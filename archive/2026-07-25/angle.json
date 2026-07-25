@@ -1,0 +1,44 @@
+{
+  "run_id": "2026-07-25",
+  "title_working": "The One It Didn't Hear",
+  "thesis": "Alaska taught some 200 seismic stations it already owned to hear mountains fall, and then the biggest one fell outside the coverage and the machine heard nothing. Researchers ran the algorithm by hand afterward. That gap is exactly what UAF just won 1,772,170 dollars to start closing.",
+  "stance": "mixed",
+  "stance_defense": "A partition, not a hedge. For the detector: a plain win, and the brand says let a win land. Some 200 stations already in the ground now flag a landslide's minute-long rumble against an earthquake's snap of seconds, replacing a baseline where the record depended on a human happening to see the right mountain. For the six-year federal bet: a real, well-aimed wager. For anyone standing under a slope this August: the honest register is caution, and the caution is aimed at coverage and calendars, not at the technology. The piece still takes a firm position (see below), so it is not mush.",
+  "the_position_it_takes": "Building the catalog before the forecast looks slow and is the correct order, because a surrogate model cannot be trained without labeled events at scale and only a working detector produces them. Alaska built the label factory first. A smart reader can push back: Tracy Arm proves coverage, not cleverness, was the binding constraint, and no part of this award buys more stations.",
+  "the_revelation": "THE SYSTEM DID NOT CATCH ITS OWN MOTIVATING DISASTER. Tracy Arm, 2025-08-10, up to about 100 million cubic meters, a runup of 470 to 500 meters, was OUTSIDE the Earthquake Center's landslide detection coverage. There was no automatic detection. Ezgi Karasozen applied the characterization algorithm to Southeast Alaska station data manually, after the fact. Verified on the Earthquake Center's own site, 2025-08-12. This is the most under-reported fact in the story and it is the credibility anchor of the whole piece.",
+  "supporting_facts": [
+    "SOME 200 seismic stations across Alaska run the landslide algorithm. That is a SUBSET of a network described as about 500 instruments, inside a defined and still-expanding test area. Keep the word 'some'. It is NOT AI: five sources call it an algorithm, zero mention any learned method. It discriminates by long-period energy and duration, an earthquake lasting seconds against a landslide that routinely lasts a minute or more.",
+    "THE PHYSICAL CEILING plus THE COVERAGE CEILING. Seismic energy only exists after rock is already moving, so listening is a record and never a warning. And listening only works where you are listening: Tracy Arm was outside coverage and produced no automatic detection. Reporting is explicit that this is not an early warning system and that it could be years before the algorithm is reliable enough to feed one.",
+    "NSF awarded UAF 1,772,170 dollars on 2026-07-10 as its share of a 4,430,711 dollar collaborative project. The abstract commits to fast AI surrogate models coupled to data assimilation to build real-time digital twins for geohazard forecasting. The period begins 2026-08-01 and runs to 2032. Year one delivers curated landslide datasets. Nothing is built. No outlet has reported the award."
+  ],
+  "fair_counterpoint_it_must_honor": "Even a working forecast moves vehicles far more readily than it moves buildings. A train can hold, a boat can turn, a road can close, and each is one handoff: alert, dispatcher, decision. A household on a steep lot is three institutional handoffs away (model, then hazard map, then law or money), none funded by this award. Barry Arm is the control case sitting inside the facts: about as studied as any slope in Alaska, it is where the prototype ran, and the exposure is still there. Do not imply the AI saves the house.",
+  "the_portable_test_for_the_viewer": "Does this system MEASURE the ground moving, or ESTIMATE that the ground is ABOUT to move? And is it listening where you are? That lets an Alaskan read the next decade of geohazard announcements correctly instead of taking each one as an alarm.",
+  "CORRECTIONS_FROM_FACT_CHECK_THAT_CHANGED_THE_ANGLE": [
+    "Michael West is STATE SEISMOLOGIST, not Director of the Alaska Earthquake Center. The 'director' title came from a February 2024 page and is stale; the live staff page lists Austin Holland as Director of Operations. His only documented statement on this work is from 2024 and he does not appear in the 2026 coverage. RESOLUTION: cut West from the piece entirely. Karasozen is the correct and only current voice. The earlier draft angle used West as the connective tissue between the detector and the award; that connection is NOT supportable and has been removed.",
+    "Tracy Arm was outside coverage and was NOT automatically detected. This replaces the earlier framing and becomes the revelation.",
+    "'Some 200' is a subset of about 500 instruments in a test area, not statewide blanket coverage.",
+    "The Mat-Su declaration was PREEMPTIVE (July 21, for flood risk, before the rain), not a response to the landslide. Moot, since Talkeetna is cut."
+  ],
+  "room_decisions": {
+    "cut_talkeetna_as_a_cited_fact": "3 of 4 analysts flagged it and the fact-check confirmed no source links it to the detection system. Cut the cited event. KEEP a train and a boat as drawn archetypes of things an alert can actually move. Same picture, zero causation risk.",
+    "handle_the_tsunami_superlative": "Do NOT say 'the tallest'. USGS does not rank it and names Lituya Bay 1958 at 530 meters as higher. Use the measured runup (470 to 500 meters) instead of a superlative. Say 'south of Juneau' with NO mileage, since sources conflict (60 vs 80 miles). Pair with 'no injuries or fatalities were reported' so it does not read as a body-count disaster.",
+    "cut_the_award_number_from_vo": "Unspeakable on video. Caption and on-screen citation only.",
+    "trim_the_pi_roster": "Carl Tape as PI. West is cut per the correction above. Satellite radar and GPS deformation stay in the picture as INSTRUMENTS, not as names.",
+    "keep_verbatim": "The not-machine-learning fact and the Karasozen quote."
+  },
+  "the_one_mechanism_to_draw": "Duration as literal WIDTH on screen. An earthquake is a sharp thin spike dead inside a three second bracket labeled 'seconds'. A landslide is a fat slow undulation that crawls all the way across the frame under a bracket that keeps extending, labeled 'over a minute'. Then the same fat wiggle arrives at three station dots at three different moments and lines cross on a slope: where, and how big. RULES: no spectrograms, no frequency axes, no y-axis labels, never write 'long-period energy' on screen. Render it as the FATNESS and SLOWNESS of the wiggle, because that is what it looks like. Duration is the physics, duration is length, and length is the one quantity a viewer reads instantly without being taught.",
+  "the_drawn_turn": "The coverage map. Lit station dots cover one region. Then the biggest slide of all lights up OUTSIDE the lit area, in the dark, and the dots do not react at all. No ping, no alert, nothing. A hand then reaches in and traces the waveform manually. The muted viewer reads it instantly: the ear is real, and it was pointed somewhere else.",
+  "banned_framings": [
+    "Never call the detector AI, machine learning, a neural network, or say it learns or is trained. Five sources call it an algorithm; zero mention a learned method. This is the single worst error available in this story.",
+    "Never say the system caught, tracked, warned of, or was validated by Tracy Arm. It was outside coverage and there was no automatic detection.",
+    "Never say early warning system, warns communities, alerts residents, or gives people minutes to evacuate. Every source disclaims it.",
+    "Never say 'statewide' blanket coverage or 'all' the stations. Some 200 of about 500, in a test area.",
+    "Never say 'the tallest tsunami on record'. Never give a Tracy Arm to Juneau mileage.",
+    "Never imply the NSF project is operational. It starts 2026-08-01.",
+    "Never use the acronym GAIA on screen or in VO. The 2026-07-23 dispatch was NOAA's unrelated GAIA beluga project.",
+    "Never caption Michael West as Director of the Alaska Earthquake Center.",
+    "Never claim this system would have saved lives in Wrangell or Ketchikan. Those were rain-triggered slides into communities; the algorithm targets large fjord landslides. The stakes link is thematic, not functional.",
+    "No savior framing, no foregone-victim framing, no reflexive downside added to sound smart."
+  ],
+  "verified_stakes_available": "Wrangell, 2023-11-20, six killed (state final report via Alaska Public Media). Ketchikan, 2024-08-25, one killed and three injured (Alaska Public Media / KRBD). Use ONLY as general Alaska-landslide stakes, never as 'this system would have helped'."
+}

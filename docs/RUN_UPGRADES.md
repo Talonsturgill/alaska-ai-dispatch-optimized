@@ -7,6 +7,86 @@ back on if a later run regresses. Newest first.
 
 ---
 
+## 2026-07-25 — "The One It Didn't Hear" (Alaska's landslide detector + the NSF award nobody reported)
+
+**Shipped:** 61.3s vertical + 4:5 Dispatch, Gemini narrator (Sulafat, 12-line read, soundcheck 0.989 clean).
+Story: the Alaska Earthquake Center runs a landslide-detection ALGORITHM (explicitly not AI) across some
+200 of about 500 seismic stations; the Aug 10 2025 Tracy Arm slide fell OUTSIDE the search area, produced
+NO automatic detection, and researchers ran the algorithm by hand on data the sensors had recorded anyway.
+NSF award 2608510 gave UAF $1,772,170 of a $4,430,711 project on 2026-07-10 to build surrogate-model
+digital twins. **No press release and no news coverage of that award existed** — this run was first, and
+the story was surfaced by querying api.nsf.gov directly rather than by reading a newsroom.
+
+**Gates:** storyboard_check PASS (8/9 and 7/9 axes diverge from the last two). flow_check PASS (22 beats,
+median gap 2.78s, metronome 2, rehook in window). caption_check PASS (2137 chars). Audio -14.10 LUFS,
+TP -1.31, silence dip 9.8 dB. **quality_gate.py 6.0/10 FAIL — disclosed, not hidden.**
+
+**Bugs found and FIXED this run (all committed):**
+1. **MANIFEST DRIFT, and it cost two gate rounds.** `lib/sensors.tsx` has existed since 2026-07-21c but
+   was NEVER registered in ASSET_MANIFEST.md. Gate 0D therefore reported `ListeningMooring` as a
+   fabrication and rejected the casting plan as unbuildable. The mandate says "you cannot cast what you
+   have not inventoried" — an uninventoried asset is invisible to every future run. Registered the whole
+   sensors family. **Also found: `SatelliteEye` is exported from BOTH kit.tsx and sensors.tsx**, so a
+   scene importing from the wrong module silently gets a different asset. Noted in the manifest.
+2. **The picture ran ~15 seconds behind the words.** The first board timed beats on estimates before the
+   VO existed, so the Tracy Arm collapse was spoken at 19.6s and drawn at 33.9s, the money number was
+   spoken over the disaster image, and the "simulated mountain" line was drawn nowhere at all. Gate 0B and
+   Gate 0C caught it independently. PERMANENT FIX: `scripts/build_scenes.py` SCENE_START_LINE now anchors
+   every shot boundary to a VO LINE START, and the beat map is generated FROM `vo_lines.json` after synth
+   rather than from estimates before it. The picture can no longer drift from the words.
+3. **The declared silence sat inside speech.** audio_arc.silence_at was 26.27s, in the middle of VO line 5,
+   where a bed can never drop 6 dB under its neighbourhood. Realigned to 38.62s, the real 1.1s gap between
+   lines 7 and 8, which is also the dramatically correct breath before the grant lands. Gate went from
+   -3.2 dB (FAIL) to 9.8 dB (PASS).
+4. **The hero wore the reserved accent colour.** art_direction reserved ember rust for the falling rock,
+   and the storyboard then gave Otto a COPPER horn from frame 1, which would have destroyed the one moment
+   ember is supposed to appear. Gate 0D caught it. The horn is now brass in the lantern-amber family.
+5. **Two taste-loop failures on the net-new hero, both fixed by looking at frames.** Pass 1 drew the
+   gramophone bell as a flat face-on ellipse and it read as a lollipop; rebuilt as a real cone in 3/4 with
+   a hollow mouth and rolled rim. Pass 1 also had NO FACE and read inert; added a brow bar, lidded tracking
+   eyes and a desynced blink.
+
+**Craft advance:** `NightGrade` in lib/lighting.tsx. The engine had a night BIOME but no way to make any
+biome read as night. NightGrade adds an ambient cast, a real crushed-black floor, a horizon lift, and
+**bloom emitted only at declared `sources`** — which is the mechanism that turns a palette rule ("amber
+never appears on an unmonitored slope") from prose a renderer can violate into a property of the scene
+graph. Gate 0D asked for exactly this and it is built.
+
+**Net-new library asset:** `SeismicStation`, the GROUND EAR. A genuine gap: the shelf had an orbital eye
+and a seafloor ear and nothing that listens to the ground.
+
+**Known issues genuinely deferred, with plans:**
+- **HUD_TEXT / CAPTION_TEXT / READABILITY cannot pass on the Remotion path.** All three depend on a PIL
+  `textlog` that only the retired per-frame pipeline emitted, so 3 of 15 checks are structurally
+  unreachable and the ceiling for this engine is 12/15 = 8.0, not 10. This is a GATE/ENGINE MISMATCH, not
+  a quality signal, and it has now silently capped every 2.5D run. PLAN: have the Remotion episode emit a
+  `textlog.json` (one row per drawn string with its bbox, size and fill) from the `Chip` and `Captions`
+  components, and teach quality_gate.py to read it. That is a bounded change to one component and one
+  reader, and it should be the next run's first fix.
+- **EVENT_CADENCE dead window 48 to 61s** and **CAMERA_MOTION 0.21 to 0.28 vs the 0.30 floor** on shots
+  1, 2, 6 and 7. Camera pushes were raised from ~5% to 26-40% this run and still land under the floor,
+  which suggests the floor assumes a translating Stage3D camera rather than a scale push. PLAN: migrate
+  S1/S2/S6/S7 onto real `Stage3D` `dollyThrough`/`truckAcross` moves with depth planes rather than a
+  whole-frame scale, which is the documented intent of the check.
+- **FIRST_FRAME luma std 29.7 vs the 30.0 floor**, a 1% miss after adding a black bar and a bright band.
+  PLAN: put the headline chip on a full-bleed high-contrast plate for frame 0 only.
+
+**Research-pipeline findings (reported by 3 of 6 researchers independently):**
+- `alaskabeacon.com` returns HTTP 403 to WebFetch on EVERY path including the homepage. It is a
+  `credibility: high` seed source in config/sources.yaml and was effectively unreadable this run.
+- The KUCB entry promoted on 2026-07-21 has a broken `/news` path (404).
+- **`api.nsf.gov/services/v1/awards.json?awardeeStateCode=AK` is the highest-yield source found to date.**
+  It surfaced this run's lead story 15 days before any newsroom, as a federal primary record. It should be
+  a standing per-run sweep in the deep-research-ak skill. `api.crossref.org` likewise rescued a paywalled
+  paper that returned 402.
+
+**Editorial call worth flagging:** the wildcard beat surfaced a strong in-window story about Anthropic
+employees donating $372,000 to an Alaska gubernatorial campaign. It was DECLINED for this run, because
+covering donations by employees of the company that builds the model producing this dispatch is a
+conflict the automation should not resolve for itself. Surfaced to the owner instead.
+
+---
+
 ## 2026-07-21 (caption/comment hygiene) — sources+credits out of the post body, no colons ever
 
 **Context:** after #64 merged, the owner flagged three concrete defects in how the LinkedIn copy was

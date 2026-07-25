@@ -1,0 +1,17 @@
+Alaska taught about 200 seismometers a second job. Then the biggest mountain of the year fell where nobody was searching.
+
+The Alaska Earthquake Center runs a landslide detection algorithm across some 200 seismic stations. It is not AI. It is physics. An earthquake is over in seconds, a landslide rumbles for a minute or more, and that difference in duration is enough for software to tell them apart and estimate where a slide happened and how big it was. Before this, the honest answer to how Alaska recorded a landslide was that somebody happened to see it.
+
+On August 10, 2025 a mountainside went into Tracy Arm, south of Juneau. USGS puts it at up to about 100 million cubic meters, with runup of 470 to 500 meters. No injuries or fatalities were reported. It also fell outside the detection coverage, so there was no automatic detection. Researchers ran the algorithm by hand afterward, on data the sensors had recorded anyway.
+
+Two limits, and they are different. Coverage is a map problem. The other is physics, and it does not care about your budget. Seismic energy only exists once rock is already moving, so listening is a record and never a warning.
+
+That second limit is what the National Science Foundation just funded. On July 10 it awarded the University of Alaska Fairbanks $1,772,170, part of a $4,430,711 project with the University of Washington and EarthScope, to train fast surrogate models that approximate expensive physics simulations and couple them to live observations. The abstract calls the result a continuously updating digital twin. It begins August 1 and runs to 2032. Year one delivers datasets.
+
+Building the catalog before the forecast looks slow and it is the correct order, because a surrogate model cannot be trained without labeled events at scale, and only a working detector produces them. Alaska built the label factory first.
+
+The fair objection is that Tracy Arm proves coverage, not cleverness, was the binding constraint, and no part of this award buys more stations.
+
+What would you fund first, more listening or better forecasting?
+
+#Alaska #ArtificialIntelligence #Geoscience #NSF #UAF

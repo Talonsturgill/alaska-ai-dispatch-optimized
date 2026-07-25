@@ -1,0 +1,62 @@
+{
+  "shots": [
+    {
+      "id": 1,
+      "start": 0,
+      "end": 62,
+      "framing": "subject-portrait",
+      "transition_in": "hard-cut",
+      "note": "open on an instrument found at work and add its second job as an addition to hardware Alas"
+    },
+    {
+      "id": 2,
+      "start": 62,
+      "end": 101,
+      "framing": "data-panel",
+      "transition_in": "focus-pull",
+      "note": "teach the mechanism as two shapes, then show the program that reads it and EARN the lamp"
+    },
+    {
+      "id": 3,
+      "start": 101,
+      "end": 145,
+      "framing": "wide-establish",
+      "transition_in": "pull-out",
+      "note": "bound the search, travel out of the watched world, and let the event land with weight"
+    },
+    {
+      "id": 4,
+      "start": 145,
+      "end": 168,
+      "framing": "alt-vantage",
+      "transition_in": "hard-cut",
+      "note": "the thesis in one image, then the emotional peak. carried anchor is the slab impact ring r"
+    },
+    {
+      "id": 5,
+      "start": 168,
+      "end": 237,
+      "framing": "macro-closeup",
+      "transition_in": "match-action",
+      "note": "the honest correction, the human marking, and the physical ceiling"
+    },
+    {
+      "id": 6,
+      "start": 237,
+      "end": 271,
+      "framing": "push-detail",
+      "transition_in": "match-cut",
+      "note": "the money arrives, unglamorous and exact"
+    },
+    {
+      "id": 7,
+      "start": 271,
+      "end": 352,
+      "framing": "two-up",
+      "transition_in": "morph",
+      "note": "draw what ahead would look like, then take it away honestly. the map is proposed, not buil"
+    }
+  ],
+  "fps": 6,
+  "total": 368
+}

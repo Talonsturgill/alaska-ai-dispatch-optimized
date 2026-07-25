@@ -1,0 +1,136 @@
+{
+  "run_id": "2026-07-25",
+  "rule": "NOTHING may appear in the VO, on screen, in the caption, or in the email that is not in this file. Every claim carries its label.",
+  "claims": [
+    {
+      "id": "C1",
+      "text": "Some 200 seismic stations across Alaska now run a landslide-detection algorithm.",
+      "label": "KHNS / Alaska Public Media, July 23, 2026",
+      "guard": "Keep the word 'some'. It is a SUBSET of a network described as about 500 instruments, inside a defined and still-expanding test area. Never say 'statewide blanket coverage' or 'all'."
+    },
+    {
+      "id": "C2",
+      "text": "It is an algorithm, not AI. It flags a landslide by its long-period seismic energy and its duration.",
+      "label": "Alaska Earthquake Center",
+      "guard": "Five sources call it an algorithm. ZERO mention machine learning, neural networks, training, or AI. This is the single worst error available in this story."
+    },
+    {
+      "id": "C3",
+      "text": "Most earthquake ruptures last only seconds. Landslides routinely last a minute or more.",
+      "label": "Alaska Earthquake Center, February 22, 2024",
+      "guard": "'landslides routinely last a minute or more' is verbatim. This is the mechanism the piece draws."
+    },
+    {
+      "id": "C4",
+      "text": "The system is designed to detect a slide, pinpoint where it happened, and estimate its size.",
+      "label": "KHNS / Alaska Public Media, July 23, 2026",
+      "guard": "Use 'designed to', exactly as the reporter did. Do not assert it reliably does."
+    },
+    {
+      "id": "C5",
+      "text": "Where seismic station coverage is good, location can be estimated to within a few miles.",
+      "label": "Alaska Earthquake Center, 2024",
+      "guard": "The 'where coverage is good' clause is MANDATORY if the number is used. Label as background, not new."
+    },
+    {
+      "id": "C6",
+      "text": "It's fair to say that this research is still quite young and we're still in the developing phase.",
+      "label": "Ezgi Karasozen, research seismologist, Alaska Earthquake Center, July 23, 2026",
+      "guard": "VERBATIM, character for character verified. Title verbatim verified on the Earthquake Center staff page."
+    },
+    {
+      "id": "C7",
+      "text": "This is not an early warning system. It could be years before the algorithm is reliable enough to feed one.",
+      "label": "KHNS / Alaska Public Media, July 23, 2026",
+      "guard": "NON-NEGOTIABLE. Must appear. Four independent hedges exist in the sources."
+    },
+    {
+      "id": "C8",
+      "text": "On August 10, 2025 a landslide above South Sawyer Glacier in Tracy Arm, south of Juneau, sent up to about 100 million cubic meters of rock into the fjord. Tsunami runup reached 470 to 500 meters. No injuries or fatalities were reported.",
+      "label": "USGS, preliminary analysis",
+      "guard": "Say 'south of Juneau' with NO mileage (sources conflict, 60 vs 80). Never 'the tallest tsunami on record' (USGS names Lituya Bay 1958 at 530 meters as higher). Pair with 'no injuries or fatalities' so it does not read as a body count."
+    },
+    {
+      "id": "C9",
+      "text": "Tracy Arm was outside the detection system's coverage. There was no automatic detection. Researchers ran the algorithm by hand afterward.",
+      "label": "Alaska Earthquake Center, August 12, 2025",
+      "guard": "THE REVELATION AND THE CREDIBILITY ANCHOR. Verbatim source phrase: 'The region is outside of the Earthquake Center's recently expanded landslide detection coverage, so there was no automatic detection.'"
+    },
+    {
+      "id": "C10",
+      "text": "The Earthquake Center has monitored for large landslides since 2023. A prototype ran in Barry Arm, Prince William Sound, sweeping data every 30 seconds.",
+      "label": "Alaska Earthquake Center",
+      "guard": "Say 'since 2023', NOT 'since August 2023'."
+    },
+    {
+      "id": "C11",
+      "text": "Barry Arm's unstable slope has slumped about 650 feet in recent decades.",
+      "label": "Alaska Earthquake Center, 2024",
+      "guard": "The only published slope figure. No volume or movement rate exists anywhere. Do not invent one."
+    },
+    {
+      "id": "C12",
+      "text": "Modeling suggests a catastrophic Barry Arm failure could send several meters of wave height to nearby communities in about 20 minutes.",
+      "label": "Alaska Earthquake Center, 2024, modeled projection",
+      "guard": "MUST carry 'modeling suggests' or 'could'. This is a projection, not an observation."
+    },
+    {
+      "id": "C13",
+      "text": "On July 10, 2026 the National Science Foundation awarded the University of Alaska Fairbanks 1,772,170 dollars, its share of a 4,430,711 dollar project with the University of Washington and EarthScope.",
+      "label": "NSF award record 2608510 (with 2608509 and 2608511)",
+      "guard": "Estimated total equals funds obligated, so the full amount is already obligated. Arithmetic verified. EarthScope is registered in Washington DC, NOT the Pacific Northwest, so never map it as such."
+    },
+    {
+      "id": "C14",
+      "text": "The award funds fast surrogate models that approximate expensive physics simulations, coupled to incoming observations through data assimilation, to produce real-time digital twins that forecast geohazards.",
+      "label": "NSF award abstract, verbatim",
+      "guard": "Verbatim fragment available: 'producing a continuously updating digital twin of a region that can estimate hazards in close to real time'."
+    },
+    {
+      "id": "C15",
+      "text": "The investigators test the full system on landslides in Alaska and the Pacific Northwest.",
+      "label": "NSF award abstract, verified character for character",
+      "guard": "Present tense in the original. Do not silently convert to 'will test' inside quotation marks."
+    },
+    {
+      "id": "C16",
+      "text": "The project begins August 1, 2026 and runs to July 31, 2032. Year one delivers curated, analysis-ready landslide datasets.",
+      "label": "NSF award record 2608510",
+      "guard": "The project has NOT started. Any phrasing implying work is underway is FALSE. Use 'begins August 1' or 'funded through 2032'."
+    },
+    {
+      "id": "C17",
+      "text": "Carl Tape of the UAF Geophysical Institute is the principal investigator.",
+      "label": "NSF award record 2608510",
+      "guard": "No academic rank is published anywhere. Never say 'Professor Carl Tape'. 'Lead investigator' or 'principal investigator' only."
+    },
+    {
+      "id": "C18",
+      "text": "NSF funded it through its Office of Advanced Cyberinfrastructure, under a program named AI and Geosciences, Software Institutes.",
+      "label": "NSF award record, fundProgramName",
+      "guard": "Do not drop 'AI and Geosciences' and show 'Software Institutes' alone; the AI half is the reason this is an AI story."
+    },
+    {
+      "id": "C19",
+      "text": "No press release and no news coverage of this award exists.",
+      "label": "Verified 2026-07-25 against the Geophysical Institute newsroom, the UAF newsroom, and web search",
+      "guard": "We are first. There is no second source to lean on, so every award fact must come from the NSF record itself."
+    },
+    {
+      "id": "C20",
+      "text": "A landslide in Wrangell on November 20, 2023 killed six people. A landslide in Ketchikan on August 25, 2024 killed one person and injured three.",
+      "label": "Alaska Public Media reporting the state's final report; Alaska Public Media / KRBD",
+      "guard": "General Alaska-landslide stakes ONLY. Both were rain-triggered slides into communities, not the fjord landslide-tsunami this algorithm targets. NEVER say this system would have helped. Use sparingly or not at all."
+    }
+  ],
+  "killed_outright": [
+    "The 13 petabyte Alaska Satellite Facility archive figure. No source states it anywhere; exact-phrase search returns zero results. Latest sourceable figure is about 6 PB in 2018. Do not show any petabyte number.",
+    "'LLM-style' research-assisting software agents. The NSF abstract never says LLM or language model. Use 'research-assisting software agents' verbatim.",
+    "'Michael West, Director, Alaska Earthquake Center'. The center's own staff page lists him as State Seismologist; Austin Holland is Director of Operations. West is CUT from this piece entirely.",
+    "'Professor Carl Tape'. No official page publishes his academic rank.",
+    "The Talkeetna landslide as a cited event. No source links it to the detection system, and the Mat-Su declaration was preemptive on July 21 for flood risk, not a response to the slide.",
+    "Any Tracy Arm to Juneau mileage. Sources conflict.",
+    "'The tallest tsunami on record'."
+  ],
+  "source_independence_warning": "alaskapublic.org and kmxt.org carry the IDENTICAL KHNS story by Avery Ellfeldt. They are ONE source, not two. Independent corroboration for the science comes from earthquake.alaska.edu's own posts."
+}

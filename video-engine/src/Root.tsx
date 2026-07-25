@@ -16,6 +16,7 @@ import { FaunaShowcase4 } from './FaunaShowcase4';
 import { FaunaShowcase5 } from './FaunaShowcase5';
 import { FishShowcase } from './FishShowcase';
 import { CityShowcase } from './CityShowcase';
+import { StationLook } from './StationLook';
 import { MaterialShowcase } from './MaterialShowcase';
 import { z } from 'zod';
 
@@ -49,6 +50,14 @@ export const RemotionRoot: React.FC = () => {
         calculateMetadata={({ props }) => ({
           durationInFrames: (props as { total?: number }).total ?? 1800,
         })}
+      />
+      <Composition
+        id="StationLook"
+        component={StationLook}
+        durationInFrames={120}
+        fps={30}
+        width={1080}
+        height={1920}
       />
       <Composition
         id="Standoff"

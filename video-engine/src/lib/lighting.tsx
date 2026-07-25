@@ -438,3 +438,73 @@ export const WaterColumn: React.FC<{
     </g>
   );
 };
+
+// ---- NightGrade (2026-07-25 CRAFT ADVANCE, the run's single primary engine advance) --------
+// Every prior Dispatch has been a daylight or dusk world. The engine had AuroraNightBG (one
+// specific night biome) but NO general system for making ANY biome read as night with rationed
+// practical light. This is that system, and it exists because "The One It Didn't Hear" carries
+// its whole thesis in WHERE THE LIGHT IS: warmth appears only where an instrument is actually
+// listening, so the unlit parts of the frame read as UNHEARD rather than merely dark.
+//
+// Without a genuine crushed-black floor, an unlit region comes out of the grade as flat grey
+// and that argument dies. So NightGrade does four things GradeLayer cannot:
+//   1. AMBIENT WASH   a cold hue cast pushed through `color`, multiply-blended, so the whole
+//                     world sits in one coherent night rather than per-object guesswork.
+//   2. BLACK FLOOR    `floor` crushes the shadows toward true black with a soft-light pass, so
+//                     "unlit" is visibly a different STATE from "dimly lit", not a lower value.
+//   3. SOURCE BLOOM   bloom is emitted ONLY at declared `sources`, never globally. A scene must
+//                     name its practical lights, which makes "amber never appears on a slope
+//                     nobody is monitoring" a checkable property of the scene graph, not a note.
+//   4. HORIZON LIFT   an optional cold gradient lift at the top of frame so silhouettes still
+//                     separate from the sky at the black floor (otherwise ridges vanish).
+// Renders as absolutely-positioned overlays, so place it LAST in a scene, before GradeLayer.
+export const NightGrade: React.FC<{
+  f: number;
+  color?: string;                                  // the ambient night cast
+  amount?: number;                                 // 0..1 overall strength of the night look
+  floor?: number;                                  // 0..1 how hard the blacks crush
+  horizon?: number;                                // 0..1 cold lift at the top of frame
+  sources?: {x: number; y: number; r: number; color?: string; intensity?: number}[];
+}> = ({f, color = '#123A34', amount = 1, floor = 0.55, horizon = 0.35, sources = []}) => {
+  const a = Math.max(0, Math.min(1, amount));
+  if (a <= 0.01) return null;
+  const breathe = 0.94 + 0.06 * Math.sin(f / 23);   // the night is never perfectly static
+  return (
+    <>
+      {/* 1. ambient cold cast over the whole frame */}
+      <div style={{
+        position: 'absolute', inset: 0, pointerEvents: 'none',
+        background: color, opacity: 0.42 * a, mixBlendMode: 'multiply',
+      }} />
+      {/* 4. horizon lift so ridge silhouettes still separate against the sky */}
+      {horizon > 0.01 && (
+        <div style={{
+          position: 'absolute', inset: 0, pointerEvents: 'none', mixBlendMode: 'screen',
+          background: `linear-gradient(to bottom, rgba(70,132,118,${0.30 * horizon * a}) 0%, rgba(70,132,118,0) 42%)`,
+        }} />
+      )}
+      {/* 3. bloom ONLY at declared practical sources. No sources means no warmth, by design. */}
+      {sources.length > 0 && (
+        <div style={{position: 'absolute', inset: 0, pointerEvents: 'none', mixBlendMode: 'screen'}}>
+          {sources.map((s, i) => {
+            const c = s.color ?? '#F2B33D';
+            const it = (s.intensity ?? 1) * breathe;
+            if (it <= 0.01) return null;
+            return (
+              <div key={i} style={{
+                position: 'absolute',
+                left: s.x - s.r, top: s.y - s.r, width: s.r * 2, height: s.r * 2,
+                background: `radial-gradient(circle at 50% 50%, ${c}${Math.round(Math.min(1, 0.42 * it) * 255).toString(16).padStart(2, '0')} 0%, ${c}00 68%)`,
+              }} />
+            );
+          })}
+        </div>
+      )}
+      {/* 2. the black floor, applied LAST so it crushes everything including the wash */}
+      <div style={{
+        position: 'absolute', inset: 0, pointerEvents: 'none', mixBlendMode: 'soft-light',
+        background: `radial-gradient(72% 56% at 50% 48%, rgba(0,0,0,0) 0%, rgba(0,0,0,${0.85 * floor * a}) 100%)`,
+      }} />
+    </>
+  );
+};

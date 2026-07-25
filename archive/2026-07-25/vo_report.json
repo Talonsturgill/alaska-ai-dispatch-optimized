@@ -1,0 +1,60 @@
+{
+  "backend": "gemini-tts",
+  "model": "gemini-3.1-flash-tts-preview",
+  "voice": "Sulafat",
+  "take": 0,
+  "takes": 4,
+  "soundcheck": {
+    "pass": true,
+    "score": 0.989,
+    "heard": "Alaska buried seismometers to hear earthquakes. Researchers taught 200 of those sensors a second job, hearing landslides. A quake ends in seconds. A slide rumbles for a minute. A program watches for that. It searches only one stretch of coast. Last August, a mountain fell into Tracy arm. South of Juneau. It fell outside the search area, so no alarm fired. The sensors still heard it. A scientist found the slide by hand. And a harder limit remains. Rock makes no sound until it falls. So a federal grant sent $1.77 million to the University of Alaska Fairbanks to build a simulated mountain fed by those sensors that forecasts what a slope will do. The work starts next month and takes years. The sensors keep listening. But never ahead.",
+    "checks": {
+      "word_accuracy": {
+        "wer": 0.022,
+        "pass": true
+      },
+      "no_leak": {
+        "leaked": [],
+        "pass": true
+      },
+      "expressive": {
+        "pitch_std_semitones": 6.33,
+        "voiced_frac": 0.45,
+        "pass": true
+      },
+      "duration": {
+        "seconds": 59.28,
+        "pass": true
+      },
+      "loudness": {
+        "lufs": null,
+        "pass": true
+      }
+    },
+    "diagnosis": "clean"
+  },
+  "all_reports": [
+    {
+      "pass": true,
+      "score": 0.989,
+      "diagnosis": "clean"
+    },
+    {
+      "pass": false,
+      "score": 0.754,
+      "diagnosis": "WORDS: WER 0.493 too high (dropped/garbled or a 500 text-fallback) \u2014 re-roll."
+    },
+    {
+      "pass": true,
+      "score": 0.989,
+      "diagnosis": "clean"
+    },
+    {
+      "pass": true,
+      "score": 0.978,
+      "diagnosis": "clean"
+    }
+  ],
+  "watermark": "SynthID (Google) embedded in all Gemini TTS audio",
+  "license": "Google Gemini API preset voice (per-use billing)"
+}

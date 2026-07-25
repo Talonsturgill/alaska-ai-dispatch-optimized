@@ -1,0 +1,653 @@
+{
+  "concept": "The One It Didn't Hear. Alaska taught about 200 buried seismometers a second job, hearing landslides. Then the biggest mountain of the year came down outside the watched stretch, no alarm fired, and a scientist had to find the slide by hand in data the sensors had recorded anyway. That gap, plus a harder physical ceiling (rock makes no sound until it is already falling), is what a new federal grant to the University of Alaska Fairbanks starts closing on August 1.",
+  "engine": "infographic-2.5d",
+  "derived_from": "scratch",
+  "angle": {
+    "thesis": "Alaska taught some 200 seismic stations it already owned to hear mountains fall, and then the biggest one fell outside the coverage and no alarm fired. That gap is what UAF just won 1,772,170 dollars to start closing.",
+    "stance": "mixed",
+    "supporting_facts": [
+      "Some 200 seismic stations already in the ground now flag a landslide by duration and long-period energy. It is an algorithm, not AI. Before it, a slide got recorded only if somebody happened to see it.",
+      "Tracy Arm, August 10 2025, up to about 100 million cubic meters, runup 470 to 500 meters, no injuries or fatalities. It fell OUTSIDE the detection coverage. There was no automatic detection and researchers ran the algorithm by hand afterward.",
+      "NSF gave UAF 1,772,170 dollars of a 4,430,711 dollar project on July 10 2026 for fast surrogate models coupled to data assimilation to make real-time digital twins. It begins August 1 2026 and runs to 2032. Year one delivers datasets."
+    ],
+    "fair_counterpoint": "Even a working forecast moves vehicles far more readily than it moves buildings. A train holds and a boat turns in one handoff. A household on a steep lot is three institutional handoffs away, and none of them are funded by this award.",
+    "runner_up_angles": "THE HONEST LIMIT (caution) lost because its own steelman defeats it, since for a fjord wall detection genuinely is warning. THE ALASKA WIN (celebration) lost because a pure celebration must skip the physical ceiling, the most interesting true thing here. WHO IS UNDER THE SLOPE (mixed) lost because it is a story about institutions and this channel needs the mechanism to carry the minute."
+  },
+  "treatment": {
+    "winner": "The Explainer, grafted with the Dramatist's character work",
+    "judge_reasoning": "Four analyst lenses argued the angle and a fifth writers-room pass supplied character. The Explainer lens won the spine because its physical insight (seismic energy only exists after rock is already moving, so listening can never be a warning) is the single most load-bearing true thing available and it is the specific reason the six-year award had to be written at all. Grafted from the Enthusiast lens: the same-instruments-new-job hook and the argument that building the catalog first is the correct order, not a disappointment. Grafted from the Dramatist lens: Otto, the seismic-station character, whose horn and chest lamp carry the emotional arc, and the turn staged as a machine that does not react. Grafted from the Who-Is-Under-The-Slope lens: the fair counter-point that an alert moves vehicles and not buildings, drawn as a fork. The Comedian register was deliberately held back below the usual level because a real 100 million cubic meter collapse does not get jokes played over it; charm lives in Otto and in the instruments, never on the mountain.",
+    "hero_asset": "SeismicStation (net-new, called Otto on screen only as a friendly label, never as an official station designation)"
+  },
+  "fingerprint": {
+    "pov": "eye-level-immersive",
+    "motion_vector": "horizontal-traverse",
+    "hero_treatment": "instrument-as-subject",
+    "layout": "stacked-layers",
+    "register": "naturalistic-scene",
+    "camera_strategy": "rack-focus-macro",
+    "light_story": "night-practical",
+    "palette": "malachite conifer dusk over near-ink ground, tungsten lanternlight rationed only to instruments that are listening, ember rust reserved for falling rock",
+    "metaphor": "a small buried ear that hears a mountain fall but can never hear one think, and a map drawn too small around it"
+  },
+  "light": {
+    "sun": "no sun. Deep blue-green hour just after dark in a Southeast fjord, a dim cold key raking from screen-left and low across the slopes",
+    "mood": "light MEANS coverage. Where an instrument is listening there is warmth. Where nothing listens there is only silhouette. The turn is lit by taking the warmth away."
+  },
+  "hook": {
+    "pattern": "bold-claim",
+    "frame1": "Otto sits ALREADY BURIED and working in the dark while a lantern-amber seismic line rips left to right across the full frame width. A stopwatch snaps in ALREADY READING PAST A MINUTE and still climbing, so the headline has its evidence in frame at frame one.",
+    "headline": "Earthquakes do not last this long",
+    "motion_by_s": 0.3,
+    "loopback": "the button returns to the same stopwatch and the same buried post, and the watch starts again from zero inside the SAME lit boundary, with only a ghosted proposal drawn beyond it"
+  },
+  "reveals": [
+    {
+      "t": 7.04,
+      "type": "build-on",
+      "what": "the counter rolls to 200 as a field of lamps ignites into the dark, recontextualizing one instrument as a network",
+      "hold_s": 0.6
+    },
+    {
+      "t": 16.8,
+      "type": "scale-pullback",
+      "what": "the lit boundary snaps down and the frame pulls out until the unlit remainder of the state dwarfs the watched stretch",
+      "hold_s": 0.7
+    },
+    {
+      "t": 24.18,
+      "type": "morph-to-chart",
+      "what": "the ember bloom outside the line against the unchanged pulsing lattice, the whole argument as one picture",
+      "hold_s": 0.8
+    }
+  ],
+  "audio_arc": {
+    "build_steps": [
+      "cold room tone and one buried tick under the hook",
+      "a mechanical tick bed established with the stopwatch, which becomes the running motif",
+      "granular lamp-tick cascade as the lattice ignites",
+      "low drone enters under the boundary and the travel out",
+      "everything below 60Hz reserved for the collapse and spent there once",
+      "warm low pulse returns under the crate"
+    ],
+    "dip_at": 38.2,
+    "riser_at": 19.9,
+    "silence_at": 38.62,
+    "payoff_at": 39.5,
+    "button_pattern": "callback",
+    "silence_spec": "true silence 1.25s from 38.62, which is the real VO gap between line 7 and line 8, the breath before the grant lands. A cold room-tone floor runs underneath. An earlier draft declared the silence at 26.27s, inside speech, where a bed can never drop 6 dB under its neighbourhood.",
+    "reserved": "sub-60Hz is spent ONCE, on the collapse at 21.16. The beat-5 rumble stays narrow and mid-low so the boom keeps its surprise.",
+    "motifs": "the chalk boundary sound bookends the piece (drawn in at 16.8, proposed outward at 54.44, pitched up a third so the redraw reads as opening). The stopwatch tick bed established at 1.91 keeps ticking VISIBLY through the silence and restarts at the button."
+  },
+  "beats": [
+    {
+      "t": "0.0-1.91",
+      "key": "hook",
+      "vo": "Alaska buried seismometers to hear earthquakes.",
+      "shows": "Otto sits ALREADY BURIED and working in the dark. A lantern-amber seismic line rips left to right across the full frame width. The headline card lands with it.",
+      "sfx": "thud",
+      "means": "hook. the instrument is found at work, not arriving",
+      "draw": {
+        "subject": "Otto, a half-buried listening post with a brass listening horn for an ear",
+        "action": "tracks a passing amber wave with its horn while its eyes follow it across frame",
+        "emotion": "attentive",
+        "annotation": "EARTHQUAKES DO NOT LAST THIS LONG"
+      },
+      "choreo": {
+        "primary": "amber line rips full width with a smeared leading edge",
+        "reaction": "horn swings to track it, eyes follow",
+        "ambient": "far ridge haze drifts, neighbouring post breathes its slow pulse"
+      }
+    },
+    {
+      "t": "1.91-4.18",
+      "key": "buried",
+      "vo": "Alaska buried seismometers to hear earthquakes.",
+      "shows": "a stopwatch snaps into the upper third ALREADY reading past a minute and still climbing, so the headline has its evidence in frame",
+      "sfx": "tick",
+      "means": "the claim gets its proof immediately, not two seconds later",
+      "draw": {
+        "subject": "a brass stopwatch and the amber trace",
+        "action": "the watch sweeps past sixty while the trace keeps rolling",
+        "emotion": "insistent",
+        "annotation": "LISTENING FOR EARTHQUAKES"
+      },
+      "choreo": {
+        "primary": "watch snaps in with a shutter click and keeps sweeping",
+        "reaction": "Otto's horn rim flares one notch",
+        "ambient": "the trace scrolls continuously, haze drifts"
+      }
+    },
+    {
+      "t": "4.18-7.04",
+      "key": "secondjob",
+      "vo": "Researchers taught two hundred of those sensors a second job. Hearing landslides.",
+      "shows": "a SECOND label plate bolts onto Otto's chest beside the first. Same instrument, one more job. Nothing new arrives.",
+      "sfx": "clank",
+      "means": "the second job shown as an addition to existing hardware, not a new machine",
+      "draw": {
+        "subject": "Otto's chest and a second bolted plate",
+        "action": "a plate swings in and bolts on beside the existing one while Otto glances down at it",
+        "emotion": "surprised then pleased",
+        "annotation": "A SECOND JOB"
+      },
+      "choreo": {
+        "primary": "plate swings in with anticipation and overshoot, two bolt hits",
+        "reaction": "Otto's eyes drop to the new plate then back up",
+        "ambient": "antenna sways, lamp pulses"
+      }
+    },
+    {
+      "t": "7.04-10.36",
+      "key": "twohundred",
+      "vo": "Researchers taught two hundred of those sensors a second job. Hearing landslides.",
+      "shows": "a counter on Otto's chest ticks up to 200 while a field of small lamps ignites behind it across the dark",
+      "sfx": "cascade",
+      "means": "the spoken number drawn at the moment it is spoken",
+      "draw": {
+        "subject": "a counter and a field of igniting station lamps",
+        "action": "the counter rolls to 200 as lamps ignite one after another into the dark",
+        "emotion": "proud",
+        "annotation": "SOME 200 SENSORS"
+      },
+      "choreo": {
+        "primary": "counter digits roll with easing and land with a hit",
+        "reaction": "each lamp pops on with a tiny overshoot",
+        "ambient": "the cascade thins toward the edges of frame"
+      }
+    },
+    {
+      "t": "10.36-12.42",
+      "key": "seconds",
+      "vo": "A quake ends in seconds. A slide rumbles for a minute. A program watches for that.",
+      "shows": "split lanes. top lane a skinny hyper quake scribble thrashes and quits and hops off the panel. bottom lane a fat slow roller begins.",
+      "sfx": "snap",
+      "means": "the mechanism, two shapes side by side",
+      "draw": {
+        "subject": "two waveform performers, a skinny quake scribble and a fat slow roller",
+        "action": "the quake thrashes, quits, checks a tiny watch and hops off the panel",
+        "emotion": "impatient",
+        "annotation": "SECONDS"
+      },
+      "choreo": {
+        "primary": "quake trace thrashes then exits frame",
+        "reaction": "Otto ignores the top lane and drops its horn to the bottom",
+        "ambient": "the roller keeps crawling underneath"
+      }
+    },
+    {
+      "t": "12.42-15.26",
+      "key": "minute",
+      "vo": "A quake ends in seconds. A slide rumbles for a minute. A program watches for that.",
+      "shows": "the roller crawls the full width of frame under a bracket that keeps extending past the quake's, and locks",
+      "sfx": "low rumble",
+      "means": "duration drawn as literal width, the one idea the piece must land",
+      "draw": {
+        "subject": "the fat landslide roller and its measuring bracket",
+        "action": "the roller crawls the whole frame while the bracket stretches past the quake's short one",
+        "emotion": "insistent",
+        "annotation": "OVER A MINUTE"
+      },
+      "choreo": {
+        "primary": "bracket stretches with an easing crawl and hits a hard stop",
+        "reaction": "Otto's horn locks rigid on the roller",
+        "ambient": "amber ripples along the trace"
+      }
+    },
+    {
+      "t": "15.26-16.8",
+      "key": "program",
+      "vo": "A quake ends in seconds. A slide rumbles for a minute. A program watches for that.",
+      "shows": "THE TELL IS EARNED. A scanning bar sweeps the trace against a duration gate. The gate LATCHES as the roller crosses a minute and Otto's chest lamp IGNITES amber-hot for the first time.",
+      "sfx": "latch",
+      "means": "the program drawn, and the promise the turn will later break",
+      "draw": {
+        "subject": "a scanning bar, a duration gate and Otto's chest lamp",
+        "action": "the gate latches on the roller and the lamp fires amber-hot with lock ticks",
+        "emotion": "satisfied",
+        "annotation": "A PROGRAM WATCHES FOR THAT"
+      },
+      "choreo": {
+        "primary": "scan bar sweeps then the gate snaps shut",
+        "reaction": "lamp ignites with a bloom, Otto's eyes widen",
+        "ambient": "the amber bloom spills onto the ground around Otto"
+      }
+    },
+    {
+      "t": "16.8-19.58",
+      "key": "boundary",
+      "vo": "It searches only one stretch of coast.",
+      "shows": "a lit boundary snaps down around the watched stretch with a chalk crack. Amber falls off HARD at the line. The outermost post leans its horn over the line like a neighbour over a fence.",
+      "sfx": "chalk crack",
+      "means": "the search area becomes a character",
+      "draw": {
+        "subject": "the lit coverage boundary and the outermost listening post",
+        "action": "the boundary snaps down and the last post leans its horn out over it into the dark",
+        "emotion": "curious and overreaching",
+        "annotation": "IT SEARCHES ONLY ONE STRETCH OF COAST"
+      },
+      "choreo": {
+        "primary": "boundary draws in with a hard snap and settle",
+        "reaction": "outermost post tips over the line and rocks back",
+        "ambient": "amber falls off sharply at the line, dark beyond"
+      }
+    },
+    {
+      "t": "19.58-21.16",
+      "key": "datecard",
+      "vo": "Last August a mountain fell into Tracy Arm, south of Juneau.",
+      "shows": "whip pan off the lit stretch, out past the boundary into the unlit dark. A date card lands with a thud.",
+      "sfx": "whoosh",
+      "means": "travel out of the watched world into the unwatched one",
+      "draw": {
+        "subject": "a date card over black fjord walls",
+        "action": "the camera whips off the lit stretch and out past the boundary into the dark",
+        "emotion": "foreboding",
+        "annotation": "AUGUST 10, 2025"
+      },
+      "choreo": {
+        "primary": "whip pan with heavy motion blur",
+        "reaction": "the lit boundary streaks away behind",
+        "ambient": "cold water sheen picks up at the bottom of frame"
+      }
+    },
+    {
+      "t": "21.16-24.18",
+      "key": "collapse",
+      "vo": "Last August a mountain fell into Tracy Arm, south of Juneau.",
+      "shows": "THE COLLAPSE. The fjord wall cracks and a heavy slab drops into the water in ember orange, drawn with weight and no charm. A scale bar climbs the far wall and locks.",
+      "sfx": "boom",
+      "means": "the event itself, given its dignity",
+      "draw": {
+        "subject": "a fjord wall and the slab of rock leaving it",
+        "action": "the wall cracks, the slab tips and drops into the water throwing a spray sheet",
+        "emotion": "none, this is physics and gets no face",
+        "annotation": "UP TO 100 MILLION CUBIC METERS. RUNUP 470 TO 500 M."
+      },
+      "choreo": {
+        "primary": "slab separates with an anticipation shiver then falls with motion blur",
+        "reaction": "water impact, spray sheet, 4px screen shake",
+        "ambient": "spray drifts, the water swell keeps rolling, dust column settles"
+      }
+    },
+    {
+      "t": "24.18-26.27",
+      "key": "signature",
+      "vo": "It fell outside the search area, so no alarm fired.",
+      "shows": "THE SIGNATURE SHOT. Hard cut to the lit lattice from above, and the ember bloom sits OUTSIDE the boundary in the dark. The amber dots keep their ordinary idle pulse and DO NOT REACT. Both halves in one frame.",
+      "sfx": "held tone",
+      "means": "the thesis in one image. the ear is real and it was pointed somewhere else",
+      "draw": {
+        "subject": "the lit station lattice and the lone ember bloom outside it",
+        "action": "the ember blooms outside the line while every amber dot inside carries on pulsing exactly as before",
+        "emotion": "indifferent, which is the point",
+        "annotation": "NO INJURIES OR FATALITIES REPORTED"
+      },
+      "choreo": {
+        "primary": "slow 1.00 to 1.05 push, no cut away",
+        "reaction": "the dots continue their unchanged idle pulse as the positive control",
+        "ambient": "haze drifts across the dark, the ember flickers"
+      }
+    },
+    {
+      "t": "26.27-28.04",
+      "key": "darklamp",
+      "vo": "It fell outside the search area, so no alarm fired.",
+      "shows": "rack focus from the lit lattice behind to Otto's chest lamp in front. The fat roller from earlier ARRIVES on the trace, big and unmistakable. The detection box never draws. The lamp stays dark.",
+      "sfx": "silence",
+      "means": "the emotional peak. the signal is present and the alarm is absent",
+      "draw": {
+        "subject": "the arriving roller, the undrawn detection box and Otto's dark chest lamp",
+        "action": "the roller crosses the paper while the gate fails to latch and the lamp fails to light",
+        "emotion": "hollow",
+        "annotation": "NO ALARM FIRED"
+      },
+      "choreo": {
+        "primary": "rack focus lattice to lamp, then a single hard push",
+        "reaction": "horn telescopes to full strain, three stress lines at the joint",
+        "ambient": "the trace KEEPS SCROLLING and the stopwatch KEEPS TICKING while nothing else moves"
+      },
+      "rehook": "the system the viewer just watched succeed visibly fails, with the signal present on the paper and the alarm absent. A reversal, not a caveat."
+    },
+    {
+      "t": "28.04-30.94",
+      "key": "stillheard",
+      "vo": "The sensors still heard it. A scientist found the slide by hand.",
+      "shows": "the trace scrolls on and the roller is plainly THERE on the paper, recorded, unmarked",
+      "sfx": "paper feed",
+      "means": "the honest correction. the sensors heard it, nothing flagged it",
+      "draw": {
+        "subject": "the recorded roller on the scrolling paper",
+        "action": "the paper feeds out carrying the roller with no box, no label and no mark on it",
+        "emotion": "patient",
+        "annotation": "THE SENSORS STILL HEARD IT"
+      },
+      "choreo": {
+        "primary": "paper feeds with a steady mechanical crawl",
+        "reaction": "Otto's eyes track the unmarked roller",
+        "ambient": "needle rides the trace, room tone only"
+      }
+    },
+    {
+      "t": "30.94-33.14",
+      "key": "byhand",
+      "vo": "The sensors still heard it. A scientist found the slide by hand.",
+      "shows": "a hand enters with a pencil and BRACKETS the roller already on the paper, then writes the label the machine never wrote. The only slow, crisp, unsmeared move in the piece.",
+      "sfx": "pencil scratch",
+      "means": "the human does the marking the machine could not",
+      "draw": {
+        "subject": "an anonymous hand with a pencil over the recorded roller",
+        "action": "it draws a bracket around the existing roller and letters the label beside it",
+        "emotion": "deliberate",
+        "annotation": "RUN BY HAND, AFTERWARD"
+      },
+      "choreo": {
+        "primary": "pencil strokes draw on crisply, sub-pixel steady, no motion blur",
+        "reaction": "Otto watches the pencil, then the boundary, then the camera",
+        "ambient": "a torn-off calendar page behind the hand, haze drifts"
+      }
+    },
+    {
+      "t": "33.14-36.4",
+      "key": "boulder_rest",
+      "vo": "And a harder limit remains. Rock makes no sound until it falls.",
+      "shows": "a single boulder sits at rest on a slope above a dead flat trace. Nothing moves. Nothing is heard.",
+      "sfx": "room tone",
+      "means": "the ceiling, set up",
+      "draw": {
+        "subject": "a resting boulder above a flat trace",
+        "action": "the boulder sits perfectly still while the trace writes a flat line beneath it",
+        "emotion": "tense stillness",
+        "annotation": "ROCK MAKES NO SOUND"
+      },
+      "choreo": {
+        "primary": "held with a slow push, the boulder does not move",
+        "reaction": "Otto's horn aims straight at it and hears nothing",
+        "ambient": "the flat trace keeps scrolling, dust drifts"
+      }
+    },
+    {
+      "t": "36.4-39.5",
+      "key": "boulder_falls",
+      "vo": "And a harder limit remains. Rock makes no sound until it falls.",
+      "shows": "the boulder tips, and ONLY THEN does the wave erupt from the flat line. Sound exists only after the rock is already moving.",
+      "sfx": "crack",
+      "means": "the physical ceiling drawn in one gesture",
+      "draw": {
+        "subject": "the tipping boulder and the erupting trace",
+        "action": "the boulder tips and the trace erupts a fraction of a second AFTER it moves, never before",
+        "emotion": "dawning",
+        "annotation": "UNTIL IT FALLS"
+      },
+      "choreo": {
+        "primary": "boulder tips with anticipation then falls with motion blur",
+        "reaction": "the trace erupts only on contact, visibly late",
+        "ambient": "Otto's horn snaps to it, lamp lights, too late"
+      }
+    },
+    {
+      "t": "39.5-42.05",
+      "key": "crate",
+      "vo": "So a federal grant sent one point seven seven million dollars to the University of Alaska Fairbanks.",
+      "shows": "a plain stencilled wooden crate thumps down beside Otto in the dark",
+      "sfx": "thump",
+      "means": "the money arrives, unglamorous",
+      "draw": {
+        "subject": "a stencilled wooden crate and Otto",
+        "action": "the crate lands beside Otto and Otto leans its horn over to inspect it",
+        "emotion": "curious",
+        "annotation": "NSF TO UAF, JULY 10, 2026"
+      },
+      "choreo": {
+        "primary": "crate lands with a settle and a dust puff",
+        "reaction": "Otto tips toward it and rocks back",
+        "ambient": "warm low pulse returns to the mix, haze drifts"
+      }
+    },
+    {
+      "t": "42.05-45.1",
+      "key": "money",
+      "vo": "So a federal grant sent one point seven seven million dollars to the University of Alaska Fairbanks.",
+      "shows": "the award figure stencils itself onto the crate side, counting up and landing with a hit",
+      "sfx": "stamp",
+      "means": "the spoken number drawn at the moment it is spoken, alone in frame",
+      "draw": {
+        "subject": "the crate side and the stencilled award figure",
+        "action": "the figure counts up and lands with a hit on the planks",
+        "emotion": "matter of fact",
+        "annotation": "$1,772,170 OF $4,430,711"
+      },
+      "choreo": {
+        "primary": "digits count up with easing and land",
+        "reaction": "the crate rocks a fraction on the hit",
+        "ambient": "the stencil edges catch the lantern rim"
+      }
+    },
+    {
+      "t": "45.1-49.08",
+      "key": "ghost",
+      "vo": "To build a simulated mountain, fed by those sensors, that forecasts what a slope will do.",
+      "shows": "the fjord wall from the collapse re-renders BESIDE ITSELF as an amber wireframe ghost. Thin threads run from the station lattice into it, feeding it.",
+      "sfx": "harmonic bloom",
+      "means": "the simulated mountain, drawn at last",
+      "draw": {
+        "subject": "the real slope and its assembling wireframe twin",
+        "action": "the wireframe assembles line by line beside the real wall while sensor threads feed into it",
+        "emotion": "wonder",
+        "annotation": "A SIMULATED MOUNTAIN, FED BY THOSE SENSORS"
+      },
+      "choreo": {
+        "primary": "wireframe assembles with staggered line reveals",
+        "reaction": "threads pulse amber from the lattice into the ghost",
+        "ambient": "the real wall sits inert beside it"
+      }
+    },
+    {
+      "t": "49.08-51.66",
+      "key": "ahead",
+      "vo": "To build a simulated mountain, fed by those sensors, that forecasts what a slope will do.",
+      "shows": "the GHOST slope tips BEFORE the real one does, and a forecast bracket reaches ahead of the present moment on the trace",
+      "sfx": "tonal ping",
+      "means": "what 'ahead' would look like, so the button can take it away",
+      "draw": {
+        "subject": "the ghost slope and a forecast bracket",
+        "action": "the ghost tips first and the bracket reaches past the needle into empty paper",
+        "emotion": "anticipatory",
+        "annotation": "FORECASTS WHAT A SLOPE WILL DO"
+      },
+      "choreo": {
+        "primary": "ghost tips early with a clean lead",
+        "reaction": "bracket extends past the present-moment needle",
+        "ambient": "the real slope still has not moved"
+      }
+    },
+    {
+      "t": "51.66-54.44",
+      "key": "calendar",
+      "vo": "The work starts next month and takes years.",
+      "shows": "a date card snaps AUG 1, 2026 then a bar extends right to 2032. Otto pries the crate open and finds labelled data reels and a rolled blueprint. No machine.",
+      "sfx": "chalk snap",
+      "means": "the honest brake, and the help is real but unbuilt",
+      "draw": {
+        "subject": "the date bar and the opened crate",
+        "action": "the bar extends to 2032 while Otto lifts a blueprint out of the crate instead of a machine",
+        "emotion": "deflated then steady",
+        "annotation": "YEAR ONE DELIVERS DATASETS. NOTHING IS BUILT YET."
+      },
+      "choreo": {
+        "primary": "bar extends with two hard ticks",
+        "reaction": "crate lid pries open, blueprint unrolls with followThrough",
+        "ambient": "reels catch the lantern rim"
+      }
+    },
+    {
+      "t": "54.44-58.74",
+      "key": "button",
+      "vo": "The sensors keep listening, but never ahead.",
+      "shows": "BUTTON. The blueprint unrolls into a GHOSTED unlit outline of a wider boundary drawn over the dark. The real amber boundary does not move. The stopwatch restarts from zero inside the SAME line.",
+      "sfx": "tick",
+      "means": "the map is proposed, not built. the callback lands.",
+      "draw": {
+        "subject": "Otto, the ghosted proposed boundary and the restarting stopwatch",
+        "action": "the ghost outline traces out over the dark while the lit boundary stays exactly where it is, and the watch starts again",
+        "emotion": "carefully hopeful",
+        "annotation": "AUG 1, 2026 TO 2032"
+      },
+      "choreo": {
+        "primary": "ghost outline draws on in blueprint cyan, unlit",
+        "reaction": "Otto's horn lifts in two stages, a half tilt then a full rise",
+        "ambient": "the stopwatch ticks from zero, amber boundary unchanged"
+      }
+    }
+  ],
+  "shots": [
+    {
+      "id": 1,
+      "t": "0.0-10.36",
+      "framing": "subject-portrait",
+      "pov": "eye-level-immersive",
+      "layout": "stacked-layers",
+      "motion_vector": "horizontal-traverse",
+      "hero_treatment": "instrument-as-subject",
+      "transition_in": "",
+      "thread": "build",
+      "camera": "dollyThrough",
+      "stage3d": "planes",
+      "centered": "Otto already buried and working, the amber trace ripping across, the second plate bolting on, the counter reaching 200",
+      "means": "open on an instrument found at work and add its second job as an addition to hardware Alaska already owned",
+      "hero": {
+        "name": "Otto, the seismic listening post",
+        "parts": 22,
+        "zones": 4,
+        "detail_note": "brass listening horn drawn as a real cone in 3/4 with a hollow dark mouth and rolled rim, ribbed half-buried post, solar panel brim, two eyes with lids and highlights, chest detection lamp with bezel ticks, stub antenna, vent slots, thick ink outline, form-shaded, amber rim, contact shadow at the dirt line"
+      }
+    },
+    {
+      "id": 2,
+      "t": "10.36-16.8",
+      "framing": "data-panel",
+      "pov": "instrument-screen",
+      "layout": "hud-instrument-frame",
+      "motion_vector": "scroll-data",
+      "hero_treatment": "data-as-subject",
+      "transition_in": "focus-pull",
+      "thread": "match",
+      "camera": "dollyThrough",
+      "stage3d": "planes",
+      "centered": "the two duration lanes and the scanning bar latching the gate",
+      "means": "teach the mechanism as two shapes, then show the program that reads it and EARN the lamp",
+      "hero": {
+        "name": "the duration lanes and the duration gate",
+        "parts": 16,
+        "zones": 3,
+        "detail_note": "skinny quake scribble, fat slow roller, extending measuring brackets, a sweeping scan bar, a latching gate, all on a foreground depth plane over the lit world so no chip is flat overlay art"
+      }
+    },
+    {
+      "id": 3,
+      "t": "16.8-24.18",
+      "framing": "wide-establish",
+      "pov": "eye-level-immersive",
+      "layout": "fullbleed-split",
+      "motion_vector": "vertical-descent",
+      "hero_treatment": "landscape-as-subject",
+      "transition_in": "pull-out",
+      "thread": "travel",
+      "camera": "craneDown+truckAcross",
+      "stage3d": "planes",
+      "centered": "the lit boundary snapping down, the whip out past it into the dark, then the fjord wall opening and the slab going into the water",
+      "means": "bound the search, travel out of the watched world, and let the event land with weight",
+      "hero": {
+        "name": "the fjord wall and the falling slab",
+        "parts": 14,
+        "zones": 4,
+        "detail_note": "faceted ROCK wall with a hairline crack opening, a separating slab in ember orange, spray sheet, water impact rings, a hard vertical scale bar. No face anywhere. GlacierBG art is NOT used, only a generalized calve MOTION contract"
+      }
+    },
+    {
+      "id": 4,
+      "t": "24.18-28.04",
+      "framing": "alt-vantage",
+      "pov": "top-down-map",
+      "layout": "single-object-void",
+      "motion_vector": "push-in-only",
+      "hero_treatment": "instrument-as-subject",
+      "transition_in": "hard-cut",
+      "thread": "carry",
+      "camera": "dollyThrough",
+      "stage3d": "planes",
+      "centered": "THE SIGNATURE SHOT. the lit lattice and the ember bloom outside it in one frame, the dots not reacting, then a rack to the dark lamp",
+      "means": "the thesis in one image, then the emotional peak. carried anchor is the slab impact ring resolving at the same screen geometry as the trace baseline",
+      "hero": {
+        "name": "the lattice, the outside ember, and the dark lamp",
+        "parts": 18,
+        "zones": 4,
+        "detail_note": "amber dots holding their unchanged idle pulse as the positive control, one lone ember bloom outside the boundary, then Otto's dark chest lamp with the arriving roller on a still-scrolling trace and a detection box that never draws"
+      }
+    },
+    {
+      "id": 5,
+      "t": "28.04-39.5",
+      "framing": "macro-closeup",
+      "pov": "macro-closeup",
+      "layout": "grid-modular",
+      "motion_vector": "horizontal-traverse",
+      "hero_treatment": "data-as-subject",
+      "transition_in": "match-action",
+      "thread": "carry",
+      "camera": "truckAcross",
+      "stage3d": "planes",
+      "centered": "the recorded roller on the scrolling paper, the hand bracketing it by pencil, then the boulder that must move before the wave begins",
+      "means": "the honest correction, the human marking, and the physical ceiling",
+      "hero": {
+        "name": "the paper, the hand, and the boulder",
+        "parts": 13,
+        "zones": 3,
+        "detail_note": "scrolling seismogram paper carrying an unmarked roller, an anonymous hand with a pencil drawing a crisp unsmeared bracket and lettering a label, a resting boulder above a flat trace that erupts only after the rock moves"
+      }
+    },
+    {
+      "id": 6,
+      "t": "39.5-45.1",
+      "framing": "push-detail",
+      "pov": "eye-level-immersive",
+      "layout": "map-territory",
+      "motion_vector": "assemble-build",
+      "hero_treatment": "structure-as-subject",
+      "transition_in": "match-cut",
+      "thread": "build",
+      "camera": "dollyThrough+riseWith",
+      "stage3d": "planes",
+      "centered": "the crate landing beside Otto and the award figure stencilling onto its side",
+      "means": "the money arrives, unglamorous and exact",
+      "hero": {
+        "name": "the stencilled crate",
+        "parts": 12,
+        "zones": 3,
+        "detail_note": "plank grain, stencil edges catching the lantern rim, counting digits landing with a hit, labelled data reels visible at the seam"
+      }
+    },
+    {
+      "id": 7,
+      "t": "45.1-58.74",
+      "framing": "two-up",
+      "pov": "alt-vantage",
+      "layout": "fullbleed-split",
+      "motion_vector": "radial-emanate",
+      "hero_treatment": "structure-as-subject",
+      "transition_in": "morph",
+      "thread": "build",
+      "camera": "orbitReveal+riseWith",
+      "stage3d": "planes",
+      "centered": "the real slope beside its amber wireframe twin, the ghost tipping first, the date bar to 2032, then the ghosted proposed boundary and the restarting stopwatch",
+      "means": "draw what ahead would look like, then take it away honestly. the map is proposed, not built",
+      "hero": {
+        "name": "the wireframe twin and the ghosted boundary",
+        "parts": 17,
+        "zones": 4,
+        "detail_note": "amber wireframe slope assembling line by line beside the inert real wall, sensor threads pulsing in from the lattice, a forecast bracket reaching past the present-moment needle, then an UNLIT blueprint-cyan proposed boundary traced over the dark while the real amber line never moves"
+      }
+    }
+  ],
+  "divergence_note": "This diverges hard from the last two dispatches on six of seven axes. 2026-07-24 (The Box That Waits for You) was an orbital-aerial, fullbleed-split, assemble-build, single-organic-hero piece in warm tundra gold and sage under a low midnight sun with a track-follow camera and dawn backlight. 2026-07-23 (Counting Belugas From Orbit) was a top-down-map, hud-instrument-frame, radial-emanate, data-as-subject piece in Cook Inlet pewter-teal and orbital blue-black with an aerial-descent camera under overcast diffuse light. This run is eye-level-immersive and on the GROUND, stacked-layers, horizontal-traverse, instrument-as-subject, with a rack-focus-macro camera in a night-practical world of deep fjord green-black where lantern amber is rationed to whatever is actually listening. Both predecessors were bright-field pieces about looking DOWN at Alaska from above; this one is a dark piece about listening from inside the ground, and its signature shot is a held non-reaction rather than a detection. The spatial signature (eye-level-immersive, stacked-layers, horizontal-traverse) does not appear in any of the last four dispatches.",
+  "palette": "malachite conifer dusk over near-ink ground, tungsten lanternlight rationed only to instruments that are listening, ember rust reserved for falling rock"
+}

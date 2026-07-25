@@ -921,3 +921,59 @@ dispatch_history:
       coral accent, cold quarantined slate industry render, deep spruce dark
     metaphor: the box that flies itself but waits for the hand that knows the land;
       local knowledge as the one lit path through a maze of identical sloughs
+- date: '2026-07-25'
+  topic: 'THE ONE IT DIDN''T HEAR: the Alaska Earthquake Center runs a landslide-detection
+    ALGORITHM (not AI) across some 200 of about 500 seismic stations, discriminating
+    a slide''s minute-long rumble from a quake''s seconds. The Aug 10 2025 Tracy Arm
+    slide (up to 100M cubic meters, runup 470 to 500 m, no injuries or fatalities)
+    fell OUTSIDE the search area, so there was no automatic detection and researchers
+    ran the algorithm by hand on data the sensors recorded anyway. Deeper ceiling:
+    rock makes no sound until it moves, so listening is a record and never a warning.
+    NSF awarded UAF 1,772,170 dollars of a 4,430,711 dollar project on 2026-07-10
+    for fast surrogate models plus data assimilation to make real-time digital twins;
+    begins 2026-08-01, runs to 2032, year one delivers datasets. Unreported scoop,
+    no press release existed.'
+  slug: the-one-it-didnt-hear
+  key_entities:
+  - alaska earthquake center
+  - landslide detection algorithm
+  - seismic stations
+  - tracy arm
+  - barry arm
+  - ezgi karasozen
+  - carl tape
+  - nsf award 2608510
+  - uaf geophysical institute
+  - surrogate model
+  - digital twin
+  - geohazard forecasting
+  - south sawyer glacier
+  - earthscope
+  archetype: ''
+  palette: ''
+  voice: ''
+  stance: mixed
+  angle: Alaska taught some 200 seismometers it already owned to hear mountains fall,
+    then the biggest one fell outside the search area and no alarm fired. That gap,
+    plus the physical ceiling that rock makes no sound until it moves, is what a federal
+    grant to UAF starts closing next month.
+  hero: SeismicStation
+  cast:
+  - SeismicStation
+  - FjordNight
+  - Trace
+  - Stopwatch
+  - Motes
+  - FieldLamps
+  composition:
+    pov: eye-level-immersive
+    motion_vector: horizontal-traverse
+    hero_treatment: instrument-as-subject
+    layout: stacked-layers
+    register: naturalistic-scene
+    camera_strategy: rack-focus-macro
+    light_story: night-practical
+    palette: malachite conifer dusk over near-ink ground, tungsten lanternlight rationed
+      only to instruments that are listening, ember rust reserved for falling rock
+    metaphor: a small buried ear that hears a mountain fall but can never hear one
+      think, and a map drawn too small around it

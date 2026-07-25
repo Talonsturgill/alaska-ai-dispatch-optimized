@@ -26,6 +26,14 @@ one line: `Name — kind — file — params/poses — status`.
 ## Craft advance this run (2026-07-19): every claim/format/story is a "live, tested run", not a batch script
 - Fixed two real infrastructure bugs discovered while producing this run's VO (both would recur on EVERY future dispatch with numbers/dates in the script, not just this one): `scripts/vo_soundcheck.py`'s WER canonicalizer silently dropped `$`/`%` symbols and mis-split comma-grouped numbers (inflated WER on every number-heavy script); `scripts/vo_synth_gemini.py`'s `_align_wholefile` (a) passed the script's own opening words as Whisper's `initial_prompt`, which made Whisper hallucinate-skip the real audio matching it (reproduced: dropped the first ~14.6s of a real take), and (b) collapsed multi-word token expansions to word[0] only, desyncing the alignment arrays. Both fixed; see the scripts' own comments for the reproduction notes.
 
+## Sensors (the instrument family) — lib/sensors.tsx
+REGISTERED 2026-07-25 (this file existed since 2026-07-21c but was NEVER registered here, so two
+runs of Gate 0D could not find its assets. That is the manifest-drift bug this run fixed.)
+- `SatelliteEye` — the ORBITAL EYE — sensors.tsx — NOTE: a second copy also lives in kit.tsx. Prefer the sensors.tsx one; the duplicate is a known hazard (see UPGRADE_BACKLOG).
+- `ListeningMooring` — the SEAFLOOR EAR, passive-acoustic node — sensors.tsx — anchor base, ribbed cylinder, mint hydrophone dome, tether float; `detect` 0..1 blooms sonar rings — ACTIVE
+- `SeismicStation` — NET-NEW 2026-07-25 — the GROUND EAR, hero of "The One It Didn't Hear". The shelf had an orbital eye and a seafloor ear but nothing that listens to the GROUND. Deliberate shape language: SOFT ROUND INSTRUMENT against HARD ANGULAR LAND. THE TELL IS A BRASS GRAMOPHONE HORN built as a real cone in 3/4 (straight taper walls, hollow dark mouth, rolled rim, receding interior throat rings) — pass 1 drew it as a flat face-on ellipse and it read as a lollipop. `emotion` listening (lazy quarter-turn sweeps) / straining (telescopes out past comfort, rim trembles, stress lines) / missing (horn rolls down to point at the dirt, rim dented, lamp DARK) / heard (snaps rigid, rim flares, lamp fires amber with sound arcs arriving into the mouth). Also has a real FACE (brow bar that drops, two lidded eyes with highlights that TRACK via `look`, desynced blink) — pass 1 had no face and read inert. `lamp` 0..1 lights ONLY when emotion==='heard', so a lit lamp always means a detection actually fired. `heading` deg, `accent` VO-reactivity, `groundY`, `tint` so a night palette re-tints without a re-draw. Solar-panel brim, stub antenna with secondary sway, ribbed half-buried post, vent slots, bezel ticks, hard angular dirt collar. Form-shaded + rim + contact shadow — ACTIVE
+- Look-dev: `StationLook` (StationLook.tsx) — the four emotional states plus NightGrade, in one frame.
+
 ## Fauna (the Alaska bestiary) — lib/fauna.tsx
 - `Moose` — land — fauna.tsx — emotion: calm/wary; idle head-bob/ear-flick/tail; palmate antlers; form-shaded + rim + AO — NEW 2026-07-18; `bumpKick` 0..1 NEW 2026-07-19: a comic bumped-indignant-recover reaction pose (squash-and-stagger, pinned ears, wide indignant eyes, antler wobble, impact stars); `alert` 0..1 NEW 2026-07-20: ears perk fully UP+forward, head/neck RAISES, nostril-flare sniff, pupil tracks upward — the OPPOSITE motion from bumpKick's lateral recoil (a watching-the-sky pose), used for the drone-watcher gag — existing-asset new-pose growth quota
 - `Raven` — air/perch — fauna.tsx — mode: perch/fly; head-tilt, throat hackles, wing-beat cycle — NEW 2026-07-18
@@ -116,6 +124,16 @@ NONE. The 2026-07-20 library session banked all 14 gap species + SledDogTeam pro
   the VERTICAL SLICE: Vale on a TRUE 3D runway floor (rotateX'd ground plane, supersampled 2x so the
   perspective-stretched tarmac stays crisp), camera cranes down through the treeline, flies low over
   the runway, rises with the liftoff.
+- `lib/lighting.tsx` NIGHTGRADE — 2026-07-25 CRAFT ADVANCE (the run's single primary engine advance).
+  Every prior Dispatch was a daylight or dusk world. The engine had AuroraNightBG (one specific night
+  BIOME) but no general system for making ANY biome read as night with rationed practical light.
+  `NightGrade(f, color, amount, floor, horizon, sources[])` does four things GradeLayer cannot:
+  (1) an ambient cold cast so the world sits in one coherent night, (2) a BLACK FLOOR that crushes
+  shadows toward true black so "unlit" is a different STATE from "dimly lit", (3) SOURCE BLOOM emitted
+  ONLY at declared `sources` {x,y,r,color,intensity} — a scene must REGISTER a light before it can glow,
+  which makes a palette rule like "amber never appears on an unmonitored slope" a property of the scene
+  graph instead of a convention a renderer can violate silently, and (4) a horizon lift so ridge
+  silhouettes still separate at the black floor. Look-dev: StationLook.tsx.
 - Known next advances: migrate MORE Episode scenes onto stage3d (first landed 2026-07-20b: the
   boom-up crane in "The Referee Arrives"; lesson: overscan non-fill world planes well past the
   frame at max pull-back or they render as cut-out boxes), kinetic typography, per-material

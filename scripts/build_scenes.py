@@ -23,7 +23,14 @@ TAIL = 2.6  # hold after the last word
 # S1 L0 (silt/find-the-whale), S2 L1 (331+decline), S3 L2 (from space, SatelliteEye),
 # S4 L3-L4 (GAIA+partners, the learning pipeline), S5 L5-L6 (cannot-count-yet, needs a
 # clear look), S6 L7-L8 (June 2025 empty, sky booked), S7 L9-L10 (holding on, the question).
-SCENE_START_LINE = [0, 2, 3, 4, 5, 7, 9]
+# 2026-07-25 "The One It Didn't Hear": 7 scenes (S1..S7) onto 12 VO lines. Shot boundaries
+# are anchored to VO LINE STARTS so the picture can never drift from the words (the Gate 0B/0C
+# finding that killed the first board: the collapse was spoken at 19.6s and drawn at 33.9s).
+# S1 L0-L1 (Otto at work + the second job), S2 L2 (duration lanes + the gate latching),
+# S3 L3-L4 (boundary + travel out + THE COLLAPSE), S4 L5 (signature shot + the dark lamp),
+# S5 L6-L7 (still heard + by hand + the boulder), S6 L8 (crate + money),
+# S7 L9-L11 (wireframe twin + calendar + button).
+SCENE_START_LINE = [0, 2, 3, 5, 6, 8, 9]
 
 
 def _apply_caption_fixups(caps):

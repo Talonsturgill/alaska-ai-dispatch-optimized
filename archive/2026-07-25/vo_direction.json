@@ -1,0 +1,156 @@
+{
+  "run_id": "2026-07-25",
+  "script_version": 4,
+  "narrator": "Nora, an Alaska public-radio host: warm, grounded, quietly witty",
+  "voice": "Sulafat",
+  "notes": "Style: warm grounded public radio, plainspoken and curious, no hype and no doom. A competent person explaining a clever thing, then telling you honestly where it stopped working. The angle is a partition, not a hedge, so the read lets the detector be a genuine win, lets the miss be quiet and heavy, and lets the calendar be an honest brake. Dry wit is available but almost never spent here, only a touch of warmth on the second job. Pace: brisk throughout, roughly fifty to sixty seconds, with the drop carried by ENERGY and weight, not by slowing everything down. Energy curve 4 2 3 4 2 1 2 1 3 4 2 3, no two neighbors equal, a full three level cliff from line three to line five.",
+  "arc": "Brisk competent build (0 to 3) with a warm confiding dip at the trick, a weighted drop at the mountain (4), the floor at the failed alarm and the hand search (5 and 6), the quietest and slowest line at the physical limit (7), a modest interested lift for the money and the plan (8 and 9), the brake back down at the timeline (10), and a clean landed button (11).",
+  "energy_curve": [4, 2, 3, 4, 2, 1, 2, 1, 3, 4, 2, 3],
+  "target_duration_s": [50, 60],
+  "caption_fixups": {},
+  "respelling_decision": "NO phonetic respelling was placed in the transcript. Two reasons, both mechanical. (1) scripts/vo_synth_gemini.py builds captions.json and words.json from plan.lines[].text with only [tags] stripped, so any respelled token would ship straight onto the screen unless a downstream fixup step exists, and none does in the current pipeline. (2) vo_soundcheck's WER reference is that same text, so a respelling that the synth pronounces CORRECTLY still scores as word errors against the ASR transcript (JOO noh is two tokens, Whisper writes Juneau as one), burning roughly a third to a half of the 0.08 WER budget before a single real ASR error. The pronunciation risk is therefore handled in the DIRECTOR'S NOTES instead, where it cannot pollute captions or WER, via a single Pronunciation line covering Juneau and seismometers. Tracy Arm and Fairbanks carry no fumble risk and get no note. caption_fixups is intentionally empty. If a take comes back with Juneau mispronounced anyway, the fix is to move JOO noh into the transcript AND populate caption_fixups with {\"JOO noh\": \"Juneau\"}, accepting the WER cost.",
+  "style_prompt": "### DIRECTOR'S NOTES\nStyle: warm, grounded public radio. Plainspoken, curious, quietly witty, though almost nothing here is a joke. A competent person explaining a clever thing, then telling you honestly where it stopped working. No hype and no doom. The facts are heavy on their own, so underplay them and never dramatize. Let the good part be genuinely good, let the limit be a limit, and stay level about both.\nPace: BRISK and energetic, keep it moving like a sharp modern explainer. Short natural breaths only, no long pauses, do not drag. Vary the tone line to line so no two sentences sound the same.\nArc: open bright and curious, then lean in warm and confiding for the clever part. Stay crisp and matter of fact through the setup. When the mountain falls and nothing goes off, drop the energy and go quiet and plain, the lowest point of the whole read. Take the line about rock and sound a shade slower, like it is being understood rather than reported. Lift modestly for the money and the plan, interested rather than triumphant. Pull back down to level and honest for the timeline. Land the last line cleanly and do not trail off.\nEmphasis: lean on the key word in each line, let the number land, and let the small connecting words like only, outside, until and never carry the turn.\nPronunciation: Juneau is JOO noh. Seismometers is size MOM uh ters.",
+  "lines": [
+    {
+      "idx": 0,
+      "text": "[curious] Alaska buried seismometers to hear earthquakes.",
+      "intent": "hook",
+      "emphasis": "earthquakes",
+      "energy": 4,
+      "pace": "brisk",
+      "tags": ["[curious]"],
+      "pause_before": false,
+      "why": "Bright and forward so the piece starts moving. The stress sits on earthquakes because that is the ORIGINAL job the very next line flips, so the flip only works if this word is planted."
+    },
+    {
+      "idx": 1,
+      "text": "Researchers taught two hundred of those sensors a second job. Hearing landslides.",
+      "intent": "reveal",
+      "emphasis": "second",
+      "energy": 2,
+      "pace": "brisk, confiding",
+      "tags": [],
+      "pause_before": false,
+      "why": "Energy 2 is a lean in, not a slow down, the pace stays brisk. Dropping under the hook makes the trick feel like something she is letting you in on, and the two word sentence at the end lands as the payoff instead of a bullet."
+    },
+    {
+      "idx": 2,
+      "text": "A quake ends in seconds. A slide rumbles for a minute. A program watches for that.",
+      "intent": "setup",
+      "emphasis": "minute",
+      "energy": 3,
+      "pace": "brisk, clean beat between the three sentences",
+      "tags": [],
+      "pause_before": false,
+      "why": "The mechanism line, so it climbs back to even and informative. Emphasis on minute because duration is the whole physics of the discrimination, and it is the word the on screen picture is drawing as width."
+    },
+    {
+      "idx": 3,
+      "text": "It searches only one stretch of coast.",
+      "intent": "stakes",
+      "emphasis": "only",
+      "energy": 4,
+      "pace": "brisk, clipped",
+      "tags": [],
+      "pause_before": false,
+      "why": "The crispest, most forward line of the opening, said with a snap on only. This is deliberate: it is the top of the cliff. Putting a 4 here and a 1 two lines later is where the read gets its real dynamic range, and it makes the drop audible rather than described."
+    },
+    {
+      "idx": 4,
+      "text": "[short pause] Last August a mountain fell into Tracy Arm, south of Juneau.",
+      "intent": "reveal",
+      "emphasis": "fell",
+      "energy": 2,
+      "pace": "measured, weighted",
+      "tags": ["[short pause]"],
+      "pause_before": true,
+      "why": "The pivot. A beat before it, then a two level drop, and weight instead of drama. Emphasis on the verb because it is the event and because the picture flinches on it. Do not sell this line, the size of it does the work."
+    },
+    {
+      "idx": 5,
+      "text": "It fell outside the search area, so no alarm fired.",
+      "intent": "reveal",
+      "emphasis": "outside",
+      "energy": 1,
+      "pace": "measured, plain",
+      "tags": [],
+      "pause_before": false,
+      "why": "The floor, and it must be genuinely quiet rather than stage whispered. Outside is the causal hinge of the entire revelation, the because word, so it carries the stress even though no alarm fired is the headline. Flat and true beats grim."
+    },
+    {
+      "idx": 6,
+      "text": "The sensors still heard it. A scientist found the slide by hand.",
+      "intent": "reveal",
+      "emphasis": "hand",
+      "energy": 2,
+      "pace": "measured, plain",
+      "tags": [],
+      "pause_before": false,
+      "why": "One notch up from the floor only because a person enters the story. Emphasis on hand, the most concrete image in the script and the exact moment the drawn turn shows a hand tracing the waveform. Said plainly, with no pity and no irony."
+    },
+    {
+      "idx": 7,
+      "text": "And a harder limit remains. Rock makes no sound until it falls.",
+      "intent": "stakes",
+      "emphasis": "until",
+      "energy": 1,
+      "pace": "slower than anything else in the read",
+      "tags": [],
+      "pause_before": false,
+      "why": "The realization. Same low energy as the floor but a different color, considered rather than deflated, which is what the slower pace buys. Until is the whole point of the piece, the word that makes listening a record and never a warning."
+    },
+    {
+      "idx": 8,
+      "text": "So a federal grant sent one point seven seven million dollars to the University of Alaska Fairbanks.",
+      "intent": "stat",
+      "emphasis": "million",
+      "energy": 3,
+      "pace": "brisk again, slight slow on the figure",
+      "tags": [],
+      "pause_before": false,
+      "why": "The lift, and a two level jump off the floor so the turn is unmistakable. So carries the therefore in the intonation, but the accent word is million because that is the number the screen lands. Interested, not relieved. This is a bet being placed, not a rescue arriving."
+    },
+    {
+      "idx": 9,
+      "text": "To build a simulated mountain, fed by those sensors, that forecasts what a slope will do.",
+      "intent": "reveal",
+      "emphasis": "forecasts",
+      "energy": 4,
+      "pace": "brisk, keep the two commas light so the sentence stays one thought",
+      "tags": [],
+      "pause_before": false,
+      "why": "The high point of the second half. Forecasts is the load bearing word of the whole back end because it is the one thing listening can never do. Bright and curious, still short of triumph, since nothing is built yet."
+    },
+    {
+      "idx": 10,
+      "text": "The work starts next month [short pause] and takes years.",
+      "intent": "stakes",
+      "emphasis": "years",
+      "energy": 2,
+      "pace": "measured, the beat before and takes years is a real one",
+      "tags": ["[short pause]"],
+      "pause_before": false,
+      "why": "The brake, and it should audibly be one. Dropping two levels straight off the lift is the honesty of the piece in a single move. The pause lets next month sound like good news for exactly half a second before years arrives."
+    },
+    {
+      "idx": 11,
+      "text": "The sensors keep listening, [short pause] but never ahead.",
+      "intent": "button",
+      "emphasis": "never",
+      "energy": 3,
+      "pace": "measured, land it, do not fade",
+      "tags": ["[short pause]"],
+      "pause_before": false,
+      "why": "The button comes back UP so it is landed rather than sighed. The comma is a real beat, so the pause is marked. Never takes the stress because the whole story question, can Alaska hear a mountain before it falls, resolves on that one word."
+    }
+  ],
+  "contrast_check": {
+    "rule": "no two adjacent lines share an energy level",
+    "pairs": "4>2, 2<3, 3<4, 4>2, 2>1, 1<2, 2>1, 1<3, 3<4, 4>2, 2<3",
+    "pass": true,
+    "spread": "1 to 4 across the piece, largest single move is the three level fall from line 3 to line 5"
+  },
+  "tags_used": ["[curious]", "[short pause]"],
+  "tag_discipline": "Four inline tags across twelve lines and seventeen sentences, all from the vetted palette, three of them pure pacing. No [wry] and no [laughs]: this angle does not earn either, and a half smile over no alarm fired would be a tonal lie. No emotion tags anywhere, all emotion is in the notes. No two tags adjacent.",
+  "assembled_prompt": "Read ONLY the transcript below aloud as speech. The lines above \"Transcript:\" are direction; never speak them.\n# AUDIO PROFILE: Nora, an Alaska public-radio host, warm, grounded, quietly witty. Neutral American accent, light and natural, not announcer-y.\n### DIRECTOR'S NOTES\nStyle: warm, grounded public radio. Plainspoken, curious, quietly witty, though almost nothing here is a joke. A competent person explaining a clever thing, then telling you honestly where it stopped working. No hype and no doom. The facts are heavy on their own, so underplay them and never dramatize. Let the good part be genuinely good, let the limit be a limit, and stay level about both.\nPace: BRISK and energetic, keep it moving like a sharp modern explainer. Short natural breaths only, no long pauses, do not drag. Vary the tone line to line so no two sentences sound the same.\nArc: open bright and curious, then lean in warm and confiding for the clever part. Stay crisp and matter of fact through the setup. When the mountain falls and nothing goes off, drop the energy and go quiet and plain, the lowest point of the whole read. Take the line about rock and sound a shade slower, like it is being understood rather than reported. Lift modestly for the money and the plan, interested rather than triumphant. Pull back down to level and honest for the timeline. Land the last line cleanly and do not trail off.\nEmphasis: lean on the key word in each line, let the number land, and let the small connecting words like only, outside, until and never carry the turn.\nPronunciation: Juneau is JOO noh. Seismometers is size MOM uh ters.\nTranscript:\n[curious] Alaska buried seismometers to hear earthquakes.\nResearchers taught two hundred of those sensors a second job. Hearing landslides.\nA quake ends in seconds. A slide rumbles for a minute. A program watches for that.\nIt searches only one stretch of coast.\n[short pause] Last August a mountain fell into Tracy Arm, south of Juneau.\nIt fell outside the search area, so no alarm fired.\nThe sensors still heard it. A scientist found the slide by hand.\nAnd a harder limit remains. Rock makes no sound until it falls.\nSo a federal grant sent one point seven seven million dollars to the University of Alaska Fairbanks.\nTo build a simulated mountain, fed by those sensors, that forecasts what a slope will do.\nThe work starts next month [short pause] and takes years.\nThe sensors keep listening, [short pause] but never ahead."
+}

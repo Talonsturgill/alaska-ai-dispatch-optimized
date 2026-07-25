@@ -1,0 +1,10 @@
+HOST=permanent VERIFIED=ok (ok)
+https://raw.githubusercontent.com/Talonsturgill/alaska-ai-weekly/dispatch-media/media/2026-07-25-master_9x16.mp4
+HOST=permanent VERIFIED=ok (ok)
+https://raw.githubusercontent.com/Talonsturgill/alaska-ai-weekly/dispatch-media/media/2026-07-25-master_4x5.mp4
+HOST=permanent VERIFIED=ok (ok)
+https://raw.githubusercontent.com/Talonsturgill/alaska-ai-weekly/dispatch-media/media/2026-07-25-master_9x16_720.mp4
+HOST=permanent VERIFIED=ok (ok)
+https://raw.githubusercontent.com/Talonsturgill/alaska-ai-weekly/dispatch-media/media/2026-07-25-poster.png
+HOST=permanent VERIFIED=ok (ok)
+https://raw.githubusercontent.com/Talonsturgill/alaska-ai-weekly/dispatch-media/media/2026-07-25-poster_thumb.jpg

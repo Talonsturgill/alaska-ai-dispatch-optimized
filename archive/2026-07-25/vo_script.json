@@ -1,0 +1,97 @@
+{
+  "run_id": "2026-07-25",
+  "title": "The One It Didn't Hear",
+  "story_question": "Can Alaska hear a mountain before it falls?",
+  "word_count": 134,
+  "lines": [
+    {
+      "idx": 0,
+      "text": "Alaska buried seismometers to hear earthquakes."
+    },
+    {
+      "idx": 1,
+      "text": "Researchers taught two hundred of those sensors a second job. Hearing landslides."
+    },
+    {
+      "idx": 2,
+      "text": "A quake ends in seconds. A slide rumbles for a minute. A program watches for that."
+    },
+    {
+      "idx": 3,
+      "text": "It searches only one stretch of coast."
+    },
+    {
+      "idx": 4,
+      "text": "Last August a mountain fell into Tracy Arm, south of Juneau."
+    },
+    {
+      "idx": 5,
+      "text": "It fell outside the search area, so no alarm fired."
+    },
+    {
+      "idx": 6,
+      "text": "The sensors still heard it. A scientist found the slide by hand."
+    },
+    {
+      "idx": 7,
+      "text": "And a harder limit remains. Rock makes no sound until it falls."
+    },
+    {
+      "idx": 8,
+      "text": "So a federal grant sent one point seven seven million dollars to the University of Alaska Fairbanks."
+    },
+    {
+      "idx": 9,
+      "text": "To build a simulated mountain, fed by those sensors, that forecasts what a slope will do."
+    },
+    {
+      "idx": 10,
+      "text": "The work starts next month and takes years."
+    },
+    {
+      "idx": 11,
+      "text": "The sensors keep listening, but never ahead."
+    }
+  ],
+  "full_text": "Alaska buried seismometers to hear earthquakes. Researchers taught two hundred of those sensors a second job. Hearing landslides. A quake ends in seconds. A slide rumbles for a minute. A program watches for that. It searches only one stretch of coast. Last August a mountain fell into Tracy Arm, south of Juneau. It fell outside the search area, so no alarm fired. The sensors still heard it. A scientist found the slide by hand. And a harder limit remains. Rock makes no sound until it falls. So a federal grant sent one point seven seven million dollars to the University of Alaska Fairbanks. To build a simulated mountain, fed by those sensors, that forecasts what a slope will do. The work starts next month and takes years. The sensors keep listening, but never ahead.",
+  "caption_fixups": {},
+  "on_screen_only_facts": [
+    "Before this, a slide got recorded only if somebody happened to see it. (C1 baseline, carried on screen so the VO stays inside the word budget)",
+    "Up to 100 million cubic meters. Runup 470 to 500 m. No injuries or fatalities reported. (C8, USGS preliminary)",
+    "NOT AI. An algorithm. (C2, the honest line all four analysts demanded)",
+    "Not an early warning system. (C7)",
+    "$1,772,170 of $4,430,711 with the University of Washington and EarthScope. (C13)",
+    "Aug 1 2026 to Jul 31 2032. Year one delivers datasets. (C16)"
+  ],
+  "compliance_check": {
+    "no_em_or_en_dashes": true,
+    "no_semicolons": true,
+    "no_colons": true,
+    "no_banned_phrases": true,
+    "numbers_phonetic_for_synth": "one point seven seven million dollars, some two hundred",
+    "numerals_on_screen": "200, 100 million, $1,772,170, 2026, 2032",
+    "actors_named_before_use": "Alaska, researchers, Tracy Arm south of Juneau, the National Science Foundation, the University of Alaska Fairbanks. UAF is spoken in full because a naive viewer has no Alaska context.",
+    "chain_test": "Every line after the hook answers therefore, but, or because against the line before. No two adjacent lines can be swapped without loss of sense.",
+    "one_story_question": "Can Alaska hear a mountain before it falls? Hook plants it, middle escalates it, the Tracy Arm miss answers it (no), the button echoes it."
+  },
+  "gate_0e_v1_failures_fixed": [
+    "'the coverage' arrived with a definite article, never established. FIXED by L3, which establishes that two hundred cannot cover Alaska and that they watch one stretch of coast, BEFORE L5 refers back to 'that stretch'.",
+    "'the algorithm' arrived with a definite article, never established. FIXED by removing it entirely. L6 now says a scientist found the slide by hand.",
+    "'Nothing heard it' contradicted 'ran the algorithm by hand'. FIXED and made MORE accurate to the source. The sensors did record the ground motion; what did not happen was an automatic detection. L5 and L6 now say exactly that.",
+    "'a working copy of a mountain' was undefined. FIXED by L9, a simulated mountain, fed live data, that models what comes next.",
+    "'Until then' pointed at August when nothing finishes in August. FIXED by L10, which says the work takes years, and by dropping 'until then' from the button.",
+    "'them' could attach to earthquakes. FIXED by naming 'sensors' explicitly in L1.",
+    "'A slide sounds different' was different from an unstated thing. FIXED by L2, which states both durations side by side."
+  ],
+  "version": 4,
+  "gate_0e_v2_failures_fixed": [
+    "CONTRADICTION: 'they watch one stretch of coast' implied a HEARING boundary, then 'the sensors recorded it' (outside that stretch) contradicted it. FIXED by naming the real boundary: 'the automatic SEARCH covers only one stretch of coast'. A search boundary and a hearing boundary are different things, and that is exactly what the source says (no automatic detection, data existed, algorithm applied manually).",
+    "'the alarm' appeared only in the negative and was never introduced. FIXED, an automatic search is established one line before the alarm fails to fire.",
+    "THE LINK BETWEEN HALVES was not stated (live data from what). FIXED by 'fed by those sensors', which ties the new project back to the network the first half established.",
+    "'That starts in August' collided with 'last August'. FIXED to 'The work starts next month', which cannot be confused with the past event.",
+    "'And a harder limit' was a verbless fragment. FIXED to 'And a harder limit remains.'",
+    "'what comes next' was undefined. FIXED to 'what a slope will do'."
+  ],
+  "gate_0e_v3_result": "SHIP TRUE on the third cold read. Chain held end to end. One LOAD-BEARING note remained, that 'the automatic search' arrived with a definite article before anything had been called a search, recoverable one line later but a video viewer cannot re-read.",
+  "gate_0e_v3_note_applied": "L2 now introduces the search BEFORE L3 bounds it ('A program watches for that.'), which also ties the seconds-versus-a-minute contrast to its function, fixing the second MINOR confusion in the same stroke. Additive change only, no link removed."
+}

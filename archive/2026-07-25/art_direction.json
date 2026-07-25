@@ -1,0 +1,91 @@
+{
+  "run_id": "2026-07-25",
+  "title_working": "The One It Didn't Hear",
+  "palette": {
+    "why_this_story": "The story is about LISTENING in the dark across a country too big to cover. So the world is a deep cold-green Southeast night with a single warm signal color that means 'heard'. Green because Tracy Arm and Barry Arm are temperate rainforest fjord country, not tundra and not oilfield. The warmth is rationed: it only appears where an instrument is actually listening, which makes the dark places read as unheard rather than merely dark. That is the whole thesis carried by color allocation alone.",
+    "roles": {
+      "sky": "#123A34 deep fjord green-black, the unheard dark",
+      "sky_high": "#1D5A4C colder green lift toward the top of frame",
+      "ground": "#0C231F near-black spruce-wall green",
+      "ground_lit": "#2A6B57 the wall where light reaches",
+      "water": "#164A44 still cold fjord water",
+      "hero": "#F2B33D lantern amber, RESERVED for a station that is actively listening and for the signal itself",
+      "hero_hot": "#FFD98A the amber's hot core, only at the moment of detection",
+      "accent": "#E4572E ember rust, RESERVED for the rock that actually falls. NEVER touches an instrument.",
+      "shadow": "#07120F",
+      "text": "#F4EDDD warm bone",
+      "ink": "#080D0B near-black warm ink outline",
+      "hero_horn": "#DCA94B brass, deliberately inside the lantern-amber family so the hero never wears the reserved accent",
+      "unlit_tack": "#2A3730 faceless instruments outside the search area, no rim, no bloom, no amber",
+      "boundary_lit": "#F2B33D the real search boundary, amber, and it NEVER moves outward in this piece",
+      "boundary_proposed": "#5FC7D8 blueprint cyan, UNLIT, used once at the button for the proposed line that is not built",
+      "prop_brass": "#C6A15B stopwatch, crate stencil and reels, dimmer than the hero amber so no prop out-glows a listening instrument",
+      "chip": "#D8CDB4 label and stamp fill, capped BELOW the hero amber value so no caption ever out-reads a lit instrument"
+    },
+    "divergence_from_last_two": "2026-07-24 was warm tundra gold plus sage green under a low midnight sun with a cloudberry coral accent and cold slate. 2026-07-23 was Cook Inlet pewter-teal silt with orbital blue-black and detection cyan to warning amber. This run is a DARK SATURATED GREEN night world with lantern amber as the only warmth. It shares no dominant hue with either: 07-24 was a warm-dominant daylight world, 07-23 was a cool grey-blue instrument world. Here green is dominant and the frame is mostly DARK, which neither predecessor was.",
+    "discipline": "ENFORCED BY CODE, not by convention. lib/lighting NightGrade takes a `sources` registry, and ONLY a registered source emits bloom. An unmonitored slope has no registered source and therefore cannot be given amber. Ember rust never touches an instrument and the hero's horn is brass, so the ember bloom at the collapse is the first time that colour has ever appeared. The lit boundary never moves outward, so the button's wider line must be drawn unlit in blueprint cyan.",
+    "description": "malachite conifer dusk over near-ink ground, tungsten lanternlight rationed only to instruments that are listening, ember rust reserved for falling rock"
+  },
+  "light": {
+    "time_of_day": "Deep blue-green hour, just after dark in a Southeast fjord.",
+    "direction": "Key from screen-left and LOW, raking across the slopes so every ridge gets a lit edge and a long shadow. The land is read by its silhouette, which is the point: you can see the shape of a mountain without knowing what it is doing.",
+    "key_fill_rim": "Key is cold and dim. Fill is near-zero, so unlit areas go genuinely dark rather than grey. RIM is the workhorse: every hero form carries a warm amber rim so the instruments read as the only warm objects in a cold world.",
+    "depth_approach": "Aerial perspective via lib/lighting Atmosphere on the far planes so ridge lines stack back into haze, plus stage3d Plane parallax. Forms stay dimensional through tones() ramps, FormGradient at softness <= 0.65 (per the 2026-07-21 under-shading fix), RimLight and ContactShadow on every hero. NO flat single-tone fills anywhere.",
+    "the_light_story": "Light MEANS coverage. Where an instrument is listening there is warmth. Where there is none, there is only silhouette. The turn is lit by taking the warmth away.",
+    "typography_and_chips": "Chips, stamps and labels get form-shading plus ChipShadow (lib/motion.tsx) and sit on a FOREGROUND depth plane, never as flat overlay art. They are EXCLUDED from the NightGrade bloom pass so they can never read as light sources, and their fill is capped below the hero amber value. This is the standing fix for the flat-HUD-chip defect the panel flagged on 2026-07-18, stated here because this file is the binding one.",
+    "measurable_floor": "Unlit regions clamp within a small delta of #07120F so 'unheard' is a different STATE from 'dimly lit'. At the signature shot the warm-lit pixel share of the frame stays under roughly 12 percent. FjordBG `night`: mist bands go to a near-black tint with the blur retained for edge softness only, gulls cut, wall reflections reduced to a single amber specular only where a registered source is actually present."
+  },
+  "shape_language": {
+    "grammar": "SOFT ROUND INSTRUMENTS against HARD ANGULAR LAND. The seismic stations are small, rounded, domed, friendly, hand-sized-looking objects with one big listening feature. The mountains and fjord walls are jagged, faceted, unsympathetic wedges with no face and no personality, deliberately.",
+    "why_this_story": "The emotional argument is that a small, earnest, well-made thing is trying to cover something enormous and indifferent. Making the instrument round and the land angular states that mismatch in silhouette, before a single word. It also means the land can never be read as a villain, only as scale, which protects against doom framing.",
+    "deliberate_contrast": "CORRECTED after Gate 0D. The earlier claim that this inverts the shelf's grammar was FALSE: Sourdough, Vale, SatelliteEye and Petrel are all warm rounded sympathetic institutional machines, so that is the house default and this would be the fifth. The real and checkable differentiators are these. One, the last three heroes were staged against sky, orbit and a cold box, never against hostile faceted LAND. Two, all three used a single EYE as the emotional tell, and this hero's tell is an EAR. No single cyclops eye appears on this hero at any point, so the build cannot drift back to the house default."
+  },
+  "casting": {
+    "hero_net_new": "SeismicStation, a net-new reusable library asset. A small half-buried listening post: a domed sensor head with one large ear-cup or aperture as its emotional tell, a squat ribbed body sunk into the ground, a stubby antenna, a solar panel wing, and a contact shadow where it meets the dirt. Emotions: listening, straining, missing, heard. The ear-cup is the tell (widens straining, clamps and glows amber on a detection, droops when it hears nothing). This is a GENUINE manifest gap: the shelf has an orbital eye (SatelliteEye) and a seafloor ear (ListeningMooring) but nothing that listens to the GROUND, which is the entire subject of this story.",
+    "hero_freshness_check": "Last two heroes were SatelliteEye (2026-07-23) and Petrel (2026-07-24). SeismicStation differs from both. Must pass dedupe.py check --hero SeismicStation.",
+    "from_the_shelf": [
+      "FjordBG (lib/biomes.tsx) as the fjord stage, re-lit to night via a new `night` parameter rather than re-drawn. This is the library mandate working as intended.",
+      "Character rig for the researcher's hand only. No face is shown, so no individual is invented on screen.",
+      "FishingBoat (lib/vehicles.tsx) available as the archetype of a thing an alert can move. NO TRAIN: vehicles.tsx has no train, and the only train in the engine is an Anchorage-only skyline parameter.",
+      "GlacierBG ART IS NOT USED. Its `calve` MOTION contract (slab tips, drops, impact splash) is generalized into a reusable behaviour for FjordBG's rock wall, because a blue-white ice face would misrepresent a rock landslide as a calving event.",
+      "ListeningMooring (lib/sensors.tsx) EXISTS IN CODE but was never registered in ASSET_MANIFEST.md, which is why Gate 0D could not find it. It is not cast this run. Registering it is a Phase 8 fix."
+    ],
+    "no_face_deliberately": "The mountains, the fjord walls, and the falling rock have NO faces and NO personality. They are not antagonists, they are physics. Characterized-object humor is reserved for the instruments only."
+  },
+  "motion_language": {
+    "world_motion": "The land does not move except when it fails. Everything else breathes: the stations bob microscopically, the water shimmers, haze drifts across the far ridges, the amber signal pulses. That stillness makes the one collapse land like a gunshot.",
+    "hero_moves_that_earn_180_degree_blur": [
+      "THE ROCK LETS GO: a slab of the fjord wall tips, separates and drops. Anticipation (the wall shivers, a hairline crack opens), then acceleration into a real fall with motion blur, then a water impact with a spray sheet and a screen shake.",
+      "THE SIGNAL RUN: when a station hears something, the amber travels along the ground to neighbouring stations as a fast rolling pulse with a smeared leading edge.",
+      "THE HAND-TRACE: a human hand enters and drags the waveform across the frame by hand, slow and deliberate, the ONLY slow move in a piece full of fast ones. Its slowness is the joke and the point."
+    ],
+    "principles": "Nothing moves linearly. Every entrance uses entrance() with anticipation, overshoot and settle. followThrough() on the antenna, the solar wing and any tape or cable. Numbers count up with easing and land with a hit. The stations blink and breathe constantly so the frame is never dead.",
+    "moves_that_earn_180_blur": [
+      "the slab letting go at 21.16",
+      "the signal run between stations",
+      "the whip pan out past the boundary at 19.58",
+      "the hard push onto the dark lamp at 26.27"
+    ],
+    "the_one_move_that_earns_the_opposite": "THE HAND-TRACE at 30.94. Crisp, sub-pixel steady, a real drawn-on stroke reveal and NO smear. Its slowness reads as deliberate craft against a piece full of blur. Listing it under 180-degree blur was a category error caught at Gate 0D.",
+    "camera_moves_named": [
+      "the crane pullback at 16.8 with ridge-plane parallax",
+      "the whip pan at 19.58",
+      "the rack focus lattice-to-lamp at 26.27",
+      "the orbit reveal of the wireframe twin at 45.1"
+    ]
+  },
+  "composition": {
+    "focal_hierarchy": "One warm thing per frame, always. In a dark world the eye goes to the amber, so the amber is the story pointer and never decorative.",
+    "negative_space_beats": "The unheard dark IS the negative space, and it is load-bearing rather than empty. At the turn the frame is deliberately mostly black.",
+    "safe_areas": "Master 9:16 1080x1920. All hero action and all captions stay inside the centered 4:5 1080x1350 box, because 4:5 is the LinkedIn feed deliverable. Nothing story-critical in the top 285px or bottom 285px of the 9:16 frame.",
+    "the_signature_shot": "THE COVERAGE MAP, and it is now BUILT as beat 'signature' at 24.18 to 26.27 (shot 5). The lit lattice and the lone ember bloom outside the boundary are held in ONE frame. The amber dots continue their unchanged idle pulse as the positive control, which is what makes the non-reaction legible as a CHOICE rather than a frozen frame, and the shot carries a slow 1.00 to 1.05 push so no frame is static. Gate 0D correctly caught that the earlier plan pointed at a frame the board did not contain.",
+    "the_second_shot": "The button at 54.44 is the payoff of the palette thesis and is claimed deliberately: it is the one moment a wider line appears over previously unheard dark, and it is drawn UNLIT in blueprint cyan because the award buys no new stations."
+  },
+  "craft_advance": {
+    "the_one_system": "lib/lighting.tsx gains `NightGrade`, a reusable low-key night grading and atmosphere system: a cold-green ambient wash, per-object warm rim allocation, an amber bloom that only blooms on declared sources, and a genuine black floor (crushed shadows) so unlit regions read as unheard rather than grey. Every previous dispatch has been a daylight or dusk world; the engine has AuroraNightBG but no general system for making ANY biome read as night with rationed practical light. This makes night a first-class lighting mode for all future runs rather than a one-off.",
+    "why_this_story_needs_it": "The thesis is carried by where the light IS and IS NOT. Without a real black floor and controlled bloom, the unheard dark comes out as flat grey and the argument dies in the grade.",
+    "secondary_upgrade": "FjordBG gains a `night` parameter so the existing biome can be re-lit rather than re-drawn, which is the library mandate working as intended.",
+    "api": "NightGrade(f, color, amount, floor, horizon, sources[]) in lib/lighting.tsx, BUILT AND TYPECHECKED this run. `sources` is the declared-source registry: {x, y, r, color, intensity}. Only a registered source contributes bloom, which is what makes the palette discipline a property of the scene graph instead of a convention a renderer can violate without noticing. `floor` crushes shadows toward true black so unlit reads as unheard. Look-dev harness: StationLook.tsx."
+  },
+  "binding_note": "This plan is an INPUT the build executes against and Phase 6 checks the render against. If a build decision contradicts it, either fix the build or consciously revise this file and say why in the retrospective."
+}

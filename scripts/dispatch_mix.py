@@ -109,8 +109,8 @@ EVENTS = [
 
 # The breath before the PAYOFF turn ("Someone who reads the land did", ~41s) — aligned to the
 # storyboard audio_arc.silence_at=39.5 (a real VO gap, the [short pause] in line 7) so the >=6dB gate dip lands in true silence.
-SILENCE_DIP_AT = 39.5
-DIP_LEN = 0.65
+SILENCE_DIP_AT = 38.62   # storyboard audio_arc.silence_at: the held non-reaction, where the bed must genuinely drop out
+DIP_LEN = 1.25
 
 
 def check_schedule(events):
@@ -160,7 +160,7 @@ def main():
     fc.append(
         f"[1:a]aformat=sample_rates={SR}:channel_layouts=stereo,aloop=loop=-1:size={int(SR*200)},"
         f"atrim=0:{VIDEO_SECS},equalizer=f=3000:t=q:w=1:g=-2.5,volume=0.30,"
-        f"volume=enable='between(t,{dip0},{dip1})':volume=0.06,"
+        f"volume=enable='between(t,{dip0},{dip1})':volume=0.015,"
         f"volume=enable='gt(t,{vo_end + 0.4})':volume=1.3[bedraw]"
     )
     # sidechain duck the bed under the VO (uses the key copy)
