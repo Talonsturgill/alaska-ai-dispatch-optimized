@@ -1,0 +1,22 @@
+{
+  "pass": true,
+  "fails": [],
+  "warns": [],
+  "metrics": {
+    "chars": 1878,
+    "hook": "Alaska told about 3,500 people the state had information they may not be citizens. Then 3,048 registrations went inactive.",
+    "hook_len": 122,
+    "hashtags": [
+      "#Alaska",
+      "#GovTech",
+      "#DataQuality",
+      "#VoterRegistration",
+      "#AlaskaPolitics"
+    ],
+    "n_hashtags": 5,
+    "emoji": 0,
+    "unicode_bold": 0,
+    "bullet_lines": 0,
+    "passes": true
+  }
+}

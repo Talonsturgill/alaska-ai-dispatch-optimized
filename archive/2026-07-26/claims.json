@@ -1,0 +1,156 @@
+{
+  "run": "2026-07-26",
+  "story": "Alaska's quarterly voter-file/DMV records comparison mailed about 3,500 Alaskans letters questioning their citizenship and moved 3,048 off the active voter list into inactive status, four weeks before the August 18 2026 primary, catching naturalized US citizens because DMV records capture status at license application and naturalization never propagates back.",
+  "status": "validator A (core claims) COMPLETE. validator B (context) pending. Nothing outside this file may appear on screen.",
+  "claims": [
+    {
+      "id": "c1",
+      "text": "About 3,500 Alaskans were mailed letters questioning their citizenship",
+      "label": "Elections Director Carol Beecher, testifying July 22 2026, via Alaska Public Media",
+      "onscreen": "3,500 LETTERS MAILED",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "c2",
+      "text": "3,048 Alaskans were moved off the state's ACTIVE voter list into inactive status",
+      "label": "Alaska Beacon",
+      "onscreen": "3,048 MOVED TO INACTIVE",
+      "status": "VERIFIED",
+      "warning": "NOT interchangeable with c1. Never say 3,500 removed or 3,048 flagged."
+    },
+    {
+      "id": "c3",
+      "text": "A typical quarterly DMV cross-check turns up more like 200 names",
+      "label": "Beecher, via Alaska Beacon",
+      "onscreen": "USUALLY ABOUT 200",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "c4",
+      "text": "In March, Elections gave DMV a list of approximately 15,200 license and ID applicants and asked for citizenship information",
+      "label": "Division of Elections memo, quoted by Alaska Beacon",
+      "onscreen": "15,200 RECORDS",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "c5",
+      "text": "The DMV memo of July 23 2026 called it a non-routine request",
+      "label": "Alaska DMV memo, via Alaska Beacon",
+      "onscreen": "NON-ROUTINE REQUEST",
+      "status": "VERIFIED",
+      "warning": "The DMV characterized the REQUEST. Not an accusation of wrongdoing. Do not editorialize."
+    },
+    {
+      "id": "c6",
+      "text": "You are a registered voter who indicated you were a citizen of the United States on your initial voter registration application. / We have since received information from the Alaska Division of Motor Vehicles that you may not be a citizen.",
+      "label": "Division of Elections letter, as quoted by Alaska Public Media",
+      "onscreen": "YOU MAY NOT BE A CITIZEN",
+      "status": "VERIFIED",
+      "warning": "Published as two segments split by attribution. Note it says MAY NOT, conditional, not an accusation."
+    },
+    {
+      "id": "c7",
+      "text": "Inactive voters can still vote a questioned ballot, attesting they are a citizen and a valid voter",
+      "label": "Beecher, via Alaska Public Media",
+      "onscreen": "STILL ABLE TO VOTE",
+      "status": "VERIFIED",
+      "warning": "LOAD-BEARING FOR FAIRNESS. Nobody was removed from the rolls. Nobody lost the right to vote."
+    },
+    {
+      "id": "c8",
+      "text": "So we understand that some of this is probably very old data, where the individuals did not contact DMV, have not updated that they are a naturalized citizen.",
+      "label": "Beecher, via Alaska Public Media",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "c9",
+      "text": "I believe that people probably don't realize that all of these governmental entities don't necessarily talk to each other.",
+      "label": "Beecher, via Alaska Public Media",
+      "status": "VERIFIED",
+      "note": "This is the thesis of the whole piece, spoken by the official herself."
+    },
+    {
+      "id": "c10",
+      "text": "We don't require paperwork. We're not requiring documentation.",
+      "label": "Beecher, via Alaska Beacon",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "c11",
+      "text": "We are simply asking individuals to confirm because we received information from a verified source that these individuals were not U.S. citizens.",
+      "label": "Beecher, via Alaska Public Media",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "c12",
+      "text": "Chris Waigl of Fairbanks got her Alaska driver's license in 2019, became a US citizen in 2025, found herself listed inactive - non citizen, and was corrected after sending her naturalization certificate",
+      "label": "Alaska Beacon",
+      "onscreen": "LICENSE 2019 / CITIZEN 2025",
+      "status": "VERIFIED",
+      "warning": "PARAPHRASE ONLY. Her sentence is NOT certifiable verbatim (two fetches returned different pronouns). The status string 'inactive - non citizen' IS usable. Her correction succeeding is favorable to the state and must be included."
+    },
+    {
+      "id": "c13",
+      "text": "The reason why I think the folks are reaching out to our office is because these are actual citizens who are receiving this notice.",
+      "label": "Rep. Andrew Gray, D-Anchorage, via Alaska Public Media",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "c14",
+      "text": "This is actually their job. This is what they do, is make sure the voter rolls are clean and correct.",
+      "label": "Rep. Kevin McCabe, R-Big Lake, via Alaska Public Media",
+      "status": "VERIFIED",
+      "warning": "REQUIRED FOR FAIRNESS. Cutting McCabe while keeping Gray would be a fairness failure."
+    },
+    {
+      "id": "c15",
+      "text": "Beecher said the action was not prompted by the federal government and that the federal government has not sent the state a list of suspected noncitizens",
+      "label": "Alaska Public Media",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "c16",
+      "text": "The active voter roll shrank between June and July, the first time since at least 2020 that has happened in an election year",
+      "label": "Alaska Beacon",
+      "status": "VERIFIED",
+      "warning": "Keep the hedge 'since at least 2020'. It is load-bearing."
+    },
+    {
+      "id": "c17",
+      "text": "This is a records comparison between the voter file and DMV data. No artificial intelligence and no machine learning is involved.",
+      "label": "verified absence across every source",
+      "onscreen": "NOT AI",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "c18",
+      "text": "Some residents reached full voicemail boxes and could not get through to staff",
+      "label": "Alaska Beacon",
+      "status": "VERIFIED",
+      "note": "The friction that undercuts 'just call'."
+    }
+  ],
+  "must_cut": [
+    "700% jump or nearly 700% increase, in any form. Reporter arithmetic, explicitly conditional, keyed to 3,500 not the 3,048 they reported, and it does not compute against their own 541 base (3,500 vs 541 is about +547 percent; 3,048 vs 541 is about +463 percent).",
+    "541 were flagged in all of 2025. Wrong framing, it was a snapshot count on a copy of the inactive list, not an annual flow.",
+    "3,500 removed, or 3,048 flagged. Different quantities, not interchangeable.",
+    "Removed from the voter rolls as a standalone claim, and any phrasing implying these people cannot vote.",
+    "Any claim the Division denied using SAVE or any named federal verification system.",
+    "Any claim the Division is legally required to perform this list maintenance. Unverified.",
+    "Chris Waigl's sentence inside quotation marks.",
+    "Any percentage of the Alaska electorate. No verified active-voter denominator exists.",
+    "Any causal link between the December Beecher-Dhillon memo and the March 15,200-record request. No source draws that line.",
+    "Any suggestion that AI, an algorithm, or myAlaska modernization caused or touched the voter flagging. This would be the most damaging error available in the piece.",
+    "Any implication that the passed July 19 registration deadline blocks affected voters from fixing this. It does not, they are still registered.",
+    "Any on-screen date for a response deadline or registration deadline. elections.alaska.gov returned 503 on every attempt, so there is NO official primary-source confirmation."
+  ],
+  "fairness_requirements": [
+    "Frame is INACTIVE STATUS, not disenfranchisement.",
+    "The Division is not the source of the bad data. The stale records are the DMV's.",
+    "Beecher publicly acknowledged the data is probably very old rather than defending the results.",
+    "The correction burden is genuinely low and the Waigl correction actually worked.",
+    "The defense must be voiced by a real named source. Rep. Kevin McCabe, R-Big Lake, is on the record.",
+    "Report the friction (non-routine request, full voicemail boxes) without assigning motive."
+  ],
+  "strongest_counterpoint": "This is list maintenance behaving as designed, and the loud number is an artifact of a wider net, not a purge. A bulk query across roughly 15,200 records instead of the usual quarterly pass produces a larger flag count as arithmetic, not intent. The flag is a QUESTION, not a determination. The genuine failure is an interagency data-sync problem Beecher named herself, and the fix is plumbing between agencies. The fair criticism is not bad faith, it is that a non-routine bulk query fired four weeks before a primary, that the letter leads with suspicion rather than with the reassurance that the recipient can still vote, and that the phone lines could not absorb the volume."
+}

@@ -977,3 +977,60 @@ dispatch_history:
       only to instruments that are listening, ember rust reserved for falling rock
     metaphor: a small buried ear that hears a mountain fall but can never hear one
       think, and a map drawn too small around it
+- date: '2026-07-26'
+  topic: 'THE FIELD THAT STOPPED IN 2019: Alaska''s Division of Elections asked the
+    DMV to check roughly 15,200 license and ID applicants at once. A normal quarterly
+    pass returns more like 200 names; this one flagged about 3,500 Alaskans, mailed
+    them letters saying the state had information they may not be citizens, and moved
+    3,048 registrations from active to inactive four weeks before the August 18 primary.
+    Nobody was removed and nobody lost the vote, and an inactive Alaskan can still
+    cast a questioned ballot. Cause: a DMV file records citizenship as of the day
+    you apply and naturalization never propagates back, so a Fairbanks voter licensed
+    in 2019 and naturalized in 2025 was flagged although neither record was wrong.
+    NO AI is involved anywhere and the film says so on screen. The transferable lesson
+    is the asymmetry, since widening a query costs almost nothing while adjudicating
+    each result costs what it always did.'
+  slug: dispatch-2026-07-26-voterroll
+  key_entities:
+  - alaska division of elections
+  - dmv citizenship match
+  - voter roll inactive
+  - naturalized citizens
+  - carol beecher
+  - questioned ballot
+  - records matching
+  - chris waigl
+  - kevin mccabe
+  - andrew gray
+  - august 18 primary
+  archetype: a records machine whose intake mouth widens while its output stem never
+    does
+  palette: printed bond paper with a pale ruled grid, municipal blue-grey cabinetry,
+    rubber-stamp indigo carrying every mark the state makes, and a single naturalization-seal
+    vermilion that touches nothing except a citizen's own documents
+  voice: Gemini native TTS, voice Sulafat, gemini-3.1-flash-tts-preview
+  stance: mixed
+  angle: Alaska widened a routine records check by orders of magnitude without widening
+    anything that catches its mistakes, so citizens got a letter because a DMV field
+    still says what was true the day they got their license.
+  hero: RecordsMachine
+  cast:
+  - RecordsMachine
+  - ThreePipeCutaway
+  - StateLetter
+  - FullTapeMachine
+  - PaperOfficeBG
+  - Character
+  composition:
+    pov: exploded-diagram
+    motion_vector: vertical-descent
+    hero_treatment: structure-as-subject
+    layout: single-object-void
+    register: blueprint-technical
+    camera_strategy: orbit-reveal
+    light_story: noon-hard
+    palette: printed bond paper with a pale ruled grid, municipal blue-grey cabinetry,
+      rubber-stamp indigo carrying every mark the state makes, and a single naturalization-seal
+      vermilion that touches nothing except a citizen's own documents
+    metaphor: a pipe that was never built, so a 2025 certificate can never reach a
+      2019 field

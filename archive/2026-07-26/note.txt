@@ -1,0 +1,7 @@
+On-screen numbers are illustrative renderings of the verified figures, not a live feed. Every number and label on screen comes from the fact-check-safe set in out/dispatch/claims.json.
+
+Two figures are deliberately kept apart everywhere in this piece. About 3,500 letters were mailed. 3,048 registrations moved from active to inactive. They are different quantities and the film never merges them. The two other figures, a normal pass returning more like 200 names and a March request covering roughly 15,200 license and ID applicants, are different KINDS of object (names returned versus applicants sent), so they are named separately and never appear in the same frame, and no ratio is drawn between them.
+
+Cut by fact-check and worth not re-deriving: the widely repeated 700 percent increase is reporter arithmetic that is explicitly conditional and does not compute against its own base. The satisfying PFD proof-of-citizenship irony is affirmatively refuted, since PFD eligibility expressly includes lawful permanent residents.
+
+The Division of Elections is not framed as a villain. Rep. Kevin McCabe's defense is voiced in the narration, not merely posted on screen, and the picture agrees with it.

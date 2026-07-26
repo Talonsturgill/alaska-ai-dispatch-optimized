@@ -1,0 +1,55 @@
+{
+  "backend": "gemini-tts",
+  "model": "gemini-3.1-flash-tts-preview",
+  "voice": "Sulafat",
+  "take": 2,
+  "takes": 3,
+  "soundcheck": {
+    "pass": true,
+    "score": 0.993,
+    "heard": "Alaska checks its voter list against DMV records. A normal check flags about 200 names. Keeping that list clean is the division of elections job. But in March, it asked the DMV to check 15,000 license holders at once. That flagged 3,500 Alaskans. Each got a letter saying they may not be citizens. 3,048 went inactive. Real citizens are in that pile. Because the DMV never hears about it when you naturalize. It stored your status the day you applied. A Fairbanks voter got her license in 2019 and her citizenship in 2025. Neither record is wrong. Inactive is not removed. She can still vote a questioned ballot. No algorithm did this. Alaska widened the question and never widened the fix. So what else are we widening?",
+    "checks": {
+      "word_accuracy": {
+        "wer": 0.014,
+        "pass": true
+      },
+      "no_leak": {
+        "leaked": [],
+        "pass": true
+      },
+      "expressive": {
+        "pitch_std_semitones": 4.7,
+        "voiced_frac": 0.54,
+        "pass": true
+      },
+      "duration": {
+        "seconds": 55.72,
+        "pass": true
+      },
+      "loudness": {
+        "lufs": null,
+        "pass": true
+      }
+    },
+    "diagnosis": "clean"
+  },
+  "all_reports": [
+    {
+      "pass": true,
+      "score": 0.982,
+      "diagnosis": "clean"
+    },
+    {
+      "pass": true,
+      "score": 0.982,
+      "diagnosis": "clean"
+    },
+    {
+      "pass": true,
+      "score": 0.993,
+      "diagnosis": "clean"
+    }
+  ],
+  "watermark": "SynthID (Google) embedded in all Gemini TTS audio",
+  "license": "Google Gemini API preset voice (per-use billing)"
+}

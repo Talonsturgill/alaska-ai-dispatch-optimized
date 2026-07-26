@@ -1,0 +1,91 @@
+{
+  "total": 55.3,
+  "voice": "Sulafat",
+  "model": "gemini-3.1-flash-tts-preview",
+  "lines": [
+    {
+      "idx": 0,
+      "text": "Alaska checks its voter list against D M V records.",
+      "start": 0.0,
+      "end": 3.24
+    },
+    {
+      "idx": 1,
+      "text": "A normal check flags about two hundred names.",
+      "start": 3.74,
+      "end": 6.24
+    },
+    {
+      "idx": 2,
+      "text": "Keeping that list clean is the Division of Elections' job.",
+      "start": 7.06,
+      "end": 9.96
+    },
+    {
+      "idx": 3,
+      "text": "But in March it asked the D M V to check fifteen thousand license holders at once.",
+      "start": 10.64,
+      "end": 15.64
+    },
+    {
+      "idx": 4,
+      "text": "That flagged three thousand five hundred Alaskans.",
+      "start": 16.4,
+      "end": 18.96
+    },
+    {
+      "idx": 5,
+      "text": "Each got a letter saying they may not be citizens. Three thousand forty eight went inactive.",
+      "start": 19.52,
+      "end": 24.6
+    },
+    {
+      "idx": 6,
+      "text": "Real citizens are in that pile.",
+      "start": 25.4,
+      "end": 27.5
+    },
+    {
+      "idx": 7,
+      "text": "Because the D M V never hears about it when you naturalize. It stored your status the day you applied.",
+      "start": 27.93,
+      "end": 33.54
+    },
+    {
+      "idx": 8,
+      "text": "A Fairbanks voter got her license in twenty nineteen and her citizenship in twenty twenty five.",
+      "start": 34.42,
+      "end": 39.52
+    },
+    {
+      "idx": 9,
+      "text": "Neither record is wrong.",
+      "start": 40.58,
+      "end": 42.12
+    },
+    {
+      "idx": 10,
+      "text": "Inactive is not removed. She can still vote a questioned ballot.",
+      "start": 43.02,
+      "end": 46.56
+    },
+    {
+      "idx": 11,
+      "text": "No algorithm did this.",
+      "start": 47.42,
+      "end": 48.96
+    },
+    {
+      "idx": 12,
+      "text": "Alaska widened the question and never widened the fix.",
+      "start": 49.5,
+      "end": 52.6
+    },
+    {
+      "idx": 13,
+      "text": "So what else are we widening?",
+      "start": 53.38,
+      "end": 55.3
+    }
+  ]
+}

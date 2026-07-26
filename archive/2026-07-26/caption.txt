@@ -1,0 +1,23 @@
+Alaska told about 3,500 people the state had information they may not be citizens. Then 3,048 registrations went inactive.
+
+Elections Director Carol Beecher has said a normal quarterly pass comes back with more like 200 names. In March the division sent the DMV a different kind of request, covering roughly 15,200 license and ID applicants. The DMV's own July 23 memo called it non-routine.
+
+Citizens are in that group. Rep. Andrew Gray of Anchorage told the division the people reaching his office are actual citizens receiving the notice.
+
+Chris Waigl of Fairbanks got her Alaska license in 2019 and naturalized in 2025. She was listed inactive as a non citizen until she sent in her naturalization certificate and the division corrected the record.
+
+Neither record was wrong.
+
+Her 2019 file was accurate in 2019 and her 2025 certificate was accurate in 2025. Beecher named the mechanism herself. Some of this is probably very old data, she said, where people never went back to tell the DMV they had naturalized. Those agencies do not necessarily talk to each other.
+
+Rep. Kevin McCabe of Big Lake is right that this is the division's actual job, and the guardrails held. Nobody was removed from the rolls. Nobody lost the right to vote. An inactive Alaskan can still cast a questioned ballot, and Beecher says no documentation is required to clear it.
+
+The cost landed somewhere else. Some residents who tried to call reached full voicemail boxes.
+
+No source in this story names AI, machine learning, or an algorithm anywhere in the process.
+
+That is the whole reason it is instructive. Widening a query got cheap. Clearing a wrong flag still costs what it always did, one record at a time.
+
+Who should carry that cost, the agency that widened the query or the citizen who has to prove a stale record stale?
+
+#Alaska #GovTech #DataQuality #VoterRegistration #AlaskaPolitics
