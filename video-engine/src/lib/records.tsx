@@ -36,7 +36,7 @@ export const RecordsMachine: React.FC<{
   const step = Math.floor(o * teeth) / teeth;
   const frac = o * teeth - Math.floor(o * teeth);
   const over = frac > 0 && frac < 0.3 ? Math.sin(frac / 0.3 * Math.PI) * 0.035 : 0;
-  const mouthW = 300 + (step + over) * 560;
+  const mouthW = 260 + (step + over) * 400;
   const id = `rm${Math.round(x)}`;
   const shudder = s > 0 ? Math.sin(f / 2.1) * 3.2 * s : 0;
   const gauge = -50 + s * 100;
@@ -46,7 +46,7 @@ export const RecordsMachine: React.FC<{
       <ContactShadow cx={0} cy={560} rx={260} opacity={0.34} />
 
       {/* THE MOUTH — a true tapered cone, never a face-on ellipse */}
-      <TaperedCone x={0} y={-210} mouthW={mouthW} stemW={190} len={300} />
+      <TaperedCone x={0} y={-300} mouthW={mouthW} stemW={190} len={390} />
 
       {/* housing body */}
       <rect x={-160} y={70} width={320} height={300} rx={12}

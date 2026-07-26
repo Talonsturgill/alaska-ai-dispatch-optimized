@@ -203,30 +203,50 @@ export const TaperedCone: React.FC<{
 }> = ({x, y, mouthW, stemW, len, tint = PAPER.hero, rim = PAPER.brass, rings = 4}) => {
   const t = tones(tint);
   const id = `cone${Math.round(x)}_${Math.round(y)}_${Math.round(mouthW)}`;
-  const mh = mouthW * 0.30;   // ellipse minor axis at the mouth (3/4 view)
-  const sh = stemW * 0.30;
+  // PASS 2 (2026-07-26, panel hard blocker). Pass 1 drew a dark ellipse at FULL mouth
+  // width on top of the body, so the whole cone read as a black satellite dish. That is
+  // the exact lollipop failure the 2026-07-25 SeismicStation horn hit and that the art
+  // direction explicitly banned. Three changes make it read as a cone:
+  //   1. a much FLATTER rim ellipse (0.16 not 0.30), so we are looking along the cone
+  //      rather than down into a dish
+  //   2. the dark interior is INSET and pushed DOWN the throat, so a lit rim band and
+  //      both straight taper WALLS stay visible around it
+  //   3. the walls carry their own shading, a lit screen-left wall against a shaded
+  //      screen-right wall, which is what actually sells a cone under a flat key
+  const mh = mouthW * 0.16;
+  const sh = Math.max(4, stemW * 0.16);
+  const inset = 0.74;
   return (
     <g transform={`translate(${x},${y})`}>
       <FormGradient id={id} t={t} />
-      {/* body: straight taper walls between the two ellipse rims */}
-      <path d={`M${-mouthW / 2},0 L${-stemW / 2},${len} A${stemW / 2},${sh} 0 0 0 ${stemW / 2},${len} L${mouthW / 2},0 Z`}
-            fill={`url(#${id})`} stroke={INK} strokeWidth={4} />
-      {/* HOLLOW DARK interior at the mouth */}
-      <ellipse cx={0} cy={0} rx={mouthW / 2} ry={mh} fill={INK} opacity={0.86} />
-      <ellipse cx={0} cy={0} rx={mouthW / 2} ry={mh} fill="none" stroke={INK} strokeWidth={4} />
-      {/* receding interior throat rings — the depth cue that kills the lollipop read */}
+      {/* the two straight taper walls, drawn as separate lit and shaded faces */}
+      <path d={`M${-mouthW / 2},0 L${-stemW / 2},${len} L0,${len} L0,0 Z`}
+            fill={t.key} stroke="none" />
+      <path d={`M${mouthW / 2},0 L${stemW / 2},${len} L0,${len} L0,0 Z`}
+            fill={t.shade} stroke="none" />
+      {/* the silhouette outline over both faces */}
+      <path d={`M${-mouthW / 2},0 L${-stemW / 2},${len} A${stemW / 2},${sh} 0 0 0 ${stemW / 2},${len} L${mouthW / 2},0`}
+            fill="none" stroke={INK} strokeWidth={4} strokeLinejoin="round" />
+      {/* the rolled rim, an OPEN band rather than a filled disc */}
+      <ellipse cx={0} cy={0} rx={mouthW / 2} ry={mh} fill={t.key} stroke={INK} strokeWidth={4} />
+      {/* the hollow dark interior, INSET and receding down the throat */}
+      <ellipse cx={0} cy={mh * 0.42} rx={(mouthW / 2) * inset} ry={mh * inset}
+               fill={INK} opacity={0.88} />
+      {/* receding interior throat rings, the depth cue that kills the flat read */}
       {Array.from({length: rings}).map((_, i) => {
         const k = (i + 1) / (rings + 1);
-        const rx = (mouthW / 2) * (1 - k * 0.62);
-        const ry = mh * (1 - k * 0.62);
         return (
-          <ellipse key={i} cx={0} cy={k * 16} rx={rx} ry={ry} fill="none"
-                   stroke={t.key} strokeWidth={1.6} opacity={0.30 - i * 0.05} />
+          <ellipse key={i} cx={0} cy={mh * 0.42 + k * mh * 0.5}
+                   rx={(mouthW / 2) * inset * (1 - k * 0.55)}
+                   ry={mh * inset * (1 - k * 0.55)}
+                   fill="none" stroke={t.key} strokeWidth={1.8} opacity={0.26 - i * 0.045} />
         );
       })}
-      {/* rolled rim */}
-      <ellipse cx={0} cy={0} rx={mouthW / 2} ry={mh} fill="none" stroke={rim} strokeWidth={7} />
-      <ellipse cx={0} cy={-2} rx={mouthW / 2} ry={mh} fill="none" stroke={INK} strokeWidth={2.2} opacity={0.6} />
+      {/* rim highlight on the lit side only */}
+      <path d={`M${-mouthW / 2},0 A${mouthW / 2},${mh} 0 0 1 0,${-mh}`}
+            fill="none" stroke={rim} strokeWidth={6} opacity={0.95} />
+      <path d={`M0,${-mh} A${mouthW / 2},${mh} 0 0 1 ${mouthW / 2},0`}
+            fill="none" stroke={rim} strokeWidth={6} opacity={0.45} />
       <RimLight d={`M${-mouthW / 2},0 L${-stemW / 2},${len}`} />
     </g>
   );

@@ -91,7 +91,7 @@ const S1: React.FC = () => {
     <Stage push={push} drift={0.6}>
       <StateLetter f={f} x={540} y={1010} scale={1.16} open={open} line="YOU MAY NOT BE A CITIZEN" />
       <Label x={540} y={470} text="3,500 LETTERS" size={72} delay={4} />
-      <Label x={540} y={600} text="NOBODY LOST THE VOTE" size={54} tint={PAPER.seal} delay={12} />
+      <Label x={540} y={600} text="NOBODY LOST THE VOTE" size={54} delay={12} />
     </Stage>
   );
 };
@@ -170,7 +170,7 @@ const S3: React.FC = () => {
               </g>
             );
           })}
-          <Stat x={540} y={1620} big="3,500" small="FLAGGED" delay={152} tint={PAPER.seal} />
+          <Stat x={540} y={1620} big="3,500" small="FLAGGED" delay={152} />
         </g>
       )}
     </Stage>
@@ -252,7 +252,7 @@ const S5: React.FC = () => {
         </g>
         <Label x={820} y={1700} text="STILL DIALING" size={34} delay={52} />
       </g>
-      <Label x={540} y={330} text="REAL CITIZENS" size={62} tint={PAPER.seal} delay={10} />
+      <Label x={540} y={330} text="REAL CITIZENS" size={62} delay={10} />
     </Stage>
   );
 };
@@ -340,7 +340,7 @@ const S7: React.FC = () => {
           </g>
         </g>
         <Character frame={f} x={800} y={1240} scale={0.66} pose="stand" emotion="neutral" outfit="parka" headgear="bare" facing={-1} />
-        <Label x={540} y={1700} text="INACTIVE IS NOT REMOVED" size={44} delay={116} tint={PAPER.seal} />
+        <Label x={540} y={1700} text="INACTIVE IS NOT REMOVED" size={44} delay={116} />
       </g>
     </Stage>
   );
