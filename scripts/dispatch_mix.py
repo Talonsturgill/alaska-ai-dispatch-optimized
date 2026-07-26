@@ -35,7 +35,7 @@ OUT = os.path.join(REPO, "out", "dispatch")
 AUD = os.path.join(OUT, "audio")
 FF = os.environ.get("FFMPEG_BIN", "ffmpeg")
 SR = 44100
-DATE = "2026-07-24"   # episode seed for the shuffle-bag + jitter
+DATE = "2026-07-26"   # episode seed for the shuffle-bag + jitter
 
 
 def run(cmd):
@@ -80,37 +80,53 @@ _TAIL = 2.6   # matches scripts/build_scenes.py TAIL (hold after the last word)
 VIDEO_SECS = max(x["end"] for x in _lines) + _TAIL   # derive from VO; never hardcode
 
 EVENTS = [
-    # S1 (lines 0-1): the drone-in-a-box pops its lid, spec labels tick, banner snaps, cold fleet stacks
-    (L[0] + 0.6,  "pop",    "hero",     -0.2),
-    (L[0] + 1.8,  "tick",   "standard",  0.3),
-    (L[1] + 0.3,  "snap",   "standard", -0.2),
-    (L[1] + 1.9,  "clank",  "texture",   0.3),
-    # S2 (line 2): the camera lifts off, the delta opens, the "2 people" scale hit
-    (L[2] + 0.4,  "whoosh", "standard",  0.0),
-    (L[2] + 3.6,  "boom",   "standard",  0.0),
-    # S3 (line 3): Byron's nameplate, the radio pings scratching track-lines on the land
-    (L[3] + 0.4,  "ding",   "standard", -0.3),
-    (L[3] + 2.6,  "tick",   "standard",  0.2),
-    # S4 (line 4): the maze MULTIPLIES (the one riser, the rehook), the WHERE-TO-LOOK slot blinks
-    (L[4] + 0.3,  "riser",  "hero",      0.0),
-    (L[4] + 3.0,  "pop",    "standard",  0.0),
-    # S5 (lines 5-6): the traced slough warms (chime), then Petrel snaps to the pointed heading
-    (L[5] + 1.6,  "chime",  "hero",     -0.2),
-    (L[6] + 0.2,  "whoosh", "standard",  0.2),
-    # S6 (lines 7-8): the found bloom lands, the REMOVE box spins, the village spark relay, nodes pop
-    (L[7] + 0.3,  "boom",   "hero",      0.0),
-    (L[7] + 2.8,  "clank",  "standard", -0.3),
-    (L[8] + 1.6,  "ding",   "standard",  0.2),
-    (L[8] + 3.4,  "pop",    "standard",  0.3),
-    # S7 (line 9): Petrel settles warm and turns to the hand (button), a soft closing tick
-    (L[9] + 0.5,  "chime",  "standard",  0.0),
-    (VIDEO_SECS - _TAIL + 1.0, "tick", "texture", 0.0),
+    # 2026-07-26 "The Field That Stopped in 2019". Every event is motivated by the
+    # picture and families deliberately alternate (the assert below enforces it).
+    # S1 (L0): the letter's flap springs open against the paper's own stiffness
+    (L[0] + 0.5,  "paper",  "hero",     -0.1),
+    # S2 (L1-L2): the tally clicker runs to 200, then McCabe's whistle
+    (L[1] + 0.4,  "tick",   "standard", -0.35),
+    (L[1] + 2.0,  "creak",  "texture",  -0.3),
+    (L[2] + 0.5,  "ding",   "standard",  0.3),
+    # S3 (L3-L4): the mouth ratchets wider, the intake storms, the stem bursts
+    (L[3] + 0.3,  "clank",  "standard",  0.0),
+    (L[3] + 1.5,  "paper",  "standard",  0.1),
+    (L[3] + 3.4,  "pop",    "texture",   0.2),
+    (L[4] + 0.6,  "whoosh", "hero",      0.0),
+    # S4 (L5): the letter types, then 3,048 seize one finite tape
+    (L[5] + 0.5,  "tick",   "standard", -0.2),
+    (L[5] + 2.6,  "chain",  "standard",  0.15),
+    (L[5] + 4.0,  "snap",   "standard",  0.15),
+    # S5 (L6): three different people, three different reactions
+    (L[6] + 0.3,  "paper",  "texture",  -0.3),
+    (L[6] + 1.1,  "ding",   "texture",   0.25),
+    # S6 (L7-L8): THE REHOOK. the housing opens, then the pawl LOCKS the wheel
+    (L[7] + 0.4,  "riser",  "hero",      0.0),
+    (L[7] + 2.9,  "clank",  "standard", -0.2),
+    (L[7] + 4.6,  "snap",   "hero",     -0.25),
+    (L[8] + 0.8,  "paper",  "standard",  0.2),
+    # S7 (L9-L10): the arrow crumples on the doorless wall, then the door swings FREE
+    (L[9] + 0.7,  "thud",   "hero",      0.0),
+    (L[10] + 0.5, "creak",  "standard", -0.2),
+    (L[10] + 2.2, "chime",  "standard",  0.2),
+    # S8 (L11-L12): the NOT AI stamp, then the signature shot overflows onto one desk
+    (L[11] + 0.3, "stamp",  "hero",      0.0),
+    (L[12] + 0.6, "whoosh", "standard",  0.0),
+    (L[12] + 2.4, "clank",  "texture",   0.15),
+    # S9 (L13): the button, back at the same table
+    (L[13] + 0.5, "chime",  "standard",  0.0),
+    (VIDEO_SECS - _TAIL + 1.1, "tick", "texture", 0.0),
 ]
 
-# The breath before the PAYOFF turn ("Someone who reads the land did", ~41s) — aligned to the
-# storyboard audio_arc.silence_at=39.5 (a real VO gap, the [short pause] in line 7) so the >=6dB gate dip lands in true silence.
-SILENCE_DIP_AT = 38.62   # storyboard audio_arc.silence_at: the held non-reaction, where the bed must genuinely drop out
-DIP_LEN = 1.25
+# The breath before the PAYOFF. storyboard audio_arc.silence_at sits under the arrow's
+# ANTICIPATION so the crumple at the turn lands into a hole (Gate 0C: the film's only
+# reserved sub-60Hz spend and its silence cannot share a frame).
+# The dip must land in the REAL VO GAP before the line, not on top of it. Placing it at
+# L[9]'s start (pass 1) put it under the speech and measured as a 4.6 dB RISE. The 1.06s
+# gap between L8 ending and L9 starting is the breath before "Neither record is wrong",
+# the quietest and most important line in the film, so the bed drops out into real silence.
+SILENCE_DIP_AT = round(L[9] - 0.98, 2)
+DIP_LEN = 0.90
 
 
 def check_schedule(events):

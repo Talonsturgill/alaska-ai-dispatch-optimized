@@ -146,7 +146,7 @@ const S3: React.FC = () => {
   });
   return (
     <Stage drift={0.8}>
-      <RecordsMachine f={f} x={540} y={900} scale={0.9} mouthOpen={openM} strain={burst * 0.4} />
+      <RecordsMachine f={f} x={540} y={820} scale={1.05} mouthOpen={openM} strain={burst * 0.4} />
       {/* forms pouring DOWN into the widened mouth */}
       <g opacity={pour}>
         {sheets.map((s, i) => (
@@ -170,7 +170,7 @@ const S3: React.FC = () => {
               </g>
             );
           })}
-          <Stat x={540} y={1660} big="3,500" small="FLAGGED" delay={152} tint={PAPER.seal} />
+          <Stat x={540} y={1620} big="3,500" small="FLAGGED" delay={152} tint={PAPER.seal} />
         </g>
       )}
     </Stage>
@@ -190,7 +190,7 @@ const S4: React.FC = () => {
     <Stage drift={0.4}>
       <PaperFiber id="s4fib" />
       {/* the plain letter. no face, no gag, no character. */}
-      <Sheet x={190} y={330} w={700} h={470} fiber="s4fib" curl={0.5}>
+      <Sheet x={230} y={200} w={620} h={420} fiber="s4fib" curl={0.5}>
         <rect x={40} y={44} width={92} height={58} fill={PAPER.brass} stroke={INK} strokeWidth={3} />
         <line x1={40} y1={128} x2={660} y2={128} stroke={PAPER.stamp} strokeWidth={5} />
         <text x={40} y={210} fontFamily={BOLD} fontWeight={800} fontSize={31} fill={INK}>
@@ -204,24 +204,24 @@ const S4: React.FC = () => {
         ))}
       </Sheet>
       {tag > 0 && (
-        <g transform={`translate(830,${800 + Math.sin(f / 7) * 6 * (1 - tag * 0.4)}) rotate(${Math.sin(f / 6) * 7 * (1 - tag * 0.3)})`} opacity={tag}>
+        <g transform={`translate(830,${560 + Math.sin(f / 7) * 6 * (1 - tag * 0.4)}) rotate(${Math.sin(f / 6) * 7 * (1 - tag * 0.3)})`} opacity={tag}>
           <line x1={0} y1={-70} x2={0} y2={0} stroke={INK} strokeWidth={3} />
           <rect x={-88} y={0} width={176} height={54} fill={PAPER.front} stroke={INK} strokeWidth={4} />
           <text x={0} y={38} textAnchor="middle" fontFamily={BOLD} fontWeight={900} fontSize={30} fill={INK}>INACTIVE</text>
         </g>
       )}
-      <FullTapeMachine f={f} x={540} y={1380} scale={1.02} fill={fill} />
+      <FullTapeMachine f={f} x={540} y={900} scale={1.85} fill={fill} />
       {/* the single-file queue arriving */}
       <g opacity={ramp(f, 60, 76)}>
         {Array.from({length: 9}).map((_, i) => {
           const t = ((f / 20) + i / 9) % 1;
           return (
-            <rect key={i} x={80 + t * 380} y={1300} width={34} height={22}
+            <rect key={i} x={60 + t * 340} y={880} width={38} height={26}
                   fill={PAPER.front} stroke={INK} strokeWidth={2.2} opacity={1 - t * 0.3} />
           );
         })}
       </g>
-      <Stat x={540} y={1690} big="3,048" small="WENT INACTIVE" delay={92} />
+      <Stat x={540} y={1560} big="3,048" small="WENT INACTIVE" delay={92} />
     </Stage>
   );
 };
@@ -236,23 +236,23 @@ const S5: React.FC = () => {
   return (
     <Stage drift={0.4}>
       <g opacity={a} transform={`translate(0,${interpolate(a, [0, 1], [30, 0])})`}>
-        <Character frame={f} x={270} y={860} scale={0.62} pose="stand" emotion="neutral" outfit="flannel" headgear="bare" />
-        <Sheet x={330} y={880} w={130} h={90} rot={-8} />
+        <Character frame={f} x={215} y={900} scale={1.05} pose="arms-crossed" emotion="neutral" outfit="flannel" headgear="beanie" />
+        <Sheet x={268} y={800} w={150} h={104} rot={-8} />
       </g>
       <g opacity={b} transform={`translate(0,${interpolate(b, [0, 1], [30, 0])})`}>
-        <Character frame={f} x={790} y={1000} scale={0.62} pose="stand" emotion="worried" outfit="puffer" headgear="bare" facing={-1} />
-        <Sheet x={620} y={1020} w={130} h={90} rot={5} />
+        <Character frame={f} x={860} y={900} scale={1.05} pose="stand" emotion="shock" outfit="puffer" headgear="cap" facing={-1} />
+        <Sheet x={648} y={800} w={150} h={104} rot={5} />
       </g>
       <g opacity={c} transform={`translate(0,${interpolate(c, [0, 1], [30, 0])})`}>
-        <Character frame={f} x={430} y={1420} scale={0.66} pose="raise" emotion="worried" outfit="vest" headgear="bare" />
+        <Character frame={f} x={540} y={1720} scale={1.06} pose="raise" emotion="worried" outfit="vest" headgear="bare" />
         {/* the receiver, and the line that does not pick up */}
-        <g transform="translate(560,1300)">
+        <g transform="translate(690,1560)">
           <rect x={-16} y={-40} width={32} height={80} rx={14} fill={PAPER.hero} stroke={INK} strokeWidth={4} />
           <path d={`M20,${-10 + Math.sin(f / 5) * 3} q26,10 26,34`} fill="none" stroke={INK} strokeWidth={3} opacity={0.6} />
         </g>
-        <Label x={700} y={1520} text="STILL DIALING" size={32} delay={52} />
+        <Label x={820} y={1700} text="STILL DIALING" size={34} delay={52} />
       </g>
-      <Label x={540} y={430} text="REAL CITIZENS" size={62} tint={PAPER.seal} delay={10} />
+      <Label x={540} y={330} text="REAL CITIZENS" size={62} tint={PAPER.seal} delay={10} />
     </Stage>
   );
 };
@@ -260,20 +260,20 @@ const S5: React.FC = () => {
 // ============================================ S6 THE MACHINE OPENS + THE TWO RECORDS
 const S6: React.FC = () => {
   const f = useCurrentFrame();
-  const dis = ramp(f, 6, 96);
+  const dis = ramp(f, 4, 62);
   const lock = ramp(f, 118, 130);
   const swap = ramp(f, 190, 214);
   return (
     <Stage push={ramp(f, 0, 200) * 0.05} drift={0.5}>
       <g opacity={1 - swap}>
-        <ThreePipeCutaway f={f} x={540} y={880} scale={0.86} disclose={dis} lock={lock} year="2019" />
-        <Label x={540} y={1290} text="NOTHING RECEIVES IT" size={46} delay={80} />
-        <Label x={540} y={1430} text="CITIZENSHIP AT APPLICATION" size={30} delay={120} />
+        <ThreePipeCutaway f={f} x={540} y={800} scale={1.12} disclose={dis} lock={lock} year="2019" />
+        <Label x={540} y={1560} text="NOTHING RECEIVES IT" size={46} delay={70} />
+        <Label x={540} y={1660} text="CITIZENSHIP AT APPLICATION" size={30} delay={110} />
       </g>
       {/* the two records, six years apart */}
       <g opacity={swap}>
         <PaperFiber id="s6fib" />
-        <Sheet x={110} y={800} w={390} h={250} fill={PAPER.mid} fiber="s6fib" rot={-3}>
+        <Sheet x={80} y={640} w={430} h={276} fill={PAPER.mid} fiber="s6fib" rot={-3}>
           <text x={26} y={54} fontFamily={MONO} fontSize={26} fill={INK} opacity={0.8}>ALASKA D M V</text>
           <rect x={26} y={90} width={200} height={70} fill={PAPER.brass} stroke={INK} strokeWidth={3} />
           <text x={40} y={140} fontFamily={MONO} fontWeight={700} fontSize={40}
@@ -281,7 +281,7 @@ const S6: React.FC = () => {
           <text x={26} y={210} fontFamily={MONO} fontSize={22} fill={INK}
                 opacity={interpolate(ramp(f, 216, 262), [0, 1], [0.85, 0.16])}>CITIZENSHIP FIELD</text>
         </Sheet>
-        <Sheet x={580} y={1120} w={390} h={250} fiber="s6fib" rot={2}>
+        <Sheet x={560} y={1010} w={430} h={276} fiber="s6fib" rot={2}>
           <text x={26} y={54} fontFamily={MONO} fontSize={24} fill={INK} opacity={0.8}>NATURALIZATION</text>
           <text x={26} y={140} fontFamily={MONO} fontWeight={700} fontSize={40} fill={INK}>2025</text>
           {/* the ONLY soft closed organic curve in the film, and the only one in vermilion */}
@@ -289,8 +289,8 @@ const S6: React.FC = () => {
                    opacity={interpolate(ramp(f, 216, 262), [0, 1], [0.75, 1])} />
           <ellipse cx={300} cy={175} rx={40} ry={29} fill="none" stroke={PAPER.front} strokeWidth={3} opacity={0.7} />
         </Sheet>
-        <Label x={280} y={760} text="LICENSE 2019" size={30} delay={200} />
-        <Label x={780} y={1080} text="CITIZEN 2025" size={30} delay={230} tint={PAPER.seal} />
+        <Label x={295} y={600} text="LICENSE 2019" size={32} delay={200} />
+        <Label x={775} y={1560} text="CITIZEN 2025" size={32} delay={230} tint={PAPER.seal} />
       </g>
     </Stage>
   );
@@ -324,7 +324,7 @@ const S7: React.FC = () => {
         {/* the wall. featureless. no handle, no seam, no villain. already infinite. */}
         <rect x={860} y={-200} width={70} height={2400} fill={PAPER.institution} stroke={INK} strokeWidth={5} />
         <rect x={860} y={-200} width={22} height={2400} fill="#fff" opacity={0.10} />
-        <Label x={540} y={1560} text="NEITHER RECORD IS WRONG" size={44} delay={44} />
+        <Label x={540} y={1620} text="NEITHER RECORD IS WRONG" size={44} delay={44} />
       </g>
       {/* the door swings FREELY open */}
       <g opacity={door}>
@@ -340,7 +340,7 @@ const S7: React.FC = () => {
           </g>
         </g>
         <Character frame={f} x={800} y={1240} scale={0.66} pose="stand" emotion="neutral" outfit="parka" headgear="bare" facing={-1} />
-        <Label x={540} y={1620} text="INACTIVE IS NOT REMOVED" size={44} delay={116} tint={PAPER.seal} />
+        <Label x={540} y={1700} text="INACTIVE IS NOT REMOVED" size={44} delay={116} tint={PAPER.seal} />
       </g>
     </Stage>
   );
@@ -367,7 +367,7 @@ const S8: React.FC = () => {
       </g>
       {/* THE SIGNATURE SHOT: mouth wide, stem unchanged, both in ONE frame */}
       <g opacity={ramp(f, 58, 76)}>
-        <RecordsMachine f={f} x={540} y={720} scale={0.62} mouthOpen={1} strain={ramp(f, 76, 130)} />
+        <RecordsMachine f={f} x={540} y={640} scale={0.78} mouthOpen={1} strain={ramp(f, 76, 130)} />
         {/* overflow spills toward FRAME CENTRE so the 4:5 crop cannot amputate it */}
         {Array.from({length: 20}).map((_, i) => {
           const h = Math.imul(i + 5, 2246822519) >>> 0;
@@ -380,9 +380,9 @@ const S8: React.FC = () => {
                   opacity={0.92 - t * 0.25} />
           );
         })}
-        <Label x={540} y={1560} text="THE PART THAT CATCHES MISTAKES" size={34} delay={92} />
+        <Label x={540} y={1610} text="THE PART THAT CATCHES MISTAKES" size={34} delay={92} />
         {/* one clerk, one lamp, one clipboard umbrella */}
-        <Character frame={f} x={540} y={1780} scale={0.5} pose="raise" emotion="worried" outfit="worker" headgear="bare" />
+        <Character frame={f} x={540} y={1810} scale={0.72} pose="raise" emotion="worried" outfit="worker" headgear="bare" />
       </g>
     </Stage>
   );
