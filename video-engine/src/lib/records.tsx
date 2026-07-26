@@ -43,7 +43,7 @@ export const RecordsMachine: React.FC<{
   return (
     <g transform={`translate(${x},${y + v.bob * 0.5}) scale(${scale})`}>
       <FormGradient id={id} t={t} />
-      <ContactShadow w={520} y={560} opacity={0.34} />
+      <ContactShadow cx={0} cy={560} rx={260} opacity={0.34} />
 
       {/* THE MOUTH — a true tapered cone, never a face-on ellipse */}
       <TaperedCone x={0} y={-210} mouthW={mouthW} stemW={190} len={300} />
@@ -57,7 +57,7 @@ export const RecordsMachine: React.FC<{
         const dy = popped ? -6 - (i % 3) * 3 : 0;
         return (
           <circle key={i} cx={-132 + i * 53} cy={92 + dy} r={7}
-                  fill={popped ? PAPER.brass : t.light} stroke={INK} strokeWidth={2.6}
+                  fill={popped ? PAPER.brass : t.key} stroke={INK} strokeWidth={2.6}
                   opacity={popped ? 1 : 0.9} />
         );
       })}
@@ -117,7 +117,7 @@ export const ThreePipeCutaway: React.FC<{
     <g transform={`translate(${x},${y}) scale(${scale})`}>
       <FormGradient id={id} t={t} />
       <PaperFiber id={`${id}fib`} />
-      <ContactShadow w={620} y={430} opacity={0.32} />
+      <ContactShadow cx={0} cy={430} rx={310} opacity={0.32} />
 
       {/* cross-sectioned housing */}
       <rect x={-300} y={-300} width={600} height={730} rx={14}
@@ -131,34 +131,37 @@ export const ThreePipeCutaway: React.FC<{
 
       {/* PIPE ONE — inbound from the DMV counter, fat and greased */}
       <g opacity={p1}>
-        <path d="M-300,-170 L-40,-170 L-40,40" fill="none" stroke={INK} strokeWidth={44} strokeLinecap="round" />
-        <path d="M-300,-170 L-40,-170 L-40,40" fill="none" stroke={t.light} strokeWidth={30} strokeLinecap="round" />
+        <path d="M-300,-170 L-40,-170 L-40,40" fill="none" stroke={INK} strokeWidth={62} strokeLinecap="round" />
+        <path d="M-300,-170 L-40,-170 L-40,40" fill="none" stroke={t.key} strokeWidth={44} strokeLinecap="round" />
+        <path d="M-300,-186 L-52,-186" fill="none" stroke="#fff" strokeWidth={7} opacity={0.30} strokeLinecap="round" />
         <text x={-286} y={-196} fontFamily="JetBrains Mono, monospace" fontSize={22} fill={INK}
               opacity={0.85}>D M V</text>
       </g>
 
       {/* PIPE TWO — outbound to Elections, fat and PULSING */}
       <g opacity={p2}>
-        <path d="M40,40 L40,-240 L300,-240" fill="none" stroke={INK} strokeWidth={44} strokeLinecap="round" />
-        <path d="M40,40 L40,-240 L300,-240" fill="none" stroke={t.light} strokeWidth={30} strokeLinecap="round" />
-        <circle cx={40} cy={-40 - pulse * 160} r={13} fill={PAPER.stamp} stroke={INK} strokeWidth={3} />
+        <path d="M40,40 L40,-240 L300,-240" fill="none" stroke={INK} strokeWidth={62} strokeLinecap="round" />
+        <path d="M40,40 L40,-240 L300,-240" fill="none" stroke={t.key} strokeWidth={44} strokeLinecap="round" />
+        <path d="M28,28 L28,-240" fill="none" stroke="#fff" strokeWidth={7} opacity={0.28} strokeLinecap="round" />
+        <circle cx={40} cy={-40 - pulse * 160} r={17} fill={PAPER.stamp} stroke={INK} strokeWidth={3} />
       </g>
 
       {/* PIPE THREE — from the courthouse, ENDING IN CAPPED OPEN AIR */}
       <g opacity={p3}>
-        <path d="M170,-300 L170,-96" fill="none" stroke={INK} strokeWidth={44} strokeLinecap="round" />
-        <path d="M170,-300 L170,-96" fill="none" stroke={t.shade} strokeWidth={30} strokeLinecap="round" />
+        <path d="M170,-300 L170,-96" fill="none" stroke={INK} strokeWidth={62} strokeLinecap="round" />
+        <path d="M170,-300 L170,-96" fill="none" stroke={t.shade} strokeWidth={44} strokeLinecap="round" />
         {/* the cap. no flange, no bolt holes, nothing was built to receive it. */}
-        <ellipse cx={170} cy={-92} rx={24} ry={9} fill={INK} opacity={0.9} />
-        <line x1={140} y1={-84} x2={200} y2={-84} stroke={INK} strokeWidth={5} />
+        <ellipse cx={170} cy={-92} rx={34} ry={12} fill={INK} opacity={0.95} />
+        <line x1={128} y1={-82} x2={212} y2={-82} stroke={INK} strokeWidth={9} strokeLinecap="round" />
+        <line x1={128} y1={-82} x2={212} y2={-82} stroke={PAPER.brass} strokeWidth={4} strokeLinecap="round" />
         {/* certificates falling out of the open end onto a drift pile */}
         {[0, 1, 2].map((i) => {
           const ph = ((f / 34) + i * 0.37) % 1;
           return (
             <g key={i} transform={`translate(${170 + Math.sin(ph * 6.2 + i) * 26},${-60 + ph * 400})
                                     rotate(${ph * 160 - 40})`} opacity={p3 * (1 - ph * 0.25)}>
-              <rect x={-30} y={-20} width={60} height={40} fill={PAPER.front} stroke={INK} strokeWidth={2.6} />
-              <ellipse cx={16} cy={10} rx={8} ry={6} fill={PAPER.seal} stroke={INK} strokeWidth={1.6} />
+              <rect x={-42} y={-28} width={84} height={56} fill={PAPER.front} stroke={INK} strokeWidth={2.6} />
+              <ellipse cx={24} cy={14} rx={12} ry={9} fill={PAPER.seal} stroke={INK} strokeWidth={1.6} />
             </g>
           );
         })}

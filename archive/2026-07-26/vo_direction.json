@@ -1,0 +1,167 @@
+{
+  "narrator": "Nora, an Alaska public-radio host: warm, grounded, quietly witty",
+  "voice": "Sulafat",
+  "target_seconds": [52, 62],
+  "script_lines": 14,
+  "notes": "Style: mixed leaning caution, with credit given early and sincerely. Warm, fair and curious rather than alarmed. This is NOT an outrage read: the Division of Elections is not a villain, the fair defense in line three is spoken straight because the piece agrees with it, and the good news in line eleven is delivered as real good news rather than as a setup for a gotcha. Understatement is allowed on the plumbing, never on the letter and never on a person. Pace: brisk explainer baseline (about one hundred forty seven spoken words, so a brisk read plus four short breaths lands inside the fifty two to sixty two second window), slowing only on the two figures in line six, on the two records turn, and on the thesis. Arc in one sentence: curious open, small and boring baseline, sincere on whose job this is, lean in on the scale change, step DOWN on the number that comes back, plain and beat-separated on the letter and the inactive count, firm on the citizens, explanatory on the mechanism, warm on the Fairbanks voter, quietest in the whole piece on the two records turn, genuine lift on the relief, flat and level on the algorithm correction, low and slow on the thesis, open and honest on the question. Respellings: NONE needed. D M V is already three separated letters so it reads as an initialism, every numeral is already spelled in words, and Fairbanks, Alaskans and Division of Elections all read correctly on Sulafat, so respelling would only inflate word error against the ASR gate. Tag budget: five inline tags across fourteen lines (one [curious], four [short pause]); every emotional instruction lives in the notes, never in a tag. None of the tag words (curious, short, pause) appear anywhere in the spoken script, so a leak would be unambiguous in the ASR check. [wry] was considered for line twelve and REJECTED: a half-smile on 'No algorithm did this' would turn a plain correction into a wink at the viewer, which the angle forbids. No pause was placed before line twelve for the same reason, since a beat there would stage it as a reveal instead of a correction.",
+  "style_prompt": "Style: warm, grounded Alaska public radio explainer. Fair, curious and measured rather than alarmed. Mixed leaning caution, with credit given early and sincerely. This is not an outrage piece, nobody in it is a villain, and the state agency is doing a real job under real pressure. Dry understatement where the plumbing earns it, never a sneer, never scolding.\nPace: BRISK and energetic, keep it moving like a sharp modern explainer. Short natural breaths only, no long pauses, do not drag. Vary the tone line to line so no two sentences sound the same.\nEmphasis: lean on the key word in each line; let the numbers land without rushing them; read D M V as three separate letters.\nArc: open curious and bright, then drop small and matter of fact for the routine baseline. Give the line about whose job this is straight and sincere, because the piece agrees with it, no irony and no grudge in it. Lean in on the widening as a change of scale, not an accusation. Step down, not up, on the number that comes back. In the letter line, give the second sentence its own beat so the two figures do not blur into one. Firm and human, never angry, on the citizens line. Explain the mechanism with momentum, not heat. Warm on the Fairbanks voter, she is a person and not an example. The line about neither record being wrong is the quietest moment in the whole piece, slow and almost under your breath. Then lift into real warmth and reassurance for the relief, because that good news is true. Say the algorithm line flat and level, a plain correction of an assumption, no wink in it. Land the thesis by dropping and slowing, never by pushing volume. End with an honest question asked of one person.",
+  "lines": [
+    {
+      "idx": 0,
+      "text": "[curious] Alaska checks its voter list against D M V records.",
+      "intent": "hook",
+      "emphasis": "checks",
+      "energy": 4,
+      "pace": "brisk, forward lean",
+      "tags": ["[curious]"],
+      "pause_before": false,
+      "why": "The hook has to plant a ROUTINE process rather than a scandal, so curiosity carries it, and emphasizing checks sets up the exact word the thesis later widens."
+    },
+    {
+      "idx": 1,
+      "text": "A normal check flags about two hundred names.",
+      "intent": "stat",
+      "emphasis": "two hundred",
+      "energy": 2,
+      "pace": "unhurried and small, let the figure sit",
+      "tags": [],
+      "pause_before": false,
+      "why": "The baseline is supposed to sound boring, so dropping two steps under the hook makes the smallness audible and gives the later scale change something to land against."
+    },
+    {
+      "idx": 2,
+      "text": "Keeping that list clean is the Division of Elections' job.",
+      "intent": "setup",
+      "emphasis": "job",
+      "energy": 3,
+      "pace": "even and sincere, no lilt on the agency name",
+      "tags": [],
+      "pause_before": false,
+      "why": "This is the fair defense and it is load-bearing, so it sits at plain conversational level with the weight on job: the piece agrees with this sentence, and any lift or drag here would read as irony or as grudging credit."
+    },
+    {
+      "idx": 3,
+      "text": "[short pause] But in March it asked the D M V to check fifteen thousand license holders at once.",
+      "intent": "reveal",
+      "emphasis": "fifteen thousand",
+      "energy": 4,
+      "pace": "brisk through the clause, slight slow onto the last two words",
+      "tags": ["[short pause]"],
+      "pause_before": true,
+      "why": "The breath lets But turn the piece without shouting, and the one step lift is a change of scale drawn in the voice; slowing onto at once makes it land as size rather than as an accusation."
+    },
+    {
+      "idx": 4,
+      "text": "That flagged three thousand five hundred Alaskans.",
+      "intent": "stat",
+      "emphasis": "Alaskans",
+      "energy": 3,
+      "pace": "level, slight slow across the figure, no crescendo",
+      "tags": [],
+      "pause_before": false,
+      "why": "Stepping DOWN off the widening is what keeps this from becoming an outrage beat, and putting the weight on the last word turns records into people right before the letter."
+    },
+    {
+      "idx": 5,
+      "text": "Each got a letter saying they may not be citizens. [short pause] Three thousand forty eight went inactive.",
+      "intent": "stakes",
+      "emphasis": "inactive",
+      "energy": 2,
+      "pace": "plain and a touch slower, no color on the first sentence, the second landed separately",
+      "tags": ["[short pause]"],
+      "pause_before": false,
+      "why": "This is the emotional low and the one beat with no performance in it; the mid line breath is the whole point, because the letters sent and the registrations made inactive are two different things and the ear will merge two big numbers that run together."
+    },
+    {
+      "idx": 6,
+      "text": "Real citizens are in that pile.",
+      "intent": "reveal",
+      "emphasis": "Real",
+      "energy": 4,
+      "pace": "brisk and firm, weight not volume",
+      "tags": [],
+      "pause_before": false,
+      "why": "The two step jump makes this land as firm insistence rather than anger, which is exactly the line where an outrage read would be easiest and most wrong."
+    },
+    {
+      "idx": 7,
+      "text": "Because the D M V never hears about it when you naturalize. It stored your status the day you applied.",
+      "intent": "setup",
+      "emphasis": "never",
+      "energy": 3,
+      "pace": "brisk and explanatory, easing onto the second sentence",
+      "tags": [],
+      "pause_before": false,
+      "why": "The mechanism wants momentum, not heat, so settling one step under the previous line keeps the explanation from sounding like an indictment while never carries the absence; clause order is left exactly as written because it tracks the picture."
+    },
+    {
+      "idx": 8,
+      "text": "A Fairbanks voter got her license in twenty nineteen and her citizenship in twenty twenty five.",
+      "intent": "stat",
+      "emphasis": "citizenship",
+      "energy": 4,
+      "pace": "brisk and warm, both dates clean and unhurried, weight settling on the later year",
+      "tags": [],
+      "pause_before": false,
+      "why": "Warming and brightening here makes one person feel like a person rather than a case, and setting citizenship against license is what makes the six year gap audible without ever stating it."
+    },
+    {
+      "idx": 9,
+      "text": "[short pause] Neither record is wrong.",
+      "intent": "reveal",
+      "emphasis": "Neither",
+      "energy": 1,
+      "pace": "slowest in the piece, quiet, almost under the breath",
+      "tags": ["[short pause]"],
+      "pause_before": true,
+      "why": "The most important line is also the quietest, and the three step drop off the previous line is the largest downward swing in the read, which is what stops the take going flat and what makes the point land as understanding rather than as blame."
+    },
+    {
+      "idx": 10,
+      "text": "Inactive is not removed. She can still vote a questioned ballot.",
+      "intent": "reveal",
+      "emphasis": "not",
+      "energy": 5,
+      "pace": "brisk and lifted, the second sentence open and reassuring",
+      "tags": [],
+      "pause_before": false,
+      "why": "This has to genuinely relieve, so it is the brightest point in the piece; the four step climb off the quietest line is the relief made physical, and it is honest because nobody lost the vote."
+    },
+    {
+      "idx": 11,
+      "text": "No algorithm did this.",
+      "intent": "reveal",
+      "emphasis": "algorithm",
+      "energy": 3,
+      "pace": "flat, level, matter of fact, no beat before it",
+      "tags": [],
+      "pause_before": false,
+      "why": "The viewer has already assumed a machine did this, so the line is a plain correction; dropping two steps off the relief keeps it from sounding triumphant, and deliberately giving it no pause and no tag stops it staging as a gotcha reveal."
+    },
+    {
+      "idx": 12,
+      "text": "Alaska widened the question and never widened the fix.",
+      "intent": "stakes",
+      "emphasis": "fix",
+      "energy": 2,
+      "pace": "slower and grounded, falling onto the last word",
+      "tags": [],
+      "pause_before": false,
+      "why": "The thesis lands by dropping and slowing rather than by pushing, which is how an adult delivers a verdict without scolding, and it answers the hook word checks with the asymmetry that is the whole angle."
+    },
+    {
+      "idx": 13,
+      "text": "[short pause] So what else are we widening?",
+      "intent": "button",
+      "emphasis": "else",
+      "energy": 4,
+      "pace": "brisk, direct, rising and left genuinely open",
+      "tags": ["[short pause]"],
+      "pause_before": true,
+      "why": "The breath earns the question, and lifting two steps off the thesis makes it a real question asked of one viewer instead of a rhetorical flourish."
+    }
+  ],
+  "energy_curve": [4, 2, 3, 4, 3, 2, 4, 3, 4, 1, 5, 3, 2, 4],
+  "contrast_check": "Fourteen lines, no two adjacent energies equal, full 1 to 5 spread used. Largest swings: line ten to eleven (one to five, the turn into the relief) and line nine to ten (four to one, into the turn). Deliberate step DOWN at line five (four to three) so the flagged figure never reads as outrage, and a second settle at line six (three to two) for the letter.",
+  "assembled_prompt": "Read ONLY the transcript below aloud as speech. The lines above \"Transcript:\" are direction; never speak them.\n# AUDIO PROFILE: Nora, an Alaska public-radio host: warm, grounded, quietly witty. Neutral American accent, light and natural, not announcer-y.\n### DIRECTOR'S NOTES\nStyle: warm, grounded Alaska public radio explainer. Fair, curious and measured rather than alarmed. Mixed leaning caution, with credit given early and sincerely. This is not an outrage piece, nobody in it is a villain, and the state agency is doing a real job under real pressure. Dry understatement where the plumbing earns it, never a sneer, never scolding.\nPace: BRISK and energetic, keep it moving like a sharp modern explainer. Short natural breaths only, no long pauses, do not drag. Vary the tone line to line so no two sentences sound the same.\nEmphasis: lean on the key word in each line; let the numbers land without rushing them; read D M V as three separate letters.\nArc: open curious and bright, then drop small and matter of fact for the routine baseline. Give the line about whose job this is straight and sincere, because the piece agrees with it, no irony and no grudge in it. Lean in on the widening as a change of scale, not an accusation. Step down, not up, on the number that comes back. In the letter line, give the second sentence its own beat so the two figures do not blur into one. Firm and human, never angry, on the citizens line. Explain the mechanism with momentum, not heat. Warm on the Fairbanks voter, she is a person and not an example. The line about neither record being wrong is the quietest moment in the whole piece, slow and almost under your breath. Then lift into real warmth and reassurance for the relief, because that good news is true. Say the algorithm line flat and level, a plain correction of an assumption, no wink in it. Land the thesis by dropping and slowing, never by pushing volume. End with an honest question asked of one person.\nTranscript:\n[curious] Alaska checks its voter list against D M V records.\nA normal check flags about two hundred names.\nKeeping that list clean is the Division of Elections' job.\n[short pause] But in March it asked the D M V to check fifteen thousand license holders at once.\nThat flagged three thousand five hundred Alaskans.\nEach got a letter saying they may not be citizens. [short pause] Three thousand forty eight went inactive.\nReal citizens are in that pile.\nBecause the D M V never hears about it when you naturalize. It stored your status the day you applied.\nA Fairbanks voter got her license in twenty nineteen and her citizenship in twenty twenty five.\n[short pause] Neither record is wrong.\nInactive is not removed. She can still vote a questioned ballot.\nNo algorithm did this.\nAlaska widened the question and never widened the fix.\n[short pause] So what else are we widening?"
+}

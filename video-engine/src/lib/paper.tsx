@@ -122,7 +122,7 @@ export const PaperOfficeBG: React.FC<{f: number; parallax?: number; drift?: numb
     const sp = 0.5 + ((h >>> 3) % 30) / 40;
     return {
       x: -220 + ((h % 1500) + f * sp * 1.7) % 1600,
-      y: 1250 + ((h >>> 11) % 500),
+      y: 1560 + ((h >>> 11) % 300),
       rot: -22 + ((h >>> 7) % 45),
       w: 120 + ((h >>> 15) % 60),
     };
@@ -221,7 +221,7 @@ export const TaperedCone: React.FC<{
         const ry = mh * (1 - k * 0.62);
         return (
           <ellipse key={i} cx={0} cy={k * 16} rx={rx} ry={ry} fill="none"
-                   stroke={t.light} strokeWidth={1.6} opacity={0.30 - i * 0.05} />
+                   stroke={t.key} strokeWidth={1.6} opacity={0.30 - i * 0.05} />
         );
       })}
       {/* rolled rim */}
@@ -255,7 +255,7 @@ export const StateLetter: React.FC<{
   return (
     <g transform={`translate(${x},${y + v.bob * 0.5}) scale(${scale}) rotate(${v.tilt * 0.3})`}>
       <FormGradient id={id} t={t} />
-      <ContactShadow w={430} y={266} opacity={0.34} />
+      <ContactShadow cx={0} cy={266} rx={215} opacity={0.34} />
       <PaperFiber id={`${id}fib`} />
       {/* body */}
       <rect x={-210} y={-130} width={420} height={262} fill={`url(#${id})`} stroke={INK} strokeWidth={4} />
@@ -280,9 +280,13 @@ export const StateLetter: React.FC<{
         </>
       )}
       {/* the flap, with real thickness and a rolled edge */}
-      <g transform={`rotate(${-hes * 150},0,-130)`}>
-        <path d="M-210,-130 L0,-8 L210,-130 Z" fill={t.shade} stroke={INK} strokeWidth={4} />
-        <path d="M-210,-130 L0,-8 L210,-130" fill="none" stroke={t.light} strokeWidth={2.4} opacity={0.7} />
+      {/* the flap: a downward triangle when closed, FLIPPING UP about its hinge as it
+          opens. A 2D scaleY flip is the honest envelope read; rotating the lid down across
+          the body (pass 1) buried the line the hook exists to show. */}
+      <g transform={`translate(0,-130) scale(1,${1 - 1.86 * hes}) translate(0,130)`}>
+        <path d="M-210,-130 L0,10 L210,-130 Z" fill={t.shade} stroke={INK} strokeWidth={4}
+              strokeLinejoin="round" />
+        <path d="M-210,-130 L0,10 L210,-130" fill="none" stroke={t.key} strokeWidth={3} opacity={0.75} />
       </g>
     </g>
   );
@@ -307,7 +311,7 @@ export const FullTapeMachine: React.FC<{
   return (
     <g transform={`translate(${x},${y + v.bob * 0.6}) scale(${scale})`}>
       <FormGradient id={id} t={t} />
-      <ContactShadow w={330} y={112} opacity={0.36} />
+      <ContactShadow cx={0} cy={112} rx={165} opacity={0.36} />
       <rect x={-165} y={-96} width={330} height={208} rx={10} fill={`url(#${id})`} stroke={INK} strokeWidth={4.5} />
       <rect x={-165} y={-96} width={330} height={34} fill={t.shade} stroke={INK} strokeWidth={3} />
       {/* two visible reels */}

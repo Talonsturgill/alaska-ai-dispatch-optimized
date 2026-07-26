@@ -30,7 +30,16 @@ TAIL = 2.6  # hold after the last word
 # S3 L3-L4 (boundary + travel out + THE COLLAPSE), S4 L5 (signature shot + the dark lamp),
 # S5 L6-L7 (still heard + by hand + the boulder), S6 L8 (crate + money),
 # S7 L9-L11 (wireframe twin + calendar + button).
-SCENE_START_LINE = [0, 2, 3, 5, 6, 8, 9]
+# 2026-07-26 "The Field That Stopped in 2019": NINE scenes (S1..S9 in Episode.tsx) onto
+# 14 VO lines. Shot boundaries are anchored to VO LINE STARTS so the picture can never
+# drift from the words. S1 L0 (the letter opens), S2 L1-L2 (the 200 baseline + McCabe's
+# fair defense, VOICED not merely posted), S3 L3-L4 (the mouth cranks wide + the intake +
+# the burst from the unchanged stem), S4 L5 (the plain letter + 3,048 into one finite
+# tape), S5 L6 (three Alaskans reacting three different ways), S6 L7-L8 (the machine opens
+# on the capped third pipe + the pawl + the two records), S7 L9-L10 (the arrow on the
+# doorless wall + the door swinging free), S8 L11-L12 (NO ALGORITHM + the signature shot),
+# S9 L13 (the button, back at the same table, staying interior).
+SCENE_START_LINE = [0, 1, 3, 5, 6, 7, 9, 11, 13]
 
 
 def _apply_caption_fixups(caps):
