@@ -1,0 +1,77 @@
+{
+  "run": "2026-07-26",
+  "title_working": "The Field That Stopped in 2019",
+
+  "palette": {
+    "why_this_story": "The last three dispatches were all OUTDOOR NATURAL LANDSCAPES under dramatic low-angle light: orbital blue-black over glacial silt (07-23), midnight-sun amber over sage tundra (07-24), deep cold-green fjord night with rationed tungsten (07-25). This story has no sky in it at all. It happens inside an office, inside a mailbox, inside a records field. So the world is made of PAPER, not landscape, and that single decision diverges the palette, the light, and the depth approach all at once. The state's world is bond-paper cream and cold filing-cabinet slate, printed in stamp-ink blue. The one saturated warm color in the entire film belongs to the citizen's own documents.",
+    "roles": {
+      "sky": "#E8E2D4 bond-paper cream. There is no sky. The backdrop is paper stock, with fiber tooth and a faint ruled grid.",
+      "sky_deep": "#D6CDBA aged manila, for depth planes receding behind the front paper",
+      "ground": "#C9BFA8 desk tan, a laminate surface with a subtle woodgrain",
+      "institution": "#4A5A66 filing-cabinet slate, cold blue-grey, every rectilinear government form",
+      "institution_shadow": "#2F3E46 ink, the outline color for everything",
+      "hero": "#6E7F8C institutional pewter, the MatchMachine's body, the same family as the cabinets because it IS the institution, not a visitor to it",
+      "accent_state": "#1B4FA8 stamp-ink blue. The state's certainty. Stamps, the letterhead rule, the checkbox, the confident tick marks. Cold and administrative.",
+      "accent_human": "#D14A2E naturalization-seal red-orange. RESERVED. It appears ONLY on the citizen's own documents and on the citizen. It is the only warm saturated color in the film, so the eye finds the human instantly in any frame."
+    },
+    "divergence_note": "Zero overlap with the last three. No sky blue, no aurora green, no tundra amber, no midnight sun. A high-key interior paper world instead of three consecutive low-key outdoor natural worlds."
+  },
+
+  "light": {
+    "time_of_day": "no time of day, deliberately. Fluorescent office light has no hour.",
+    "direction": "hard overhead fluorescent, slightly front-left, with a second bounce off the desk",
+    "key_fill_rim": "HIGH KEY and FLAT, the deliberate opposite of the last three dispatches' dramatic low-angle key. Short hard shadows directly under objects, weak fill, and a thin cool rim only where paper edges catch the overhead tube. Objects read dimensional through STACKING and EDGE THICKNESS rather than through moody falloff.",
+    "depth_approach": "PAPER STACK DEPTH. Forms read three-dimensional because they are built from layered sheets with visible thickness, drop shadows between layers, and slightly curled corners. Stage3D planes carry the parallax: back wall of filing cabinets, mid plane of the desk, front plane of loose paper drifting past the lens. Extrude gives the cabinets and the MatchMachine real body thickness.",
+    "why": "A story about a records system should be lit like the room the records live in. Flat institutional light is also the honest emotional register: nothing dramatic happened, which is exactly the problem."
+  },
+
+  "shape_language": {
+    "grammar": "HARD RECTILINEAR INSTITUTION against the ONE ROUND HUMAN THING. The state's world is right angles all the way down: cabinets, drawers, letters, forms, windows, grids, checkboxes, the MatchMachine's boxy body. The citizen's world has the only curves in the film, and the key one is the OVAL SEAL on the naturalization certificate. In a world of rectangles, a circle reads as human on sight.",
+    "why_this_story": "The record is rectangular. The person is not. The whole piece is about a rectangle failing to describe a person, so the shapes have to carry that before a single word is spoken.",
+    "inversion_note": "This deliberately INVERTS 07-25's grammar (soft round instruments against hard angular land). There the round thing was the machine; here the round thing is the human, and the machine is the hard one."
+  },
+
+  "casting": {
+    "hero": "MatchMachine, NET-NEW. A two-drawer records-matching machine in institutional pewter. Its two drawers are its two eyes, its slot mouth prints and mails. The tell is a single THIN WIRE running between its left half and its right half, far too thin for the volume it carries, and it is the only flexible thing on an otherwise rigid body. It is EARNEST, not malicious: it is proud of its work and completely certain, which is the point. Emotions: dutiful, certain, straining, and finally faltering when it sees what it did. Hero gate FRESH against SeismicStation (07-25) and Petrel (07-24).",
+    "supporting_from_shelf": [
+      "Character rig (lib/Character.tsx) as the citizen, flannel or puffer outfit, emotions neutral to worried to resolved. Cast from the shelf per the library mandate, no net-new human needed.",
+      "BoxLabel, StatBurst, FatArrow, Stamp from kit.tsx for the HUD and the annotations, now form-shaded",
+      "PenAndDocument and Nameplate from lib/props.tsx for the letter and the certificate beats",
+      "TallyCounter (odometer variant) from lib/props.tsx for the counter that climbs from a trickle to a flood, a genuine reuse in a totally new staging"
+    ],
+    "net_new": [
+      "MatchMachine (kit.tsx) as described above",
+      "PaperOfficeBG (lib/biomes.tsx). The shelf has ELEVEN biomes and every single one is outdoors. There is no interior anywhere in the library, which is a real gap the story found. A fluorescent-lit records room: a back wall of filing cabinets receding in one-point perspective, a desk plane, a ceiling tube light with a faint flicker, dust motes in the light column, and drifting loose paper for the front parallax plane. Reusable for every future government, courtroom, legislature, utility-commission or office story, and this channel covers those constantly."
+    ]
+  },
+
+  "motion_language": {
+    "world_motion": "EVERYTHING MOVES LIKE PAPER. Sheets riffle, slide, stack, fan, and spill. Nothing floats. Weight and air resistance on every moving element, so a dropped page settles rather than falls straight.",
+    "hero_motion": "The MatchMachine is METRONOMIC and confident: a steady mechanical stamp-and-eject cycle that never varies, which is what makes it unsettling as the volume climbs. Its idle now runs through the new vitals() primitive so it breathes instead of floating on one sine.",
+    "human_motion": "hesitant and asymmetric, the deliberate counter-rhythm to the machine's metronome. The citizen's motion has anticipation and hold where the machine's has none.",
+    "earns_180_motion_blur": [
+      "the envelope flood spilling over the funnel's sides at the signature shot",
+      "the arrow that leaves the 2025 certificate and SLAMS to a dead stop at the wall, the single hardest deceleration in the film",
+      "the counter's roll from a trickle to a flood"
+    ],
+    "key_hero_moves": [
+      "the drawer-eyes widening as the intake volume climbs",
+      "the thin wire between the machine's halves going taut and trembling under load",
+      "the stamp cycle accelerating past comfort while the output slot stays exactly the same width"
+    ]
+  },
+
+  "composition": {
+    "focal_hierarchy": "The reserved human red-orange is the eye magnet in every frame it appears in. Everything else is a cool desaturated field, so attention is directed by SATURATION rather than by contrast or motion alone.",
+    "negative_space_beats": "The turn holds on a nearly empty frame: two documents on a desk with a wide gap of bare laminate between them. After a busy paper flood, emptiness is the punctuation.",
+    "safe_areas": "Master 9:16 1080x1920. Hero action and all captions stay inside the centered 4:5 1080x1350 box, since the 4:5 is the LinkedIn feed deliverable. The funnel signature shot is composed vertically so it survives the crop: mouth in the upper third, stem in the lower third, both inside 4:5.",
+    "signature_shot": "THE FUNNEL DRAWN WRONG. A tall paper funnel whose mouth swings wide open in one motion while the stem underneath never changes width, staying exactly one phone line and one clerk wide. Envelopes overflow the sides and pile on the desk. Composed for the 4:5 crop and held long enough to read muted."
+  },
+
+  "craft_advance": {
+    "primary": "vitals() in lib/motion.tsx, the living-idle primitive, already landed and verified this run. Three desynced layers on irrational period ratios replace the single fixed-period sine that every characterized-object hero floated on, so no hero can be authored with the thin idle the scorer panel flagged on 07-24 and again on 07-25. Wired through all seven existing heroes and used by MatchMachine from birth.",
+    "supporting": "PaperOfficeBG establishes the library's first INTERIOR biome and a reusable paper-material treatment (fiber tooth, ruled grid, layered sheet depth with curled corners), extending lib/materials.tsx into a substance the shelf did not have."
+  },
+
+  "binding_note": "This plan is an INPUT the build executes against and Phase 6 checks the render against. If a build decision contradicts it, either fix the build or consciously revise this file and say why in the retrospective."
+}

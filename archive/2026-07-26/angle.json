@@ -1,0 +1,42 @@
+{
+  "run": "2026-07-26",
+  "thesis": "Alaska widened a routine records check by orders of magnitude without widening anything that catches its mistakes, so about 3,500 citizens got a letter questioning their citizenship because a DMV field still says what was true the day they got their license. Nobody lost the vote. The asymmetry is the lesson.",
+  "valence": "mixed, leaning caution, with credit given early and explicitly",
+  "why_this_valence_is_honest": "Celebration is dishonest because 3,048 people sit in inactive status they did not earn, the active roll shrank June to July for the first time since at least 2020 in an election year, and some residents could not reach a phone line that was already full. Alarm is equally dishonest because the franchise is intact, the letter is conditional, the correction path requires no documentation, and it has run end to end for a named Alaskan. Mixed is the only reading that keeps the Waigl correction and the full voicemail boxes in the same frame.",
+
+  "supporting_facts": [
+    "A typical quarterly voter-file to DMV pass returns what Beecher called more like 200 names. In March the Division gave DMV approximately 15,200 license and ID applicants and asked for citizenship information, which the DMV's July 23 memo called a non-routine request. About 3,500 letters went out and 3,048 people moved from active to inactive.",
+    "The stale field is the DMV's. It records status at the moment of license application, naturalization never propagates back, and the person has no reason to go tell them. Beecher named this herself: I believe that people probably don't realize that all of these governmental entities don't necessarily talk to each other.",
+    "Chris Waigl of Fairbanks got her license in 2019, became a citizen in 2025, was listed inactive - non citizen, and was corrected after sending her naturalization certificate. Neither record was wrong. They were six years apart."
+  ],
+
+  "fair_counterpoint_it_must_honor": "Rep. Kevin McCabe, R-Big Lake, on the record: This is actually their job. This is what they do, is make sure the voter rolls are clean and correct. He is right, and the piece does not say stop checking. Alongside him: nobody was removed, nobody lost the right to vote, inactive voters may still cast a questioned ballot attesting to citizenship, Beecher said we don't require paperwork, we're not requiring documentation, and she volunteered that the data is probably very old rather than defending the results. This counterpoint must be VOICED EARLY, not buried before the button.",
+
+  "the_honest_limit_on_our_own_angle": "The correction path is real but UNDEMONSTRATED AT SCALE. One confirmed correction (Waigl) against 3,048 moved to inactive. Calling it a working safeguard is a promise until the Division can show how many of the 3,048 have been restored. Do not assert that it worked for everyone, and do not assert that it failed for anyone beyond the verified full voicemail boxes.",
+
+  "the_turn": "All four analysts independently converged on the same image, which is why it is the turn. One person, two records, six years apart. A DMV card stamped 2019 with its citizenship field greying over, and a naturalization certificate stamped 2025, clean and bright. An arrow leaves the 2025 certificate, travels toward the DMV card, and stops dead at a blank wall between them. Neither record is wrong. The update simply never had a road to travel.",
+
+  "signature_shot": "The funnel drawn wrong. Its mouth swings open from a trickle of names to a flood of records in one motion, while the stem underneath never changes width. It stays one phone line, one mailbox, one clerk. The overflow spills over the sides as envelopes.",
+
+  "the_ai_connection_earned_not_claimed": "State plainly on screen that NO AI TOUCHED THIS. No source mentions artificial intelligence, machine learning, a model, or an algorithm. It was people, a query, and two databases. That is exactly why it transfers: the cost of widening a query fell almost to zero while the cost of adjudicating each result stayed exactly where it was. That asymmetry is the single most reliable way automated systems fail in public agencies, and Alaska now has a local, dated, non-hypothetical case of it that no algorithm can be blamed for.",
+
+  "who_it_serves": "Any Alaskan holding one of these letters learns the thing the letter did not say clearly: you were not removed, and you can still vote on August 18 by casting a questioned ballot and attesting at the polls, with no documentation required per the Division. Legislators and staffers get repairable objects instead of a villain: what event updates the DMV citizenship field after naturalization, why a roughly 200-name routine pass became a 15,200-record request, whether the letter should lead with our records may be out of date instead of you may not be a citizen, and whether the correction lane is staffed to the size of the query.",
+
+  "runners_up_and_why_they_lost": [
+    "HUMAN COST as the spine: the most emotionally true lens and it supplies the kitchen-table image, but run alone it risks inflating a reversible paperwork burden into disenfranchisement, which the facts do not support. Grafted in as the turn's emotional anchor rather than the spine.",
+    "SYSTEM ACTUALLY WORKED as the spine: the sharpest contrarian read and it correctly forces the fairness material early, but it grades the state on the outcome it landed on rather than the process it chose, and its own analyst conceded it breaks when measured only on the people who got through. Grafted in as the early credit and the McCabe voice.",
+    "PLUMBING as the spine: the cleanest diagnosis and the source of the two-records turn, but alone it flattens a real harm into an engineering diagram and would read as cover for the judgment call to mail before verifying. Grafted in as the turn and the mechanism."
+  ],
+
+  "hard_bans": [
+    "700% increase, in any form. Reporter arithmetic, explicitly conditional, and it does not compute against the sources' own base.",
+    "75 times, 76 times, or any multiplier built from 200 and 15,200. They are DIFFERENT KINDS OF OBJECT, names returned versus applicants sent. Name both plainly and NEVER divide them.",
+    "Any percentage of the Alaska electorate. No verified active-voter denominator exists.",
+    "Any claim the Division is legally required to do this list maintenance. Unverified.",
+    "Any causal link to a federal memo.",
+    "Any suggestion AI, an algorithm, or myAlaska modernization touched the voter flagging.",
+    "Any implication that anyone cannot vote, or was removed from the rolls.",
+    "Any on-screen deadline date. elections.alaska.gov returned 503 on every attempt, so no date is confirmed.",
+    "Chris Waigl's words inside quotation marks. Paraphrase only."
+  ]
+}
