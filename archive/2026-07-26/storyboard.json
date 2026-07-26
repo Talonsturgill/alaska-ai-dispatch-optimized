@@ -53,7 +53,7 @@
   "register": "blueprint-technical",
   "camera_strategy": "orbit-reveal",
   "light_story": "noon-hard",
-  "palette": "bond-paper cream and municipal blue-grey in flat fluorescent light, rubber-stamp indigo carrying every mark the state makes, and a single naturalization-seal vermilion that touches nothing except a citizen's own documents",
+  "palette": "printed bond paper with a pale ruled grid, municipal blue-grey cabinetry, rubber-stamp indigo carrying every mark the state makes, and a single naturalization-seal vermilion that touches nothing except a citizen's own documents",
   "metaphor": "a pipe that was never built, so a 2025 certificate can never reach a 2019 field"
  },
  "light": {
@@ -62,45 +62,41 @@
  },
  "hook": {
   "pattern": "bold-claim",
-  "frame1": "Extreme close on a cream envelope on a kitchen table with the state seal embossed in gold and one corner curled. The envelope has a small drawn face and it is WINCING because it knows what it is carrying. Its flap peels open like a reluctant mouth by 0.9s and the line types across the paper.",
+  "frame1": "A real state letter on a desk, NO FACE anywhere on it, staged against the dark slate filing-cabinet wall so cream paper has a hard edge to read against. Its flap opens by physics, hesitating once before it gives.",
   "headline": "3,500 LETTERS. NOBODY LOST THE VOTE.",
   "motion_by_s": 0.9,
-  "loopback": "the button returns to the same envelope and the same mailbox with the red flag now pointed the OTHER way and a dotted gold road tracing toward the pipe that does not exist yet"
+  "loopback": "the button returns to the EXACT same table and slate wall from frame one, the letter now face down beside the certificate, with a dotted indigo line tracing toward the capped pipe and stopping short. The film never leaves the interior.",
+  "headline_full_by_s": 1.2
  },
  "reveals": [
   {
-   "t": 25.0,
+   "t": 29.0,
    "type": "build-on",
-   "what": "the cutaway assembles and the third pipe is revealed to end in capped open air, so the mechanism's failure is a visible absence rather than a broken part",
+   "what": "the machine opens and the third pipe is revealed to end in capped open air, so the failure is a visible absence rather than a broken part",
    "hold_s": 0.7
   },
   {
-   "t": 36.2,
+   "t": 48.5,
    "type": "scale-pullback",
-   "what": "the arrow crumples on the blank wall and the camera pulls back until the wall runs past frame in both directions, recontextualizing one person's problem as a structural one",
-   "hold_s": 0.8
-  },
-  {
-   "t": 44.7,
-   "type": "scale-pullback",
-   "what": "the funnel's mouth cranks past the frame edges while the stem stays exactly one desk wide, so the asymmetry is legible in a single muted frame",
+   "what": "the camera pulls back and the widened mouth and the unchanged stem are finally read together in one frame, which is the whole thesis without a number",
    "hold_s": 0.7
   }
  ],
- "rehook": "at 25.0s the piece stops explaining and opens the machine, revealing a third pipe that ends in nothing, which re-grabs a viewer drifting after the letter beats",
+ "rehook": "at 29.0 the piece stops explaining and opens the machine, revealing a third pipe that ends in nothing",
  "audio_arc": {
   "build_steps": [
    "room tone and one paper transient under the hook",
-   "a calm mechanical tick bed established with the tally counter",
-   "paper-rush and stamp layer as the volume arrives",
-   "a low riser entering under the cutaway",
-   "everything below 60Hz reserved for the arrow hitting the wall and spent there once",
-   "a warm single tone returning under the button"
+   "a calm mechanical tick bed with the tally counter",
+   "gear ratchet and paper-rush as the volume arrives",
+   "a low riser entering under the cutaway at 29.0",
+   "a real silence at 37.8 under the arrow's anticipation so the crumple lands into a hole, and everything below 60Hz reserved for that single crumple and spent there once",
+   "a warm single tone returning under the button",
+   "the hard sprung-steel click timbre is RESERVED for the pawl at 33.6 alone, so tick is a felt-damped brass detent, the mouth is a toothed groan under load, and the button is a thin tin ping"
   ],
-  "dip_at": 38.8,
-  "riser_at": 25.0,
-  "silence_at": 36.2,
-  "payoff_at": 44.7,
+  "dip_at": 43.9,
+  "riser_at": 29.0,
+  "silence_at": 38.1,
+  "payoff_at": 48.5,
   "button_pattern": "question"
  },
  "beats": [
@@ -108,365 +104,384 @@
    "t": 0.0,
    "key": "hook",
    "vo": "Alaska checks its voter list against D M V records.",
-   "shows": "Extreme close on a cream envelope on a kitchen table, state seal embossed. It has a small drawn face and it is WINCING, because it knows what it carries. Its flap peels open like a reluctant mouth and one line types across the paper.",
-   "sfx": "paper-tear",
-   "means": "hook. the messenger is not the enemy, and the dread object is defused by making the paper the reluctant party",
+   "shows": "A real letter lying on a desk, NO FACE and NO EYES anywhere on it, staged against the dark slate filing-cabinet wall so the cream paper has a hard edge to read against. A hard fluorescent shadow sits under it. Its flap opens by PHYSICS, the spring in the paper, hesitating once before it gives. Both halves of the headline are on screen by 1.2s.",
+   "sfx": "paper-spring",
+   "means": "hook. the dread object is real, not a cartoon. reluctance lives in the hesitation of the motion, never in a performance",
    "draw": {
-    "subject": "a characterized cream envelope with a wincing face",
-    "action": "peels its own flap open and reads the line it has to carry",
-    "emotion": "reluctant, apologetic",
-    "annotation": "YOU MAY NOT BE A CITIZEN"
+    "subject": "a plain state letter with a curled corner and a rectilinear embossed block",
+    "action": "its flap springs open, hesitates once, then gives, revealing the line it carries",
+    "emotion": "none, deliberately. the paper does not act",
+    "annotation": "3,500 LETTERS / NOBODY LOST THE VOTE"
    },
    "choreo": {
-    "primary": "the flap peels open and the line types across the paper",
-    "reaction": "the envelope's eyes track its own sentence and it winces",
-    "ambient": "dust motes drift in the fluorescent column, paper fiber tooth catches the light"
+    "primary": "the flap springs open against the paper's own stiffness and settles",
+    "reaction": "a hand withdraws from frame with follow-through, leaving the letter alone",
+    "ambient": "a slow shadow crosses the desk laminate, the letter's curled corner relaxes flat across the whole beat, and the fluorescent tube shimmers on the slate wall behind"
    }
   },
   {
-   "t": 3.4,
+   "t": 3.0,
    "key": "routine",
    "vo": "A normal check flags about two hundred names.",
-   "shows": "Flat office light. A brass TallyCounter clicks calmly to 200 while small paper name tags float back into a wooden tray. Small, tidy, boring on purpose.",
-   "sfx": "tick",
-   "means": "establish the baseline so the widening later has something to be measured against",
+   "shows": "Flat office light. A brass TallyCounter, CLICKER variant with a knurled dial and a needle window, clicks calmly to 200 while small paper name tags float back into a wooden tray. Small, tidy, boring on purpose.",
+   "sfx": "brass-detent-run",
+   "means": "establish the baseline so the widening has something to be measured against. this world is CLOSED before the next shot opens, so the two quantities never share a frame",
    "draw": {
-    "subject": "a brass tally counter on a clerk's desk",
+    "subject": "a dull brass tally clicker on a clerk's desk",
     "action": "clicks placidly to 200 as name tags drift back into a tray",
     "emotion": "calm, unbothered",
     "annotation": "MORE LIKE 200 NAMES"
    },
    "choreo": {
-    "primary": "the tally dial clicks over to 200 in eased increments",
-    "reaction": "name tags flutter down into the tray and settle",
-    "ambient": "the desk lamp hums, a wall clock hand ticks"
+    "primary": "the needle steps to 200 in eased increments",
+    "reaction": "name tags flutter down and settle at staggered intervals",
+    "ambient": "the lamp filament flickers with a lagged shadow response, a slow fan turns on the back plane, and name tags from the previous drop are still settling out of phase"
    }
   },
   {
-   "t": 6.0,
-   "key": "fairness",
-   "vo": "In March the Division of Elections asked the D M V to check fifteen thousand license holders at once.",
-   "shows": "Whip pan to a Character in the referee outfit with a Nameplate reading REP. KEVIN MCCABE, R BIG LAKE. He plants, points, and blows the brass whistle. His boxed quote slams in. The counter and the stacks straighten up like players who just got called correctly.",
+   "t": 5.0,
+   "key": "mccabe",
+   "vo": "Keeping that list clean is the Division of Elections' job.",
+   "shows": "Whip pan to a Character in the referee outfit with a brass whistle and a Nameplate reading REP. KEVIN MCCABE, R BIG LAKE. He plants, points and blows the whistle. His verified quote lands in a box. The counter behind him straightens up like a called player. He gets a full beat of narration to himself and the picture agrees with him.",
    "sfx": "whistle",
-   "means": "FAIRNESS VOICED EARLY. the piece agrees with him on screen, no sneer, no dark lighting. doing the job correctly is what opens the mouth",
+   "means": "FAIRNESS VOICED, not merely posted. the narration now carries his point and this shot is long enough to hold it",
    "draw": {
     "subject": "Rep. Kevin McCabe drawn as a referee with a brass whistle",
-    "action": "plants, points and blows the whistle, and the blast widens the funnel mouth one notch",
-    "emotion": "certain, fair, unmocked",
+    "action": "plants, points and blows the whistle while his quote lands beside him",
+    "emotion": "certain, fair, drawn straight with no comic business",
     "annotation": "THIS IS ACTUALLY THEIR JOB"
    },
    "choreo": {
-    "primary": "McCabe plants, points and blows the whistle",
-    "reaction": "the counter and the stacks straighten up like called players",
-    "ambient": "the whistle lanyard swings with follow-through"
+    "primary": "he plants and the whistle blast pushes a visible pressure ring outward",
+    "reaction": "the tally counter and the tray straighten up in response",
+    "ambient": "the fluorescent tube buzz-shimmers across the desk laminate, a paper wall calendar's corner lifts and falls, and the tally needle still breathes behind him"
    }
   },
   {
-   "t": 9.2,
+   "t": 10.0,
+   "key": "the-mouth",
+   "vo": "But in March it asked the D M V to check fifteen thousand license holders at once.",
+   "shows": "Pull back and we meet THE MACHINE for the first time, whole. Its intake MOUTH is a true three-quarter cone with straight taper walls, a rolled dull-brass rim and a hollow dark interior. A toothed GearLever ratchets and the mouth cranks visibly wider, tooth by tooth.",
+   "sfx": "toothed-groan",
+   "means": "the machine is INTRODUCED here as one object, so every later part of it has an antecedent",
+   "draw": {
+    "subject": "the records machine's intake mouth, a true tapered cone",
+    "action": "cranks wider tooth by tooth as the GearLever is pulled",
+    "emotion": "mechanical, indifferent",
+    "annotation": "THE QUESTION"
+   },
+   "choreo": {
+    "primary": "the mouth ratchets open in stepped increments with overshoot on each tooth",
+    "reaction": "the whole housing rocks slightly against each ratchet click",
+    "ambient": "the pale ruled grid on the back wall shifts with parallax and dust turns in the light column"
+   }
+  },
+  {
+   "t": 12.6,
    "key": "the-ask",
-   "vo": "In March the Division of Elections asked the D M V to check fifteen thousand license holders at once.",
-   "shows": "The tray is gone. A chute opens and roughly 15,200 license and ID application forms pour DOWN it in a paper storm. Two stacks stand side by side under a hard center seam, DIFFERENT SHAPES and DIFFERENT COLORS, opposite arrows.",
+   "vo": "But in March it asked the D M V to check fifteen thousand license holders at once.",
+   "shows": "License and ID application forms pour DOWN into the widened mouth in a paper storm. The label lands. The 200 world from the previous shot is GONE from frame and is never shown beside this one.",
    "sfx": "paper-rush",
-   "means": "the widening, drawn as direction and effort, never as a ratio",
+   "means": "the widening drawn as volume and direction. the forbidden comparison is prevented by ABSENCE, not by arguing with the viewer",
    "draw": {
-    "subject": "a chute of license and ID application forms",
-    "action": "pours downward into a growing stack while a second differently shaped stack points the other way",
-    "emotion": "overwhelming, indifferent",
-    "annotation": "15,200 APPLICANTS SENT"
+    "subject": "a storm of license and ID application forms",
+    "action": "pours downward into the widened mouth and disappears into the dark throat",
+    "emotion": "overwhelming",
+    "annotation": "15,200 SENT TO THE D M V"
    },
    "choreo": {
-    "primary": "application forms pour DOWN the chute in a paper storm",
-    "reaction": "the two stacks grow at visibly different rates and lean apart",
-    "ambient": "loose sheets drift across the front plane"
+    "primary": "forms cascade with air resistance, tumbling rather than falling straight",
+    "reaction": "the mouth's rim flexes under the load",
+    "ambient": "the ceiling fan turns at the back plane and the lamp cord sways, both unrelated to the paper"
    }
   },
   {
-   "t": 11.3,
-   "key": "not-comparable",
-   "vo": "That check flagged three thousand five hundred Alaskans.",
-   "shows": "A small cocky division symbol slides in and tries to wedge itself between the 200 stack and the 15,200 stack to make a ratio. Both stacks lean away from it. A rubber stamp drops from frame top and flattens it.",
-   "sfx": "stamp",
-   "means": "teaches the viewer the exact statistical error the piece refuses to make, and makes refusing it entertaining",
-   "draw": {
-    "subject": "a cocky division sign",
-    "action": "wedges between the two stacks and gets flattened by a falling rubber stamp",
-    "emotion": "smug then squashed",
-    "annotation": "NOT COMPARABLE"
-   },
-   "choreo": {
-    "primary": "the division sign wedges in and the stamp SLAMS down on it",
-    "reaction": "both stacks lean away from it before the stamp lands",
-    "ambient": "stamp dust puffs outward and settles"
-   }
-  },
-  {
-   "t": 14.1,
+   "t": 16.1,
    "key": "flagged",
-   "vo": "That check flagged three thousand five hundred Alaskans.",
-   "shows": "The stem of the mechanism bursts and envelopes fire out of it in an arc, each identical, each the same size, none enlarged.",
-   "sfx": "burst",
-   "means": "the output of the widened question, drawn as volume leaving a pipe that did not grow",
+   "vo": "That flagged three thousand five hundred Alaskans.",
+   "shows": "Down at the far end, the machine's STEM bursts and envelopes fire out of it in an arc, each identical, each the same size, none enlarged. The stem is visibly the same width it has always been.",
+   "sfx": "pressurized-paper-spray",
+   "means": "the output of the widened question leaving a throat that did not grow. the stem now belongs to a machine the viewer has already met",
    "draw": {
-    "subject": "a spray of identical cream envelopes",
-    "action": "bursts out of a narrow stem and arcs across frame",
-    "emotion": "relentless",
+    "subject": "the machine's narrow output stem",
+    "action": "bursts and fires identical envelopes out in an arc",
+    "emotion": "strained",
     "annotation": "3,500 FLAGGED"
    },
    "choreo": {
-    "primary": "envelopes burst out of the narrow stem in an arc",
-    "reaction": "the stem shudders and rings from the pressure",
-    "ambient": "overflow flutters at the frame edge"
+    "primary": "envelopes fire out under pressure with motion blur on the leading edge",
+    "reaction": "the stem shudders and rings after each burst",
+    "ambient": "the lamp filament dips on each burst and recovers, and the fan keeps turning behind"
    }
   },
   {
-   "t": 16.3,
+   "t": 17.8,
    "key": "the-letter",
-   "vo": "Each got a letter saying they may not be citizens, and their registration went inactive.",
-   "shows": "The room goes quiet. The actual letter types out, two sentences, black on white, no character, no joke, no face anywhere in frame. An INACTIVE tag hangs itself on the corner of the page.",
+   "vo": "Each got a letter saying they may not be citizens. Three thousand forty eight went inactive.",
+   "shows": "The room goes quiet. The actual letter types out, two sentences, black on white. No face, no character, no joke anywhere in frame. An INACTIVE tag settles onto the corner of the page. Held deliberately short so the reading task never becomes the longest ask in the film.",
    "sfx": "typewriter",
-   "means": "the one beat with no comedy in it. the words are allowed to land unaccompanied",
+   "means": "the one beat with no comedy in it. the words land unaccompanied and the register is documentary",
    "draw": {
     "subject": "the letter itself, plain and unpersonified",
-    "action": "types its own two sentences while an INACTIVE tag hangs on its corner",
+    "action": "types its two sentences while an INACTIVE tag settles on its corner",
     "emotion": "none, deliberately flat",
-    "annotation": "REGISTRATION INACTIVE"
+    "annotation": "YOU MAY NOT BE A CITIZEN"
    },
    "choreo": {
-    "primary": "the two sentences type out, one character at a time",
-    "reaction": "the INACTIVE tag drops and swings on its string",
-    "ambient": "the room goes still, only the paper grain breathes"
+    "primary": "the two sentences type out at reading pace",
+    "reaction": "the INACTIVE tag drops, swings once on its string and stills",
+    "ambient": "the fluorescent tube shimmers slowly across the page, the INACTIVE tag's pendulum decays across the WHOLE beat rather than settling early, and a shadow creeps a few pixels down the paper"
    }
   },
   {
-   "t": 19.9,
+   "t": 21.1,
    "key": "full-box",
-   "vo": "Each got a letter saying they may not be citizens, and their registration went inactive.",
-   "shows": "3,048 identical envelopes (ISOTYPE, same size, never enlarged) march single file into ONE answering machine whose tape loop is visibly finite. The tape fills, the reels seize, a tag flips up. One extra envelope taps politely on the casing and sits down to wait.",
-   "sfx": "reel-stop",
-   "means": "the felt number. a count against a KNOWN OBJECT WITH FIXED CAPACITY, so no ratio is needed",
+   "vo": "Each got a letter saying they may not be citizens. Three thousand forty eight went inactive.",
+   "shows": "3,048 identical envelopes (ISOTYPE, same size, NEVER enlarged) march single file into ONE answering machine whose tape loop is visibly finite. The tape fills, the reels seize, a FULL tag flips up on a spring. One extra envelope taps the casing twice, waits, and sits down on top of it.",
+   "sfx": "belt-squeal-to-spring-twang",
+   "means": "the count made felt against a KNOWN OBJECT WITH FIXED CAPACITY, so no ratio is ever needed",
    "draw": {
-    "subject": "a single answering machine with a finite tape reel",
+    "subject": "one answering machine with two visible tape reels",
     "action": "swallows a single-file line of envelopes until its reels seize and a FULL tag flips up",
     "emotion": "strained, then stuck",
-    "annotation": "3,048 MOVED TO INACTIVE"
+    "annotation": "3,048 WENT INACTIVE"
    },
    "choreo": {
-    "primary": "envelopes march single file into the machine and the reels seize",
-    "reaction": "the FULL tag flips up on its spring and quivers",
-    "ambient": "one extra envelope taps the casing twice and sits down"
+    "primary": "the reels spin, slow, and seize with a hard stop",
+    "reaction": "the FULL tag flips up on its spring and stays up, quivering",
+    "ambient": "the drift of arrived envelopes accumulates around the machine's feet and the lamp cord sways"
    }
   },
   {
-   "t": 22.4,
-   "key": "not-a-bloc",
+   "t": 22.9,
+   "key": "not-a-bloc-a",
    "vo": "Real citizens are in that pile.",
-   "shows": "Fast three-up. Three DIFFERENT Alaskans hold the same page. One shrugs, one is worried, one is already dialing. Drawn respectfully, no caricature, three separate reactions.",
-   "sfx": "pop",
-   "means": "naturalized Alaskans are not one reaction and the picture must not flatten them into one",
+   "shows": "Slow across a kitchen table. ONE Alaskan folds the page in half, sets it down, and goes back to dinner. Drawn at real scale, legible, unhurried, no caricature. Then a second reads it twice and sets it down very carefully, squaring the edges.",
+   "sfx": "paper-shuffle-triple",
+   "means": "naturalized Alaskans are not one reaction. this beat is now DESIGNED rather than asserted, with each response legible on its own",
    "draw": {
-    "subject": "three different Alaskans holding the same page",
-    "action": "react three different ways, one shrugging, one worried, one dialing",
-    "emotion": "shrug, worry, resolve",
-    "annotation": "ACTUAL CITIZENS"
+    "subject": "two different Alaskans with the same page in front of them",
+    "action": "one folds it and returns to dinner, one reads it twice and squares the edges",
+    "emotion": "unbothered, then careful",
+    "annotation": "REAL CITIZENS"
    },
    "choreo": {
-    "primary": "three panels snap in, staggered 75ms apart",
-    "reaction": "one figure shrugs, one tenses, one lifts a phone",
-    "ambient": "each panel has its own idle rhythm, deliberately desynced"
+    "primary": "the page folds along a crease and settles",
+    "reaction": "the second figure's hands square the paper edges twice",
+    "ambient": "steam rises off a dinner plate, a chair creaks"
    }
   },
   {
-   "t": 25.0,
-   "key": "cutaway",
-   "vo": "Because the D M V stores your status the day you apply, and naturalizing later never travels back.",
-   "shows": "THE CUTAWAY. A brass and enamel records mechanism cross sectioned in three quarter view. PIPE ONE inbound from the DMV counter, fat and functional. PIPE TWO outbound to Elections, fat and pulsing. PIPE THREE descends confidently from the courthouse carrying a naturalization certificate and simply ENDS IN OPEN AIR, capped, no flange, nothing ever built to receive it. A certificate drops out of the open end and flutters onto a small pile of others.",
-   "sfx": "riser",
-   "means": "REHOOK and the thesis drawn instead of said. the absence is the picture",
+   "t": 25.8,
+   "key": "not-a-bloc-b",
+   "vo": "Real citizens are in that pile.",
+   "shows": "The third Alaskan is already dialing. They hold the receiver, wait, and the line does not pick up. They set it down and pick it up again. The same page sits under their hand.",
+   "sfx": "handset-lift",
+   "means": "the third reaction is the one that runs into the wall, which sets up the desk beat without narrating it",
    "draw": {
-    "subject": "a cutaway records mechanism with three pipes",
+    "subject": "a third Alaskan at a phone with the same page",
+    "action": "dials, waits, hangs up and immediately dials again",
+    "emotion": "worried",
+    "annotation": "STILL DIALING"
+   },
+   "choreo": {
+    "primary": "the rotary dial spins back with real inertia",
+    "reaction": "the call travels a drawn line back to the answering machine and its FULL tag quivers again and stays up",
+    "ambient": "steam keeps rising off the dinner plate behind and the lamp cord sways"
+   }
+  },
+  {
+   "t": 29.0,
+   "key": "cutaway",
+   "vo": "Because the D M V never hears about it when you naturalize. It stored your status the day you applied.",
+   "shows": "THE MACHINE OPENS. The same housing from the intake shot splits into a three-quarter cutaway. PIPE ONE inbound from the DMV counter, fat and greased. PIPE TWO outbound to Elections, fat and pulsing. PIPE THREE descends confidently from the courthouse carrying a naturalization certificate and simply ENDS IN CAPPED OPEN AIR, no flange, nothing ever built to receive it. Certificates flutter out of the open end onto a drift pile beneath.",
+   "sfx": "brass-latch-decompression",
+   "means": "REHOOK. the thesis drawn as a physical ABSENCE inside a machine the viewer already knows",
+   "draw": {
+    "subject": "the records machine in three-quarter cutaway with three pipes",
     "action": "pumps through two pipes while the third ends in capped open air and drops certificates on the floor",
     "emotion": "indifferent, mechanical",
     "annotation": "NOTHING RECEIVES IT"
    },
    "choreo": {
-    "primary": "the housing splits open and the three pipes are revealed",
-    "reaction": "pipe two pulses while pipe three hangs capped and silent",
-    "ambient": "certificates flutter from the open end onto a drift pile"
+    "primary": "the housing splits along its seam and discloses STAGGERED, pipe one, then pipe two, then a beat, then pipe three ending in capped open air LAST",
+    "reaction": "opening the housing vents pressure so pipe two's pulse visibly quickens and then re-settles",
+    "ambient": "the drift pile of certificates under the capped end scatters and re-settles from the draft, and dust turns in the vented air"
    },
-   "rehook": "the piece stops explaining and OPENS THE MACHINE, revealing a third pipe that ends in nothing, which re-grabs a viewer drifting after the letter beats"
+   "rehook": "at 29.0 the piece stops explaining and OPENS THE MACHINE, revealing a third pipe that ends in nothing, which re-grabs a viewer drifting after the letter beats"
   },
   {
-   "t": 29.8,
+   "t": 33.6,
    "key": "the-pawl",
-   "vo": "Because the D M V stores your status the day you apply, and naturalizing later never travels back.",
-   "shows": "Push to macro. A date wheel rotates and stamps a year into a small brass window labelled CITIZENSHIP AT APPLICATION, and a spring loaded PAWL clicks down and LOCKS the wheel. The crank that would turn it can only be reached from outside the diagram.",
+   "vo": "Because the D M V never hears about it when you naturalize. It stored your status the day you applied.",
+   "shows": "Push to macro. A date wheel rotates and stamps a year into a small dull-brass window labelled CITIZENSHIP AT APPLICATION, and a spring loaded PAWL clicks down and LOCKS the wheel. The crank that would turn it can only be reached from outside the diagram.",
    "sfx": "pawl-click",
-   "means": "the single sound of the whole video. the lock is not malice, it is design",
+   "means": "the single signature sound of the film. the lock is design, not malice",
    "draw": {
     "subject": "a spring loaded pawl over a date wheel",
-    "action": "clicks down and locks the wheel at 2019",
+    "action": "slams down and locks the wheel at 2019",
     "emotion": "final, uncaring",
     "annotation": "CITIZENSHIP AT APPLICATION"
    },
    "choreo": {
-    "primary": "the date wheel rotates and the pawl SLAMS down and locks",
+    "primary": "the pawl slams down and the wheel stops dead",
     "reaction": "the whole housing takes a 3px shock on the lock",
-    "ambient": "the unreachable crank rocks slightly and stills"
+    "ambient": "the vented draft still moves the certificate pile below and the tube shimmers on the housing"
    }
   },
   {
-   "t": 32.3,
+   "t": 36.3,
    "key": "two-records",
-   "vo": "One Fairbanks voter got her license in twenty nineteen and her citizenship in twenty twenty five.",
-   "shows": "Match cut on the shape of a rectangle. Top down on a kitchen table, warm window light. LEFT a DMV card stamped 2019, and its citizenship field is a small brass window whose ink is GREYING, desaturating over 1.2s while the rest of the card stays perfectly crisp. RIGHT a naturalization certificate stamped 2025, bright cream, gold seal, edges sharp. A human hand sets them down and withdraws.",
+   "vo": "A Fairbanks voter got her license in twenty nineteen and her citizenship in twenty twenty five.",
+   "shows": "Match cut on the shape of a rectangle. Top down on a kitchen table. LEFT a DMV card stamped 2019 with real card thickness and a beveled edge, its citizenship field a small dull-brass window whose ink GREYS OUT in place over 1.2s while the rest of the card stays perfectly crisp. RIGHT a naturalization certificate stamped 2025, bright, with a raised vermilion OVAL seal, the only soft organic curve in the film.",
    "sfx": "paper-set",
    "means": "one field ages and nothing else does, so the drawing says OLD rather than WRONG",
    "draw": {
     "subject": "two documents six years apart on a kitchen table",
-    "action": "the 2019 citizenship field greys out in place while the 2025 seal stays bright",
+    "action": "the 2019 citizenship field greys out in place while the 2025 seal stays saturated",
     "emotion": "quiet, patient",
     "annotation": "LICENSE 2019 / CITIZEN 2025"
    },
    "choreo": {
-    "primary": "the 2019 citizenship field greys out in place over 1.2s",
-    "reaction": "the gold seal on the 2025 certificate catches a moving highlight",
-    "ambient": "a hand withdraws from frame with follow-through"
+    "primary": "the citizenship field desaturates letter by letter over 1.2s, and the SAME curve drives the 2025 seal's brightening so one value visibly drives the other",
+    "reaction": "LICENSE 2019 draws on the word twenty nineteen and CITIZEN 2025 draws on the word twenty twenty five, about 2.5s apart",
+    "ambient": "warm window light drifts slowly across the laminate, the certificate's edge lifts and settles, and dust turns in the beam"
    }
   },
   {
-   "t": 36.2,
+   "t": 38.6,
    "key": "the-turn",
    "vo": "Neither record is wrong.",
-   "shows": "A fat outlined ARROW grows out of the certificate with real anticipation and travels sixty percent of the gap. Then it hits a BLANK WALL. Not a locked door, not a red X, not a villain. A featureless flat wall with no handle and no seam. The arrowhead crumples with a dull thud, no impact star, deliberately unsatisfying. Camera pulls back and the wall keeps going past frame in both directions.",
+   "shows": "A fat outlined ARROW grows out of the certificate with real anticipation and travels sixty percent of the gap. Then it hits a BLANK WALL. Not a locked door, not a red X, not a villain. Featureless, no handle, no seam. The arrowhead crumples with a dull thud, NO impact star, deliberately unsatisfying. THE CAMERA DOES NOT MOVE. The wall is already running past frame in both directions and we simply hold on it.",
    "sfx": "dull-thud",
-   "means": "THE TURN. the loudest quietest beat. a picture of an absence, held",
+   "means": "THE TURN. a locked hold, not a pullback, so the signature shot later owns the pullback gesture alone",
    "draw": {
     "subject": "a fat outlined arrow and a featureless blank wall",
-    "action": "the arrow crumples against a wall that has no door and hangs there still pointing",
-    "emotion": "hopeful then stopped",
+    "action": "the arrow crumples against a wall with no door and hangs there still pointing",
+    "emotion": "hopeful, then stopped",
     "annotation": "NEITHER RECORD IS WRONG"
    },
    "choreo": {
-    "primary": "the arrow launches with anticipation and CRUMPLES on the wall",
-    "reaction": "the certificate leans a few degrees, looking for a way around",
-    "ambient": "the camera pulls back and the wall runs past frame both ways"
+    "primary": "the arrow launches with anticipation and decelerates to a dead stop",
+    "reaction": "the certificate leans a few degrees, looking for a way around, and settles back",
+    "ambient": "dust drifts against the wall's flat face, the crumpled arrowhead's residual quiver decays through the hold, and the vermilion seal pulses once as the only warm thing in frame"
    }
   },
   {
-   "t": 39.9,
+   "t": 42.9,
    "key": "the-door",
    "vo": "Inactive is not removed. She can still vote a questioned ballot.",
-   "shows": "Everything goes quiet. A plain door stands alone with a paper tag reading INACTIVE. The letter braces for a slam. The door just swings OPEN, freely, on a lazy hinge, with a soft wooden knock. A voter walks through and marks a questioned ballot with a small attestation check.",
-   "sfx": "wood-knock",
+   "shows": "Everything goes quiet. A plain door stands alone with a paper tag reading INACTIVE. The door swings OPEN, freely, on a lazy hinge with a soft wooden knock. A voter walks through and marks a questioned ballot with a small attestation check.",
+   "sfx": "hinge-creak-to-roomtone",
    "means": "the fear is defused BEFORE the emotional peak, and the questioned ballot is drawn as an accepted object, never a hurdle",
    "draw": {
     "subject": "a door tagged INACTIVE and a voter",
     "action": "the door swings freely open and the voter walks through and marks a questioned ballot",
     "emotion": "braced, then relieved",
-    "annotation": "NOBODY REMOVED"
+    "annotation": "INACTIVE IS NOT REMOVED"
    },
    "choreo": {
-    "primary": "the INACTIVE door swings freely open on a lazy hinge",
-    "reaction": "the letter, mid-cringe, opens one eye and straightens up",
-    "ambient": "the attestation check marks itself with a soft scratch"
+    "primary": "the door swings open on a lazy hinge with overshoot and settle",
+    "reaction": "the INACTIVE tag swings on the moving door",
+    "ambient": "the INACTIVE tag swings on the moving door and the lamp cord sways"
    }
   },
   {
-   "t": 44.7,
-   "key": "the-funnel",
-   "vo": "But Alaska widened the question and did not widen the fix. The phone line filled up.",
-   "shows": "SIGNATURE SHOT. Camera cranes down the side of a brass and enamel funnel. A GearLever is pulled and the MOUTH cranks visibly wider tooth by tooth with anticipation and overshoot. The STEM underneath never changes width by a single pixel. It stays one pipe feeding one desk, one phone, one chair. Envelopes that cannot fit slop over the rim and pour down the outside.",
-   "sfx": "gear-ratchet",
-   "means": "the whole failure legible in one frame with no numbers required, and it reads muted",
+   "t": 44.9,
+   "key": "no-algorithm",
+   "vo": "No algorithm did this.",
+   "shows": "A single index card is stamped, hard, in stamp-ink indigo. No robot, no chip, no glowing brain anywhere in frame. Just the card, the stamp, and the two plain boxes it names.",
+   "sfx": "stamp-on-brass",
+   "means": "the brand's honest disclosure, drawn. it also earns the transfer the button depends on, since the question needs an established subject",
    "draw": {
-    "subject": "a funnel whose mouth cranks wide while its stem stays narrow",
-    "action": "widens at the mouth and overflows down its own outside walls onto one desk",
-    "emotion": "overwhelmed, apologetic",
+    "subject": "an index card under a falling rubber stamp",
+    "action": "takes the stamp hard and rocks once on the desk",
+    "emotion": "matter of fact",
+    "annotation": "A QUERY AND TWO DATABASES"
+   },
+   "choreo": {
+    "primary": "the stamp falls hard and lifts, leaving indigo ink",
+    "reaction": "the card rocks once and settles flat",
+    "ambient": "stamp dust puffs outward and drifts down"
+   }
+  },
+  {
+   "t": 48.5,
+   "key": "the-funnel",
+   "vo": "Alaska widened the question and never widened the fix.",
+   "shows": "SIGNATURE SHOT. The camera PULLS BACK and we finally read the whole machine at once. The mouth, cranked wide from the intake shot, and the stem, exactly as narrow as it was, in ONE frame. Overflow envelopes that cannot fit pour over the rim and spill TOWARD FRAME CENTER onto one desk. The mouth stops at the 4:5 safe edge so the contrast survives the crop.",
+   "sfx": "overflow",
+   "means": "the whole failure legible in one muted frame with no numbers required. this shot owns the pullback gesture",
+   "draw": {
+    "subject": "the whole records machine, mouth and stem in one frame",
+    "action": "the wide mouth pours and the unchanged stem overflows onto one desk",
+    "emotion": "overwhelmed",
     "annotation": "THE PART THAT CATCHES MISTAKES"
    },
    "choreo": {
-    "primary": "the GearLever ratchets and the mouth cranks wider tooth by tooth",
-    "reaction": "the stem visibly refuses to move a single pixel",
-    "ambient": "overflow pours down the outside walls in parallax"
+    "primary": "the camera pulls back to hold mouth and stem together",
+    "reaction": "the stem SHUDDERS and its rivets pop out one at a time under the load while its WIDTH never changes, the lamp below dims and recovers on each ratchet tooth, and a pressure gauge needles into the red and pins",
+    "ambient": "overflow accumulates in a growing drift around the desk legs and the fan turns behind"
    }
   },
   {
-   "t": 49.4,
-   "key": "the-desk",
-   "vo": "But Alaska widened the question and did not widen the fix. The phone line filled up.",
-   "shows": "Down at the stem. One clerk under one lamp, holding a receiver that is only making a flat tone, an envelope landing on their head. They do not look up. They raise a clipboard like an umbrella and keep working.",
-   "sfx": "flat-tone",
-   "means": "the Division drawn as overwhelmed, never as malicious. the most sympathetic figure is also the bottleneck",
-   "draw": {
-    "subject": "one clerk at one desk with one phone",
-    "action": "raises a clipboard over their head as envelopes land and keeps working",
-    "emotion": "dogged, swamped",
-    "annotation": "THE PHONE LINE FILLED UP"
-   },
-   "choreo": {
-    "primary": "the clerk raises a clipboard like an umbrella and keeps working",
-    "reaction": "an envelope lands on the clipboard and slides off",
-    "ambient": "the phone receiver emits a flat unchanging tone"
-   }
-  },
-  {
-   "t": 52.2,
+   "t": 51.0,
    "key": "button",
    "vo": "So what else are we widening?",
-   "shows": "Rise off the desk and out to the rural mailbox from the cold open on a gravel shoulder. The envelope arrives IN the box. Then the small red flag lifts UP with a spring overshoot and a metal tick, the sign that something is going the OTHER direction. A faint gold DOTTED line traces off the mailbox toward the shape of the mechanism on the horizon, unfinished, still dotted, the pipe that does not exist yet drawn as an intention.",
-   "sfx": "spring-tick",
-   "means": "loopback. frame one was a letter arriving at a table, the last frame is the same letter with the flag pointed the other way, so the two ends of one missing road are visible",
+   "shows": "Return to the EXACT kitchen table from frame one. Same desk, same slate wall behind it. The letter now lies face down beside the naturalization certificate. A faint dotted indigo line traces off the table toward the capped third pipe, still visible in the machine's cutaway, unfinished, drawn as an intention. We never leave the interior.",
+   "sfx": "tin-ping",
+   "means": "loopback to the film's ACTUAL first image, with the world intact and the missing connection drawn as a dotted line rather than narrated",
    "draw": {
-    "subject": "the rural mailbox and a dotted gold road",
-    "action": "the mail flag springs UP and a dotted line traces toward the unbuilt pipe on the horizon",
+    "subject": "the same table from frame one, the letter face down beside the certificate",
+    "action": "a dotted indigo road traces from the table toward the capped pipe and stops short",
     "emotion": "unresolved, deliberate",
     "annotation": "STILL REGISTERED"
    },
    "choreo": {
-    "primary": "the mail flag springs UP with overshoot and a metal tick",
-    "reaction": "the dotted gold road traces toward the unbuilt pipe",
-    "ambient": "grass moves at the gravel shoulder, the envelope settles in the box"
+    "primary": "the dotted line draws itself toward the capped pipe and stops",
+    "reaction": "the dotted line is PARENTED to the letter settling, so the settle is what launches it",
+    "ambient": "dust motes drift in the same fluorescent column that opened the film and the tube shimmers on the slate wall"
    }
   }
  ],
  "shots": [
   {
    "id": 1,
-   "t": "0.0-6.4",
+   "t": "0.0-3.0",
    "framing": "macro-closeup",
    "pov": "macro-closeup",
    "layout": "single-object-void",
    "motion_vector": "push-in-only",
-   "hero_treatment": "single-organic-hero",
+   "hero_treatment": "data-as-subject",
    "transition_in": "",
    "thread": "build",
    "camera": "dollyThrough",
-   "stage3d": "planes",
-   "centered": "the wincing envelope reading its own line on a kitchen table",
-   "means": "open on the dread object and defuse it by making the paper the reluctant party",
+   "stage3d": "Plane parallax + Solidify on the letter + CastShadow3D on the desk + Atmosphere on the cabinet wall",
+   "centered": "the plain letter opening by physics against the dark slate wall",
+   "means": "open on the real dread object with both halves of the headline up by 1.2s",
    "hero": {
-    "name": "CivicLetter, the characterized envelope",
+    "name": "the state letter (CivicLetter, NO FACE)",
     "parts": 6,
     "zones": 3,
-    "detail_note": "NEVER a joke object. The envelope is the reluctant messenger and is drawn with sympathy. Thick ink outline, three-tone paper shading with a warm bounce off the table, rolled flap edge with real thickness so it reads dimensional and not like a flat rectangle.",
     "parts_list": [
      "cream body with a curled corner",
-     "embossed gold state seal",
-     "a hinged flap that opens as a mouth",
-     "two apologetic eyes",
+     "rectilinear embossed state block in slate and dull brass",
+     "a hinged flap with a rolled edge and real thickness",
      "the printed line it carries",
-     "a drop shadow on the table laminate"
+     "a hard fluorescent contact shadow",
+     "stamp-ink indigo letterhead rule"
     ],
     "zones_list": [
-     "the face zone (eyes and flap)",
-     "the seal zone (gold, institutional)",
-     "the carried-text zone (the line it must show)"
-    ]
+     "the flap zone (the physical hesitation)",
+     "the letterhead zone (institutional authority)",
+     "the carried-text zone"
+    ],
+    "detail_note": "NO EYES, NO MOUTH, NO WINCE. Gate 0B ruled the characterized envelope a violation of the board's own discipline rule, since the letter carried a citizenship challenge to real Alaskans. Reluctance is expressed ONLY through motion hesitation and paper stiffness. Staged against the slate plane so a cream object is not sitting on a cream field at thumbnail scale."
    }
   },
   {
    "id": 2,
-   "t": "6.4-9.0",
+   "t": "3.0-10.0",
    "framing": "subject-portrait",
    "pov": "eye-level-immersive",
    "layout": "centered-hero-lowerthird",
@@ -475,100 +490,135 @@
    "transition_in": "whip-pan",
    "thread": "match",
    "camera": "truckAcross",
-   "stage3d": "planes",
-   "centered": "McCabe as referee with the brass whistle, and the calm tally counter behind him",
-   "means": "voice the fair defense EARLY and let the picture agree with it",
+   "stage3d": "Plane parallax + Extrude on the cabinet wall + CastShadow3D under the counter",
+   "centered": "the calm 200-name baseline, then McCabe with the whistle getting a full narrated beat",
+   "means": "establish the baseline and VOICE the fair defense, at 6.4s the longest non-turn shot in the film",
    "hero": {
-    "name": "McCabe as referee, plus the brass TallyCounter",
+    "name": "the TallyCounter clicker and McCabe",
     "parts": 6,
     "zones": 3,
-    "detail_note": "He is drawn with respect and NO comic business, no dark lighting, no sneer. The piece agrees with him. The referee outfit already exists in the Character rig from 2026-07-20b and has never been used for its literal purpose until now.",
     "parts_list": [
-     "Character rig in the referee outfit with ink stripes",
+     "dull brass clicker with a knurled dial",
+     "needle window reading 200",
+     "wooden tray of paper name tags",
+     "Character rig in the referee outfit",
      "brass whistle on a lanyard",
-     "boxed Nameplate reading REP. KEVIN MCCABE, R BIG LAKE",
-     "the brass tally counter with a knurled dial",
-     "a needle window showing 200",
-     "a wooden tray of paper name tags"
+     "boxed Nameplate REP. KEVIN MCCABE, R BIG LAKE"
     ],
     "zones_list": [
+     "the instrument (the calm baseline)",
      "the referee figure (authority, drawn straight)",
-     "the counter instrument (the calm baseline)",
-     "the label zone (his verified quote)"
-    ]
+     "the quote box"
+    ],
+    "detail_note": "CLICKER variant, not odometer. He is drawn with respect, no sneer and no dark lighting, and the narration carries his point rather than leaving it as a box on screen. This shot deliberately CLOSES the 200 world before the next shot opens, so the two quantities never share a frame."
    }
   },
   {
    "id": 3,
-   "t": "9.0-16.1",
+   "t": "10.0-17.8",
    "framing": "data-panel",
    "pov": "cross-section-cutaway",
    "layout": "fullbleed-split",
    "motion_vector": "vertical-descent",
-   "hero_treatment": "data-as-subject",
+   "hero_treatment": "structure-as-subject",
    "transition_in": "graphic-match",
    "thread": "build",
    "camera": "craneDown+dollyThrough",
-   "stage3d": "planes",
-   "centered": "the chute pouring applicant forms, the two differently shaped stacks, and the flattened division sign",
-   "means": "draw the widening as direction and effort and refuse the ratio out loud",
+   "stage3d": "Plane parallax + Extrude on the machine housing + CastShadow3D + Atmosphere on receding planes",
+   "centered": "the machine introduced whole, its mouth cranking wider, the intake storm, and the burst from the unchanged stem",
+   "means": "introduce the machine as ONE object so the stem and the cutaway later both have an antecedent",
    "hero": {
-    "name": "The intake chute and the two stacks",
-    "parts": 6,
+    "name": "the records machine, intake mouth and stem",
+    "parts": 7,
     "zones": 3,
-    "detail_note": "The two stacks MUST be different shapes AND different colors so the eye never wants to divide them. They never share a scale bar. This is the hard-ban gag rendered as physical comedy.",
     "parts_list": [
-     "an angled metal chute with a rolled lip",
-     "a falling storm of license and ID application forms",
-     "stack A, short and wide, arrow pointing back",
-     "stack B, tall and narrow, arrow pointing out",
-     "a hard center seam between them",
-     "a falling rubber stamp reading NOT COMPARABLE"
+     "true three-quarter tapered intake cone",
+     "rolled dull-brass rim",
+     "hollow dark throat with receding interior rings",
+     "toothed GearLever",
+     "the narrow output stem",
+     "pewter housing with Extrude body thickness",
+     "a storm of application forms"
     ],
     "zones_list": [
-     "the chute mouth (where volume enters)",
-     "the split floor (the two differently shaped stacks)",
-     "the stamp zone (the refused ratio)"
-    ]
+     "the mouth (what gets widened)",
+     "the throat (where volume disappears)",
+     "the stem (what never changes)"
+    ],
+    "detail_note": "TRUE TAPER, straight side walls, hollow dark interior, rolled rim, receding throat rings. NEVER a face-on ellipse. This is the explicit dodge for the 2026-07-25 SeismicStation horn lollipop failure and this film contains two such cones."
    }
   },
   {
    "id": 4,
-   "t": "16.1-25.0",
-   "framing": "two-up",
+   "t": "17.8-22.9",
+   "framing": "push-detail",
    "pov": "eye-level-immersive",
    "layout": "grid-modular",
    "motion_vector": "assemble-build",
    "hero_treatment": "multiplicity-swarm",
    "transition_in": "hard-cut",
    "thread": "carry",
-   "camera": "craneDown",
-   "stage3d": "planes",
-   "centered": "the plain letter, the answering machine seizing, and three different Alaskans reacting three different ways",
+   "camera": "dollyThrough",
+   "stage3d": "Plane parallax + Solidify on the machine + CastShadow3D under every object on the desk",
+   "centered": "the plain letter typing, then 3,048 envelopes seizing one finite tape",
    "means": "land the letter with no comedy, then make the count felt against a fixed-capacity object",
    "hero": {
-    "name": "The answering machine and the letter",
+    "name": "the letter and the FullTapeMachine",
     "parts": 6,
     "zones": 3,
-    "detail_note": "The letter beat is the ONE beat with no face and no gag anywhere in frame. The envelopes are isotype, identical size, NEVER enlarged, because enlarging a pictogram lies about area.",
     "parts_list": [
-     "the plain letter, unpersonified, black on white",
-     "a hanging INACTIVE tag on its corner",
-     "an answering machine with two visible tape reels",
-     "a finite tape loop that fills and seizes",
-     "a FULL tag on a spring",
-     "a single-file line of identical isotype envelopes"
+     "the plain unpersonified letter",
+     "a settling INACTIVE tag",
+     "answering machine chassis in pewter",
+     "two visible tape reels",
+     "a finite tape loop that fills",
+     "a FULL tag on a spring"
     ],
     "zones_list": [
      "the letter zone (no comedy allowed)",
      "the machine zone (fixed capacity, straining)",
      "the queue zone (the count arriving)"
-    ]
+    ],
+    "detail_note": "Envelopes are isotype, identical size, NEVER enlarged, because enlarging a pictogram lies about area. The letter beat is held deliberately short so reading never becomes the longest ask in the film."
    }
   },
   {
    "id": 5,
-   "t": "25.0-32.1",
+   "t": "22.9-29.0",
+   "framing": "two-up",
+   "pov": "macro-closeup",
+   "layout": "stacked-layers",
+   "motion_vector": "horizontal-traverse",
+   "hero_treatment": "single-organic-hero",
+   "transition_in": "match-action",
+   "thread": "carry",
+   "camera": "truckAcross",
+   "stage3d": "Plane parallax + CastShadow3D + Atmosphere behind the table",
+   "centered": "three different Alaskans, each reaction legible on its own",
+   "means": "the anti-flattening beat, now 5.2 seconds and designed rather than asserted",
+   "hero": {
+    "name": "three Alaskans, Character rigs",
+    "parts": 6,
+    "zones": 3,
+    "parts_list": [
+     "figure one folding the page and returning to dinner",
+     "figure two reading twice and squaring the edges",
+     "figure three dialing and redialing",
+     "the same page in three different hands",
+     "a dinner plate with rising steam",
+     "a rotary phone with real dial inertia"
+    ],
+    "zones_list": [
+     "the unbothered response",
+     "the careful response",
+     "the response that hits a busy line"
+    ],
+    "detail_note": "Gate 0B flagged this as the beat with the strongest ethical mandate and the least design. It now runs 5.2s across two beats with differentiated business, staged large and SEQUENTIAL rather than as a 75ms three-panel snap. Use only the rig's real emotions: neutral, worried, shock, smug, angry."
+   }
+  },
+  {
+   "id": 6,
+   "t": "29.0-38.6",
    "framing": "alt-vantage",
    "pov": "exploded-diagram",
    "layout": "single-object-void",
@@ -577,99 +627,131 @@
    "transition_in": "morph",
    "thread": "travel",
    "camera": "orbitReveal",
-   "stage3d": "planes",
-   "centered": "the three-pipe records mechanism with the third pipe ending in capped open air, and the pawl locking the date wheel",
-   "means": "REHOOK and the thesis drawn as an absence instead of said",
+   "stage3d": "Plane parallax + Extrude per-face on the housing + CastShadow3D + Atmosphere on depth planes",
+   "centered": "the same machine opening to reveal the capped third pipe, then the pawl locking the wheel, then the two records",
+   "means": "REHOOK and the thesis drawn as an absence inside a machine already met",
    "hero": {
-    "name": "The three-pipe records mechanism (the cutaway hero)",
+    "name": "the ThreePipeMechanism cutaway",
     "parts": 7,
     "zones": 3,
-    "detail_note": "AUTHOR THE PIPES AS TRUE THREE-QUARTER TAPERS with straight side walls, hollow dark interiors, rolled rims and receding interior throat rings. This is the explicit dodge for the 2026-07-25 SeismicStation horn failure, where a face-on ellipse read as a lollipop. Hard cap of TWO visible labels in frame; everything else is carried by pipe thickness and the pawl click.",
     "parts_list": [
-     "a brass and enamel housing cross sectioned in three-quarter view",
-     "PIPE ONE inbound from the DMV counter, fat and greased",
-     "PIPE TWO outbound to Elections, fat and visibly pulsing",
-     "PIPE THREE from the courthouse, ending in capped OPEN AIR",
-     "a date wheel in a brass window labelled CITIZENSHIP AT APPLICATION",
-     "a spring loaded pawl that locks the wheel",
-     "a small drift pile of undelivered certificates on the floor"
+     "pewter and enamel housing in three-quarter cross section",
+     "pipe one inbound, fat and greased",
+     "pipe two outbound, fat and pulsing",
+     "pipe three ending in CAPPED OPEN AIR",
+     "a date wheel in a dull-brass window",
+     "a spring loaded pawl",
+     "a drift pile of undelivered certificates"
     ],
     "zones_list": [
      "the working half (two pipes that function)",
      "the absent half (the capped pipe and the pile beneath it)",
-     "the lock zone (the pawl and the date wheel)"
-    ]
+     "the lock zone (pawl and date wheel)"
+    ],
+    "detail_note": "Same true-taper rule as shot 3. Hard cap of TWO visible labels in frame; everything else carried by pipe thickness and the pawl click."
    }
   },
   {
-   "id": 6,
-   "t": "32.1-44.6",
-   "framing": "push-detail",
+   "id": 7,
+   "t": "38.6-44.9",
+   "framing": "macro-closeup",
    "pov": "top-down-map",
    "layout": "fullbleed-split",
    "motion_vector": "horizontal-traverse",
    "hero_treatment": "data-as-subject",
    "transition_in": "match-cut",
    "thread": "match",
-   "camera": "truckAcross+craneDown",
-   "stage3d": "planes",
-   "centered": "the two records six years apart, the arrow crumpling on the blank wall, and the INACTIVE door swinging freely open",
-   "means": "THE TURN, then defuse the fear before the emotional peak rather than after",
+   "camera": "static:the wall is already infinite so a locked hold is the statement and the pullback belongs to the signature shot",
+   "stage3d": "Plane parallax + Solidify on both documents + CastShadow3D under each",
+   "centered": "the arrow crumpling on the doorless wall, then the INACTIVE door swinging freely open",
+   "means": "THE TURN as a locked hold, then defuse the fear before the emotional peak",
    "hero": {
-    "name": "The two records and the blank wall",
+    "name": "the two records, the blank wall and the door",
     "parts": 6,
     "zones": 3,
-    "detail_note": "The oval seal is the ONLY curve in a film of rectangles, which is how the human reads on sight. The arrowhead crumples with NO impact star and NO comic juice, deliberately unsatisfying. The person is never caricatured, only a hand cropped at the wrist, drawn respectfully.",
     "parts_list": [
-     "a DMV card stamped 2019 with real card thickness and a beveled edge",
-     "its citizenship field as a small brass window whose ink greys out in place",
-     "a naturalization certificate stamped 2025 with a raised gold OVAL seal",
-     "a fat outlined arrow with anticipation",
-     "a featureless blank wall with no handle and no seam",
-     "a human hand that sets the documents down and withdraws"
+     "DMV card stamped 2019 with beveled card thickness",
+     "its citizenship field greying in a dull-brass window",
+     "naturalization certificate stamped 2025",
+     "a raised vermilion OVAL seal",
+     "a fat outlined arrow that crumples",
+     "a featureless wall with no handle and no seam"
     ],
     "zones_list": [
-     "the aged record (one field ages, nothing else does)",
-     "the current record (the only warm saturated object in the film)",
-     "the gap and the wall (the absence)"
-    ]
+     "the aged record",
+     "the current record (the only vermilion in the film)",
+     "the gap and the wall"
+    ],
+    "detail_note": "The oval seal is the ONLY soft closed organic curve in the film and the only curve rendered in the reserved accent. The arrowhead crumples with NO impact star and NO comic juice. The person is never caricatured, only a hand cropped at the wrist."
    }
   },
   {
-   "id": 7,
-   "t": "44.6-55.0",
+   "id": 8,
+   "t": "44.9-51.0",
    "framing": "wide-establish",
    "pov": "cross-section-cutaway",
    "layout": "stacked-layers",
    "motion_vector": "vertical-descent",
    "hero_treatment": "structure-as-subject",
    "transition_in": "pull-out",
-   "thread": "carry",
-   "camera": "craneDown+riseWith",
-   "stage3d": "planes",
-   "centered": "the funnel drawn wrong, the one clerk under the overflow, and the mailbox with its flag raised the other way",
-   "means": "the signature shot, then loop back to frame one with the missing road drawn as an intention",
+   "thread": "build",
+   "camera": "craneDown",
+   "stage3d": "Plane parallax + Extrude on the machine + CastShadow3D under the desk + Atmosphere on the overflow layers",
+   "centered": "the NO ALGORITHM stamp, then the whole machine read at once with mouth and stem in one frame",
+   "means": "the honest disclosure, then the signature shot that owns the pullback",
    "hero": {
-    "name": "The funnel drawn wrong, and the one desk beneath it",
+    "name": "the whole records machine and the one desk",
     "parts": 7,
     "zones": 3,
-    "detail_note": "Same true-taper rule as shot 5. The mouth-to-stem contrast is staged VERTICALLY inside the centered 4:5 safe box and the overflow spills toward frame center, never off the sides, so the LinkedIn crop cannot amputate the signature shot.",
     "parts_list": [
-     "a brass and enamel funnel with a rolled rim",
-     "a toothed GearLever that cranks the mouth wider",
-     "a stem that never changes width",
-     "one clerk under one lamp with a clipboard umbrella",
+     "the widened intake mouth",
+     "the unchanged narrow stem",
+     "the toothed GearLever",
+     "overflow envelopes spilling toward frame center",
+     "one clerk with a clipboard umbrella",
      "one desk phone making a flat tone",
-     "overflow envelopes pouring down the outside walls",
-     "the rural mailbox with a red flag on a spring"
+     "a stamped index card reading A QUERY AND TWO DATABASES"
     ],
     "zones_list": [
      "the mouth (what got widened)",
      "the stem (what did not)",
      "the desk (who absorbs the difference)"
-    ]
+    ],
+    "detail_note": "The mouth STOPS AT THE 4:5 SAFE EDGE and overflow spills toward FRAME CENTER, never off the sides, so the LinkedIn crop cannot amputate the signature shot. Both mechanics were contradictory across files in v1 and are now reconciled."
+   }
+  },
+  {
+   "id": 9,
+   "t": "51.0-54.5",
+   "framing": "push-detail",
+   "pov": "macro-closeup",
+   "layout": "single-object-void",
+   "motion_vector": "push-in-only",
+   "hero_treatment": "data-as-subject",
+   "transition_in": "carried-element",
+   "thread": "match",
+   "camera": "dollyThrough",
+   "stage3d": "Plane parallax + Solidify on the documents + CastShadow3D",
+   "centered": "the exact table from frame one, the letter face down beside the certificate, a dotted road toward the capped pipe",
+   "means": "loopback to the film's ACTUAL first image without ever leaving the interior",
+   "hero": {
+    "name": "the table from frame one",
+    "parts": 5,
+    "zones": 2,
+    "parts_list": [
+     "the same desk and slate wall from shot 1",
+     "the letter now face down",
+     "the naturalization certificate beside it",
+     "a dotted indigo line stopping short",
+     "the capped pipe still visible in the cutaway"
+    ],
+    "zones_list": [
+     "the closed loop (the same first image)",
+     "the unbuilt connection (the dotted line)"
+    ],
+    "detail_note": "Gate 0B found v1's loopback claimed a mailbox that never appeared in the cold open, and that the button left for an exterior with sky and grass in a film whose whole divergence claim is that it has no sky. The button now returns to the real first image and NEVER leaves the interior."
    }
   }
  ],
- "divergence_note": "The last three dispatches were all OUTDOOR NATURAL LANDSCAPES under dramatic low-angle light: an orbital blue-black top-down map over glacial silt (07-23), an orbital-aerial dawn-backlit tundra split with a warm cream drone hero (07-24), and an eye-level malachite fjord night with rationed tungsten and an instrument hero (07-25). This board has NO SKY, NO LANDSCAPE and NO NATURAL LIGHT anywhere in it. It is an interior paper world lit by a hard overhead fluorescent tube, and its hero is not a creature or an instrument but a STRUCTURE, a cutaway records mechanism whose defining feature is a pipe that was never built. The spatial signature (exploded-diagram, single-object-void, vertical-descent) is unused in the last four dispatches, the register moves from naturalistic-scene and instrument-readout to blueprint-technical line art for the first time, the camera strategy is orbit-reveal rather than aerial-descent, track-follow or rack-focus-macro, and the light story is noon-hard flat key rather than overcast-diffuse, dawn-backlight or night-practical. The palette shares no token with either of the last two: bond-paper cream and filing-cabinet slate with stamp-ink blue, and a naturalization-seal red-orange that is rationed to the citizen's own documents so the only warm saturated thing in the film is the human's proof."
+ "divergence_note": "The last three dispatches were OUTDOOR NATURAL LANDSCAPES under dramatic low-angle light: an orbital top-down map over glacial silt (07-23), an orbital-aerial dawn-backlit tundra split (07-24), and an eye-level malachite fjord night with rationed tungsten (07-25). This board has NO SKY, NO LANDSCAPE and NO NATURAL LIGHT anywhere in it, including its button, which stays inside the room. Its hero is neither creature nor instrument but a STRUCTURE whose defining feature is a part that was never built. The spatial signature (exploded-diagram, single-object-void, vertical-descent) is unused in the last four dispatches, the register moves to blueprint-technical line art for the first time, the camera strategy is orbit-reveal rather than aerial-descent, track-follow or rack-focus-macro, and the light story is noon-hard flat key. The palette also deliberately pushes off 2026-07-13, whose logic was a cold institutional fluorescent wash plus manila plus one hot accent: here the dominant institutional note is PRINTED PAPER, rubber-stamp indigo over a pale ruled grid, so the world reads as a printed form rather than as a second grey office."
 }

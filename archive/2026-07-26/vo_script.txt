@@ -1,12 +1,14 @@
 Alaska checks its voter list against D M V records.
 A normal check flags about two hundred names.
-In March the Division of Elections asked the D M V to check fifteen thousand license holders at once.
-That check flagged three thousand five hundred Alaskans.
-Each got a letter saying they may not be citizens, and their registration went inactive.
+Keeping that list clean is the Division of Elections' job.
+But in March it asked the D M V to check fifteen thousand license holders at once.
+That flagged three thousand five hundred Alaskans.
+Each got a letter saying they may not be citizens. Three thousand forty eight went inactive.
 Real citizens are in that pile.
-Because the D M V stores your status the day you apply, and naturalizing later never travels back.
-One Fairbanks voter got her license in twenty nineteen and her citizenship in twenty twenty five.
+Because the D M V never hears about it when you naturalize. It stored your status the day you applied.
+A Fairbanks voter got her license in twenty nineteen and her citizenship in twenty twenty five.
 Neither record is wrong.
 Inactive is not removed. She can still vote a questioned ballot.
-But Alaska widened the question and did not widen the fix. The phone line filled up.
+No algorithm did this.
+Alaska widened the question and never widened the fix.
 So what else are we widening?
