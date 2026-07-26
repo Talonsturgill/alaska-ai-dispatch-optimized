@@ -1,6 +1,10 @@
 import React from 'react';
 import {TalkMouth, ambientMouth} from './voice';
 import {tones, FormGradient, RimLight, ContactShadow} from './lighting';
+// vitals(): the shared living-idle primitive (motion.tsx). Every characterized-object
+// hero below routes its idle through it, so no hero can be authored with the thin
+// single-sine float the panel flagged on 2026-07-24 and 2026-07-25.
+import {vitals} from './motion';
 
 // =============================================================================
 // KIT — shared IGS-style drawing helpers for the Dispatch episode. Ink outlines,
@@ -347,8 +351,11 @@ export const Sourdough: React.FC<{
   accent?: number;
 }> = ({frame: f, x = 0, y = 0, scale = 1, facing = 1, emotion = 'proud', glow = 1, accent = 0}) => {
   const idle = emotion === 'frozen' ? 0 : 1;
-  const breath = 1 + idle * 0.012 * Math.sin(f / 15);
-  const bob = idle * 2 * Math.sin(f / 21);
+  // living idle (2026-07-26): layered desynced breath/weight-shift via vitals().
+  // `frozen` still holds its breath (gain 0), which is a deliberate story beat.
+  const vt = vitals(f, 1.0, idle * 0.85);
+  const breath = vt.breath;
+  const bob = vt.bob * 0.7;
   const blink = idle > 0 && ((f + 30) % 110) < 5 && emotion !== 'faltering';
   const bodyT = tones('#c9741f');   // warm ember-adjacent housing color
   const capT = tones('#3A4A63');    // frost-blue knit cap, matches the palette's ground tone
@@ -453,7 +460,7 @@ export const Cell: React.FC<{
   frame: number; x?: number; y?: number; scale?: number; facing?: 1 | -1; chargeLevel?: 0 | 1 | 2;
 }> = ({frame: f, x = 0, y = 0, scale = 1, facing = 1, chargeLevel = 1}) => {
   const t = tones('#2f7d6b');   // cold-hardened teal-green casing
-  const bob = 1.6 * Math.sin(f / 17 + 1);
+  const bob = vitals(f, 2.0, 0.55).bob;   // living idle (vitals) — was a single sine
   const idg = `cl${Math.round(x)}_${Math.round(y)}`;
   return (
     <g transform={`translate(${x},${y}) scale(${scale * facing},${scale})`}>
@@ -500,7 +507,7 @@ export const Vale: React.FC<{
   const bodyT = tones('#8C99A8');   // cool gunmetal
   const tankT = tones('#3f6f6a');   // teal suppressant tank
   const idg = `vale${Math.round(x)}_${Math.round(y)}`;
-  const bob = 4 * Math.sin(f / 16);
+  const bob = vitals(f, 3.0, 1.15).bob;   // living idle (vitals) — was a single sine
   const lock = Math.max(0, Math.min(1, eyeLock));
   // iris: wide when scanning, clamps SMALL and bright when locked
   const iris = 20 - lock * 11 + (emotion === 'vigilant' ? 2 * Math.sin(f / 7) : 0);
@@ -675,7 +682,7 @@ export const SatelliteEye: React.FC<{
   const bodyT = tones('#9AA6B4');   // cool pewter-gunmetal bus
   const cellT = tones('#2b3a6b');   // indigo solar cells
   const idg = `sat${Math.round(x)}_${Math.round(y)}`;
-  const bob = 5 * Math.sin(f / 17) + accent * 4;
+  const bob = vitals(f, 4.0, 1.35).bob + accent * 4;   // living idle (vitals) — was a single sine
   const lock = Math.max(0, Math.min(1, eyeLock));
   // iris: wide + sweeping while searching, CLAMPS small + bright when found (locked)
   const sweep = emotion === 'searching' ? 6 * Math.sin(f / 9) : 0;
@@ -808,7 +815,7 @@ export const Petrel: React.FC<{
   const bodyT = tones('#EBD9B0');   // warm cream shell
   const trimT = tones('#D9B87A');   // gold trim
   const idg = `petrel${Math.round(x)}_${Math.round(y)}`;
-  const bob = 5 * Math.sin(f / 15);
+  const bob = vitals(f, 5.0, 1.35).bob;   // living idle (vitals) — was a single sine
   const dil = Math.max(0, Math.min(1, eyeDilate));
   const kick = Math.max(0, Math.min(1, accent));
   // idle-search drift to the WRONG side (eager/lost), then the scene drives `heading` on the snap

@@ -116,6 +116,53 @@ export function idleSway(frame: number, phase = 0, amp = 2.5, period = 46): numb
     + amp * 0.4 * Math.sin((frame + phase * 7.3) / (period * 0.37) * 2 * Math.PI);
 }
 
+/**
+ * vitals() — THE LIVING-IDLE PRIMITIVE (2026-07-26).
+ *
+ * Why this exists: the scorer panel flagged "held figures/heroes read thin on idle
+ * life" on 2026-07-24 AND again on 2026-07-25, and both runs DEFERRED it. The
+ * Character rig had already earned a layered weight-shift idle, but every
+ * characterized-object hero in kit.tsx floated on a SINGLE fixed-period sine
+ * (`const bob = 5 * Math.sin(f / 17)`). One sine at one period is why they read
+ * mechanical: over any half-second window it barely moves, and two heroes on
+ * screen bob in lockstep.
+ *
+ * The structural fix is a shared primitive rather than another doctrine note, so
+ * a hero cannot be authored WITHOUT life. Three desynced layers on deliberately
+ * IRRATIONAL period ratios (they never re-phase, so the loop never reads as a
+ * loop): a slow primary drift, a mid breath, and a small fast micro-tremor.
+ *
+ *   `phase` — per-instance seed so two heroes in one shot never move in lockstep.
+ *   `gain`  — scales the whole signal (0 freezes it: use for a deliberate
+ *             held-breath//frozen story beat, matching Sourdough's `frozen`).
+ *
+ * Returns pixel/scale/degree-ready channels:
+ *   bob    — vertical drift in px (feed the hero's translate y)
+ *   swayX  — lateral weight-shift in px
+ *   breath — a scale multiplier around 1 (feed a scaleY or whole-body scale)
+ *   tilt   — degrees of body roll that TRACKS swayX, so the shift reads as
+ *            weight moving, not a sprite sliding
+ *   micro  — a raw -1..1 fast tremor for attached secondary parts (antennae,
+ *            tags, cables) that should lag the body
+ */
+export function vitals(
+  frame: number,
+  phase = 0,
+  gain = 1,
+): {bob: number; swayX: number; breath: number; tilt: number; micro: number} {
+  const p = phase * 2.399963; // golden-angle spread: nearby seeds decorrelate fast
+  // Irrational period ratios (no common multiple => no visible re-phasing).
+  const slow = Math.sin(frame / 37.3 + p);
+  const mid = Math.sin(frame / 19.7 + p * 1.61);
+  const fast = Math.sin(frame / 8.9 + p * 2.71);
+  const bob = gain * (3.1 * slow + 1.3 * mid + 0.45 * fast);
+  const swayX = gain * (2.2 * Math.sin(frame / 53.1 + p * 0.83) + 0.7 * mid);
+  const breath = 1 + gain * 0.014 * (0.75 * mid + 0.25 * slow);
+  // tilt tracks the lateral shift (weight moves, the body answers) with a small lag
+  const tilt = gain * (1.15 * Math.sin(frame / 53.1 + p * 0.83 - 0.35) + 0.3 * fast);
+  return {bob, swayX, breath, tilt, micro: fast};
+}
+
 /** Soft drop shadow group for HUD chips so they sit IN the lit scene (manifest note). */
 export const ChipShadow: React.FC<{dx?: number; dy?: number; opacity?: number; children: React.ReactNode}> = ({
   dx = 5, dy = 9, opacity = 0.28, children,

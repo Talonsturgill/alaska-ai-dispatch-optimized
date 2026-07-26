@@ -1,5 +1,7 @@
 import React from 'react';
 import {INK, tones, FormGradient, RimLight, ContactShadow} from './lighting';
+// vitals(): shared living-idle primitive — see motion.tsx (2026-07-26 repeat-offender fix).
+import {vitals} from './motion';
 
 // Net-new sensor assets for the 2026-07-21c beluga Dispatch: the robot EYE (SatelliteEye /
 // GAIA) and the robot EAR (ListeningMooring / passive-acoustic node). Flat-vector IGS 2.5D
@@ -21,7 +23,7 @@ export const SatelliteEye: React.FC<{
   const cone = Math.max(0, Math.min(1, scanCone));
   const glow = Math.max(0, Math.min(1, lensGlow));
   const yaw = Math.sin(f / 42) * 6;                 // orbital drift (visible idle)
-  const bob = Math.sin(f / 34) * 10;
+  const bob = vitals(f, 6.0, 2.6).bob;              // living idle (vitals) — was a single sine
   const dish = (f * 2.6) % 360;
   const blink = (Math.sin(f / 8) > 0.6) ? 1 : 0.25;
   const wing = Math.sin(f / 40) * 2.4;
@@ -142,7 +144,7 @@ export const SeismicStation: React.FC<{
   const miss = emotion === 'missing' ? 1 : 0;
   const heard = emotion === 'heard' ? 1 : 0;
 
-  const bob = Math.sin(f / 26) * 2.8 * (1 - miss * 0.6);
+  const bob = vitals(f, 7.0, 0.9).bob * (1 - miss * 0.6);   // living idle (vitals) — was a single sine
   const kick = accent * 6;
   const sweep = emotion === 'listening' ? Math.sin(f / 30) * 14 : 0;
   const tremble = strain * Math.sin(f / 3.0) * 2.6;

@@ -104,6 +104,20 @@ NONE. The 2026-07-20 library session banked all 14 gap species + SledDogTeam pro
 - `lib/fishcraft.tsx` — FISHCRAFT (NET-NEW 2026-07-21, fish-mastery session): the shared fish-realism engine every fauna fish composes (doctrine + research sources in docs/craft/FISHCRAFT.md). `makeSpine()` carangiform traveling wave (amplitude grows tailward, head counter-yaw, tail heave+pitch coupling so the figure-8 emerges, gill pulse, buoyancy bob on irrational periods), `bodyGeom()` sampled outline/rails from depth profiles (SINGLE closed subpath — two concatenated subpaths auto-close with chord artifacts), `FishSurface` chrome layer stack (countershade gradient, masked shingle scales, filled form-shadow band, head-to-tail FADED spec band + hard glint, iridescence puddle, belly bounce, caustics), `FinMembrane` translucent rippling ray-lined fins, `CHROME_SKIN` preset. HARD-WON RULES: uid() inputs must include ALL variant props (pure-hash collisions cross-wire gradients); spec layers fade out before the caudal wrist; body profiles keep a wrist FLOOR (~9% body length) — ACTIVE
 - `lib/materials.tsx` — MATERIALS (NEW 2026-07-20d, Stage3D backlog item (d)): surfaces read as SUBSTANCES, not flat fills. Eight deterministic SVG-pattern overlays: brushedMetal, corrugated, tarmac, granite, bark, planks, snowpack, ice. Usage: `<MaterialDefs />` once per svg, then re-draw any silhouette with `fill={matFill('bark')}` over its lit base (or the `Surface` helper). Seeded imul-hash speckle (no Math.random). Look-dev: MaterialShowcase.tsx incl. an Extrude+material demo. Pairs with the no-flat-single-tone-fills rule.
 - `lib/motion.tsx` — animation principles: entrance() (anticipation/overshoot/squash-stretch + MotionBlur velocity), followThrough() secondary swing, accentKick(), idleSway(), squashStretch(), ChipShadow (HUD chips sit in the scene) — NEW 2026-07-18b
+- `lib/motion.tsx` `vitals()` — THE LIVING-IDLE PRIMITIVE, 2026-07-26 (repeat-offender fix: the
+  scorer panel flagged thin idle life on held heroes on 2026-07-24 AND 2026-07-25, and both runs
+  DEFERRED it, so the third strike gets a code guard instead of a doctrine note). The Character rig
+  had already earned a layered weight-shift idle, but every characterized-object hero floated on a
+  SINGLE fixed-period sine (`const bob = 5 * Math.sin(f / 17)`) — which is exactly why they read
+  mechanical: over any half-second window the figure barely moves, and two heroes on screen bob in
+  lockstep. `vitals(frame, phase, gain)` returns `{bob, swayX, breath, tilt, micro}` from three
+  desynced layers on deliberately IRRATIONAL period ratios (no common multiple, so the loop never
+  re-phases and never reads as a loop); `phase` decorrelates instances by the golden angle, `gain`
+  scales or freezes the whole signal (0 = a deliberate held-breath story beat). WIRED THROUGH every
+  hero already: kit.tsx `Sourdough` (frozen still holds its breath), `Cell`, `Vale`, `SatelliteEye`,
+  `Petrel`; sensors.tsx `SatelliteEye`, `SeismicStation`. Author new heroes against it — a hero
+  cannot be given a thin idle without deliberately bypassing the primitive. Verified: tsc --noEmit
+  clean + StationLook draft stills render all four emotional states correctly — ACTIVE
 - `lib/voice.tsx` — VOICE ACTING: VoiceProvider/useVoice (per-frame mouth envelope + emphasis accents from the VO pipeline), TalkMouth flapping mouth; Character + ServerMachine take `talking` — the cast speaks/reacts in sync with the narration — NEW 2026-07-18b
 - `assets/sfx/` designed-foley bank (scripts/build_sfx_library.py, 16 sounds; scripts/sfx_bank.py resolver; drop real CC0 takes in assets/sfx/real/ to upgrade any entry) — NEW 2026-07-18b
 - `scripts/render.sh` — draft (half-res ~2-4x faster) vs final render wrapper; the taste loop iterates on drafts — NEW 2026-07-18b
