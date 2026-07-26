@@ -1,0 +1,5 @@
+dispatch-2026-07-26-9x16.mp4 https://raw.githubusercontent.com/Talonsturgill/alaska-ai-weekly/dispatch-media/media/dispatch-2026-07-26-9x16.mp4
+dispatch-2026-07-26-4x5.mp4 https://raw.githubusercontent.com/Talonsturgill/alaska-ai-weekly/dispatch-media/media/dispatch-2026-07-26-4x5.mp4
+dispatch-2026-07-26-720.mp4 https://raw.githubusercontent.com/Talonsturgill/alaska-ai-weekly/dispatch-media/media/dispatch-2026-07-26-720.mp4
+dispatch-2026-07-26-poster.png https://raw.githubusercontent.com/Talonsturgill/alaska-ai-weekly/dispatch-media/media/dispatch-2026-07-26-poster.png
+dispatch-2026-07-26-thumb.jpg https://raw.githubusercontent.com/Talonsturgill/alaska-ai-weekly/dispatch-media/media/dispatch-2026-07-26-thumb.jpg

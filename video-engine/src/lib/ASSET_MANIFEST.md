@@ -34,6 +34,50 @@ runs of Gate 0D could not find its assets. That is the manifest-drift bug this r
 - `SeismicStation` — NET-NEW 2026-07-25 — the GROUND EAR, hero of "The One It Didn't Hear". The shelf had an orbital eye and a seafloor ear but nothing that listens to the GROUND. Deliberate shape language: SOFT ROUND INSTRUMENT against HARD ANGULAR LAND. THE TELL IS A BRASS GRAMOPHONE HORN built as a real cone in 3/4 (straight taper walls, hollow dark mouth, rolled rim, receding interior throat rings) — pass 1 drew it as a flat face-on ellipse and it read as a lollipop. `emotion` listening (lazy quarter-turn sweeps) / straining (telescopes out past comfort, rim trembles, stress lines) / missing (horn rolls down to point at the dirt, rim dented, lamp DARK) / heard (snaps rigid, rim flares, lamp fires amber with sound arcs arriving into the mouth). Also has a real FACE (brow bar that drops, two lidded eyes with highlights that TRACK via `look`, desynced blink) — pass 1 had no face and read inert. `lamp` 0..1 lights ONLY when emotion==='heard', so a lit lamp always means a detection actually fired. `heading` deg, `accent` VO-reactivity, `groundY`, `tint` so a night palette re-tints without a re-draw. Solar-panel brim, stub antenna with secondary sway, ribbed half-buried post, vent slots, bezel ticks, hard angular dirt collar. Form-shaded + rim + contact shadow — ACTIVE
 - Look-dev: `StationLook` (StationLook.tsx) — the four emotional states plus NightGrade, in one frame.
 
+## Paper & records (the interior family) — lib/paper.tsx + lib/records.tsx
+NET-NEW 2026-07-26 ("The Field That Stopped in 2019"). The shelf had ELEVEN biomes and every
+one was outdoors, and materials.tsx had eight substance overlays and none was paper. This
+dispatch happens entirely inside an office, so both gaps were load-bearing.
+- `PaperOfficeBG` — the library's FIRST INTERIOR BIOME — paper.tsx — a fluorescent-lit records
+  room: a back wall of filing cabinets in one-point recession (THE DARK ANCHOR, #4A5A66), a lit
+  dust column, a desk plane, and a front parallax drift of loose sheets. Params `parallax`,
+  `drift`. Built against a HIGH flatness rating with an ENFORCED value ladder (10 to 12 percent L
+  per depth plane) because a high-key flat-lit cream interior is the textbook beige-page recipe — ACTIVE
+- `PaperFiber` — the paper SUBSTANCE (the materials.tsx gap) — paper.tsx — fiber tooth plus a pale
+  ruled grid so a sheet reads as printed stock, deterministic imul hash, never Math.random — ACTIVE
+- `Sheet` — a sheet with REAL BODY — paper.tsx — the numeric shadow contract lives in code, not in
+  prose: 2px edge, drop shadow offset 4 down / 2 right at 22 percent, optional curled corner with a
+  30 percent under-shadow. Under flat light this is what makes paper read as a solid — ACTIVE
+- `TaperedCone` — the TRUE THREE-QUARTER CONE — paper.tsx — REBUILT IN PASS 2 after the panel
+  raised it as a hard blocker. Pass 1 drew a dark ellipse at FULL mouth width over the body and the
+  whole thing read as a black satellite dish, which is the SAME lollipop failure the 2026-07-25
+  SeismicStation horn hit. The fix is three things: a much flatter rim ellipse so the camera looks
+  ALONG the cone rather than down into a dish, a dark interior INSET and pushed down the throat so a
+  lit rim band and both straight taper walls stay visible, and the two walls drawn as SEPARATE lit
+  and shaded faces, which is what actually sells a cone when there is no dramatic falloff to help.
+  `mouthW` and `stemW` are independent on purpose — ACTIVE
+- `StateLetter` — the letter, WITH NO FACE — paper.tsx — a creative gate ruled the first pass a
+  violation: a cartoon envelope performing a wince is a gag played BY the object that carried a
+  citizenship challenge to thousands of real people. Reluctance now lives entirely in PHYSICS, an
+  `open` flap that hesitates against the paper's own stiffness and flips up about its hinge. Params
+  `open`, `line`, `faceDown` — ACTIVE
+- `FullTapeMachine` — fixed-capacity answering machine — paper.tsx — two visible reels, a finite
+  tape loop, a FULL tag on a spring. Exists so a COUNT can be felt against a KNOWN OBJECT WITH FIXED
+  CAPACITY instead of as a ratio, which is how this film honoured a ban on dividing two figures that
+  were different kinds of object. `fill` 0..1 seizes the reels — ACTIVE
+- `RecordsMachine` — the run's HERO — records.tsx — ONE machine, not two, so its output stem has an
+  antecedent before the narration references it. The intake mouth cranks wider tooth by tooth via
+  `mouthOpen` while the stem never changes width, which is the entire thesis in two independent
+  parameters. `strain` pops rivets one at a time and pins a pressure gauge, so the stem's refusal is
+  STAGED AS MOTION rather than declared as an absence — ACTIVE
+- `ThreePipeCutaway` — the SAME machine, opened — records.tsx — the thesis drawn as a physical
+  ABSENCE. Pipe one inbound and pipe two outbound are fat and working; pipe three, which would carry
+  a naturalization certificate back in, ENDS IN CAPPED OPEN AIR with certificates dropping onto a
+  drift pile. `disclose` staggers the reveal so the capped pipe is the LAST information; `lock`
+  slams a pawl onto the date wheel. KNOWN WEAKNESS: two panel judges found the capped pipe still not
+  legible enough as an absence at sampled frames. Next pass should scale the pipes up, label the
+  capped end, and animate flow in one and two so the dead one reads by contrast — ACTIVE
+
 ## Fauna (the Alaska bestiary) — lib/fauna.tsx
 - `Moose` — land — fauna.tsx — emotion: calm/wary; idle head-bob/ear-flick/tail; palmate antlers; form-shaded + rim + AO — NEW 2026-07-18; `bumpKick` 0..1 NEW 2026-07-19: a comic bumped-indignant-recover reaction pose (squash-and-stagger, pinned ears, wide indignant eyes, antler wobble, impact stars); `alert` 0..1 NEW 2026-07-20: ears perk fully UP+forward, head/neck RAISES, nostril-flare sniff, pupil tracks upward — the OPPOSITE motion from bumpKick's lateral recoil (a watching-the-sky pose), used for the drone-watcher gag — existing-asset new-pose growth quota
 - `Raven` — air/perch — fauna.tsx — mode: perch/fly; head-tilt, throat hackles, wing-beat cycle — NEW 2026-07-18
@@ -148,6 +192,11 @@ NONE. The 2026-07-20 library session banked all 14 gap species + SledDogTeam pro
   which makes a palette rule like "amber never appears on an unmonitored slope" a property of the scene
   graph instead of a convention a renderer can violate silently, and (4) a horizon lift so ridge
   silhouettes still separate at the black floor. Look-dev: StationLook.tsx.
+- KNOWN NEXT ADVANCES (2026-07-26 panel, median 6.68 vs a 9.0 bar, worth reading before the next run):
+  held figures render FROZEN across full 8-frame strips even though the Character rig has idle built
+  in, so scenes are not driving it; the turn's arrow arrives and never crumples; nine shots played at
+  ONE camera height on one set with no close-up and no scale change; and the caption_fixups map in
+  vo_script.json must be populated EVERY run or TTS spellings like 'D M V' paint onto screen.
 - Known next advances: migrate MORE Episode scenes onto stage3d (first landed 2026-07-20b: the
   boom-up crane in "The Referee Arrives"; lesson: overscan non-fill world planes well past the
   frame at max pull-back or they render as cut-out boxes), kinetic typography, per-material

@@ -933,12 +933,13 @@ critic SHIP, Gate 0E cold-read SHIP. Panel: 3-judge median 8.30, zero hard block
 pass flagged the on-screen numbers (fixed), re-verified clean. LinkedIn caption: linter PASS
 (1615 chars, 92-char hook, 5 hashtags), editor+scorer 8.74.
 
-## 2026-07-26 -- "The Field That Stopped in 2019" (Alaska voter-roll DMV match) -- INCOMPLETE RUN
+## 2026-07-26 -- "The Field That Stopped in 2019" (Alaska voter-roll DMV match) -- SHIPPED BELOW BAR
 
-**Shipped:** nothing to air. The board, the fact-check-safe set, the voice and the nine scenes
-are complete, verified and pushed. Phase 6 (gates + panel), Phase 6B (caption) and Phase 7
-(encode, upload, feed, Gmail draft) did NOT run. Branch not merged, because the merge rule is
-conditional on quality gates passing and they were never run. Honest state, not a silent partial.
+**Shipped:** a 57.9 second vertical Dispatch, three cuts, Gmail draft delivered, feed entry live,
+branch merged. The panel median is 6.68 against a 9.0 bar and the draft says so in the scorecard
+rather than burying it. Every objective gate passes and all three hard blockers the panel raised
+were fixed in the delivered cut. The note below the Two permanent fixes section records what the
+judges still fault, unre-graded, so the next run inherits the real list and not a flattering one.
 
 **Story:** Alaska's Division of Elections asked the DMV to check about 15,000 license holders at
 once. That flagged 3,500 Alaskans, mailed them letters saying they may not be citizens, and moved
@@ -999,6 +1000,51 @@ been described as widened. Gates 0B, 0C and 0D all returned ship:false and drove
 0B caught the letter being made a comic object, the fair defense being posted but never spoken,
 and the mandated no-AI statement missing entirely.
 
-**Deferred with a plan (genuinely, not silently):** finish the run. The board, claims, voice and
-scenes are on the branch; what remains is the per-scene taste loop beyond the two passes done on
-the hook and the cutaway, then Phase 6 gates and panel, the caption, and Phase 7 delivery.
+**Panel result, final and unrounded:** MEDIAN 6.68 (judges 5.64, 6.68, 6.71) against a 9.0 ship
+threshold. Accuracy and sourcing 9.0 and 7.5, sound design and mix 8.0 to 8.5, writing 8.0 to 8.5.
+The claim discipline held everywhere: 3,500 letters and 3,048 inactive are never merged or divided,
+the 200 and the 15,200 never share a frame, no ratio is ever drawn between them, and no banned
+figure appears anywhere. Objective gates: -13.7 LUFS integrated, true peak -1.28 dBTP, a MEASURED
+16 dB silence dip landing inside a real 1.06s VO gap before the turn, audible tail, 31
+forced-aligned caption cues taken from the final mixed VO, 25 SFX events with no two consecutive
+from the same family and exactly one riser, and all three cuts ffprobe-asserted at 1080x1920,
+1080x1350 and 720x1280 with audio verified present in each rather than assumed.
+
+**Three hard blockers raised by the panel, all three fixed in the delivered cut:**
+
+1. A TYPO PAINTED INTO THE FILM. The VO script spells DMV as three separated letters so the synth
+   reads it as an initialism, and forced alignment transcribed it straight back, so "D M V" was
+   appearing on screen in the caption track and in two pieces of art. build_scenes.py already had a
+   `caption_fixups` mechanism for exactly this leak and this run had never populated it. The gap was
+   the run, not the engine. Populated via out/dispatch/vo_script.json and zero cues carry the
+   artifact. GENERAL LESSON: any TTS spelling hack is a leak into the caption track by default, and
+   the fixup map has to be written at the same moment the hack is written, never later.
+2. THE KEY REASSURANCE WAS CROPPED OFF THE LINKEDIN CUT. The 4:5 safe area runs y=285 to y=1635 and
+   "INACTIVE IS NOT REMOVED" sat at y=1700, so the one sentence that stops a viewer believing people
+   were disenfranchised was amputated from the primary deliverable. That label plus eight others are
+   now inside the box. GENERAL LESSON: the 9x16 master is not the deliverable being judged, the 4:5
+   crop is, so authoring against the master's full height is authoring against the wrong frame.
+3. BOTH CONES RENDERED AS FACE-ON ELLIPSES, the same lollipop failure the 2026-07-25 seismic horn
+   hit and which this run's own binding art direction named and banned in writing. Naming a failure
+   in the art direction does not prevent it. Geometry rebuilt with straight taper walls drawn as
+   separate lit and shaded faces, a rolled rim, and an inset recessed throat.
+
+**What the judges still fault, carried forward honestly and NOT re-graded after the fixes:**
+
+- Held figures are frozen. McCabe is pixel-identical across a full 8-frame strip, as is the clerk
+  under the funnel. `vitals()` exists now and these scenes simply are not driving it. The fix landed
+  in the library and did not land in the episode.
+- The turn is under-animated. The arrow arrives and then sits, and never crumples against the wall
+  the beat was designed around.
+- The cutaway carrying the entire thesis, a pipe ending in capped open air, is not legible enough at
+  the sampled frames. Two judges named this the single biggest defect. Next pass: scale the pipes
+  up, label the capped end, and animate flow in pipes one and two so the dead one reads by contrast.
+- Nine shots play at one camera height on one set. No close-up, no low angle, no real scale change
+  in 57.9 seconds.
+- The kitchen-table beat that was supposed to make three Alaskans read as people was rendered
+  against the same institutional wall as everything else.
+
+**Conflict of interest, logged rather than quietly avoided:** a legitimate, well-sourced ADN story
+this week reports six Anthropic employees donating $372,000 to an Alaska gubernatorial candidate.
+This automation is Anthropic-built, so it is not the right narrator for that story, and the choice
+not to air it is recorded in out/dispatch/story_pick.md instead of being made invisibly.
