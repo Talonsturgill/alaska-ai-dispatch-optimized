@@ -359,7 +359,7 @@ const S8: React.FC = () => {
           <text x={40} y={120} fontFamily={BOLD} fontWeight={900} fontSize={64} fill={INK}>NO ALGORITHM</text>
           <text x={40} y={200} fontFamily={MONO} fontSize={34} fill={INK} opacity={0.85}>A QUERY AND TWO DATABASES</text>
         </Sheet>
-        <g transform={`translate(700,940) rotate(${-12 + stamp * 12}) scale(${interpolate(stamp, [0, 1], [1.7, 1])})`} opacity={stamp}>
+        <g transform={`translate(700,1230) rotate(${-12 + stamp * 12}) scale(${interpolate(stamp, [0, 1], [1.7, 1])})`} opacity={stamp}>
           <rect x={-120} y={-52} width={240} height={104} fill="none" stroke={PAPER.stamp} strokeWidth={9} />
           <text x={0} y={22} textAnchor="middle" fontFamily={BOLD} fontWeight={900} fontSize={56}
                 fill={PAPER.stamp}>NOT AI</text>
