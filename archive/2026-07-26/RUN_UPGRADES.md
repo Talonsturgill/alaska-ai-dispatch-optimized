@@ -1044,6 +1044,24 @@ from the same family and exactly one riser, and all three cuts ffprobe-asserted 
 - The kitchen-table beat that was supposed to make three Alaskans read as people was rendered
   against the same institutional wall as everything else.
 
+**Caught in the post-delivery audit, and it was NOT this run's bug:** every dispatch email ever
+generated has shipped a DEAD LINK. `dispatch_email.py` hardcoded `alaskaihq.com` in two places, the
+clickable sources list and the copy-paste FIRST COMMENT block, and the live site is `alaskaaihq.com`
+(alaska + ai + hq). Verified by request, the correct domain returns 200 and the typo does not
+resolve at all. The first-comment block is the one that hurts, because it is the text the owner
+pastes PUBLICLY under the LinkedIn post, so the dead link went out in front of readers every time.
+Fixed at the source in the script rather than patched in this run's output, so no future run can
+reintroduce it. LESSON: a hardcoded constant with a comment saying it is hardcoded ON PURPOSE so no
+run can forget it is exactly the kind of string that never gets re-read, and it was never once
+resolved against the live site.
+
+**Also caught in the same audit:** the house punctuation ban covers the Gmail draft explicitly, but
+`caption_check.py` only hard-gates the POST BODY, so the scorecard, note and upgrades prose reached
+the draft with six colons and a semicolon in them. Cleaned, and the two template-level offenders in
+`dispatch_email.py` were fixed at the source. The aspect-ratio notation in the download buttons
+(9:16, 4:5) is deliberately LEFT ALONE as numeric ratio rather than prose punctuation. Worth a
+decision from the owner on whether the gate should extend to the whole email body.
+
 **Conflict of interest, logged rather than quietly avoided:** a legitimate, well-sourced ADN story
 this week reports six Anthropic employees donating $372,000 to an Alaska gubernatorial candidate.
 This automation is Anthropic-built, so it is not the right narrator for that story, and the choice

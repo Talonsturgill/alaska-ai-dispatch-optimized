@@ -19,7 +19,7 @@ ul.upg li{color:#1c5f38;}
 
   <h2>The video</h2>
   <a class="dl" href="https://raw.githubusercontent.com/Talonsturgill/alaska-ai-weekly/dispatch-media/media/dispatch-2026-07-26-4x5.mp4">&#9660;&nbsp; Post to LinkedIn &middot; 4:5 (main feed)<small>1080&times;1350 &middot; ~60s &middot; H.264 MP4 &middot; stays in the home feed</small></a><a class="dl alt" href="https://raw.githubusercontent.com/Talonsturgill/alaska-ai-weekly/dispatch-media/media/dispatch-2026-07-26-9x16.mp4">&#9660;&nbsp; TikTok &middot; 9:16 (full-screen)<small>1080&times;1920 &middot; on LinkedIn this goes to the vertical Video tab, not the feed</small></a>
-  <div class="warn" style="background:#eaf4ff;border-color:#b6d8f5;color:#245c8a;">For LinkedIn use the <b>4:5</b> cut (top button) so the video lands in the <b>main feed</b> next to your caption. The 9:16 is TikTok-native; uploaded to LinkedIn it gets pulled into the swipe-only Video tab instead of the feed.</div>
+  <div class="warn" style="background:#eaf4ff;border-color:#b6d8f5;color:#245c8a;">For LinkedIn use the <b>4:5</b> cut (top button) so the video lands in the <b>main feed</b> next to your caption. The 9:16 is TikTok-native, and uploaded to LinkedIn it gets pulled into the swipe-only Video tab instead of the feed.</div>
   
   <div class="poster"><img src="https://raw.githubusercontent.com/Talonsturgill/alaska-ai-weekly/dispatch-media/media/dispatch-2026-07-26-poster.png" alt="poster"/></div>
 
@@ -62,46 +62,46 @@ https://www.adn.com/politics/2026/07/24/alaska-removes-thousands-from-states-act
 KTOO, 2026-07-23
 https://www.ktoo.org/2026/07/23/state-removes-3500-alaskans-from-voter-rolls-based-in-part-on-old-data/
 
-More Alaska and AI updates, alaskaihq.com
+More Alaska and AI updates, alaskaaihq.com
 
 Music, "Lightless Dawn" Kevin MacLeod (incompetech.com), licensed under CC BY 4.0
-Voice, Gemini native TTS, voice Sulafat, model gemini-3.1-flash-tts-preview. A preset voice carrying a SynthID watermark, not a clone. Soundcheck passed at 0.993, best of 3 takes, 55.3s.</pre>
+Voice, Gemini native TTS, voice Sulafat, model gemini-3.1-flash-tts-preview, a preset voice carrying a SynthID watermark, not a clone. Soundcheck passed at 0.993, best of 3 takes.</pre>
 
   <h2>Grade</h2><ul><li>3-judge panel against config/dispatch_rubric.yaml, ship threshold 9.0.
 
 MEDIAN 6.68 (judges scored 5.64, 6.68, 6.71). That is well below the bar and this draft does not pretend otherwise.
 
-THREE HARD BLOCKERS WERE RAISED AND ALL THREE ARE FIXED IN THE DELIVERED CUT:
+THREE HARD BLOCKERS WERE RAISED AND ALL THREE ARE FIXED IN THE DELIVERED CUT.
 1. A typo painted into the film. The VO script spells DMV as three letters so the synth reads it as an initialism, and forced alignment transcribed it straight back, so "D M V" was appearing on screen in the caption track and in two pieces of art. build_scenes.py already had a caption_fixups mechanism for exactly this leak and this run had never populated it. Populated now, zero cues carry the artifact.
-2. The key reassurance was cropped off the LinkedIn cut. The 4:5 safe area runs y=285 to y=1635 and "INACTIVE IS NOT REMOVED" sat at y=1700, so the one sentence that stops a viewer believing people were disenfranchised was amputated from the primary deliverable. That label and eight others are now inside the box.
+2. The key reassurance was cropped off the LinkedIn cut. The 4x5 safe area runs y=285 to y=1635 and "INACTIVE IS NOT REMOVED" sat at y=1700, so the one sentence that stops a viewer believing people were disenfranchised was amputated from the primary deliverable. That label and eight others are now inside the box.
 3. Both cones rendered as face-on ellipses, which is the same lollipop failure the 2026-07-25 seismic horn hit and which this run's own binding art direction named and banned. The cone geometry was rebuilt with straight taper walls drawn as separate lit and shaded faces, a rolled rim, and an inset recessed throat.
 
-WHAT THE JUDGES STILL FAULT, honestly, and NOT re-graded after the fixes:
+WHAT THE JUDGES STILL FAULT, honestly, and NOT re-graded after the fixes.
 - Held figures are frozen. McCabe is pixel-identical across a full 8-frame strip, as is the clerk under the funnel. The rig has idle life built in and these scenes are not driving it.
 - The turn is under-animated. The arrow arrives and then sits, and never crumples against the wall the beat was designed around.
 - The cutaway that carries the entire thesis, a pipe ending in capped open air, is not legible enough at the sampled frames. Two judges named this as the single biggest defect.
 - Nine shots play at one camera height on one set. No close-up, no low angle, no real scale change in 57.9 seconds.
 - The kitchen-table beat that was supposed to make three Alaskans read as people was rendered against the same institutional wall as everything else.
 
-WHAT SCORED WELL: accuracy and sourcing (9.0 and 7.5), sound design and mix (8.0 to 8.5), writing (8.0 to 8.5). The claim discipline held everywhere. 3,500 letters and 3,048 inactive are never merged or divided, the 200 and the 15,200 never share a frame and no ratio is ever drawn between them, and no banned figure appears anywhere.
+WHAT SCORED WELL. Accuracy and sourcing (9.0 and 7.5), sound design and mix (8.0 to 8.5), writing (8.0 to 8.5). The claim discipline held everywhere. 3,500 letters and 3,048 inactive are never merged or divided, the 200 and the 15,200 never share a frame and no ratio is ever drawn between them, and no banned figure appears anywhere.
 
-OBJECTIVE GATES ALL PASS: -13.7 LUFS integrated, true peak -1.28 dBTP, a measured 16 dB silence dip landing in a real VO gap before the turn, audible tail, 31 forced-aligned caption cues from the final mixed VO, 25 SFX events with no two consecutive from the same family and exactly one riser, and all three cuts ffprobe-asserted at 1080x1920, 1080x1350 and 720x1280 with audio verified present in each rather than assumed.</li></ul>
+OBJECTIVE GATES ALL PASS. Integrated loudness -13.7 LUFS, true peak -1.28 dBTP, a measured 16 dB silence dip landing in a real VO gap before the turn, audible tail, 31 forced-aligned caption cues from the final mixed VO, 25 SFX events with no two consecutive from the same family and exactly one riser, and all three cuts ffprobe-asserted at 1080x1920, 1080x1350 and 720x1280 with audio verified present in each rather than assumed.</li></ul>
   <h2>Upgrades shipped this run</h2><ul class="upg"><li>FIXED a repeat offender deferred on 2026-07-24 and again on 2026-07-25. Every characterized-object hero was floating on a single fixed-period sine, which is why they read mechanical and why two heroes in one shot bobbed in lockstep. vitals() in lib/motion.tsx now gives three desynced layers on irrational period ratios, seeded per instance, and it is wired through all nine heroes. Verified with tsc and look-dev stills.</li>
-<li>FIXED a new bug class that was silently shipping the WRONG NARRATION. vo_synth_gemini.py reads only vo_direction.json, a snapshot of the script at the moment the director agent ran. Revise the script afterwards and the plan goes stale underneath it, and the run ships old words with clean audio, a passing soundcheck and perfect alignment. It happened on this run: the first take was a 12 line read of a 14 line script and dropped the fairness line entirely. The synth now diffs the plan against the script and hard-fails, and it was verified firing on the bad plan and passing on the good one.</li>
+<li>FIXED a new bug class that was silently shipping the WRONG NARRATION. vo_synth_gemini.py reads only vo_direction.json, a snapshot of the script at the moment the director agent ran. Revise the script afterwards and the plan goes stale underneath it, and the run ships old words with clean audio, a passing soundcheck and perfect alignment. It happened on this run, and the first take was a 12 line read of a 14 line script and dropped the fairness line entirely. The synth now diffs the plan against the script and hard-fails, and it was verified firing on the bad plan and passing on the good one.</li>
 <li>FIXED the pre-turn silence dip, which was measuring as a 4.6 dB RISE because it was placed at the start of the line instead of in the VO gap before it. It now sits in the real 1.06 second gap and measures 16 dB.</li>
-<li>CRAFT ADVANCE: lib/paper.tsx adds the asset library's FIRST interior biome (all eleven existing biomes are outdoors) plus a paper substance (materials.tsx had eight overlays and none was paper), built with a numeric value ladder, a dark anchor and contact shadow to defeat a HIGH flatness rating from the art-direction gate.</li>
-<li>NEW ASSETS: RecordsMachine and ThreePipeCutaway (one machine, whose mouth widens while its stem does not), StateLetter with no face, FullTapeMachine, TaperedCone.</li></ul>
+<li>CRAFT ADVANCE. lib/paper.tsx adds the asset library's FIRST interior biome (all eleven existing biomes are outdoors) plus a paper substance (materials.tsx had eight overlays and none was paper), built with a numeric value ladder, a dark anchor and contact shadow to defeat a HIGH flatness rating from the art-direction gate.</li>
+<li>NEW ASSETS. RecordsMachine and ThreePipeCutaway (one machine, whose mouth widens while its stem does not), StateLetter with no face, FullTapeMachine, TaperedCone.</li></ul>
   <h2>Sources (clickable reference)</h2>
   <ul><li><a href="https://alaskapublic.org/news/2026-07-23/state-removes-3-500-alaskans-from-voter-rolls-based-in-part-on-old-data">Alaska Public Media (Liz Ruskin), 2026-07-23</a> &middot; Beecher's testimony at the July 22 hearing, the ~3,500 letters, the letter text, the questioned-ballot remedy, McCabe and Gray on the record.<br><span style="color:#6a7782;font-size:12px;">https://alaskapublic.org/news/2026-07-23/state-removes-3-500-alaskans-from-voter-rolls-based-in-part-on-old-data</span></li>
 <li><a href="https://www.adn.com/politics/2026/07/24/alaska-removes-thousands-from-states-active-voter-list-erroneously-flagging-some-citizens/">Alaska Beacon via ADN (James Brooks and Corinne Smith), 2026-07-24</a> &middot; 3,048 moved off the active list, the ~15,200-record March request, the DMV July 23 memo calling it non-routine, Chris Waigl of Fairbanks, the full voicemail boxes.<br><span style="color:#6a7782;font-size:12px;">https://www.adn.com/politics/2026/07/24/alaska-removes-thousands-from-states-active-voter-list-erroneously-flagging-some-citizens/</span></li>
 <li><a href="https://www.ktoo.org/2026/07/23/state-removes-3500-alaskans-from-voter-rolls-based-in-part-on-old-data/">KTOO, 2026-07-23</a> &middot; Third independent carry of the same hearing, used to cross-check the 200-name baseline.<br><span style="color:#6a7782;font-size:12px;">https://www.ktoo.org/2026/07/23/state-removes-3500-alaskans-from-voter-rolls-based-in-part-on-old-data/</span></li>
-<li><b>Every Alaska + AI decision and update we track, in one place:</b> <a href="https://alaskaihq.com">alaskaihq.com</a></li></ul>
+<li><b>Every Alaska + AI decision and update we track, in one place</b> <a href="https://alaskaaihq.com">alaskaaihq.com</a></li></ul>
 
-  <div class="foot">Generated 2026-07-26T07:27:48.079961Z by the Alaska.Ai Dispatch routine. On-screen numbers are illustrative renderings of the verified figures, not a live feed. Every number and label on screen comes from the fact-check-safe set in out/dispatch/claims.json.
+  <div class="foot">Generated 2026-07-26T07:37:12.175101Z by the Alaska.Ai Dispatch routine. On-screen numbers are illustrative renderings of the verified figures, not a live feed. Every number and label on screen comes from the fact-check-safe set in out/dispatch/claims.json.
 
 Two figures are deliberately kept apart everywhere in this piece. About 3,500 letters were mailed. 3,048 registrations moved from active to inactive. They are different quantities and the film never merges them. The two other figures, a normal pass returning more like 200 names and a March request covering roughly 15,200 license and ID applicants, are different KINDS of object (names returned versus applicants sent), so they are named separately and never appear in the same frame, and no ratio is drawn between them.
 
-Cut by fact-check and worth not re-deriving: the widely repeated 700 percent increase is reporter arithmetic that is explicitly conditional and does not compute against its own base. The satisfying PFD proof-of-citizenship irony is affirmatively refuted, since PFD eligibility expressly includes lawful permanent residents.
+Cut by fact-check and worth not re-deriving, the widely repeated 700 percent increase is reporter arithmetic that is explicitly conditional and does not compute against its own base. The satisfying PFD proof-of-citizenship irony is affirmatively refuted, since PFD eligibility expressly includes lawful permanent residents.
 
 The Division of Elections is not framed as a villain. Rep. Kevin McCabe's defense is voiced in the narration, not merely posted on screen, and the picture agrees with it.</div>
 </div></body></html>
