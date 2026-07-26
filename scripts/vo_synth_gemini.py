@@ -212,11 +212,53 @@ def _strip_tags(s):
     return re.sub(r"\s+", " ", re.sub(r"\[[^\]]*\]", "", s)).strip()
 
 
+def _assert_plan_matches_script(lines):
+    """HARD GATE (added 2026-07-26 after this script silently narrated a stale draft).
+
+    This script reads ONLY vo_direction.json. That file is written by the
+    vo-director agent, so it is a SNAPSHOT of whatever the script said at the
+    moment the agent ran. If the script is then revised (a creative gate demands
+    a rewrite, a line is added, a clause is reordered), the plan silently goes
+    stale UNDER the script and the run synthesizes, mixes, captions and ships the
+    OLD narration. Nothing downstream can detect it: the audio is clean, the
+    soundcheck passes, the alignment is monotonic, and the words are simply wrong.
+
+    That is exactly what happened on 2026-07-26. Gate 0B required three new lines
+    (the fair defense actually spoken, a 3,500-versus-3,048 split, and an explicit
+    no-algorithm statement) plus one clause reorder. The plan predated all of it,
+    so the first synth produced a 12 line read of a 14 line script and dropped the
+    fairness line entirely. Caught only because the QC transcript was read by eye.
+
+    Same failure CLASS as the 2026-07-19 stale-scratch incident, and it gets the
+    same treatment: a code guard the pipeline runs, not a doctrine reminder. The
+    run fails loudly here instead of shipping the wrong words.
+    """
+    sp = os.path.join(OUT, "vo_script.txt")
+    if not os.path.exists(sp):
+        return  # nothing to compare against; the plan is the only source of truth
+    want = [l.strip() for l in open(sp).read().strip().split("\n") if l.strip()]
+    got = [l.strip() for l in lines]
+    if want == got:
+        return
+    msg = [
+        "VO PLAN IS STALE. vo_direction.json does not match vo_script.txt.",
+        f"  script lines: {len(want)}    plan lines: {len(got)}",
+    ]
+    for i in range(max(len(want), len(got))):
+        w = want[i] if i < len(want) else "<missing from plan>"
+        g = got[i] if i < len(got) else "<missing from plan>"
+        if w != g:
+            msg.append(f"  line {i}:\n    script: {w}\n    plan:   {g}")
+    msg.append("Re-run the vo-director agent on the CURRENT script, then re-synth.")
+    raise SystemExit("\n".join(msg))
+
+
 def main():
     os.makedirs(AUD, exist_ok=True)
     plan = json.load(open(os.path.join(OUT, "vo_direction.json")))
     prompt = plan["assembled_prompt"]
     lines = [_strip_tags(l["text"]) for l in plan["lines"]]  # SPOKEN words only (no tags)
+    _assert_plan_matches_script(lines)
     spoken = " ".join(lines)
     tags = sorted({t for l in plan["lines"] for t in l.get("tags", [])})
 
