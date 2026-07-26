@@ -125,7 +125,7 @@ const S2: React.FC = () => {
       <g opacity={mc} transform={`translate(0,${interpolate(mc, [0, 1], [40, 0])})`}>
         <Character frame={f} x={790} y={1080} scale={0.92} pose="point" emotion="neutral"
                    outfit="referee" headgear="bare" facing={-1} />
-        <Label x={790} y={1330} text="REP. KEVIN McCABE" size={30} delay={64} />
+        <Label x={790} y={1330} text="REP. KEVIN McCABE, R-BIG LAKE" size={23} delay={64} />
         <Label x={620} y={620} text="THIS IS ACTUALLY" size={50} delay={70} />
         <Label x={620} y={718} text="THEIR JOB" size={50} delay={76} />
       </g>
@@ -157,7 +157,7 @@ const S3: React.FC = () => {
           </g>
         ))}
       </g>
-      <Stat x={540} y={330} big="15,200" small="SENT TO THE D M V" delay={46} />
+      <Stat x={540} y={330} big="15,200" small="SENT TO THE DMV" delay={46} />
       {/* the burst out of the unchanged stem */}
       {burst > 0 && (
         <g opacity={burst}>
@@ -170,7 +170,7 @@ const S3: React.FC = () => {
               </g>
             );
           })}
-          <Stat x={540} y={1620} big="3,500" small="FLAGGED" delay={152} />
+          <Stat x={540} y={1500} big="3,500" small="FLAGGED" delay={152} />
         </g>
       )}
     </Stage>
@@ -182,9 +182,13 @@ const S4: React.FC = () => {
   const f = useCurrentFrame();
   const type = ramp(f, 6, 44);
   const fill = ramp(f, 62, 128);
-  const line = 'We have since received information';
-  const line2 = 'that you may not be a citizen.';
-  const shown = Math.round(type * (line.length + line2.length));
+  // The DMV attribution is load-bearing and pass 1 silently dropped it. Those words are
+  // exactly what tells a viewer the suspicion came from a DMV RECORD rather than from the
+  // Division's own judgement, so cutting them cost fairness as well as fidelity.
+  const line = 'We have since received information from';
+  const line2 = 'the Alaska Division of Motor Vehicles';
+  const line3 = 'that you may not be a citizen.';
+  const shown = Math.round(type * (line.length + line2.length + line3.length));
   const tag = ramp(f, 46, 58);
   return (
     <Stage drift={0.4}>
@@ -193,13 +197,16 @@ const S4: React.FC = () => {
       <Sheet x={230} y={200} w={620} h={420} fiber="s4fib" curl={0.5}>
         <rect x={40} y={44} width={92} height={58} fill={PAPER.brass} stroke={INK} strokeWidth={3} />
         <line x1={40} y1={128} x2={660} y2={128} stroke={PAPER.stamp} strokeWidth={5} />
-        <text x={40} y={210} fontFamily={BOLD} fontWeight={800} fontSize={31} fill={INK}>
+        <text x={40} y={208} fontFamily={BOLD} fontWeight={800} fontSize={26} fill={INK}>
           {line.slice(0, shown)}
         </text>
-        <text x={40} y={256} fontFamily={BOLD} fontWeight={800} fontSize={31} fill={INK}>
+        <text x={40} y={250} fontFamily={BOLD} fontWeight={800} fontSize={26} fill={INK}>
           {line2.slice(0, Math.max(0, shown - line.length))}
         </text>
-        {[320, 356, 392].map((y, i) => (
+        <text x={40} y={292} fontFamily={BOLD} fontWeight={800} fontSize={26} fill={INK}>
+          {line3.slice(0, Math.max(0, shown - line.length - line2.length))}
+        </text>
+        {[344, 380].map((y, i) => (
           <line key={y} x1={40} y1={y} x2={i === 2 ? 300 : 660} y2={y} stroke={INK} strokeWidth={3} opacity={0.24} />
         ))}
       </Sheet>
@@ -221,7 +228,7 @@ const S4: React.FC = () => {
           );
         })}
       </g>
-      <Stat x={540} y={1560} big="3,048" small="WENT INACTIVE" delay={92} />
+      <Stat x={540} y={1490} big="3,048" small="WENT INACTIVE" delay={92} />
     </Stage>
   );
 };
@@ -250,7 +257,7 @@ const S5: React.FC = () => {
           <rect x={-16} y={-40} width={32} height={80} rx={14} fill={PAPER.hero} stroke={INK} strokeWidth={4} />
           <path d={`M20,${-10 + Math.sin(f / 5) * 3} q26,10 26,34`} fill="none" stroke={INK} strokeWidth={3} opacity={0.6} />
         </g>
-        <Label x={820} y={1700} text="STILL DIALING" size={34} delay={52} />
+        <Label x={820} y={1600} text="STILL DIALING" size={34} delay={52} />
       </g>
       <Label x={540} y={330} text="REAL CITIZENS" size={62} delay={10} />
     </Stage>
@@ -267,14 +274,14 @@ const S6: React.FC = () => {
     <Stage push={ramp(f, 0, 200) * 0.05} drift={0.5}>
       <g opacity={1 - swap}>
         <ThreePipeCutaway f={f} x={540} y={800} scale={1.12} disclose={dis} lock={lock} year="2019" />
-        <Label x={540} y={1560} text="NOTHING RECEIVES IT" size={46} delay={70} />
-        <Label x={540} y={1660} text="CITIZENSHIP AT APPLICATION" size={30} delay={110} />
+        <Label x={540} y={1470} text="NOTHING RECEIVES IT" size={46} delay={70} />
+        <Label x={540} y={1590} text="CITIZENSHIP AT APPLICATION" size={30} delay={110} />
       </g>
       {/* the two records, six years apart */}
       <g opacity={swap}>
         <PaperFiber id="s6fib" />
         <Sheet x={80} y={640} w={430} h={276} fill={PAPER.mid} fiber="s6fib" rot={-3}>
-          <text x={26} y={54} fontFamily={MONO} fontSize={26} fill={INK} opacity={0.8}>ALASKA D M V</text>
+          <text x={26} y={54} fontFamily={MONO} fontSize={26} fill={INK} opacity={0.8}>ALASKA DMV</text>
           <rect x={26} y={90} width={200} height={70} fill={PAPER.brass} stroke={INK} strokeWidth={3} />
           <text x={40} y={140} fontFamily={MONO} fontWeight={700} fontSize={40}
                 fill={INK} opacity={interpolate(ramp(f, 216, 262), [0, 1], [1, 0.22])}>2019</text>
@@ -290,7 +297,7 @@ const S6: React.FC = () => {
           <ellipse cx={300} cy={175} rx={40} ry={29} fill="none" stroke={PAPER.front} strokeWidth={3} opacity={0.7} />
         </Sheet>
         <Label x={295} y={600} text="LICENSE 2019" size={32} delay={200} />
-        <Label x={775} y={1560} text="CITIZEN 2025" size={32} delay={230} tint={PAPER.seal} />
+        <Label x={775} y={1500} text="CITIZEN 2025" size={32} delay={230} tint={PAPER.seal} />
       </g>
     </Stage>
   );
@@ -324,7 +331,7 @@ const S7: React.FC = () => {
         {/* the wall. featureless. no handle, no seam, no villain. already infinite. */}
         <rect x={860} y={-200} width={70} height={2400} fill={PAPER.institution} stroke={INK} strokeWidth={5} />
         <rect x={860} y={-200} width={22} height={2400} fill="#fff" opacity={0.10} />
-        <Label x={540} y={1620} text="NEITHER RECORD IS WRONG" size={44} delay={44} />
+        <Label x={540} y={1560} text="NEITHER RECORD IS WRONG" size={44} delay={44} />
       </g>
       {/* the door swings FREELY open */}
       <g opacity={door}>
@@ -340,7 +347,8 @@ const S7: React.FC = () => {
           </g>
         </g>
         <Character frame={f} x={800} y={1240} scale={0.66} pose="stand" emotion="neutral" outfit="parka" headgear="bare" facing={-1} />
-        <Label x={540} y={1700} text="INACTIVE IS NOT REMOVED" size={44} delay={116} />
+        <Label x={540} y={1500} text="INACTIVE IS NOT REMOVED" size={44} delay={116} />
+        <Label x={540} y={1592} text="ONE FAIRBANKS RECORD WAS CORRECTED" size={26} delay={150} />
       </g>
     </Stage>
   );
@@ -380,7 +388,7 @@ const S8: React.FC = () => {
                   opacity={0.92 - t * 0.25} />
           );
         })}
-        <Label x={540} y={1610} text="THE PART THAT CATCHES MISTAKES" size={34} delay={92} />
+        <Label x={540} y={1560} text="THE PART THAT CATCHES MISTAKES" size={34} delay={92} />
         {/* one clerk, one lamp, one clipboard umbrella */}
         <Character frame={f} x={540} y={1810} scale={0.72} pose="raise" emotion="worried" outfit="worker" headgear="bare" />
       </g>
