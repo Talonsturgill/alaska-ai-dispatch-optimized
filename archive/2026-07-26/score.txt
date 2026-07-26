@@ -2,18 +2,18 @@
 
 MEDIAN 6.68 (judges scored 5.64, 6.68, 6.71). That is well below the bar and this draft does not pretend otherwise.
 
-THREE HARD BLOCKERS WERE RAISED AND ALL THREE ARE FIXED IN THE DELIVERED CUT:
+THREE HARD BLOCKERS WERE RAISED AND ALL THREE ARE FIXED IN THE DELIVERED CUT.
 1. A typo painted into the film. The VO script spells DMV as three letters so the synth reads it as an initialism, and forced alignment transcribed it straight back, so "D M V" was appearing on screen in the caption track and in two pieces of art. build_scenes.py already had a caption_fixups mechanism for exactly this leak and this run had never populated it. Populated now, zero cues carry the artifact.
-2. The key reassurance was cropped off the LinkedIn cut. The 4:5 safe area runs y=285 to y=1635 and "INACTIVE IS NOT REMOVED" sat at y=1700, so the one sentence that stops a viewer believing people were disenfranchised was amputated from the primary deliverable. That label and eight others are now inside the box.
+2. The key reassurance was cropped off the LinkedIn cut. The 4x5 safe area runs y=285 to y=1635 and "INACTIVE IS NOT REMOVED" sat at y=1700, so the one sentence that stops a viewer believing people were disenfranchised was amputated from the primary deliverable. That label and eight others are now inside the box.
 3. Both cones rendered as face-on ellipses, which is the same lollipop failure the 2026-07-25 seismic horn hit and which this run's own binding art direction named and banned. The cone geometry was rebuilt with straight taper walls drawn as separate lit and shaded faces, a rolled rim, and an inset recessed throat.
 
-WHAT THE JUDGES STILL FAULT, honestly, and NOT re-graded after the fixes:
+WHAT THE JUDGES STILL FAULT, honestly, and NOT re-graded after the fixes.
 - Held figures are frozen. McCabe is pixel-identical across a full 8-frame strip, as is the clerk under the funnel. The rig has idle life built in and these scenes are not driving it.
 - The turn is under-animated. The arrow arrives and then sits, and never crumples against the wall the beat was designed around.
 - The cutaway that carries the entire thesis, a pipe ending in capped open air, is not legible enough at the sampled frames. Two judges named this as the single biggest defect.
 - Nine shots play at one camera height on one set. No close-up, no low angle, no real scale change in 57.9 seconds.
 - The kitchen-table beat that was supposed to make three Alaskans read as people was rendered against the same institutional wall as everything else.
 
-WHAT SCORED WELL: accuracy and sourcing (9.0 and 7.5), sound design and mix (8.0 to 8.5), writing (8.0 to 8.5). The claim discipline held everywhere. 3,500 letters and 3,048 inactive are never merged or divided, the 200 and the 15,200 never share a frame and no ratio is ever drawn between them, and no banned figure appears anywhere.
+WHAT SCORED WELL. Accuracy and sourcing (9.0 and 7.5), sound design and mix (8.0 to 8.5), writing (8.0 to 8.5). The claim discipline held everywhere. 3,500 letters and 3,048 inactive are never merged or divided, the 200 and the 15,200 never share a frame and no ratio is ever drawn between them, and no banned figure appears anywhere.
 
-OBJECTIVE GATES ALL PASS: -13.7 LUFS integrated, true peak -1.28 dBTP, a measured 16 dB silence dip landing in a real VO gap before the turn, audible tail, 31 forced-aligned caption cues from the final mixed VO, 25 SFX events with no two consecutive from the same family and exactly one riser, and all three cuts ffprobe-asserted at 1080x1920, 1080x1350 and 720x1280 with audio verified present in each rather than assumed.
+OBJECTIVE GATES ALL PASS. Integrated loudness -13.7 LUFS, true peak -1.28 dBTP, a measured 16 dB silence dip landing in a real VO gap before the turn, audible tail, 31 forced-aligned caption cues from the final mixed VO, 25 SFX events with no two consecutive from the same family and exactly one riser, and all three cuts ffprobe-asserted at 1080x1920, 1080x1350 and 720x1280 with audio verified present in each rather than assumed.

@@ -90,8 +90,8 @@ def parse_sources(data):
 
 # The permanent tail of every sources section: the owner's public decision/update log.
 # Hardcoded in the template ON PURPOSE so no run can forget it.
-ALASKAIHQ_LI = ('<li><b>Every Alaska + AI decision and update we track, in one place:</b> '
-                '<a href="https://alaskaihq.com">alaskaihq.com</a></li>')
+ALASKAIHQ_LI = ('<li><b>Every Alaska + AI decision and update we track, in one place</b> '
+                '<a href="https://alaskaaihq.com">alaskaaihq.com</a></li>')
 
 
 def render(post, poster_html, vids, voice, music, sources, score, note, temporary, date_str, title, upgrades,
@@ -116,7 +116,7 @@ def render(post, poster_html, vids, voice, music, sources, score, note, temporar
         cl.append(esc(s["label"]))
         cl.append(esc(s["url"]))
         cl.append("")
-    cl.append("More Alaska and AI updates, alaskaihq.com")
+    cl.append("More Alaska and AI updates, alaskaaihq.com")
     cl.append("")
     if music: cl.append(f"Music, {esc(music)}")
     if voice: cl.append(f"Voice, {esc(voice)}")
@@ -132,7 +132,7 @@ def render(post, poster_html, vids, voice, music, sources, score, note, temporar
                     f'<small>1080&times;1920 &middot; on LinkedIn this goes to the vertical Video tab, not the feed</small></a>')
     feed_guide = ('<div class="warn" style="background:#eaf4ff;border-color:#b6d8f5;color:#245c8a;">'
                   'For LinkedIn use the <b>4:5</b> cut (top button) so the video lands in the <b>main feed</b> '
-                  'next to your caption. The 9:16 is TikTok-native; uploaded to LinkedIn it gets pulled into the '
+                  'next to your caption. The 9:16 is TikTok-native, and uploaded to LinkedIn it gets pulled into the '
                   'swipe-only Video tab instead of the feed.</div>') if vids.get("square") else ''
     warn = '<div class="warn">Heads up: these download links are temporary (~1 hour). Save the file before it expires, or configure a permanent host.</div>' if temporary else ""
     score_html = f"<h2>Grade</h2><ul><li>{score}</li></ul>" if score else ""
