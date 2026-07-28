@@ -29,7 +29,9 @@ repo, by design. Five minutes, once.
 6. **Schedule:** weekly (Saturday morning). **Network:** Default (Trusted) is enough — cloud
    APIs and the rclone host are reachable.
 
-7. **Run now** to test, then check your **Gmail drafts** for "ALASKA.AI — Dispatch ready".
+7. **Run now** to test, then check the drafts in **docket@alaskaaihq.com** (the account the Gmail
+   connector authenticates as) for a subject starting `ALASKA.AI · Dispatch ready`. Note the
+   separator is a middot, not a dash, so searching for a dash finds nothing.
 
 That's the whole setup. Deps = automated (step 3). Prompt = paste (step 2). Secret = yours (step 4).
 The routine handles research → fact-check → produce → review/iterate → deliver on its own.
