@@ -54,10 +54,27 @@ claude.ai/code/routines (not in this repo).
 - `out/` — per-run scratch (gitignored on `main`).
 - `archive/` — convention for the `claude/weekly-{date}` branches the routine commits artifacts to.
 
+## Gmail account (AUTHORITATIVE)
+
+The Gmail connector authenticates as **docket@alaskaaihq.com**, a Google Workspace mailbox on
+our own domain. It is NOT the personal Talon.sturgill@gmail.com account this repo used before.
+
+- Drafts land in **docket@alaskaaihq.com**, and that is the inbox to check after a run.
+- Drafts already come from the right address, with DKIM signed by alaskaaihq.com. There is
+  NO send-as step, no From-address to set, and no alias to select. If you find such an
+  instruction anywhere, it is stale and following it would be wrong.
+- Scripts set `"to": "me"`, which resolves to whichever account is authenticated. LEAVE IT
+  THAT WAY. Do not hardcode an address, here or in a payload, so the next repoint is a
+  connector change and not a code change.
+- The mailbox was repointed, so it does NOT contain drafts from before the switch. Nothing
+  in this repo reads or lists past drafts, and nothing should start.
+
+These routines DRAFT ONLY and never send. That does not change.
+
 ## Manual test
 
 From the routine UI at claude.ai/code/routines, click "Run now" any time. The
-first run creates a draft in your connected Gmail with subject
+first run creates a draft in **docket@alaskaaihq.com** with subject
 `Alaska.Ai — Weekly Recap Draft — {date}`. Don't post a draft you haven't read.
 
 ## Adding sources

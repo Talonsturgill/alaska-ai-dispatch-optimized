@@ -10,7 +10,7 @@ Every Saturday at 5:00 AM AK time, a Claude routine cloned from this repo:
 4. Drafts the post in the analytical, position-taking voice anchored on `examples/post_001.md`.
 5. Runs an editor + scorer loop until the post hits the rubric threshold.
 6. Renders a 1080x1350 brand image via the `alaska-ai-brief` skill.
-7. Drops a polished HTML draft in your connected Gmail with the post text + image inline.
+7. Drops a polished HTML draft in **docket@alaskaaihq.com** (the connected Gmail account) with the post text + image inline.
 8. Commits all artifacts to a `claude/weekly-{YYYY-MM-DD}` branch.
 
 ## Setup
