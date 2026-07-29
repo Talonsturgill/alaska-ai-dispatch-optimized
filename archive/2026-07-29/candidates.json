@@ -38,6 +38,12 @@
       "attempted": true,
       "candidates_found": 1,
       "note": "Genesis Mission is explainable with real body: launched 2025-11-24, $293M March 2026, $800M+ partner commitments July 2026, and Cordova gives Alaska grid-AI a concrete proven example."
+    },
+    {
+      "rung": "primary_source_mining",
+      "attempted": true,
+      "candidates_found": 2,
+      "note": "NSF api.nsf.gov mined hard and productively. Agent's own verdict: 'normal - not a slow week once primary databases are mined directly.' Both yields are ALREADY COVERED: (a) GAIA, NSF 2608509 UW $2,209,093 + 2608511 EarthScope $449,448, AI digital twin tested on Alaska landslides, is the SAME project as the 07-25 dispatch's UAF award 2608510 (sibling awards, same 2026-08-01 start). (b) Alaska Critical Mineral Accelerator Engine, NSF 2532372, is on the hard exclusion list, covered 07-17. BLOCKED endpoints logged, not silently dropped: akleg.gov 403, rca.alaska.gov 403, FERC eLibrary JS-only, DOE GM-RFA PDF not text-extractable by WebFetch, usaspending POST-only."
     }
   ],
   "candidates": [
@@ -89,5 +95,6 @@
     "stance": "curious",
     "hero": "Sourdough",
     "why_it_clears": "In-window, primary-sourced, genuinely unreported, real AI angle, distinct subject from the last two dispatches, and hero casting differs from SeismicStation and RecordsMachine."
-  }
+  },
+  "rung5_confirms_lock": "GAIA is the 07-25 dispatch's own project, which CONFIRMS AURORA-AI is a distinct subject: GAIA is geohazards and landslides, AURORA-AI is the electrical grid. The first-pass dedupe rejection was definitively wrong."
 }

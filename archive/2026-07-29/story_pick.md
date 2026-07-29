@@ -182,3 +182,33 @@ shape. It is not a reason to ship nothing.
 
 Stance curious. Hero Sourdough with Cell, which differs from the last two heroes (SeismicStation,
 RecordsMachine). Dedupe FRESH on the honest distinctive entity set.
+
+## Rung 5 result, and what it settles
+
+Primary-source mining was worked properly and its own summary line is the answer to the question
+the owner asked: **"normal - not a slow week once primary databases are mined directly."**
+
+It returned two well-documented awards, both WITH full abstracts and dollar figures, and both turn
+out to be stories this channel has already told:
+
+- **GAIA** (NSF 2608509, University of Washington, PI Marine Denolle, $2,209,093, plus 2608511 to
+  EarthScope Consortium, $449,448). An AI digital twin for real-time geohazard forecasting, whose
+  abstract says the investigators "test the full system on landslides in Alaska and the Pacific
+  Northwest." This is the SAME project as the 2026-07-25 dispatch's UAF award 2608510. They are
+  sibling awards under one project, same 2026-08-01 start.
+- **Alaska Critical Mineral Accelerator Engine** (NSF 2532372, UAF, PI Lee Ann Munk, $7.5M FY2026
+  obligation, $15M over two years, up to $160M over ten). On the hard exclusion list, covered
+  2026-07-17.
+
+That GAIA is the 07-25 dispatch's own project **settles the dedupe question definitively**. 07-25
+was geohazards and landslides. AURORA-AI is the electrical grid. They are not the same story, and
+the first-pass rejection was wrong.
+
+### Tooling gaps found, logged rather than dropped
+
+Four primary sources could not be reached and are NOT to be treated as empty on a future run:
+`akleg.gov` returns 403 on every path, `rca.alaska.gov` returns 403 on every path, FERC eLibrary is
+a JS-only app WebFetch cannot render, the DOE GM-RFA awards PDF is a compressed stream WebFetch
+cannot extract text from, and usaspending's search API is POST-only. The DeepGreen tidal AI data
+centre lead is blocked behind FERC specifically. These need either a browser-driven fetch or a
+WebSearch pass once budget resets.
