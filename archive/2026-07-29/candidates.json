@@ -1,0 +1,93 @@
+{
+  "run_id": "2026-07-29",
+  "search_budget_exhausted": true,
+  "uncapped_sweep_done": true,
+  "rungs": [
+    {
+      "rung": "in_window_sweep",
+      "attempted": true,
+      "candidates_found": 6,
+      "note": "6 researchers across 6 beats; consumed all 200 session searches (the failure this run fixed)"
+    },
+    {
+      "rung": "outlet_index_sweep",
+      "attempted": true,
+      "candidates_found": 2,
+      "note": "19 of 21 Alaska outlet indexes fetched via uncapped WebFetch, headlines read. alaskabeacon.com 403, thecordovatimes.com JS-shell."
+    },
+    {
+      "rung": "widened_window",
+      "attempted": true,
+      "candidates_found": 1,
+      "note": "Re-tested the 30-day field. Bristol Bay becomes RECENCY-eligible under the corrected rule but stays rejected on fact-check grounds (3 headline stats absent from the only fetchable source). AURORA-AI is in-window regardless."
+    },
+    {
+      "rung": "carried_leads",
+      "attempted": true,
+      "candidates_found": 2,
+      "note": "archive/2026-07-29 lead #1 is AURORA-AI itself; archive/2026-07-26 carries DeepGreen FERC tidal AI data center."
+    },
+    {
+      "rung": "follow_up",
+      "attempted": true,
+      "candidates_found": 1,
+      "note": "AURORA-AI is itself the follow-up axis: the 07-25 dispatch ended on UAF modelling money, and this is the next federal bet landing on Alaska infrastructure."
+    },
+    {
+      "rung": "pegged_explainer",
+      "attempted": true,
+      "candidates_found": 1,
+      "note": "Genesis Mission is explainable with real body: launched 2025-11-24, $293M March 2026, $800M+ partner commitments July 2026, and Cordova gives Alaska grid-AI a concrete proven example."
+    }
+  ],
+  "candidates": [
+    {
+      "id": "rocketlab",
+      "verdict": "rejected",
+      "reason": "no AI angle in any of 3 sources"
+    },
+    {
+      "id": "bristol-bay-salmon",
+      "verdict": "rejected",
+      "reason": "fact-check broke 3 headline stats; repeats 07-21 subject"
+    },
+    {
+      "id": "anthropic-donations",
+      "verdict": "recused",
+      "reason": "conflict of interest"
+    },
+    {
+      "id": "uaf-quake-whisper",
+      "verdict": "rejected",
+      "reason": "conventional seismogram analysis, no AI"
+    },
+    {
+      "id": "energy-beat",
+      "verdict": "rejected",
+      "reason": "3 stories fetched, zero AI content"
+    },
+    {
+      "id": "claude-impact-lab",
+      "verdict": "recused",
+      "reason": "Anthropic-branded event, same conflict"
+    },
+    {
+      "id": "bethel-lego-league",
+      "verdict": "rejected",
+      "reason": "classical robotics, no AI/ML"
+    },
+    {
+      "id": "aurora-ai",
+      "verdict": "LOCKED",
+      "reason": "Reversal of the first-pass rejection. The dedupe hit was generic tokens (alaska/digital/twin/uaf); the SUBJECT is Alaska's electrical grid, where 07-25 was landslide seismology. A viewer would not feel shown the same story. In-window (awards list posted 2026-07-22), primary-sourced verbatim from the DOE OSTI PDF, and completely unreported in Alaska."
+    }
+  ],
+  "locked_story": {
+    "headline": "Alaska got written into America's AI moonshot and nobody noticed",
+    "found_at_rung": "primary_source_mining (first surfaced), reinstated via carried_leads + corrected dedupe",
+    "subject": "AURORA-AI, a UAF-led DOE Genesis Mission Phase I award for real-time AI on Alaska's grid",
+    "stance": "curious",
+    "hero": "Sourdough",
+    "why_it_clears": "In-window, primary-sourced, genuinely unreported, real AI angle, distinct subject from the last two dispatches, and hero casting differs from SeismicStation and RecordsMachine."
+  }
+}

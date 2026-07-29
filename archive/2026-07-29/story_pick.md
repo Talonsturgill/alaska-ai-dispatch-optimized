@@ -129,3 +129,56 @@ rather than force a weak story, so that is what this run does.
    top of the RADIANCE digital twin. Out of window now, but it is the most visually rich and best
    documented Alaska AI-energy story in the record, and it would make an excellent Dispatch on any
    fresh development.
+
+---
+
+# REVERSAL (2026-07-29, after owner review)
+
+The owner's ruling on the stop above: **there is always news, and an empty run is a failed run.**
+That ruling is correct and the reasoning above was wrong in three specific, identifiable ways.
+
+1. **Circular.** Six researchers consumed the entire session-wide WebSearch budget in round one.
+   The run then cited its own resulting blindness as evidence there was no news.
+2. **Wrong window.** A fixed 10-day window was applied although the automation had skipped 07-27
+   and 07-28. A skipped day means the audience has seen NOTHING, so the backlog is unspent
+   inventory. The window should have widened, not narrowed.
+3. **Dedupe misapplied.** AURORA-AI was killed on a generic-token overlap
+   [alaska, digital, twin, uaf] when its actual SUBJECT, the electrical grid, has nothing to do
+   with 07-25's landslide seismology. A viewer would not feel shown the same story twice.
+
+And beneath all three: WebFetch was never capped. Alaska outlet front pages could have been swept
+for free at any moment and were not. Stopping was cheap, so the run stopped.
+
+## What the escalation ladder actually produced
+
+- **Rung 2, outlet index sweep** (the rung originally skipped): 19 of 21 Alaska outlet indexes
+  fetched and read. Two candidates, both correctly set aside. The Anchorage Claude Impact Lab is
+  Anthropic-branded, so it draws the same conflict-of-interest recusal as the donation story.
+  Bethel's Dirt Busters FIRST Lego League team is a lovely story and is classical robotics, not AI.
+  The thin week is now a MEASURED finding rather than an assumption.
+- **Rung 4, carried leads**: the 07-29 lead list's own item #1 is AURORA-AI.
+- **Rung 7, pegged explainer**: available regardless, because the Genesis Mission has real body.
+
+## STORY LOCKED
+
+**Alaska got written into America's AI moonshot and nobody noticed.**
+
+The DOE Office of Science Genesis Mission Phase I awards list, posted 2026-07-22, carries
+`AURORA-AI: Alaska Utility Resilience & Optimization using Real-time AI`, University of Alaska
+Fairbanks, PI Richard Wies. No Alaska outlet has it. Neither has UAF.
+
+The earlier objection that it is "a title with no body" was solved the wrong way round. The film's
+subject is not the grant abstract. It is that a national AI initiative, launched 2025-11-24 with
+$293M in March 2026 and more than $800M in partner commitments by July 2026, reached down and put
+Alaska's electrical grid on its list, and the reason it did is knowable even though the abstract is
+not: Alaska's grid is islanded, and DOE has already proved the pattern in Cordova, where a
+2,600-person microgrid became a real-time digital twin with 1,200 smart meters, 6 phasor measurement
+units and a 1 MW battery, and where a 170 kW data centre now sits inside the Humpback Creek hydro
+plant. Cordova is a SEPARATE, EARLIER project and must be labelled as such on screen.
+
+The honest turn stays honest: the public record on AURORA-AI is one line long. That is a real open
+question the audience should weigh, and the routine explicitly allows an open question as a dramatic
+shape. It is not a reason to ship nothing.
+
+Stance curious. Hero Sourdough with Cell, which differs from the last two heroes (SeismicStation,
+RecordsMachine). Dedupe FRESH on the honest distinctive entity set.
