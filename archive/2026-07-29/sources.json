@@ -1,0 +1,29 @@
+{
+  "sources": [
+    {
+      "title": "DOE Office of Science, Genesis Mission Phase I awards list (announcement DE-FOA-0003612), posted 2026-07-22 -- carries the AURORA-AI line verbatim",
+      "url": "https://science.osti.gov/-/media/funding/pdf/Awards-Lists/2026/GM-RFA-Awards-List.pdf"
+    },
+    {
+      "title": "National Laboratory of the Rockies, Genesis Mission project page -- confirms AURORA-AI is led by the University of Alaska Fairbanks",
+      "url": "https://www.nlr.gov/computational-science/genesis-mission"
+    },
+    {
+      "title": "National Laboratory of the Rockies press release, 2026-07-22 -- the announcement that names the project only in its headline",
+      "url": "https://www.nlr.gov/news/detail/press/2026/nlr-awarded-12-genesis-mission-projects-ranging-from-semiconductors-to-alaska-utility-optimization"
+    },
+    {
+      "title": "U.S. Department of Energy, Genesis Mission programme page -- launched 2025-11-24, $293M March 2026, $800M+ partner commitments July 2026",
+      "url": "https://www.energy.gov/undersecretaryforscience/genesis-mission/genesis-mission"
+    },
+    {
+      "title": "National Laboratory of the Rockies, 2023 -- Cordova Electric Cooperative microgrid digital twin (RADIANCE, $6.2M DOE grant). SEPARATE, EARLIER PROJECT",
+      "url": "https://www.nlr.gov/news/detail/program/2023/city-of-cordova-and-us-department-of-energy-push-envelope-of-microgrid-design"
+    },
+    {
+      "title": "National Laboratory of the Rockies, 2026-03-05 -- the 170 kW data centre inside Cordova's Humpback Creek hydro plant. SEPARATE PROJECT",
+      "url": "https://www.nlr.gov/news/detail/program/2026/in-alaska-a-data-center-inside-a-power-plant-inside-a-microgrid"
+    }
+  ],
+  "sourcing_note": "Every figure in this dispatch comes from a primary federal document that was fetched and read directly, not from a search snippet. The AURORA-AI line is quoted verbatim from the DOE Office of Science awards PDF and confirmed independently on the National Laboratory of the Rockies Genesis Mission page. The Cordova figures describe a SEPARATE, EARLIER project and no source links it to this award."
+}

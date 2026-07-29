@@ -1,0 +1,7 @@
+This dispatch is a scoop. As of today no Alaska outlet, and not UAF or ACEP either, has published anything about the AURORA-AI award. Two outlets could not be checked (alaskabeacon.com returned 403 and the Fairbanks Daily News-Miner rate-limited), so the film says "no coverage we could find" rather than claiming an absolute.
+
+What the film deliberately does NOT claim. It does not say what AURORA-AI will build, because nobody has published that. It does not attach a dollar figure to it, because none is public. It does not suggest concealment, since an empty Phase I record is most likely normal administrative practice. Cordova is labelled on screen as a SEPARATE and EARLIER project, because no source links RADIANCE to this award.
+
+Research constraint worth knowing. The first research round consumed the entire session-wide web search budget, which left later agents unable to search. That is now fixed in the routine, and the rest of this run's research ran on uncapped WebFetch, including a sweep of 19 of 21 Alaska outlet indexes and direct mining of NSF and DOE award databases.
+
+The site feed at alaskaaihq.com/videos was updated with this dispatch.

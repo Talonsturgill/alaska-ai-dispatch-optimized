@@ -1034,3 +1034,49 @@ dispatch_history:
       vermilion that touches nothing except a citizen's own documents
     metaphor: a pipe that was never built, so a 2025 certificate can never reach a
       2019 field
+- date: '2026-07-29'
+  topic: 'AURORA-AI: the DOE Genesis Mission Phase I awards list posted 2026-07-22
+    carries a UAF-led project for real-time AI on Alaska''s power grid, PI Richard
+    Wies, and no Alaska outlet has reported it. The entire public record is one line.
+    Why Alaska is knowable anyway: the grid is hundreds of islanded systems, and DOE
+    already spent $6.2M making Cordova''s 2,600-person microgrid a real-time model
+    (SEPARATE, EARLIER project).'
+  slug: dispatch-2026-07-29-aurora-ai
+  key_entities:
+  - aurora-ai
+  - genesis mission
+  - doe office of science
+  - alaska electrical grid
+  - richard wies
+  - utility resilience
+  - islanded microgrid
+  - cordova electric
+  - national laboratory of the rockies
+  archetype: ''
+  palette: ''
+  voice: ''
+  stance: curious
+  angle: A national AI initiative put Alaska's power grid on its list and the one-line
+    record is an invitation to look at why Alaska is the right place to test grid
+    AI, not a scandal
+  hero: Sourdough
+  cast:
+  - Sourdough
+  - Cell
+  - Character
+  - Sheet
+  - PaperFiber
+  - BoxLabel
+  - StatBurst
+  composition:
+    pov: macro-closeup
+    motion_vector: push-in-only
+    hero_treatment: single-organic-hero
+    layout: grid-modular
+    register: editorial-schematic
+    camera_strategy: rise-reveal
+    light_story: night-practical
+    palette: document-black and filament-amber, one live teal, unlit rows in true
+      black
+    metaphor: one line of type in a two hundred row federal list, and the lumpy amber
+      country that line is actually describing

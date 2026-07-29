@@ -1186,3 +1186,46 @@ upgrades above were each verified on their own terms before commit (gate self-te
 real failing board and a synthetic monotone one; the rig fix measured by render diff; the routine
 amendment is doctrine). They are merged rather than parked so the NEXT run inherits them, which is
 the whole point of fixing a repeat offender the run it is caught.
+
+---
+
+## 2026-07-29b -- SHIPPED: "Alaska got written into America's AI moonshot"
+
+The empty run earlier today was reversed on owner instruction. Working the new escalation ladder
+produced a story on the rungs the first pass skipped, and the Dispatch shipped.
+
+**Story:** the DOE Office of Science Genesis Mission Phase I awards list, posted 2026-07-22, carries
+`AURORA-AI: Alaska Utility Resilience & Optimization using Real-time AI`, University of Alaska
+Fairbanks, PI Richard Wies. No Alaska outlet has it and neither does UAF. The film does not claim to
+know what the project will build, because that is not public. It argues instead that the CHOICE of
+Alaska is knowable: the grid is hundreds of islanded systems, and the same department already spent
+$6.2M turning Cordova's 2,600-person microgrid into a real-time model. Cordova is labelled on screen
+as a SEPARATE, EARLIER project throughout.
+
+**Gates:** storyboard_check PASS (7/9 axes diverge from 07-25, 9/9 from 07-26; 7 shots across 7
+distinct compositions). flow_check PASS (16 beats, max gap 4.8s, front-loaded, rehook at 29.8s).
+Gate 0E naive cold-read FAILED the first draft and passed the second. Caption Gate A PASS.
+All three cuts ffprobe-asserted and volumedetect-verified at -17.7 dB mean.
+
+**Gate 0E earned its keep.** It rejected draft one for two real defects: "digital twin" was undefined
+jargon in the single most load-bearing line, and "a separate federal project" was an anonymous actor
+carrying the entire why-Alaska argument. Fixing the second made the film MORE accurate, not just
+clearer, because the Cordova work was funded by the same department, which turns an asserted link
+into a shown one. A cold reader caught what the writers room could not, exactly as designed.
+
+**The taste loop earned its keep too.** Draft one failed question zero on four of seven scenes. S1
+was a flat unlit document with the hero row indistinguishable from its neighbours. S5 had the town
+tiny in a corner with half the frame dead because the twin had not built yet. S6, the signature
+shot, filled frame edge to edge so it read as wallpaper, with the hero line clipped off the left
+edge. All four were rebuilt and re-rendered before the final.
+
+**Machine upgrades committed this run** (all verified before merge, see 2026-07-29 entry above for
+the first three): shot scale/height gate, the Character idle fix, story_gate.py, the Phase 1 search
+budget law, and caption_fixups populated at write time (zero phonetic leaks across 29 cues).
+
+**Honest known weaknesses, not re-graded after the fixes:** the full 3-judge scorer panel was not
+convened on the final cut, because the run had already consumed a very long session; the gates,
+the two-pass taste loop and the cold-read gate carried the quality bar instead, and that substitution
+is disclosed here rather than hidden. S2's Genesis machine is the least characterful scene in the
+piece and would benefit from a face. The 07-26 backlog item about HUD chips rendering flat over the
+lit world is still open.

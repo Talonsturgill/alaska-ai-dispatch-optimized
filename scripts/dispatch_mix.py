@@ -83,39 +83,33 @@ EVENTS = [
     # 2026-07-26 "The Field That Stopped in 2019". Every event is motivated by the
     # picture and families deliberately alternate (the assert below enforces it).
     # S1 (L0): the letter's flap springs open against the paper's own stiffness
-    (L[0] + 0.5,  "paper",  "hero",     -0.1),
-    # S2 (L1-L2): the tally clicker runs to 200, then McCabe's whistle
-    (L[1] + 0.4,  "tick",   "standard", -0.35),
-    (L[1] + 2.0,  "creak",  "texture",  -0.3),
-    (L[2] + 0.5,  "ding",   "standard",  0.3),
-    # S3 (L3-L4): the mouth ratchets wider, the intake storms, the stem bursts
-    (L[3] + 0.3,  "clank",  "standard",  0.0),
-    (L[3] + 1.5,  "paper",  "standard",  0.1),
-    (L[3] + 3.4,  "pop",    "texture",   0.2),
-    (L[4] + 0.6,  "whoosh", "hero",      0.0),
-    # S4 (L5): the letter types, then 3,048 seize one finite tape
-    (L[5] + 0.5,  "tick",   "standard", -0.2),
-    (L[5] + 2.6,  "chain",  "standard",  0.15),
-    (L[5] + 4.0,  "snap",   "standard",  0.15),
-    # S5 (L6): three different people, three different reactions
-    (L[6] + 0.3,  "paper",  "texture",  -0.3),
-    (L[6] + 1.1,  "ding",   "texture",   0.25),
-    # S6 (L7-L8): THE REHOOK. the housing opens, then the pawl LOCKS the wheel
-    (L[7] + 0.4,  "riser",  "hero",      0.0),
-    (L[7] + 2.9,  "clank",  "standard", -0.2),
-    (L[7] + 4.6,  "snap",   "hero",     -0.25),
-    (L[8] + 0.8,  "paper",  "standard",  0.2),
-    # S7 (L9-L10): the arrow crumples on the doorless wall, then the door swings FREE
-    (L[9] + 0.7,  "thud",   "hero",      0.0),
-    (L[10] + 0.5, "creak",  "standard", -0.2),
-    (L[10] + 2.2, "chime",  "standard",  0.2),
-    # S8 (L11-L12): the NOT AI stamp, then the signature shot overflows onto one desk
-    (L[11] + 0.3, "stamp",  "hero",      0.0),
-    (L[12] + 0.6, "whoosh", "standard",  0.0),
-    (L[12] + 2.4, "clank",  "texture",   0.15),
-    # S9 (L13): the button, back at the same table
-    (L[13] + 0.5, "chime",  "standard",  0.0),
-    (VIDEO_SECS - _TAIL + 1.1, "tick", "texture", 0.0),
+    # ---- 2026-07-29 schedule. 7 shots, 12 VO lines. Every shot gets >= 1 motivated
+    # event, no two consecutive events share a sound family, exactly ONE riser. ----
+    # S1 (L0-L1): the sheet lands, rows stamp down it, one row ignites
+    (L[0] + 0.15, "paper",  "hero",     0.0),
+    (L[0] + 1.30, "tick",   "texture", -0.25),
+    (L[1] + 0.35, "chime",  "hero",     0.0),
+    # S2 (L2-L3): the Genesis machine assembles and the bell jar lights
+    (L[2] + 0.45, "clank",  "standard", -0.2),
+    (L[2] + 2.10, "whoosh", "texture",   0.2),
+    (L[3] + 0.60, "snap",   "standard", -0.15),
+    # S3 (L4): THE TURN. the furnace powers down, empty slots drop in
+    (L[4] + 0.50, "thud",   "hero",      0.0),
+    (L[4] + 2.60, "tick",   "texture",   0.15),
+    # S4 (L5-L6): THE REHOOK. the map wipes in and the grids ignite one by one
+    (L[5] + 0.30, "riser",  "hero",      0.0),
+    (L[6] + 0.40, "pop",    "standard", -0.2),
+    (L[6] + 1.80, "ding",   "texture",   0.25),
+    # S5 (L7-L8): Cordova lights up, the funding plate lands, the twin builds
+    (L[7] + 0.45, "whoosh", "standard", -0.3),
+    (L[7] + 2.30, "chime",  "texture",  -0.15),
+    (L[8] + 0.55, "clank",  "hero",      0.1),
+    # S6 (L9-L10): the pull-back to 200 rows
+    (L[9] + 0.40, "paper",  "standard",  0.0),
+    (L[10] + 0.35, "boom",  "hero",  0.0),
+    # S7 (L11): the button, the furnace flares back
+    (L[11] + 0.30, "chime",  "hero",     0.0),
+    (VIDEO_SECS - _TAIL + 1.0, "tick", "texture", 0.0),
 ]
 
 # The breath before the PAYOFF. storyboard audio_arc.silence_at sits under the arrow's
@@ -125,7 +119,7 @@ EVENTS = [
 # L[9]'s start (pass 1) put it under the speech and measured as a 4.6 dB RISE. The 1.06s
 # gap between L8 ending and L9 starting is the breath before "Neither record is wrong",
 # the quietest and most important line in the film, so the bed drops out into real silence.
-SILENCE_DIP_AT = round(L[9] - 0.98, 2)
+SILENCE_DIP_AT = round(L[10] - 0.85, 2)
 DIP_LEN = 0.90
 
 

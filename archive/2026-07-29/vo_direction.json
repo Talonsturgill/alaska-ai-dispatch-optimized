@@ -1,0 +1,128 @@
+{
+  "narrator": "Nora, an Alaska public-radio host: warm, grounded, quietly witty",
+  "notes": "Style: warm, natural, conversational; a curious local reporter who just found something real in a federal document, not cynical, not boosterish. Let the empty public record (line 5) land flat and a touch slower than what surrounds it. Let real warmth bloom for Cordova (lines 7 and 8, the peak of the read). Lines 9 and 10 are one continuous sentence split in two: carry the breath across the comma at the end of line 9, do not let it land as a full stop, and let the payoff arrive on updating in real time in line 10. Line 11 is the conclusion, confident and firm. Land the final line as a genuinely curious open question, never a flat statement or engagement bait. Pace: BRISK and energetic, keep it moving like a sharp modern explainer. Short natural breaths only, no long pauses, do not drag. Vary the tone line to line so no two sentences sound the same. Emphasis: lean on the key word in each line; let numbers land.",
+  "style_prompt": "### DIRECTOR'S NOTES\nStyle: warm, natural, conversational; a curious local reporter who just found something real in a federal document, not cynical, not boosterish. Let the empty public record (line 5) land flat and a touch slower than what surrounds it. Let real warmth bloom for Cordova (lines 7 and 8, the peak of the read). Lines 9 and 10 are one continuous sentence split in two: carry the breath across the comma at the end of line 9, do not let it land as a full stop, and let the payoff arrive on updating in real time in line 10. Line 11 is the conclusion, confident and firm. Land the final line as a genuinely curious open question, never a flat statement or engagement bait.\nPace: BRISK and energetic, keep it moving like a sharp modern explainer. Short natural breaths only, no long pauses, do not drag. Vary the tone line to line so no two sentences sound the same.\nEmphasis: lean on the key word in each line; let numbers land.",
+  "lines": [
+    {
+      "idx": 0,
+      "text": "Last Wednesday, the U S Energy Department published two hundred science projects.",
+      "intent": "hook",
+      "emphasis": "two hundred",
+      "energy": 3,
+      "tags": [],
+      "pause_before": false,
+      "why": "Opens plain and curious, like a reporter reading down a list; energy holds at 3 so line 2's reveal of Alaska has somewhere to lift."
+    },
+    {
+      "idx": 1,
+      "text": "One line said [curious] Alaska.",
+      "intent": "hook",
+      "emphasis": "Alaska",
+      "energy": 4,
+      "tags": ["[curious]"],
+      "pause_before": false,
+      "why": "The tease lands here. Energy lifts from 3 to 4 and the curious tag sits right on the reveal word, forward-leaning without overselling it."
+    },
+    {
+      "idx": 2,
+      "text": "It's the Genesis Mission, America's bet on A I for hard science.",
+      "intent": "setup",
+      "emphasis": "Genesis Mission",
+      "energy": 3,
+      "tags": [],
+      "pause_before": false,
+      "why": "Settles into context after the tease; energy drops to 3 for contrast and to let the proper noun register cleanly."
+    },
+    {
+      "idx": 3,
+      "text": "Alaska's line reads Aurora A I. Real time A I for the power grid, run by the University of Alaska Fairbanks.",
+      "intent": "setup",
+      "emphasis": "Aurora A I",
+      "energy": 4,
+      "tags": [],
+      "pause_before": false,
+      "why": "This is the payoff of the tease, the actual entry in the record, so it lifts back to 4. Two short clauses keep it brisk and specific despite the longer line."
+    },
+    {
+      "idx": 4,
+      "text": "That's the whole public record. No abstract, no budget, and [short pause] nobody here has reported it.",
+      "intent": "reveal",
+      "emphasis": "nobody",
+      "energy": 2,
+      "tags": ["[short pause]"],
+      "pause_before": true,
+      "why": "The pivot. A beat before it starts, then the read goes flatter and slower than everything around it so the emptiness of the record actually registers, per the note on this line."
+    },
+    {
+      "idx": 5,
+      "text": "But you can see why they picked the grid.",
+      "intent": "setup",
+      "emphasis": "why",
+      "energy": 3,
+      "tags": [],
+      "pause_before": false,
+      "why": "Climbs back out of the flat pivot to open the explanation section. Energy rises to 3, still even, a hinge line."
+    },
+    {
+      "idx": 6,
+      "text": "Alaska isn't one grid. It's hundreds of separate ones.",
+      "intent": "stakes",
+      "emphasis": "hundreds",
+      "energy": 4,
+      "tags": [],
+      "pause_before": false,
+      "why": "First of the two warmest lines. Lifts to 4, the sound of someone genuinely enjoying explaining the state's geography."
+    },
+    {
+      "idx": 7,
+      "text": "Cordova powers itself. Twenty six hundred people, their own hydro dam.",
+      "intent": "stat",
+      "emphasis": "Cordova",
+      "energy": 5,
+      "tags": [],
+      "pause_before": false,
+      "why": "The human beat and the peak of the whole read, energy 5. A real town said with plain affection, the number landing unhurried right after."
+    },
+    {
+      "idx": 8,
+      "text": "That same department already spent six point two million there,",
+      "intent": "stat",
+      "emphasis": "six point two million",
+      "energy": 3,
+      "tags": [],
+      "pause_before": false,
+      "why": "Settles down from the peak for contrast, but ends on a comma, not a full stop. The sentence keeps moving into line 10, so this must not sound like a closer."
+    },
+    {
+      "idx": 9,
+      "text": "building a live computer model of that grid, updating in real time.",
+      "intent": "reveal",
+      "emphasis": "real time",
+      "energy": 4,
+      "tags": [],
+      "pause_before": false,
+      "why": "Carries the breath straight across from line 9 as one continuous thought and lifts back to 4 so the payoff, updating in real time, actually lands."
+    },
+    {
+      "idx": 10,
+      "text": "So Alaska isn't a footnote. It's the test bed.",
+      "intent": "stakes",
+      "emphasis": "test bed",
+      "energy": 3,
+      "tags": [],
+      "pause_before": false,
+      "why": "The conclusion, confident and firm. Energy settles to 3, grounded certainty rather than another climax, leaving room for the closing question to lift."
+    },
+    {
+      "idx": 11,
+      "text": "One line of public record. [curious] What's in it?",
+      "intent": "button",
+      "emphasis": "what's",
+      "energy": 4,
+      "tags": ["[curious]"],
+      "pause_before": false,
+      "why": "The button. Energy lifts to 4 and the curious tag sits right before the question so it lands as a genuinely open question, never a flat closer or engagement bait."
+    }
+  ],
+  "assembled_prompt": "Read ONLY the transcript below aloud as speech. The lines above \"Transcript:\" are direction; never speak them.\n# AUDIO PROFILE: Nora, an Alaska public-radio host: warm, grounded, quietly witty\n### DIRECTOR'S NOTES\nStyle: warm, natural, conversational; a curious local reporter who just found something real in a federal document, not cynical, not boosterish. Let the empty public record (line 5) land flat and a touch slower than what surrounds it. Let real warmth bloom for Cordova (lines 7 and 8, the peak of the read). Lines 9 and 10 are one continuous sentence split in two: carry the breath across the comma at the end of line 9, do not let it land as a full stop, and let the payoff arrive on updating in real time in line 10. Line 11 is the conclusion, confident and firm. Land the final line as a genuinely curious open question, never a flat statement or engagement bait.\nPace: BRISK and energetic, keep it moving like a sharp modern explainer. Short natural breaths only, no long pauses, do not drag. Vary the tone line to line so no two sentences sound the same.\nEmphasis: lean on the key word in each line; let numbers land.\nTranscript:\nLast Wednesday, the U S Energy Department published two hundred science projects.\nOne line said [curious] Alaska.\nIt's the Genesis Mission, America's bet on A I for hard science.\nAlaska's line reads Aurora A I. Real time A I for the power grid, run by the University of Alaska Fairbanks.\nThat's the whole public record. No abstract, no budget, and [short pause] nobody here has reported it.\nBut you can see why they picked the grid.\nAlaska isn't one grid. It's hundreds of separate ones.\nCordova powers itself. Twenty six hundred people, their own hydro dam.\nThat same department already spent six point two million there,\nbuilding a live computer model of that grid, updating in real time.\nSo Alaska isn't a footnote. It's the test bed.\nOne line of public record. [curious] What's in it?"
+}

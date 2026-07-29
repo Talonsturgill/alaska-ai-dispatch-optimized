@@ -1,0 +1,78 @@
+{
+  "run_id": "2026-07-29",
+  "title": "Alaska got written into America's AI moonshot and nobody noticed",
+  "signature_shot": "The pull-back at the turn. We are tight on ONE printed line on a federal award list, close enough to read AURORA-AI, and the camera pulls back and keeps pulling until that line is a single hairline stripe in a column of two hundred identical rows. Alaska's entire presence in a national AI programme, drawn to scale, in one move.",
+
+  "palette": {
+    "roles": {
+      "sky": "#101A2E",
+      "ground": "#1B2740",
+      "hero": "#F2B33D",
+      "accent": "#4FD6C8",
+      "shadow": "#080D18"
+    },
+    "name": "document-black and filament-amber, with one live teal",
+    "mood": "A dark records-room blue that is nearly ink, lit almost entirely by two things: the warm filament amber of electricity being generated, and a single cold teal that means live data. The world is dark because the story is about something nobody has looked at yet.",
+    "why_this_story": "Amber IS the grid in this film. Every light that comes from an Alaskan generator is amber, so when Cordova powers itself the town glows in the hero colour and reads instantly as self-sufficient. Teal is rationed to exactly one meaning, a machine reading something in real time, so the digital twin needs no label to be understood.",
+    "divergence": "07-25 was malachite conifer dusk with tungsten and ember rust. 07-26 was printed bond paper, municipal blue-grey and rubber-stamp indigo, a HIGH-KEY interior. This is neither: a low-key near-ink interior with saturated amber emission and a single cold accent. Against 07-26 in particular it is a deliberate inversion, dark where that film was bright, emissive where that film was flatly lit."
+  },
+
+  "light": {
+    "time_of_day": "no time of day, deliberately. This is a windowless archive that becomes a night landscape.",
+    "direction": "Key from BELOW and INSIDE the objects for the first half, because in this world light is generated, not received. Sourdough's furnace window is a practical that lights his own chin and the floor around him.",
+    "key_fill_rim": "Practical amber key at low angle, very low cool fill so shadows stay near-black, hard teal rim ONLY on surfaces a machine is currently reading.",
+    "depth_approach": "NightGrade (lib/lighting.tsx) carries the whole film. It crushes an unlit black floor so 'unlit' is a different STATE from 'dim', and it only blooms light at REGISTERED sources, which is exactly the discipline this palette needs. Every amber glow in the film is a declared source, so a lit window always means a generator is running.",
+    "why_this_story": "The film is about a fact sitting in the dark that nobody has read. Rationed practical light lets the frame literally show the audience how little of the picture is illuminated, and lets the final pull-back reveal 199 unlit rows around the one lit line."
+  },
+
+  "shape_language": {
+    "grammar": "HARD ORTHOGONAL RULED GRID versus SOFT ROUNDED EMISSIVE MASS.",
+    "detail": "The federal record is drawn as pure rectilinear geometry: ruled rows, hairline column rules, identical row heights, everything aligned to a strict grid. Alaska's infrastructure is drawn as rounded, bulging, hand-built mass: Sourdough's barrel body, Cell's rounded sled, the fat curve of a hydro penstock, the soft dome of a hill.",
+    "why_this_story": "The thesis in two shapes. A national list has to flatten Alaska into a row of uniform height. The thing that row describes is lumpy, warm, specific and refuses to be uniform. When the pull-back reveals the grid of rows, the audience has already learned that round means real and ruled means abstract."
+  },
+
+  "casting": {
+    "hero": {
+      "asset": "Sourdough",
+      "from": "manifest (kit.tsx)",
+      "why": "He IS a personified regional power plant with a furnace-window chest whose glow is his emotional tell, which is the exact instrument this story needs. The film's central question is whether a distant list understands what it just put on it, and Sourdough lets 'an Alaskan generator' be a character with a face rather than a diagram. His `glow` param carries the whole emotional arc: burning steadily alone, dimming at the turn when the record proves empty, and flaring at the button.",
+      "hero_gate": "differs from the last two heroes (07-25 SeismicStation, 07-26 RecordsMachine); dedupe.py check --hero Sourdough returns FRESH"
+    },
+    "supporting": [
+      {"asset": "Cell", "from": "manifest (kit.tsx)", "why": "The battery sidekick on sled runners. Cordova's real microgrid has a 1 MW battery, so Cell is literally accurate here rather than decorative, and his chargeLevel face gives the town a second reactive character."},
+      {"asset": "Character", "from": "manifest (Character.tsx)", "why": "One Cordova resident, small in frame, so the 2,600 people are a person and not a number. Uses the idle fixed this run, so a held figure breathes."},
+      {"asset": "Sheet / PaperFiber", "from": "manifest (paper.tsx)", "why": "The award list is printed stock with real body and a numeric shadow contract, so the document reads as an object with weight rather than a UI panel."},
+      {"asset": "StatCard / BoxLabel / FatArrow", "from": "manifest (kit.tsx, props.tsx)", "why": "The label kit carries the honest attributions, including the on-screen 'SEPARATE PROJECT' tag that keeps Cordova from reading as AURORA-AI."}
+    ],
+    "net_new": "NONE PLANNED. The shelf covers this story and the library mandate says a run where the shelf already covers everything owes no net-new art and should spend the effort on craft instead. The craft advance below is where this run's effort goes.",
+    "hero_glow_arc": "steady (lines 1-4) -> DIM at the turn (line 5, the record is empty) -> warm and rising (lines 6-9, why Alaska) -> flare (lines 10-12)"
+  },
+
+  "motion_language": {
+    "world_motion": "Two opposed motions. The RECORD moves in hard mechanical increments, rows snapping into place on a strict beat with no easing on the snap itself. ALASKA moves organically, with breath, sway, drift and secondary follow-through on everything attached.",
+    "hero_moves": [
+      "ROW SNAP: award rows stamp into the list one per beat, mechanical, unyielding.",
+      "THE PULL-BACK (signature): the camera retreats from one readable line until it is a hairline in a field of 200. Long, eased, unbroken, with a full still HOLD at the end.",
+      "GLOW DIM: at the turn, Sourdough's furnace window drops and the whole frame loses its key light with it, so the audience FEELS the empty record as a loss of light.",
+      "ISLAND SCATTER: 'hundreds of islands' resolves as points of amber igniting one by one across a dark map, never all at once.",
+      "TWIN SYNC: Cordova and its teal wireframe copy move in perfect lockstep, one frame apart, so the twin reads as a copy that is keeping up."
+    ],
+    "earns_blur": "The pull-back and the island scatter earn 180-degree motion blur. The row snaps deliberately do NOT, because mechanical stamping should feel hard.",
+    "anticipation_overshoot": "Every organic entrance uses entrance() with anticipation and overshoot. The record's motion uses none, on purpose. That contrast is the shape language expressed as timing."
+  },
+
+  "composition": {
+    "focal_hierarchy": "One read per frame. In record shots the eye goes to the single lit row. In Alaska shots the eye goes to whatever is emitting amber. Because light is rationed, focal hierarchy is enforced by the lighting model rather than by layout alone.",
+    "negative_space": "The turn (line 5) is the emptiest frame in the film. Near-black, one small dim figure, enormous unlit space. It is the only frame in the piece with no teal anywhere.",
+    "safe_areas": "THE 4:5 IS THE DELIVERABLE. Every load-bearing label, the AURORA-AI line, the SEPARATE PROJECT tag and the closing question live inside y=285 to y=1635. The 07-26 panel amputated a key reassurance by authoring against the 9:16 master, so the centred 4:5 box is the authoring frame and the 9:16 gets the extra air.",
+    "signature": "see signature_shot above"
+  },
+
+  "craft_advance": {
+    "system": "lib/lighting.tsx NightGrade, extended into an EMISSIVE SOURCE LEDGER",
+    "what": "NightGrade already blooms light only at registered sources. This run adds the discipline that a source can be TYPED and ANIMATED as a story property, so 'amber means an Alaskan generator is running' and 'teal means a machine is reading in real time' become properties of the scene graph rather than conventions a renderer can silently violate. A scene cannot paint amber without declaring a generator.",
+    "why_now": "This is the first Dispatch whose entire thesis is carried by WHICH THINGS ARE LIT. Making the source ledger typed means the palette rule is enforced by the engine, which is the same 'code guard beats a doctrine note' principle that fixed this run's two repeat offenders."
+  },
+
+  "binding_note": "This plan is an INPUT the build executes against and Phase 6 checks the render against, not a description written afterwards. If a build decision contradicts it, either fix the build or consciously revise this file and say why in the retrospective."
+}

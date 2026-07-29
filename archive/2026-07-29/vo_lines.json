@@ -1,0 +1,79 @@
+{
+  "total": 57.62,
+  "voice": "Sulafat",
+  "model": "gemini-3.1-flash-tts-preview",
+  "lines": [
+    {
+      "idx": 0,
+      "text": "Last Wednesday, the U S Energy Department published two hundred science projects.",
+      "start": 0.0,
+      "end": 4.96
+    },
+    {
+      "idx": 1,
+      "text": "One line said Alaska.",
+      "start": 5.5,
+      "end": 7.46
+    },
+    {
+      "idx": 2,
+      "text": "It's the Genesis Mission, America's bet on A I for hard science.",
+      "start": 8.3,
+      "end": 12.46
+    },
+    {
+      "idx": 3,
+      "text": "Alaska's line reads Aurora A I. Real time A I for the power grid, run by the University of Alaska Fairbanks.",
+      "start": 13.04,
+      "end": 20.54
+    },
+    {
+      "idx": 4,
+      "text": "That's the whole public record. No abstract, no budget, and nobody here has reported it.",
+      "start": 21.16,
+      "end": 28.58
+    },
+    {
+      "idx": 5,
+      "text": "But you can see why they picked the grid.",
+      "start": 29.23,
+      "end": 31.4
+    },
+    {
+      "idx": 6,
+      "text": "Alaska isn't one grid. It's hundreds of separate ones.",
+      "start": 31.78,
+      "end": 35.44
+    },
+    {
+      "idx": 7,
+      "text": "Cordova powers itself. Twenty six hundred people, their own hydro dam.",
+      "start": 36.0,
+      "end": 40.64
+    },
+    {
+      "idx": 8,
+      "text": "That same department already spent six point two million there,",
+      "start": 41.32,
+      "end": 45.14
+    },
+    {
+      "idx": 9,
+      "text": "building a live computer model of that grid, updating in real time.",
+      "start": 45.64,
+      "end": 49.56
+    },
+    {
+      "idx": 10,
+      "text": "So Alaska isn't a footnote. It's the test bed.",
+      "start": 50.42,
+      "end": 53.62
+    },
+    {
+      "idx": 11,
+      "text": "One line of public record. What's in it?",
+      "start": 54.56,
+      "end": 57.62
+    }
+  ]
+}
