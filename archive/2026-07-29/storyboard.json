@@ -1,0 +1,538 @@
+{
+  "concept": "Alaska got written into America's AI moonshot and nobody noticed. A national AI programme put Alaska's power grid on its award list, the entire public record is one line, and the reason Alaska makes sense is knowable even though the abstract is not.",
+  "engine": "infographic-2.5d",
+  "derived_from": "scratch",
+  "palette": "document-black and filament-amber, one live teal, unlit rows in true black",
+  "angle": {
+    "thesis": "A national AI initiative reached down and put Alaska's power grid on its list, and the one-line public record is not a scandal, it is an invitation to look at why Alaska is the right place to test grid AI.",
+    "supporting": [
+      "DOE Genesis Mission Phase I awards list posted 2026-07-22 carries AURORA-AI, University of Alaska Fairbanks, PI Richard Wies, verbatim from the OSTI PDF",
+      "No Alaska outlet and not UAF itself has reported it as of 2026-07-29",
+      "The same department already spent $6.2M making Cordova's islanded microgrid a real-time model, so the choice of Alaska has precedent"
+    ],
+    "counter_point": "The empty record may simply be normal Phase I administrative practice rather than anything withheld, and the film must not imply concealment. Cordova is a SEPARATE, EARLIER project and is labelled as such on screen.",
+    "runners_up": [
+      "A transparency or accountability frame, rejected because award lists routinely lack abstracts at Phase I and the cynical read is not earned",
+      "Making Cordova the whole story, rejected because it is out of window and would bury the actual news"
+    ]
+  },
+  "treatment": {
+    "winner": "THE EXPLAINER, grafted with the DRAMATIST's held turn",
+    "judge_reasoning": "The Explainer wins because the piece's pleasure is a genuine recontextualisation of scale, one line inside two hundred, which is a picture rather than a claim. Grafted from the Dramatist: the turn is staged as a light going out on a character rather than as a narrated caveat, which keeps an administrative fact emotionally legible. Grafted from the Enthusiast: Cordova is played warm and proud rather than as a curiosity, so the why-Alaska stretch earns real admiration instead of pity."
+  },
+  "fingerprint": {
+    "pov": "macro-closeup",
+    "motion_vector": "push-in-only",
+    "hero_treatment": "single-organic-hero",
+    "layout": "grid-modular",
+    "register": "editorial-schematic",
+    "camera_strategy": "rise-reveal",
+    "light_story": "night-practical",
+    "palette": "document-black and filament-amber, one live teal, unlit rows in true black",
+    "metaphor": "one line of type in a two hundred row federal list, and the lumpy amber country that line is actually describing"
+  },
+  "hook": {
+    "pattern": "anomaly-question",
+    "frame1": "A single lamp-lit printed row on a dark federal award list, the words AURORA-AI legible at frame 0, 199 other rows falling away into unlit grey.",
+    "headline": "One line said Alaska",
+    "motion_by_s": 0.5,
+    "loopback": "The closing shot returns to the same lamp-lit line and asks what is inside it, so the last frame rhymes with the first."
+  },
+  "reveals": [
+    {
+      "t": 34.6,
+      "type": "build-on",
+      "what": "the islanded grids ignite one at a time across a dark Alaska until the scatter itself is the argument",
+      "hold_s": 0.6
+    },
+    {
+      "t": 46.4,
+      "type": "trim-path",
+      "what": "Cordova's teal wireframe twin draws itself vertex by vertex and then matches the real town's motion",
+      "hold_s": 0.5
+    },
+    {
+      "t": 50.2,
+      "type": "scale-pullback",
+      "what": "THE SIGNATURE. Pull back from the readable AURORA-AI line until it is one hairline among 200 rows",
+      "hold_s": 0.8
+    }
+  ],
+  "audio_arc": {
+    "build_steps": 4,
+    "dip_at": 22.5,
+    "riser_at": 29.8,
+    "silence_at": 49.4,
+    "payoff_at": 50.2,
+    "button_pattern": "question"
+  },
+  "divergence_note": "Against 2026-07-26, which was a high-key blueprint-technical interior shot in exploded-diagram POV with an orbit-reveal camera descending through a single object in void, this is a low-key editorial-schematic world in macro-closeup POV on a hard modular grid, rising rather than descending, and lit almost entirely by emission rather than by a flat overhead key. Against 2026-07-25, which was an eye-level naturalistic fjord in stacked layers traversing horizontally under rationed tungsten, this trades the outdoor landscape for a printed document that becomes a map, swaps horizontal traverse for a vertical rise-reveal, and makes the hero a personified power plant rather than an instrument. The signature move, pulling back from one readable line to 200 rows, has never been used by this channel.",
+  "shots": [
+    {
+      "id": 1,
+      "t": "0.0-8.6",
+      "framing": "macro-closeup",
+      "scale": "insert",
+      "height": "high",
+      "pov": "macro-closeup",
+      "layout": "grid-modular",
+      "motion_vector": "push-in-only",
+      "hero_treatment": "data-as-subject",
+      "camera": "static:frame 1 must be a dead-legible printed line for the poster grade so every bit of motion comes from rows stamping into the page around it",
+      "stage3d": "flat:a sheet of paper lying under a lamp has no world to move through, and faking depth here would undercut the hard ruled grid the shape language depends on",
+      "centered": "the single printed row reading AURORA-AI, dead centre, lit by one lamp",
+      "means": "the whole film in one object, a fact sitting in the dark that nobody has read",
+      "hero": {
+        "name": "The award row",
+        "parts": 6,
+        "zones": 3,
+        "detail_note": "printed stock with real body via Sheet and PaperFiber, a 2px edge, drop shadow 4 down 2 right at 22 percent, hairline column rules, ruled row separators, and the row text set in mono so it reads as a record and not a caption"
+      }
+    },
+    {
+      "id": 2,
+      "t": "8.6-19.4",
+      "framing": "data-panel",
+      "scale": "wide",
+      "height": "eye",
+      "transition_in": "fui-boot",
+      "thread": "build",
+      "pov": "instrument-screen",
+      "layout": "hud-instrument-frame",
+      "motion_vector": "assemble-build",
+      "hero_treatment": "structure-as-subject",
+      "camera": "truckAcross",
+      "stage3d": "planes",
+      "centered": "the Genesis Mission assembling itself as a lit structure, AI and supercomputing and quantum snapping together into one machine",
+      "means": "establishes the national scale that Alaska is one line inside of",
+      "hero": {
+        "name": "The Genesis machine",
+        "parts": 9,
+        "zones": 4,
+        "detail_note": "a built structure of stacked compute racks, a cooling spine, and a quantum bell jar, each with vents, indicator LEDs and cable runs, teal readouts on the faces, amber only where it draws power"
+      }
+    },
+    {
+      "id": 3,
+      "t": "19.4-27.8",
+      "framing": "subject-portrait",
+      "scale": "medium",
+      "height": "low",
+      "transition_in": "hard-cut",
+      "thread": "match",
+      "pov": "eye-level-immersive",
+      "layout": "single-object-void",
+      "motion_vector": "vertical-descent",
+      "hero_treatment": "single-organic-hero",
+      "camera": "static:the emptiest frame in the film is held on purpose so the loss of key light IS the motion and the turn registers as an absence",
+      "stage3d": "planes",
+      "centered": "Sourdough alone in near-black, his furnace window dimming as the record proves empty",
+      "means": "the turn, drawn as a light going out rather than narrated as a caveat",
+      "hero": {
+        "name": "Sourdough",
+        "parts": 8,
+        "zones": 3,
+        "detail_note": "barrel body with rivet seams, furnace window chest as the emotional tell, stack cap, pressure gauge, footing plinth, all form-shaded with rim light and contact shadow, glow param driving the dim"
+      }
+    },
+    {
+      "id": 4,
+      "t": "27.8-36.0",
+      "framing": "map-territory",
+      "scale": "extreme-wide",
+      "height": "overhead",
+      "transition_in": "mask-wipe",
+      "thread": "travel",
+      "pov": "top-down-map",
+      "layout": "map-territory",
+      "motion_vector": "radial-emanate",
+      "hero_treatment": "multiplicity-swarm",
+      "camera": "craneDown",
+      "stage3d": "planes",
+      "centered": "amber points igniting one by one across a dark Alaska until the map is a scatter of separate lights",
+      "means": "hundreds of separate grids made physical, so islanded stops being a word and becomes a picture",
+      "hero": {
+        "name": "The scatter of islanded grids",
+        "parts": 7,
+        "zones": 3,
+        "detail_note": "true-geography Alaska landmass in near-black, individually igniting amber nodes each with a bloom and a hairline halo, no connecting lines anywhere because that absence IS the point"
+      }
+    },
+    {
+      "id": 5,
+      "t": "36.0-46.2",
+      "framing": "two-up",
+      "scale": "medium",
+      "height": "eye",
+      "transition_in": "whip-pan",
+      "thread": "carry",
+      "pov": "cross-section-cutaway",
+      "layout": "fullbleed-split",
+      "motion_vector": "horizontal-traverse",
+      "hero_treatment": "structure-as-subject",
+      "camera": "dollyThrough",
+      "stage3d": "planes",
+      "centered": "Cordova on the left in amber, its teal wireframe copy on the right, moving in lockstep one frame apart",
+      "means": "the digital twin explained by showing it, a copy that keeps up, with the SEPARATE PROJECT tag on screen",
+      "hero": {
+        "name": "Cordova and its live model",
+        "parts": 10,
+        "zones": 4,
+        "detail_note": "hydro dam with penstock curve and spillway, powerhouse with lit windows, Cell on sled runners with its charge-bar face, one resident figure, and the whole thing mirrored as a teal wireframe with vertex dots and scan sweep"
+      }
+    },
+    {
+      "id": 6,
+      "t": "46.2-53.0",
+      "framing": "push-detail",
+      "scale": "close",
+      "height": "high",
+      "transition_in": "graphic-match",
+      "thread": "match",
+      "pov": "macro-closeup",
+      "layout": "grid-modular",
+      "motion_vector": "vertical-rise",
+      "hero_treatment": "data-as-subject",
+      "camera": "riseWith",
+      "stage3d": "planes",
+      "centered": "THE SIGNATURE SHOT. Tight on the AURORA-AI line, then the camera pulls back and keeps pulling until it is one hairline stripe among 200 identical rows",
+      "means": "Alaska's entire presence in a national AI programme, drawn to true scale in one unbroken move",
+      "hero": {
+        "name": "The 200-row list",
+        "parts": 8,
+        "zones": 3,
+        "detail_note": "200 ruled rows at true scale, 199 unlit and rendered as grey hairlines, one row lit amber and legible, column rules, a page edge with thickness, and a lamp pool that shrinks as the camera rises"
+      }
+    },
+    {
+      "id": 7,
+      "t": "53.0-58.5",
+      "framing": "subject-portrait",
+      "scale": "wide",
+      "height": "ground",
+      "transition_in": "pull-out",
+      "thread": "build",
+      "pov": "eye-level-immersive",
+      "layout": "centered-hero-lowerthird",
+      "motion_vector": "push-in-only",
+      "hero_treatment": "single-organic-hero",
+      "camera": "craneDown+dollyThrough",
+      "stage3d": "planes",
+      "centered": "Sourdough at ground level, furnace flaring back to full amber, the closing question set beside him",
+      "means": "loops back to the opening lamp-lit line, and hands the audience the open question",
+      "hero": {
+        "name": "Sourdough at the button",
+        "parts": 8,
+        "zones": 3,
+        "detail_note": "same rig as shot 3 with glow driven back up, contact shadow re-forming on the ground plane as light returns, breath and idle sway running so the held final figure is alive"
+      }
+    }
+  ],
+  "beats": [
+    {
+      "i": 0,
+      "t": 0.0,
+      "vo": "Last Wednesday, the U S Energy Department published two hundred science projects.",
+      "draw": {
+        "subject": "a lamp snaps on over a printed federal list",
+        "action": "the sheet lands and rows stamp down it one by one",
+        "emotion": "official, indifferent",
+        "annotation": "200 PROJECTS"
+      },
+      "shows": "a lamp snaps on over a printed federal list the sheet lands and rows stamp down it one by one",
+      "sfx": "paper-drop",
+      "means": "open on the object the whole film is about",
+      "choreo": {
+        "primary": "the sheet drops into the lamp pool and settles with a paper bounce",
+        "reaction": "the lamp cone flares briefly on impact",
+        "ambient": "dust motes drift through the cone"
+      }
+    },
+    {
+      "i": 1,
+      "t": 2.1,
+      "vo": "Last Wednesday, the U S Energy Department published two hundred science projects.",
+      "draw": {
+        "subject": "the stamping rows",
+        "action": "rows keep stamping, filling the page edge to edge",
+        "emotion": "relentless",
+        "annotation": "U S ENERGY DEPARTMENT"
+      },
+      "shows": "the stamping rows rows keep stamping, filling the page edge to edge",
+      "sfx": "stamp-tick",
+      "means": "establish the machine's uniform rhythm",
+      "choreo": {
+        "primary": "ruled rows stamp down the page one per beat",
+        "reaction": "the page edge flexes microscopically under each stamp",
+        "ambient": "dust motes keep drifting"
+      }
+    },
+    {
+      "i": 2,
+      "t": 4.8,
+      "vo": "One line said Alaska.",
+      "draw": {
+        "subject": "one row among the rest",
+        "action": "ignites amber while every other row stays grey",
+        "emotion": "singled out",
+        "annotation": "ALASKA"
+      },
+      "shows": "one row among the rest ignites amber while every other row stays grey",
+      "sfx": "chime-soft",
+      "means": "the one lit thing in a dark page",
+      "choreo": {
+        "primary": "one row ignites amber while every neighbour stays grey",
+        "reaction": "the surrounding grey rows dim a further step by contrast",
+        "ambient": "the amber bloom breathes"
+      }
+    },
+    {
+      "i": 3,
+      "t": 7.3,
+      "vo": "It's the Genesis Mission, America's bet on A I for hard science.",
+      "draw": {
+        "subject": "the Genesis machine",
+        "action": "assembles itself from parts flying in and locking together",
+        "emotion": "confident, vast",
+        "annotation": "GENESIS MISSION"
+      },
+      "shows": "the Genesis machine assembles itself from parts flying in and locking together",
+      "sfx": "assemble-clank",
+      "means": "zoom out to the programme the line belongs to",
+      "choreo": {
+        "primary": "compute racks fly in and lock into a standing structure",
+        "reaction": "indicator LEDs cascade on across the assembled faces",
+        "ambient": "a slow cooling-fan shimmer"
+      }
+    },
+    {
+      "i": 4,
+      "t": 11.0,
+      "vo": "It's the Genesis Mission, America's bet on A I for hard science.",
+      "draw": {
+        "subject": "the machine's quantum bell jar",
+        "action": "lights up and pulses as compute racks spin",
+        "emotion": "humming",
+        "annotation": "AI \u00b7 SUPERCOMPUTING \u00b7 QUANTUM"
+      },
+      "shows": "the machine's quantum bell jar lights up and pulses as compute racks spin",
+      "sfx": "riser-low",
+      "means": "show what the bet actually consists of",
+      "choreo": {
+        "primary": "the quantum bell jar lights and pulses",
+        "reaction": "teal readouts on the racks tick upward in response",
+        "ambient": "cable runs sway slightly"
+      }
+    },
+    {
+      "i": 5,
+      "t": 14.0,
+      "vo": "Alaska's line reads Aurora A I. Real time A I for the power grid, run by the University of Alaska Fairbanks.",
+      "draw": {
+        "subject": "the AURORA-AI row",
+        "action": "lifts off the page as a solid plate and turns to face us",
+        "emotion": "declarative",
+        "annotation": "AURORA-AI \u00b7 UNIV. OF ALASKA FAIRBANKS"
+      },
+      "shows": "the AURORA-AI row lifts off the page as a solid plate and turns to face us",
+      "sfx": "plate-turn",
+      "means": "the fact stated plainly, on screen, exactly as the document has it",
+      "choreo": {
+        "primary": "the AURORA-AI row lifts off the page as a solid plate and turns to face us",
+        "reaction": "the page below darkens as the plate takes the light",
+        "ambient": "plate edge catches a travelling highlight"
+      }
+    },
+    {
+      "i": 6,
+      "t": 18.2,
+      "vo": "Alaska's line reads Aurora A I. Real time A I for the power grid, run by the University of Alaska Fairbanks.",
+      "draw": {
+        "subject": "a nameplate under the plate",
+        "action": "slides in and locks",
+        "emotion": "matter-of-fact",
+        "annotation": "PI RICHARD WIES"
+      },
+      "shows": "a nameplate under the plate slides in and locks",
+      "sfx": "lock-click",
+      "means": "attribute it to a named person, primary sourced",
+      "choreo": {
+        "primary": "a nameplate slides in beneath the plate and locks",
+        "reaction": "the plate settles a few pixels under the added weight",
+        "ambient": "lamp flicker"
+      }
+    },
+    {
+      "i": 7,
+      "t": 22.5,
+      "vo": "That's the whole public record. No abstract, no budget, and nobody here has reported it.",
+      "draw": {
+        "subject": "Sourdough beside the plate",
+        "action": "his furnace window DIMS and the frame loses its key light with him",
+        "emotion": "deflated, uncertain",
+        "annotation": "NO ABSTRACT \u00b7 NO BUDGET"
+      },
+      "shows": "Sourdough beside the plate his furnace window DIMS and the frame loses its key light with him",
+      "sfx": "power-down-hum",
+      "means": "THE TURN, drawn as a light going out",
+      "choreo": {
+        "primary": "Sourdough's furnace window DIMS toward black",
+        "reaction": "the whole frame loses its key light with him and his contact shadow dissolves",
+        "ambient": "a last ember crawls across the grate"
+      }
+    },
+    {
+      "i": 8,
+      "t": 25.9,
+      "vo": "That's the whole public record. No abstract, no budget, and nobody here has reported it.",
+      "draw": {
+        "subject": "three empty label slots",
+        "action": "drop in one at a time and each stays blank",
+        "emotion": "hollow",
+        "annotation": "(no coverage we could find)"
+      },
+      "shows": "three empty label slots drop in one at a time and each stays blank",
+      "sfx": "empty-tick",
+      "means": "the absence made countable rather than asserted",
+      "choreo": {
+        "primary": "three empty label slots drop in one at a time and stay blank",
+        "reaction": "Sourdough's head tips fractionally toward the empty slots",
+        "ambient": "his idle breath continues in near-darkness"
+      }
+    },
+    {
+      "i": 9,
+      "t": 29.8,
+      "vo": "But you can see why they picked the grid.",
+      "draw": {
+        "subject": "the dark map of Alaska",
+        "action": "wipes in and a first amber node ignites",
+        "emotion": "curious, warming",
+        "annotation": "REHOOK"
+      },
+      "shows": "the dark map of Alaska wipes in and a first amber node ignites",
+      "sfx": "whoosh-reveal",
+      "means": "the recovery, and the promise that the emptiness has an explanation",
+      "rehook": "the dark map wipes in and the first grid node ignites, promising that the empty record has a real explanation",
+      "choreo": {
+        "primary": "the dark map of Alaska wipes in and one amber node ignites",
+        "reaction": "the node throws a small halo onto the surrounding coast",
+        "ambient": "a slow aurora wash breathes far above"
+      }
+    },
+    {
+      "i": 10,
+      "t": 34.6,
+      "vo": "Alaska isn't one grid. It's hundreds of separate ones.",
+      "draw": {
+        "subject": "the scatter of nodes",
+        "action": "igniting one by one across the map with NO lines drawn between them",
+        "emotion": "scattered, alive",
+        "annotation": "HUNDREDS OF SEPARATE GRIDS"
+      },
+      "shows": "the scatter of nodes igniting one by one across the map with NO lines drawn between them",
+      "sfx": "ignite-pops",
+      "means": "the word islanded turned into a picture",
+      "choreo": {
+        "primary": "nodes ignite one by one across the map with NO lines between them",
+        "reaction": "each ignition nudges the previous node's halo",
+        "ambient": "the aurora wash keeps breathing"
+      }
+    },
+    {
+      "i": 11,
+      "t": 38.0,
+      "vo": "Cordova powers itself. Twenty six hundred people, their own hydro dam.",
+      "draw": {
+        "subject": "Cordova's hydro dam and powerhouse",
+        "action": "the penstock fills and the powerhouse windows light in sequence",
+        "emotion": "proud, self-sufficient",
+        "annotation": "CORDOVA \u00b7 2,600 PEOPLE"
+      },
+      "shows": "Cordova's hydro dam and powerhouse the penstock fills and the powerhouse windows light in sequence",
+      "sfx": "water-rush",
+      "means": "the human beat, a real town that runs on itself",
+      "choreo": {
+        "primary": "the penstock fills and Cordova's powerhouse windows light in sequence",
+        "reaction": "Cell's charge bar climbs and a resident figure looks up",
+        "ambient": "spillway spray drifts and the figure breathes"
+      }
+    },
+    {
+      "i": 12,
+      "t": 42.7,
+      "vo": "That same department already spent six point two million there,",
+      "draw": {
+        "subject": "a funding plate",
+        "action": "lands beside the town with weight",
+        "emotion": "consequential",
+        "annotation": "$6.2M \u00b7 SEPARATE PROJECT"
+      },
+      "shows": "a funding plate lands beside the town with weight",
+      "sfx": "plate-thud",
+      "means": "the honest label that keeps Cordova from reading as AURORA-AI",
+      "choreo": {
+        "primary": "a funding plate lands beside the town with weight",
+        "reaction": "the ground plane takes a visible impact dust puff",
+        "ambient": "powerhouse windows keep flickering warm"
+      }
+    },
+    {
+      "i": 13,
+      "t": 46.4,
+      "vo": "building a live computer model of that grid, updating in real time.",
+      "draw": {
+        "subject": "the teal wireframe copy of Cordova",
+        "action": "builds vertex by vertex then moves in lockstep with the real town",
+        "emotion": "uncanny, precise",
+        "annotation": "LIVE MODEL"
+      },
+      "shows": "the teal wireframe copy of Cordova builds vertex by vertex then moves in lockstep with the real town",
+      "sfx": "data-shimmer",
+      "means": "the twin explained by showing it keep up, no jargon",
+      "choreo": {
+        "primary": "the teal wireframe twin builds vertex by vertex then moves in lockstep",
+        "reaction": "the real town's motion leads it by exactly one frame",
+        "ambient": "scan sweep crawls down the wireframe"
+      }
+    },
+    {
+      "i": 14,
+      "t": 50.2,
+      "vo": "So Alaska isn't a footnote. It's the test bed.",
+      "draw": {
+        "subject": "the AURORA-AI line",
+        "action": "the camera pulls back until it is a hairline among 200 rows",
+        "emotion": "small but undeniable",
+        "annotation": "1 OF 200"
+      },
+      "shows": "the AURORA-AI line the camera pulls back until it is a hairline among 200 rows",
+      "sfx": "pull-back-swell",
+      "means": "THE SIGNATURE REVEAL, true scale",
+      "choreo": {
+        "primary": "the camera pulls back until the lit line is one hairline among 200 rows",
+        "reaction": "the lamp pool shrinks to a dot as the page opens out",
+        "ambient": "199 grey rows resolve out of the dark"
+      }
+    },
+    {
+      "i": 15,
+      "t": 53.5,
+      "vo": "One line of public record. What's in it?",
+      "draw": {
+        "subject": "Sourdough at ground level",
+        "action": "furnace flares back to full amber as the question sets beside him",
+        "emotion": "curious, unresolved",
+        "annotation": "WHAT'S IN IT?"
+      },
+      "shows": "Sourdough at ground level furnace flares back to full amber as the question sets beside him",
+      "sfx": "final-chime",
+      "means": "the button, looping back to the opening lamp",
+      "choreo": {
+        "primary": "Sourdough's furnace flares back to full amber",
+        "reaction": "his contact shadow re-forms on the ground as light returns",
+        "ambient": "breath and idle weight-shift running, embers rising"
+      }
+    }
+  ]
+}

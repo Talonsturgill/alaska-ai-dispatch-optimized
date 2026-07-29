@@ -1,0 +1,6 @@
+Gated shot SCALE and CAMERA HEIGHT before any frame renders, closing the 07-26 panel's "nine shots at one camera height, no close-up, no real scale change" defect. Verified against the real 07-26 board and a synthetic monotone one.
+Fixed frozen held figures at the root in Character.tsx. The idle weight-shift was gated to two poses, so point, raise and panic got no sway at all. Verified by render diff, 3083 pixels now animate that were previously frozen.
+Made empty runs structurally impossible via scripts/story_gate.py, a seven-rung escalation ladder that must reach exit 0 before the angle room. Verified by replaying the failed run through it.
+Protected the shared research search budget in Phase 1 after a six-agent fan-out consumed all 200 session searches and blinded every later agent.
+Populated caption_fixups at the moment the TTS respellings were written, so no phonetic spelling reached the screen. Verified, zero leaks in 29 cues.
+REPEAT-OFFENDER ESCALATION: the 07-26 run shipped below bar and deferred the frozen-figure fix for the third time. It is now fixed in code rather than deferred again.

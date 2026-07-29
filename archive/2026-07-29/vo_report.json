@@ -1,0 +1,55 @@
+{
+  "backend": "gemini-tts",
+  "model": "gemini-3.1-flash-tts-preview",
+  "voice": "Sulafat",
+  "take": 0,
+  "takes": 3,
+  "soundcheck": {
+    "pass": true,
+    "score": 0.988,
+    "heard": "Last Wednesday, the US Energy Department published 200 science projects. One line said, Alaska, it's the Genesis mission. America's bet on AI for hard science. Alaska's line reads Aurora AI, real-time AI for the power grid, run by the University of Alaska Fairbanks. That's the whole public record. No abstract, no budget, and nobody here has reported it. But you can see why they picked the grid. Alaska isn't one grid. It's hundreds of separate ones. Cordova powers itself. 2600 people, their own hydrodame. That same department already spent 6.2 million there. Building a live computer model of that grid, updating in real-time. So, Alaska isn't a footnote. It's the test bed. One line of public record. What's in it?",
+    "checks": {
+      "word_accuracy": {
+        "wer": 0.023,
+        "pass": true
+      },
+      "no_leak": {
+        "leaked": [],
+        "pass": true
+      },
+      "expressive": {
+        "pitch_std_semitones": 7.42,
+        "voiced_frac": 0.57,
+        "pass": true
+      },
+      "duration": {
+        "seconds": 58.0,
+        "pass": true
+      },
+      "loudness": {
+        "lufs": null,
+        "pass": true
+      }
+    },
+    "diagnosis": "clean"
+  },
+  "all_reports": [
+    {
+      "pass": true,
+      "score": 0.988,
+      "diagnosis": "clean"
+    },
+    {
+      "pass": true,
+      "score": 0.98,
+      "diagnosis": "clean"
+    },
+    {
+      "pass": true,
+      "score": 0.988,
+      "diagnosis": "clean"
+    }
+  ],
+  "watermark": "SynthID (Google) embedded in all Gemini TTS audio",
+  "license": "Google Gemini API preset voice (per-use billing)"
+}

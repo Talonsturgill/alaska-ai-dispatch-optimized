@@ -1,4 +1,5 @@
 import React from 'react';
+import {Ep0729, ep0729Schema} from './Ep0729';
 import { Composition } from 'remotion';
 import { Episode, episodeSchema } from './Episode';
 import { Standoff } from './Standoff';
@@ -34,6 +35,19 @@ const standoffSchema = z.object({
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      <Composition
+        id="Dispatch0729"
+        component={Ep0729}
+        durationInFrames={1830}
+        fps={30}
+        width={1080}
+        height={1920}
+        schema={ep0729Schema}
+        defaultProps={{ captions: [] }}
+        calculateMetadata={({ props }) => ({
+          durationInFrames: (props as {total?: number}).total ?? 1830,
+        })}
+      />
       <Composition
         id="Dispatch"
         component={Episode}

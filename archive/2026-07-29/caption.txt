@@ -1,0 +1,23 @@
+The U.S. Energy Department just put Alaska's power grid on its national AI list, and nobody in the state has reported it.
+
+That was last Wednesday, in the Genesis Mission award list. Two hundred projects. One of them is Alaska.
+
+The line reads AURORA-AI, Alaska Utility Resilience and Optimization using Real-time AI, led by Richard Wies at the University of Alaska Fairbanks.
+
+That is the entire public record. One line. No abstract, no dollar figure, no named utility partner, and nothing from UAF either. I went looking for a second source and there isn't one.
+
+Here is why I think it matters anyway.
+
+The Genesis Mission is the federal government's attempt to point AI, supercomputing and quantum systems at hard science problems all at once. It launched in November and by this month it had more than eight hundred million dollars in partner commitments behind it. That programme just put Alaska's grid on its list.
+
+And the choice is not random. Alaska is not one grid, it is hundreds of separate ones. Cordova runs on its own hydro for about twenty six hundred people. The same department already spent six point two million dollars there, in a separate and earlier project, building a live computer model of that grid that updates in real time.
+
+That is the thing most of the country cannot offer. You cannot test grid AI properly on a system that can always borrow power from the state next door. Alaska can't borrow. Every mistake shows up immediately, in one town, on one dam.
+
+So the most interesting infrastructure story in the state right now is a single line of type that almost nobody has read.
+
+I want to be careful about what this is not. An empty Phase I record is probably just normal administrative practice, not secrecy, and I have no evidence anyone is hiding anything. I also cannot tell you what AURORA-AI will actually build, because nobody has published it.
+
+What would you want to know first if you could ask the principal investigator one question?
+
+#Alaska #ArtificialIntelligence #EnergyGrid #Microgrids #Infrastructure
