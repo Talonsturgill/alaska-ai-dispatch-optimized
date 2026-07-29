@@ -24,11 +24,43 @@ push access to the alaskaaicarousels repo) rather than silently skipping — the
 staying current is part of the deliverable, but a feed-push failure must NOT roll
 back or block the already-shipped video/email.
 """
-import argparse, json, subprocess, sys, tempfile, time
+import argparse, json, re, subprocess, sys, tempfile, time
 from pathlib import Path
+from urllib.parse import urlparse
 
 REPO = "https://github.com/Talonsturgill/alaskaaicarousels.git"
 MANIFEST = "docs/videos/videos.json"
+
+
+def clean_text(field, s):
+    """A display string bound for the /videos feed. The player renders title and
+    caption into card.innerHTML, so a value carrying markup is a script on the
+    alaskaaihq.com origin. The player now escapes on output, but the feed should
+    not carry markup in the first place: reject angle brackets and control
+    characters here, at the trust boundary, so a bad value fails the publish
+    (surfaced in the draft) instead of shipping. A headline that needs a literal
+    < or > can spell it 'under' / 'over'."""
+    s = (s or "").strip()
+    if re.search(r"[<>]", s) or any(ord(c) < 0x20 and c not in "\t" for c in s):
+        sys.exit(f"publish_feed: --{field} carries markup or control characters, "
+                 f"rephrase it: {s!r}")
+    return s
+
+
+def clean_url(field, u, required):
+    """A URL bound for a poster/src attribute in the feed. It must be a real
+    http(s) URL with no quote, space, or angle bracket, the characters that would
+    break out of the attribute it is written into. Empty is allowed for the
+    optional URLs."""
+    u = (u or "").strip()
+    if not u:
+        if required:
+            sys.exit(f"publish_feed: --{field} is required")
+        return u
+    p = urlparse(u)
+    if p.scheme not in ("http", "https") or not p.netloc or re.search(r"[\"'<>\s]", u):
+        sys.exit(f"publish_feed: --{field} is not a clean http(s) URL: {u!r}")
+    return u
 
 
 def run(cmd, cwd=None, ok_fail=False):
@@ -56,6 +88,15 @@ def main():
     ap.add_argument("--repo", default=REPO)
     ap.add_argument("--branch", default="main")
     a = ap.parse_args()
+
+    # Validate every value that reaches the feed manifest before it is written,
+    # so videos.json cannot carry an XSS payload into the /videos player.
+    a.title = clean_text("title", a.title)
+    a.caption = clean_text("caption", a.caption)
+    a.video_url = clean_url("video-url", a.video_url, required=True)
+    a.poster_url = clean_url("poster-url", a.poster_url, required=False)
+    a.video_mobile_url = clean_url("video-mobile-url", a.video_mobile_url, required=False)
+    a.poster_thumb_url = clean_url("poster-thumb-url", a.poster_thumb_url, required=False)
 
     with tempfile.TemporaryDirectory(prefix="feedpub_") as td:
         # shallow, blob-less clone: we only need the manifest, not site history/media
