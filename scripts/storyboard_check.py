@@ -132,6 +132,63 @@ def main():
         unknown_fr = sorted({f for f in framings if f and f not in SHOT_FRAMINGS})
         if unknown_fr:
             problems.append(f"shots use framings outside the vocab: {unknown_fr} (use config/shot_structure.yaml `framings`).")
+        # ---- 1b-ii. SCALE + CAMERA HEIGHT (2026-07-29 repeat-offender guard) ----
+        # The 07-26 panel: "nine shots play at one camera height on one set. No close-up, no low
+        # angle, no real scale change in 57.9 seconds." `framing` never caught it because a board
+        # can name eight framings and still compose every shot at one apparent subject size. So
+        # scale and height are now first-class declared axes with their own gate.
+        SCALES = shotcfg.get("scales", [])
+        HEIGHTS = shotcfg.get("heights", [])
+        classes = shotcfg.get("scale_classes", {}) or {}
+        CLOSE_CLASS = set(classes.get("close_class", []))
+        WIDE_CLASS = set(classes.get("wide_class", []))
+        scales = [norm_tag(s.get("scale", "")) for s in shots]
+        heights = [norm_tag(s.get("height", "")) for s in shots]
+        no_scale = [s.get("id", i + 1) for i, s in enumerate(shots) if not scales[i]]
+        if no_scale:
+            problems.append(f"shots {no_scale} declare no `scale` — every shot names how big the subject "
+                            f"reads ({SCALES}); this is the axis the 2026-07-26 panel found flat.")
+        no_height = [s.get("id", i + 1) for i, s in enumerate(shots) if not heights[i]]
+        if no_height:
+            problems.append(f"shots {no_height} declare no `height` — every shot names where the camera "
+                            f"stands ({HEIGHTS}).")
+        bad_scale = sorted({s for s in scales if s and s not in SCALES})
+        if bad_scale:
+            problems.append(f"shots use scales outside the vocab: {bad_scale} (config/shot_structure.yaml `scales`).")
+        bad_height = sorted({h for h in heights if h and h not in HEIGHTS})
+        if bad_height:
+            problems.append(f"shots use camera heights outside the vocab: {bad_height} "
+                            f"(config/shot_structure.yaml `heights`).")
+        if all(scales):
+            nscale = len(set(scales))
+            need_scale = int(srule.get("min_distinct_scales", 3))
+            if nscale < need_scale:
+                problems.append(f"shots use only {nscale} distinct scale(s) {sorted(set(scales))}; need >= "
+                                f"{need_scale}. Shooting every beat at one subject size is the 2026-07-26 "
+                                f"'no real scale change in 57.9 seconds' failure.")
+            if srule.get("require_close_class", True) and not (set(scales) & CLOSE_CLASS):
+                problems.append(f"no close-class shot ({sorted(CLOSE_CLASS)}) anywhere in the board — the panel "
+                                f"named the missing close-up explicitly. Get the camera onto a face or a detail.")
+            if srule.get("require_wide_class", True) and not (set(scales) & WIDE_CLASS):
+                problems.append(f"no wide-class shot ({sorted(WIDE_CLASS)}) — a close-up only reads as close "
+                                f"against something wide. Establish the world at least once.")
+            run_max = int(srule.get("max_consecutive_same_scale", 2))
+            run, prev = 1, scales[0]
+            for i in range(1, len(scales)):
+                run = run + 1 if scales[i] == prev else 1
+                prev = scales[i]
+                if run > run_max:
+                    problems.append(f"shot {shots[i].get('id', i + 1)} is the {run}th consecutive shot at scale "
+                                    f"'{scales[i]}' (max {run_max}). Break the size run — that is what reads as "
+                                    f"one locked camera.")
+                    break
+        if all(heights):
+            nheight = len(set(heights))
+            need_h = int(srule.get("min_distinct_heights", 2))
+            if nheight < need_h:
+                problems.append(f"shots use only {nheight} camera height(s) {sorted(set(heights))}; need >= "
+                                f"{need_h}. 'Nine shots at one camera height' was the panel's exact phrasing.")
+
         if srule.get("require_transitions", True):
             no_tr = [s.get("id", i + 2) for i, s in enumerate(shots[1:]) if not str(s.get("transition_in", "")).strip()]
             if no_tr:

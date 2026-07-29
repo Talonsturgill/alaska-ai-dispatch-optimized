@@ -177,6 +177,23 @@ repeat ever.
 
 ## PHASE 1: RESEARCH (go wide; non-recursive)
 
+SEARCH BUDGET (LAW, added 2026-07-29 after this class bit a run for the first time). WebSearch is
+capped PER SESSION, not per agent, and the whole fan-out draws on ONE shared pool. On 2026-07-29 six
+first-round researchers spent all 200 calls, and every follow-up agent for the rest of the run came
+back with "search budget exhausted" — the round that VERIFIES a lead and the round that finds the
+story the first pass missed are both downstream of the round that spends the budget, so a generous
+round one silently buys a blind round two. Therefore:
+- Round one is AT MOST 4 researchers, and every researcher prompt states an explicit cap: "Use at
+  most 20 WebSearch calls. Prefer WebFetch of outlet indexes and known URLs, which is NOT capped."
+- HOLD BACK roughly a third of the budget for round two. Targeted verification and the second look
+  are worth more per call than a sixth parallel beat.
+- WebFetch is the cheap instrument: fetching an outlet's news index and reading its headlines costs
+  no search budget at all. Sweep by OUTLET with WebFetch, and spend WebSearch only on genuine
+  unknowns.
+- If an agent reports the budget exhausted, say so in the run report and in the Gmail draft note.
+  A thin research result caused by an exhausted budget is NOT a slow news week, and must never be
+  reported as one.
+
 FIRST: `python3 scripts/dedupe.py list --days 14` for the exclusion list. Then fan out
 researcher agents across current Alaska + AI/robotics/ML news: gov/.edu science (UAF institutes,
 USGS, NOAA, NASA, FAA), fisheries & wildlife, energy/grid/data-centers, defense/aviation/UAS,
