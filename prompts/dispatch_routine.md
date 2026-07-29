@@ -245,7 +245,51 @@ treat that as a reason to look hard for the story the automation would otherwise
 genuine Alaska-AI win, an Indigenous-led / research / workforce story, or a "this is genuinely
 cool" capability. Rotation is about not being monotone, not about hitting a positivity quota.
 
-If nothing clears the bar, say so and stop rather than forcing a weak story.
+## NO EMPTY RUNS (LAW, added 2026-07-29 by owner directive, OVERRIDES the old stop clause)
+
+The previous text here said "if nothing clears the bar, say so and stop". On 2026-07-29 a run used
+that clause to ship nothing, and the owner's ruling is blunt: THERE IS ALWAYS NEWS. That run's
+reasoning was circular (it burned the whole shared search budget in round one, then cited its own
+blindness as proof of a slow week), it narrowed the window to 10 days although the automation had
+skipped three days and therefore owed the audience MORE, and it killed a live scoop on a
+generic-token dedupe hit. Each rejection looked defensible alone. The verdict was still wrong.
+
+The root defect was that STOPPING WAS AS CHEAP AS CONTINUING. So it no longer is.
+
+`scripts/story_gate.py` is now a HARD GATE with the same standing as storyboard_check.py:
+
+    python3 scripts/story_gate.py window        # the window this run owes; skipped days WIDEN it
+    python3 scripts/story_gate.py check         # exit 1 = you may not stop, work the next rung
+
+Phase 3 MUST maintain `out/dispatch/candidates.json` recording every rung attempted and every
+candidate evaluated, and MUST reach `story_gate.py check` exit 0 before the angle room. Climb until
+a story locks:
+
+1. `in_window_sweep` — beat fan-out across the window the gate reports, NOT a fixed 10 days.
+2. `outlet_index_sweep` — WebFetch the Alaska outlet news indexes and READ THE HEADLINES.
+   WebFetch is NOT capped by the session search budget. Skipping this rung and then reporting a
+   slow week means you did not look.
+3. `widened_window` — re-sweep at 30 days. A story the audience has never been shown is NEW TO
+   THEM. A three-week-old developing pilot is a legitimate Dispatch, especially after skipped days.
+4. `carried_leads` — work the carried-forward leads in recent `archive/*/story_pick.md`.
+5. `primary_source_mining` — NSF api.nsf.gov, DOE science.osti.gov award lists, USAspending,
+   grants.gov, SAM.gov, FERC eLibrary, RCA filings, the Legislature bill tracker, agency dockets,
+   university feeds. This is how BOTH the 07-25 and 07-29 scoops were found. Uncapped, never empty.
+6. `follow_up` — a genuinely new development on a covered story, or the open question a prior
+   Dispatch left hanging. "What happened next" is real news.
+7. `pegged_explainer` — THE FLOOR, and it always exists. An evergreen Alaska-and-AI explainer
+   pegged to a current hook. If you can explain one true thing about Alaska and AI, you have a
+   Dispatch. This rung cannot come back empty, which is the point of the ladder.
+
+DEDUPE IS ABOUT SUBJECT, NOT TOKENS. A shared token like "alaska", "uaf", "ai" or "digital twin"
+is NOT a repeat. Ask the viewer's question: would someone who watched the last dispatch feel they
+are being shown the same story again? A grid story and a landslide story are different stories even
+when both involve UAF and modelling. Do not game the entity list to force FRESH, and do not let a
+token collision kill a genuinely distinct subject either. Both failures are real; the second one
+cost this channel a scoop.
+
+Recency is measured against WHAT THE AUDIENCE HAS SEEN, not against the calendar. If the automation
+skipped days, the backlog is unspent inventory, not stale news.
 
 ## PHASE 3.5: THE ANGLE ROOM (find the earned take before any pen hits paper)
 
@@ -735,7 +779,10 @@ and compensating the relevant tribes where a story warrants it.
 
 ## DEFINITION OF DONE
 
-A video Dispatch is ALWAYS delivered (or an explicit no-story-clears-the-bar stop). A Gmail
+A video Dispatch is ALWAYS delivered. FULL STOP — the old "or an explicit no-story-clears-the-bar
+stop" wording was removed on 2026-07-29 after a run used it to ship nothing. An empty run is a
+FAILED run. `scripts/story_gate.py check` must exit 0 before the angle room, and it will not let you
+stop until the whole escalation ladder is worked (Phase 3). A Gmail
 draft exists with post text, credits (voice QC report included), sources, the honest scorecard,
 and WORKING permanent links for BOTH cuts (4:5 labeled as the LinkedIn feed cut). The run's
 entry was published to the alaskaaihq.com/videos feed via scripts/publish_feed.py (or its
