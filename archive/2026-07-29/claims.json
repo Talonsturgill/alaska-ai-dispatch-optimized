@@ -1,0 +1,91 @@
+{
+  "story": "AURORA-AI \u2014 a UAF-led DOE Genesis Mission award for Alaska utility resilience, unreported by anyone",
+  "claims": [
+    {
+      "id": "C1",
+      "text": "The DOE Office of Science Genesis Mission Phase I awards list, posted 2026-07-22, includes an award to Richard Wies of the University of Alaska Fairbanks titled 'AURORA-AI: Alaska Utility Resilience & Optimization using Real-time AI'.",
+      "verbatim": "Wies, Richard | AURORA-AI: Alaska Utility Resilience & Optimization using Real-time AI | University of Alaska Fairbanks | Fairbanks | AK | 99775-7880",
+      "source_url": "https://science.osti.gov/-/media/funding/pdf/Awards-Lists/2026/GM-RFA-Awards-List.pdf",
+      "source_name": "DOE Office of Science, Genesis Mission RFA awards list (announcement DE-FOA-0003612)",
+      "pub_date": "2026-07-22",
+      "load_bearing": true
+    },
+    {
+      "id": "C2",
+      "text": "The National Laboratory of the Rockies lists AURORA-AI among the projects it supports, led by the University of Alaska Fairbanks.",
+      "verbatim": "AURORA-AI: Alaska Utility Resilience and Optimization Using Real-Time AI -- Led by University of Alaska Fairbanks",
+      "source_url": "https://www.nlr.gov/computational-science/genesis-mission",
+      "source_name": "National Laboratory of the Rockies",
+      "pub_date": "2026-07-22",
+      "load_bearing": true
+    },
+    {
+      "id": "C3",
+      "text": "Nothing published anywhere describes what AURORA-AI will actually do. No abstract, no method, no named utility, no dollar figure, no timeline. The press release points readers to a webpage that lists only the title.",
+      "source_url": "https://www.nlr.gov/news/detail/press/2026/nlr-awarded-12-genesis-mission-projects-ranging-from-semiconductors-to-alaska-utility-optimization",
+      "source_name": "National Laboratory of the Rockies press release",
+      "pub_date": "2026-07-22",
+      "load_bearing": true,
+      "note": "This absence is itself verified: the release, its GlobeNewswire twin, the NLR Genesis Mission page and energy.gov were all fetched and none goes beyond the title."
+    },
+    {
+      "id": "C4",
+      "text": "The Genesis Mission is a DOE initiative launched 2025-11-24 that combines AI, supercomputing and quantum systems into one science-discovery platform. DOE announced 293 million dollars in March 2026 and more than 800 million dollars in partner commitments in July 2026.",
+      "source_url": "https://www.energy.gov/undersecretaryforscience/genesis-mission/genesis-mission",
+      "source_name": "U.S. Department of Energy",
+      "pub_date": "2026",
+      "load_bearing": true
+    },
+    {
+      "id": "C5",
+      "text": "Cordova Electric Cooperative's microgrid, serving a town of about 2,600 residents, was rebuilt as a real-time digital twin on the national lab's ARIES platform under the RADIANCE project, a 6.2 million dollar DOE grant, including about 1,200 smart meters, 6 phasor measurement units and a 1 MW battery.",
+      "source_url": "https://www.nlr.gov/news/detail/program/2023/city-of-cordova-and-us-department-of-energy-push-envelope-of-microgrid-design",
+      "source_name": "National Laboratory of the Rockies (then NREL)",
+      "pub_date": "2023",
+      "load_bearing": true,
+      "note": "SEPARATE, EARLIER PROJECT. No source links RADIANCE to AURORA-AI. Any on-screen use must not imply they are the same project."
+    },
+    {
+      "id": "C6",
+      "text": "In March 2026 a 170 kW modular data center was installed inside Cordova's Humpback Creek hydroelectric plant, using surplus hydropower for local computing.",
+      "source_url": "https://www.nlr.gov/news/detail/program/2026/in-alaska-a-data-center-inside-a-power-plant-inside-a-microgrid",
+      "source_name": "National Laboratory of the Rockies",
+      "pub_date": "2026-03-05",
+      "load_bearing": true,
+      "note": "SEPARATE from AURORA-AI. Same caveat as C5."
+    },
+    {
+      "id": "C7",
+      "text": "The National Laboratory of the Rockies has a Fairbanks campus and describes it as the only national lab based in Alaska. NREL was renamed the National Laboratory of the Rockies in December 2025.",
+      "source_url": "https://www.nlr.gov/about/alaska",
+      "source_name": "National Laboratory of the Rockies",
+      "pub_date": null,
+      "load_bearing": false
+    },
+    {
+      "id": "C8",
+      "text": "Richard Wies is a professor of electrical and computer engineering at UAF, on the faculty since August 1999, researching distributed generation, load control and microgrids.",
+      "source_url": "https://www.researchgate.net/profile/Richard-Wies",
+      "source_name": "ResearchGate profile (SECONDARY)",
+      "pub_date": null,
+      "load_bearing": false,
+      "note": "Secondary sourcing only. Needs a uaf.edu confirmation before any on-screen biographical claim."
+    },
+    {
+      "id": "C9",
+      "text": "No Alaska news outlet, and not UAF or ACEP themselves, has published anything about this award as of 2026-07-29.",
+      "source_name": "Direct checks of adn.com, alaskapublic.org, ktoo.org, uaf.edu news and the ACEP site",
+      "pub_date": "2026-07-29",
+      "load_bearing": true,
+      "note": "alaskabeacon.com returned 403 and the Fairbanks Daily News-Miner hit a rate limit, so those two are UNCHECKED rather than confirmed absent. Phrase on screen as 'no coverage we could find', never as an absolute."
+    }
+  ],
+  "fact_check_status": "VERIFIED \u2014 every load-bearing claim re-fetched independently by a second agent on 2026-07-29",
+  "on_screen_rules": [
+    "C8 (Wies biography) is SECONDARY-sourced only. Do not put a biographical claim on screen. He may be named as the principal investigator, which is primary-sourced from the DOE awards list.",
+    "C5 and C6 (Cordova) are a SEPARATE, EARLIER project. The film must never imply Cordova is what AURORA-AI funds. Label it on screen as a different project.",
+    "C9 must be phrased as 'no coverage we could find', never as an absolute, because two outlets could not be checked.",
+    "No dollar figure may be attached to AURORA-AI. The programme-wide range is NOT this award's number.",
+    "Numbers on screen are illustrative where drawn as objects; the figures themselves come only from this file."
+  ]
+}

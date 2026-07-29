@@ -1066,3 +1066,123 @@ decision from the owner on whether the gate should extend to the whole email bod
 this week reports six Anthropic employees donating $372,000 to an Alaska gubernatorial candidate.
 This automation is Anthropic-built, so it is not the right narrator for that story, and the choice
 not to air it is recorded in out/dispatch/story_pick.md instead of being made invisibly.
+
+---
+
+## 2026-07-29 -- MACHINE UPGRADES + an honest research-constraint finding
+
+**Three repeat offenders fixed at the root, each verified before commit** (commit 3bcbb86).
+
+### 1. Shot monotony is now gated before a frame renders
+
+The 2026-07-26 panel's verdict was "nine shots play at one camera height on one set. No close-up,
+no low angle, no real scale change in 57.9 seconds", and the same defect had been raised on earlier
+runs. It kept surviving because `min_distinct_framings` could not see it: a board can legally
+declare eight different framing TAGS while composing every single shot at the same apparent subject
+size and the same eye height. Framing says WHAT is in frame. It says nothing about how big the
+subject reads or where the camera stands.
+
+So `scale` and `height` are now first-class per-shot axes with their own vocabularies in
+`config/shot_structure.yaml` (scales: extreme-wide, wide, medium, close, insert; heights: ground,
+low, eye, high, overhead), and `scripts/storyboard_check.py` gates them at Gate 0A: at least three
+distinct scales, at least one close-class shot, at least one wide-class shot, never three
+consecutive shots at one scale, and at least two camera heights.
+
+VERIFIED both ways, because a gate that only fails the obvious case is not a gate. Run against the
+actual 2026-07-26 storyboard it refuses all nine shots for declaring neither axis. Run against a
+synthetic board where every shot declares `scale: medium, height: eye` (the board that would have
+passed every previous gate while committing the exact sin the panel named) it fails on three
+separate counts: only one distinct scale, a run of three at one size, and only one camera height.
+
+### 2. Frozen held figures, fixed in the rig instead of noted for a third time
+
+Flagged by the panel on 07-24 and on 07-25, DEFERRED both times, and on 07-26 a judge measured a
+figure as pixel-identical across a full 8-frame strip. The 07-26 retrospective concluded "`vitals()`
+exists now and these scenes simply are not driving it", which located the blame in the episode. That
+was wrong, and it is why a doctrine note did not fix it.
+
+The actual root cause was one line in `Character.tsx`. The idle weight-shift was gated to
+`pose === 'stand' || pose === 'arms-crossed'`, so the `point`, `raise` and `panic` poses received no
+sway whatsoever, leaving only a small torso bob to carry the entire figure. Those are precisely the
+poses a scene holds on for its biggest, most-scrutinised beats, which is why the defect kept landing
+on the shots the judges were looking hardest at. A person pointing at something still shifts their
+weight. Every non-walking pose now earns the idle, with gesture poses scaled to 0.55 amplitude so a
+raised arm still reads deliberate rather than wobbly.
+
+VERIFIED BY PIXELS, not by argument. The same two frames of `CraftShowcase` (which holds a
+`pose="point"` figure) were rendered under the new code and under the reverted old gate. Across a
+6-frame window, 3083 pixels inside the pointing figure's bounding box (x 87-249, y 520-780 at draft
+resolution) animate under the new code and were frozen under the old one. `tsc --noEmit` clean. The
+verification harness is kept at `out/verify/verify_idle.sh` so the measurement can be reproduced.
+
+### 3. The research search budget, a NEW failure class caught this run
+
+WebSearch is capped PER SESSION, not per agent, and the entire research fan-out draws on one shared
+pool. This run's six first-round researchers consumed all 200 calls. Every agent launched afterwards
+reported "search budget exhausted" and could no longer search at all, only WebFetch specific URLs.
+
+The dangerous part is the shape of the failure, not the cap. The round that VERIFIES a lead and the
+round that finds the story the first pass missed are both downstream of the round that spends the
+budget, so a generous round one silently buys a blind round two, and the symptom it produces --
+thin results -- is indistinguishable from a genuinely slow news week. Five of six researchers this
+run reported a slow week, and that is probably true, but it can no longer be asserted with full
+confidence for the back half of the sweep.
+
+Phase 1 of `prompts/dispatch_routine.md` now caps round one at four researchers with an explicit
+per-agent search cap stated in the prompt, reserves roughly a third of the budget for verification,
+directs sweeps at WebFetch of outlet indexes (which is NOT capped), and REQUIRES an exhausted budget
+to be surfaced in the run report and the Gmail draft rather than reported as a slow news week.
+
+### Story outcome
+
+Recorded in full in `out/dispatch/story_pick.md`. Four candidates were rejected on honest grounds
+rather than stretched into a film: the Bristol Bay drone/AI salmon pilot (adversarial fact-check
+broke it -- three headline statistics absent from the only fetchable source, a misattributed quote,
+latest verifiable date 2026-07-03, and a close repeat of the 2026-07-21 salmon-counting dispatch);
+Rocket Lab's $266M Kodiak contract (real and in-window, but no source connects it to AI, and bolting
+an AI frame onto a launch-infrastructure story is exactly what the honesty rule forbids); the UAF
+pre-earthquake signal near Nenana (in-window, no AI angle on inspection); and the Alaska energy beat
+(three real stories fetched and confirmed to contain zero AI content).
+
+The Anthropic-employee campaign-donation story was RECUSED again, for the same reason the 2026-07-26
+run recused it: this automation is Anthropic-built and is not the right narrator for a story about
+Anthropic employees' political spending. Logged rather than dropped invisibly.
+
+### The one real find, and why it still did not ship
+
+The second-round dig DID turn up an unreported, in-window, primary-sourced Alaska AI story. Read
+directly from the DOE Office of Science Genesis Mission Phase I awards list posted 2026-07-22
+(announcement DE-FOA-0003612): "Wies, Richard | AURORA-AI: Alaska Utility Resilience &
+Optimization using Real-time AI | University of Alaska Fairbanks". Confirmed independently on the
+National Laboratory of the Rockies' own Genesis Mission page. No Alaska outlet, and not UAF or ACEP
+themselves, has published a word about it. It is a live, unclaimed scoop and it is logged as a lead.
+
+It was still refused, on two grounds that compound each other:
+
+- It is a TITLE WITH NO BODY. Seven sources were fetched and not one contains an abstract, method,
+  dataset, utility partner, dollar figure or timeline.
+- `dedupe.py` flagged it against 2026-07-25 on [alaska, digital, twin, uaf], and on inspection the
+  flag is correct rather than a generic-token collision. "The One It Didn't Hear" had already told
+  this audience that UAF won an unreported federal award, surfaced from a federal award database,
+  to build real-time digital twins, with no press release in existence. Four days later this is an
+  unreported federal award, to UAF, surfaced from a federal awards document, for real-time AI, with
+  no description in existence. Different agency, same news to a viewer.
+
+The two faults are not independent, which is what settled it: the ONLY material substantial enough
+to give AURORA-AI a body is the Cordova digital twin, and that is precisely the material that
+creates the overlap. Curing the thinness deepens the repeat. Re-testing with a narrower entity set
+would have returned FRESH and produced exactly the cookie-cutter the gate exists to prevent, so the
+entity list was not re-cut.
+
+**Run outcome: an explicit no-story-clears-the-bar stop, which the routine provides for.** No video
+shipped. Six candidates, six honest failures: two with no AI angle in any source (Rocket Lab's
+$266M Kodiak contract, the UAF pre-earthquake signal), one broken by adversarial fact-check and
+repeating the 07-21 beat (Bristol Bay), one recused for conflict of interest, one empty beat, and
+AURORA-AI above. Full reasoning per candidate in `out/dispatch/story_pick.md`, along with five
+leads carried forward.
+
+**Gate result:** no storyboard, no render, no panel, because no story was locked. The three machine
+upgrades above were each verified on their own terms before commit (gate self-tested against both a
+real failing board and a synthetic monotone one; the rig fix measured by render diff; the routine
+amendment is doctrine). They are merged rather than parked so the NEXT run inherits them, which is
+the whole point of fixing a repeat offender the run it is caught.
