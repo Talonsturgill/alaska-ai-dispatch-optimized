@@ -23,7 +23,7 @@ brand:
       - "End with a real engagement question to readers, not a 'follow us' CTA."
       - "Plain English. Complex ideas in simple sentences."
       - "Never use em dashes or en dashes, ever. Write ranges as 'X to Y'. For a pause or aside use a comma, a period, parentheses, or a colon. Use straight quotes, not curly."
-      - "ALWAYS use contractions over the formal register. NEVER write 'cannot', write \"can't\". Owner directive 2026-07-30, and it applies everywhere: captions and post copy above all, but also VO, on-screen labels, the Gmail draft and credits. 'cannot' reads as institutional writing, which is the opposite of this voice. Enforced as a hard fail by scripts/caption_check.py (BANNED_FORMAL) so it can't drift back."
+      - "ALWAYS use contractions over the formal register. NEVER write 'cannot', write \"can't\". Owner directive 2026-07-30, and it applies everywhere: captions and post copy above all, but also VO, on-screen labels, the Gmail draft and credits. 'cannot' reads as institutional writing, which is the opposite of this voice. ENFORCEMENT IS PARTIAL AND THAT IS STATED HONESTLY: scripts/caption_check.py (BANNED_FORMAL) hard-fails it in the LinkedIn POST TEXT ONLY, which is the highest-traffic surface. VO, on-screen labels, the Gmail draft and credits are NOT linted for it and are the writer's responsibility, same as the em-dash ban."
       - "Cite the source of a claim inline when it matters (e.g. 'briefed lawmakers last week')."
     dont:
       - "Don't use hashtags."

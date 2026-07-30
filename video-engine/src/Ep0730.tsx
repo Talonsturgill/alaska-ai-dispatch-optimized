@@ -34,9 +34,17 @@ const MONO = '"JetBrains Mono", ui-monospace, monospace';
 const SAFE_TOP = 285;
 const SAFE_BOT = 1635;
 
-const Stage: React.FC<{children: React.ReactNode}> = ({children}) => (
+// NOTE THE `grade` SLOT, added 2026-07-30 after code review. NightGrade emits HTML <div>
+// elements, and a <div> created inside an <svg> is placed in the SVG namespace where it
+// paints NOTHING. Every scene below originally rendered <NightGrade> as an svg child, so the
+// entire night grade (ambient cast, crushed black floor, registered source bloom) was a
+// silent no-op in the shipped film. UnderIceLook.tsx had it right, outside the svg, which is
+// why look-dev looked graded and the episode did not. The slot makes the correct placement
+// the only placement a scene can use.
+const Stage: React.FC<{children: React.ReactNode; grade?: React.ReactNode}> = ({children, grade}) => (
   <AbsoluteFill style={{backgroundColor: ABYSS}}>
     <svg viewBox="0 0 1080 1920" width="1080" height="1920">{children}</svg>
+    {grade}
   </AbsoluteFill>
 );
 
@@ -86,7 +94,7 @@ const S1: React.FC = () => {
   const mkJit = Math.sin(f / 2.2) * 3 * (mk > 0.4 ? 1 : 0);
 
   return (
-    <Stage>
+    <Stage grade={<NightGrade f={f} color="#0f3a52" amount={0.34} floor={0.2} horizon={0.12} sources={[{x: 540, y: iceY - 60, r: 300, color: LEAD_WARM, intensity: 0.45}, {x: 430, y: 1180, r: 90, color: CYAN, intensity: 0.3}]} />}>
       <UnderIceBG f={f} iceY={iceY} lead={0.55} parallax={interpolate(f, [0, 300], [0, 0.5])} />
 
       {/* the satellite and its dying cone, ABOVE the ice */}
@@ -107,7 +115,9 @@ const S1: React.FC = () => {
       </g>
 
       <g opacity={interpolate(f, [8, 22], [0, 1], {extrapolateRight: 'clamp'})}>
-        <Plate x={540} y={SAFE_TOP + 40} text="NO SIGNAL" w={420} accent={CYAN} />
+        {/* offset right: centred at 540 this plate painted over the satellite body
+            (x 470-610), hiding the emitter of the dying cone for most of S1 */}
+        <Plate x={815} y={SAFE_TOP + 40} text="NO SIGNAL" w={390} accent={CYAN} />
       </g>
 
       {/* the machine, small in a big dark world */}
@@ -128,9 +138,6 @@ const S1: React.FC = () => {
         <Plate x={540} y={SAFE_BOT - 60} text="BEAUFORT SEA" sub="POSITION UNKNOWN" w={560} />
       </g>
 
-      <NightGrade f={f} color="#0f3a52" amount={0.34} floor={0.2} horizon={0.12}
-        sources={[{x: 540, y: iceY - 60, r: 300, color: LEAD_WARM, intensity: 0.45},
-                  {x: 430, y: 1180, r: 90, color: CYAN, intensity: 0.3}]} />
     </Stage>
   );
 };
@@ -154,7 +161,7 @@ const S2: React.FC = () => {
   const allOn = f > 92;
 
   return (
-    <Stage>
+    <Stage grade={<NightGrade f={f} color="#0f3a52" amount={0.3} floor={0.18} horizon={0.1} sources={[{x: 540, y: iceY - 40, r: 260, color: LEAD_WARM, intensity: 0.3}, ...(allOn ? xs.map((x) => ({x, y: floorY - 44, r: 120, color: CYAN, intensity: 0.34})) : [])]} />}>
       <UnderIceBG f={f} iceY={iceY} lead={0.3} parallax={interpolate(f, [0, 320], [0.1, 0.6])} />
 
       {/* the first ring, travelling up out of the black before anything is explained */}
@@ -183,9 +190,6 @@ const S2: React.FC = () => {
         <StatCard x={540} y={SAFE_BOT - 300} big="6 SOURCES - 900 Hz" sub="IN PLACE 1 YEAR" scale={0.92} color="#1d4b66" />
       </g>
 
-      <NightGrade f={f} color="#0f3a52" amount={0.3} floor={0.18} horizon={0.1}
-        sources={[{x: 540, y: iceY - 40, r: 260, color: LEAD_WARM, intensity: 0.3},
-                  ...(allOn ? xs.map((x) => ({x, y: floorY - 44, r: 120, color: CYAN, intensity: 0.34})) : [])]} />
     </Stage>
   );
 };
@@ -210,7 +214,7 @@ const S3: React.FC = () => {
   const discl = interpolate(f, [150, 180], [0, 1], {extrapolateRight: 'clamp'});
 
   return (
-    <Stage>
+    <Stage grade={<NightGrade f={f} color="#0f3a52" amount={0.36} floor={0.24} horizon={0.08} sources={[{x: cx - 66, y: cy, r: locked ? 170 : 110, color: CYAN, intensity: locked ? 0.5 : 0.28}]} />}>
       <UnderIceBG f={f} iceY={180} lead={0.18} parallax={0.7} motes />
 
       {/* THREE RANGE LINES that visibly TERMINATE on the machine, each from its own
@@ -272,8 +276,6 @@ const S3: React.FC = () => {
         <Plate x={540} y={SAFE_BOT - 70} text="NOT MACHINE LEARNING" sub="AUTONOMY AND ACOUSTIC ENGINEERING" w={860} />
       </g>
 
-      <NightGrade f={f} color="#0f3a52" amount={0.36} floor={0.24} horizon={0.08}
-        sources={[{x: cx - 66, y: cy, r: locked ? 170 : 110, color: CYAN, intensity: locked ? 0.5 : 0.28}]} />
     </Stage>
   );
 };
@@ -297,7 +299,7 @@ const S4: React.FC = () => {
   const plate = entrance(f, fps, 246, {drop: 90});
 
   return (
-    <Stage>
+    <Stage grade={<NightGrade f={f} color="#0f3a52" amount={0.32} floor={0.2} horizon={0.1} sources={[{x: 200, y: 1420, r: 200, color: CYAN, intensity: 0.22}, {x: 540, y: iceY - 40, r: 240, color: LEAD_WARM, intensity: 0.26}]} />}>
       <UnderIceBG f={f} iceY={iceY} lead={0.22} parallax={interpolate(f, [0, 300], [0.2, 0.7])} />
 
       {/* the sound field the animal is swimming through, dimmed under the music duck */}
@@ -351,9 +353,6 @@ const S4: React.FC = () => {
         <Plate x={540} y={SAFE_TOP + 24} text="BELUGA" sub="BEAUFORT SEA AND EASTERN CHUKCHI STOCKS" w={860} />
       </g>
 
-      <NightGrade f={f} color="#0f3a52" amount={0.32} floor={0.2} horizon={0.1}
-        sources={[{x: 200, y: 1420, r: 200, color: CYAN, intensity: 0.22},
-                  {x: 540, y: iceY - 40, r: 240, color: LEAD_WARM, intensity: 0.26}]} />
     </Stage>
   );
 };
@@ -370,7 +369,7 @@ const S5: React.FC = () => {
   const tick = interpolate(f, [120, 152], [0, 1], {extrapolateRight: 'clamp'});
 
   return (
-    <Stage>
+    <Stage grade={<NightGrade f={f} color="#0f3a52" amount={0.3} floor={0.18} horizon={0.1} sources={[{x: 540, y: 1010, r: 220, color: '#7fd4ff', intensity: 0.2}]} />}>
       <UnderIceBG f={f} iceY={260} lead={0.2} parallax={0.5} motes={false} />
 
       {/* the ghost animals held still, named by the card rather than acted upon */}
@@ -400,8 +399,6 @@ const S5: React.FC = () => {
         </g>
       )}
 
-      <NightGrade f={f} color="#0f3a52" amount={0.3} floor={0.18} horizon={0.1}
-        sources={[{x: 540, y: 1010, r: 220, color: '#7fd4ff', intensity: 0.2}]} />
     </Stage>
   );
 };
@@ -433,7 +430,7 @@ const S6: React.FC = () => {
   const px = x0 + (x1 - x0) * 0.05;
 
   return (
-    <Stage>
+    <Stage grade={<NightGrade f={f} color="#0f3a52" amount={0.34} floor={0.22} horizon={0.08} sources={[{x: px, y: yT, r: 130, color: HULL, intensity: 0.24}, {x: 300, y: 1120, r: 150, color: HULL, intensity: 0.18}]} />}>
       <UnderIceBG f={f} iceY={200} lead={0.12} parallax={0.4} motes={false} />
 
       <g transform={`translate(540,${yT}) scale(${zoom}) translate(-540,${-yT})`}>
@@ -500,9 +497,6 @@ const S6: React.FC = () => {
         </g>
       )}
 
-      <NightGrade f={f} color="#0f3a52" amount={0.34} floor={0.22} horizon={0.08}
-        sources={[{x: px, y: yT, r: 130, color: HULL, intensity: 0.24},
-                  {x: 300, y: 1120, r: 150, color: HULL, intensity: 0.18}]} />
     </Stage>
   );
 };
@@ -520,7 +514,7 @@ const S7: React.FC = () => {
   const pin = spring({frame: f - 150, fps, config: {damping: 11, stiffness: 170}});
 
   return (
-    <Stage>
+    <Stage grade={<NightGrade f={f} color="#0f3a52" amount={interpolate(f, [200, 300], [0.32, 0.5])} floor={0.24} horizon={0.08} sources={[{x: 252, y: 1180, r: 150, color: CYAN, intensity: 0.42}]} />}>
       <UnderIceBG f={f} iceY={300} lead={interpolate(f, [200, 300], [0.3, 0.06])} parallax={0.55} />
 
       <g opacity={date.on ? Math.min(1, date.scale) : 0} transform={`translate(0,${date.dy})`}>
@@ -555,8 +549,6 @@ const S7: React.FC = () => {
         <text x={790} y={1420} textAnchor="middle" fontFamily={MONO} fontWeight={700} fontSize={38} fill="#e08a7f">UNKNOWN</text>
       </g>
 
-      <NightGrade f={f} color="#0f3a52" amount={interpolate(f, [200, 300], [0.32, 0.5])} floor={0.24} horizon={0.08}
-        sources={[{x: 252, y: 1180, r: 150, color: CYAN, intensity: 0.42}]} />
     </Stage>
   );
 };

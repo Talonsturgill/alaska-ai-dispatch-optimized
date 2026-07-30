@@ -126,7 +126,7 @@ def render(post, poster_html, vids, voice, music, sources, score, note, temporar
     # 9:16 gets routed into LinkedIn's swipe-only vertical Video tab. Post the 4:5 to LinkedIn.
     if vids.get("square"):
         buttons += (f'<a class="dl" href="{vids["square"]}">&#9660;&nbsp; Post to LinkedIn &middot; 4:5 (main feed)'
-                    f'<small>1080&times;1350 &middot; ~60s &middot; H.264 MP4 &middot; stays in the home feed</small></a>')
+                    f'<small>1080&times;1350 &middot; ~90s &middot; H.264 MP4 &middot; stays in the home feed</small></a>')
     if vids.get("vertical"):
         buttons += (f'<a class="dl alt" href="{vids["vertical"]}">&#9660;&nbsp; TikTok &middot; 9:16 (full-screen)'
                     f'<small>1080&times;1920 &middot; on LinkedIn this goes to the vertical Video tab, not the feed</small></a>')

@@ -38,6 +38,28 @@ def _parse_t(t):
     return a, b
 
 
+
+def _t_num(v, default=0.0):
+    """Beat/reveal timestamps are USUALLY floats but the documented schema also allows a
+    range string like "0.0-3.5", and four archived boards use it. A bare float() on those
+    raises ValueError and kills the whole gate with a traceback instead of reporting
+    problems, which is strictly worse than the defect it was added to catch."""
+    if v is None:
+        return default
+    if isinstance(v, (int, float)):
+        return float(v)
+    s = str(v).strip()
+    if not s:
+        return default
+    try:
+        return float(s)
+    except ValueError:
+        head = s.split("-")[0].split("to")[0].strip()
+        try:
+            return float(head)
+        except ValueError:
+            return default
+
 def load_beats(sb):
     """Return (beats_normalized, fmt) where fmt in {'object','string','mixed','none'}."""
     raw = sb.get("beats") or []
@@ -151,12 +173,12 @@ def analyze(dirp):
                         f"promise planted by {plant_by}s and paid at least {min_span}s later, or the "
                         f"back half runs on inertia (ENGAGEMENT.md §2.6).")
                 else:
-                    if float(pt) > plant_by:
+                    if _t_num(pt) > plant_by:
                         R["problems"].append(f"OPEN LOOP: planted at {pt}s, must be planted by {plant_by}s")
-                    if float(yt) - float(pt) < min_span:
+                    if _t_num(yt) - _t_num(pt) < min_span:
                         R["problems"].append(f"OPEN LOOP: plant {pt}s to pay {yt}s spans "
-                                             f"{float(yt)-float(pt):.1f}s, needs >= {min_span}s to be a loop")
-                    R["metrics"]["open_loop_span_s"] = round(float(yt) - float(pt), 2)
+                                             f"{_t_num(yt)-_t_num(pt):.1f}s, needs >= {min_span}s to be a loop")
+                    R["metrics"]["open_loop_span_s"] = round(_t_num(yt) - _t_num(pt), 2)
     elif fmt != "object":
         R["problems"].append(f"beats are the OLD prose format ({fmt}); upgrade to timed objects "
                              f"{{t,vo,shows,sfx,means}} so cadence + coverage are checkable (VISUAL_FLOW.md §3)")

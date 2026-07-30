@@ -155,7 +155,33 @@ def cmd_check(path):
     # The queue file saves the RESEARCH only; the fact-check, angle room, Gate 0 and the panel
     # all still run, which is stated in the queue file's own consumption contract.
     if locked and str(locked.get("found_at_rung", "")).strip() == "queued":
-        print(f"PASS [story_gate] story was QUEUED: {locked.get('headline')}")
+        # THE BYPASS MUST BE EVIDENCE-BACKED, NOT SELF-ASSERTED (hardened 2026-07-30 after
+        # code review). As first written this exited 0 on the run's own claim alone, before
+        # the headline check and without confirming a queue file ever existed. That is the
+        # exact shape of the failure this gate exists to prevent: a run that wants to stop
+        # early only had to write found_at_rung "queued" to skip the entire ladder.
+        qf = ROOT / "queue" / "next_story.json"
+        if not qf.exists():
+            fail(["a story claims found_at_rung 'queued' but queue/next_story.json does not exist.",
+                   "The bypass is evidence-backed: no queue file means no queued pick, so the",
+                   "escalation ladder still applies. If the queue file was already deleted this",
+                   "run, set found_at_rung to the rung that actually found the story."])
+        try:
+            q = json.loads(qf.read_text())
+        except Exception as e:
+            fail([f"queue/next_story.json exists but does not parse ({e}).",
+                   "A queued bypass may not rest on an unreadable file."])
+        due = str(q.get("queued_for", "")).strip()
+        today = datetime.date.today().isoformat()
+        if due and due > today:
+            fail([f"queue/next_story.json is queued_for {due}, which is in the future (today {today}).",
+                   "A queued story may only be consumed on or after its date."])
+        head = str(locked.get("headline", "")).strip()
+        if not head:
+            fail(["a queued story declares no headline. The queue bypass does not exempt a run",
+                   "from naming the story it is making."])
+        print(f"PASS [story_gate] story was QUEUED: {head}")
+        print(f"  queue/next_story.json present, queued_for {due or '(undated)'}")
         print("  the pick was pre-worked, so the escalation ladder does not apply")
         print("  REMINDER: delete queue/next_story.json in this run's commit, or it ships twice")
         sys.exit(0)

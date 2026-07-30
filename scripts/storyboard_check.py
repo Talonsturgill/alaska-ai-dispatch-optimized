@@ -80,6 +80,28 @@ def fail(msg):
     sys.exit(1)
 
 
+
+def _t_num(v, default=0.0):
+    """Beat/reveal timestamps are USUALLY floats but the documented schema also allows a
+    range string like "0.0-3.5", and four archived boards use it. A bare float() on those
+    raises ValueError and kills the whole gate with a traceback instead of reporting
+    problems, which is strictly worse than the defect it was added to catch."""
+    if v is None:
+        return default
+    if isinstance(v, (int, float)):
+        return float(v)
+    s = str(v).strip()
+    if not s:
+        return default
+    try:
+        return float(s)
+    except ValueError:
+        head = s.split("-")[0].split("to")[0].strip()
+        try:
+            return float(head)
+        except ValueError:
+            return default
+
 def main():
     sb_path = Path(sys.argv[1]) if len(sys.argv) > 1 else DEFAULT_SB
     if not sb_path.exists():
@@ -346,12 +368,12 @@ def main():
                             "every piece gets at least one true-scale 'whoa' beat aligned to the escalation "
                             "(ENGAGEMENT.md §3)")
         else:
-            beat_ts = [float(b.get("t", 0)) for b in (sb.get("beats") or []) if b.get("t") is not None]
+            beat_ts = [_t_num(b.get("t")) for b in (sb.get("beats") or []) if b.get("t") is not None]
             piece_end = max(beat_ts) if beat_ts else 0.0
             if piece_end >= 75:                       # long-format only
                 mid = piece_end / 2.0
-                first = [r for r in scale_rv if float(r.get("t", 0)) < mid]
-                second = [r for r in scale_rv if float(r.get("t", 0)) >= mid]
+                first = [r for r in scale_rv if _t_num(r.get("t")) < mid]
+                second = [r for r in scale_rv if _t_num(r.get("t")) >= mid]
                 if len(scale_rv) < 2 or not first or not second:
                     problems.append(
                         f"a {piece_end:.0f}s piece declares {len(scale_rv)} scale-class reveal(s), "

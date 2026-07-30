@@ -116,15 +116,54 @@ EVENTS = [
 ]
 
 
-# The breath before the PAYOFF. storyboard audio_arc.silence_at sits under the arrow's
-# ANTICIPATION so the crumple at the turn lands into a hole (Gate 0C: the film's only
-# reserved sub-60Hz spend and its silence cannot share a frame).
-# The dip must land in the REAL VO GAP before the line, not on top of it. Placing it at
-# L[9]'s start (pass 1) put it under the speech and measured as a 4.6 dB RISE. The 1.06s
-# gap between L8 ending and L9 starting is the breath before "Neither record is wrong",
-# the quietest and most important line in the film, so the bed drops out into real silence.
-SILENCE_DIP_AT = round(L[11] - 0.85, 2)
-DIP_LEN = 0.90
+# THE BREATH BEFORE THE PAYOFF, NOW SELF-FITTING (hardened 2026-07-30 after code review).
+#
+# This used to be two hand-tuned constants, an offset from a chosen line and a fixed 0.90s
+# length. That is fragile in exactly the way the 07-29 comment it replaced already warned
+# about: on this run the chosen gap measured 0.84s while the dip was 0.90s, so the silence
+# overlapped speech at BOTH ends and the "real pre-button silence" the audio gate checks for
+# was landing on top of the two lines it was supposed to sit between.
+#
+# The fix is to stop guessing. Measure every real inter-line gap in the back half, take the
+# widest one, and fit the dip inside it with a margin at each end. A dip can then never be
+# wider than the hole it goes in, on this run or any future one, whatever the VO timing turns
+# out to be.
+_MARGIN = 0.10          # keep this much clear speech either side of the dip
+_MIN_DIP = 0.35         # below this it is not an audible breath, so do not bother
+_MAX_DIP = 0.90         # above this it reads as a dropout rather than a beat
+
+def _fit_silence_dip(lines, after_frac=0.5):
+    """Return (start_seconds, length_seconds) for the pre-button breath, fitted to a REAL gap."""
+    if len(lines) < 3:
+        return None, 0.0
+    end = max(x["end"] for x in lines)
+    cands = []
+    for a, b in zip(lines, lines[1:]):
+        gap = b["start"] - a["end"]
+        # only the back half, and never the gap immediately before the final line, so the
+        # button itself still lands into its own silence rather than sharing one
+        if b["start"] >= end * after_frac and gap > 0:
+            cands.append((gap, a["end"], b["start"]))
+    if not cands:
+        return None, 0.0
+    gap, gstart, gend = max(cands)
+    usable = gap - 2 * _MARGIN
+    if usable < _MIN_DIP:
+        return None, 0.0
+    dip = min(_MAX_DIP, usable)
+    start = gstart + _MARGIN + (usable - dip) / 2.0     # centre it in the hole
+    return round(start, 3), round(dip, 3)
+
+
+SILENCE_DIP_AT, DIP_LEN = _fit_silence_dip(_lines)
+if SILENCE_DIP_AT is None:
+    # No gap in the back half is wide enough to hold an audible breath. Say so loudly rather
+    # than silently placing one on top of speech.
+    print("dispatch_mix: WARNING no back-half VO gap wide enough for a silence dip; skipping it")
+    SILENCE_DIP_AT, DIP_LEN = 0.0, 0.0
+else:
+    print(f"dispatch_mix: silence dip {DIP_LEN:.2f}s at {SILENCE_DIP_AT:.2f}s "
+          f"(fitted inside a real VO gap, not hand-tuned)")
 
 
 def check_schedule(events):

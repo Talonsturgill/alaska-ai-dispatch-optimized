@@ -22,6 +22,30 @@ Programmatic:
 """
 import argparse, json, os, re, sys
 
+# THE DURATION WINDOW IS READ FROM CONFIG, NOT HARDCODED (2026-07-30). It used to be a
+# literal dur_hi=75.0, which silently became a run-breaker the moment the format went from
+# 60s to 90s: a conforming 90s read is 84 to 96 seconds of audio, so EVERY take would have
+# failed the PACE check, pick_best would have returned a failing take, and the routine
+# forbids shipping one. Deriving it from config/state.yaml means the next format change
+# cannot strand this file behind it.
+def _duration_window():
+    lo, hi = 8.0, 75.0
+    try:
+        import yaml
+        cfg = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "config", "state.yaml")
+        band = (yaml.safe_load(open(cfg)) or {}).get("dispatch_seconds_band")
+        if band and len(band) == 2:
+            # DELIBERATELY WIDE. The gate that owns exact runtime is Phase 7; this check
+            # only needs to catch a take that is GROSSLY broken, a TTS truncation or a
+            # runaway loop. Making it tight here just burns re-synths on takes the runtime
+            # gate would have accepted.
+            lo, hi = max(8.0, float(band[0]) * 0.55), float(band[1]) * 1.35
+    except Exception:
+        pass
+    return lo, hi
+
+DUR_LO, DUR_HI = _duration_window()
+
 # tolerances (tuned for a ~55s brisk social VO)
 WER_MAX = 0.08          # <= 8% word error
 PITCH_STD_MIN = 1.6     # semitones; below this = monotone
@@ -156,7 +180,9 @@ def _lufs(wav):
     return float(meter.integrated_loudness(data))
 
 
-def check(wav, spoken_text, tags=None, dur_lo=8.0, dur_hi=75.0):
+def check(wav, spoken_text, tags=None, dur_lo=None, dur_hi=None):
+    dur_lo = DUR_LO if dur_lo is None else dur_lo
+    dur_hi = DUR_HI if dur_hi is None else dur_hi
     tags = tags or []
     heard = _transcribe(wav)
     wer = _wer(spoken_text, heard)
