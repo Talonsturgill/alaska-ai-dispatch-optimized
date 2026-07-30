@@ -1,0 +1,91 @@
+{
+  "total": 66.66,
+  "voice": "Sulafat",
+  "model": "gemini-3.1-flash-tts-preview",
+  "lines": [
+    {
+      "idx": 0,
+      "text": "Off northern Alaska, sea ice blocks a satellite signal.",
+      "start": 0.0,
+      "end": 3.88
+    },
+    {
+      "idx": 1,
+      "text": "So how does a robot under it know where it is?",
+      "start": 4.66,
+      "end": 7.26
+    },
+    {
+      "idx": 2,
+      "text": "The U S Navy wants to watch the Arctic year round. Its answer is sound.",
+      "start": 8.18,
+      "end": 13.5
+    },
+    {
+      "idx": 3,
+      "text": "Six speakers on the seabed would hum at nine hundred hertz.",
+      "start": 14.48,
+      "end": 17.9
+    },
+    {
+      "idx": 4,
+      "text": "A glider listens, measures the distance to each, and solves for its position.",
+      "start": 18.82,
+      "end": 23.18
+    },
+    {
+      "idx": 5,
+      "text": "No learning, just geometry.",
+      "start": 24.16,
+      "end": 26.0
+    },
+    {
+      "idx": 6,
+      "text": "But that humming is sound, in water where whales live.",
+      "start": 26.0,
+      "end": 30.7
+    },
+    {
+      "idx": 7,
+      "text": "So the Navy asked permission. N O A A, the ocean agency, proposed yes.",
+      "start": 31.48,
+      "end": 36.84
+    },
+    {
+      "idx": 8,
+      "text": "Belugas and ringed seals may be disturbed, not harmed, and the Navy met its past conditions.",
+      "start": 37.96,
+      "end": 43.84
+    },
+    {
+      "idx": 9,
+      "text": "The last Beaufort beluga count was nineteen ninety two.",
+      "start": 45.02,
+      "end": 48.08
+    },
+    {
+      "idx": 10,
+      "text": "For ringed seals, threatened, there's no count at all.",
+      "start": 49.42,
+      "end": 52.82
+    },
+    {
+      "idx": 11,
+      "text": "You can't measure harm to a population you haven't counted.",
+      "start": 53.66,
+      "end": 57.28
+    },
+    {
+      "idx": 12,
+      "text": "N O A A takes comments until August twenty first.",
+      "start": 58.64,
+      "end": 61.94
+    },
+    {
+      "idx": 13,
+      "text": "We know where the machine is. Nobody knows how many whales.",
+      "start": 62.52,
+      "end": 66.66
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "run_id": "2026-07-30",
+  "title": "We know where the machine is",
+  "one_line": "A cold, quiet, instrument-blue world where the only certainty is a machine's own position, and the animals sharing the water are drawn as absences.",
+
+  "palette": {
+    "roles": {
+      "sky": "#cfe6f2",
+      "ground": "#081a2e",
+      "hero": "#f2b33d",
+      "accent": "#4fe3ff",
+      "shadow": "#0d2033",
+      "warm_signal": "#ffe9b8"
+    },
+    "mood": "Instrument blue. A world lit from a hole in the ceiling, not from a sun. The only saturated warm object in the frame is the machine itself, so the eye always knows what the film is about. Cyan is reserved EXCLUSIVELY for sound, never for surfaces, so every cyan pixel in the piece means something is being heard.",
+    "divergence": "The last two dispatches were 07-29 (Sourdough, a warm amber powerplant world above ground) and 07-26 (PaperOfficeBG, a high-key fluorescent cream interior). This is the first SUBMERGED palette the channel has shipped and the first where the value ladder runs bright-at-top to near-black-at-bottom, inverting every prior biome. No blue-without-reason: the blue is water depth and the ice is its ceiling.",
+    "why_this_story": "The story is about knowing exactly where a machine is in a place where nothing can be seen. A world with almost no light, one warm object, and one meaning-bearing accent hue is that premise drawn."
+  },
+
+  "light": {
+    "time_of_day": "Irrelevant by design. Under a metre of sea ice there is no time of day, which is itself the point.",
+    "direction": "A single soft downward key through a lead (a crack of open water) in the ice overhead, screen-upper-centre. Everything below falls off to a crushed black floor.",
+    "key_fill_rim": "Key is the lead. Fill is the ambient scatter of the ice underside acting as a huge dim bounce card. Rim is the glider's own cyan eye and the mooring pulses, which are the only PRACTICAL lights in the world and must be REGISTERED as NightGrade sources so a glow can never appear where nothing is emitting.",
+    "depth_approach": "Three separated planes enforced by a value ladder inside one hue family: FAR pressure-ridge keels at low contrast, MID the ice ceiling slab as the brightest hardest most detailed surface, NEAR suspended particulate drifting against the camera. Forms read dimensional via tones/FormGradient/RimLight/ContactShadow, and the glider carries a real lit-and-shaded near and far wing so it is never a flat symmetrical silhouette.",
+    "engine": "lib/lighting.tsx NightGrade with declared sources, plus paleTones() for the ice so a near-white surface shades to gray rather than candy."
+  },
+
+  "shape_language": {
+    "grammar": "SOFT HORIZONTAL MACHINE against HARD VERTICAL INSTRUMENTS under a JAGGED HORIZONTAL LID.",
+    "deliberate_contrast": "The glider is a rounded, warm, horizontal, drifting thing. The moored sources are cold, hard, vertical, and rigidly anchored. The ice above is a brutal irregular sawtooth of keels. Three grammars that cannot be confused with each other at a glance, which is what lets a muted viewer parse the frame instantly.",
+    "why_this_story": "The film's argument is a contrast between a solved problem and an unmeasured one. Giving the solved thing (the machine) organic warmth and the measuring apparatus (the sources) cold rigidity makes the argument structural rather than narrated."
+  },
+
+  "casting": {
+    "hero": {
+      "asset": "IceGlider",
+      "net_new": true,
+      "reason": "The manifest held an orbital eye, a seafloor ear, a ground ear and two aerial machines, and NOTHING THAT SWIMS. A story that happens entirely under water could not be cast from the shelf. Cleared the cast-freshness gate: dedupe.py check --hero IceGlider returns FRESH, and it differs from Sourdough (07-29) and RecordsMachine (07-26)."
+    },
+    "supporting": [
+      {"asset": "AcousticSource", "net_new": true, "reason": "The thing the hero listens FOR. Built as a deliberate emit/receive pair with the glider's inbound arcs, so the direction of information is always visible."},
+      {"asset": "UnderIceBG", "net_new": true, "reason": "The twelfth biome and the first submerged one. All eleven prior biomes were above water."},
+      {"asset": "Beluga", "net_new": false, "reason": "CAST FROM THE SHELF (fauna.tsx, built 07-20d). The story needs the animal that may be disturbed, and reusing the existing beluga is exactly the franchise-continuity the library mandate asks for. It appears as a GHOST OUTLINE in the turn, never as a victim and never characterized."},
+      {"asset": "StatCard / Nameplate", "net_new": false, "reason": "From lib/props.tsx, now form-shaded BY DEFAULT after this run's repeat-offender fix, so the labels finally sit IN the lit world instead of floating on it."}
+    ],
+    "explicitly_not_cast": "No human characters. No characterized institution with a face. The 07-26 dispatch already used a characterized federal-paperwork machine (RecordsMachine) and repeating that staging would be a hero rerun in spirit. The regulator appears only as a document and a date."
+  },
+
+  "motion_language": {
+    "world_motion": "Everything drifts. Nothing thrusts. The water has weight, so all motion is damped and slow, and the particulate drifts against the camera push to sell depth.",
+    "hero_moves": [
+      "THE SAWTOOTH: the glider's signature verb. It has no propeller, so it pitches down, sinks, pitches up, rises, on a long irrational period. This is the asset's whole identity and it must be visible in the first two seconds.",
+      "THE ARRIVING PING: sound arcs travel INTO the glider from a bearing. The glider receives, the mooring emits. Never reversed.",
+      "THE CLAMP: at the moment the machine solves its position, the iris snaps small and bright with lock ticks. This is the film's one earned overshoot and it happens exactly once.",
+      "THE GHOST DRIFT: in the turn, the beluga outline crosses frame WITHOUT a solid fill, moving at a different speed from everything else, so absence is staged as motion rather than declared as a missing label."
+    ],
+    "earns_180_blur": "Only the clamp beat and the whip to the turn. Everything else is too slow to need it, and blurring a drifting object would read as a mistake.",
+    "engine": "lib/motion.tsx entrance() and followThrough() for the arcs and the antenna, vitals() for every held idle so no hero floats on a single sine."
+  },
+
+  "composition": {
+    "staging": "A VERTICAL CROSS SECTION is the film's home framing, because the story is literally about a ceiling you cannot get a signal through. Ice at top, machine in the middle third, seafloor sources at the bottom.",
+    "focal_hierarchy": "One read per frame. The warm hero against a cold world is the default focal signal. When a number matters, the accent cyan or the warm lead light is spent on it and NOWHERE else in that frame.",
+    "safe_areas": "Hero action and all captions live inside the centred 4:5 box, because the 4:5 is the LinkedIn feed deliverable. The 9:16 gets its extra vertical from the ice ceiling above and the depth below, both of which are atmosphere, so a centre crop never amputates the story.",
+    "shot_scale_discipline": "Deliberately varied to fix the 07-26 panel finding that nine shots played at ONE camera height with no close-up. This board runs a wide cross section, a macro on the eye at the clamp, a chart-scale pullback at the turn, and a near-black button, so scale and height both change at least three times.",
+    "signature_shot": "THE TRILATERATION SOLVE. Three cyan range arcs arrive from three off-frame moorings and cross at exactly one point, and the glider is at that point, iris clamped. Held for 0.6s in near silence. It is the one frame this piece should be remembered for, because it is the entire first half of the argument in a single image."
+  },
+
+  "craft_advance": {
+    "system": "lib/underice.tsx, a new submerged-world family, plus the enforced-default form-shading fix in lib/props.tsx and the new paleTones() ramp in lib/lighting.tsx.",
+    "how": "paleTones() is the genuinely reusable engine advance. tones() was built for saturated mid-value fills and pushed near-white surfaces toward candy tints, which is why an ice ceiling could not be shaded without going pastel blue. paleTones() ramps a near-white surface through neutral grays instead, so ANY future snow, ice, paper, or bone surface in the library shades correctly. The flat-HUD-chip fix is the other half: form-shading is now the DEFAULT for StatCard and Nameplate rather than an opt-in flag that every new scene silently missed.",
+    "why_this_story": "An under-ice world is 80 percent near-white ceiling and near-black water. Both ends of that range were exactly where the existing lighting ramp was weakest, so the story forced the engine gap into the open."
+  },
+
+  "sound_intent": {
+    "music": "Thinking Music, Kevin MacLeod, CC BY 4.0. Chosen by mapping the committed valence (curious) through config/music_sources.yaml angle_to_mood, which gives wonder/curious/pondering/delicate. It is the only track in the pool matching that mood that has not been used in the last ten days (Frost Waltz was used 07-26, Echoes of Time v2 on 07-29, Lightless Dawn on 07-26).",
+    "risk_noted": "Thinking Music carries a 'quirky' tag and this piece touches a threatened species, so it is ducked hard and high-passed under the turn, and it drops to silence before the button rather than playing through it.",
+    "sfx_intent": "Sound is the SUBJECT of this film, so the foley carries argument, not decoration. The 900 Hz hum is a real tonal bed. Each mooring pulse is a distinct pitched ping. The clamp gets a hard lock tick. The turn gets a genuine silence drop, because the honest sound of an uncounted population is nothing at all."
+  },
+
+  "binding_note": "This plan is an INPUT the build executes against, not a description written afterward. Phase 6 checks the render against it. If a build decision contradicts it, either the build gets fixed or the plan gets consciously revised and the reason recorded in the retrospective."
+}

@@ -20,6 +20,8 @@ import { CityShowcase } from './CityShowcase';
 import { StationLook } from './StationLook';
 import { MaterialShowcase } from './MaterialShowcase';
 import { z } from 'zod';
+import { UnderIceLook } from './UnderIceLook';
+import { Ep0730, ep0730Schema } from './Ep0730';
 
 const standoffSchema = z.object({
   yesCount: z.number(),
@@ -210,6 +212,27 @@ export const RemotionRoot: React.FC = () => {
         fps={30}
         width={1080}
         height={1920}
+      />
+      <Composition
+        id="UnderIceLook"
+        component={UnderIceLook}
+        durationInFrames={120}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
+      <Composition
+        id="Dispatch0730"
+        component={Ep0730}
+        durationInFrames={2001}
+        fps={30}
+        width={1080}
+        height={1920}
+        schema={ep0730Schema}
+        defaultProps={{ captions: [] }}
+        calculateMetadata={({ props }) => ({
+          durationInFrames: (props as {total?: number}).total ?? 2001,
+        })}
       />
     </>
   );

@@ -1,0 +1,681 @@
+{
+  "concept": "THE MACHINE KNOWS WHERE IT IS. Under Arctic sea ice a satellite cannot reach, so the Navy proposes solving a robot's position with sound, six moored 900 Hz sources it trilaterates off. The film admires that plainly, then turns on a real asymmetry: the permit's no-harm finding rests on a Beaufort beluga count from 1992 and, for ESA-threatened Arctic ringed seals, no count at all. You cannot measure harm to a population you have not counted. Comments close August 21.",
+  "engine": "infographic-2.5d",
+  "derived_from": "scratch",
+  "palette": "instrument-blue abyss and ice-white lid, survey-yellow hero, one meaning-bearing cyan reserved exclusively for sound",
+  "angle": {
+    "thesis": "Under the ice a machine can fix its own position by listening to sound, while the biological baseline for the animals sharing that water is a 34-year-old number or missing entirely. The precision is all pointed at the robots.",
+    "supporting_facts": [
+      "Up to six fixed acoustic navigation sources at 900 Hz, in place for a year, with gliders trilaterating off them and dead reckoning as the fallback. All certified verbatim from 91 FR 46055.",
+      "Beaufort Sea beluga abundance estimate 39,258, CV 0.229, dated 1992.",
+      "The Arctic ringed seal stock is ESA-listed threatened and MMPA-depleted, a strategic stock, and its abundance is UNDETERMINED."
+    ],
+    "fair_counterpoint": "ONR has complied with all the requirements of the previous IHAs, the request is for Level B harassment only, and neither ONR nor NMFS expects serious injury or mortality. The film states this on screen and holds it, rather than burying it.",
+    "valence": "curious, landing on a real open question",
+    "runners_up": [
+      "ENGINEERING WONDER (celebration). Lost because celebration required knowing the data outcome, and the notice never says who receives the observational data.",
+      "THE OPEN DOCKET, nobody was asked (open question). Lost outright on the fact-check. The validator could not read FR 46070 to 46079, where the statutorily required subsistence determination sits, so any claim that nobody was consulted is unverifiable and probably false.",
+      "AUTONOMY IS NOT AI (open question). Partially GRAFTED IN as the honest disclaimer on line 6 rather than carrying the film, because on its own it is a vocabulary lesson and not a story."
+    ]
+  },
+  "treatment": {
+    "winner": "THE EXPLAINER, grafted with THE ENTHUSIAST's admiration for the engineering and THE DRAMATIST's honest open question",
+    "logline": "A machine learns exactly where it is in the one place nobody can see, and the animals in the same water have not been counted since 1992.",
+    "cold_open": "A satellite's signal cone reaches down and dies flat against the underside of the sea ice, with the glider a speck in the black below.",
+    "escalation": "The hardware plants, the field switches on, three range arcs converge, the iris clamps. Each beat makes the machine MORE certain, which is what makes the turn land.",
+    "the_turn": "The same sound that gives the machine certainty is sound in water where whales live, and the count that would let anyone check the no-harm finding is 34 years old or does not exist.",
+    "the_button": "A split frame. The machine's position pins exactly. The whale side stays an unfilled outline.",
+    "judge_reasoning": "The Explainer wins because this story's whole power is a number comparison a viewer can feel, 1992 against a machine that solves to the metre, and because clarity-as-spectacle is the only lens that can carry an acoustic-positioning explanation in 14 lines. The Enthusiast's genuine admiration is grafted into beats 6 through 11 so the engineering is never sneered at, and the Dramatist's open question supplies the button. The Comedian was deliberately NOT grafted: characterized-object comedy near an ESA-threatened species and Alaska Native subsistence resources would be tonally wrong, and the routine forbids it."
+  },
+  "fingerprint": {
+    "pov": "cross-section-cutaway",
+    "layout": "stacked-layers",
+    "motion_vector": "radial-emanate",
+    "hero_treatment": "instrument-as-subject",
+    "register": "naturalistic-scene",
+    "camera_strategy": "locked-drift",
+    "light_story": "night-practical",
+    "palette": "instrument-blue abyss and ice-white lid, survey-yellow hero, one cyan for sound",
+    "metaphor": "sound as a substitute sky, and an empty pan on a measuring scale"
+  },
+  "hook": {
+    "pattern": "anomaly-question",
+    "frame1": "A satellite signal cone striking the underside of the sea ice and flattening to nothing, with NO SIGNAL legible at frame 0 and the glider a speck in the black below.",
+    "headline": "The ice blocks the sky",
+    "motion_by_s": 0.4,
+    "loopback": "The button returns to the same machine, now with its position pinned, which is the question from frame 1 answered."
+  },
+  "reveals": [
+    {
+      "t": 22.6,
+      "type": "build-on",
+      "what": "three range arcs chain in from three separate sources and intersect on one point, assembling a position out of nothing but sound",
+      "hold_s": 0.6
+    },
+    {
+      "t": 46.0,
+      "type": "scale-pullback",
+      "what": "the camera pulls back off a single 1992 data point to reveal 34 entirely empty years, so the absence is discovered by widening rather than announced",
+      "hold_s": 0.7
+    },
+    {
+      "t": 51.4,
+      "type": "morph-to-chart",
+      "what": "the ghost animals resolve into a measuring scale with one pan never loaded",
+      "hold_s": 0.5
+    }
+  ],
+  "audio_arc": {
+    "build_steps": 4,
+    "dip_at": 26.5,
+    "riser_at": 44.8,
+    "silence_at": 58.6,
+    "payoff_at": 59.6,
+    "button_pattern": "callback"
+  },
+  "divergence_note": "This is the first SUBMERGED dispatch the channel has shipped and the first whose value ladder runs bright-at-top to near-black-at-bottom, inverting every one of the eleven prior biomes, all of which were above water. Versus 2026-07-29 (AURORA-AI) it changes pov (macro-closeup to cross-section-cutaway), layout (grid-modular to stacked-layers), motion_vector (push-in-only to radial-emanate), hero_treatment (single-organic-hero to instrument-as-subject), register (editorial-schematic to naturalistic-scene) and camera_strategy (rise-reveal to locked-drift), which is six of seven. Versus 2026-07-26 (the voter-roll film, a high-key fluorescent cream INTERIOR built on PaperOfficeBG) it changes every axis including light_story, since that piece was flat-lit daylight interior and this is a night-practical world where the only lights are a crack of daylight overhead and the machines' own eyes. The spatial signature (cross-section-cutaway, stacked-layers, radial-emanate) has not been used in the last four dispatches. The palette is new: no prior dispatch has used instrument-blue abyss with a hue reserved exclusively for sound, and cyan appears on no surface anywhere in this film, only on things being heard.",
+  "shots": [
+    {
+      "id": 1,
+      "t": 0.0,
+      "framing": "wide-establish",
+      "scale": "extreme-wide",
+      "height": "high",
+      "pov": "cross-section-cutaway",
+      "layout": "stacked-layers",
+      "motion_vector": "vertical-descent",
+      "hero_treatment": "landscape-as-subject",
+      "camera": "craneDown+dollyThrough",
+      "stage3d": "planes",
+      "centered": "the dead signal cone against the ice lid",
+      "means": "establish the lid and the dark beneath it",
+      "hero": {
+        "name": "UnderIceBG",
+        "parts": 5,
+        "zones": 3,
+        "detail_note": "The ice lid is a continuous polygon of flat runs punctuated by three irregular pressure-ridge keels, with a shadowed inner face, brine-channel stipple, fracture chevrons, and a lead of daylight. Three depth zones: far keels, mid ceiling slab, near drifting particulate."
+      }
+    },
+    {
+      "id": 2,
+      "t": 8.6,
+      "framing": "alt-vantage",
+      "scale": "medium",
+      "height": "eye",
+      "pov": "eye-level-immersive",
+      "layout": "single-object-void",
+      "motion_vector": "radial-emanate",
+      "hero_treatment": "structure-as-subject",
+      "transition_in": "carried-element",
+      "thread": "CARRY",
+      "camera": "dollyThrough",
+      "stage3d": "planes",
+      "centered": "the first ping blooming out of the black",
+      "means": "the answer arrives as sound",
+      "hero": {
+        "name": "AcousticSource",
+        "parts": 6,
+        "zones": 3,
+        "detail_note": "Seabed anchor wedge, taut mooring line, ribbed transducer can with rim light and three band lines, a pulse lamp, and emitted ring stack. Zones: seafloor base, mid can, upper line and emitted field."
+      }
+    },
+    {
+      "id": 3,
+      "t": 19.3,
+      "framing": "macro-closeup",
+      "scale": "close",
+      "height": "low",
+      "pov": "macro-closeup",
+      "layout": "centered-hero-lowerthird",
+      "motion_vector": "push-in-only",
+      "hero_treatment": "single-organic-hero",
+      "transition_in": "match-cut",
+      "thread": "MATCH",
+      "camera": "static:the solve is a diagram and any camera move would fight the geometry the frame is asking you to read",
+      "stage3d": "flat:the solve is a diagram and depth would fight the geometry",
+      "centered": "three arcs crossing on the glider, iris clamping",
+      "means": "THE SIGNATURE SHOT",
+      "hero": {
+        "name": "IceGlider",
+        "parts": 9,
+        "zones": 3,
+        "detail_note": "Hull with five pressure-hull seams, payload bay, mid-body lit and shaded wing pair, CTD sensor stack on the spine, bare swept tail, satellite antenna, socket, iris, brow bar, bezel ticks. Zones: nose face, mid body, tail and antenna."
+      }
+    },
+    {
+      "id": 4,
+      "t": 26.5,
+      "framing": "map-territory",
+      "scale": "wide",
+      "height": "overhead",
+      "pov": "top-down-map",
+      "layout": "map-territory",
+      "motion_vector": "horizontal-traverse",
+      "hero_treatment": "multiplicity-swarm",
+      "transition_in": "morph",
+      "thread": "MATCH",
+      "camera": "truckAcross",
+      "stage3d": "planes",
+      "centered": "the ghost beluga crossing the lit sound field",
+      "means": "THE REHOOK and the pivot",
+      "hero": {
+        "name": "Beluga",
+        "parts": 4,
+        "zones": 2,
+        "detail_note": "Bulbous melon with wobble idle, ridge line in place of a dorsal, upcurved mouth, fluke, drawn as an UNFILLED ghost outline so the absence of data is the absence of fill. Zones: head and melon, body and fluke."
+      }
+    },
+    {
+      "id": 5,
+      "t": 36.6,
+      "framing": "data-panel",
+      "scale": "medium",
+      "height": "eye",
+      "pov": "instrument-screen",
+      "layout": "hud-instrument-frame",
+      "motion_vector": "assemble-build",
+      "hero_treatment": "data-as-subject",
+      "transition_in": "assemble",
+      "thread": "BUILD",
+      "camera": "static:the finding is a document and stillness is the register",
+      "stage3d": "flat:a document plane has no world to move through",
+      "centered": "the Level B finding card and the compliance tick",
+      "means": "the procedural beat, read even-handedly",
+      "hero": {
+        "name": "StatCard",
+        "parts": 4,
+        "zones": 2,
+        "detail_note": "Form-shaded card body with FormGradient, contact shadow, rim light on the light-side edge, big stat line and sub line, plus a drawn compliance tick. Zones: card face, cast shadow ground."
+      }
+    },
+    {
+      "id": 6,
+      "t": 43.6,
+      "framing": "two-up",
+      "scale": "insert",
+      "height": "high",
+      "pov": "exploded-diagram",
+      "layout": "fullbleed-split",
+      "motion_vector": "scroll-data",
+      "hero_treatment": "data-as-subject",
+      "transition_in": "graphic-match",
+      "thread": "MATCH",
+      "camera": "riseWith",
+      "stage3d": "flat:the timeline is schematic space",
+      "centered": "the 1992 point, then 34 empty years revealed by the pullback",
+      "means": "THE TURN and the scale reveal",
+      "hero": {
+        "name": "StatCard",
+        "parts": 5,
+        "zones": 2,
+        "detail_note": "Timeline rule with year ticks, one hard 1992 data point, an empty 34-year span, an empty count box for the seal, and a split seam. Zones: the loaded left, the empty right."
+      }
+    },
+    {
+      "id": 7,
+      "t": 55.2,
+      "framing": "subject-portrait",
+      "scale": "wide",
+      "height": "low",
+      "pov": "eye-level-immersive",
+      "layout": "fullbleed-split",
+      "motion_vector": "push-in-only",
+      "hero_treatment": "single-organic-hero",
+      "transition_in": "carried-element",
+      "thread": "CARRY",
+      "camera": "dollyThrough",
+      "stage3d": "planes",
+      "centered": "the machine pinned, the whale blank",
+      "means": "the date, then THE BUTTON",
+      "hero": {
+        "name": "IceGlider",
+        "parts": 9,
+        "zones": 3,
+        "detail_note": "Same nine-part hero at wide scale with the iris clamped bright, paired across a hard split seam against the unfilled beluga outline. Zones: machine half, seam, blank half."
+      }
+    }
+  ],
+  "beats": [
+    {
+      "i": 1,
+      "t": 0.0,
+      "vo_line": 1,
+      "vo": "Off northern Alaska, sea ice blocks a satellite signal.",
+      "draw": {
+        "subject": "a satellite's signal cone reaching down from above the ice",
+        "action": "strikes the underside of the ice ceiling and DIES there, flattening into nothing",
+        "emotion": "indifferent, the ice does not care",
+        "annotation": "NO SIGNAL"
+      },
+      "shows": "cross-section of the ice lid with the dead cone against it",
+      "sfx": "low sub-bass thud plus a signal-cutout click",
+      "means": "the physical premise, stated as a picture",
+      "choreo": {
+        "primary": "the signal cone descends and FLATTENS against the ice, compressing on impact",
+        "reaction": "the ice lid does not move at all, which is the joke",
+        "ambient": "particulate drifts down-frame, the lead light breathes"
+      }
+    },
+    {
+      "i": 2,
+      "t": 2.4,
+      "vo_line": 1,
+      "vo": "Off northern Alaska, sea ice blocks a satellite signal.",
+      "draw": {
+        "subject": "the IceGlider, tiny in the black water far below the ice",
+        "action": "drifts alone into frame, pitching down on its sawtooth",
+        "emotion": "unbothered but blind",
+        "annotation": "BEAUFORT SEA"
+      },
+      "shows": "the hero revealed small in a big dark world",
+      "sfx": "a soft water-body swell",
+      "means": "scale, we meet the machine as a speck",
+      "choreo": {
+        "primary": "the glider enters on its sawtooth, pitching nose-down then easing up",
+        "reaction": "its antenna trails with followThrough",
+        "ambient": "far keels parallax against the push, motes drift"
+      }
+    },
+    {
+      "i": 3,
+      "t": 3.9,
+      "vo_line": 2,
+      "vo": "So how does a robot under it know where it is?",
+      "draw": {
+        "subject": "the glider's single cyan eye",
+        "action": "dilates WIDE and sweeps side to side, searching",
+        "emotion": "lost",
+        "annotation": "POSITION UNKNOWN"
+      },
+      "shows": "the eye going wide, the question made physical",
+      "sfx": "a hollow searching sweep tone",
+      "means": "THE story question, asked by a face",
+      "choreo": {
+        "primary": "the iris dilates wide on an ease-out, then sweeps left to right",
+        "reaction": "the brow bar tilts with the sweep",
+        "ambient": "hull seams catch a slow specular crawl, body bobs on vitals"
+      }
+    },
+    {
+      "i": 4,
+      "t": 6.8,
+      "vo_line": 2,
+      "vo": "So how does a robot under it know where it is?",
+      "draw": {
+        "subject": "a dashed ghost position marker beside the glider",
+        "action": "flickers, tries to resolve, and collapses",
+        "emotion": "uncertain",
+        "annotation": "?"
+      },
+      "shows": "a failed position fix",
+      "sfx": "a soft failed-lock buzz",
+      "means": "the question refuses to answer itself",
+      "choreo": {
+        "primary": "the dashed marker scales in, jitters, and collapses inward",
+        "reaction": "the iris tightens a half-step in response",
+        "ambient": "motes continue, the hum bed shimmers the water"
+      }
+    },
+    {
+      "i": 5,
+      "t": 8.6,
+      "vo_line": 3,
+      "vo": "The U S Navy wants to watch the Arctic year round. Its answer is sound.",
+      "draw": {
+        "subject": "a boxed institutional nameplate",
+        "action": "slides in and plants beside the dark water column",
+        "emotion": "neutral, institutional",
+        "annotation": "U.S. NAVY - OFFICE OF NAVAL RESEARCH"
+      },
+      "shows": "who wants this and why",
+      "sfx": "a plate-set clunk",
+      "means": "name the actor before using it",
+      "choreo": {
+        "primary": "the nameplate slides in from frame-left with overshoot and settles",
+        "reaction": "its contact shadow lags and firms",
+        "ambient": "the glider keeps bobbing in the background, out of focus"
+      }
+    },
+    {
+      "i": 6,
+      "t": 12.0,
+      "vo_line": 3,
+      "vo": "The U S Navy wants to watch the Arctic year round. Its answer is sound.",
+      "draw": {
+        "subject": "the first ring of sound",
+        "action": "blooms out of the blackness below and travels up past the glider",
+        "emotion": "expectant",
+        "annotation": "SOUND"
+      },
+      "shows": "the answer arrives as a picture before it is explained",
+      "sfx": "the first pitched 900 Hz ping",
+      "means": "the method, revealed visually",
+      "choreo": {
+        "primary": "the first ring blooms outward from below and travels up past frame centre",
+        "reaction": "the glider's brow lifts as the ring crosses it",
+        "ambient": "the water column brightens slightly as the ring passes"
+      }
+    },
+    {
+      "i": 7,
+      "t": 14.6,
+      "vo_line": 4,
+      "vo": "Six speakers on the seabed would hum at nine hundred hertz.",
+      "draw": {
+        "subject": "six moored AcousticSource cans",
+        "action": "drop and PLANT along the seafloor one after another, anchors settling",
+        "emotion": "purposeful",
+        "annotation": "6 MOORED SOURCES - 900 Hz - IN PLACE 1 YEAR"
+      },
+      "shows": "the hardware, counted out",
+      "sfx": "six staggered anchor thuds, pitch-jittered",
+      "means": "the count made physical",
+      "choreo": {
+        "primary": "six anchors drop in sequence, each landing with a squash and settle",
+        "reaction": "mooring lines whip taut then damp out one by one",
+        "ambient": "silt puffs bloom at each landing and disperse"
+      }
+    },
+    {
+      "i": 8,
+      "t": 17.4,
+      "vo_line": 4,
+      "vo": "Six speakers on the seabed would hum at nine hundred hertz.",
+      "draw": {
+        "subject": "all six sources together",
+        "action": "pulse in sequence so the whole seafloor breathes light",
+        "emotion": "steady",
+        "annotation": "YEAR-ROUND"
+      },
+      "shows": "the field switching on",
+      "sfx": "a low sustained hum bed enters",
+      "means": "a system, not a device",
+      "choreo": {
+        "primary": "all six pulse lamps ignite in a left-to-right cascade",
+        "reaction": "the emitted rings stagger outward on desynced phases",
+        "ambient": "the seafloor gains a slow travelling shimmer"
+      }
+    },
+    {
+      "i": 9,
+      "t": 19.3,
+      "vo_line": 5,
+      "vo": "A glider listens, measures the distance to each, and solves for its position.",
+      "draw": {
+        "subject": "three cyan range arcs",
+        "action": "travel UP from three separate sources toward the drifting glider",
+        "emotion": "attentive",
+        "annotation": "RANGE"
+      },
+      "shows": "measurement drawn as arriving distance",
+      "sfx": "three ascending pitched pings",
+      "means": "how the measurement physically happens",
+      "choreo": {
+        "primary": "three range arcs sweep up from three sources toward the glider",
+        "reaction": "the iris begins narrowing as each arc arrives",
+        "ambient": "the hum bed thickens, motes swirl in the arcs' wake"
+      }
+    },
+    {
+      "i": 10,
+      "t": 22.6,
+      "vo_line": 5,
+      "vo": "A glider listens, measures the distance to each, and solves for its position.",
+      "draw": {
+        "subject": "the glider at the exact crossing point of three arcs",
+        "action": "the arcs INTERSECT at one point and the iris CLAMPS small and bright",
+        "emotion": "fixed, certain",
+        "annotation": "POSITION SOLVED"
+      },
+      "shows": "THE SIGNATURE SHOT, three arcs crossing on one machine",
+      "sfx": "a hard lock tick, then 0.6s of near silence",
+      "means": "the film's central image, the solve",
+      "choreo": {
+        "primary": "the three arcs INTERSECT and the iris CLAMPS small and bright with lock ticks",
+        "reaction": "the body squares up on heading, yaw snaps to zero",
+        "ambient": "everything else stills for the 0.6s hold, the one deliberate freeze"
+      }
+    },
+    {
+      "i": 11,
+      "t": 24.9,
+      "vo_line": 6,
+      "vo": "No learning, just geometry.",
+      "draw": {
+        "subject": "three bare circles overlaid on the solve",
+        "action": "draw themselves as pure outline and hold, no ornament",
+        "emotion": "plain, dry",
+        "annotation": "NOT MACHINE LEARNING - AUTONOMY AND ACOUSTIC ENGINEERING"
+      },
+      "shows": "the honest disclaimer, drawn as geometry",
+      "sfx": "a dry chalk-draw tick",
+      "means": "the AI claim scoped honestly, on screen",
+      "choreo": {
+        "primary": "three bare circles draw themselves on with trimPath and hold",
+        "reaction": "the label sets down beneath with a contact shadow",
+        "ambient": "the glider holds its clamped stare, breathing only on vitals"
+      }
+    },
+    {
+      "i": 12,
+      "t": 26.5,
+      "vo_line": 7,
+      "vo": "But that humming is sound, in water where whales live.",
+      "draw": {
+        "subject": "a beluga GHOST OUTLINE, unfilled",
+        "action": "drifts across the sound field at a different speed from everything else",
+        "emotion": "unknowing",
+        "annotation": "BELUGA - BEAUFORT SEA AND EASTERN CHUKCHI STOCKS"
+      },
+      "shows": "THE REHOOK, the animal enters the frame the sound already fills",
+      "sfx": "the hum ducks, a soft whale-presence swell",
+      "means": "the pivot, cooling not accusing",
+      "rehook": "the animal that the sound already surrounds walks into frame as an unfilled outline, so the viewer who came for a robot suddenly has something at stake",
+      "choreo": {
+        "primary": "the beluga ghost outline enters frame-right and crosses at its own slower speed",
+        "reaction": "the sound rings bend around it without filling it",
+        "ambient": "the field dims as the music ducks, motes slow"
+      }
+    },
+    {
+      "i": 13,
+      "t": 31.0,
+      "vo_line": 8,
+      "vo": "So the Navy asked permission. N O A A, the ocean agency, proposed yes.",
+      "draw": {
+        "subject": "the Federal Register filing as a lit document",
+        "action": "rises into frame and a PROPOSED stamp thuds down onto it",
+        "emotion": "procedural",
+        "annotation": "91 FR 46055 - PROPOSED - FILED JULY 22"
+      },
+      "shows": "the paperwork, named and dated",
+      "sfx": "a paper rise plus a rubber-stamp thud",
+      "means": "the regulator and the request, correctly attributed",
+      "choreo": {
+        "primary": "the filing rises into frame and the PROPOSED stamp thuds down with squash",
+        "reaction": "the paper edge flexes on the stamp impact",
+        "ambient": "dust lifts off the document and settles"
+      }
+    },
+    {
+      "i": 14,
+      "t": 34.8,
+      "vo_line": 8,
+      "vo": "So the Navy asked permission. N O A A, the ocean agency, proposed yes.",
+      "draw": {
+        "subject": "a second plate under the filing",
+        "action": "sets down, the decision still pending above it",
+        "emotion": "neutral",
+        "annotation": "NOAA FISHERIES - DECISION NOT FINAL"
+      },
+      "shows": "who decides, and that it is not decided",
+      "sfx": "a light plate click",
+      "means": "PROPOSED, not granted",
+      "choreo": {
+        "primary": "the NOAA plate sets down beneath the filing and holds",
+        "reaction": "the filing above it lifts a hair, then rests",
+        "ambient": "the ghost beluga continues drifting behind, unhurried"
+      }
+    },
+    {
+      "i": 15,
+      "t": 36.6,
+      "vo_line": 9,
+      "vo": "Belugas and ringed seals may be disturbed, not harmed, and the Navy met its past conditions.",
+      "draw": {
+        "subject": "a labeled finding card",
+        "action": "slides in beside the ghost beluga and holds, level and unhurried",
+        "emotion": "even-handed",
+        "annotation": "LEVEL B HARASSMENT ONLY - NO SERIOUS INJURY OR MORTALITY EXPECTED"
+      },
+      "shows": "the legal finding, stated plainly",
+      "sfx": "a soft card set",
+      "means": "the accurate scope of the request",
+      "choreo": {
+        "primary": "the finding card slides in level and unhurried, no overshoot",
+        "reaction": "the ghost beluga's outline brightens a touch as the card names it",
+        "ambient": "the water holds steady, deliberately calm for the even-handed beat"
+      }
+    },
+    {
+      "i": 16,
+      "t": 40.6,
+      "vo_line": 9,
+      "vo": "Belugas and ringed seals may be disturbed, not harmed, and the Navy met its past conditions.",
+      "draw": {
+        "subject": "a compliance tick beside the finding",
+        "action": "draws itself and HOLDS, given real screen time",
+        "emotion": "fair",
+        "annotation": "PRIOR YEARS - ALL REQUIREMENTS MET"
+      },
+      "shows": "the fair counter-point, given equal weight",
+      "sfx": "a clean affirmative tick",
+      "means": "the piece is not an accusation and says so",
+      "choreo": {
+        "primary": "the compliance tick draws itself in one confident stroke and HOLDS",
+        "reaction": "the finding card settles a half-pixel under the tick's weight",
+        "ambient": "nothing else competes, this beat is given its own air"
+      }
+    },
+    {
+      "i": 17,
+      "t": 43.6,
+      "vo_line": 10,
+      "vo": "The last Beaufort beluga count was nineteen ninety two.",
+      "draw": {
+        "subject": "the ghost beluga beside a single data point",
+        "action": "the point lands hard on an otherwise empty timeline",
+        "emotion": "flat",
+        "annotation": "BEAUFORT SEA BELUGA - LAST ESTIMATE 1992"
+      },
+      "shows": "the turn opens on a lonely number",
+      "sfx": "a single dry data-point tick",
+      "means": "the asymmetry begins",
+      "choreo": {
+        "primary": "the 1992 data point lands hard on the timeline with a small impact ring",
+        "reaction": "the timeline rule flexes under the point",
+        "ambient": "the ghost beluga hovers beside it, motionless for once"
+      }
+    },
+    {
+      "i": 18,
+      "t": 46.0,
+      "vo_line": 10,
+      "vo": "The last Beaufort beluga count was nineteen ninety two.",
+      "draw": {
+        "subject": "the timeline itself",
+        "action": "PULLS BACK to reveal 34 empty years stretching from 1992 to now",
+        "emotion": "stark",
+        "annotation": "34 YEARS, NO NEW ESTIMATE"
+      },
+      "shows": "SCALE PULLBACK, the emptiness revealed by widening",
+      "sfx": "a long low reveal swell",
+      "means": "the scale-class reveal, absence made visible",
+      "choreo": {
+        "primary": "the camera PULLS BACK and 34 empty years unspool to fill the frame",
+        "reaction": "the single data point shrinks toward insignificance",
+        "ambient": "year ticks stream past in the widening, the reveal's own motion"
+      }
+    },
+    {
+      "i": 19,
+      "t": 47.5,
+      "vo_line": 11,
+      "vo": "For ringed seals, threatened, there's no count at all.",
+      "draw": {
+        "subject": "a ringed seal ghost outline beside an EMPTY count box",
+        "action": "the box stays empty, nothing fills it",
+        "emotion": "unmeasured",
+        "annotation": "ARCTIC RINGED SEAL - ESA THREATENED - ABUNDANCE UNDETERMINED"
+      },
+      "shows": "an empty field where a number should be",
+      "sfx": "a hollow empty-box tone",
+      "means": "the second and harder absence",
+      "choreo": {
+        "primary": "the empty count box draws in beside the seal ghost and stays EMPTY",
+        "reaction": "the seal outline settles, unfilled",
+        "ambient": "the timeline above holds, the emptiness now doubled"
+      }
+    },
+    {
+      "i": 20,
+      "t": 51.4,
+      "vo_line": 12,
+      "vo": "You can't measure harm to a population you haven't counted.",
+      "draw": {
+        "subject": "a measuring scale with nothing on one pan",
+        "action": "tips, because one side was never loaded",
+        "emotion": "resolved, plain",
+        "annotation": "NO BASELINE"
+      },
+      "shows": "THE THESIS drawn as a physical impossibility",
+      "sfx": "a slow weighted tip, then quiet",
+      "means": "the argument, not a mood",
+      "choreo": {
+        "primary": "the measuring scale TIPS on a slow weighted ease because one pan was never loaded",
+        "reaction": "the empty pan rises as the loaded pan falls",
+        "ambient": "everything else stops, the thesis gets a clean frame"
+      }
+    },
+    {
+      "i": 21,
+      "t": 55.2,
+      "vo_line": 13,
+      "vo": "N O A A takes comments until August twenty first.",
+      "draw": {
+        "subject": "a hard date card over the dark water",
+        "action": "sets down square and holds, legible and unhurried",
+        "emotion": "actionable",
+        "annotation": "COMMENTS CLOSE AUG 21 - 91 FR 46055"
+      },
+      "shows": "the actionable date",
+      "sfx": "a firm card set",
+      "means": "civic utility, the one thing a viewer can do",
+      "choreo": {
+        "primary": "the date card sets down square with a firm landing",
+        "reaction": "its contact shadow snaps under it",
+        "ambient": "the dark water breathes behind, motes resume"
+      }
+    },
+    {
+      "i": 22,
+      "t": 59.6,
+      "vo_line": 14,
+      "vo": "We know where the machine is. Nobody knows how many whales.",
+      "draw": {
+        "subject": "the glider with its iris clamped, and the beluga ghost still unfilled",
+        "action": "the frame splits, the machine's position pins exactly, the whale side stays blank",
+        "emotion": "plain, not triumphant",
+        "annotation": "SOLVED / UNKNOWN"
+      },
+      "shows": "THE BUTTON, the asymmetry in one frame, looping back to the opening",
+      "sfx": "the hum drops to silence, one last lock tick",
+      "means": "the two halves of the film, side by side",
+      "choreo": {
+        "primary": "the frame splits, the machine's position pin snaps exact on the left",
+        "reaction": "the whale side stays an unfilled outline and does NOT resolve",
+        "ambient": "the hum falls to silence, one last lock tick, the lead light dims out"
+      }
+    }
+  ]
+}

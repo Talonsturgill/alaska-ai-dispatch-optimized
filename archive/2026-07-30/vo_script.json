@@ -1,0 +1,76 @@
+{
+  "run_id": "2026-07-30",
+  "title": "We know where the machine is",
+  "lines": [
+    "Off northern Alaska, sea ice blocks a satellite signal.",
+    "So how does a robot under it know where it is?",
+    "The U S Navy wants to watch the Arctic year round. Its answer is sound.",
+    "Six speakers on the seabed would hum at nine hundred hertz.",
+    "A glider listens, measures the distance to each, and solves for its position.",
+    "No learning, just geometry.",
+    "But that humming is sound, in water where whales live.",
+    "So the Navy asked permission. N O A A, the ocean agency, proposed yes.",
+    "Belugas and ringed seals may be disturbed, not harmed, and the Navy met its past conditions.",
+    "The last Beaufort beluga count was nineteen ninety two.",
+    "For ringed seals, threatened, there's no count at all.",
+    "You can't measure harm to a population you haven't counted.",
+    "N O A A takes comments until August twenty first.",
+    "We know where the machine is. Nobody knows how many whales."
+  ],
+  "caption_fixups": {
+    "U S Navy's": "Navy's",
+    "N O A A": "NOAA",
+    "A I": "AI",
+    "U S": "US"
+  },
+  "on_screen_numerals": {
+    "Six": "6",
+    "nine hundred hertz": "900 Hz",
+    "nineteen ninety two": "1992",
+    "August twenty first": "AUG 21"
+  },
+  "on_screen_specificity": {
+    "note": "The VO drops specificity to hit the word budget. The SCREEN carries it back. This is the house split between a spoken read and a drawn label.",
+    "line_4_label": "6 MOORED SOURCES - 900 Hz - IN PLACE 1 YEAR",
+    "line_8_label": "91 FR 46055 - PROPOSED - FILED JULY 22",
+    "line_9_label": "LEVEL B HARASSMENT ONLY",
+    "line_10_label": "BEAUFORT SEA BELUGA - LAST ESTIMATE 1992",
+    "line_11_label": "ARCTIC RINGED SEAL - ESA THREATENED - ABUNDANCE UNDETERMINED",
+    "line_13_label": "COMMENTS CLOSE AUG 21"
+  },
+  "word_count": 152,
+  "estimated_seconds": 66.3,
+  "rate_basis": "137.5 wpm measured from the 2026-07-29 run (132 words in 57.62s), not assumed.",
+  "gate_0e_fixes_applied": [
+    "THE SEAM. Gate 0E's central finding was that nothing joined the machine half to the whale half except adjacency, so the viewer had to invent the link. New line 7, 'But that humming is sound, in water where whales live', is the bridge, and it makes the 900 Hz the explicit subject of the permit rather than leaving it to inference.",
+    "NOAA WAS FACTUALLY MISLEADING, not merely unclear. 'N O A A filed the paperwork' reads as NOAA being the applicant. NOAA is the REGULATOR and the Navy is the applicant. Rewritten to 'the Navy asked permission, and N O A A proposed granting it', which is both clearer and correct, and it preserves that the authorization is PROPOSED and not granted.",
+    "LOCATION NAMED. Gate 0E flagged that the place is never named and that 'our best beluga count there' pointed at nothing. Line 1 now opens 'Off northern Alaska' and line 10 says 'Beaufort'. Note this is a REGIONAL locator, not a proximity claim, so it does not reintroduce the 204 km error the validator caught.",
+    "'DISTURBANCE ONLY' WAS A SUBJECTLESS FRAGMENT. Now 'Belugas and ringed seals may be disturbed, not harmed', which gives it a subject and states the contrast the legal term carries.",
+    "THE ARGUMENT IS NOW SPOKEN. Gate 0E noted the piece never says out loud why a missing count matters. New line 12, 'You can't measure harm to a population you haven't counted', makes the turn an argument instead of a mood, which was the cold reader's objection to the ending.",
+    "'PEOPLE CALL THIS A I' gives the no-machine-learning correction a target. Gate 0E said it answered a question nobody had asked.",
+    "TRILATERATION CUT. Gate 0E flagged that 'trilateration' with SIX speakers invites a why-not-three confusion, and the mechanism is already described in plainer words on line 5. Cutting the term also bought words for the seam fix. The term stays in the Gmail draft and the first comment, where there is room to quote the notice's own definition.",
+    "ASLEEP-AND-DRIFT CUT. The most charming fact in the document, and cut anyway, because it is not load-bearing for the one story question and Gate 0E flagged 'strays too far from what' as its own confusion. Cutting a WHOLE FACT is what the trim law prescribes over shaving connective tissue."
+  ],
+  "notes": [
+    "ONE STORY QUESTION: how does a machine know where it is under the ice. The turn answers it, then asks the same question of the whales, which is what makes the button land instead of moralising.",
+    "NO whole-document 'there is no AI' claim. Line 6 is scoped to the system as described.",
+    "NO take numbers. NO proximity claim. NO hunting-waters claim. NO consultation claim.",
+    "The fair counter-point is INSIDE the turn's own beat, on line 9, so the piece cannot read as an accusation."
+  ],
+  "gate_0e_round3_fixes": [
+    "MOVED AND REWROTE THE AI LINE, which was where the round-2 cold reader got lost. 'People call this A I. It's autonomy, and acoustic engineering' arrived with no antecedent, corrected an argument the viewer had never heard, and did no chain work between the navigation half and the whale half. It is now 'No learning, no model. Just geometry.', which is DESCRIPTIVE rather than a rebuttal, so it needs no target, and it does real chain work by saying HOW the position gets solved. The fuller approved wording moves to the SCREEN as a label and to the Gmail draft.",
+    "NOAA IDENTIFIED as 'the ocean agency' on first use. Round 2 flagged that NOAA is never established as an agency and the acronym is never expanded.",
+    "TENSE DISAMBIGUATED. Round 2 could not tell whether the speakers are already deployed or proposed. 'Six speakers on the seabed WOULD hum' marks it as the proposed year, which is also strictly accurate, since this is Year 9 of a program but the authorization covers Sept 2026 to Sept 2027.",
+    "MISSION PURPOSE ADDED. Round 2 asked why a Navy glider is under Arctic sea ice at all. Line 3 now says the Navy wants to watch the Arctic year round, which is supported by the notice's own framing of AMOS and the Arctic and Global Prediction Program.",
+    "COMMENT RECIPIENT NAMED. 'N O A A takes comments until August twenty first' answers round 2's objection that the date was attached to an undefined process with no stated recipient.",
+    "'WE' ANCHORED. The button is now 'We know where the machine is. Nobody knows how many whales.' The concrete 'nobody' replaces the second vague 'we', which round 2 said let everyone off the hook at the moment the piece pointed a finger."
+  ],
+  "gate_0e_result": {
+    "rounds": 3,
+    "verdict": "ship:true on round 3",
+    "round1_fail": "The seam. Nothing joined the machine half to the whale half except adjacency, so the viewer had to invent the link. Also NOAA read as the APPLICANT, which was factually misleading, not just unclear.",
+    "round2_fail": "The AI disclaimer line arrived with no antecedent, corrected an argument the viewer had never heard, and did no chain work. Plus NOAA unidentified, tense ambiguous, and a vague 'we' in the button.",
+    "round3_pass": "Cold reader built the full causal chain unaided, named every actor, and stated the question. Ending judged an argument rather than a mood.",
+    "round3_nonblocking_note_applied": "The reader flagged 'The Navy has complied before' as the one orphan line nothing depended on, and said to attach it or cut it. ATTACHED: it now names what was complied with (past monitoring conditions), which is directly supported by the certified quote about mitigation, monitoring and reporting, and it is folded into the same beat as the disturbance finding so the fair counter-point sits inside the turn."
+  }
+}

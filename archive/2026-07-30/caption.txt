@@ -1,0 +1,17 @@
+Under Arctic sea ice a satellite cannot reach a robot, so the Navy is building a substitute sky out of sound.
+
+The filing went up July 22 and no Alaska outlet has reported it. NOAA Fisheries has proposed authorizing the Office of Naval Research's Arctic Research Activities for a ninth year, in the Beaufort and Chukchi Seas.
+
+The engineering is genuinely good. Up to six acoustic navigation sources would sit anchored on the seabed for a year at 900 hertz. A long endurance glider listens, measures how far it is from each one, and solves for its own position by trilateration, with dead reckoning when the signal drops. It carries no propeller. It changes its buoyancy and falls forward. Nothing in the Navy's description of this system is machine learning, which is worth saying plainly, because autonomy and AI are not synonyms and the difference matters when you are reading a permit.
+
+The request is for Level B harassment only, of beluga whales and ringed seals. Disturbance, not injury. Neither the Navy nor NOAA expects serious injury or mortality, and the notice states the Navy complied with all requirements of its previous authorizations. That record deserves saying out loud.
+
+But the numbers underneath that finding are thin. The abundance estimate for the Beaufort Sea beluga stock is 39,258, dated 1992. The Arctic ringed seal stock is threatened under the Endangered Species Act and depleted under the Marine Mammal Protection Act, and its abundance is undetermined. No count at all.
+
+So the machine will know where it is to the metre, in the dark. The animals sharing that water were last counted 34 years ago, or have never been counted.
+
+That is not an accusation, it is an asymmetry, and it is fixable. Survey money is unglamorous and it is what makes every downstream finding defensible. Comments close August 21.
+
+What I keep turning over is whether a no harm finding means much when the baseline under it is 34 years old. Would you rather see the Arctic instrumented faster, or counted better first?
+
+#Alaska #ArcticResearch #Autonomy #MarineMammals #OceanTech

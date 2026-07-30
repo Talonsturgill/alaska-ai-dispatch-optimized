@@ -1,6 +1,6 @@
 import React from 'react';
 import {INK, ICE, SNOW, RED} from './kit';
-import {tones, FormGradient, RimLight, ContactShadow, BrushedMetal} from './lighting';
+import {tones, paleTones, FormGradient, RimLight, ContactShadow, BrushedMetal} from './lighting';
 
 // =============================================================================
 // PROPS — the generalized physical-prop kit (asset-library session #2,
@@ -21,19 +21,25 @@ const CRIMSON = '#c0392b';
 const GRAPHITE_D = '#232c34';
 
 // A big loud stat chip: one number/phrase, optional sub line.
-// `formShaded` (NEW 2026-07-21, clears the flat-HUD-chip deferral, ASSET_MANIFEST.md):
-// gives the chip real dimensional shading (tones/FormGradient) + a ContactShadow so it
-// sits IN the lit scene. Off by default so existing calls render unchanged.
-export const StatCard: React.FC<{x: number; y: number; big: string; sub?: string; op?: number; scale?: number; color?: string; formShaded?: boolean}> = ({x, y, big, sub, op = 1, scale = 1, color = CRIMSON, formShaded = false}) => {
+// FORM-SHADING IS NOW THE DEFAULT (2026-07-30). It was added 2026-07-21 as an OPT-IN
+// `formShaded` flag defaulting to FALSE, which is exactly why "HUD chips render as flat
+// fills over the lit world" kept getting re-flagged by the scorer panel on 07-18, 07-26
+// AND 07-29: the capability existed, but every new scene that simply called <StatCard/>
+// still got the flat chip unless its author remembered a flag. A default-off fix is a
+// doctrine reminder wearing a code costume. The default is now SHADED, and a caller that
+// genuinely wants the old look must ask for it with `flat`. `formShaded` is retained so
+// older explicit callers keep compiling.
+export const StatCard: React.FC<{x: number; y: number; big: string; sub?: string; op?: number; scale?: number; color?: string; formShaded?: boolean; flat?: boolean}> = ({x, y, big, sub, op = 1, scale = 1, color = CRIMSON, formShaded, flat = false}) => {
+  const shaded = formShaded ?? !flat;
   const cardTones = tones(color);
   const gid = `statcard_${x}_${y}`;
   const h = sub ? 128 : 96;
   return (
     <g transform={`translate(${x},${y}) scale(${scale})`} opacity={op}>
-      {formShaded && <ContactShadow cx={0} cy={h / 2 + 14} rx={280} ry={20} opacity={0.3} />}
-      {formShaded && <defs><FormGradient id={gid} t={cardTones} softness={0.8} /></defs>}
-      <rect x={-260} y={-64} width={520} height={h} rx={16} fill={formShaded ? `url(#${gid})` : color} stroke={INK} strokeWidth={8} />
-      {formShaded && <RimLight d={`M-260,-56 L-252,${h / 2 - 8}`} w={5} opacity={0.4} />}
+      {shaded && <ContactShadow cx={0} cy={h / 2 + 14} rx={280} ry={20} opacity={0.3} />}
+      {shaded && <defs><FormGradient id={gid} t={cardTones} softness={0.8} /></defs>}
+      <rect x={-260} y={-64} width={520} height={h} rx={16} fill={shaded ? `url(#${gid})` : color} stroke={INK} strokeWidth={8} />
+      {shaded && <RimLight d={`M-260,-56 L-252,${h / 2 - 8}`} w={5} opacity={0.4} />}
       <text x={0} y={sub ? -12 : big.length > 10 ? 10 : 16} textAnchor="middle" fontFamily={BOLD} fontWeight={900} fontSize={sub ? 58 : 46} fill={SNOW} letterSpacing={1} stroke={INK} strokeWidth={2.5} paintOrder="stroke">{big}</text>
       {sub && <text x={0} y={38} textAnchor="middle" fontFamily={BOLD} fontWeight={900} fontSize={26} fill={SNOW} opacity={0.9}>{sub}</text>}
     </g>
@@ -41,13 +47,25 @@ export const StatCard: React.FC<{x: number; y: number; big: string; sub?: string
 };
 
 // A small identity plate (institution, place, person).
-export const Nameplate: React.FC<{x: number; y: number; text: string; sub?: string; op?: number; subColor?: string}> = ({x, y, text, sub, op = 1, subColor = '#e0921a'}) => (
-  <g transform={`translate(${x},${y})`} opacity={op}>
-    <rect x={-150} y={-40} width={300} height={sub ? 88 : 60} rx={10} fill={ICE} stroke={INK} strokeWidth={6} />
-    <text x={0} y={sub ? -8 : 10} textAnchor="middle" fontFamily={BOLD} fontWeight={900} fontSize={36} fill={INK} letterSpacing={1.5} stroke={ICE} strokeWidth={3} paintOrder="stroke">{text}</text>
-    {sub && <text x={0} y={30} textAnchor="middle" fontFamily={BOLD} fontWeight={700} fontSize={20} fill={subColor}>{sub}</text>}
-  </g>
-);
+// SHADED BY DEFAULT 2026-07-30, same repeat-offender fix as StatCard above. This prop had
+// NO dimensional path at all, so every nameplate in every episode was a flat ICE rectangle
+// sitting on top of the lit world. It now carries the same contract as the rest of the kit
+// (FormGradient body + ContactShadow + a rim on the light-side edge); pass `flat` to opt out.
+export const Nameplate: React.FC<{x: number; y: number; text: string; sub?: string; op?: number; subColor?: string; flat?: boolean}> = ({x, y, text, sub, op = 1, subColor = '#e0921a', flat = false}) => {
+  const plateTones = paleTones(ICE);
+  const gid = `nameplate_${Math.round(x)}_${Math.round(y)}`;
+  const h = sub ? 88 : 60;
+  return (
+    <g transform={`translate(${x},${y})`} opacity={op}>
+      {!flat && <ContactShadow cx={0} cy={h - 34} rx={160} ry={14} opacity={0.26} />}
+      {!flat && <defs><FormGradient id={gid} t={plateTones} softness={0.75} /></defs>}
+      <rect x={-150} y={-40} width={300} height={h} rx={10} fill={flat ? ICE : `url(#${gid})`} stroke={INK} strokeWidth={6} />
+      {!flat && <RimLight d={`M-146,-34 L-146,${h - 46}`} w={4} opacity={0.38} />}
+      <text x={0} y={sub ? -8 : 10} textAnchor="middle" fontFamily={BOLD} fontWeight={900} fontSize={36} fill={INK} letterSpacing={1.5} stroke={ICE} strokeWidth={3} paintOrder="stroke">{text}</text>
+      {sub && <text x={0} y={30} textAnchor="middle" fontFamily={BOLD} fontWeight={700} fontSize={20} fill={subColor}>{sub}</text>}
+    </g>
+  );
+};
 
 // A hanging sign swinging on its post. 1-3 lines; last line can be dimmed as a
 // date/attribution via `dimLast`.

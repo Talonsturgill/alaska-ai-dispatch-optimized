@@ -61,8 +61,14 @@ All work in talonsturgill/alaska-ai-weekly, on a claude/dispatch-<date> branch o
 push AND merge (repo policy in CLAUDE.md: this routine ships autonomously; the Gmail draft is
 the only human touchpoint and is NOT a merge gate). Runs DAILY. Dedupe is mandatory:
 scripts/dedupe.py list at research start, check before locking a story, add (with composition
-fingerprint) at the end of every run. Never repeat a story within the week; never an exact
-repeat ever.
+fingerprint) at the end of every run. THE DEDUPE WINDOW IS 30 DAYS (owner directive 2026-07-30,
+"make the dedupe function of this automation only 30 days, it's okay to repeat if it's been 30 days
+since we talked about something"). Inside 30 days, do not repeat a subject. Outside 30 days, a
+repeat is EXPLICITLY ALLOWED, including an exact one. This replaces the old "never repeat within
+the week; never an exact repeat ever" rule, whose unbounded prohibition permanently burned every
+subject the automation ever touched and shrank the eligible pool on a daily cadence. The window is
+enforced in code by DEDUPE_WINDOW_DAYS in scripts/dedupe.py, so `list` and `check` both default to
+30 and the slug check is windowed rather than forever.
 
 ## NON-NEGOTIABLE GUARDRAILS
 
@@ -194,7 +200,7 @@ round one silently buys a blind round two. Therefore:
   A thin research result caused by an exhausted budget is NOT a slow news week, and must never be
   reported as one.
 
-FIRST: `python3 scripts/dedupe.py list --days 14` for the exclusion list. Then fan out
+FIRST: `python3 scripts/dedupe.py list` for the exclusion list (defaults to the 30-day window). Then fan out
 researcher agents across current Alaska + AI/robotics/ML news: gov/.edu science (UAF institutes,
 USGS, NOAA, NASA, FAA), fisheries & wildlife, energy/grid/data-centers, defense/aviation/UAS,
 Alaska-Native-led & rural tech, and a "what's breaking this week" wildcard. Multiple rounds if

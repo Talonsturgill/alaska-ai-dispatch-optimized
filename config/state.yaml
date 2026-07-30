@@ -1080,3 +1080,59 @@ dispatch_history:
       black
     metaphor: one line of type in a two hundred row federal list, and the lumpy amber
       country that line is actually describing
+- date: '2026-07-30'
+  topic: 'WE KNOW WHERE THE MACHINE IS: NOAA Fisheries proposed IHA (91 FR 46055,
+    filed 2026-07-22, comments close 08-21) for ONR Arctic Research Activities Year
+    9 supporting the Arctic Mobile Observing System in the Beaufort and Chukchi Seas.
+    Up to six moored 900 Hz acoustic navigation sources let long-endurance gliders
+    solve their own position by trilateration with dead reckoning as fallback. Honest
+    angle: nothing in the described system is machine learning, it is autonomy and
+    acoustic engineering. The earned turn is an asymmetry, the machine solves its
+    position to the metre while the Beaufort beluga abundance estimate is 39,258 dated
+    1992 and the ESA-threatened Arctic ringed seal stock''s abundance is undetermined.
+    Fair counter-point stated on screen: Level B harassment only, no serious injury
+    or mortality expected, and ONR complied with all prior IHA requirements. Unreported
+    scoop, no 2026 AMOS coverage exists.'
+  slug: amos-year9-under-ice
+  key_entities:
+  - arctic mobile observing system
+  - amos year 9
+  - office of naval research
+  - 91 fr 46055
+  - acoustic navigation source
+  - trilateration
+  - beaufort sea beluga 1992
+  - arctic ringed seal undetermined
+  - r/v sikuliaq
+  - incidental harassment authorization
+  - noaa fisheries
+  - under ice glider
+  archetype: ''
+  palette: instrument-blue abyss and ice-white lid, survey-yellow hero, one cyan reserved
+    for sound
+  voice: Gemini Sulafat, preset voice with SynthID watermark
+  stance: curious
+  angle: Under the ice a machine can fix its own position by listening to sound, while
+    the biological baseline for the animals sharing that water is a 34-year-old number
+    or missing entirely. The precision is all pointed at the robots.
+  hero: IceGlider
+  cast:
+  - IceGlider
+  - UnderIceBG
+  - AcousticSource
+  - RingedSealGhost
+  - Beluga
+  - StatCard
+  - Nameplate
+  composition:
+    pov: cross-section-cutaway
+    layout: stacked-layers
+    motion_vector: radial-emanate
+    hero_treatment: instrument-as-subject
+    register: naturalistic-scene
+    camera_strategy: locked-drift
+    light_story: night-practical
+    palette: instrument-blue abyss and ice-white lid, survey-yellow hero, one cyan
+      for sound
+    metaphor: sound as a substitute sky, and a gauge with no scale printed behind
+      its needle

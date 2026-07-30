@@ -1,0 +1,149 @@
+{
+  "run_id": "2026-07-30",
+  "narrator": "An Alaska policy reporter: analytical, plainspoken, curious rather than alarmed, never arch",
+  "notes": "Style: analytical, plainspoken, genuinely interested. Someone who read a federal filing and found something worth pointing at, not an investigator and not a booster. The committed valence is CURIOUS landing on an OPEN QUESTION, so nothing in this read may sound like an accusation. ENERGY CONTRAST IS THE WHOLE PLAN, because a flat read would kill this script: the mechanism build peaks at line 5, then line 6 drops hard to a dry 3, the procedural pair at lines 8 and 9 sit deliberately low, and the thesis at line 12 is the second peak. Lines 10 through 12 are the emotional floor and must NOT be read at the level of lines 3 through 5. Line 12 ('You can't measure harm to a population you haven't counted.') is the thesis of the film, read slow and level. Line 14 is two clauses with a genuine beat between them, landing soft. Pace brisk overall, about 138 words per minute, but let the turn breathe. Do NOT change 'N O A A' or 'U S', the separated letters are deliberate so the letters get spoken.",
+  "style_prompt": "### DIRECTOR'S NOTES\nStyle: analytical, plainspoken, genuinely interested. Someone who read a federal filing and found something worth pointing at, not an investigator and not a booster. The committed valence is CURIOUS landing on an OPEN QUESTION, so nothing in this read may sound like an accusation. ENERGY CONTRAST IS THE WHOLE PLAN, because a flat read would kill this script: the mechanism build peaks at line 5, then line 6 drops hard to a dry 3, the procedural pair at lines 8 and 9 sit deliberately low, and the thesis at line 12 is the second peak. Lines 10 through 12 are the emotional floor and must NOT be read at the level of lines 3 through 5. Line 12 ('You can't measure harm to a population you haven't counted.') is the thesis of the film, read slow and level. Line 14 is two clauses with a genuine beat between them, landing soft. Pace brisk overall, about 138 words per minute, but let the turn breathe. Do NOT change 'N O A A' or 'U S', the separated letters are deliberate so the letters get spoken.",
+  "lines": [
+    {
+      "idx": 0,
+      "text": "Off northern Alaska, sea ice blocks a satellite signal.",
+      "intent": "hook",
+      "emphasis": "sea ice",
+      "energy": 3,
+      "tags": [],
+      "pause_before": false,
+      "why": "Opens plain and physical. A stated fact, not a warning. Energy holds low so line 2's question has somewhere to lift."
+    },
+    {
+      "idx": 1,
+      "text": "So how does a robot under it know where it is?",
+      "intent": "hook-question",
+      "emphasis": "where",
+      "energy": 4,
+      "tags": [],
+      "pause_before": false,
+      "why": "THE story question. Genuine curiosity, a slight lift on the last three words. Never menacing, this is a puzzle being posed."
+    },
+    {
+      "idx": 2,
+      "text": "The U S Navy wants to watch the Arctic year round. Its answer is sound.",
+      "intent": "setup",
+      "emphasis": "year round",
+      "energy": 4,
+      "tags": [],
+      "pause_before": false,
+      "why": "Names the actor and the want. Matter of fact. Slight forward lean on 'Its answer is sound' as if setting down the interesting part."
+    },
+    {
+      "idx": 3,
+      "text": "Six speakers on the seabed would hum at nine hundred hertz.",
+      "intent": "mechanism",
+      "emphasis": "nine hundred",
+      "energy": 4,
+      "tags": [],
+      "pause_before": false,
+      "why": "Concrete hardware. Steady and even, letting the oddness of speakers on a seabed do the work without comment."
+    },
+    {
+      "idx": 4,
+      "text": "A glider listens, measures the distance to each, and solves for its position.",
+      "intent": "mechanism",
+      "emphasis": "solves",
+      "energy": 5,
+      "tags": [],
+      "pause_before": false,
+      "why": "The read's first real build. Three clauses that accumulate, so keep momentum across the commas and land firmly on 'position'."
+    },
+    {
+      "idx": 5,
+      "text": "No learning, just geometry.",
+      "intent": "landing",
+      "emphasis": "geometry",
+      "energy": 3,
+      "tags": [],
+      "pause_before": false,
+      "why": "DRY. Flat, satisfied, almost a shrug. The contrast rule in action, drop hard from the 5 above so the plainness reads as confidence, not deflation."
+    },
+    {
+      "idx": 6,
+      "text": "But that humming is sound, in water where whales live.",
+      "intent": "pivot",
+      "emphasis": "whales",
+      "energy": 4,
+      "tags": [],
+      "pause_before": false,
+      "why": "THE PIVOT. Cools rather than accuses. 'But' is a hinge, not an objection. Slight slowing across the whole line."
+    },
+    {
+      "idx": 7,
+      "text": "So the Navy asked permission. N O A A, the ocean agency, proposed yes.",
+      "intent": "procedural",
+      "emphasis": "proposed",
+      "energy": 3,
+      "tags": [],
+      "pause_before": false,
+      "why": "Procedural and neutral. This is the paperwork beat and it should sound like paperwork, deliberately lower energy between two higher ones."
+    },
+    {
+      "idx": 8,
+      "text": "Belugas and ringed seals may be disturbed, not harmed, and the Navy met its past conditions.",
+      "intent": "fair-counter",
+      "emphasis": "not harmed",
+      "energy": 3,
+      "tags": [],
+      "pause_before": false,
+      "why": "EVEN-HANDED, this is the point in the Navy's favour and must NOT be read grudgingly. Give 'not harmed' and 'met its past conditions' equal, unironic weight."
+    },
+    {
+      "idx": 9,
+      "text": "The last Beaufort beluga count was nineteen ninety two.",
+      "intent": "turn",
+      "emphasis": "nineteen ninety two",
+      "energy": 4,
+      "tags": [],
+      "pause_before": true,
+      "why": "THE TURN opens. Let the date land alone with a touch of space before it. No editorial colour, the number is the argument."
+    },
+    {
+      "idx": 10,
+      "text": "For ringed seals, threatened, there's no count at all.",
+      "intent": "turn",
+      "emphasis": "no count at all",
+      "energy": 3,
+      "tags": [],
+      "pause_before": false,
+      "why": "Lower and quieter than the line before. The emotional floor of the read. Do not push."
+    },
+    {
+      "idx": 11,
+      "text": "You can't measure harm to a population you haven't counted.",
+      "intent": "thesis",
+      "emphasis": "counted",
+      "energy": 5,
+      "tags": [],
+      "pause_before": false,
+      "why": "The thesis sentence of the film. Slow, level, fully weighted. Every word deliberate. This is the one line that should feel like a conclusion."
+    },
+    {
+      "idx": 12,
+      "text": "N O A A takes comments until August twenty first.",
+      "intent": "actionable",
+      "emphasis": "August twenty first",
+      "energy": 4,
+      "tags": [],
+      "pause_before": false,
+      "why": "Clear and unhurried, a date the listener might write down. Practical, not urgent."
+    },
+    {
+      "idx": 13,
+      "text": "We know where the machine is. Nobody knows how many whales.",
+      "intent": "button",
+      "emphasis": "machine",
+      "energy": 4,
+      "tags": [],
+      "pause_before": true,
+      "why": "Two clauses with a real beat between them. NOT a gotcha and NOT triumphant. A plain statement of an asymmetry, ending soft rather than hard."
+    }
+  ],
+  "assembled_prompt": "Read ONLY the transcript below aloud as speech. The lines above \"Transcript:\" are direction; never speak them.\n# AUDIO PROFILE: An Alaska policy reporter: analytical, plainspoken, curious rather than alarmed, never arch\n### DIRECTOR'S NOTES\nStyle: analytical, plainspoken, genuinely interested. Someone who read a federal filing and found something worth pointing at, not an investigator and not a booster. The committed valence is CURIOUS landing on an OPEN QUESTION, so nothing in this read may sound like an accusation. ENERGY CONTRAST IS THE WHOLE PLAN, because a flat read would kill this script: the mechanism build peaks at line 5, then line 6 drops hard to a dry 3, the procedural pair at lines 8 and 9 sit deliberately low, and the thesis at line 12 is the second peak. Lines 10 through 12 are the emotional floor and must NOT be read at the level of lines 3 through 5. Line 12 ('You can't measure harm to a population you haven't counted.') is the thesis of the film, read slow and level. Line 14 is two clauses with a genuine beat between them, landing soft. Pace brisk overall, about 138 words per minute, but let the turn breathe. Do NOT change 'N O A A' or 'U S', the separated letters are deliberate so the letters get spoken.\n\n### PER LINE DIRECTION\nline 1: intent hook, energy 3 of 5, stress the words 'sea ice'\nline 2: intent hook-question, energy 4 of 5, stress the words 'where'\nline 3: intent setup, energy 4 of 5, stress the words 'year round'\nline 4: intent mechanism, energy 4 of 5, stress the words 'nine hundred'\nline 5: intent mechanism, energy 5 of 5, stress the words 'solves'\nline 6: intent landing, energy 3 of 5, stress the words 'geometry'\nline 7: intent pivot, energy 4 of 5, stress the words 'whales'\nline 8: intent procedural, energy 3 of 5, stress the words 'proposed'\nline 9: intent fair-counter, energy 3 of 5, stress the words 'not harmed'\nline 10: intent turn, energy 4 of 5, stress the words 'nineteen ninety two', take a beat before this line\nline 11: intent turn, energy 3 of 5, stress the words 'no count at all'\nline 12: intent thesis, energy 5 of 5, stress the words 'counted'\nline 13: intent actionable, energy 4 of 5, stress the words 'August twenty first'\nline 14: intent button, energy 4 of 5, stress the words 'machine', take a beat before this line\n\nTranscript:\n1. Off northern Alaska, sea ice blocks a satellite signal.\n2. So how does a robot under it know where it is?\n3. The U S Navy wants to watch the Arctic year round. Its answer is sound.\n4. Six speakers on the seabed would hum at nine hundred hertz.\n5. A glider listens, measures the distance to each, and solves for its position.\n6. No learning, just geometry.\n7. But that humming is sound, in water where whales live.\n8. So the Navy asked permission. N O A A, the ocean agency, proposed yes.\n9. Belugas and ringed seals may be disturbed, not harmed, and the Navy met its past conditions.\n10. The last Beaufort beluga count was nineteen ninety two.\n11. For ringed seals, threatened, there's no count at all.\n12. You can't measure harm to a population you haven't counted.\n13. N O A A takes comments until August twenty first.\n14. We know where the machine is. Nobody knows how many whales.\n"
+}

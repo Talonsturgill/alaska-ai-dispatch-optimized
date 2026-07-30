@@ -1,0 +1,55 @@
+{
+  "backend": "gemini-tts",
+  "model": "gemini-3.1-flash-tts-preview",
+  "voice": "Sulafat",
+  "take": 1,
+  "takes": 3,
+  "soundcheck": {
+    "pass": true,
+    "score": 0.997,
+    "heard": "Off Northern Alaska, sea ice blocks a satellite signal. So, how does a robot under it know where it is? The US Navy wants to watch the Arctic year-round. Its answer is sound. Six speakers on the seabed would hum at 900 hertz. A glider listens, measures the distance to each, and solves for its position. No learning, just geometry. But that humming is sound. In water where whales live. So the Navy asked permission. NOAA, the ocean agency, proposed yes. Beluga's and ringed seals may be disturbed, not harmed. And the Navy met its past conditions. The last Beaufort Beluga count was 1992. For ringed seals threatened, there's no count at all. You can't measure harm to a population, you haven't counted. NOAA takes comments until August 21st. We know where the machine is. Nobody knows how many whales.",
+    "checks": {
+      "word_accuracy": {
+        "wer": 0.007,
+        "pass": true
+      },
+      "no_leak": {
+        "leaked": [],
+        "pass": true
+      },
+      "expressive": {
+        "pitch_std_semitones": 9.04,
+        "voiced_frac": 0.54,
+        "pass": true
+      },
+      "duration": {
+        "seconds": 67.24,
+        "pass": true
+      },
+      "loudness": {
+        "lufs": null,
+        "pass": true
+      }
+    },
+    "diagnosis": "clean"
+  },
+  "all_reports": [
+    {
+      "pass": true,
+      "score": 0.993,
+      "diagnosis": "clean"
+    },
+    {
+      "pass": true,
+      "score": 0.997,
+      "diagnosis": "clean"
+    },
+    {
+      "pass": true,
+      "score": 0.997,
+      "diagnosis": "clean"
+    }
+  ],
+  "watermark": "SynthID (Google) embedded in all Gemini TTS audio",
+  "license": "Google Gemini API preset voice (per-use billing)"
+}

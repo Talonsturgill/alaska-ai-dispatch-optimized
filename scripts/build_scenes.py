@@ -39,7 +39,7 @@ TAIL = 2.6  # hold after the last word
 # on the capped third pipe + the pawl + the two records), S7 L9-L10 (the arrow on the
 # doorless wall + the door swinging free), S8 L11-L12 (NO ALGORITHM + the signature shot),
 # S9 L13 (the button, back at the same table, staying interior).
-SCENE_START_LINE = [0, 2, 4, 5, 7, 9, 11]   # 2026-07-29: 7 shots, see out/dispatch/storyboard.json
+SCENE_START_LINE = [0, 2, 4, 6, 8, 9, 12]   # 2026-07-30: 7 shots onto 14 VO lines, see out/dispatch/storyboard.json
 
 
 def _apply_caption_fixups(caps):

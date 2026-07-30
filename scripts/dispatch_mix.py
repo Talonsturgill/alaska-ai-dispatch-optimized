@@ -35,7 +35,7 @@ OUT = os.path.join(REPO, "out", "dispatch")
 AUD = os.path.join(OUT, "audio")
 FF = os.environ.get("FFMPEG_BIN", "ffmpeg")
 SR = 44100
-DATE = "2026-07-26"   # episode seed for the shuffle-bag + jitter
+DATE = "2026-07-30"   # episode seed for the shuffle-bag + jitter
 
 
 def run(cmd):
@@ -80,37 +80,41 @@ _TAIL = 2.6   # matches scripts/build_scenes.py TAIL (hold after the last word)
 VIDEO_SECS = max(x["end"] for x in _lines) + _TAIL   # derive from VO; never hardcode
 
 EVENTS = [
-    # 2026-07-26 "The Field That Stopped in 2019". Every event is motivated by the
-    # picture and families deliberately alternate (the assert below enforces it).
-    # S1 (L0): the letter's flap springs open against the paper's own stiffness
-    # ---- 2026-07-29 schedule. 7 shots, 12 VO lines. Every shot gets >= 1 motivated
-    # event, no two consecutive events share a sound family, exactly ONE riser. ----
-    # S1 (L0-L1): the sheet lands, rows stamp down it, one row ignites
-    (L[0] + 0.15, "paper",  "hero",     0.0),
-    (L[0] + 1.30, "tick",   "texture", -0.25),
-    (L[1] + 0.35, "chime",  "hero",     0.0),
-    # S2 (L2-L3): the Genesis machine assembles and the bell jar lights
-    (L[2] + 0.45, "clank",  "standard", -0.2),
-    (L[2] + 2.10, "whoosh", "texture",   0.2),
-    (L[3] + 0.60, "snap",   "standard", -0.15),
-    # S3 (L4): THE TURN. the furnace powers down, empty slots drop in
-    (L[4] + 0.50, "thud",   "hero",      0.0),
-    (L[4] + 2.60, "tick",   "texture",   0.15),
-    # S4 (L5-L6): THE REHOOK. the map wipes in and the grids ignite one by one
-    (L[5] + 0.30, "riser",  "hero",      0.0),
-    (L[6] + 0.40, "pop",    "standard", -0.2),
-    (L[6] + 1.80, "ding",   "texture",   0.25),
-    # S5 (L7-L8): Cordova lights up, the funding plate lands, the twin builds
-    (L[7] + 0.45, "whoosh", "standard", -0.3),
-    (L[7] + 2.30, "chime",  "texture",  -0.15),
-    (L[8] + 0.55, "clank",  "hero",      0.1),
-    # S6 (L9-L10): the pull-back to 200 rows
-    (L[9] + 0.40, "paper",  "standard",  0.0),
-    (L[10] + 0.35, "boom",  "hero",  0.0),
-    # S7 (L11): the button, the furnace flares back
-    (L[11] + 0.30, "chime",  "hero",     0.0),
+    # ---- 2026-07-30 "We know where the machine is". 7 shots, 14 VO lines.
+    # SOUND IS THE SUBJECT of this film, so the foley carries argument rather than
+    # decoration. Families deliberately alternate (the assert below enforces it) and
+    # the single riser is spent on the pullback that reveals 34 empty years.
+    # S1 (L0-L1): the signal cone dies flat on the ice, the machine's eye sweeps
+    (L[0] + 0.20, "thud",   "hero",      0.0),    # the cone hits the lid and stops
+    (L[0] + 1.60, "tick",   "texture",  -0.30),   # the failed lock
+    (L[1] + 0.90, "creak",  "standard",  0.15),   # ice under load, the world is closed
+    # S2 (L2-L3): six anchors plant, then the whole seafloor breathes light
+    (L[2] + 0.40, "clank",  "standard", -0.25),   # first anchor lands
+    (L[2] + 2.20, "paper",  "texture",   0.20),   # silt lifting
+    (L[3] + 0.35, "ding",   "hero",      0.0),    # the 900 Hz field comes up
+    # S3 (L4-L5): the range lines arrive and THE CLAMP lands. The signature shot.
+    (L[4] + 0.30, "whoosh", "standard", -0.30),   # first range line sweeps in
+    (L[4] + 1.55, "pop",    "standard",  0.25),   # second
+    (L[4] + 2.70, "chime",  "hero",      0.0),    # THE SOLVE, centered for the payoff
+    (L[5] + 0.25, "tick",   "texture",   0.10),   # the bare geometry drawing on
+    # S4 (L6-L7): the ghost enters the sound field, the filing lands and stamps
+    (L[6] + 0.50, "creak",  "standard", -0.20),   # the animal displacing water
+    (L[7] + 0.45, "stamp",  "hero",      0.0),    # PROPOSED thuds down
+    (L[7] + 2.30, "snap",   "texture",   0.20),   # the paper settling
+    # S5 (L8): the finding, and the compliance tick given its own air
+    (L[8] + 0.55, "clank",  "standard", -0.15),   # the finding card sets
+    (L[8] + 2.60, "ding",   "standard",  0.15),   # the tick draws, unironic
+    # S6 (L9-L11): THE TURN. one point lands, the pullback opens 34 empty years
+    (L[9] + 0.35, "pop",    "hero",     -0.35),   # the 1992 point lands hard
+    (L[9] + 1.90, "riser",  "hero",      0.0),    # THE ONE RISER, the scale pullback
+    (L[10] + 0.40, "tick",  "texture",   0.30),   # the empty field, a hollow click
+    (L[11] + 0.55, "boom",  "hero",      0.0),    # the thesis, the unreadable gauge
+    # S7 (L12-L13): the date, then the button
+    (L[12] + 0.40, "clank", "standard",  0.0),    # the date card sets square
+    (L[13] + 0.35, "chime", "hero",      0.0),    # the button, one last lock tick
     (VIDEO_SECS - _TAIL + 1.0, "tick", "texture", 0.0),
 ]
+
 
 # The breath before the PAYOFF. storyboard audio_arc.silence_at sits under the arrow's
 # ANTICIPATION so the crumple at the turn lands into a hole (Gate 0C: the film's only
@@ -119,7 +123,7 @@ EVENTS = [
 # L[9]'s start (pass 1) put it under the speech and measured as a 4.6 dB RISE. The 1.06s
 # gap between L8 ending and L9 starting is the breath before "Neither record is wrong",
 # the quietest and most important line in the film, so the bed drops out into real silence.
-SILENCE_DIP_AT = round(L[10] - 0.85, 2)
+SILENCE_DIP_AT = round(L[11] - 0.85, 2)
 DIP_LEN = 0.90
 
 

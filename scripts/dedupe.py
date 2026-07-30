@@ -4,9 +4,9 @@ Never repeat a story within the same week (and never an exact repeat). The ledge
 config/state.yaml > dispatch_history; it is read at the start of research and written at
 the end of every run.
 
-  python scripts/dedupe.py list  --days 14
+  python scripts/dedupe.py list  --days 30
       -> the exclusion list of recently-covered topics + key entities (for research).
-  python scripts/dedupe.py check --entities "cook inlet,beluga,noaa" [--days 7]
+  python scripts/dedupe.py check --entities "cook inlet,beluga,noaa" [--days 30]
       -> prints FRESH (exit 0) or DUP ... (exit 1) if it overlaps a recent Dispatch.
   python scripts/dedupe.py add --date 2026-06-28 --topic "..." --slug dispatch-... \
       --entities "a,b,c" --archetype "..." --palette "..." --voice "..." \
@@ -35,6 +35,29 @@ def entity_key(e):
     s = ",".join(ents) if isinstance(ents, list) else str(ents)
     return norm(s) | norm(e.get("topic", ""))
 
+# ============================================================================
+# THE DEDUPE WINDOW (owner directive, 2026-07-30)
+# ----------------------------------------------------------------------------
+# The window is THIRTY DAYS, for `list` and `check` alike, and a repeat after
+# thirty days is EXPLICITLY ALLOWED. The owner's words: "make the dedupe
+# function of this automation only 30 days, it's okay to repeat if it's been 30
+# days since we talked about something."
+#
+# This replaces two older rules that no longer apply:
+#   - the 7-day check window and the 14-day list window, and
+#   - "never an exact repeat ever", which was an unbounded prohibition.
+# The slug check already runs through recent(), so an exact-slug repeat is now
+# gated by this same window rather than forever.
+#
+# Why this changed: topics were getting thin. An unbounded no-repeat rule means
+# the automation permanently burns every subject it ever touches, and with a
+# daily cadence that shrinks the eligible pool every single run. A subject the
+# audience last saw a month ago is not a rerun to them, and a genuinely new
+# development on it is real news.
+# ============================================================================
+DEDUPE_WINDOW_DAYS = 30
+
+
 def recent(d, days):
     today = dt.date.today(); out = []
     for e in d["dispatch_history"]:
@@ -46,8 +69,8 @@ def recent(d, days):
 
 def main():
     ap = argparse.ArgumentParser(); sub = ap.add_subparsers(dest="cmd", required=True)
-    pl = sub.add_parser("list");  pl.add_argument("--days", type=int, default=14)
-    pc = sub.add_parser("check"); pc.add_argument("--entities", required=True); pc.add_argument("--days", type=int, default=7)
+    pl = sub.add_parser("list");  pl.add_argument("--days", type=int, default=DEDUPE_WINDOW_DAYS)
+    pc = sub.add_parser("check"); pc.add_argument("--entities", required=True); pc.add_argument("--days", type=int, default=DEDUPE_WINDOW_DAYS)
     pc.add_argument("--hero", default="",
                     help="the library asset cast as this run's HERO / AI-embodiment (e.g. ServerMachine, "
                          "Vale, Sourdough). HARD GATE (2026-07-21 owner rule): the same hero asset in "

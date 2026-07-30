@@ -96,6 +96,30 @@ export function tones(base: string): Tones {
   };
 }
 
+// PALE-SURFACE TONES (2026-07-30). tones() multiplies saturation by 1.05 on the shade
+// stop, which is right for a mid-value base but wrong for a near-white one. A tint like
+// ICE (#eef6ff) sits at ~full HSL saturation with almost no lightness headroom, so the
+// 0.17 shadeDrop lands on a vivid blue and the surface reads as coloured glass instead of
+// a white object with a shadow on it. Real white surfaces do pick up a slightly cooler,
+// slightly more saturated shadow, just an order of magnitude less than that.
+//
+// paleTones() damps saturation in proportion to how light the base is, so ice, snow,
+// paper, birch and bone shade into believable grays instead of candy. Use it for any
+// surface above roughly 85 percent lightness; tones() stays correct for everything else.
+export function paleTones(base: string): Tones {
+  const [h, s, l] = rgbToHsl(...hexToRgb(base));
+  // 1.0 at l=0.80 and below, falling to ~0.25 at pure white
+  const damp = Math.max(0.25, Math.min(1, (1 - l) / 0.2));
+  const warm = (dh: number) => (h + dh + 1) % 1;
+  const sd = s * damp;
+  return {
+    key: hslToHex(warm(-0.015), Math.min(1, sd * 0.92), Math.min(1, l + LIGHT.keyLift * 0.4)),
+    base,
+    core: hslToHex(h, sd, Math.max(0, l - LIGHT.coreDrop)),
+    shade: hslToHex(warm(0.02), Math.min(1, sd * 1.05), Math.max(0, l - LIGHT.shadeDrop * 0.8)),
+  };
+}
+
 // A unique id helper (deterministic from a seed string -- no Math.random, which
 // is banned in this runtime and would break Remotion's deterministic render).
 function gid(seed: string): string {

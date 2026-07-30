@@ -1,0 +1,210 @@
+{
+  "run_id": "2026-07-30",
+  "window_days": 10,
+  "window": "2026-07-20 to 2026-07-30",
+  "search_budget_note": "Round one deliberately capped. The wildcard researcher used 6 of its 15 permitted searches. No agent has reported budget exhaustion. Budget was NOT a constraint on this run's research, so nothing here may be attributed to a thin search pool.",
+  "candidates": [
+    {
+      "id": "anthropic-money-vs-moratorium",
+      "headline": "Anthropic employees put $372,000 into an Alaska governor candidate who wants to freeze every new data center in the state",
+      "verdict": "DECLINED ON CONFLICT OF INTEREST, not on merit",
+      "merit": "On the facts this is the strongest Alaska-AI story of the window: multi-sourced across ADN, Alaska Public Media and The Alaska Story, with a signed first-person ADN op-ed from the $100,000 donor confirming his own gift and motive, and a named state-level AI and data-center policy platform.",
+      "why_declined": "This Dispatch is written and voiced by an Anthropic model. A piece in which that automation takes a position on Anthropic employees' political donations, and on AI regulation those donations fund, cannot meet this channel's own honesty standard without a disclosure the video format cannot carry credibly. The conflict is structural, not a matter of careful wording. ESCALATED TO THE OWNER in the Gmail draft instead, with sources, so a human can decide whether and how Alaska.Ai covers it. Recording it here so a future run does not mistake this for a story nobody found.",
+      "sources": [
+        "https://www.adn.com/opinions/2026/07/29/opinion-why-this-anthropic-employee-gave-100k-to-a-candidate-for-alaska-governor/",
+        "https://alaskapublic.org/news/politics/elections/2026-07-24/democrat-in-alaskas-governor-race-reports-1-8-million-fundraising-haul-driven-by-californians"
+      ]
+    },
+    {
+      "id": "awos-dark",
+      "headline": "More than 50 of Alaska's automated aviation weather stations went dark at once, about a third of the network",
+      "verdict": "LIVE CANDIDATE",
+      "notes": "2026-07-27 outage, reported 07-28 and 07-29. Honest AI angle is the observation layer every forecast model infers from, and no AI failed. Sourcing caveat: one reporter (Alena Naiden) carried by three outlets in one public-media network, so it is ONE sourcing chain, strengthened by two named experts with different institutional interests (UAF's Rick Thoman, Airmen's Association's Adam White). Cause still officially unconfirmed.",
+      "confidence": "high",
+      "corroboration": "Independently surfaced by a SECOND beat (energy/defense/aviation) which read the KTOO copy in full and confirmed the same figures: 50-plus stations down 2026-07-27, about 20 still down that afternoon, up to 20 offline on a NORMAL day per UAF's Rick Thoman, which reframes it as a chronic condition rather than a one-off. Stations are mostly FAA-owned with some NWS and DoD. Still ONE reporter (Alena Naiden) and one origin story carried by KNBA and KTOO. No FAA statement on cause, so no cause may be asserted on screen.",
+      "stance_if_used": "curious or mixed"
+    },
+    {
+      "id": "broadband-zero",
+      "headline": "Alaska scored a zero out of 100 and finished last in the nation on every broadband metric measured",
+      "verdict": "LIVE CANDIDATE",
+      "notes": "CompareInternet 2026 State Internet Index, published 07-16 and updated 07-20, built on the FCC Broadband Data Collection. Covered by the Juneau Empire 07-25 and nowhere else found. Caveat: commercial ISP-comparison site, so the scoring weights are its own editorial choice even though the underlying data is federal. AI angle is a floor, not a deployment.",
+      "confidence": "high"
+    },
+    {
+      "id": "bristol-bay-skipper-science",
+      "headline": "A UAF grad student built a phone app to fill the data hole in Bristol Bay's sport fishery",
+      "verdict": "LIVE CANDIDATE, modest",
+      "notes": "KDLG 07-20. The app itself has no AI and the article never claims any; its value is as the data-collection layer a model would train on. Pairs with KDLG's 07-03 Wood River drone plus machine-learning sockeye-counting pilot, which is BACKGROUND and out of window. Possible dedupe tension with the 07-21 salmon-counting dispatch; would need an honest distinctiveness test.",
+      "confidence": "medium"
+    },
+    {
+      "id": "existing-eight-data-centers",
+      "headline": "Alaska already runs eight data centers, and the fight now is over who approves the next one",
+      "verdict": "WEAK, single opinion-forward outlet",
+      "notes": "The existing-inventory angle is genuinely unreported, but it rests on one openly advocacy-forward source and a DataCenterMap count nobody fetched. Also overlaps two covered subjects. Would need independent verification of the eight facilities before use.",
+      "confidence": "medium"
+    },
+    {
+      "id": "rocket-lab-kodiak",
+      "headline": "Rocket Lab lands a $266 million contract for at least 12 missile-defense test launches from Kodiak",
+      "verdict": "REJECTED, no AI angle",
+      "notes": "The researcher checked and reported plainly that none of the coverage mentions AI, autonomy, sensors, tracking algorithms or computing. Strong Alaska tech story, wrong beat. Not dressed up.",
+      "confidence": "high"
+    },
+    {
+      "id": "eielson-eul-industry-day",
+      "headline": "The Eielson Enhanced Use Lease hit its procurement milestone, and the official 3,967-acre offer never says the words data center",
+      "verdict": "REJECTED as same subject",
+      "notes": "Primary Air Force document (eielson.af.mil, fetched in full): virtual industry day held 2026-07-22, RFLP AFCEC-26-R-0009 on SAM.gov, proposals due 2026-08-10, 3,967 acres in four parcels, permitted uses listed as residential/commercial/office/cultural/institutional/entertainment with NO data-center language. Genuinely new milestone detail and a real accountability angle. But the SUBJECT is the 2026-07-22 dispatch 'Air Force Enhanced Use Lease offering ~4,700 acres for AI data centers at JBER, Eielson, Clear.' Applying the viewer's test from the routine: someone who watched that dispatch would feel shown the same story. The researcher flagged it honestly for this call rather than hiding the overlap. CARRIED FORWARD as a lead: the Aug 10 deadline and the mixed-use-language gap are worth a follow-up dispatch after the deadline lands.",
+      "confidence": "high on the document, rejected on dedupe"
+    },
+    {
+      "id": "fairbanks-fire-drones",
+      "headline": "Fairbanks Fire Department now flies three drones, and the ceiling over the city is 200 feet",
+      "verdict": "WEAK, and honestly no AI",
+      "notes": "News-Miner 2026-07-14, single source, 16 days old. Three DJI Mavic 3 Pro at about $7,000 each, thermal imaging, 150 ft typical and 200 ft max because Fairbanks International is next door. The researcher states plainly the only automation aboard is return-to-launch and the 3D mapping is photogrammetry. Charming and very Alaska, but no AI and no second source.",
+      "confidence": "medium"
+    },
+    {
+      "id": "enstar-gas-storage",
+      "headline": "ENSTAR appeals its rejected $240 million Cook Inlet gas storage project",
+      "verdict": "REJECTED as a lead, retained as verified background",
+      "notes": "KTOO 2026-07-24 plus Alaska's News Source 07-28/07-29. No AI or data-center content in either source and the researcher says so. Useful only as the arithmetic under any Alaska data-center pitch: 150,000-plus Southcentral customers, a $240M project the utility calls its largest ever, Hilcorp drilling 27 wells to the next producer's two, and mayors warning of 50 to 100 percent post-2030 cost increases.",
+      "confidence": "high on facts, low as a standalone AI story"
+    },
+    {
+      "id": "bristol-bay-drone-cv-counting",
+      "headline": "A grey box on the Wood River launches a drone at 8:30 every morning, and a computer-vision model is learning to count Bristol Bay sockeye",
+      "verdict": "REJECTED on SHAPE REPEAT, after an honest dedupe re-test",
+      "merit": "Genuinely strong: real supervised computer vision, regional funders (BBRSDA, BBEDC, UW Fisheries Research Institute), named people (Norm Van Vactor, Joel Tibbs, Ian Chiu), and a superb drawable contrast between a solar-powered box that opens at 8:30 a.m. and a human in a wooden tower hand-clicking salmon for ten minutes of every hour, a method unchanged since 1955.",
+      "dedupe_reasoning": "scripts/dedupe.py returned DUP against the 07-24 Quinhagak dispatch on ['bay','box','drone','river'] and against 07-23 on ['counts','vision']. Those are GENERIC TOKENS and per the routine a token collision must not kill a distinct subject, so I re-tested with an honest distinctive entity set. The script still only token-matches and cannot answer the real question, so I applied the viewer's test directly. THE ANSWER IS THAT THIS IS A REPEAT, on story SHAPE rather than tokens. The channel has already shipped two dispatches in the last nine days with this exact shape: 07-21 'The Referee Arrives' (NOAA AFSC YOLOv11 counting salmon in trawl net-cam footage, expert annotation, research not deployed) and 07-23 'Counting Belugas From Orbit' (NOAA/USGS GAIA machine vision counting Cook Inlet belugas, expert annotation, experimental not deployed). A third experimental-computer-vision-model-in-training-counts-Alaska-fauna film, and the SECOND about counting salmon specifically, is a story a regular viewer would feel they had already been shown. Noting explicitly that this is the OPPOSITE error from the 07-29 failure: there a real scoop was killed by a generic token, here the tokens read fresh and the shape does not. Both failures are real and this one is the honest call.",
+      "carried_forward": "Strong lead for a LATER dispatch once the model is validated against ADF&G tower counts, which is the genuinely new news and a different story (a thing that WORKS, not a thing in training).",
+      "do_not_air": "The snippeted phase-one figures 256 drone flights and 17,552 images are UNVERIFIED (Undercurrent News and SeafoodSource both 403'd). Never air them.",
+      "confidence": "high on facts, rejected on freshness-of-shape"
+    },
+    {
+      "id": "anthc-ai-governance",
+      "headline": "Alaska's tribal health system is writing the rules for medical AI before the vendors arrive, and the test case is the medevac call",
+      "verdict": "REJECTED on timeliness, flagged as a strong future subject",
+      "notes": "Peer-reviewed symposium report in the International Journal of Circumpolar Health, 31 participants from ANTHC, Southcentral Foundation, Maniilaq Association, Stanford and the CDC Arctic Investigations Program; data sovereignty over AI/ML in the Alaska Tribal Health System; medevac decisions occur roughly 40 times more often than the national rate. The most substantive Alaska AI governance work found on any beat, and genuinely unreported by Alaska outlets. But it published 2026-05-23, which is 68 days old, outside BOTH the 10-day window and the 30-day unreported allowance. The researcher flagged the date honestly rather than burying it. Also: its one candidate quote came back with an ellipsis and is NOT certified verbatim, so it could not be aired as written without a re-read.",
+      "cultural_note": "If ever used: ANTHC is a statewide tribal health organization, Southcentral Foundation is the Anchorage-area tribal health organization, Maniilaq Association serves the Northwest Arctic. None speaks for the others and none speaks for Alaska Native people as a bloc. 31 people at one symposium are not a referendum.",
+      "confidence": "medium-high on facts, rejected on timeliness"
+    },
+    {
+      "id": "apd-bear-drone",
+      "headline": "Anchorage police flew a drone over a mauled hiker to watch the bear while medics carried her out",
+      "verdict": "WEAK, no AI",
+      "notes": "APD release 2026-07-19, case 26-19000, incident 07-18. Primary source fetched. A remotely piloted quadcopter and a human watching a feed; the researcher says plainly there is no AI. The ADF&G companion release NR-26-3487 exists by date on the index but the PDF 503'd then 404'd, so no ADF&G quote is available. Victim unnamed in the release and must stay unnamed.",
+      "confidence": "high on facts, no AI angle"
+    },
+    {
+      "id": "suicide-basin-forecast",
+      "headline": "Juneau's flood forecast is a laser, two satellite cameras, and a human reading water speed",
+      "verdict": "WEAK as a lead, no AI in the operating forecast",
+      "notes": "NWS now predicts Suicide Basin fills 2026-08-08 to 08-12. Instrumented observation plus physical hydrology plus forecaster judgment; the Army Corps sandbag machine is mechanical automation. Honest framing would be that the highest-stakes forecast in Southeast Alaska is NOT model-solved. The '1,900 homes' figure came from an unfetched aggregator snippet and must not be aired without a CBJ or KTOO source.",
+      "confidence": "high on facts, low on AI relevance"
+    },
+    {
+      "id": "uas-whale-strike-sim",
+      "headline": "Ship pilots in Southeast will practice not hitting humpbacks in a simulator built from real observer data",
+      "verdict": "WEAK, no AI, single outlet",
+      "notes": "KTOO 2026-07-29. Bridge simulator seeded with marine-mammal-observer data at UAS Ketchikan, plus NOAA's crowd-sourced Whale Alert app. The interesting adjacency is what is ABSENT: automated whale detection exists elsewhere and Southeast is deploying trained human eyes and slower speeds instead. Would need a second source before leading.",
+      "confidence": "medium-high on facts, low on AI relevance"
+    },
+    {
+      "id": "amos-year-9",
+      "headline": "Navy asks to run a robot fleet under the ice off Alaska's North Slope for a ninth year, launched from UAF's own research ship",
+      "verdict": "SELECTED",
+      "notes": "91 FR 46055-46079, doc 2026-14816, published 2026-07-22. NOAA Fisheries proposed incidental harassment authorization for the Office of Naval Research's Arctic Research Activities Year 9, Sept 2026 to Sept 2027, supporting the Arctic Mobile Observing System. Comments close 2026-08-21 and the docket is still open. Completely unreported: the researcher found no 2026 coverage of AMOS anywhere, and NOAA's own incidental-take index does not yet list it.",
+      "confidence": "high"
+    },
+    {
+      "id": "ana-ai3-institute",
+      "headline": "HHS finalizes killing the Alaska-only ANA grant line and stands up a $3.5M Artificial Intelligence for American Indians institute instead",
+      "verdict": "RUNNER-UP, escalated to the owner as a second scoop worth covering",
+      "notes": "91 FR 47241-47243, doc 2026-15150, published 2026-07-28, two days old and entirely unreported by Alaska outlets. SEDS and its Alaska-only companion SEDS-AK are replaced by a five-track EAGLE program plus a new AI3 Action Institute funded at a $3.5M ceiling as ONE national award. The federal document itself records that commenters warned EAGLE could disadvantage Alaska Tribes specifically, and ANA finalized it anyway. A genuinely strong accountability story.",
+      "why_not_selected": "Two reasons, both honest. First, it is a grant-DESIGN story rather than an AI deployment, so its AI substance is the objection (Indigenous data sovereignty, Tribal readiness) rather than a working system. Second and more practically, the natural staging is a characterized federal-paperwork machine, and this channel shipped exactly that four runs ago as RecordsMachine on 07-26, which is a hero rerun in spirit even with a new asset. It deserves real coverage and is being handed to the owner rather than buried.",
+      "cultural_requirements_if_used": "Name organizations specifically, distinguish advocacy nonprofits from tribal governments, never present Native opinion as a bloc, no characterized-object humor applied to any Alaska Native subject, and no Native iconography or unverified Native-language words on screen.",
+      "confidence": "high"
+    },
+    {
+      "id": "permafrost-digital-twin",
+      "headline": "Two kilometers of fiber-optic cable in a Utqiagvik road embankment feed a machine-learning permafrost digital twin",
+      "verdict": "REJECTED on timeliness plus concept overlap",
+      "notes": "Penn State release 2026-06-16 (updated 07-15), JGR Earth Surface doi 10.1029/2025JF008787, UAF's Dmitry Nicolsky a co-author. 44 days old, past the 30-day unreported allowance. Also 'real-time digital twin' is the exact concept the 07-25 dispatch closed on. NSF is named as funder but NO grant number is given, so none may be cited.",
+      "confidence": "medium"
+    }
+  ],
+  "status": "STORY LOCKED at rung primary_source_mining. Proceeding to Phase 3.5 angle room.",
+  "rungs": [
+    {
+      "rung": "in_window_sweep",
+      "attempted": true,
+      "candidates_found": 6,
+      "detail": "Round one fan-out of 4 researchers (cap 20 WebSearch each, a third of the session budget held back for round two per the Phase 1 law): gov/.edu science + primary-source mining, energy/grid/data-centers + defense/aviation/UAS, fisheries/wildlife + Alaska-Native-led and rural tech, and the outlet-index wildcard."
+    },
+    {
+      "rung": "outlet_index_sweep",
+      "attempted": true,
+      "candidates_found": 6,
+      "detail": "26 Alaska outlet indexes loaded via WebFetch, 13 failed or served stale content. Loaded: ADN, Alaska Beacon (RSS only), Alaska Public Media, KTOO, KNBA, KYUK, KUCB, KDLG, KFSK, KTNA, Northern Journal, Alaska Business, News-Miner, Juneau Empire, Kodiak Daily Mirror, Ketchikan Daily News, Nome Nugget, Delta Discovery, Alaska Native News, Must Read Alaska, Alaska Landmine, Alaska Watchman, The Alaska Story, Governor's newsroom, UAF News, Copper River Country Journal.",
+      "sweep_failures": [
+        "alaskabeacon.com article and category pages return HTTP 403 to WebFetch; only /feed/ RSS works. Recorded as a standing workaround.",
+        "The Arctic Sounder HTTP 503",
+        "Peninsula Clarion, Homer News, and the Juneau Empire /news/ path served years-old stale content, so those three are effectively UNSWEPT this run and are a disclosed coverage gap",
+        "The Cordova Times returned an empty body",
+        "Alaska DOT&PF newsroom and GCI newsroom URLs both 404 and need correcting in config/sources.yaml"
+      ]
+    },
+    {
+      "rung": "primary_source_mining",
+      "attempted": true,
+      "candidates_found": 3,
+      "detail": "Federal Register API, NSF Awards API (four queries), DOE Office of Science Genesis Mission award-list PDF, grants.gov/simpler.grants.gov, plus eight university and agency news indexes. This rung produced BOTH of the run's genuine scoops, same as it did on 07-25 and 07-29. It also proved two useful negatives: every NSF award to an Alaska institution from 2026-04-01 to 2026-07-30 was enumerated (15 awards, none AI/ML except the already covered GAIA award 2608510), and exactly ONE award in the entire national DOE Genesis Mission list is Alaskan (AURORA-AI, already covered on 07-29)."
+    }
+  ],
+  "fetch_blocklist": {
+    "note": "Sites that blocked fetches this run, so nothing from them is cited anywhere. Worth a proxy check before the next run; Alaska Beacon and Petroleum News are both load-bearing for the energy beat.",
+    "blocked": [
+      "alaskabeacon.com (403 all article/category paths; only /feed/ RSS works)",
+      "petroleumnews.com (403)",
+      "gvea.com (403)",
+      "acuasi.alaska.edu (503 on three attempts)",
+      "rocketlabcorp.com and investor site (403/404)",
+      "faa.gov newsroom search (404)",
+      "akcenter.org (empty body)",
+      "thearcticsounder.com (503)",
+      "thecordovatimes.com (empty body)"
+    ]
+  },
+  "confirmed_absences": [
+    "No in-window AI, autonomy or counter-UAS news from JBER, Eielson or the 11th Airborne Division (the division's UAS items published April and May, both fetched, out of window).",
+    "No July 2026 ACUASI or UAF energy/UAS news.",
+    "No RCA large-load or data-center tariff docket found.",
+    "Railbelt Integrated Resource Plan story is December 2025; Cordova Greensparc data-center-in-a-microgrid is 2026-03-05; Chugach FIRE-SPY is July 2024."
+  ],
+  "locked_story": {
+    "headline": "Navy asks to run a robot fleet under the ice off Alaska's North Slope for a ninth year, launched from UAF's own research ship",
+    "found_at_rung": "primary_source_mining",
+    "date_of_news": "2026-07-22",
+    "primary_source": "91 FR 46055-46079 (doc 2026-14816), NOAA Fisheries proposed incidental harassment authorization, ONR Arctic Research Activities Year 9",
+    "why_this_one": [
+      "Robotics is explicitly in the routine's scope, so autonomy is not a stretch on this beat, it is the beat.",
+      "Genuinely unreported. No 2026 coverage of AMOS exists anywhere the researcher could find, and NOAA's own incidental-take index has not listed it yet.",
+      "Fresh: eight days old, and the public comment docket is OPEN until 2026-08-21, so the film has real civic utility rather than being a retrospective.",
+      "A brand-new visual world for this channel. Every prior dispatch has been above water. This one is under a meter of sea ice, in the dark, navigating by sound.",
+      "It fills a real library gap. The shelf holds an orbital eye (SatelliteEye), a seafloor ear (ListeningMooring), a ground ear (SeismicStation) and two aerial machines (Vale, Petrel), but nothing that SWIMS. That justifies the run's net-new asset instead of manufacturing one.",
+      "It has an honest two-sided structure without forcing either side: a genuinely impressive engineering answer to a hard problem (an acoustic substitute for GPS where no satellite can reach), and a real open question (Level B harassment authorized on beluga and ringed seal, both subsistence species, with a comment window nobody in Alaska has been told about).",
+      "Hero differs from the last two heroes (Sourdough on 07-29, RecordsMachine on 07-26), satisfying the cast-freshness gate."
+    ],
+    "dedupe_record": "dedupe.py returned DUP twice on purely generic tokens, ['naval','research'] against the 07-23 beluga satellite dispatch because the Naval Research Laboratory was a GAIA partner, and ['2026','year'] against 07-25. Both were re-tested with honest distinctive entity sets and the subject is unrelated in each case. With the hero declared the gate returns FRESH. This is exactly the generic-token trap that killed a real scoop on 07-29, and it was not repeated here.",
+    "hard_constraints": [
+      "Cause of nothing may be asserted beyond the document. NOAA proposes Level B harassment ONLY, with no serious injury or mortality anticipated; do NOT state a take number, because the researcher did not extract the authorized counts.",
+      "This is autonomy and engineering, NOT machine learning. The notice contains no AI. Say so plainly on screen, the way the 07-26 film did.",
+      "R/V Sikuliaq is ice-strengthened and explicitly NOT an icebreaker. CGC HEALY is named only as a POSSIBLE recovery vessel and 'icebreaking may be required'. Do not upgrade either claim.",
+      "Prior-AMOS performance color from search snippets (367-day missions, 233 consecutive days under ice) is UNVERIFIED and must not be aired.",
+      "Inupiat subsistence use of these waters is real and must be framed with respect and specificity, never as a bloc opinion and never with characterized-object humor."
+    ]
+  }
+}
