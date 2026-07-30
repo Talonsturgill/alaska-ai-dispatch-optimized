@@ -91,7 +91,13 @@ enforced in code by DEDUPE_WINDOW_DAYS in scripts/dedupe.py, so `list` and `chec
    2026-07-17 dispatch shipped SILENT: a bare `ffmpeg -i video -i audio` with no `-map` took
    the render's empty audio track, and the quality gate only probed the wav, not the mp4.
    Always volumedetect the delivered cuts before upload.
-5. NO EM DASHES OR EN DASHES, NO SEMICOLONS, NO COLONS. ANYWHERE. EVER. Not in VO, captions,
+5. NO EM DASHES OR EN DASHES, NO SEMICOLONS, NO COLONS. ANYWHERE. EVER. AND NEVER THE WORD
+   "CANNOT", ALWAYS "CAN'T" (owner directive 2026-07-30, "ban the word cannot, always use can't
+   instead, especially in the captions"). Contractions over the formal register, everywhere:
+   captions and post copy above all, but also VO, on-screen labels, the Gmail draft and credits.
+   "cannot" reads as institutional writing and this voice is not institutional. Enforced as a hard
+   fail by scripts/caption_check.py (BANNED_FORMAL), and the table is the place to add any future
+   formal-register ban rather than scattering one-off checks. Not in VO, captions,
    on-screen labels, the LinkedIn post, the Gmail draft, or credits. Ranges are "X to Y"; use
    commas, periods, and parentheses to join clauses (a colon is NEVER the answer, rewrite the
    sentence), and the middot as an on-screen separator. scripts/caption_check.py hard-fails the

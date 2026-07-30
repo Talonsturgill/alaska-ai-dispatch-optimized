@@ -26,6 +26,10 @@ AI_TELLS=["delve","tapestry","testament","landscape of","ever-evolving","ever-ch
           "embark","robust solution","seamless","cutting-edge","revolutionize","supercharge","skyrocket",
           "here's the honest part","here is the honest part","here's what matters","here is what matters",
           "here's where the frame breaks","here is where the frame breaks"]
+# Formal-register words the brand bans outright, mapped to the contraction that replaces
+# them. Owner directive 2026-07-30, starting with "cannot". Add to this table rather than
+# scattering one-off checks.
+BANNED_FORMAL={"cannot":"can't"}
 BANNED_PUNCT={"—":"em dash","–":"en dash",";":"semicolon",":":"colon","“":"curly quote","”":"curly quote","‘":"curly quote","’":"curly apostrophe"}
 # Sources + music/voice credit belong in the copy-paste COMMENT block (dispatch_email.py), never
 # in the post body (2026-07-21 owner catch: they got pasted into the post AND duplicated, and the
@@ -80,6 +84,17 @@ def lint(text):
     # brand voice: banned punctuation (colon included — rewrite the sentence, never a colon)
     hits={name for ch,name in BANNED_PUNCT.items() if ch in t}
     if hits: fails.append("PUNCT: brand voice bans "+", ".join(sorted(hits))+" (use periods, commas, parentheses, 'X to Y' ranges — a colon means rewrite the sentence)")
+    # CONTRACTION LAW (owner directive 2026-07-30): "ban the word 'cannot', always use
+    # 'can't' instead, especially in the captions". "cannot" is the formal register and it
+    # reads as institutional writing, which is exactly the voice this brand is not. Enforced
+    # here as a HARD FAIL rather than left as a doctrine note, because a style rule nobody
+    # checks drifts back within a few runs (see the flat-HUD-chip lesson: a default-off fix
+    # is a doctrine reminder wearing a code costume).
+    for bad, good in BANNED_FORMAL.items():
+        for mm in re.finditer(r"\b" + bad + r"\b", t, re.I):
+            fails.append(f"REGISTER: '{mm.group(0)}' is banned, write \"{good}\" (owner rule, "
+                         f"contractions keep the voice human, not institutional)")
+            break
     # sources + credits must NOT be in the post body — they go in the copy-paste comment block
     if URL_RE.search(t): fails.append("BODY: a URL/domain is in the post — sources go ONLY in the Gmail draft's comment block, never in the post text")
     cred=CREDIT_RE.search(t)
