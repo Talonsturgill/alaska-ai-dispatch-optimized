@@ -115,16 +115,48 @@ def analyze(dirp):
                 R["problems"].append(f"METRONOME: {worst_run} consecutive beat gaps within ±{tol}s of "
                                      f"each other (~{run_val}s each); fixed cadence habituates — jitter "
                                      f"the intervals (ENGAGEMENT.md §2.3)")
-            # REHOOK: one declared re-hook beat in the drift window
-            rlo, rhi = eng["rehook_window_s"]
+            # REHOOK: a declared re-hook beat in EVERY drift window the piece is long enough
+            # to reach. At 60s there was one window. The 90s format has two, because the
+            # 25-38s cliff gets a sibling once a viewer has been watching a full minute with
+            # no idea how much is left. A window the piece never reaches is exempt.
             piece_end = max((b["t1"] or b["t0"]) for b in timed)
-            if piece_end > rhi:                       # short pieces are exempt
-                rehooks = [b for b in timed if str(b.get("rehook", "")).strip() and rlo <= b["t0"] <= rhi]
-                R["metrics"]["rehook_beats_in_window"] = len(rehooks)
-                if not rehooks:
+            windows = eng.get("rehook_windows_s") or [eng["rehook_window_s"]]
+            found_total = 0
+            for rlo, rhi in windows:
+                if piece_end <= rhi:                  # piece never spans this window; exempt,
+                    continue                          # same rule the single-window check used
+                hits = [b for b in timed
+                        if str(b.get("rehook", "")).strip() and rlo <= b["t0"] <= rhi]
+                found_total += len(hits)
+                if not hits:
                     R["problems"].append(f"REHOOK: no beat in the {rlo}-{rhi}s drift window declares "
                                          f"`rehook` (the escalation/promise turn that re-grabs a sagging "
-                                         f"viewer — ENGAGEMENT.md §2.4)")
+                                         f"viewer — ENGAGEMENT.md §2.4). A {piece_end:.0f}s piece must "
+                                         f"re-grab in EVERY window it runs through, not just the first.")
+            R["metrics"]["rehook_beats_in_window"] = found_total
+            R["metrics"]["rehook_windows_checked"] = [w for w in windows if piece_end > w[1]]
+
+            # OPEN LOOP: a 90s film needs a promise planted early and paid late, or the
+            # viewer has no reason to still be there at 70s except inertia. Declared on the
+            # board as open_loop {plant_t, pay_t, what}.
+            plant_by = eng.get("open_loop_plant_by_s")
+            min_span = eng.get("open_loop_min_span_s")
+            if plant_by and min_span and piece_end >= 75:      # only binding on long-format pieces
+                ol = (sb.get("open_loop") or {}) if isinstance(sb, dict) else {}
+                pt, yt = ol.get("plant_t"), ol.get("pay_t")
+                if pt is None or yt is None or not str(ol.get("what", "")).strip():
+                    R["problems"].append(
+                        f"OPEN LOOP: a {piece_end:.0f}s piece declares no `open_loop` "
+                        f"{{plant_t, pay_t, what}}. At this length a viewer needs an unanswered "
+                        f"promise planted by {plant_by}s and paid at least {min_span}s later, or the "
+                        f"back half runs on inertia (ENGAGEMENT.md §2.6).")
+                else:
+                    if float(pt) > plant_by:
+                        R["problems"].append(f"OPEN LOOP: planted at {pt}s, must be planted by {plant_by}s")
+                    if float(yt) - float(pt) < min_span:
+                        R["problems"].append(f"OPEN LOOP: plant {pt}s to pay {yt}s spans "
+                                             f"{float(yt)-float(pt):.1f}s, needs >= {min_span}s to be a loop")
+                    R["metrics"]["open_loop_span_s"] = round(float(yt) - float(pt), 2)
     elif fmt != "object":
         R["problems"].append(f"beats are the OLD prose format ({fmt}); upgrade to timed objects "
                              f"{{t,vo,shows,sfx,means}} so cadence + coverage are checkable (VISUAL_FLOW.md §3)")

@@ -21,8 +21,10 @@
 #      must be a real visual discontinuity at each declared boundary, not just a relabel. A 'oner' FAILS.
 
 rule:
-  min_shots: 4                 # >= 4 distinct shots in ~60s (a scene change at least every ~15s)
-  target_shots: [5, 8]         # aim for 5-8 (~8-12s each) — the producer note's "a scene change every ~10s"
+  min_shots: 6                 # >= 6 distinct shots in ~90s (a scene change at least every ~15s)
+  target_shots: [7, 10]        # aim for 7-10 (~9-13s each) at 90s. RAISED from 5-8: holding the old
+                               # count over a longer runtime would have stretched every shot toward the
+                               # 16s oner ceiling, which is exactly the failure this file exists to stop.
   min_shot_seconds: 3.0        # no shot shorter than this (no nervous flash-cutting)
   max_shot_seconds: 16.0       # NO shot may dominate the runtime — a single shot longer than this IS the 'oner' failure
   min_distinct_framings: 3     # >= 3 different framings/vantages across the shots (not the same frame trivially reframed)
@@ -34,7 +36,7 @@ rule:
   # same eye height. Framing says WHAT is in frame; these two axes say HOW BIG the subject reads
   # and WHERE THE CAMERA STANDS. Both are now declared per shot and gated before any render,
   # because a doctrine reminder demonstrably did not hold.
-  min_distinct_scales: 3            # >= 3 different apparent subject sizes across the shots
+  min_distinct_scales: 4            # >= 4 different apparent subject sizes across the shots (was 3 at 60s)
   require_close_class: true         # at least one close/insert shot — the panel's named miss
   require_wide_class: true          # ...and at least one wide, so the close-up has something to contrast against
   max_consecutive_same_scale: 2     # never 3+ shots running at one size (that IS the "one camera height" failure)

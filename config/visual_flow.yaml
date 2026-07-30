@@ -6,8 +6,10 @@
 # rationale: docs/craft/VISUAL_FLOW.md. Numbers are the CEILING/target, calibrated against back-tests.
 
 beats:
-  min: 12                      # >= 12 timed, story-advancing beats across ~60s (matches BEAT_DENSITY)
-  max: 20                      # more than this in 60s is usually strobing, not storytelling
+  min: 18                      # >= 18 timed, story-advancing beats across ~90s. RAISED from 12 with the
+                               # 90s format: at the 5s never-rest ceiling, 90s needs 18 beats just to be
+                               # legal, so 12 would have let a 90s film run half-empty and still pass.
+  max: 30                      # more than this in 90s is usually strobing, not storytelling
   max_gap_s: 5.0               # NEVER-REST ceiling: start-to-start gap between consecutive beats <= 5s
   target_gap_s: [2.5, 4.0]     # aim here; a run whose MEDIAN gap sits in this band flows well
   required_fields: [t, vo, shows, sfx, means]   # each beat is an object with these (see VISUAL_FLOW.md §3)
@@ -23,7 +25,7 @@ sfx:
   # {t, kind, label}); quality_gate.py's SFX_EVENTS check verifies each produced a real level lift.
   events_json: audio/sfx_events.json
   min_events_per_shot: 1       # every shot has at least one motivated sound event
-  min_events_total: 8          # a 60s piece with fewer than this is under-sonified
+  min_events_total: 12         # a 90s piece with fewer than this is under-sonified (was 8 at 60s)
   kinds: [pop, whoosh, riser, hit, ambient, tick, boom, lock, pulse]   # the elemental grammar + our extensions
   lift_db_floor: 1.0           # a planned event must lift the master's local band by >= this vs its neighborhood
   duck_under_vo: true          # SFX sit under the VO; the audio gate already enforces VO dominance + -14 LUFS
@@ -39,7 +41,17 @@ engagement:
   frontload_min_beats: 3        # >= this many beats must START inside the window
   metronome_tol_s: 0.4          # gaps within +/- this of each other count as "the same interval"
   metronome_max_run: 2          # more than this many consecutive same-interval gaps = habituation, FAIL
-  rehook_window_s: [25, 38]     # one beat in this window must declare `rehook` (the escalation/promise turn)
+  # TWO REHOOKS AT 90s (was one at 60s). This is the single most important change in the
+  # format upgrade. The 25-38s drift cliff does not go away when a film gets longer, it gets
+  # a SIBLING: a second sag opens in the back half once the viewer has been watching for a
+  # minute and has no idea how much is left. One rehook cannot cover 90 seconds.
+  rehook_windows_s: [[25, 38], [55, 72]]
+  rehook_window_s: [25, 38]     # legacy single-window key, kept so older boards still parse
+  # THE OPEN LOOP is the other half of the answer. A 90s film must PLANT an unanswered
+  # promise early and PAY it late, so a viewer has a reason to still be there at 70s that is
+  # not merely inertia. Declared on the board as open_loop {plant_t, pay_t, what}.
+  open_loop_plant_by_s: 20      # the promise must be planted this early
+  open_loop_min_span_s: 35      # and paid at least this much later, or it is not a loop
   wpm_warn: [130, 190]          # VO pace warning band (words per minute vs speech_end)
 
 choreo:

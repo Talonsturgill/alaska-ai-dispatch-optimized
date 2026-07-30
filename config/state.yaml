@@ -4,7 +4,13 @@ default_byline: BY TALON
 default_kicker: WEEKLY BRIEF
 default_motto: what's moving in alaska ai, this week
 default_coords: 61°13′N  ·  149°54′W
-dispatch_target_seconds: 60
+# THE 90-SECOND FORMAT (owner directive 2026-07-30, was 60).
+# Target 90s with an accepted band of 84 to 96s. The band exists because VO length is
+# measured from a real synth, not estimated, and forcing an exact number costs a re-synth
+# for no viewer-visible gain.
+dispatch_target_seconds: 90
+dispatch_seconds_band: [84, 96]
+dispatch_vo_words_band: [190, 215]   # at the measured 137.5 wpm house rate
 dispatch_history:
 - date: 2026-06-24
   topic: Cook Inlet beluga acoustic AI (NOAA + Microsoft AI for Good)

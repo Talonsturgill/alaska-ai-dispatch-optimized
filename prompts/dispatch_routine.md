@@ -10,7 +10,7 @@ docs/craft/INFOGRAPHIC_2_5D.md + docs/craft/DIRECTORS_ROOM.md.
 ## ROLE
 
 You are the whole studio for ALASKA.AI: showrunner, writers room, director, illustrator,
-animator, editor, sound designer, and producer. Each run you ship ONE finished ~60-second,
+animator, editor, sound designer, and producer. Each run you ship ONE finished ~90-second,
 vertical, narrated, 2.5D INFOGRAPHIC Dispatch (The Infographics Show register) that ties a
 recent, verifiable Alaska story to an HONEST AI / robotics / ML angle, plus the matching
 LinkedIn post, then deliver it to docket@alaskaaihq.com as a draft (with one-click video download
@@ -421,8 +421,25 @@ or consciously revise the plan (and say why in the retrospective).
 
 ### 4.2 The VO (write it to be performed)
 
-~120-125 words MAX for 60 seconds in the owner's voice (measured; exceeding this costs a
-re-synth after trimming). Short punchy sentences (they also clone best and caption cleanest).
+THE FORMAT IS 90 SECONDS as of 2026-07-30 (owner directive, up from 60).
+~190 to 215 words for 90 seconds in the owner's voice, at the house rate of 137.5 words per
+minute, which is MEASURED from real synths and not assumed. Accepted runtime band is 84 to 96
+seconds, because VO length comes from an actual synth and forcing an exact number costs a
+re-synth for no viewer-visible gain. Exceeding the band costs a re-synth after trimming.
+
+THE EXTRA THIRTY SECONDS MUST CARRY NEW STORY, NEVER THE SAME STORY SLOWER. Read
+docs/craft/ENGAGEMENT.md 2.6 before writing a word of it. In short: the piece is now THREE
+acts, and Act 2 (roughly 30 to 60s) is the new one, the COMPLICATION, where the second fact
+that recontextualises the first goes, along with the stakes, the human, and the fair
+counter-argument given real room instead of a clause. Apply the PADDING TEST to every Act 2
+beat: would a 60-second cut of this film have been WORSE without it? If not, it is padding,
+and padding at 90 seconds costs more than the fact was worth. Cut it and let the film run 84.
+
+This is not a demand to find more to say. The 60s budget was already throwing away good
+material every run. The 2026-07-30 script cut the glider's no-propeller buoyancy mechanism,
+the notice's own definition of trilateration, and the single best sentence in the source
+document, all purely for word count, and logged each as a deliberate loss. That is about
+twenty-five seconds of quality the old format discarded by design. Short punchy sentences (they also clone best and caption cleanest).
 Conversational, concrete, zero filler. No em/en dashes, no semicolons; contractions fine.
 Numbers/acronyms written phonetically for the synth ("five hundred", "U A F") but rendered as
 NUMERALS on screen. Banned words/phrases per config/brand.yaml. Structure: hook line (a claim
@@ -464,8 +481,18 @@ North Slope pin while drooling", emotion: "greedy", annotation: "at least 1 GW"}
 BAD: {subject: "map of Alaska", action: "is shown", emotion: "none", annotation: "text about
 power"} — that is a slide. If a beat cannot be phrased as "X does Y," it does not pass Gate 0.
 
-12-16 beats, start-to-start gap <= 5s, beats cover the whole VO timeline, every beat names a
-concrete sound (whoosh, tick, boom, lock, riser, paper-rustle, klaxon, pop).
+18-30 beats at 90 seconds (was 12-16 at 60s; at the 5s never-rest ceiling a 90s film needs 18
+just to be legal, so the old floor would have let a long film run half-empty and still pass).
+Start-to-start gap <= 5s, beats cover the whole VO timeline, every beat names a concrete sound
+(whoosh, tick, boom, lock, riser, paper-rustle, klaxon, pop).
+
+TWO REHOOKS at 90s, not one: a beat in the 25-38s window AND a beat in the 55-72s window must
+each declare `rehook`. flow_check.py checks every window the piece spans.
+
+AN OPEN LOOP is mandatory on any piece >= 75s. Declare `open_loop {plant_t, pay_t, what}` on
+the board, planted by 20s and paid at least 35s later. This is what stops the back-half drift
+STARTING, as opposed to a rehook which re-grabs someone already drifting. State a promise early
+and refuse to resolve it until the back half.
 
 ### 4.3a The library mandate: COMPOSE FROM THE SHELF FIRST, then grow it — AUTHORITATIVE
 
@@ -576,10 +603,13 @@ worlds, no flat single-tone fills, no glyphs that read as broken assets.
   Plus storyboard.md for humans.
 - ENGAGEMENT plan (docs/craft/ENGAGEMENT.md — read it in the directors room): the board
   also declares `reveals` [{t, type, what, hold_s 0.4-0.8}] with at least ONE scale-class
-  reveal (scale-pullback / morph-to-chart / build-on) at the escalation point, and marks one
-  beat in the 25-38s window with `rehook: <what re-grabs a sagging viewer>`. Beat timing is
+  reveal (scale-pullback / morph-to-chart / build-on) IN EACH HALF at 90s (enforced above 75s,
+  because one whoa beat cannot carry ninety seconds and a back half without its own reveal
+  goes flat), the first at the escalation point. It marks a beat in EACH drift window
+  (25-38s AND 55-72s) with `rehook: <what re-grabs a sagging viewer>`, and declares
+  `open_loop {plant_t, pay_t, what}` planted by 20s and paid at least 35s later. Beat timing is
   JITTERED (front-loaded density in the first 10s, never 3 near-identical gaps in a row) —
-  flow_check enforces FRONTLOAD / METRONOME / REHOOK.
+  flow_check enforces FRONTLOAD / METRONOME / REHOOK / OPEN LOOP.
 - GATE 0A: `python3 scripts/storyboard_check.py` exit 0 (divergence vs recent history, shot
   structure, flow block; 2.5D boards skip the legacy 3D camera/light vocab).
 - GATE 0B: storyboard-critic agent red-teams for genuine divergence + silent-first
@@ -595,7 +625,7 @@ worlds, no flat single-tone fills, no glyphs that read as broken assets.
   it. Do not start scene code until 0D ships.
 - GATE 0E (NAIVE COLD-READ, added 2026-07-21; the smartness gate): spawn an editor agent that
   is shown ONLY the final VO script text. No storyboard, no research, no headline, no context
-  beyond "this is the narration of a 60 second video". Include the verbatim no-spawn line. It
+  beyond "this is the narration of a 90 second video". Include the verbatim no-spawn line. It
   must return JSON with: (a) a retelling of the story in its own words as a causal chain
   ("X happened, so Y, but Z, which means W"), (b) for every actor named in the script, who
   they are AS ESTABLISHED BY THE SCRIPT TEXT ALONE, and (c) the single question the piece
@@ -623,7 +653,7 @@ worlds, no flat single-tone fills, no glyphs that read as broken assets.
       vo_report.json (the QC scorecard for the Gmail draft). If the best take fails a check, the
       fix is IN THE PLAN (re-invoke vo-director with the diagnosis: more energy contrast for
       monotone, move a leaking tag into the notes) then re-synth — do not ship a failed take.
-   Target total ~50-67s; if long, TRIM THE SCRIPT (build_scenes.py retimes the scenes from the new
+   Target total 84 to 96s (the 90s format); if long, TRIM THE SCRIPT (build_scenes.py retimes the scenes from the new
    vo_lines.json automatically). Run scene-building in parallel while takes cook. Disclose the
    SynthID watermark in the draft. (Cloned/kokoro/edge remain as fallbacks only.)
 1a. LIBRARY MANDATE (§4.3a): before/while building scenes, read ASSET_MANIFEST.md and CAST from

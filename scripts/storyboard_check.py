@@ -337,10 +337,27 @@ def main():
         bad_rv = [r.get("type") for r in rv if norm_tag(r.get("type")) not in REVEAL_TYPES]
         if bad_rv:
             problems.append(f"reveals type(s) {bad_rv} not in the reveal vocabulary {sorted(REVEAL_TYPES)}")
-        if not any(norm_tag(r.get("type")) in SCALE_CLASS for r in rv):
+        # SCALE-CLASS REVEALS. At 60s one was enough. The 90s format needs one PER HALF,
+        # because a single "whoa" beat cannot carry ninety seconds and a back half with no
+        # reveal of its own is where a long film goes flat.
+        scale_rv = [r for r in rv if norm_tag(r.get("type")) in SCALE_CLASS]
+        if not scale_rv:
             problems.append("no scale-class reveal declared (scale-pullback / morph-to-chart / build-on) — "
                             "every piece gets at least one true-scale 'whoa' beat aligned to the escalation "
                             "(ENGAGEMENT.md §3)")
+        else:
+            beat_ts = [float(b.get("t", 0)) for b in (sb.get("beats") or []) if b.get("t") is not None]
+            piece_end = max(beat_ts) if beat_ts else 0.0
+            if piece_end >= 75:                       # long-format only
+                mid = piece_end / 2.0
+                first = [r for r in scale_rv if float(r.get("t", 0)) < mid]
+                second = [r for r in scale_rv if float(r.get("t", 0)) >= mid]
+                if len(scale_rv) < 2 or not first or not second:
+                    problems.append(
+                        f"a {piece_end:.0f}s piece declares {len(scale_rv)} scale-class reveal(s), "
+                        f"{len(first)} in the first half and {len(second)} in the second. At this length "
+                        f"the format needs at least ONE PER HALF (ENGAGEMENT.md §3), because a single "
+                        f"whoa beat cannot carry ninety seconds and a back half with no reveal goes flat.")
         for r in rv:
             try:
                 hold = float(r.get("hold_s", -1))

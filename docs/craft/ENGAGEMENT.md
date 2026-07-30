@@ -15,8 +15,11 @@ second, so the eye never has a reason to leave.
 - Second cliff: the 25-35s drift. New viewers sag there unless something re-grabs them.
 - Completion + rewatch are the dominant 2025-26 ranking signals (each Shorts loop counts
   as a view since 2025-03). A loopable ending is a distribution feature, not a flourish.
-- Our 60-75s format sits in the 40-55% expected-retention band; every rule below exists
-  to fight that number upward.
+- Our format is 90s as of 2026-07-30 (owner directive, up from 60s). BE HONEST ABOUT THE
+  COST: completion rate falls as length rises, and completion is a dominant ranking signal,
+  so 90 seconds is NOT free. It is only worth it if the extra 30 seconds carries new story,
+  and it is actively harmful if it carries the same story slower. Everything in §2.6 exists
+  to make the trade pay.
 
 ## 2. The cadence law (beats)
 
@@ -28,11 +31,59 @@ second, so the eye never has a reason to leave.
 3. **NO METRONOME**: never 3+ consecutive near-identical gaps. Fixed cadence habituates
    ("the brain detects the pattern and stops reacting"). Jitter the intervals: 2.5s,
    4s, 3s — never tick-tick-tick.
-4. **Re-hook**: one beat in the 25-38s window must be a deliberate RE-HOOK — an
-   escalation, a promise-payoff, a "that's not even the crazy part" turn — not just the
-   next beat in line. Declare it (`beats[].rehook`).
+4. **Re-hook**: a beat in EACH drift window must be a deliberate RE-HOOK — an escalation,
+   a promise-payoff, a "that's not even the crazy part" turn — not just the next beat in
+   line. Declare it (`beats[].rehook`). At 90s there are TWO windows, 25-38s and 55-72s,
+   and `flow_check.py` checks every window the piece spans.
 5. **Back-half holds**: after ~40s viewers watch semi-passively; slightly longer holds
    are allowed (never past the 5s floor). Spend the saved density on the button.
+6. **AT 90s THE BACK HALF NEEDS ITS OWN ENGINE.** Rule 5 was written for a 60s piece where
+   "the back half" meant the last twenty seconds. At 90s it means forty-five, and
+   semi-passive watching for forty-five seconds is just leaving. See §2.6.
+
+## 2.6 The 90-second format (added 2026-07-30 with the length change)
+
+Going from 60s to 90s adds runtime and roughly fifty percent more places to lose someone.
+Four mechanisms, all gate-enforced, make the extra time earn itself:
+
+**A. TWO REHOOKS, not one.** `flow_check.py` checks EVERY drift window the piece spans. The
+25-38s cliff does not disappear when a film gets longer, it gains a sibling at 55-72s, once a
+viewer has been watching a full minute with no idea how much is left.
+
+**B. AN OPEN LOOP, planted by 20s and paid at least 35s later.** Declared as
+`open_loop {plant_t, pay_t, what}`, gate-enforced above 75s. This is the most important
+addition. A rehook re-grabs someone already drifting. An open loop stops the drift starting,
+because the viewer is carrying an unanswered question. State a promise early and do NOT
+resolve it until the back half: name that a number is broken without saying which, show a
+machine doing something before explaining why, pose the question the turn will answer.
+Without this, a 90s film runs its back half on inertia.
+
+**C. A SCALE-CLASS REVEAL IN EACH HALF.** `storyboard_check.py` enforces it above 75s. One
+"whoa" beat cannot carry ninety seconds, and a back half with no reveal of its own goes flat
+no matter how good the front is.
+
+**D. THREE ACTS, not two.** A 60s Dispatch is setup and turn. A 90s Dispatch has room for the
+middle movement 60s always cut:
+
+- ACT 1, roughly 0-30s: the question and the mechanism. The extra room is for making the
+  mechanism genuinely delightful rather than compressed to a sentence.
+- ACT 2, roughly 30-60s: THE COMPLICATION. The new act, and where the added thirty seconds
+  actually lives. The second fact that recontextualises the first, the stakes, the human, the
+  counter-argument given real room instead of a clause.
+- ACT 3, roughly 60-90s: the turn, the argument, the button.
+
+**THE PADDING TEST, and it is a hard one.** For every beat in Act 2 ask: would a 60-second cut
+of this film have been WORSE without this beat? If the honest answer is no, it is padding, and
+padding at 90 seconds costs more than the fact was worth. Cut it and let the film run 84.
+
+**Proof the time is fillable with quality, not padding.** The 2026-07-30 Dispatch cut three
+genuinely good things purely for the 60s word budget, all documented in that run's
+`vo_script.json` as deliberate losses: the glider having no propeller and moving by changing
+its own buoyancy, the notice's own definition of trilateration, and the best sentence in the
+whole document, that a hibernating glider keeps tracking its position and wakes if it drifts
+too far from its target region. That is roughly twenty-five seconds of material the format was
+throwing away every run. The 90s format is not asking runs to find more to say. It is giving
+back what the old budget was already cutting.
 
 ## 3. The reveal grammar (how a beat lands COOL, not just clear)
 
