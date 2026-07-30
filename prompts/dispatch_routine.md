@@ -187,6 +187,31 @@ enforced in code by DEDUPE_WINDOW_DAYS in scripts/dedupe.py, so `list` and `chec
    music download); the stamp already protects correctness without destroying those.
    Rule of thumb: never trust an `out/dispatch/*` file you did not see this run write or regenerate.
 
+## PHASE 0.5: THE STORY QUEUE (check this BEFORE spending a single search)
+
+If `queue/next_story.json` exists and its `queued_for` date is today or earlier, THE STORY IS
+ALREADY PICKED. Read that file and then:
+
+- SKIP Phase 1 research entirely. Spend NO search budget on finding a story.
+- SKIP Phase 3 and the whole escalation ladder. The pick was already worked.
+- START at Phase 2, the adversarial fact-check of the claims the queue file carries, then go to
+  Phase 3.5, the angle room.
+- Write `out/dispatch/candidates.json` with `locked_story` set from the queue file,
+  `found_at_rung: "queued"`, and a `rungs` entry `{"rung": "queued_story", "attempted": true}`.
+  `story_gate.py` accepts a queued story as satisfying the ladder.
+- DELETE `queue/next_story.json` in this run's commit. A queued story that is not cleared ships
+  twice.
+
+Everything else in the routine still applies in full. A queued story does NOT buy a pass on the
+fact-check, the angle room, Gate 0A through 0E, the taste loop or the scorer panel. The queue file
+saves the RESEARCH, which is the most expensive phase, and nothing else. Treat every figure and
+quote in it as UNVERIFIED, because the 2026-07-30 run proved a research summary can carry a
+fabricated quote into a package.
+
+Why this exists (owner directive 2026-07-30): when a run picks a story it cannot use, or the owner
+picks one for a future run, that work should not be thrown away and re-done from scratch the next
+day. Queueing the pick saves the whole search fan-out.
+
 ## PHASE 1: RESEARCH (go wide; non-recursive)
 
 SEARCH BUDGET (LAW, added 2026-07-29 after this class bit a run for the first time). WebSearch is

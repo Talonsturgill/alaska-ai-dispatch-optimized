@@ -150,6 +150,15 @@ def cmd_check(path):
         fail([f"candidate ledger at {path} is not valid JSON ({e})."])
 
     locked = c.get("locked_story")
+    # A QUEUED story satisfies the ladder outright (owner directive 2026-07-30). The pick was
+    # already worked on a previous run or by the owner, so the ladder has nothing left to prove.
+    # The queue file saves the RESEARCH only; the fact-check, angle room, Gate 0 and the panel
+    # all still run, which is stated in the queue file's own consumption contract.
+    if locked and str(locked.get("found_at_rung", "")).strip() == "queued":
+        print(f"PASS [story_gate] story was QUEUED: {locked.get('headline')}")
+        print("  the pick was pre-worked, so the escalation ladder does not apply")
+        print("  REMINDER: delete queue/next_story.json in this run's commit, or it ships twice")
+        sys.exit(0)
     if locked and str(locked.get("headline", "")).strip():
         print(f"PASS [story_gate] story locked: {locked.get('headline')}")
         print(f"  rung: {locked.get('found_at_rung', '(unrecorded)')}")
