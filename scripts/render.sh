@@ -31,21 +31,55 @@ resolve_out() {   # abs path -> unchanged; relative path -> resolved against the
   esac
 }
 
+# THE COMPOSITION LOCK (added 2026-07-31, after rendering the wrong film).
+#
+# Root.tsx keeps every past episode registered, and the generic id "Dispatch" is still
+# wired to a PREVIOUS run's component. Rendering "Dispatch" therefore succeeds, exits 0,
+# writes an mp4 of the right length, and produces the wrong film. It did: this run rendered
+# 93.3 seconds of the July 26 episode, whose scenes run out around 60 seconds, so the last
+# third came out as blank grey with this run's captions burned over it. Nothing in the
+# pipeline objected. Every hash matched, the mux verified, the encodes passed their ffprobe
+# assertions, and the freshness check was satisfied, because all of those check that the
+# deliverable is CURRENT and none of them check that it is the right MOVIE.
+#
+# So the run's composition id is now recorded in out/dispatch/.run_stamp.json and this
+# wrapper refuses to render anything else. A stale id from an old command line, an old doc,
+# or a habit stops here instead of at the panel.
+STAMP="$CALLER_PWD/out/dispatch/.run_stamp.json"
+[[ -f "$STAMP" ]] || STAMP="../out/dispatch/.run_stamp.json"
+RUN_COMP=""
+if [[ -f "$STAMP" ]]; then
+  RUN_COMP="$(python3 -c 'import json,sys;print(json.load(open(sys.argv[1])).get("composition",""))' "$STAMP" 2>/dev/null || true)"
+fi
+assert_comp() {
+  local want="$1"
+  [[ -z "$RUN_COMP" ]] && return 0
+  if [[ "$want" != "$RUN_COMP" ]]; then
+    echo "render.sh: REFUSING to render composition '$want'." >&2
+    echo "  This run's film is '$RUN_COMP' (out/dispatch/.run_stamp.json)." >&2
+    echo "  Root.tsx still has every past episode registered, so a wrong id renders a" >&2
+    echo "  PREVIOUS run's film at this run's length and exits 0. That is how the" >&2
+    echo "  2026-07-31 run produced 30 seconds of blank frames and did not notice." >&2
+    echo "  If the film really did change, update \"composition\" in the run stamp." >&2
+    exit 3
+  fi
+}
+
 MODE="${1:?usage: render.sh draft|final|still ...}"
 case "$MODE" in
   draft)
-    COMP="${2:-Dispatch}"; OUT="../out/dispatch/render/draft.mp4"; [[ -n "${3:-}" ]] && OUT="$(resolve_out "$3")"
+    COMP="${2:-${RUN_COMP:-Dispatch}}"; assert_comp "$COMP"; OUT="../out/dispatch/render/draft.mp4"; [[ -n "${3:-}" ]] && OUT="$(resolve_out "$3")"
     exec npx remotion render src/index.ts "$COMP" "$OUT" \
       --props="$PROPS" --codec=h264 --muted --concurrency=2 \
       --scale=0.5 --crf=30 --every-nth-frame=1
     ;;
   final)
-    COMP="${2:-Dispatch}"; OUT="../out/dispatch/render/video_mute.mp4"; [[ -n "${3:-}" ]] && OUT="$(resolve_out "$3")"
+    COMP="${2:-${RUN_COMP:-Dispatch}}"; assert_comp "$COMP"; OUT="../out/dispatch/render/video_mute.mp4"; [[ -n "${3:-}" ]] && OUT="$(resolve_out "$3")"
     exec npx remotion render src/index.ts "$COMP" "$OUT" \
       --props="$PROPS" --codec=h264 --muted --concurrency=2 --crf=19
     ;;
   still)
-    FRAME="${2:?frame number}"; COMP="${3:-Dispatch}"
+    FRAME="${2:?frame number}"; COMP="${3:-${RUN_COMP:-Dispatch}}"; assert_comp "$COMP"
     OUT="../out/dispatch/probe/still_$FRAME.png"; [[ -n "${4:-}" && "${4:-}" != "--draft" ]] && OUT="$(resolve_out "$4")"
     SCALE=1
     if [[ "${5:-}" == "--draft" || "${4:-}" == "--draft" ]]; then SCALE=0.5; fi

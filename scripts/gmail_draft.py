@@ -25,6 +25,13 @@ import datetime as dt
 import json
 from pathlib import Path
 
+# THE MAILBOX IS docket@alaskaaihq.com AND IT IS THE SAME ONE EVERY TIME (owner, 2026-07-31).
+# It used to say "me", an account-relative alias, on the theory that a repoint should be a
+# connector change and not a code change. In practice the Gmail connector rejects "me" outright
+# ("Invalid email address. Please provide a raw email address"), so every run hit the error,
+# went and looked the address up, and typed it into the tool call by hand. A constant that every
+# caller has to rediscover is not a constant, it is a gap. It lives here now.
+DRAFT_TO = "docket@alaskaaihq.com"
 CSS = """
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:#1a1a1a;background:#fafafa;margin:0;padding:24px;}
 .wrap{max-width:720px;margin:0 auto;background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:28px;}
@@ -97,7 +104,7 @@ def main():
 
     payload = {
         "subject": f"Alaska.Ai — Weekly Recap Draft — {args.date}",
-        "to": "me",
+        "to": DRAFT_TO,
         "html_body": render(post_text, image_b64, sources, score, args.date, args.branch),
     }
     print(json.dumps(payload))

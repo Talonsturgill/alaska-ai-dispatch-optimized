@@ -61,6 +61,11 @@ export interface CharacterProps {
       dominates the default-amplitude idle, without touching the shared idle system for every other
       pose==='stand' figure elsewhere in the cast. */
   idleGain?: number;
+  /** Override the outfit's trim colour (tie, scarf, stripes). Added 2026-07-31 because
+   *  the suit's trim ships RED, and a film whose art direction licenses exactly two reds
+   *  in the whole piece cannot spend one on a necktie. An override beats editing the
+   *  shared palette: every other episode keeps the tie it was graded with. */
+  trim?: string;
 }
 
 const OUTFITS: Record<Outfit, {main: string; shade: string; trim: string; pants: string}> = {
@@ -93,8 +98,9 @@ export const Character: React.FC<CharacterProps> = ({
   eyes = '#41607d',
   glasses = false,
   idleGain = 1,
+  trim,
 }) => {
-  const c = OUTFITS[outfit];
+  const c = {...OUTFITS[outfit], ...(trim ? {trim} : {})};
   // breathing: a visible chest rise+fall. Bumped round 10 — the panel kept reading standers as
   // "frozen sprites" partly because the old amplitude was too small to register in a ~0.5s review
   // strip; a clearer breath (plus the weight-shift below) means any half-second window shows life.

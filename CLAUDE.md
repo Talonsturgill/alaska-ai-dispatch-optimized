@@ -63,9 +63,18 @@ our own domain. It is NOT the personal Talon.sturgill@gmail.com account this rep
 - Drafts already come from the right address, with DKIM signed by alaskaaihq.com. There is
   NO send-as step, no From-address to set, and no alias to select. If you find such an
   instruction anywhere, it is stale and following it would be wrong.
-- Scripts set `"to": "me"`, which resolves to whichever account is authenticated. LEAVE IT
-  THAT WAY. Do not hardcode an address, here or in a payload, so the next repoint is a
-  connector change and not a code change.
+- Scripts set `"to": DRAFT_TO`, a module constant equal to `docket@alaskaaihq.com`, in both
+  `scripts/dispatch_email.py` and `scripts/gmail_draft.py`. **It is the same mailbox every
+  time. Do not go looking it up per run.**
+- This reverses the earlier `"to": "me"` rule, on the owner's instruction (2026-07-31). The
+  old reasoning was that an account-relative alias makes a repoint a connector change rather
+  than a code change. That was wrong in practice: the Gmail connector rejects `me` outright
+  ("Invalid email address. Please provide a raw email address"), so every run hit the error,
+  looked the address up, and typed it into the tool call by hand. A constant each run has to
+  rediscover is not a constant, it is a gap.
+- When calling the Gmail connector directly rather than through the scripts, pass
+  `docket@alaskaaihq.com`. If the mailbox ever moves, change `DRAFT_TO` in those two files
+  and this bullet, and nothing else.
 - The mailbox was repointed, so it does NOT contain drafts from before the switch. Nothing
   in this repo reads or lists past drafts, and nothing should start.
 

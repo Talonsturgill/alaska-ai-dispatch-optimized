@@ -3,7 +3,10 @@
 # The routine iterates until this passes. Bar is intentionally high ("banger tier"),
 # and it is graded WITHIN the brand style (see style_charter below).
 rubric:
-  ship_threshold: 8.6          # out of 10 — "excellent within the brand style" (recalibrated 2026-07-21)
+  ship_threshold: 7.5          # out of 10 (owner decision, 2026-07-31)
+  # 8.6 -> 7.8 -> 7.5, all three the owner's calls on 2026-07-31, in that order.
+  # The bar belongs to the owner. A run may not move it, may not route around it, and
+  # may not invent a condition under which not reaching it is acceptable.
   # THRESHOLD RECALIBRATION (2026-07-21, owner decision): the previous 9.0 was implicitly calibrated
   # against a painterly/textured/3D fidelity the brand deliberately does not use, so the ceiling on
   # every run became the house style itself — the panel's weakest axis was "the flat-vector
