@@ -1,0 +1,6 @@
+{"lens":"MONEY / ALASKA POLITICS","thesis":"The structural story is that Alaska has run this 17-candidate race with no contribution limits since 2021, and voters decide in August whether to restore them.",
+"key_finding":"The AI-money framing COLLAPSES as a scale story ($100k is 4th-5th largest single gift in the race) and as a CAPTURE story (money and policy point the same direction, the opposite of bought-a-plank). It SURVIVES only as a COMPOSITION fact: six individuals at one employer supplied about one fifth of a $1.8M haul.",
+"valence":"open-question",
+"would_cut":["Anthropic-as-subject constructions","the 'funded by Californians' grievance beat","$372,000 stated bare","the whole North Slope energy spine (calls it a different film; cutting from Thomas's AI-pace quote to the gas shortfall is misattribution)","Gallup 71 percent (national, unrelated to campaign finance)","the New York contrast (belongs to the policy lens, half-using it wastes it)","$521,812 / 28 percent / 1,569 donors (attributed-only)"],
+"self_flagged_error_to_correct":"Wrote 'Bernadette Heilala', conflating Bernadette Wilson with Matt Heilala. The self-funder is MATT HEILALA.",
+"self_flagged_unverified":"Any claim that restored limits would cap contributions but leave self-funding untouched is an INFERENCE, not in claims.json. Needs the ballot measure text before it may be asserted."}

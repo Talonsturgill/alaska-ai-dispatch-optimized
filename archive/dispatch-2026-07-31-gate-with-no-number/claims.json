@@ -1,0 +1,67 @@
+{
+  "run_id": "2026-07-31",
+  "note": "THE FACT-CHECK-SAFE SET. Only these numbers/quotes may appear on screen or in copy, each with its label. Two independent adversarial validators. APOC could NOT be queried (JS postback + export endpoints error), so NO dollar figure here is confirmed against the filing itself. Never claim 'we checked the filings'.",
+  "safe_figures": {
+    "haul": {"value": "about $1.8 million", "since": "February 2026", "label": "per ADN and Alaska Public Media", "note": "The Alaska Story renders the same haul as ~$1.85M, so say ABOUT"},
+    "field": {"value": "17 candidates", "note": "12 Republicans, 2 Democrats, at least one independent"},
+    "anthropic_six": {"value": "$372,000", "who": "six Anthropic employees, individually", "label": "per ADN, corroborated by The Alaska Story", "note": "about one fifth of the haul"},
+    "thomas_gift": {"value": "$100,000", "who": "Drake Thomas, Anthropic safety team, grew up on the Kenai Peninsula, lives in Berkeley", "note": "single largest gift TO THIS CAMPAIGN, but NOT the largest in the race"},
+    "begich_gifts": {"value": "$250,000-plus and $275,000", "who": "two single donors to Tom Begich", "why_it_matters": "FAIRNESS COUNTERWEIGHT: a $100k gift is the 4th or 5th largest single contribution in this race"},
+    "heilala_self": {"value": "more than $1.4 million of his own money", "of": "nearly $1.6 million total"},
+    "no_limits": {"value": "Alaska has no contribution limits", "since": "struck down by a federal court in 2021", "note": "ballot measure to restore them is before voters in AUGUST; both Democrats say they support restoring them"},
+    "north_slope": {"value": "more than 500 public comments, fewer than a dozen supportive", "what": "Stak Energy gas-powered data center campus ~25 mi south of Deadhorse", "state_action": "DNR Division of Oil and Gas preliminary best-interest decision 2026-05-19, comment deadline extended to 2026-07-17", "scale": "generators could produce a gigawatt or more, roughly 30 percent more than peak demand across urban Alaska's entire electrical grid (ArcticToday)", "note": "DOLLAR SIZE CUT: same outlet said $500M in May and $10B+ in July"},
+    "existing": {"value": "Alaska already has about eight data centers", "where": "three Anchorage, two near Prudhoe Bay, one each Fairbanks, Wrangell, Petersburg", "label": "Data Center Map via The Alaska Story", "why": "a moratorium on ALL NEW ones is a change of posture, not a first-ever line"},
+    "gallup": {"value": "71 percent oppose, 48 percent strongly", "exact": "constructing data centers for AI IN THEIR LOCAL AREA", "fielded": "March 2-18 2026, n=1000, published May 13 2026", "note": "THE WORDS 'in their local area' ARE MANDATORY. Do NOT air the 27 percent favor figure."}
+  },
+  "the_platform_verbatim": "Institute a moratorium on all new data centers (similar to New York State) until the legislature can pass comprehensive regulation on data center development.",
+  "the_new_york_contrast": {
+    "finding": "The platform cites New York as its model, but the two are not alike. VERIFIED against the NY governor's own release (primary, 2026-07-14).",
+    "new_york": "HYPERSCALE facilities only, works by pausing state environmental permits for UP TO ONE YEAR, lifts when a Generic Environmental Impact Statement sets standards",
+    "alaska_proposal": "ALL new data centers, no size threshold, no time cap, lifts only when the Legislature acts",
+    "honest_reading": "The Alaska plank is BROADER than the model it names. This is a policy finding, not a gotcha, and it is the strongest unreported thing in the file."
+  },
+  "quotes_verbatim_certified": {
+    "jkt": "I think very clearly we should have a process and a policy we don't right now, and so until we do, nothing should happen,",
+    "thomas_terrified": "The honest answer is that I'm terrified by the extremely rapid pace of AI development, and I wish it were slower.",
+    "thomas_race": "AI companies are stuck in a race to build powerful AI as fast as possible without the level of testing, safeguards and transparency that the public should demand of them.",
+    "thomas_bridge": "I worry that none of my efforts to improve things at just one company will be enough if there aren't forward-thinking people like JKT who can help pass laws that will protect the public on a greater scale.",
+    "hochul": "As data center development threatens to hike up utility bills, deplete our natural resources, and create uncertainty for New Yorkers, it's my responsibility to take action and lead.",
+    "chugach": "We currently do not have gas to serve a large data center, but we do have generation capacity, so it depends on the size of the data center, their economics, project timing, and specific contractual terms of service."
+  },
+  "mandatory_fairness": {
+    "no_corporate_framing": "SIX INDIVIDUALS GAVE. Anthropic the company gave nothing, has published nothing, and the donor's own op-ed states 'The views in this op-ed are his alone and do not represent Anthropic.' Any line implying 'Anthropic funded a candidate' is FACTUALLY FALSE, not merely unfair. Never write 'Anthropic declined to comment' either, nobody reported asking.",
+    "legal_and_ordinary": "Out-of-state political giving is legal and ordinary. The story is the CONTENT of the plank and the coalition behind it, not impropriety.",
+    "dollars_not_donors": "ADN says a majority of the MONEY came from the Lower 48. NOT a majority of donors. Do not flatten.",
+    "argue_with_what_he_wrote": "Thomas's stated reasoning is ENTIRELY about the pace and safety of AI development. He makes NO Alaska energy argument. If the film juxtaposes his quote with the grid, that is THE FILM'S argument and must be signposted.",
+    "other_candidates": "Do NOT claim rivals have or lack a data-center position. Could not be established.",
+    "case_against": "The strongest fair case against a blanket moratorium: a North Slope project generates its own power at the gas source rather than competing with households on the constrained Railbelt grid, so the facility a no-threshold moratorium would stop is the one that does not touch a household's bill.",
+    "case_for": "The strongest fair case for: Alaska is being asked to approve a load bigger than its own grid before it has any statute governing who pays for the power. 500+ comments, fewer than a dozen supportive."
+  },
+  "attributed_only": {
+    "521812": "The Alaska Story's own analysis, by conservative commentator Suzanne Downing. Say 'according to an analysis by The Alaska Story'. Never bare.",
+    "1569_donors": "Drake Thomas's own claim, in an op-ed defending his own $100,000 gift. Say 'his largest donor wrote that'. Unverifiable against APOC.",
+    "thomas_recruited": "The candidate's own account, per ADN: Thomas connected him with the other Anthropic employees."
+  },
+  "do_not_air": [
+    "Anthropic gave / the AI company funded the campaign (FALSE)",
+    "Most of his DONORS are from Outside (unit error)",
+    "$521,812 or 28 percent as bare fact",
+    "1,569 Alaska donors as bare fact",
+    "Drake Thomas grew up in Soldotna (his own bio says Kenai; use 'Kenai Peninsula')",
+    "Any dollar size for the Stak project ($500M vs $10B, 20x discrepancy)",
+    "'His moratorium is the same as New York's' without the contrast",
+    "The 32-vote margin / age 23 / Yale detail (tertiary summary only)",
+    "14 years in the Legislature (campaign figure conflicts with the 2013-2023 record; use 'a decade')",
+    "Gallup 27 percent favor; any Gallup phrasing dropping 'in their local area'",
+    "4,700 acres for the Air Force offering",
+    "Rolling blackouts attributed to John Sims (reporter's narration)",
+    "AIDEA Mat-Su ~20,000-acre conveyance in any form",
+    "Any claim that we checked APOC filings"
+  ],
+  "verification_gaps_disclose_in_draft": [
+    "APOC portal could not be queried (JS postback; export + filing-list endpoints returned errors). No dollar figure independently confirmed against the filing.",
+    "alaskabeacon.com returned HTTP 403 on every attempt, including its 2026-07-28 chart of all $9M raised in the race, the best corroborating dataset in existence.",
+    "dog.dnr.alaska.gov 503; the DNR primary document on the Stak lease was not reachable this run (the state's own public-notice page WAS reachable and is cited)."
+  ],
+  "search_budget": "ZERO WebSearch calls spent this run. The story was queued, and both validators worked entirely through WebFetch (55 fetches total). The session search budget is fully intact and NOTHING in this run may be attributed to an exhausted pool."
+}

@@ -1,0 +1,233 @@
+{
+  "run_id": "2026-07-31",
+  "narrator": "Nora, an Alaska public-radio host: warm, grounded, quietly witty",
+  "voice": "Sulafat",
+  "notes": "Style: corrective-constructive, not sour and not hype. A smart, plainspoken Alaskan analyst who has read the documents, credits what is right, and disagrees where the evidence earns it. Contractions everywhere, dry wit only on the one aside. Pace: brisk, a sharp modern explainer, short natural breaths, numbers get room. Arc: plain and neutral to open, a lift on the image, a low firm settle on the turn, a build through the evidence up north, quiet and sincere on the concession, level on the admission of our own limit, flat and dry on the deflation, the peak on the wellhead payoff, warm on the proposal, rising into the two closing questions. Energy design spreads 2 to 5 with no two neighbors equal (VO_DIRECTION step 5), because a flat read of a policy script is this piece's failure mode.",
+  "phonetics": "Chugach is respelled Choo-gatch (CHOO-gatch) in the assembled_prompt transcript ONLY. lines[].text keeps the true spelling because scripts/vo_synth_gemini.py::_assert_plan_matches_script compares tag-stripped lines[].text to vo_script.txt character for character, and those same strings drive captions and on-screen text. No other proper noun in this script is a plausible TTS mangle: Anchorage, Alaska, New York and wellhead all read correctly for Sulafat.",
+  "style_prompt": "### DIRECTOR'S NOTES\nStyle: warm, plainspoken and conversational, a smart Alaskan analyst who has actually read the documents. Corrective and constructive, never sour, never a hit piece. Credit what is right, disagree where the evidence earns it, dry wit only on the one throwaway aside.\nArc: plain and neutral to open, a lift on the image, a low firm settle on the turn, a build through the evidence, quiet and sincere on the concession, flat and dry on the aside, the peak on the payoff, then warm, then rising into the close.\nSincerity: where the read agrees with him, that agreement is genuine, slow and warm, never sarcastic or grudging. Where it admits the limit of its own case, keep it level, not triumphant. The proposal near the end is warm, not scolding. The final two questions are real questions and each one lifts at the end.\nPace: BRISK and energetic, keep it moving like a sharp modern explainer. Short natural breaths only, no long pauses, do not drag. Vary the tone line to line so no two sentences sound the same.\nEmphasis: lean on the key word in each line; let numbers land.",
+  "lines": [
+    {
+      "idx": 0,
+      "text": "A candidate for governor wants every new Alaska data center frozen until lawmakers act.",
+      "intent": "setup",
+      "emphasis": "frozen",
+      "energy": 3,
+      "tags": [],
+      "pause_before": false,
+      "why": "Reported, not indicted. Neutral mid-level so the freeze arrives as a fact on the table, and so every later move up or down has a baseline to move from."
+    },
+    {
+      "idx": 1,
+      "text": "[curious] Picture that freeze as a gate across a road.",
+      "intent": "hook",
+      "emphasis": "gate",
+      "energy": 4,
+      "tags": [
+        "[curious]"
+      ],
+      "pause_before": false,
+      "why": "The image is the invitation, so it brightens and leans forward. The lift also buys the drop on the next line somewhere to fall from."
+    },
+    {
+      "idx": 2,
+      "text": "Real gates already stand here.",
+      "intent": "reveal",
+      "emphasis": "already",
+      "energy": 2,
+      "tags": [],
+      "pause_before": true,
+      "why": "Turns the metaphor by dropping, not by pushing. Low and firm after the bright hook makes 'already' feel like something the viewer just found out."
+    },
+    {
+      "idx": 3,
+      "text": "Chugach Electric, the Anchorage utility, says it doesn't have the gas for a big one.",
+      "intent": "stat",
+      "emphasis": "gas",
+      "energy": 3,
+      "tags": [],
+      "pause_before": false,
+      "why": "First piece of evidence, even and informative. The appositive is thrown away quickly so the word left standing at the end is 'gas'."
+    },
+    {
+      "idx": 4,
+      "text": "And since March, Anchorage requires proof the power is there.",
+      "intent": "stat",
+      "emphasis": "proof",
+      "energy": 4,
+      "tags": [],
+      "pause_before": false,
+      "why": "The second gate stacks on the first, so it lifts instead of repeating. That lift is the sound of a list building rather than a list being recited."
+    },
+    {
+      "idx": 5,
+      "text": "[short pause] Now go north, onto state land, where neither reaches.",
+      "intent": "reveal",
+      "emphasis": "neither",
+      "energy": 2,
+      "tags": [
+        "[short pause]"
+      ],
+      "pause_before": true,
+      "why": "The geographic pivot of the whole film. A beat plus a drop signals a change of place, and 'neither' lands quietly instead of being announced."
+    },
+    {
+      "idx": 6,
+      "text": "This spring Alaska offered a fifty year lease for a data center burning gas at the wellhead.",
+      "intent": "stat",
+      "emphasis": "fifty",
+      "energy": 3,
+      "tags": [],
+      "pause_before": false,
+      "why": "The number carries the scale, so 'fifty year' gets a touch of room while the rest of the line keeps moving at the brisk baseline."
+    },
+    {
+      "idx": 7,
+      "text": "It did that before writing any statute on who pays.",
+      "intent": "stakes",
+      "emphasis": "before",
+      "energy": 4,
+      "tags": [],
+      "pause_before": false,
+      "why": "This is the actual charge, so it firms up one notch above the fact that set it up. Weight on 'before' is what makes it an order-of-operations problem, not an insult."
+    },
+    {
+      "idx": 8,
+      "text": "Five hundred Alaskans commented on it. [short pause] Fewer than a dozen were supportive.",
+      "intent": "stat",
+      "emphasis": "dozen",
+      "energy": 3,
+      "tags": [
+        "[short pause]"
+      ],
+      "pause_before": false,
+      "why": "The beat between the two numbers is the point. The second sentence slows so the distance between five hundred and a dozen is heard, not merely stated."
+    },
+    {
+      "idx": 9,
+      "text": "So he's right that there's a hole.",
+      "intent": "stakes",
+      "emphasis": "right",
+      "energy": 2,
+      "tags": [],
+      "pause_before": true,
+      "why": "THE fairness line. Softest level in the read, warm, unhurried, a clean full stop. Any speed or edge here reads as sarcasm and turns the whole film into a hit piece, so it simply agrees."
+    },
+    {
+      "idx": 10,
+      "text": "But Anchorage is one borough. Alaska has a patchwork, not a process.",
+      "intent": "setup",
+      "emphasis": "patchwork",
+      "energy": 3,
+      "tags": [],
+      "pause_before": false,
+      "why": "The film conceding the limit of its own argument. Even and matter of fact, no lift on 'patchwork' that would make an admission sound like a win."
+    },
+    {
+      "idx": 11,
+      "text": "His platform says it's modeled on New York's.",
+      "intent": "setup",
+      "emphasis": "modeled",
+      "energy": 4,
+      "tags": [],
+      "pause_before": false,
+      "why": "A light, quick setup with a touch of curiosity, so the comparison feels like an invitation to go check it. It also separates the two comparison lines that follow from each other."
+    },
+    {
+      "idx": 12,
+      "text": "New York's covers only the biggest sites, and ends after a year.",
+      "intent": "stat",
+      "emphasis": "only",
+      "energy": 3,
+      "tags": [],
+      "pause_before": false,
+      "why": "Steady and factual, both facts on equal footing. The contrast is supposed to land on the next line, so nothing is oversold here."
+    },
+    {
+      "idx": 13,
+      "text": "[short pause] His has no size limit and no end date.",
+      "intent": "reveal",
+      "emphasis": "no",
+      "energy": 4,
+      "tags": [
+        "[short pause]"
+      ],
+      "pause_before": true,
+      "why": "The turn. A beat, then slower and harder than the New York line, with weight on both 'no's, so the missing pieces register as absences rather than as another list."
+    },
+    {
+      "idx": 14,
+      "text": "[wry] Near Anchorage that adds little, since the gas shortage already blocks a big one.",
+      "intent": "wry",
+      "emphasis": "little",
+      "energy": 2,
+      "tags": [
+        "[wry]"
+      ],
+      "pause_before": false,
+      "why": "The deflation. Dry, low and thrown slightly away, which is both the honest register for a shrug and the biggest energy runway in the read into the payoff."
+    },
+    {
+      "idx": 15,
+      "text": "At the wellhead it's the only thing in the way, and that one makes its own power instead of drawing yours.",
+      "intent": "stakes",
+      "emphasis": "yours",
+      "energy": 5,
+      "tags": [],
+      "pause_before": true,
+      "why": "The point of the whole film and the peak of the read. Firm through the first clause, then slow into 'makes its own power' and land 'yours' warm and direct, spoken to one person."
+    },
+    {
+      "idx": 16,
+      "text": "Condition it on where the power comes from, not on whether the building is new.",
+      "intent": "stakes",
+      "emphasis": "where",
+      "energy": 3,
+      "tags": [],
+      "pause_before": false,
+      "why": "The constructive proposal. Pulling back from the peak keeps it offered rather than demanded, warm instead of scolding, which is the whole valence of the piece."
+    },
+    {
+      "idx": 17,
+      "text": "Seventeen people are running for governor. Ask them all two questions.",
+      "intent": "button",
+      "emphasis": "all",
+      "energy": 4,
+      "tags": [],
+      "pause_before": false,
+      "why": "Brisk and direct. The number is read plainly, then a small turn to camera on the instruction so 'all' does the work of being fair to every candidate."
+    },
+    {
+      "idx": 18,
+      "text": "What size triggers it, and what ends it?",
+      "intent": "button",
+      "emphasis": "ends",
+      "energy": 5,
+      "tags": [],
+      "pause_before": false,
+      "why": "Two real questions, each one lifting at the end. The rise rather than a drop is what keeps this an open ask of the candidates instead of a verdict on one of them."
+    }
+  ],
+  "energy_curve": [
+    3,
+    4,
+    2,
+    3,
+    4,
+    2,
+    3,
+    4,
+    3,
+    2,
+    3,
+    4,
+    3,
+    4,
+    2,
+    5,
+    3,
+    4,
+    5
+  ],
+  "contrast_check": "PASS. No two adjacent lines share an energy level; spread is 2 to 5 across 19 lines, with the widest single jump (2 to 5) at the deflation into the payoff.",
+  "assembled_prompt": "Read ONLY the transcript below aloud as speech. The lines above \"Transcript:\" are direction; never speak them.\n# AUDIO PROFILE: Nora, an Alaska public-radio host: warm, grounded, quietly witty. Neutral American accent, light and natural, not announcer-y.\n### DIRECTOR'S NOTES\nStyle: warm, plainspoken and conversational, a smart Alaskan analyst who has actually read the documents. Corrective and constructive, never sour, never a hit piece. Credit what is right, disagree where the evidence earns it, dry wit only on the one throwaway aside.\nArc: plain and neutral to open, a lift on the image, a low firm settle on the turn, a build through the evidence, quiet and sincere on the concession, flat and dry on the aside, the peak on the payoff, then warm, then rising into the close.\nSincerity: where the read agrees with him, that agreement is genuine, slow and warm, never sarcastic or grudging. Where it admits the limit of its own case, keep it level, not triumphant. The proposal near the end is warm, not scolding. The final two questions are real questions and each one lifts at the end.\nPace: BRISK and energetic, keep it moving like a sharp modern explainer. Short natural breaths only, no long pauses, do not drag. Vary the tone line to line so no two sentences sound the same.\nEmphasis: lean on the key word in each line; let numbers land.\nTranscript:\nA candidate for governor wants every new Alaska data center frozen until lawmakers act.\n[curious] Picture that freeze as a gate across a road.\nReal gates already stand here.\nChoo-gatch Electric, the Anchorage utility, says it doesn't have the gas for a big one.\nAnd since March, Anchorage requires proof the power is there.\n[short pause] Now go north, onto state land, where neither reaches.\nThis spring Alaska offered a fifty year lease for a data center burning gas at the wellhead.\nIt did that before writing any statute on who pays.\nFive hundred Alaskans commented on it. [short pause] Fewer than a dozen were supportive.\nSo he's right that there's a hole.\nBut Anchorage is one borough. Alaska has a patchwork, not a process.\nHis platform says it's modeled on New York's.\nNew York's covers only the biggest sites, and ends after a year.\n[short pause] His has no size limit and no end date.\n[wry] Near Anchorage that adds little, since the gas shortage already blocks a big one.\nAt the wellhead it's the only thing in the way, and that one makes its own power instead of drawing yours.\nCondition it on where the power comes from, not on whether the building is new.\nSeventeen people are running for governor. Ask them all two questions.\nWhat size triggers it, and what ends it?"
+}

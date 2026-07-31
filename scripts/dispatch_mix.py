@@ -80,40 +80,45 @@ _TAIL = 2.6   # matches scripts/build_scenes.py TAIL (hold after the last word)
 VIDEO_SECS = max(x["end"] for x in _lines) + _TAIL   # derive from VO; never hardcode
 
 EVENTS = [
-    # ---- 2026-07-30 "We know where the machine is". 7 shots, 14 VO lines.
-    # SOUND IS THE SUBJECT of this film, so the foley carries argument rather than
-    # decoration. Families deliberately alternate (the assert below enforces it) and
-    # the single riser is spent on the pullback that reveals 34 empty years.
-    # S1 (L0-L1): the signal cone dies flat on the ice, the machine's eye sweeps
-    (L[0] + 0.20, "thud",   "hero",      0.0),    # the cone hits the lid and stops
-    (L[0] + 1.60, "tick",   "texture",  -0.30),   # the failed lock
-    (L[1] + 0.90, "creak",  "standard",  0.15),   # ice under load, the world is closed
-    # S2 (L2-L3): six anchors plant, then the whole seafloor breathes light
-    (L[2] + 0.40, "clank",  "standard", -0.25),   # first anchor lands
-    (L[2] + 2.20, "paper",  "texture",   0.20),   # silt lifting
-    (L[3] + 0.35, "ding",   "hero",      0.0),    # the 900 Hz field comes up
-    # S3 (L4-L5): the range lines arrive and THE CLAMP lands. The signature shot.
-    (L[4] + 0.30, "whoosh", "standard", -0.30),   # first range line sweeps in
-    (L[4] + 1.55, "pop",    "standard",  0.25),   # second
-    (L[4] + 2.70, "chime",  "hero",      0.0),    # THE SOLVE, centered for the payoff
-    (L[5] + 0.25, "tick",   "texture",   0.10),   # the bare geometry drawing on
-    # S4 (L6-L7): the ghost enters the sound field, the filing lands and stamps
-    (L[6] + 0.50, "creak",  "standard", -0.20),   # the animal displacing water
-    (L[7] + 0.45, "stamp",  "hero",      0.0),    # PROPOSED thuds down
-    (L[7] + 2.30, "snap",   "texture",   0.20),   # the paper settling
-    # S5 (L8): the finding, and the compliance tick given its own air
-    (L[8] + 0.55, "clank",  "standard", -0.15),   # the finding card sets
-    (L[8] + 2.60, "ding",   "standard",  0.15),   # the tick draws, unironic
-    # S6 (L9-L11): THE TURN. one point lands, the pullback opens 34 empty years
-    (L[9] + 0.35, "pop",    "hero",     -0.35),   # the 1992 point lands hard
-    (L[9] + 1.90, "riser",  "hero",      0.0),    # THE ONE RISER, the scale pullback
-    (L[10] + 0.40, "tick",  "texture",   0.30),   # the empty field, a hollow click
-    (L[11] + 0.55, "boom",  "hero",      0.0),    # the thesis, the unreadable gauge
-    # S7 (L12-L13): the date, then the button
-    (L[12] + 0.40, "clank", "standard",  0.0),    # the date card sets square
-    (L[13] + 0.35, "chime", "hero",      0.0),    # the button, one last lock tick
-    (VIDEO_SECS - _TAIL + 1.0, "tick", "texture", 0.0),
+    # ---- 2026-07-31 "The Gate With No Number". 12 shots, 19 VO lines, 33 beats.
+    # Every event is motivated by a visible mechanical action. The single riser is
+    # spent on the shadow that crosses both panels of the split, which is the frame
+    # where the whole argument resolves.
+    (0.12, "thud", "hero", 0.0),
+    (2.93, "creak", "standard", 0.0),
+    (4.09, "pop", "standard", 0.0),
+    (4.99, "snap", "standard", 0.0),
+    (6.33, "clank", "standard", 0.0),
+    (7.95, "tick", "texture", 0.0),
+    (10.4, "chain", "standard", 0.0),
+    (12.67, "thud", "hero", 0.0),
+    (15.51, "tick", "standard", 0.0),
+    (17.68, "snap", "standard", 0.0),
+    (19.33, "thud", "hero", 0.0),
+    (22.86, "whoosh", "texture", 0.0),
+    (27.5, "chain", "standard", 0.0),
+    (30.41, "tick", "hero", 0.0),
+    (33.25, "paper", "standard", 0.0),
+    (38.07, "tick", "standard", 0.0),
+    (41.06, "creak", "texture", 0.0),
+    (43.14, "tick", "standard", 0.0),
+    (46.24, "whoosh", "texture", 0.0),
+    (48.52, "clank", "texture", 0.0),
+    (52.06, "whoosh", "standard", 0.0),
+    (55.16, "chime", "hero", 0.0),
+    (58.41, "tick", "hero", 0.0),
+    (61.08, "pop", "standard", 0.0),
+    (65.19, "riser", "hero", 0.0),
+    (68.66, "creak", "texture", 0.0),
+    (70.15, "boom", "hero", 0.0),
+    (73.93, "snap", "hero", 0.0),
+    (78.1, "clank", "standard", 0.0),
+    (80.76, "chime", "hero", 0.0),
+    (82.53, "tick", "standard", 0.0),
+    (85.13, "pop", "standard", 0.0),
+    (87.74, "stamp", "hero", 0.0),
 ]
+
 
 
 # THE BREATH BEFORE THE PAYOFF, NOW SELF-FITTING (hardened 2026-07-30 after code review).

@@ -1,0 +1,121 @@
+{
+  "total": 90.7,
+  "voice": "Sulafat",
+  "model": "gemini-3.1-flash-tts-preview",
+  "lines": [
+    {
+      "idx": 0,
+      "text": "A candidate for governor wants every new Alaska data center frozen until lawmakers act.",
+      "start": 0.0,
+      "end": 5.66
+    },
+    {
+      "idx": 1,
+      "text": "Picture that freeze as a gate across a road.",
+      "start": 6.44,
+      "end": 9.06
+    },
+    {
+      "idx": 2,
+      "text": "Real gates already stand here.",
+      "start": 9.82,
+      "end": 11.66
+    },
+    {
+      "idx": 3,
+      "text": "Chugach Electric, the Anchorage utility, says it doesn't have the gas for a big one.",
+      "start": 12.46,
+      "end": 17.14
+    },
+    {
+      "idx": 4,
+      "text": "And since March, Anchorage requires proof the power is there.",
+      "start": 17.78,
+      "end": 21.28
+    },
+    {
+      "idx": 5,
+      "text": "Now go north, onto state land, where neither reaches.",
+      "start": 22.28,
+      "end": 25.74
+    },
+    {
+      "idx": 6,
+      "text": "This spring Alaska offered a fifty year lease for a data center burning gas at the wellhead.",
+      "start": 26.74,
+      "end": 31.96
+    },
+    {
+      "idx": 7,
+      "text": "It did that before writing any statute on who pays.",
+      "start": 32.7,
+      "end": 36.28
+    },
+    {
+      "idx": 8,
+      "text": "Five hundred Alaskans commented on it. Fewer than a dozen were supportive.",
+      "start": 37.52,
+      "end": 42.48
+    },
+    {
+      "idx": 9,
+      "text": "So he's right that there's a hole.",
+      "start": 43.42,
+      "end": 45.3
+    },
+    {
+      "idx": 10,
+      "text": "But Anchorage is one borough. Alaska has a patchwork, not a process.",
+      "start": 46.14,
+      "end": 51.46
+    },
+    {
+      "idx": 11,
+      "text": "His platform says it's modeled on New York's.",
+      "start": 52.56,
+      "end": 55.14
+    },
+    {
+      "idx": 12,
+      "text": "New York's covers only the biggest sites, and ends after a year.",
+      "start": 55.7,
+      "end": 59.74
+    },
+    {
+      "idx": 13,
+      "text": "His has no size limit and no end date.",
+      "start": 61.1,
+      "end": 63.76
+    },
+    {
+      "idx": 14,
+      "text": "Near Anchorage that adds little, since the gas shortage already blocks a big one.",
+      "start": 64.74,
+      "end": 68.94
+    },
+    {
+      "idx": 15,
+      "text": "At the wellhead it's the only thing in the way, and that one makes its own power instead of drawing yours.",
+      "start": 70.0,
+      "end": 75.86
+    },
+    {
+      "idx": 16,
+      "text": "Condition it on where the power comes from, not on whether the building is new.",
+      "start": 77.22,
+      "end": 81.4
+    },
+    {
+      "idx": 17,
+      "text": "Seventeen people are running for governor. Ask them all two questions.",
+      "start": 82.5,
+      "end": 86.94
+    },
+    {
+      "idx": 18,
+      "text": "What size triggers it, and what ends it?",
+      "start": 87.96,
+      "end": 90.7
+    }
+  ]
+}

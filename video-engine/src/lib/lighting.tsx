@@ -532,3 +532,94 @@ export const NightGrade: React.FC<{
     </>
   );
 };
+
+// ---- DayGrade (2026-07-31 CRAFT ADVANCE, the run's single primary engine advance) -----------
+// NightGrade (07-25) gave the engine a real night. It never got a counterpart, so every bright
+// scene since has been ungraded flat art or a night grade run at low `amount`, which is why the
+// last four Dispatches all drifted to dusk or dark: night was the only lit world the engine
+// could actually build. This film is a high-noon arctic story (a gravel pad, a tundra plain, a
+// municipal chamber) and it needed the opposite system, so here it is.
+//
+// A daylight grade is NOT NightGrade inverted. Three of its four moves run backwards:
+//   1. WARM/COOL SPLIT   daylight ambient is never one cast. Skylight is cool and falls from
+//                        above; ground bounce is warm and rises from below. Applying a single
+//                        tint (the night model) is exactly what makes "day" scenes read as
+//                        "night scenes turned up", which is the failure this replaces.
+//   2. LIFTED FLOOR      THE LOAD-BEARING INVERSION. NightGrade crushes shadows toward black so
+//                        "unlit" is a distinct state. Outdoors at high albedo (snow, pale
+//                        gravel, tundra, an overcast dome) shadows do the opposite: they FILL
+//                        with skylight and never approach black. `floor` here RAISES shadow
+//                        density toward the sky hue. A daylight scene with crushed blacks reads
+//                        as a studio table-top, not as outdoors, no matter how bright the mids.
+//   3. AERIAL PERSPECTIVE  night structures depth with declared practical sources; day structures
+//                        it with DISTANCE. `haze` veils the frame toward the sky colour with a
+//                        vertical falloff, so far planes desaturate and near planes stay crisp.
+//                        This is the daylight equivalent of "a scene must register its lights".
+//   4. SUN DIRECTION     an optional low arctic sun at `sunX`/`sunY` laying a soft directional
+//                        warm wash plus a restrained glare, so the key has a findable origin and
+//                        rim lights on assets agree with the world instead of floating.
+// Renders as absolutely-positioned overlays, so place it LAST in a scene, before GradeLayer.
+// Same placement contract as NightGrade: it emits <div>s, so it must sit OUTSIDE the <svg>
+// (a div created inside an svg lands in the SVG namespace and paints nothing, the silent bug
+// that made the entire 07-30 night grade a no-op).
+export const DayGrade: React.FC<{
+  f: number;
+  sky?: string;                                    // the cool skylight cast falling from above
+  bounce?: string;                                 // the warm ground-bounce cast rising from below
+  amount?: number;                                 // 0..1 overall strength
+  floor?: number;                                  // 0..1 how far shadows LIFT toward the sky (not crush)
+  haze?: number;                                   // 0..1 aerial-perspective veil toward `sky`
+  sunX?: number; sunY?: number;                    // sun position in 1080x1920 frame coords
+  sunIntensity?: number;                           // 0..1 directional warm wash + glare
+}> = ({
+  f, sky = '#bcd8ea', bounce = '#e8cf9a', amount = 1, floor = 0.5, haze = 0.35,
+  sunX, sunY, sunIntensity = 0.5,
+}) => {
+  const a = Math.max(0, Math.min(1, amount));
+  if (a <= 0.01) return null;
+  // daylight is not static either: a slow high-cloud breath, gentler than the night's
+  const breathe = 0.96 + 0.04 * Math.sin(f / 41);
+  const hex2 = (v: number) => Math.round(Math.max(0, Math.min(1, v)) * 255).toString(16).padStart(2, '0');
+  return (
+    <>
+      {/* 1a. cool skylight from above (screen keeps it additive so it opens shadows, never muddies) */}
+      <div style={{
+        position: 'absolute', inset: 0, pointerEvents: 'none', mixBlendMode: 'screen',
+        background: `linear-gradient(to bottom, ${sky}${hex2(0.26 * a)} 0%, ${sky}00 58%)`,
+      }} />
+      {/* 1b. warm ground bounce from below */}
+      <div style={{
+        position: 'absolute', inset: 0, pointerEvents: 'none', mixBlendMode: 'screen',
+        background: `linear-gradient(to top, ${bounce}${hex2(0.17 * a)} 0%, ${bounce}00 34%)`,
+      }} />
+      {/* 4. the sun: a soft directional warm wash with a restrained glare core */}
+      {sunX !== undefined && sunY !== undefined && sunIntensity > 0.01 && (
+        <div style={{position: 'absolute', inset: 0, pointerEvents: 'none', mixBlendMode: 'screen'}}>
+          <div style={{
+            position: 'absolute',
+            left: sunX - 900, top: sunY - 900, width: 1800, height: 1800,
+            background: `radial-gradient(circle at 50% 50%, #fff2cf${hex2(0.30 * sunIntensity * a * breathe)} 0%, #fff2cf00 62%)`,
+          }} />
+          <div style={{
+            position: 'absolute',
+            left: sunX - 190, top: sunY - 190, width: 380, height: 380,
+            background: `radial-gradient(circle at 50% 50%, #fffaf0${hex2(0.42 * sunIntensity * a * breathe)} 0%, #fffaf000 70%)`,
+          }} />
+        </div>
+      )}
+      {/* 3. aerial perspective: veil toward the sky, strongest at the horizon band */}
+      {haze > 0.01 && (
+        <div style={{
+          position: 'absolute', inset: 0, pointerEvents: 'none',
+          background: `linear-gradient(to bottom, ${sky}00 0%, ${sky}${hex2(0.30 * haze * a)} 40%, ${sky}${hex2(0.13 * haze * a)} 68%, ${sky}00 100%)`,
+        }} />
+      )}
+      {/* 2. THE LIFTED FLOOR, applied LAST so it opens every shadow in the frame including the
+             wash above. This is the move that separates a daylight grade from a bright night. */}
+      <div style={{
+        position: 'absolute', inset: 0, pointerEvents: 'none', mixBlendMode: 'screen',
+        background: `radial-gradient(78% 62% at 50% 46%, ${sky}00 0%, ${sky}${hex2(0.24 * floor * a)} 100%)`,
+      }} />
+    </>
+  );
+};

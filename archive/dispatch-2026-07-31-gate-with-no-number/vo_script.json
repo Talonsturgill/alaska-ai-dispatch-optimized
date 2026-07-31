@@ -1,0 +1,13 @@
+{
+  "run_id": "2026-07-31",
+  "title": "The Gate With No Number",
+  "caption_fixups": {
+    "fifty": "50",
+    "Five hundred": "500",
+    "five hundred": "500",
+    "Seventeen": "17",
+    "seventeen": "17",
+    "ten to two": "10 to 2"
+  },
+  "note": "Numbers are spelled out in the spoken script so the synth reads them correctly, and mapped back to numerals here so the on-screen captions show digits. The 2026-07-26 panel caught TTS spellings painting onto screen when this map was left empty."
+}

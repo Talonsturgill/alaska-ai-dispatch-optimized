@@ -261,3 +261,47 @@ NONE. The 2026-07-20 library session banked all 14 gap species + SledDogTeam pro
   deferrals with plans in docs/RUN_UPGRADES.md): fauna Salmon spine-follow swim deform;
   Character rig micro-texture pass behind a `detail` prop; word-level kinetic captions driven
   by words.json.
+
+## Civics, the RULES kit — lib/civics.tsx
+NET-NEW 2026-07-31 ("The Gate With No Number"). The shelf could draw machines, animals, biomes,
+instruments and paperwork, but nothing for the thing this channel covers most often: A RULE, and
+the moment a rule meets the thing it is supposed to act on. Four prior Dispatches wanted it and
+improvised around it (07-18 land conveyance, 07-22 enhanced-use lease, 07-26 records match, 07-29
+award list). props.tsx CheckpointGateLever is a faceless barrier ARM with no condition and no
+verdict, so it can show a road closed and nothing else. It cannot show WHY.
+- `Gate` — the CONDITIONAL rule — civics.tsx — rounded, articulated, many-parted, WITH A FACE. Carries
+  a printed `condition` and a `source` authority line on a board, and reaches a `verdict`
+  asking/pass/block that drives the lamp, the brow and the arm together. A thing that can say "it
+  depends" must visibly have parts that could move differently. `accent` VO reactivity, `phase`
+  decorrelates the idle, routed through vitals() — ACTIVE
+- `ThresholdGate` — the SAME RIG BUILT TWICE — civics.tsx — `cut` 0..1 opens a real sorting aperture
+  sized by `cutW`, `hands` 0..1 gives the crown clock its hands, `lamp` lights ONLY when a threshold
+  actually fired. Build it with both at 1 and it is a bounded instrument that discriminates; with
+  both at 0 it stops everything it meets. Setting the two side by side states a SCOPE CONTRAST as a
+  consequence you can see rather than as a comparative-statutes footnote — ACTIVE
+- `AperturePlate` / `CapClock` — the plate and the clock ALONE — civics.tsx — extracted mid-run when
+  the first render of the turn staged two whole rigs side by side and pushed both plates off the
+  frame edges. A comparison needs each object at full width, not the whole machine — ACTIVE
+- HARD-WON: pass 1 to 3 drew the threshold as a SCALE PLATE with a needle and gradations. It worked
+  and was dropped anyway, because the 2026-07-30 Dispatch had already used "a gauge with no scale
+  printed behind its needle" as its own thesis image one run earlier. An aperture is also the better
+  drawing: a dial reports that nothing is measured, a slot shows WHICH LOAD GETS THROUGH.
+- Look-dev: `GateLook` (GateLook.tsx) — both configurations plus a 0.28-SCALE LEGIBILITY STRIP, run
+  BEFORE any scene is authored. It caught three real defects on its first pass (the marks vanished
+  below full scale, the boom swept across the clock face, the brow sat on the eyes as a burglar mask).
+
+## Engine advance 2026-07-31 — DayGrade, the daylight counterpart
+- `lib/lighting.tsx` `DayGrade(f, sky, bounce, amount, floor, haze, sunX, sunY, sunIntensity)` — NightGrade
+  landed 07-25 and never got an opposite, so every bright scene since was ungraded flat art or a night
+  grade at low amount. That is the MECHANICAL reason four straight dispatches drifted to dusk or dark:
+  night was the only lit world the engine could build. Three of its four moves run backwards from
+  NightGrade: a WARM/COOL SPLIT (skylight cool from above, ground bounce warm from below, because
+  daylight ambient is never one cast), AERIAL PERSPECTIVE instead of registered practical sources, and
+  above all a LIFTED FLOOR — at high albedo outdoor shadows fill with skylight and never approach black,
+  so `floor` RAISES shadow density toward the sky hue. Crushed blacks in a daylight scene read as a
+  studio table top no matter how bright the mids. Same placement contract as NightGrade: it emits divs,
+  so it must sit OUTSIDE the svg.
+- KNOWN NEXT ADVANCE, deferred with a plan: DayGrade has no ACCENT REGISTRY. NightGrade's `sources[]`
+  makes "amber never appears on an unmonitored slope" a property of the scene graph; DayGrade's reserved
+  colour is held only by pinned values at call sites, and the 07-31 panel still found three leaks. Add
+  `accents[]`, permit the reserved hue only at registered rects, throw on an unregistered one.

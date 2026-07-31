@@ -4,13 +4,13 @@ default_byline: BY TALON
 default_kicker: WEEKLY BRIEF
 default_motto: what's moving in alaska ai, this week
 default_coords: 61°13′N  ·  149°54′W
-# THE 90-SECOND FORMAT (owner directive 2026-07-30, was 60).
-# Target 90s with an accepted band of 84 to 96s. The band exists because VO length is
-# measured from a real synth, not estimated, and forcing an exact number costs a re-synth
-# for no viewer-visible gain.
 dispatch_target_seconds: 90
-dispatch_seconds_band: [84, 96]
-dispatch_vo_words_band: [190, 215]   # at the measured 137.5 wpm house rate
+dispatch_seconds_band:
+- 84
+- 96
+dispatch_vo_words_band:
+- 190
+- 215
 dispatch_history:
 - date: 2026-06-24
   topic: Cook Inlet beluga acoustic AI (NOAA + Microsoft AI for Good)
@@ -1142,3 +1142,63 @@ dispatch_history:
       for sound
     metaphor: sound as a substitute sky, and a gauge with no scale printed behind
       its needle
+- date: '2026-07-31'
+  topic: 'THE GATE WITH NO NUMBER: a candidate for governor wants every new Alaska
+    data center frozen until the Legislature acts, and his platform names New York
+    as the model. New York''s covers hyperscale only and ends after a year; his has
+    no size limit and no end date. That gap adds little near Anchorage, where Chugach''s
+    gas shortage already blocks a large project and an Anchorage Assembly zoning test
+    (AO 2026-27, 10 to 2, March 2026) already conditions approval on proven capacity,
+    and is decisive only at a 715.4-acre 50-year North Slope lease that makes its
+    own power at the wellhead. Six Anthropic employees gave $372,000 individually;
+    the company gave nothing. Missing option named: condition the rule on where the
+    power comes from, not on whether the building is new.'
+  slug: dispatch-2026-07-31-gate-with-no-number
+  key_entities:
+  - kreiss-tomkins
+  - drake thomas
+  - anthropic employee donations
+  - alaska data center moratorium
+  - alaska governor race 2026
+  - new york hyperscale moratorium
+  - chugach electric
+  - ao 2026-27
+  - adl 422741
+  - wellhead power
+  - campaign finance
+  archetype: policy instrument audited against its own cited model
+  palette: pale arctic overcast, tundra ochre and gravel, steel grey gates, threshold
+    red reserved for a size line
+  voice: ''
+  stance: mixed
+  angle: Alaska's data-center gate isn't missing, it's gas and interconnection, and
+    a moratorium with no size threshold binds hardest on the one project the existing
+    gates never touch.
+  hero: ThresholdGate
+  cast:
+  - ThresholdGate
+  - Gate
+  - AperturePlate
+  - CapClock
+  - ServerMachine (steel + copper)
+  - TundraBG
+  - OilfieldBG
+  - Sheet
+  - PaperFiber
+  - SurveyStake
+  - MeasuringChain
+  - BoundaryReveal
+  - PaperStorm
+  - Nameplate
+  composition:
+    pov: eye-level-immersive
+    motion_vector: vertical-descent
+    hero_treatment: instrument-as-subject
+    layout: fullbleed-split
+    register: naturalistic-scene
+    camera_strategy: rack-focus-macro
+    light_story: overcast-diffuse
+    palette: pale arctic overcast, tundra ochre and gravel, steel grey gates, threshold
+      red reserved for a size line
+    metaphor: a sorting slot that was never cut, so every load is the same size to
+      it

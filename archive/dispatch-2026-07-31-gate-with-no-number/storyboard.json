@@ -1,0 +1,1043 @@
+{
+  "concept": "THE GATE WITH NO NUMBER. A freeze on every new Alaska data center is drawn as a barrier gate whose sorting aperture was never cut and whose clock has no hands, so it stops everything it meets rather than discriminating, and the project it actually decides is the one at the wellhead that no other gate reaches.",
+  "engine": "infographic-2.5d",
+  "derived_from": "scratch",
+  "treatment": {
+    "winner": "THE DRAMATIST",
+    "judge_score": 8.7,
+    "judge_reasoning": "Its central object IS the thesis, the two absences in that object are literally the button, and the net-new asset was already built and taste-looped this run. The alternatives either argued against the fair counterpoint the angle must honour without hedging, or drifted celebratory against a ledger already skewed that way, or needed a from-scratch hero whose payoff asserts the vacuum was imaginary.",
+    "grafts": [
+      "the balance-scale money deflation, from the Comedian, carrying zero spoken dollar figures",
+      "the Anchorage conditional-test staged as a verdict you watch happen, from the Comedian",
+      "the three gates standing untouched over an empty road, from the Explainer",
+      "the engraved WHERE DOES THE POWER COME FROM board at the signature shot rather than the button, from the Enthusiast"
+    ],
+    "kills": [
+      "the eleven second Act 1 money block",
+      "the pen that hovers and never signs, which stages a human refusing to act and contradicts the film's own no-villain contract. Replaced with a blank statute book, because the absence is real and the villain is not.",
+      "the arrow that taps the empty slot, which re-explains what the cold open already showed",
+      "two full rigs side by side for the turn, which halves the on-screen size of the one detail the film depends on. The turn punches in on the plates and clocks only."
+    ]
+  },
+  "angle": "Alaska's data-center gate isn't missing, it's gas and interconnection, and a moratorium with no size threshold binds hardest on the one project the existing gates never touch: the facility that makes its own power at the wellhead and never competes with an Alaskan household for a kilowatt hour.",
+  "fingerprint": {
+    "pov": "eye-level-immersive",
+    "motion_vector": "vertical-descent",
+    "hero_treatment": "instrument-as-subject",
+    "layout": "fullbleed-split",
+    "register": "naturalistic-scene",
+    "camera_strategy": "rack-focus-macro",
+    "light_story": "overcast-diffuse",
+    "palette": "pale arctic overcast, tundra ochre and gravel, steel grey gates, threshold red reserved for a size line",
+    "metaphor": "a sorting slot that was never cut, so every load is the same size to it"
+  },
+  "palette": "pale arctic overcast, tundra ochre and gravel, steel grey gates, threshold red reserved for a size line",
+  "beats": [
+    {
+      "t": 0.0,
+      "title": "THE BOOM SLAMS",
+      "vo": "A candidate for governor wants every new Alaska data center frozen until lawmakers act.",
+      "draw": {
+        "subject": "a striped barrier boom on a gravel road",
+        "action": "slams down across the road with a dust puff and a recoil",
+        "emotion": "alarmed-sudden",
+        "annotation": "NO SIZE WRITTEN ON IT"
+      },
+      "shows": "THE BOOM SLAMS",
+      "sfx": "boom-thunk",
+      "means": "a rule arrives with force before anyone has said what it measures",
+      "choreo": {
+        "primary": "the boom drives down and recoils on its pivot",
+        "reaction": "the gravel jumps and a dust puff blooms under the impact",
+        "ambient": "blowing snow drifts across the road and the far ridge holds still"
+      }
+    },
+    {
+      "t": 2.81,
+      "title": "THE MACHINE SKIDS SHORT",
+      "vo": "A candidate for governor wants every new Alaska data center frozen until lawmakers act.",
+      "draw": {
+        "subject": "a steel ServerMachine, the applicant",
+        "action": "skids nose-first and stops a hand's width from the boom",
+        "emotion": "nervous",
+        "annotation": "THE APPLICANT, STOPPED"
+      },
+      "shows": "THE MACHINE SKIDS SHORT",
+      "sfx": "skid-gravel",
+      "means": "the thing it acts on is smaller than the instrument",
+      "choreo": {
+        "primary": "the machine skids nose-first and stops short",
+        "reaction": "its brow snaps up and its lights stutter",
+        "ambient": "the boom above it settles through two diminishing bounces"
+      }
+    },
+    {
+      "t": 3.97,
+      "title": "THE PLATFORM, AND WHO PAID FOR IT",
+      "vo": "A candidate for governor wants every new Alaska data center frozen until lawmakers act.",
+      "draw": {
+        "subject": "the candidate with his platform sheet",
+        "action": "holds the sheet up while a verbatim disclaimer card seats beside it",
+        "emotion": "earnest",
+        "annotation": "JONATHAN KREISS-TOMKINS / \"The views in his op-ed are his alone and do not represent Anthropic.\""
+      },
+      "shows": "THE CANDIDATE, PLAYED STRAIGHT",
+      "sfx": "card-seat",
+      "means": "a named person wants this, and the money behind him is named and bounded in the same breath",
+      "choreo": {
+        "primary": "he raises the platform sheet and the disclaimer card seats beside it with a settle",
+        "reaction": "the sheet takes the light and the type resolves",
+        "ambient": "his coat keeps moving on the wind"
+      }
+    },
+    {
+      "t": 4.87,
+      "title": "THE MONEY, NAMED ONCE",
+      "vo": "A candidate for governor wants every new Alaska data center frozen until lawmakers act.",
+      "draw": {
+        "subject": "a single stat card on the candidate's platform sheet",
+        "action": "lands and holds while the sheet stays in frame",
+        "emotion": "matter-of-fact",
+        "annotation": "$372,000 / SIX ANTHROPIC EMPLOYEES, AS INDIVIDUALS / THE COMPANY GAVE NOTHING"
+      },
+      "shows": "THE MONEY, NAMED AND DEFLATED",
+      "sfx": "card-land",
+      "means": "the giving is individual and legal, so the story has to be the plank",
+      "choreo": {
+        "primary": "the card lands on the sheet with one overshoot and settles",
+        "reaction": "the sheet dips under the weight and rights itself",
+        "ambient": "his coat keeps moving on the wind"
+      },
+      "note": "Gate 0B: 30-plus words in a 2.1s window is unreadable at feed speed, and the insinuation lands in 2.1s while the exculpation does not. Cards now arrive SEQUENTIALLY and the verbatim disclaimer gets its own hold. The disclaimer is a hard constraint in angle.json and was missing from the board entirely.",
+      "cards_sequential": [
+        "$372,000",
+        "SIX ANTHROPIC EMPLOYEES, AS INDIVIDUALS",
+        "THE COMPANY GAVE NOTHING"
+      ],
+      "disclaimer_card": "The views in his op-ed are his alone and do not represent Anthropic."
+    },
+    {
+      "t": 6.21,
+      "title": "BEHIND THE GATE",
+      "vo": "Picture that freeze as a gate across a road.",
+      "draw": {
+        "subject": "the plate seen from behind the gate, backlit by the overcast",
+        "action": "frames the skidded machine through the space where a slot should be",
+        "emotion": "blank-institutional",
+        "annotation": "NO CUT"
+      },
+      "shows": "PUNCH IN ON THE PLATE",
+      "sfx": "metal-clank",
+      "means": "the opening that would have done the sorting was never made",
+      "choreo": {
+        "primary": "the camera arrives behind the plate and the machine resolves small and soft through the empty ghost cut",
+        "reaction": "the dashed outline of the opening that was never made catches the backlight",
+        "ambient": "grit moves across the plate's back face"
+      }
+    },
+    {
+      "t": 7.83,
+      "title": "THE CLOCK HAS NO HANDS",
+      "vo": "Picture that freeze as a gate across a road.",
+      "draw": {
+        "subject": "the crown-mounted clock on the same rig",
+        "action": "turns to camera showing an empty dashed hub",
+        "emotion": "blank-institutional",
+        "annotation": "NO END DATE"
+      },
+      "shows": "THE CLOCK HAS NO HANDS",
+      "sfx": "bezel-turn",
+      "means": "and neither was the thing that would have ended it",
+      "choreo": {
+        "primary": "the clock turns to camera",
+        "reaction": "the empty hub reads as two mounting holes with nothing in them",
+        "ambient": "a slow high cloud passes and the plate cools a value step"
+      }
+    },
+    {
+      "t": 10.28,
+      "title": "THREE GATES STAND UP",
+      "vo": "Real gates already stand here.",
+      "draw": {
+        "subject": "three conditional Gates with printed condition boards",
+        "action": "rise along the road, each lighting its own verdict lamp",
+        "emotion": "alert-dutiful",
+        "annotation": "THREE GATES THAT ALREADY EXIST"
+      },
+      "shows": "THREE GATES STAND UP",
+      "sfx": "servo-rise",
+      "means": "rules already exist here and they are physical, not political",
+      "choreo": {
+        "primary": "three gates rise along the road in a stagger",
+        "reaction": "each verdict lamp wakes in turn",
+        "ambient": "their condition boards sway a little on their mounts"
+      }
+    },
+    {
+      "t": 12.55,
+      "title": "TWO VERDICTS, ONE ROAD",
+      "vo": "Chugach Electric, the Anchorage utility, says it doesn't have the gas for a big one.",
+      "draw": {
+        "subject": "the two working gates",
+        "action": "one drops its arm on the steel machine while the other lifts for a machine that shows its paperwork",
+        "emotion": "dutiful",
+        "annotation": "DO YOU HAVE GAS / CHUGACH ELECTRIC, ADN MAY 2026"
+      },
+      "shows": "GATE ONE BLOCKS ON GAS",
+      "sfx": "arm-thunk",
+      "means": "a real gate can say yes or no, and takes different time to decide each",
+      "choreo": {
+        "primary": "gate one hesitates, then drops its arm across the road",
+        "reaction": "gate two hesitates longer, then lifts clear and lets the second machine roll through",
+        "ambient": "both condition boards sway a little on their mounts"
+      }
+    },
+    {
+      "title": "THE GAUGE BEHIND THE GATE",
+      "draw": {
+        "subject": "a fuel gauge on the gate's post",
+        "action": "swings down and pins near its empty stop",
+        "emotion": "matter-of-fact",
+        "annotation": "IT HAS THE GENERATORS, NOT THE GAS"
+      },
+      "choreo": {
+        "primary": "the needle swings down and pins against its stop",
+        "reaction": "the gate's arm stays down and its lamp stays dark",
+        "ambient": "dust moves across the gauge glass"
+      },
+      "sfx": "needle-pin",
+      "means": "the Railbelt constraint is fuel supply, and it is physical rather than political",
+      "t": 15.39,
+      "vo": "Chugach Electric, the Anchorage utility, says it doesn't have the gas for a big one.",
+      "shows": "THE GAUGE BEHIND THE GATE"
+    },
+    {
+      "t": 17.56,
+      "title": "THE ASSEMBLY'S OWN TALLY",
+      "vo": "And since March, Anchorage requires proof the power is there.",
+      "draw": {
+        "subject": "a tally counter mounted on the passing gate",
+        "action": "whirls and hard-locks on the vote that built this test",
+        "emotion": "plain",
+        "annotation": "AO 2026-27 / ANCHORAGE ASSEMBLY, 10 TO 2, MARCH 2026"
+      },
+      "shows": "THE TWO EMPTY SLOTS",
+      "sfx": "counter-lock",
+      "means": "the conditional test was built by a vote, not by a pause",
+      "choreo": {
+        "primary": "the counter whirls and hard-locks",
+        "reaction": "the gate's lamp settles green and its arm stays up",
+        "ambient": "the road dust drifts past the open lane"
+      }
+    },
+    {
+      "t": 19.21,
+      "title": "THE PLATE STOPS BOTH",
+      "vo": "And since March, Anchorage requires proof the power is there.",
+      "draw": {
+        "subject": "the freeze's uncut aperture plate",
+        "action": "stops a small machine and a huge one with the same flat refusal",
+        "emotion": "indifferent",
+        "annotation": "TWO NUMBERS DECIDE WHO THIS CATCHES"
+      },
+      "shows": "GATE TWO ASKS FOR PROOF",
+      "sfx": "double-bounce",
+      "means": "an instrument with no size on it treats every load as the same load",
+      "choreo": {
+        "primary": "a small machine is presented to the plate and bounces off, then a machine four times its size is presented and bounces off identically",
+        "reaction": "the plate does not move, flex or register either impact",
+        "ambient": "grit skitters off the plate face and settles on the road"
+      },
+      "open_loop_plant": true
+    },
+    {
+      "t": 22.74,
+      "title": "THE ROAD ENDS",
+      "vo": "Now go north, onto state land, where neither reaches.",
+      "draw": {
+        "subject": "the gravel road itself",
+        "action": "runs out into open tundra as the camera cranes north",
+        "emotion": "exposed",
+        "annotation": "NEITHER GATE REACHES HERE"
+      },
+      "shows": "THE ROAD ENDS",
+      "sfx": "wind-swell",
+      "means": "the existing regime has an edge, and past it there is nothing",
+      "choreo": {
+        "primary": "the camera cranes north and the road runs out",
+        "reaction": "the last gate post falls away behind the frame edge",
+        "ambient": "cottongrass shivers across the whole foreground"
+      }
+    },
+    {
+      "t": 27.38,
+      "title": "THE PARCEL DRAWS ITSELF",
+      "vo": "This spring Alaska offered a fifty year lease for a data center burning gas at the wellhead.",
+      "draw": {
+        "subject": "a survey stake and a measuring chain",
+        "action": "settle and pay out until a boundary closes around a square",
+        "emotion": "matter-of-fact",
+        "annotation": "715.4 ACRES / STATE LAND, DNR PRELIMINARY DECISION, THIS SPRING"
+      },
+      "shows": "THE PARCEL DRAWS ITSELF",
+      "sfx": "chain-pay",
+      "means": "the state committed real ground",
+      "choreo": {
+        "primary": "the measuring chain accelerates off its reel and decelerates into each stake in turn",
+        "reaction": "survey stakes settle at each corner in turn",
+        "ambient": "the boundary trace closes and holds its glow"
+      },
+      "rehook": "the film leaves the road and the whole existing regime behind, and the state's own commitment lands"
+    },
+    {
+      "t": 30.29,
+      "title": "FIFTY YEARS RATCHETS PAST",
+      "vo": "This spring Alaska offered a fifty year lease for a data center burning gas at the wellhead.",
+      "draw": {
+        "subject": "a lease bar along the parcel edge",
+        "action": "ratchets one click per year and runs off frame as the camera pulls back",
+        "emotion": "sobering",
+        "annotation": "50 YEARS"
+      },
+      "shows": "FIFTY YEARS RATCHETS PAST",
+      "sfx": "ratchet-run",
+      "means": "and committed it for longer than the argument about it will last",
+      "choreo": {
+        "primary": "the lease bar ratchets one click per year",
+        "reaction": "the camera pulls back as the bar runs off frame",
+        "ambient": "the parcel shrinks against the tundra behind it"
+      }
+    },
+    {
+      "t": 33.13,
+      "title": "THE STATUTE BOOK IS BLANK",
+      "vo": "It did that before writing any statute on who pays.",
+      "draw": {
+        "subject": "the lease document and the statute book",
+        "action": "the lease lands on the open book with a thud and every page under it stays blank",
+        "emotion": "plain",
+        "annotation": "NO STATUTE ON WHO PAYS"
+      },
+      "shows": "THE STATUTE BOOK IS BLANK",
+      "sfx": "book-riffle",
+      "means": "it did that with nothing written down about who pays",
+      "choreo": {
+        "primary": "the lease document drops onto the open book with a thud and a hand riffles the whole book front to back",
+        "reaction": "every page passes empty to both margins and the riffle runs out",
+        "ambient": "dust turns slowly in the lamp column"
+      }
+    },
+    {
+      "t": 37.95,
+      "title": "FIVE HUNDRED SHEETS ARRIVE",
+      "vo": "Five hundred Alaskans commented on it. Fewer than a dozen were supportive.",
+      "draw": {
+        "subject": "comment sheets on the lease",
+        "action": "storm in and stack into a pile that climbs past frame",
+        "emotion": "weighty",
+        "annotation": "MORE THAN 500 COMMENTS ON THAT LEASE / FEWER THAN A DOZEN SUPPORTIVE"
+      },
+      "shows": "FIVE HUNDRED SHEETS ARRIVE",
+      "sfx": "paper-storm",
+      "means": "the public used the only door that was open",
+      "choreo": {
+        "primary": "comment sheets storm in and stack",
+        "reaction": "the pile climbs past the top of frame",
+        "ambient": "loose sheets drift down the front plane"
+      }
+    },
+    {
+      "title": "ELEVEN ON TOP",
+      "draw": {
+        "subject": "the supportive comments",
+        "action": "sit countable on top of a pile that runs past frame",
+        "emotion": "weighty",
+        "annotation": "FEWER THAN A DOZEN SUPPORTIVE"
+      },
+      "choreo": {
+        "primary": "eleven sheets settle on top of the stack and stay separately countable",
+        "reaction": "the pile beneath them keeps climbing past the frame edge",
+        "ambient": "loose sheets drift down the front plane"
+      },
+      "sfx": "sheet-settle",
+      "means": "the public was overwhelmingly against it and the count is not close",
+      "t": 40.94,
+      "vo": "Five hundred Alaskans commented on it. Fewer than a dozen were supportive.",
+      "shows": "ELEVEN ON TOP"
+    },
+    {
+      "t": 43.02,
+      "title": "THE GROUND GIVES WAY WHERE THE ROAD ENDED",
+      "vo": "Five hundred Alaskans commented on it. Fewer than a dozen were supportive.",
+      "draw": {
+        "subject": "the bare ground north of the last gate post",
+        "action": "opens as a gap where there was never a gate to begin with",
+        "emotion": "conceding",
+        "annotation": "HE IS RIGHT THAT THERE IS A HOLE"
+      },
+      "shows": "THE HOLE, DRAWN",
+      "sfx": "roll-through",
+      "means": "the vacuum is real and the film says so without hedging",
+      "choreo": {
+        "primary": "a machine rolls past the last gate post into open ground and keeps going, unchallenged",
+        "reaction": "the three gates behind it hold their arms up and none of them reaches this far",
+        "ambient": "cottongrass shivers along the shoulder as it passes"
+      },
+      "note": "Restaged from 'a hole in the road between the gates', which contradicted beat 26.4's own geography (the road ENDS and neither gate reaches past it). Same vantage and frame edge as 26.4 so the concession rhymes with the crane that set it up."
+    },
+    {
+      "t": 46.12,
+      "title": "THREE GATES, ONE SHORT STRETCH OF ROAD",
+      "vo": "But Anchorage is one borough. Alaska has a patchwork, not a process.",
+      "draw": {
+        "subject": "the three gates seen from far off",
+        "action": "stand in a tight cluster over one short stretch of gravel with bare tundra to every horizon",
+        "emotion": "honest",
+        "annotation": "ANCHORAGE IS ONE BOROUGH / A PATCHWORK, NOT A PROCESS"
+      },
+      "shows": "ONE BOROUGH LIT",
+      "sfx": "wind-open",
+      "means": "but the film's own claim has a boundary and it says that too",
+      "choreo": {
+        "primary": "the camera pulls back until the whole regime is three small posts on one strip of road",
+        "reaction": "their verdict lamps stay lit and stay tiny",
+        "ambient": "cloud shadow crosses the open ground on every side of them"
+      }
+    },
+    {
+      "title": "BARE GROUND TO EVERY HORIZON",
+      "draw": {
+        "subject": "the tundra beyond the gates",
+        "action": "runs out unbroken in every direction past the short strip of road",
+        "emotion": "honest",
+        "annotation": "STATE LAND"
+      },
+      "choreo": {
+        "primary": "the camera continues past the gates until only open ground fills the frame",
+        "reaction": "the three posts shrink to specks at the bottom edge",
+        "ambient": "cloud shadow crosses the whole plain"
+      },
+      "sfx": "wind-open",
+      "means": "one borough's rule governs a very small share of the ground in question",
+      "t": 48.4,
+      "vo": "But Anchorage is one borough. Alaska has a patchwork, not a process.",
+      "shows": "BARE GROUND TO EVERY HORIZON"
+    },
+    {
+      "t": 51.94,
+      "title": "NEW YORK'S GATE ARRIVES",
+      "vo": "But Anchorage is one borough. Alaska has a patchwork, not a process.",
+      "draw": {
+        "subject": "a second ThresholdGate rig",
+        "action": "slides in beside the first, same build, different configuration",
+        "emotion": "matter-of-fact",
+        "annotation": "MODELED ON NEW YORK, PER THE PLATFORM"
+      },
+      "shows": "NEW YORK'S GATE ARRIVES",
+      "sfx": "whip-in",
+      "means": "a version of this instrument exists that has both missing numbers",
+      "choreo": {
+        "primary": "New York's rig slides in beside the first, overshoots a little and settles back",
+        "reaction": "its lamp is already lit",
+        "ambient": "both booms hold level while the plates settle"
+      }
+    },
+    {
+      "t": 55.04,
+      "title": "THE TWO PLATES, PUNCHED IN",
+      "vo": "His platform says it's modeled on New York's.",
+      "draw": {
+        "subject": "the two aperture plates only, booms off frame",
+        "action": "hold side by side, one cut open with a red edge, one solid",
+        "emotion": "revelatory",
+        "annotation": "BIGGEST SITES ONLY vs NO SIZE LIMIT"
+      },
+      "shows": "THE TWO PLATES, PUNCHED IN",
+      "sfx": "reveal-chime",
+      "means": "one plate lets a size through and the other lets nothing through",
+      "choreo": {
+        "primary": "New York's plate swings in and locks beside the uncut one with an overshoot and settle",
+        "reaction": "the red threshold edge catches the light as it seats",
+        "ambient": "both plate faces breathe a slow value shift under the moving cloud"
+      },
+      "rehook": "the comparison arrives and the viewer is finally shown what the two missing numbers look like on a rule that has them"
+    },
+    {
+      "t": 58.29,
+      "title": "THE TWO CLOCKS",
+      "vo": "New York's covers only the biggest sites, and ends after a year.",
+      "draw": {
+        "subject": "the two crown clocks",
+        "action": "hold side by side, one with hands, one with a dashed empty hub",
+        "emotion": "revelatory",
+        "annotation": "ENDS AFTER A YEAR vs NO END DATE"
+      },
+      "shows": "THE TWO CLOCKS",
+      "sfx": "year-sweep",
+      "means": "one rule ends by itself and the other has no way to end",
+      "choreo": {
+        "primary": "the camera racks up from the plates to the crowns and New York's hands sweep a full year in two seconds",
+        "reaction": "the other hub sits absolutely still with nothing in it",
+        "ambient": "the two bezels tick against each other out of phase"
+      },
+      "open_loop_pay": true
+    },
+    {
+      "title": "THE TWO ABSENCES, NAMED",
+      "draw": {
+        "subject": "the uncut slot and the empty hub",
+        "action": "hold side by side with their labels seating under them",
+        "emotion": "plain",
+        "annotation": "NO SIZE LIMIT / NO END DATE"
+      },
+      "choreo": {
+        "primary": "the two labels seat under the two absences with a short stagger",
+        "reaction": "the dashed ghost cut and the dashed empty hub both catch the light",
+        "ambient": "the plate faces shift a value step under the moving cloud"
+      },
+      "sfx": "label-seat",
+      "means": "the two things the other rule has are exactly the two this one lacks",
+      "t": 60.96,
+      "vo": "His has no size limit and no end date.",
+      "shows": "THE TWO ABSENCES, NAMED"
+    },
+    {
+      "t": 65.07,
+      "title": "ONE SHADOW, TWO OUTCOMES",
+      "vo": "Near Anchorage that adds little, since the gas shortage already blocks a big one.",
+      "draw": {
+        "subject": "a hard centre seam with the Railbelt machine left and the wellhead machine right",
+        "action": "one boom's shadow sweeps across both panels and only one side changes",
+        "emotion": "revelatory",
+        "annotation": "ALREADY STOPPED  vs  THE ONLY THING IN THE WAY"
+      },
+      "shows": "THE RAILBELT MACHINE IS ALREADY STOPPED",
+      "sfx": "shadow-sweep",
+      "means": "the same rule changes nothing on one side and everything on the other",
+      "choreo": {
+        "primary": "the freeze's shadow sweeps left to right across both panels of a hard split",
+        "reaction": "on the left nothing moves because the gas gate's arm is already down, on the right the boom actually falls and lands on the roof",
+        "ambient": "the left machine's idle fan keeps running and its lamp never changes state"
+      }
+    },
+    {
+      "title": "THE LEFT SIDE NEVER CHANGES",
+      "draw": {
+        "subject": "the Railbelt machine under the passing shadow",
+        "action": "holds completely unchanged as the shadow clears it",
+        "emotion": "unchanged",
+        "annotation": "NOTHING HERE MOVED"
+      },
+      "choreo": {
+        "primary": "the shadow clears the left panel and the machine is exactly as it was",
+        "reaction": "its lamp never changed state and the gas gate's arm is still down",
+        "ambient": "its idle fan keeps turning at the same rate"
+      },
+      "sfx": "fan-hold",
+      "means": "the new rule added nothing where a real constraint was already binding",
+      "t": 68.54,
+      "vo": "Near Anchorage that adds little, since the gas shortage already blocks a big one.",
+      "shows": "THE LEFT SIDE NEVER CHANGES"
+    },
+    {
+      "t": 70.03,
+      "title": "THE BOOM LANDS, AND NOTHING ELSE DOES",
+      "vo": "At the wellhead it's the only thing in the way, and that one makes its own power instead of drawing yours.",
+      "draw": {
+        "subject": "the wellhead machine under the landed boom",
+        "action": "takes the weight and keeps running on its own umbilical",
+        "emotion": "decisive",
+        "annotation": "IT MAKES ITS OWN POWER"
+      },
+      "shows": "THE BOOM LANDS AT THE WELLHEAD",
+      "sfx": "boom-land",
+      "means": "the project it decides is the one that never drew from the grid",
+      "choreo": {
+        "primary": "the boom settles onto the roof and the machine holds under it",
+        "reaction": "the machine's own generator keeps turning and its lamp does not flicker",
+        "ambient": "the flare breathes on the far plane and the gravel takes its moving glow"
+      }
+    },
+    {
+      "t": 73.81,
+      "title": "THE SIGNATURE SHOT",
+      "vo": "At the wellhead it's the only thing in the way, and that one makes its own power instead of drawing yours.",
+      "draw": {
+        "subject": "the wellhead machine with its own generator",
+        "action": "runs on an umbilical into the gas beneath its own feet while a dashed line from a lit kitchen stops dead in open tundra",
+        "emotion": "quiet",
+        "annotation": "NEVER TOUCHES YOUR BILL"
+      },
+      "shows": "THE SIGNATURE SHOT",
+      "sfx": "line-deadstop",
+      "means": "and the household it was meant to protect was never connected to it",
+      "choreo": {
+        "primary": "the dashed line runs in from the far left and stops dead",
+        "reaction": "the wellhead machine goes on running on its own umbilical",
+        "ambient": "the flare glow moves on the gravel and never reaches the line's end"
+      }
+    },
+    {
+      "t": 77.98,
+      "title": "THE MISSING QUESTION",
+      "vo": "Condition it on where the power comes from, not on whether the building is new.",
+      "draw": {
+        "subject": "a conditional Gate's condition board",
+        "action": "lowers into place carrying a question that was never asked",
+        "emotion": "constructive",
+        "annotation": "WHERE DOES THE POWER COME FROM"
+      },
+      "shows": "THE MISSING QUESTION",
+      "sfx": "board-seat",
+      "means": "the question that would have sorted them was never asked",
+      "choreo": {
+        "primary": "the condition board lowers into place on the gate",
+        "reaction": "the gate's lamp wakes for the first time",
+        "ambient": "cottongrass moves across the whole foreground and the flare breathes on the far plane"
+      }
+    },
+    {
+      "t": 80.64,
+      "title": "THE RULE THAT WOULD HAVE SORTED THEM",
+      "vo": "Condition it on where the power comes from, not on whether the building is new.",
+      "draw": {
+        "subject": "the new condition board on the freeze's own post",
+        "action": "seats into the empty mount and the plate's slot cuts itself to match",
+        "emotion": "constructive",
+        "annotation": "NOT WHETHER THE BUILDING IS NEW"
+      },
+      "choreo": {
+        "primary": "the board seats and a slot cuts itself open in the plate beneath it",
+        "reaction": "daylight comes through the new opening for the first time and throws a bar on the road",
+        "ambient": "cottongrass moves across the foreground and the flare breathes far off"
+      },
+      "shows": "the missing condition, installed",
+      "means": "the fix is a line that can be drawn, not the absence of a rule",
+      "sfx": "slot-cut"
+    },
+    {
+      "t": 82.41,
+      "title": "SEVENTEEN",
+      "vo": "Seventeen people are running for governor. Ask them all two questions.",
+      "draw": {
+        "subject": "seventeen small nameplates",
+        "action": "land in a cascade across the frame",
+        "emotion": "direct",
+        "annotation": "SEVENTEEN PEOPLE ARE RUNNING FOR GOVERNOR / WE COULD NOT ESTABLISH THE FIELD'S OTHER POSITIONS"
+      },
+      "shows": "SEVENTEEN",
+      "sfx": "cascade-tick",
+      "means": "the field has not been asked it either",
+      "choreo": {
+        "primary": "seventeen nameplates land across the frame in a cascade",
+        "reaction": "one of them carries a plate and sixteen carry nothing",
+        "ambient": "the reporting-limit chip holds under them"
+      }
+    },
+    {
+      "title": "ASK THEM ALL",
+      "draw": {
+        "subject": "the seventeen nameplates",
+        "action": "turn to face camera together",
+        "emotion": "direct",
+        "annotation": "WE COULD NOT ESTABLISH THE FIELD'S OTHER POSITIONS"
+      },
+      "choreo": {
+        "primary": "the seventeen plates turn to face camera in a fast stagger",
+        "reaction": "one carries a platform and sixteen carry nothing",
+        "ambient": "the reporting-limit chip holds steady beneath them"
+      },
+      "sfx": "plate-turn",
+      "means": "the question is for the whole field, and we are honest that we do not know their answers",
+      "t": 85.01,
+      "vo": "Seventeen people are running for governor. Ask them all two questions.",
+      "shows": "ASK THEM ALL"
+    },
+    {
+      "t": 87.62,
+      "title": "THE BUTTON",
+      "vo": "What size triggers it, and what ends it?",
+      "draw": {
+        "subject": "the two questions as hard type",
+        "action": "stamp down over the uncut plate as the boom begins to rise again",
+        "emotion": "direct",
+        "annotation": "WHAT SIZE TRIGGERS IT / WHAT ENDS IT"
+      },
+      "shows": "THE BUTTON",
+      "sfx": "stamp-double",
+      "means": "so ask it",
+      "choreo": {
+        "primary": "two questions stamp down over the uncut plate",
+        "reaction": "the boom begins to rise behind them",
+        "ambient": "the same low dust drifts across the road as in frame 0, and the machine sits at the same edge and scale"
+      }
+    }
+  ],
+  "shots": [
+    {
+      "n": 1,
+      "framing": "wide-establish",
+      "transition_in": "hard-cut",
+      "thread": "build",
+      "camera": "static:frame 0 must be dead legible for the poster grade so the boom falls into a locked frame",
+      "stage3d": "planes",
+      "pov": "eye-level-immersive",
+      "layout": "single-object-void",
+      "motion_vector": "vertical-descent",
+      "hero_treatment": "instrument-as-subject",
+      "hero": {
+        "name": "ThresholdGate, the freeze",
+        "parts": 6,
+        "zones": 3,
+        "detail_note": "Striped boom, pivot and counterweight, aperture plate, crown clock, brow and eyes, decision lamp. Only the boom moves here, so the plate and clock read as hardware the film will come back to."
+      },
+      "scale": "wide",
+      "height": "low",
+      "t": [
+        0.0,
+        3.2
+      ],
+      "centered": "the boom drives down through frame centre and the machine skids up short beneath it",
+      "means": "open on the instrument acting before anyone has said what it measures"
+    },
+    {
+      "n": 2,
+      "framing": "macro-closeup",
+      "transition_in": "push-in",
+      "thread": "match",
+      "camera": "dollyThrough",
+      "stage3d": "flat:a single object face-on, depth would fight the read",
+      "pov": "macro-closeup",
+      "layout": "hud-instrument-frame",
+      "motion_vector": "push-in-only",
+      "hero_treatment": "data-as-subject",
+      "hero": {
+        "name": "the aperture plate and crown clock",
+        "parts": 5,
+        "zones": 2,
+        "detail_note": "Plate body, corner bolts, dashed ghost cut, clock bezel, empty hub. Both absences are dashed and labelled so they read as parts removed, never as an unfinished asset."
+      },
+      "scale": "insert",
+      "height": "eye",
+      "t": [
+        3.2,
+        7.4
+      ],
+      "centered": "the empty ghost cut sits dead centre with the machine small and soft through it",
+      "means": "carry the same object to a new vantage so the absence frames the thing it cannot measure"
+    },
+    {
+      "n": 3,
+      "framing": "subject-portrait",
+      "transition_in": "hard-cut",
+      "thread": "carry",
+      "camera": "static:the camera stops moving for a real named person which is the respect signal",
+      "stage3d": "planes",
+      "pov": "eye-level-immersive",
+      "layout": "centered-hero-lowerthird",
+      "motion_vector": "push-in-only",
+      "hero_treatment": "single-organic-hero",
+      "hero": {
+        "name": "the candidate, Character rig",
+        "parts": 4,
+        "zones": 3,
+        "detail_note": "Suit body, boxed nameplate, platform sheet, held pose. Played straight. No comic face and no gag anywhere in frame."
+      },
+      "scale": "medium",
+      "height": "eye",
+      "t": [
+        7.4,
+        12.9
+      ],
+      "centered": "the platform sheet held at chest height with the disclaimer card seating beside it",
+      "means": "name the person and bound the money in one world so neither can be read as insinuation"
+    },
+    {
+      "n": 4,
+      "framing": "wide-establish",
+      "transition_in": "whip-pan",
+      "thread": "build",
+      "camera": "truckAcross",
+      "stage3d": "planes",
+      "pov": "eye-level-immersive",
+      "layout": "stacked-layers",
+      "motion_vector": "horizontal-traverse",
+      "hero_treatment": "multiplicity-swarm",
+      "hero": {
+        "name": "three conditional Gates",
+        "parts": 6,
+        "zones": 3,
+        "detail_note": "Rounded head, brow and eyes, condition board, source line, verdict lamp, barrier arm. Each carries its real printed condition and reaches its own verdict, so a rule that can answer either way is visible as a mechanism."
+      },
+      "scale": "wide",
+      "height": "eye",
+      "t": [
+        12.9,
+        26.4
+      ],
+      "centered": "three condition boards in a row, each reaching its own verdict",
+      "means": "build the mechanism that already exists, then show the new instrument failing to discriminate inside it"
+    },
+    {
+      "n": 5,
+      "framing": "alt-vantage",
+      "transition_in": "map-travel",
+      "thread": "travel",
+      "camera": "craneDown+dollyThrough",
+      "stage3d": "planes",
+      "pov": "orbital-aerial",
+      "layout": "map-territory",
+      "motion_vector": "horizontal-traverse",
+      "hero_treatment": "landscape-as-subject",
+      "hero": {
+        "name": "the road and the tundra edge",
+        "parts": 4,
+        "zones": 2,
+        "detail_note": "Gravel road, last gate post, tundra band, horizon ridge. The road physically runs out, which is the argument that the existing gates end somewhere."
+      },
+      "scale": "extreme-wide",
+      "height": "high",
+      "t": [
+        26.4,
+        29.6
+      ],
+      "centered": "the last gate post leaving frame as bare ground opens ahead",
+      "means": "travel past the edge of the regime"
+    },
+    {
+      "n": 6,
+      "framing": "map-territory",
+      "transition_in": "graphic-match",
+      "thread": "build",
+      "camera": "riseWith",
+      "stage3d": "planes",
+      "pov": "top-down-map",
+      "layout": "map-territory",
+      "motion_vector": "assemble-build",
+      "hero_treatment": "structure-as-subject",
+      "hero": {
+        "name": "the parcel",
+        "parts": 4,
+        "zones": 2,
+        "detail_note": "Survey stakes, measuring chain, boundary trace, lease bar. 715.4 acres and 50 years are the two primary unimpeachable figures and both are drawn at true relative scale."
+      },
+      "scale": "wide",
+      "height": "overhead",
+      "t": [
+        29.6,
+        36.6
+      ],
+      "centered": "survey stakes walking past camera at ground height as the boundary closes behind them",
+      "means": "build the commitment the state actually made, at eye level and on the ground"
+    },
+    {
+      "n": 7,
+      "framing": "push-detail",
+      "transition_in": "mask-wipe",
+      "thread": "carry",
+      "camera": "static:a held blank page is the point and any move would imply something is happening on it",
+      "stage3d": "flat:interior tabletop",
+      "pov": "macro-closeup",
+      "layout": "single-object-void",
+      "motion_vector": "push-in-only",
+      "hero_treatment": "data-as-subject",
+      "hero": {
+        "name": "the blank statute book",
+        "parts": 4,
+        "zones": 2,
+        "detail_note": "Bound cover, two empty pages, desk plane, lamp pool. Replaces the pen that hovers and never signs, so the absence is real and no human is staged refusing to act."
+      },
+      "scale": "close",
+      "height": "eye",
+      "t": [
+        36.6,
+        44.2
+      ],
+      "centered": "the lease landing on the open book and every page riffling past empty",
+      "means": "carry the commitment to the thing that should have governed it and find nothing there"
+    },
+    {
+      "n": 8,
+      "framing": "two-up",
+      "transition_in": "whip-pan",
+      "thread": "match",
+      "camera": "dollyThrough",
+      "stage3d": "flat:the comparison must be face-on and equal or the staging argues for one side",
+      "pov": "macro-closeup",
+      "layout": "fullbleed-split",
+      "motion_vector": "assemble-build",
+      "hero_treatment": "instrument-as-subject",
+      "hero": {
+        "name": "the two aperture plates",
+        "parts": 5,
+        "zones": 2,
+        "detail_note": "Cut plate, red threshold edge, solid plate, dashed ghost cut, bolts. Booms deliberately off frame so the plates fill the width and the difference survives feed size."
+      },
+      "scale": "close",
+      "height": "eye",
+      "t": [
+        44.2,
+        52.0
+      ],
+      "centered": "a machine rolling past the last post into open ground, then the three gates tiny on one strip",
+      "means": "concede the vacuum, then concede the limit of our own claim in the same grammar"
+    },
+    {
+      "n": 9,
+      "framing": "alt-vantage",
+      "transition_in": "hard-cut",
+      "thread": "travel",
+      "camera": "orbitReveal",
+      "stage3d": "planes",
+      "pov": "eye-level-immersive",
+      "layout": "stacked-layers",
+      "motion_vector": "vertical-descent",
+      "hero_treatment": "structure-as-subject",
+      "hero": {
+        "name": "the wellhead machine",
+        "parts": 5,
+        "zones": 3,
+        "detail_note": "ServerMachine body, its own generator, umbilical into the ground, the boom resting on its roof, and a dashed line stopping dead in open ground. The widest empty space in frame is the gap that line never closes."
+      },
+      "scale": "wide",
+      "height": "low",
+      "t": [
+        52.0,
+        62.6
+      ],
+      "centered": "two plate faces filling the width, one cut and throwing a bar of daylight, one solid",
+      "means": "match to a version of the same instrument that has both missing numbers"
+    },
+    {
+      "n": 10,
+      "framing": "two-up",
+      "transition_in": "graphic-match",
+      "thread": "match",
+      "camera": "truckAcross",
+      "stage3d": "planes",
+      "pov": "eye-level-immersive",
+      "layout": "fullbleed-split",
+      "motion_vector": "horizontal-traverse",
+      "hero_treatment": "multiplicity-swarm",
+      "hero": {
+        "name": "the split, both machines under one shadow",
+        "parts": 6,
+        "zones": 3,
+        "detail_note": "Hard centre seam, the Railbelt machine already halted under a down arm, the wellhead machine on its pad, one travelling shadow, two outcomes. This is the fingerprint's declared fullbleed-split finally delivered at the payoff."
+      },
+      "scale": "medium",
+      "height": "eye",
+      "t": [
+        62.6,
+        70.2
+      ],
+      "centered": "a hard centre seam with one shadow crossing both panels",
+      "means": "state the inversion in one frame, so the redundancy and the decision are seen together"
+    },
+    {
+      "n": 11,
+      "framing": "push-detail",
+      "transition_in": "pull-out",
+      "thread": "build",
+      "camera": "craneDown+dollyThrough",
+      "stage3d": "planes",
+      "pov": "macro-closeup",
+      "layout": "single-object-void",
+      "motion_vector": "scroll-data",
+      "hero_treatment": "structure-as-subject",
+      "hero": {
+        "name": "the umbilical and the dead end",
+        "parts": 5,
+        "zones": 3,
+        "detail_note": "Machine feet, umbilical entering gravel, its own generator turning, the dashed line's terminal dash, and the empty ground between them. The pull-out is the film's second scale reveal and the gap is read in depth, not in width, so the 4:5 crop cannot amputate it."
+      },
+      "scale": "insert",
+      "height": "ground",
+      "t": [
+        70.2,
+        78.0
+      ],
+      "centered": "the umbilical entering the ground at the machine's feet, then the dead end of the dashed line",
+      "means": "pull out until the household's line and the machine are in one frame and never touch"
+    },
+    {
+      "n": 12,
+      "framing": "wide-establish",
+      "transition_in": "match-cut",
+      "thread": "match",
+      "camera": "static:it is frame 0 again and any drift would break the loop",
+      "stage3d": "planes",
+      "pov": "eye-level-immersive",
+      "layout": "grid-modular",
+      "motion_vector": "vertical-rise",
+      "hero_treatment": "data-as-subject",
+      "hero": {
+        "name": "the button",
+        "parts": 4,
+        "zones": 2,
+        "detail_note": "Uncut plate, two stamped questions, rising boom, and the machine back at the same edge and scale as frame 0 so the loop does not pop."
+      },
+      "scale": "wide",
+      "height": "low",
+      "t": [
+        78.0,
+        91.0
+      ],
+      "centered": "the two questions stamping down over the uncut plate as the boom starts to rise",
+      "means": "hand the unanswered question to the viewer and loop to frame 0"
+    }
+  ],
+  "hook": {
+    "pattern": "in-medias-res",
+    "frame1": "a striped boom mid-fall over a gravel road with a steel machine skidding short beneath it",
+    "headline": "The gate with no number",
+    "motion_by_s": 0.4,
+    "loopback": "the last shot is the same boom beginning to rise, matched to frame 0"
+  },
+  "reveals": [
+    {
+      "t": 30.29,
+      "type": "scale-pullback",
+      "what": "fifty years ratchets past one click per year and runs off frame as the parcel shrinks against the tundra",
+      "hold_s": 0.7
+    },
+    {
+      "t": 55.04,
+      "type": "build-on",
+      "what": "the slot is CUT on screen and daylight throws a bar of light through it onto the ground, then a pan one plate-width to where no light comes through",
+      "hold_s": 0.8
+    },
+    {
+      "t": 58.29,
+      "type": "build-on",
+      "what": "New York's hands sweep a full year against an absolutely still empty hub",
+      "hold_s": 0.6
+    },
+    {
+      "t": 73.81,
+      "type": "scale-pullback",
+      "what": "tight on the umbilical entering the ground at the machine's feet, then out to the whole tundra with the household's dashed line dying in the middle of it",
+      "hold_s": 0.8
+    }
+  ],
+  "open_loop": {
+    "plant_t": 19.21,
+    "pay_t": 58.29,
+    "what": "Two machines of visibly different size are presented to the freeze's plate and it stops BOTH identically, with the line that two numbers decide who this catches. Neither number is named until New York's rig arrives carrying both."
+  },
+  "audio_arc": {
+    "build_steps": [
+      0.0,
+      10.28,
+      27.38,
+      51.94
+    ],
+    "dip_at": 53.74,
+    "riser_at": 52.54,
+    "silence_at": 54.34,
+    "payoff_at": 55.04,
+    "button_pattern": "question"
+  },
+  "divergence_note": "The last four dispatches were night or dusk films (07-25 tungsten night, 07-26 a flat lit interior, 07-29 filament amber on black, 07-30 an instrument-blue abyss), because NightGrade existed and had no daylight counterpart, so the engine could only really build a lit night. DayGrade was written this run and this is the first high-key daylight Dispatch in five, under a thin overcast with a findable sun. The spatial signature is new too: eye-level-immersive plus fullbleed-split plus vertical-descent has not been used in the last four, where the signatures were cross-section-cutaway over stacked-layers, macro-closeup over grid-modular, exploded-diagram over single-object-void, and eye-level-immersive over stacked-layers. The hero is a net-new conditional-gate family rather than a sensing instrument, which breaks a run of machines that listen or look. And the central metaphor was deliberately changed mid-run away from a blank gauge, because 07-30 already used a gauge with no printed scale behind its needle as its own thesis image, and a needle with nothing to point at two films running is the same picture twice even though the axes gate would have scored the rest of the fingerprint as distinct.",
+  "cultural_note": "No characterized-object comedy is applied to any real named individual. The candidate is the human Character rig with a boxed nameplate, played straight, and the camera stops moving for him. The donor is not drawn at all. Institutions may be characterized, people may not."
+}

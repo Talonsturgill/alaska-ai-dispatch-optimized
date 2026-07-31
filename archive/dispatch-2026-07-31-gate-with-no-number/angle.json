@@ -1,0 +1,37 @@
+{
+  "run_id": "2026-07-31",
+  "thesis": "Alaska's data-center gate isn't missing, it's gas and interconnection, and a moratorium with no size threshold binds hardest on the one project the existing gates never touch: the facility that makes its own power at the wellhead and never competes with an Alaskan household for a kilowatt hour.",
+  "valence": "corrective-constructive",
+  "valence_defense": "Not doom, not boosterism, not another curious/mixed. It takes a side and names the missing option, which is exactly what brand.yaml's 'name the binary, name the missing option' instruction was written for. The diagnosis in the plank is RIGHT and the film says so plainly. The instrument is wrong, and the film shows why with primary documents rather than adjectives.",
+  "three_strongest_supporting_facts": [
+    "Chugach Electric on record to ADN 2026-05-05: 'We currently do not have gas to serve a large data center, but we do have generation capacity, so it depends on the size of the data center, their economics, project timing, and specific contractual terms of service.' The binding Railbelt constraint is FUEL SUPPLY, not permission.",
+    "Anchorage Assembly voted 10-2 in March 2026 on AO 2026-27, the first definition of data centers in the zoning code, requiring utility documentation of sufficient system capacity. A conditional test already exists in the borough where most Alaskans live, and an assembly built it, not a pause.",
+    "The platform names New York as its model. New York's pause covers HYPERSCALE facilities only, runs up to ONE YEAR, and lifts when a Generic Environmental Impact Statement sets standards (primary: the NY governor's 2026-07-14 release). Alaska's has no size threshold and no time cap. That scope gap is what decides which project gets caught."
+  ],
+  "the_fair_counterpoint_it_must_honor": "The vacuum the plank names is REAL and the film must say so without hedging: the State of Alaska issued a preliminary decision to lease 715.4 acres for 50 years for a gas-powered compute campus before writing a single statute on who pays for the power, and more than 500 Alaskans commented, fewer than a dozen supportive. Kreiss-Tomkins is the only candidate in the race with any instrument on the table. And the counter to my own thesis: Anchorage's rule is MUNICIPAL, one borough, while the North Slope lease sits on state land under DNR, so 'Alaska already has a process' is strictly 'Alaska has a patchwork.' The film states that limit out loud.",
+  "the_missing_option": "Condition the rule on WHERE THE POWER COMES FROM, not on whether the building is new.",
+  "the_two_questions_for_any_candidate": "What size triggers it, and what ends it?",
+  "conflict_of_interest_test": {
+    "test": "Remove every Anthropic name and the argument is unchanged.",
+    "result": "PASSES. Every load-bearing claim rests on a primary document (the platform text, the NY governor's release, the DNR public notice, Chugach on record, the Air Force solicitation, Anchorage AO 2026-27). Not one depends on who any donor works for.",
+    "why_this_decided_it": "This is the deciding reason the mechanism angle was chosen over the human angle. A story about Anthropic employees, produced by an Anthropic model, must rest on ground the conflict cannot steer. Note that 'avoid the subject' FAILS the same test, because avoidance means telling an Alaskan less than we know, so the money is named plainly and briefly and then the film moves to the plank."
+  },
+  "runner_ups_and_why_they_lost": [
+    {"angle": "THE HUMAN (the donor's on-record fear of AI pace)", "why_it_lost": "Thomas makes NO Alaska energy argument, so the film would have to build the bridge from his fear to Alaska's grid itself and signpost every cut to avoid misattribution. A spine that needs a disclaimer to avoid lying is not a spine. It is ALSO the angle most vulnerable to the charge that this film went easy on the company whose model produced it: it would render a $100,000 donor as a conscience-driven insider using only the quotes he chose for his own defense op-ed. Kept as: a 3-second hook that gets deliberately deflated, plus his verbatim disclaimer on screen."},
+    {"angle": "THE MONEY (no contribution limits since 2021, August ballot)", "why_it_lost": "Its only real punch requires flattening six individuals into 'the AI company funded a candidate', which is factually false, not merely unfair. Strip that and it is a ballot-measure explainer that would run identically if the six donors sold insurance. Kept as: the fairness counterweight ($100,000 is the 4th or 5th largest single gift in this race) and one honest line that the giving is legal and ordinary."},
+    {"angle": "THE NEW YORK CONTRAST AS SPINE", "why_it_lost": "Demoted to a BEAT by the red team's strongest objection, which I accept. Stated as SCOPE ('he cited the wrong precedent') it is a paperwork scoop that earns a shrug. Stated as CONSEQUENCE (the missing line decides which project gets caught) it is load-bearing. It appears as consequence or not at all."}
+  ],
+  "hard_constraints_carried_into_the_board": [
+    "SIX INDIVIDUALS GAVE. Anthropic the company gave nothing, published nothing, holds no position in the record. 'Anthropic funded a candidate' is FACTUALLY FALSE. Never 'Anthropic declined to comment' either, nobody reported asking.",
+    "Thomas's verbatim disclaimer goes ON SCREEN if the film names Anthropic: the views in his op-ed are his alone and do not represent Anthropic.",
+    "NEVER cut from Thomas's 'terrified' quote to Alaska grid or Cook Inlet material. He makes no Alaska energy argument. That juxtaposition is misattribution, not a stylistic risk.",
+    "THE STAK DATES ARE CONTESTED between our two artifacts (05-12/close 06-15 vs 05-19/extended 07-17). Say 'this spring' or 'May 2026'. NO precise day and NO deadline on screen.",
+    "Use 715.4 acres and 50 years (PRIMARY, unimpeachable). Do NOT air any dollar size for Stak (20x discrepancy) and treat the gigawatt figure as explicitly attributed reporting or drop it.",
+    "Gallup only with 'in their local area' verbatim. Never the 27 percent favor figure.",
+    "A majority of the MONEY came from the Lower 48, NOT a majority of donors.",
+    "Matt Heilala is the self-funder (more than $1.4M of nearly $1.6M). Bernadette Wilson is a different candidate (~$460,000). TWO analysts conflated them.",
+    "Do NOT claim the other 16 candidates have or lack a data-center position. It could not be established.",
+    "Never imply we checked APOC filings. The portal could not be queried."
+  ],
+  "room": {"analysts": 4, "lenses": ["policy", "human", "money", "red-team"], "cross_challenge": "The red team was briefed on the other three theses and pre-broke each; its objections are recorded in the runner-up reasons above and were accepted rather than argued down.", "synthesis_by": "orchestrator"}
+}

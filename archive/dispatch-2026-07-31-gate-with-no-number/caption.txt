@@ -1,0 +1,19 @@
+Alaska's first candidate to put a data center moratorium in writing modeled it on New York's. New York's is narrower in two specific ways.
+
+Jonathan Kreiss-Tomkins wants every new Alaska data center frozen until the Legislature writes rules. His platform names New York State as the model. New York's pause covers hyperscale facilities only, runs up to one year, and lifts when a study sets standards. His has no size threshold and no end date.
+
+That gap decides which project gets caught, and it runs the opposite way from what you would expect.
+
+Near Anchorage, two real gates already stand. Chugach Electric told ADN in May it doesn't have the gas to serve a large data center. It has generation capacity. It doesn't have fuel. And in March the Anchorage Assembly voted 10 to 2 to write data centers into the zoning code for the first time, making approval conditional on a developer documenting the utility has capacity. A blanket freeze adds very little on top of that, because a gas shortage is already binding.
+
+North of the Railbelt, nothing like that reaches. This spring the state issued a preliminary decision to lease 715.4 acres of state land for a gas fired compute campus, before the Legislature had written a single statute on who pays for the power. More than 500 comments came in. Fewer than a dozen were supportive.
+
+So the diagnosis is right. There is a hole. But the instrument lands hardest on the one facility that makes its own power at the wellhead and never competes with a household for a kilowatt hour.
+
+The honest limit on my own argument is that Anchorage is one borough and that lease is state land, so what Alaska has is a patchwork, not a process.
+
+The missing option isn't no rule. It's a rule conditioned on where the power comes from, rather than on whether the building is new.
+
+Seventeen people are running for governor. What size should trigger a pause, and what should end it?
+
+#Alaska #AIPolicy #DataCenters #Energy #AlaskaPolitics

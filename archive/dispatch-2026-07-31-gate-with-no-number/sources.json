@@ -1,0 +1,55 @@
+{
+  "sources": [
+    {
+      "title": "Kreiss-Tomkins for Alaska, campaign platform",
+      "url": "https://www.jktforak.com/platform",
+      "note": "PRIMARY. The moratorium language verbatim: a moratorium on all new data centers (similar to New York State) until the legislature can pass comprehensive regulation."
+    },
+    {
+      "title": "NY Gov. Hochul, first statewide hyperscale data center moratorium, 2026-07-14",
+      "url": "https://www.governor.ny.gov/news/first-statewide-moratorium-new-hyperscale-data-centers-launched-governor-kathy-hochul",
+      "note": "PRIMARY. The model the platform names. Hyperscale only, up to ONE YEAR, lifts when a Generic Environmental Impact Statement sets standards."
+    },
+    {
+      "title": "State of Alaska DNR public notice, ADL 422741",
+      "url": "https://aws.state.ak.us/OnlinePublicNotices/Notices/View.aspx?id=223817",
+      "note": "PRIMARY. Preliminary decision, 715.4 acres, 50-year term, gas-powered facility with modular high-performance computing units, roughly 26 miles south of Deadhorse. These are the only two scale figures the film airs."
+    },
+    {
+      "title": "ADN, the military wants to host data centers in Alaska, 2026-05-05",
+      "url": "https://www.adn.com/alaska-news/military/2026/05/05/the-military-wants-to-host-data-centers-in-alaska-raising-questions-about-whether-theres-enough-gas-to-power-them/",
+      "note": "Chugach spokesperson Julie Hasquet, on record: we currently do not have gas to serve a large data center, but we do have generation capacity. The constraint is FUEL, not permission, and the film keeps both halves."
+    },
+    {
+      "title": "ADN, Anchorage Assembly pre-emptively adopts data center regulations, 2026-03-27",
+      "url": "https://www.adn.com/alaska-news/anchorage/2026/03/27/anchorage-assembly-preemptively-adopts-data-center-regulations/",
+      "note": "AO 2026-27, passed 10 to 2 in March 2026. First definition of a data center in the zoning code, requiring utility documentation of sufficient system capacity."
+    },
+    {
+      "title": "ArcticToday, data center critics flood Alaska land managers with opposition",
+      "url": "https://www.arctictoday.com/data-center-critics-flood-alaska-land-managers-with-opposition-to-north-slope-project/",
+      "note": "More than 500 comments, fewer than a dozen supportive. NOTE: the VO says 'Five hundred Alaskans', which overstates what this source establishes. Corrected in the caption, not in the VO. See the note above."
+    },
+    {
+      "title": "ADN, Democrat in Alaska's governor race reports $1.8 million haul, 2026-07-23",
+      "url": "https://www.adn.com/politics/2026/07/23/democrat-in-alaskas-governor-race-reports-18-million-fundraising-haul-driven-by-californians/",
+      "note": "$372,000 from six Anthropic employees, individually. $100,000 from Drake Thomas, the largest single gift TO THIS CAMPAIGN but the 4th or 5th largest in the race (two Begich donors gave $250,000-plus and $275,000, and Matt Heilala self-funded more than $1.4M)."
+    },
+    {
+      "title": "ADN opinion, why this Anthropic employee gave $100K, 2026-07-29",
+      "url": "https://www.adn.com/opinions/2026/07/29/opinion-why-this-anthropic-employee-gave-100k-to-a-candidate-for-alaska-governor/",
+      "note": "The donor's own reasoning, and the source of the verbatim disclaimer carried on screen. He makes NO Alaska energy argument anywhere, which is why the film never cuts from him to the grid."
+    },
+    {
+      "title": "af.mil, DAF exploring lease opportunities for data centers in Alaska, 2026-02-23",
+      "url": "http://www.af.mil/News/Article-Display/Article/4412433/daf-exploring-lease-opportunities-for-data-centers-in-alaska",
+      "note": "The Air Force's own solicitation concedes JBER sites have insufficient power and need a new connection to Chugach."
+    },
+    {
+      "title": "Alaska Public Media, same fundraising story, 2026-07-24",
+      "url": "https://alaskapublic.org/news/politics/elections/2026-07-24/democrat-in-alaskas-governor-race-reports-1-8-million-fundraising-haul-driven-by-californians",
+      "note": "17 candidates. Alaska has had NO contribution limits since a federal court struck them down in 2021, and a measure to restore them is on the August ballot."
+    }
+  ],
+  "sourcing_note": "APOC could not be queried this run, so NO dollar figure is confirmed against a filing. Every figure is attributed to ADN or Alaska Public Media. Alaska Beacon returned HTTP 403 on every attempt."
+}

@@ -1,0 +1,18 @@
+{
+  "run_id": "2026-07-31",
+  "found_at_rung": "queued",
+  "rungs": [
+    {"rung": "queued_story", "attempted": true,
+     "note": "queue/next_story.json queued_for 2026-07-31 by owner directive (merged to main in PR #81). Phase 0.5 of the routine: research and the escalation ladder are SKIPPED, the pick was already worked. Zero WebSearch budget spent on finding a story."}
+  ],
+  "locked_story": {
+    "slug": "anthropic-donors-alaska-governor-data-center-moratorium",
+    "headline": "Anthropic employees put $372,000 into an Alaska governor candidate who wants to freeze every new data center in the state",
+    "entities": "kreiss-tomkins, drake thomas, anthropic employee donations, apoc campaign finance, alaska data center moratorium, alaska governor race 2026, ai policy platform",
+    "queued_on": "2026-07-30",
+    "why": "First Alaska statewide candidate to put a data-center moratorium in writing, in a state where the Air Force is marketing acreage for large loads, a gigawatt-scale North Slope project is pending, and the Railbelt utilities are already short on gas. Puts Alaska energy politics inside the national AI money fight.",
+    "claims_status": "ALL UNVERIFIED at lock time. Phase 2 adversarial fact-check is mandatory and was run this session (two independent validators). A queued story buys no pass on the fact-check.",
+    "conflict_of_interest": "This Dispatch is about Anthropic employees, and the automation that produces it runs on an Anthropic model. The 2026-07-30 run DECLINED the story on those grounds and escalated it. The owner overruled and directed it be produced, with explicit fairness requirements recorded in queue/next_story.json. Those requirements are treated as binding. Disclosure is internal (Gmail draft, owner-only) per the owner's ruling that no public disclosure is wanted."
+  },
+  "dedupe": {"rechecked_at_run_time": true}
+}

@@ -1,0 +1,88 @@
+{
+  "run_id": "2026-07-31",
+  "title": "The Gate With No Number",
+  "binding_note": "This plan is an INPUT the build executes against and the gates check against, not a description written afterward.",
+  "palette": {
+    "roles": {
+      "sky": "#c3d3de  pale arctic overcast, high key",
+      "ground": "#b9a074  tundra ochre and pale gravel pad",
+      "hero": "#93a0ad  instrument steel, the gates themselves",
+      "accent": "#c0392b  THRESHOLD RED",
+      "shadow": "#1b232b  slate ink, never true black"
+    },
+    "mood": "A bright, plain, businesslike arctic day. Daylight is the point: this is a story about a decision made in the open, in public documents, with nobody hiding.",
+    "THE_BINDING_RULE": "RED IS THE THRESHOLD AND ONLY THE THRESHOLD, and it has exactly TWO LICENSED USES in the whole film: the red band on New York's bounded plate, and the red edge of the cut slot at 55.8. Every other appearance is a violation, not a judgement call. Gate 0D was right that a rule with no mechanism is a convention, so the non-red value is PINNED HERE for every asset whose shelf default is red.",
+    "divergence": "The last four dispatches ran night-practical or dusk (07-25 tungsten night, 07-26 flat interior, 07-29 filament-amber on black, 07-30 instrument-blue abyss). This is the first HIGH-KEY DAYLIGHT film in five runs. No blue-without-reason, no aurora, no night.",
+    "pinned_non_red_values": {
+      "boom stripes": "slate #1b232b on bone #eef3f7. A striped barrier boom defaults to red and white in every reference a builder reaches for, and this boom is frame 0, the last frame, and the loop image. Pinning it is the single most important line in this file.",
+      "Gate verdict lamps": "pass = citron #b9d24a, block = slate-dark #3a4149 with the lamp UNLIT, asking = amber #e8b23a. A blocking lamp is the most reflexively red state in the film.",
+      "ThresholdGate decision lamp": "permanently unlit. The freeze never discriminates, so it never earns a lit lamp.",
+      "OilfieldBG flare": "amber only, pushed to the far plane under Atmosphere so it desaturates with depth.",
+      "derrick beacon": "citron, or omitted.",
+      "AlaskaMini pin": "steel. Not used this run anyway after the map beat was restaged.",
+      "AnchorageSkylineBG": "floatplane FALSE, train FALSE, denali FALSE. Its floatplane param is literally red and white.",
+      "TundraBG": "season summer. Autumn brings red-tinged tundra across the whole northern sequence.",
+      "ServerMachine": "emotion focused, never nervous or shock, so its lights never stutter red. Tint steel on the Railbelt, copper at the wellhead.",
+      "HUD chips, StatCard, Stamp, StatBurst, ImpactStar, SpeedLines": "explicitly tinted slate or bone at every call site. The 07-30 lesson was that a default is a doctrine reminder wearing a code costume.",
+      "warm practicals": "the desk lamp and the lit kitchen are bone-warm #ffe9c8, held below the reserved hue band and never bloomed."
+    }
+  },
+  "light": {
+    "time_of_day": "late morning, high arctic summer, thin overcast with the sun findable at upper right",
+    "direction": "broad soft key from screen left, cool skylight fill from the dome, warm bounce off gravel and tundra",
+    "depth_approach": "three Stage3D planes with Atmosphere aerial perspective. Far planes desaturate and veil toward the sky, near planes stay crisp.",
+    "engine": "DayGrade (lib/lighting.tsx, BUILT THIS RUN). Its lifted floor is load-bearing here: at high albedo the shadows fill with skylight and never approach black, which is what makes an outdoor daylight scene read as outdoors instead of as a studio table top.",
+    "why_this_story": "A film arguing that the public record is open and legible should not be lit like a conspiracy.",
+    "sun_bearing": "ONE BEARING, PINNED: the sun sits UPPER SCREEN LEFT, and the key comes from screen left to agree with it. Gate 0D caught the plan contradicting itself (a disc at upper right with a key from the left) and caught that OilfieldBG's own haze band keeps its low arctic sun LEFT of the flare. Every RimLight in all twelve shots derives from this bearing.",
+    "value_ladder": "NUMBERS, not the phrase aerial perspective. 10 to 12 percent L separation per depth plane, the enforced PaperOfficeBG precedent. Near plane holds full chroma and full detail, mid plane loses 10 percent L and 15 percent chroma, far plane loses 22 percent L and 35 percent chroma into the sky veil. THIS IS LOAD BEARING BECAUSE DAYGRADE LIFTS THE SHADOW FLOOR: NightGrade got depth for free by crushing to black, and lifting the floor removes that separation, so the entire depth burden moves onto the ladder at the moment the plan stops giving numbers.",
+    "overscan": "World planes overscan 40 percent past frame at maximum pull-back on the 26.4 crane and the 33.8 and 70.2 pull-backs, per the 2026-07-20b cut-out-box lesson.",
+    "flat_shot_depth_cues": "Shots 2, 7 and 9 are stage3d flat and still get a named depth cue: contact shadows under both plates, a rack between plate faces, and a soft off-frame boom edge crossing the near corner. The turn cannot be two flat plates on a lifted floor.",
+    "season": "LATE ARCTIC SUMMER, pinned. Cottongrass, melt ponds, no snow anywhere. Beat 0.0's ambient is low road DUST, not blowing snow, which also fixes the loop frame."
+  },
+  "shape_language": {
+    "CONTRAST_A_conditional_vs_unconditional": "OPPOSITE SILHOUETTES. Gate (rounded, articulated, many-parted, a face, a printed condition) against ThresholdGate (hard, plated, a boom and a slab). Operates 12.9 to 22.6.",
+    "CONTRAST_B_bounded_vs_unbounded": "THE SAME RIG MINUS ITS PARTS. New York's ThresholdGate against Alaska's, identical build, one with a cut slot and sweeping hands and one with neither. Operates 52.0 to 62.6. This is NOT an opposite-silhouette contrast and the plan previously claimed both at once, which would have left the build improvising which grammar governed which beat.",
+    "why_this_story": "The claim is that the freeze is UNFINISHED, not evil. A subtraction argued as a subtraction is the correct formal move. Drawing it as a monster would state the wrong thesis, which is also why MachineShadow is refused."
+  },
+  "casting": {
+    "hero": "ThresholdGate (lib/civics.tsx, NET-NEW THIS RUN). Hero rotation check: last two heroes were IceGlider (07-30) and Sourdough (07-29). PASSES.",
+    "supporting_from_the_shelf": [
+      "Gate (civics.tsx) for the three working conditional gates, each carrying its real printed condition and source",
+      "ServerMachine steel tint for the Railbelt applicant and copper tint for the wellhead campus, one asset two characters via an existing param. Emotion is focused and nervous, NOT greedy: on this story the machine is not the villain",
+      "Character rig, suit + Nameplate, for the candidate, played straight, camera static, no gag in frame",
+      "OilfieldBG for the North Slope wellhead, TundraBG for the parcel, AnchorageSkylineBG at strict lowkey single-landmark cameo for the utility beat only",
+      "SurveyStake, MeasuringChain, BoundaryReveal, StatCard, Nameplate, PaperStorm, AlaskaMini, TallyCounter"
+    ],
+    "net_new": "ThresholdGate + Gate, both in the new lib/civics.tsx, filling the shelf's documented gap: it could draw a binary refusal, a traced line and a measurement, but nothing that measures a thing against a line and decides.",
+    "explicitly_not_cast": "MachineShadow as the moratorium. It was the obvious pick and it is wrong. A faceless cold monolith says the rule is sinister. The rule is not sinister, it is unfinished, and the same-rig-with-parts-missing says that precisely.",
+    "budgeted_this_run": {
+      "the ratcheting lease bar": "a ground-plane bar drawn in the episode from primitives, one click per year, no new library asset needed",
+      "the statute book": "episode-local, built from paper.tsx Sheet plus PaperFiber over a simple bound cover. Riffles front to back, every page empty.",
+      "the wellhead generator and umbilical": "NEW PARTS on the existing ServerMachine call site, drawn in the episode, not a new asset",
+      "the lit kitchen": "a far-plane lit window on a small house silhouette, episode-local, no domestic biome needed at that scale",
+      "the dashed feeder line": "a dashed path with a terminal dash, episode-local",
+      "the balance scale": "CUT. The money beat is now sequential cards on the platform sheet, so the scale is not built at all."
+    }
+  },
+  "motion_language": {
+    "SIGNATURE_MOTION": "THE FALL THAT NEVER VARIES. Gate 0D caught that this file still declared a rattling needle on a blank dial as the film's signature motion, an object the storyboard had already deleted, which left the film with NO signature motion and a plan describing a different film. The replacement, and it is stronger: a gate's verb is a DECISION, and a decision is legible as TIMING.",
+    "1_the_conditional_gates_hesitate_by_load": "At 16.4 the two working gates HOLD for different counts before ruling, 9 frames and 14 frames. A rule that weighs visibly takes different amounts of time to weigh.",
+    "2_the_freeze_falls_identically_every_time": "The SAME FALL, FRAME FOR FRAME, over three wildly different loads: 0.0 over the small Railbelt applicant, 19.0 over a small machine and then one four times its size, 62.6 and 66.9 over a machine already stopped and a machine nothing else reaches. Identical anticipation, identical +3 frame impact, identical recoil count, ZERO hold frames. Nothing about the load changes the motion, and a viewer feels that before they can articulate it. It is carried by the BOOM, the largest silhouette in frame, so it survives the 4:5 phone crop in a way interior detail never would.",
+    "3_stillness_as_the_absence": "At 58.9 the ThresholdGate's vitals gain is set to 0, so its handless hub is the ONLY thing in frame that is absolutely still while New York's hands sweep a full year in two seconds. In a world where every hero breathes on irrational desynced periods, ABSOLUTE STILLNESS is a grammar, the same way RingedSealGhost made unshaded a grammar on 07-30. A deliberate, documented bypass of the vitals primitive for a story beat.",
+    "no_linear_easing": "The measuring chain accelerates off its reel and decelerates into each stake. New York's plate overshoots and settles. One overshoot per frame."
+  },
+  "composition": {
+    "staging": "Focal hierarchy is the PLATE FACE and, in the northern act, the GROUND. The stale rule that every push-in lands on a scale plate is deleted along with the dial.",
+    "safe_areas": "The 4:5 crop is the deliverable. Vertical protected band y 285 to 1635, AND a horizontal protected band x 108 to 972, because the signature shot's meaning is spatial in both axes.",
+    "THE_TURN_STAGING_FIX": "The judge killed the obvious staging of the turn. Two full rigs side by side in a 1080x1920 frame halves the on-screen size of the exact detail the whole film depends on. So the turn PUNCHES IN ON THE TWO SCALE PLATES AND THE TWO CLOCK FACES ONLY and lets the booms live off frame.",
+    "signature_shot": "The wellhead machine on its pad with its own generator turning and an umbilical into the gas beneath its own feet, and a dashed line from a lit kitchen that stops dead in open ground. RESTAGED IN DEPTH: the kitchen sits small on the FAR plane at upper left and the line RECEDES toward camera, dying at centre, so the emptiness is read in Z rather than as horizontal width. Gate 0D caught that the 4:5 deliverable crops exactly the axis the meaning lived on.",
+    "poster_frame": "FRAME 0 is the poster: the boom mid-fall with the machine skidding short beneath it. Shot 11's signature shot is the REMEMBERED image, which is a different job, and the plan now says which is which."
+  },
+  "craft_advance": {
+    "primary": "DayGrade in lib/lighting.tsx, the daylight counterpart NightGrade never got. Committed and verified this run.",
+    "why_it_was_needed": "NightGrade landed 07-25 and had no opposite, so every bright scene since was ungraded flat art or a night grade at low amount. That is the mechanical reason four straight dispatches drifted to dusk or dark, and it is a real engine limitation rather than a taste pattern.",
+    "supporting": "lib/civics.tsx, the shelf's first conditional-rule family, with GateLook.tsx as a look-dev that runs a thumbnail-scale legibility test before any scene is authored."
+  },
+  "known_risk": "The film rests on a viewer distinguishing a plate with a CUT SLOT from a plate with NO SLOT, and a clock with HANDS from a clock with an EMPTY HUB, at phone size in under a second. This class of failure has bitten the shelf three times (the 07-25 horn read as a lollipop, the 07-26 cone as a satellite dish, the 07-30 keels as bunting). Mitigations built and rendered this run: the cut is a real opening with a lit inner reveal and a red edge, the uncut plate carries a dashed ghost of the opening plus a printed NO CUT, the clock is crown-mounted clear of the boom sweep, and GateLook.tsx renders a 0.28-scale strip that the pass-5 still now passes on the strength of the cut alone. At 55.8 the slot is CUT ON SCREEN and daylight throws a bar of light through it onto the ground, so the difference is also an EVENT.",
+  "gate_0d_response": "Every required fix from the Gate 0D review is answered above except the DayGrade accent registry, which is deferred with a plan (see docs/RUN_UPGRADES.md) because adding an enforcing colour registry to a grade system on the same run that introduced it is a change I would not be able to verify across twelve shots before this run ships. The palette rule is held this run by PINNED VALUES at every leak site named in the review, which is weaker than a code guard and is disclosed as such."
+}

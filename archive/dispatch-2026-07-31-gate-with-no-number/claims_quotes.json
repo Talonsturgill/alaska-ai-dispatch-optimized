@@ -1,0 +1,36 @@
+{
+  "validator": "B — quotes, donor reasoning, energy context",
+  "run_id": "2026-07-31",
+  "verbatim_safe": {
+    "thomas_terrified": "The honest answer is that I'm terrified by the extremely rapid pace of AI development, and I wish it were slower.",
+    "thomas_race": "AI companies are stuck in a race to build powerful AI as fast as possible without the level of testing, safeguards and transparency that the public should demand of them.",
+    "thomas_bridge": "I worry that none of my efforts to improve things at just one company will be enough if there aren't forward-thinking people like JKT who can help pass laws that will protect the public on a greater scale.",
+    "thomas_mom": "Among JKT's field-leading pool of Alaskan donors is my mom in Kenai.",
+    "jkt_process": "I think very clearly we should have a process and a policy we don't right now, and so until we do, nothing should happen,",
+    "sims_drilling": "Hilcorp is drilling 27 wells this year to meet existing contractual obligations, the next producer is drilling two wells. So we need activity in the Cook Inlet and that's what we are not seeing.",
+    "chugach_gas": "We currently do not have gas to serve a large data center, but we do have generation capacity, so it depends on the size of the data center, their economics, project timing, and specific contractual terms of service."
+  },
+  "mandatory_disclaimer": "Drake Thomas grew up in Kenai and now lives in California, where he works for Anthropic. The views in this op-ed are his alone and do not represent Anthropic. — THE FILM MUST CARRY THIS IF IT NAMES ANTHROPIC.",
+  "verified_facts": {
+    "stak_notice": "State of Alaska DNR public notice ADL 422741: preliminary decision, 50-year lease, 715.4 acres, ~26 mi south of Deadhorse, gas-powered facility with modular high-performance computing units. Decision date 2026-05-12, comments closed 06-15. PRIMARY.",
+    "chugach": "Julie Hasquet, Chugach Electric spokesperson, ADN 2026-05-05. Constraint is GAS, not generation capacity. Do NOT flatten to 'utilities can't serve data centers'.",
+    "jber": "Air Force solicitation concedes JBER sites have 'insufficient power' and need 'a new connection' to Chugach. af.mil release 2026-02-23, three bases: JBER, Eielson, Clear.",
+    "anchorage_zoning": "Anchorage Assembly 10-2 vote, March 2026, AO 2026-27, first definition of data centers in the zoning code; requires utility documentation of sufficient system capacity. Say 'in March 2026', no precise day.",
+    "gallup": "71 percent of Americans oppose constructing data centers for AI IN THEIR LOCAL AREA, 48 percent strongly. Fielded Mar 2-18 2026, n=1000, published May 13 2026. The words 'in their local area' are MANDATORY.",
+    "newsweek": "12 states with gubernatorial candidates backing moratoriums as of July 21 2026. Alaska not listed, but JKT's call was reported July 24, so the omission is a timing artifact. Phrase carefully."
+  },
+  "do_not_air": [
+    "Gallup 27 percent favor (Gallup says 'barely a quarter'; 27 is Newsweek-only)",
+    "Any Gallup phrasing that drops 'in their local area'",
+    "4,700 acres for the Air Force offering (403 snippet only; ADN says JBER sites are ~60 to 200 acres)",
+    "Rolling blackouts attributed to John Sims (that is the reporter's narration, doubly hedged)",
+    "AIDEA Mat-Su ~20,000-acre conveyance in any form (snippet only, never fetched)",
+    "STAK gigawatt figures as state-approved (absent from the primary notice; media-reported only)",
+    "'$500 million' STAK value, 'twice as much gas as urban Alaska's grid', MEA 30-minute rolling outages (all 403 snippets)",
+    "Drake Thomas 'grew up in Soldotna' (his own bio says Kenai)",
+    "1,569 Alaska donors as independent fact (verified only as HIS claim)",
+    "Any statement that Anthropic the company funded the campaign or holds this position"
+  ],
+  "critical_editorial_flag": "Thomas NEVER makes an Alaska energy argument. His stated reasoning is entirely about the pace and safety of AI development. If the film cuts from his quote to the Cook Inlet gas shortfall, that juxtaposition is THE FILM'S argument, not his. It must be signposted or it is a misattribution.",
+  "strongest_spine": "The primary-source pair: the State of Alaska's own May 12 notice offering a 50-year North Slope lease for a gas-powered compute facility, set against Chugach's on-record statement that it does not currently have gas to serve a large data center. Both verified, neither depends on a contested number."
+}

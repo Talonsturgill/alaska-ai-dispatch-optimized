@@ -1,0 +1,284 @@
+[
+  {
+    "text": "A candidate for governor wants",
+    "start": 0.0,
+    "end": 1.6099999999999999,
+    "seg": 0
+  },
+  {
+    "text": "every new Alaska data center frozen",
+    "start": 1.64,
+    "end": 4.029999999999999,
+    "seg": 0
+  },
+  {
+    "text": "until lawmakers act.",
+    "start": 4.06,
+    "end": 5.66,
+    "seg": 0
+  },
+  {
+    "text": "Picture that freeze as a gate",
+    "start": 6.44,
+    "end": 8.05,
+    "seg": 1
+  },
+  {
+    "text": "across a road.",
+    "start": 8.08,
+    "end": 9.06,
+    "seg": 1
+  },
+  {
+    "text": "Real gates already stand here.",
+    "start": 9.82,
+    "end": 11.66,
+    "seg": 2
+  },
+  {
+    "text": "Chugach Electric, the Anchorage",
+    "start": 12.46,
+    "end": 13.99,
+    "seg": 3
+  },
+  {
+    "text": "utility, says it doesn't have the",
+    "start": 14.02,
+    "end": 15.91,
+    "seg": 3
+  },
+  {
+    "text": "gas for a big one.",
+    "start": 15.94,
+    "end": 17.14,
+    "seg": 3
+  },
+  {
+    "text": "And since March, Anchorage requires",
+    "start": 17.78,
+    "end": 19.65,
+    "seg": 4
+  },
+  {
+    "text": "proof the power is there.",
+    "start": 19.68,
+    "end": 21.28,
+    "seg": 4
+  },
+  {
+    "text": "Now go north, onto state land,",
+    "start": 22.28,
+    "end": 24.54,
+    "seg": 5
+  },
+  {
+    "text": "where neither reaches.",
+    "start": 24.82,
+    "end": 25.74,
+    "seg": 5
+  },
+  {
+    "text": "This spring Alaska offered a fifty",
+    "start": 26.74,
+    "end": 28.95,
+    "seg": 6
+  },
+  {
+    "text": "year lease for a data center",
+    "start": 28.98,
+    "end": 30.41,
+    "seg": 6
+  },
+  {
+    "text": "burning gas at the wellhead.",
+    "start": 30.44,
+    "end": 31.96,
+    "seg": 6
+  },
+  {
+    "text": "It did that before writing any",
+    "start": 32.7,
+    "end": 35.01,
+    "seg": 7
+  },
+  {
+    "text": "statute on who pays.",
+    "start": 35.04,
+    "end": 36.28,
+    "seg": 7
+  },
+  {
+    "text": "Five hundred Alaskans commented",
+    "start": 37.52,
+    "end": 39.25,
+    "seg": 8
+  },
+  {
+    "text": "on it.",
+    "start": 39.28,
+    "end": 39.980000000000004,
+    "seg": 8
+  },
+  {
+    "text": "Fewer than a dozen were supportive.",
+    "start": 40.62,
+    "end": 42.48,
+    "seg": 8
+  },
+  {
+    "text": "So he's right that there's a",
+    "start": 43.42,
+    "end": 45.03,
+    "seg": 9
+  },
+  {
+    "text": "hole.",
+    "start": 45.06,
+    "end": 45.760000000000005,
+    "seg": 9
+  },
+  {
+    "text": "But Anchorage is one borough.",
+    "start": 46.14,
+    "end": 47.92,
+    "seg": 10
+  },
+  {
+    "text": "Alaska has a patchwork, not a",
+    "start": 48.66,
+    "end": 51.15,
+    "seg": 10
+  },
+  {
+    "text": "process.",
+    "start": 51.18,
+    "end": 51.88,
+    "seg": 10
+  },
+  {
+    "text": "His platform says it's modeled",
+    "start": 52.56,
+    "end": 54.15,
+    "seg": 11
+  },
+  {
+    "text": "on New York's.",
+    "start": 54.18,
+    "end": 55.14,
+    "seg": 11
+  },
+  {
+    "text": "New York's covers only the biggest",
+    "start": 55.7,
+    "end": 57.79,
+    "seg": 12
+  },
+  {
+    "text": "sites, and ends after a year.",
+    "start": 57.82,
+    "end": 59.74,
+    "seg": 12
+  },
+  {
+    "text": "His has no size limit and",
+    "start": 61.1,
+    "end": 63.01,
+    "seg": 13
+  },
+  {
+    "text": "no end date.",
+    "start": 63.04,
+    "end": 63.76,
+    "seg": 13
+  },
+  {
+    "text": "Near Anchorage that adds little,",
+    "start": 64.74,
+    "end": 66.44,
+    "seg": 14
+  },
+  {
+    "text": "since the gas shortage already",
+    "start": 66.62,
+    "end": 68.01,
+    "seg": 14
+  },
+  {
+    "text": "blocks a big one.",
+    "start": 68.04,
+    "end": 68.94,
+    "seg": 14
+  },
+  {
+    "text": "At the wellhead it's the only",
+    "start": 70.0,
+    "end": 71.53,
+    "seg": 15
+  },
+  {
+    "text": "thing in the way, and that",
+    "start": 71.56,
+    "end": 73.33,
+    "seg": 15
+  },
+  {
+    "text": "one makes its own power instead",
+    "start": 73.36,
+    "end": 75.05,
+    "seg": 15
+  },
+  {
+    "text": "of drawing yours.",
+    "start": 75.08,
+    "end": 75.86,
+    "seg": 15
+  },
+  {
+    "text": "Condition it on where the power",
+    "start": 77.22,
+    "end": 78.83,
+    "seg": 16
+  },
+  {
+    "text": "comes from, not on whether the",
+    "start": 78.86,
+    "end": 80.61,
+    "seg": 16
+  },
+  {
+    "text": "building is new.",
+    "start": 80.64,
+    "end": 81.4,
+    "seg": 16
+  },
+  {
+    "text": "Seventeen people are running for",
+    "start": 82.5,
+    "end": 84.27,
+    "seg": 17
+  },
+  {
+    "text": "governor.",
+    "start": 84.3,
+    "end": 85.0,
+    "seg": 17
+  },
+  {
+    "text": "Ask them all two questions.",
+    "start": 85.3,
+    "end": 86.94,
+    "seg": 17
+  },
+  {
+    "text": "What size triggers it, and what",
+    "start": 87.96,
+    "end": 90.21,
+    "seg": 18
+  },
+  {
+    "text": "ends it?",
+    "start": 90.24,
+    "end": 90.94,
+    "seg": 18
+  }
+]
