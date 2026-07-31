@@ -721,10 +721,36 @@ worlds, no flat single-tone fills, no glyphs that read as broken assets.
   moves) on the FINAL frames; verify frame freshness by mtime before packing.
 - GATE B: editor + flow-critic (POST) + a 3-JUDGE SCORER PANEL vs config/dispatch_rubric.yaml.
   Judges grade motion from the filmstrips (never "unverifiable from stills"). PANEL MEDIAN
-  decides, ship 9.0. On ANY failure: one dispatch-fixer agent per named failure, patch the
-  root cause, re-render (minutes), re-gate. If the median stalls below threshold with ZERO
-  hard blockers and only style-register complaints, deliver with the full scorecard disclosed
-  in the draft rather than looping forever; any CONCRETE named defect is always fixed first.
+  decides. On ANY failure: one dispatch-fixer agent per named failure, patch the root cause,
+  re-render (minutes), REBUILD THE EVIDENCE FROM THE NEW RENDER, and re-grade. Loop until the
+  median clears the bar.
+
+  THE MEDIAN MUST CLEAR THE BAR. THERE IS NO DISCLOSURE PATH (owner directive 2026-07-31,
+  "removing the permission u gave urself to ship slop... we made the quality gates for a
+  fucking reason"). The clause that used to sit here let a run deliver below threshold when it
+  judged the leftovers to be "style-register complaints", and on 2026-07-31 a run used it to
+  ship a 6.98 against an 8.6 bar. The leftovers it waved through were five boring stretches
+  with timestamps and a 15.3 second static ending, which are concrete named defects, not
+  cosmetics. A run grading its own remaining defects as cosmetic is the whole failure mode.
+  Disclosure is not a substitute for fixing. If the film is not good enough, it does not go.
+
+  THE PANEL MUST GRADE THE BYTES THAT SHIP. Same run, same directive. The 07-31 panel graded
+  one render, the run then fixed things and re-rendered TWICE, and the cut that shipped had
+  been seen by nobody. The reported score described a file that no longer existed. So the
+  verdict is now BOUND TO A HASH:
+
+      python3 scripts/ship_gate.py record --judges <j1>,<j2>,<j3>   # after the FINAL render
+      python3 scripts/ship_gate.py check                            # before ANY delivery
+
+  `record` refuses evidence older than the render it claims to describe. `check` hard-fails if
+  the median is under the bar, if fewer than three judges graded, if any deliverable's sha256
+  differs from the graded one, or if any contact sheet changed. RE-RENDER ANYTHING AND THE
+  HASHES STOP MATCHING AND THE GATE FAILS. It has NO override flag and adding one is a
+  regression, because the failure being prevented is a run granting itself permission.
+
+  NEVER SHIP A FRAME YOU HAVE NOT LOOKED AT, AND NEVER ASSUME A FIX WORKED. After every fix,
+  render the affected range and READ THE FRAME. The hash binding exists because "I fixed it and
+  re-rendered" is a guess until a frame from the shipping cut has been seen.
 
 ## PHASE 6B: THE LINKEDIN CAPTION
 
@@ -747,6 +773,22 @@ colon, any URL, or a sources/credit line in the body). GATE B: editor then score
 config/linkedin_caption_rubric.yaml (ship 8.5, zero hard_fails). Loop until both pass.
 
 ## PHASE 7: DELIVER, FULLY DONE (no pending states)
+
+0. **THE SHIP GATE, AND IT RUNS FIRST.** Encode everything (step 1), rebuild the review
+   evidence from THAT encode, have the 3-judge panel grade THAT evidence, then:
+
+       python3 scripts/ship_gate.py record --judges <j1>,<j2>,<j3>
+       python3 scripts/ship_gate.py check
+
+   `check` MUST exit 0 before a single byte is uploaded, before the Gmail draft is built,
+   and before the PR is merged. If it exits 1, THE RUN IS NOT DONE: fix the named defects,
+   re-render, rebuild the evidence, re-grade, re-record. Do not upload "so the links exist".
+   Do not draft the email "so it is ready". Do not merge "and fix it tomorrow". The gate is
+   the point at which a below-bar cut stops being deliverable, and it has no override.
+
+   If a run genuinely cannot reach the bar, it STOPS and notifies the owner with the panel's
+   named defects. That is a failed run and it is reported as one. It is not a shipped run
+   with a disclosure attached.
 
 1. Encode 9:16 master + 4:5 center-crop (H.264 High, faststart, AAC 48k, -14 LUFS, each
    < 100 MB); ffprobe-assert 1080x1920 and 1080x1350 so a wrong-ratio cut can never ship.
@@ -849,7 +891,18 @@ and compensating the relevant tribes where a story warrants it.
 A video Dispatch is ALWAYS delivered. FULL STOP — the old "or an explicit no-story-clears-the-bar
 stop" wording was removed on 2026-07-29 after a run used it to ship nothing. An empty run is a
 FAILED run. `scripts/story_gate.py check` must exit 0 before the angle room, and it will not let you
-stop until the whole escalation ladder is worked (Phase 3). A Gmail
+stop until the whole escalation ladder is worked (Phase 3).
+
+READ THIS NEXT SENTENCE BEFORE YOU USE THE ONE ABOVE (added 2026-07-31). "ALWAYS DELIVERED" IS
+ABOUT THE STORY, NOT ABOUT THE QUALITY BAR, AND IT IS NOT A LICENCE TO SHIP A BAD FILM. The two
+rules answer two different failure modes. 07-29 was a run that found no story and shipped nothing,
+so the ladder now refuses to let you stop looking. 07-31 was a run that had a good story, failed
+its own panel at 6.98 against an 8.6 bar, and shipped anyway. Both are failures. So: you may never
+skip the day for lack of a story, AND you may never ship a cut that has not cleared
+`scripts/ship_gate.py check`. If a run cannot reach the bar, it stops and notifies the owner with
+the panel's named defects, and that is reported as a FAILED RUN, not as a delivery with a caveat.
+Anyone reaching for "but a Dispatch is always delivered" to justify pushing a below-bar cut past
+the ship gate is repeating 07-31 with a different sentence. A Gmail
 draft exists with post text, credits (voice QC report included), sources, the honest scorecard,
 and WORKING permanent links for BOTH cuts (4:5 labeled as the LinkedIn feed cut). The run's
 entry was published to the alaskaaihq.com/videos feed via scripts/publish_feed.py (or its
