@@ -354,9 +354,35 @@ def cmd_record(a):
     print(f"  -> {VERDICT}")
 
 
+def check_beats_delivered():
+    """Did the build draw the events the board wrote? (scripts/beat_delivery.py)
+
+    Added 2026-07-31. Advisory-to-hard: it PASSES the run it was written for, at 100%, which
+    is itself the finding -- that run's beats all moved, and the panel still scored the picture
+    as static, so this is not the explanation for that score. It is here as a regression guard
+    against a build that quietly stops drawing what the board promised, which is a failure that
+    contact sheets hide and that cost a full review cycle to even suspect.
+    """
+    import glob as _g
+    if not _g.glob(str(OUT / "frames" / "frame_*.png")):
+        return
+    try:
+        sys.path.insert(0, str(ROOT / "scripts"))
+        import beat_delivery as _bd
+        r = _bd.analyze(str(OUT / "frames"), str(OUT / "storyboard.json"))
+        print(f"  beat delivery: {r['delivered']}/{r['beats']} beats draw a visible event")
+        if r["problems"]:
+            fail(r["problems"])
+    except SystemExit:
+        raise
+    except Exception as e:
+        print(f"  beat delivery: could not run ({e}); beats not delivery-checked")
+
+
 def cmd_check(a):
     check_render_is_current()
     check_not_blank()
+    check_beats_delivered()
     problems = []
     if not VERDICT.exists():
         fail([f"no {VERDICT.name}. The 3-judge panel has not graded this cut. "

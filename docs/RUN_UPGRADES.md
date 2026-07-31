@@ -1555,3 +1555,49 @@ phrase-aware caption breaking; and three factual repairs the film needed — a p
 decision no longer described as an opened lease, a utility's four-way conditional no longer
 flattened to "already stopped", and the "only rule in the way" claim qualified to match its
 own card.
+### 2026-07-31 — three hypotheses about the score, two of them wrong, measured not argued
+
+The four axes carrying 55% of the weighted deficit (Hook 0.44, Motion 0.38, Illustration 0.37,
+Composition 0.29) all point at the same complaint from all three judges: the film states its
+beats on cards instead of drawing them. Three explanations were proposed and each was tested
+against the artifacts rather than asserted.
+
+**H1: the storyboard schedules type where it should schedule events.** Built
+`scripts/beat_events.py` to refuse such a board at Gate 0. Result: **the board passes, 33 of
+33 beats name a physical event.** H1 is false. The board was not the problem.
+
+(That checker's first run reported five failures, all false: it listed verbs in third-person
+singular while boards are written in the base form, so "two gates rise" and "the hands sweep"
+read as no-events. Fixed with a de-inflector. A gate that cries wolf gets switched off.)
+
+**H2: the build does not draw what the board promised.** Two judge quotes supported it
+directly, including "storyboard 43.02 calls for the bare ground opens as a gap... no hole, gap
+or ground event is drawn". Built `scripts/beat_delivery.py` to diff the rendered frames across
+each beat's own window, ignoring the caption band so a swapping caption cannot mask a frozen
+picture. Result: **33 of 33 beats change, the weakest at 9.0% of the frame and the median far
+above that.** H2 is false too. The judges' "pixel-identical" readings came from 8-frame strips,
+which are 0.27 second windows, not from the beats.
+
+**H3, the one the measurements support:** the events are real and broadly distributed, and what
+the panel is scoring is their SCALE AND PLACEMENT. Measured over the whole film, motion above
+the caption band is distributed like this, top of frame to bottom:
+
+    y    0- 580   25-40% relative motion     <- sky
+    y  580-1044   50-87%
+    y 1044-1392   68-92%                     <- the working band
+
+81.7% of the frame carries motion at some point and the busiest quarter of rows holds only 38%
+of it, so this is not a film with a dead frame. It is a film whose upper third does very little
+while the argument happens in a band, which is exactly judge 1's "25-30% dead sky above" and
+the 47% low-information figure said twice.
+
+**What this means for the next run.** There is no mechanical gate that captures the remaining
+deficit, because what is left is genuinely compositional: how much of the frame the subject
+occupies, what the top third is doing, where the eye is sent. That is what the panel is FOR,
+and a checker that could score it would be the panel. The lever is at treatment: fewer, larger
+subjects, and a reason for the top third of every frame to exist.
+
+Both checkers are kept and wired in (`beat_events` at Gate 0, `beat_delivery` in `ship_gate`)
+as regression guards, with their pass results recorded here so nobody later mistakes them for
+the fix. They cost no render time and they close two real failure modes that contact sheets
+hide. Neither of them explains this run's score, and the file says so.

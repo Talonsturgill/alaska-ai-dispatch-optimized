@@ -475,6 +475,19 @@ def main():
     except Exception as _e:
         print(f"  [flow-advisory] flow_check could not run ({_e}); beats not flow-validated")
 
+    # ---- 7. PHYSICAL EVENTS: a beat must draw something happening, not label it ----
+    # scripts/beat_events.py. Cheap regression guard: it PASSES the 2026-07-31 board, which is
+    # the point of the note in that file -- the board was not that run's problem. It exists so
+    # a board that genuinely schedules type instead of events cannot reach a render.
+    try:
+        import beat_events as _be
+        _br = _be.analyze(str(sb_path))
+        for _p in _br["problems"]:
+            problems.append(f"beat-events: {_p}")
+        print(f"  [beat-events] {_br['with_event']}/{_br['beats']} beats name a physical event")
+    except Exception as _e:
+        print(f"  [beat-events] could not run ({_e}); beats not event-validated")
+
     if problems:
         for p in problems:
             print(f"FAIL [storyboard_check] {p}")
