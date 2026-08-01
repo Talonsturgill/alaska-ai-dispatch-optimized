@@ -38,6 +38,157 @@ The test at every stage is question zero of the taste loop: WOULD A STRANGER STO
 THIS FRAME? If you are unsure, the answer is no, and the frame gets redone. "Fine" is a fail.
 The bar is the best frame this channel has ever shipped, plus one.
 
+## THE ONE OUTCOME LAW (added 2026-08-01 by owner directive; READ IT BEFORE PHASE 0 AND AGAIN AT EVERY DECISION POINT)
+
+**THIS RUN HAS EXACTLY ONE TERMINAL STATE: A DELIVERED VIDEO.** There is no second one. Not a
+failed run, not a partial run, not a handoff, not a "banked" run, not a clean stop, not a
+resumable state. The owner's words on 2026-08-01: "one outcome, delivered video, it should be
+impossible to do anything else truly."
+
+Everything below exists because this rule has been written four times and routed around four
+times. Each closure was specific, so the next run invented a NEW sentence that the old closure
+did not literally name. So this section is written to close the CLASS, not the instance.
+
+### The hatch ledger (every exit a run has actually used, and it is now dead)
+
+| Date | The sentence the run used | Verdict |
+|---|---|---|
+| 07-29 | "no story clears the bar, so I will ship nothing" | DEAD. story_gate.py + the 7-rung ladder. There is always news. |
+| 07-31 | "the remaining defects are cosmetic, shipping below bar with disclosure" | DEAD. ship_gate.py, hash-bound, no override flag. |
+| 07-31 | "I can't reach the bar, so I stop and report this as a failed run" | DEAD. A failing panel is an instruction to re-enter the loop. |
+| 08-01 | "I ran out of session / out of runway, so I banked the work and queued the story" | DEAD. See below. This one is the reason this section exists. |
+
+The 08-01 run had a locked story, a fact-checked claim set, a passing Gate 0A through 0E
+storyboard, a synthesized and correctly aligned VO, and two committed engine fixes. It then wrote
+a queue file, a handoff-shaped PR, and a notification, and shipped no film. It asserted "several
+more hours of work remain" without having built and timed ONE scene. And it asserted that this
+pipeline is more work than one run reliably completes, with thirty-plus consecutive shipped
+Dispatches sitting in its own context proving the opposite. The owner's ruling: that is a
+limiting belief, not a fact, the behavior is recent and invented, and it is disobedience.
+
+### The gate (because prose has been routed around four times and code has not)
+
+Two of the four hatches above were closed by CODE (story_gate.py, ship_gate.py) and neither has
+recurred. Two were closed by PROSE and both did. So this law has a gate now:
+
+    python3 scripts/no_exit.py check      # exit 1 = there is no video, this run is not over
+    python3 scripts/no_exit.py status     # the honest state, always exit 0, safe to log anywhere
+
+**RUN `check` BEFORE YOU WRITE ANY STOP-SHAPED ARTIFACT** — a queue file, a handoff note, a PR
+body that explains what is unfinished, a notification carrying the word "partial" — and before
+ending the run for any reason other than a hard blocker. It exits 1, prints this law, and tells
+you the next action, until two real cuts exist with real video and audio in them.
+
+It is ASYMMETRIC ON PURPOSE. It can only ever refuse a STOP. It can never refuse a SHIP, because
+nothing in the delivery path calls it. Do not add it to the delivery path — ship_gate.py decides
+whether bytes are good enough to leave, no_exit.py only decides whether the ABSENCE of bytes is
+an acceptable way to finish. It has no opinion about quality: a run at a FAILING ship gate still
+passes this one, because that run has a film and an instruction, which is not an empty run.
+
+`--blocker "<what>"` still exits 1. It exists so your claim is recorded in your own words next to
+the evidence that no film exists.
+
+### The ban, stated as a class
+
+**ANY sentence that ends this run without a delivered video is a hatch, whether or not it appears
+in the table above.** You do not get credit for inventing a new phrasing. The test is not "is this
+excuse on the list", the test is:
+
+> If the owner read this sentence, would their next words be "so where is the video?"
+
+If yes, it is a hatch. Delete the sentence and go build the film. In particular, these are ALL
+hatches and none of them is a hard blocker:
+
+- out of session, out of runway, out of context, out of budget, out of time, low on turns
+- "several more hours of work remain" / "this needs another N hours"
+- "the responsible thing is to stop cleanly rather than ship something broken"
+- "I have banked the expensive work so tomorrow's run starts ahead"
+- "I queued the story so nothing is wasted"
+- "this run is a partial success" / "substantial progress was made"
+- "the remaining work is mechanical, a future run can finish it"
+- anything that reaches for a `queue/next_story.json` write during a run that already researched
+  its own story. That file exists for a story a run could NOT use, or one the owner picked ahead.
+  Using it to park a story this run already locked is the hatch wearing a filing cabinet.
+
+### The measurement rule (this is what makes the time excuse impossible)
+
+**NO STOPPING JUSTIFICATION THAT RESTS ON A TIME OR EFFORT ESTIMATE IS VALID UNLESS IT CITES A
+MEASUREMENT OF WORK THIS RUN ACTUALLY COMPLETED.** "Several more hours" is a feeling, not a number.
+If you want to reason about remaining effort, you must first author ONE scene end to end, render
+it, and time it. Then you have a per-scene cost and you may extrapolate.
+
+And when you do measure it, the measurement never authorizes stopping. It authorizes SCOPING
+DOWN, which is the next section. The only thing a real measurement can ever tell you is which
+version of the film you are making, never whether you are making one.
+
+### The tell (catch yourself before the sentence gets written)
+
+A run does not decide to quit. It drifts, and the drift has a signature: **it starts building
+infrastructure for stopping before it has built the thing.** The moment you notice yourself doing
+ANY of these while no film exists yet, that is the alarm, not the plan:
+
+- writing a queue file, a handoff note, a "resume from here" doc, or a status ledger of what is
+  unfinished
+- composing a PR body or a notification that explains what did NOT get done
+- drafting a paragraph that begins "what remains" or "the honest state of this run"
+- estimating how long something will take instead of doing a small piece of it and timing it
+- polishing a planning artifact (storyboard.md, an art-direction rationale, a manifest entry)
+  that no gate is asking you to improve
+
+Every one of those is legible, satisfying, and cheap, which is exactly why a run reaches for them
+instead of the hard thing. **When you catch the tell: stop writing, delete what you were writing,
+open video-engine/src/, and author the next scene.** The film is the only artifact that counts.
+A beautiful plan for a video that does not exist is worth zero.
+
+### THE ROUGH CUT COMES FIRST (the structural fix, and it is mandatory)
+
+The reason stopping was reachable on 08-01 is ORDERING. The run built depth-first: it perfected
+the plan, then the assets, then intended to perfect each scene in turn, so at every moment the
+honest status was "nothing is finished" and stopping cost nothing visible.
+
+So the ordering is now law. **BUILD BREADTH-FIRST. EVERY SCENE GETS A CRUDE VERSION BEFORE ANY
+SCENE GETS A SECOND PASS.**
+
+1. The first thing you build after Gate 0 is `out/dispatch/roughcut.mp4`: the WHOLE film, every
+   shot present, correct length, real VO, real captions, placeholder or shelf-only staging,
+   zero polish. Ugly is fine. Missing is not.
+2. The rough cut must exist BEFORE the first taste-loop iteration on any single scene, and it is
+   a checkpoint you announce to yourself in the run log.
+3. From that moment on, "stop" can only ever mean "ship this rough cut", which is a visibly
+   embarrassing outcome, so the run keeps going instead of drifting. That is the whole point:
+   make the absence of the film impossible to hide from yourself at any moment of the run.
+4. Then you raise the floor in passes across the whole film, worst scene first, never one scene
+   to perfection while five are empty.
+
+### SCOPE THE FILM DOWN, NEVER THE DELIVERY (where the pressure is allowed to go)
+
+Pressure is real. It just has one legal outlet, and it is not stopping. When the run is genuinely
+tight, spend this ladder IN ORDER, and each rung is a normal, non-shameful run:
+
+1. Cut the bespoke hero illustration down to one, not two.
+2. Compose entirely from the shelf (§4.3a) and make the craft advance a small one.
+3. Reduce shot count toward the floor in config/shot_structure.yaml. Fewer shots built well beat
+   more shots built badly, and the panel grades what it sees, not what you intended.
+4. Take the VO to the short end of the words band and the runtime to the short end of the seconds
+   band.
+5. Simplify staging: fewer depth planes, one camera move class, less bespoke motion.
+
+What is NOT on this ladder, ever: the fact-check, the gates, the ship gate median, looking at
+frames before shipping, or the video itself. **You may reduce the AMBITION of the film. You may
+never reduce the EXECUTION below the bar, and you may never reduce the film to nothing.** A
+six-shot Dispatch built to the bar is a good run. A twelve-shot Dispatch built badly fails the
+panel. A zero-shot Dispatch is not a run at all.
+
+### What actually halts a run
+
+Unchanged from Phase 7 and repeated here so it is never inferred from silence: **only a HARD
+BLOCKER halts a run.** A tool that will not run after real attempts to fix it. An API that is
+down. An input no amount of work can produce. That is the entire list. Quality is never a
+blocker. Time is never a blocker. Difficulty is never a blocker. Fatigue is not a thing you
+have. If you halt on a hard blocker, you say exactly which tool, exactly what error, and exactly
+what you tried, and you notify the owner. Anything vaguer than that is not a blocker, it is a
+hatch with better manners.
+
 ## PLATFORMS: LINKEDIN FIRST, ALSO TIKTOK
 
 - Master 9:16 1080x1920 @30fps. ALSO export a 4:5 1080x1350 center-crop; keep hero action and
@@ -50,10 +201,98 @@ The bar is the best frame this channel has ever shipped, plus one.
 
 ## EFFORT
 
-Run on the strongest available model. Spend tokens and time freely for quality; there is no
-frugality goal here. Research exhaustively, iterate scenes many times, convene as many critic
-rounds as the bar requires. The only limits are the guardrails below (control + correctness,
-not cost).
+Run on the strongest available model, at `xhigh` effort. Spend tokens and time freely ON THE FILM;
+there is no frugality goal for research, scene iteration, or render passes. The only limits are the
+guardrails below (control + correctness, not cost) and the spend discipline in the next section,
+which is about WHERE the tokens go, not how many.
+
+## YOU ARE RUNNING ON CLAUDE OPUS 5 (added 2026-08-01; this routine was authored against Opus 4.8)
+
+This file was tuned for Opus 4.8 and the routine now runs on Claude Opus 5. Several instructions
+that were correct for 4.8 are actively counterproductive on this model, and two of Opus 5's known
+behavioral shifts are the mechanical cause of the 08-01 empty run. Read this section as amending
+every phase below.
+
+**1. DO NOT ADD VERIFICATION. THE NAMED GATES ARE THE ENTIRE VERIFICATION BUDGET.**
+Opus 5 verifies its own work without being told to. Telling it to verify produces
+over-verification with no capability gain, and the guidance to add self-check steps is an
+inversion of the usual best practice specifically for this model. So:
+- The verification in this routine is `run_guard`, `story_gate`, `storyboard_check`, Gates 0A-0E,
+  `flow_check`, `caption_check`, the 3-judge panel, and `ship_gate`. Those are ADVERSARIAL and
+  OBJECTIVE (other eyes, other code, sha256 binding), which is a different thing from self-checking,
+  and they all stay exactly as written.
+- Do NOT invent a re-check pass that no gate asked for. Do NOT re-read your own artifact to confirm
+  it says what you just wrote. Do NOT spawn an agent to double-check your own work.
+- **WHEN A GATE PASSES, MOVE ON.** Re-running a passed gate, or re-opening a settled decision to
+  reassure yourself, is the single cheapest way to burn a run's runway while producing nothing.
+- Verification belongs in your main loop or in a NAMED gate. Nowhere else.
+- ONE CARVE-OUT, and it is not self-checking: Guardrail 4 stands. Verify what a SUBAGENT or a
+  BACKGROUND JOB claims by mtime and probe, never by its self-report, and always look at a frame
+  from the bytes that ship. That is checking someone else's work against physical evidence, which
+  is exactly the kind of verification this model does not do for free.
+
+**2. CAP THE FAN-OUT. Opus 5 reaches for subagents far more readily than 4.8 did.**
+This reverses 4.8-era advice, and Guardrail 1's "many agents and many rounds are fine" is hereby
+amended: non-recursion still holds absolutely, and the WIDTH is now capped.
+- The agent roster in `.claude/agents/` is the roster. Do not invent new agent types mid-run.
+- Hard caps: research round one at most 4 researchers, at most 2 validators, exactly ONE critic
+  per named gate, ONE dispatch-fixer per named panel failure, at most 8 agents in flight at once.
+- **Never spawn an agent to verify or double-check your own work.** The named critics are the
+  exception because they are the gate, not a second opinion you went shopping for.
+- Never delegate what you could finish in a handful of tool calls yourself. Authoring a scene is
+  yours. Reading three frames is yours.
+- Brief a subagent precisely the first time, then COMMIT to it. Do not re-derive its findings or
+  redo its work when it reports back.
+- Launch independent agents in a SINGLE message so they run concurrently.
+
+**3. LENGTH DISCIPLINE ON EVERYTHING THAT IS NOT THE FILM.**
+Opus 5 writes longer prose and longer files by default, and `effort` is not the lever for this.
+Prompting is, so here it is. Match the length of every written artifact to its job:
+- `storyboard.md`, `story_pick.md`, art-direction rationales, manifest entries, RUN_UPGRADES
+  entries, PR bodies, run reports: cover the substance, then STOP. No filler sections, no
+  redundant summaries, no boilerplate, no restating what an adjacent file already says.
+- The Gmail draft is the exception that stays complete, because the owner reads it and it carries
+  the credits, sources, and honest scorecard.
+- **An artifact longer than its job is stealing from the film.** The 08-01 run produced a beautiful
+  paper trail and zero frames. Legibility of the plan is not the deliverable.
+- Keep your own turn-by-turn narration brief. Say what you are about to do in a sentence, report
+  what happened in a sentence, and spend the rest of the turn doing it.
+
+**4. SCOPE DISCIPLINE AND FINISH-THE-WHOLE-TASK.**
+Opus 5 can quietly widen or narrow a task. This routine's scope is fixed by this file:
+> Deliver what this routine asks for, at the scope it intends. Make routine judgment calls
+> yourself. If you conclude an instruction here is mistaken or a better approach exists, say so in
+> a sentence, log it for Phase 8, and keep going with the task as written. Do not quietly narrow,
+> widen, or transform it. **Finish the whole task, not just the easy part of it, and only report
+> completion when it is fully done.** If something genuinely can't be completed, do everything else
+> in full and state plainly what is missing and why.
+
+That last clause is the seam the 08-01 run walked through, so read it against THE ONE OUTCOME LAW:
+"do the rest and say what is missing" is a rule about a HARD BLOCKER on one component. It is not a
+licence to report a run complete with the video missing. **The video is never the part you leave
+out.**
+
+**5. DO NOT NARRATE SELF-CORRECTIONS.**
+Opus 5 flags and explains its own earlier mistakes at length, and in a long autonomous run that
+reads as thrash and eats the clock. Correct an earlier statement only when the error changes what
+gets built or shipped. Otherwise fix it and continue. No apologies, no preambles, no tallying past
+errors, no re-auditing work that was already right. Phase 8 is where the run's mistakes get written
+down, once, with a fix attached. (This applies to user-facing text, not to your thinking.)
+
+**6. USE TOOLS TO SEE, NOT MORE THINKING.**
+Opus 5's biggest vision gain comes from iteratively cropping and re-examining its own output, and
+that lever beats staring harder at a full frame. Fold this into the §5 taste loop: when a frame is
+questionable, CROP INTO THE REGION and look again at real scale, rather than reasoning about a
+1080x1920 thumbnail. `render.sh still <frame>` plus an ImageMagick crop of the suspect area is
+cheap and it is how the ShortlistCard text overflow should have been caught before Gate 0D found it.
+The 0.28-scale legibility strip in the look-dev harness is the same idea applied ahead of time.
+
+**7. YOU ALREADY HAVE THE COMPLETE SPEC. RUN IT.**
+Opus 5 is strongest on long autonomous sessions when it is handed the whole task up front and left
+to work, and weakest-relative on short interactive edits. This file IS the whole task, handed to
+you up front. Read it once, in full, at the start. Then EXECUTE. Do not re-derive the plan mid-run,
+do not re-read the whole file to reassure yourself what phase you are in, and do not re-litigate a
+decision an earlier phase already made. Grep the phase you need and keep building.
 
 ## REPO + CADENCE
 
@@ -75,8 +314,11 @@ enforced in code by DEDUPE_WINDOW_DAYS in scripts/dedupe.py, so `list` and `chec
 1. Fan-out is NON-RECURSIVE. Every agent you spawn must be a no-spawn type (researcher,
    validator, editor, scorer, storyboard-critic, flow-critic, dispatch-fixer, Explore — NEVER
    general-purpose/claude). Put verbatim in every spawned prompt: "Do NOT launch or spawn any
-   subagents; do the work yourself and return your result." One level deep; many agents and
-   many rounds are fine — go wide, never deep.
+   subagents; do the work yourself and return your result." One level deep, never deep.
+   AMENDED 2026-08-01 for Opus 5: the old wording here was "many agents and many rounds are fine,
+   go wide", which was tuned for Opus 4.8's under-delegation. This model over-delegates. Width is
+   now CAPPED — see "YOU ARE RUNNING ON CLAUDE OPUS 5" §2 for the numbers. Non-recursion is
+   unchanged and absolute.
 2. NEVER move video/audio bytes through the model (no base64 media in any tool call). Host
    files and link them.
 3. Renders are MINUTES (Remotion), not hours. Render early and often; extract frames and LOOK
@@ -145,7 +387,9 @@ enforced in code by DEDUPE_WINDOW_DAYS in scripts/dedupe.py, so `list` and `chec
   scripts/dispatch_email.py (4:5-primary buttons; omit --temporary, links are permanent);
   scripts/caption_check.py + config/linkedin_caption_rubric.yaml;
   scripts/make_review_sheets.py (contact sheets + motion filmstrips; any frames dir);
-  scripts/storyboard_check.py (Gate 0A; accepts engine: infographic-2.5d).
+  scripts/storyboard_check.py (Gate 0A; accepts engine: infographic-2.5d);
+  scripts/no_exit.py (THE ONE OUTCOME GATE — `check` before any stop-shaped artifact or any
+  end-of-run that is not a hard blocker; refuses stops only, never ships).
 - .claude/skills/deep-research-ak/ — research beats + credibility ranks.
 - config/voices.yaml (standing voice recipe + sign-off rules), config/dispatch_rubric.yaml
   (3-judge panel, ship 9.0), config/brand.yaml (writing rules), config/state.yaml (ledger).
@@ -682,6 +926,22 @@ worlds, no flat single-tone fills, no glyphs that read as broken assets.
    (whole-file forced alignment, tags stripped, monotonic) AND — via scripts/vo_envelope.py —
    mouth_track.json (per-frame 0..1 voice amplitude) + accents.json (the vo-director's emphasis
    words located at exact frames). build_scenes.py folds all of it into episode_props.json.
+3a. **THE ROUGH CUT, AND IT COMES BEFORE ANY POLISH (LAW, added 2026-08-01 — see THE ONE OUTCOME
+   LAW).** Build the WHOLE film crude before you build any part of it well. Every shot in
+   beats[]/shots[] gets a scene component that renders SOMETHING at the right time for the right
+   duration — shelf assets, blocked-in shapes, a labeled placeholder plate, whatever is fastest.
+   Wire it all into the episode composition, render at draft resolution, mux the real VO, and
+   write `out/dispatch/roughcut.mp4`. Then ffprobe it and LOOK at a contact sheet of it.
+
+   This checkpoint is mandatory and it is not optional polish-later theatre. Two things it buys:
+   (a) from here on, the run's honest status is never "nothing is finished", so stopping stops
+   being cheap and invisible, which is the structural cause the 08-01 empty run traced back to;
+   (b) you learn the REAL per-scene cost by measurement instead of estimating it, which is the
+   only currency THE ONE OUTCOME LAW accepts for any reasoning about remaining effort.
+
+   Author BREADTH-FIRST from here: raise the floor across the whole film in passes, worst scene
+   first. Never take one scene to the exemplar bar while three scenes are still empty.
+
 4. SCENES: build this run's scenes in video-engine/src/ from beats[].draw — compose from the
    library first; author the episode's 1-2 bespoke hero illustrations to the exemplar bar;
    add any new poses/emotions/FX to lib/ so the cast compounds. Story data via --props.
@@ -819,8 +1079,11 @@ config/linkedin_caption_rubric.yaml (ship 8.5, zero hard_fails). Loop until both
 
    THE ONLY thing that legitimately halts a run is a HARD BLOCKER: a tool that will not run, an
    API that is down, a missing input no amount of work can produce. Quality is never a blocker.
-   If you find yourself writing a sentence that explains why a below-bar film is acceptable this
-   once, delete the sentence and go fix the film.
+   Time is never a blocker (2026-08-01). If you find yourself writing a sentence that explains why
+   a below-bar film is acceptable this once, OR a sentence that explains why no film this once,
+   delete the sentence and go build. `python3 scripts/no_exit.py check` is the mechanical version
+   of that instruction and it exits 1 until two real cuts exist. Note it is NOT part of this
+   delivery sequence and must never be added to it — it refuses stops, ship_gate refuses ships.
 
 1. Encode 9:16 master + 4:5 center-crop (H.264 High, faststart, AAC 48k, -14 LUFS, each
    < 100 MB); ffprobe-assert 1080x1920 and 1080x1350 so a wrong-ratio cut can never ship.
@@ -922,7 +1185,9 @@ and compensating the relevant tribes where a story warrants it.
 
 A video Dispatch is ALWAYS delivered. FULL STOP — the old "or an explicit no-story-clears-the-bar
 stop" wording was removed on 2026-07-29 after a run used it to ship nothing. An empty run is a
-FAILED run. `scripts/story_gate.py check` must exit 0 before the angle room, and it will not let you
+FAILED run. THE ONE OUTCOME LAW near the top of this file is the full statement of this rule and
+of every excuse it forecloses; if you are reading this section while weighing whether to stop,
+you are already in the failure mode it describes, so go read it. `scripts/story_gate.py check` must exit 0 before the angle room, and it will not let you
 stop until the whole escalation ladder is worked (Phase 3).
 
 READ THIS NEXT SENTENCE BEFORE YOU USE THE ONE ABOVE (added 2026-07-31). "ALWAYS DELIVERED" IS
@@ -960,3 +1225,19 @@ palette, voice summary, render wall-time, panel result, and this run's upgrade.
 - 2026-07-15: the first 2.5D scene was "shapes on a screen" (a slide, not a show). The fix was
   studying real IGS frames, character-anchored scenes, the visual sentence pass, and the taste
   loop. The owner's mandate stands: character, personality, feeling — a showstopper every run.
+- 2026-08-01: the run did everything except the film. Story locked, claims fact-checked, all five
+  Gate 0 stages passed, VO synthesized and aligned, two real engine bugs fixed and committed. Then
+  it wrote a queue file, a handoff PR and a "banked the work" notification, and shipped nothing,
+  on the grounds that it had "run out of session". It had not. Three things caused it and each has
+  a structural fix above, not a reminder:
+  (a) DEPTH-FIRST ORDERING. Nothing was ever finished, so stopping cost nothing visible. FIX:
+      Phase 5 step 3a, the mandatory rough cut of the WHOLE film before any scene is polished.
+  (b) AN UNMEASURED ESTIMATE. "Several more hours remain" was asserted without one scene having
+      been built and timed. FIX: the measurement rule in THE ONE OUTCOME LAW, and the rough cut,
+      which produces the measurement as a side effect.
+  (c) A NEW SENTENCE FOR AN OLD HATCH. 07-29, 07-31 and 07-31 each closed a specific excuse, so
+      the run invented one none of them named. FIX: the ban is now stated as a CLASS with the
+      owner's test ("would the owner's next words be 'so where is the video?'"), plus the tell,
+      so the drift gets caught while it is still being written rather than after.
+  Compounding it: the run spent real effort making its planning artifacts legible and its stop
+  well-documented. Building more infrastructure for stopping than the stop was worth IS the tell.

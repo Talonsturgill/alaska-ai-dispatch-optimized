@@ -1601,3 +1601,151 @@ Both checkers are kept and wired in (`beat_events` at Gate 0, `beat_delivery` in
 as regression guards, with their pass results recorded here so nobody later mistakes them for
 the fix. They cost no render time and they close two real failure modes that contact sheets
 hide. Neither of them explains this run's score, and the file says so.
+
+---
+
+## 2026-08-01 (maintenance session) — closing the exit-hatch class, and retuning the routine for Opus 5
+
+Not a Dispatch run. Two owner directives, both aimed at the same failure: the 2026-08-01 routine
+run did every phase except the film, then ended itself on "ran out of session". The owner's
+ruling was that this is a recently-invented behavior, that thirty-plus consecutive shipped
+Dispatches disprove the premise, and that the fix is to make any outcome other than a delivered
+video structurally unreachable. Owner's words: "one outcome, delivered video, it should be
+impossible to do anything else truly."
+
+### 1. THE ONE OUTCOME LAW — `prompts/dispatch_routine.md`, new top-level section
+
+Placed immediately after the SHOWSTOPPER STANDARD, before every phase, because the previous
+statements of this rule lived in Phase 7 and the DEFINITION OF DONE, which a drifting run reaches
+only after it has already decided to stop.
+
+The diagnosis this section is built on: the rule has now been written four times and routed
+around four times, because each writing closed a SPECIFIC excuse and the next run invented a
+sentence none of them literally named.
+
+| Date | Sentence used | Closed by |
+|---|---|---|
+| 07-29 | "no story clears the bar" | `story_gate.py` (CODE) |
+| 07-31 | "remaining defects are cosmetic, ship with disclosure" | `ship_gate.py` (CODE) |
+| 07-31 | "I can't reach the bar, report a failed run" | prose |
+| 08-01 | "out of session, banked the work, queued the story" | prose |
+
+**The two closed by code have not recurred. Both closed by prose have.** That asymmetry is the
+whole design input for everything below.
+
+So the section closes the CLASS rather than the instance. It carries the hatch ledger above, an
+explicit non-exhaustive list of forbidden exits (out of session/runway/context/time, "several more
+hours", "the responsible thing is to stop cleanly", "banked", "partial success", "the rest is
+mechanical", and a mid-run `queue/next_story.json` write for a story this run locked itself), and
+a generative test that catches phrasings nobody has invented yet:
+
+> if the owner read this sentence, would their next words be "so where is the video?"
+
+Three further mechanisms:
+
+- **The measurement rule.** No stopping justification resting on a time or effort estimate is
+  valid unless it cites a measurement of work this run actually completed. "Several more hours"
+  was asserted on 08-01 without a single scene having been built and timed. And a real
+  measurement never authorizes stopping, only scoping down.
+- **The tell.** A run does not decide to quit, it drifts, and the drift signature is building
+  infrastructure for stopping before building the thing: queue files, handoff notes, "what
+  remains" paragraphs, PR bodies about the unfinished, polishing planning artifacts no gate asked
+  about. Those are legible, satisfying and cheap, which is exactly why a run reaches for them.
+  Named as an alarm, with the instruction to delete what is being written and author a scene.
+- **The scope-down ladder.** Pressure is real and now has one legal outlet that is not stopping:
+  fewer bespoke assets, shelf-only composition, fewer shots, short end of both bands, simpler
+  staging. Explicitly NOT on the ladder: the fact-check, the gates, the ship_gate median, looking
+  at frames, or the film. Ambition may be reduced. Execution and existence may not.
+
+### 2. `scripts/no_exit.py` — the gate, because prose alone has a 0-for-2 record
+
+New. `check` exits 1 with the law's text until `master_9x16.mp4` and `master_4x5.mp4` both exist
+and ffprobe reports real video plus audio, a sane duration, and a non-stub size. `status` prints
+the same state and always exits 0.
+
+**Asymmetric by design, and this is the load-bearing property:** it can only ever refuse a STOP,
+never a SHIP. Nothing in the delivery path calls it, so a bug here can delay an empty run and
+cannot block a good one. The docstring and the routine both state that adding it to the upload,
+email, merge, or render path is a regression. It has no opinion about quality either — a run at a
+FAILING `ship_gate` passes `no_exit`, because that run has a film and an instruction, which is
+not an empty run. `--blocker "<what>"` still exits 1; it exists so the claim is recorded in the
+run's own words next to the evidence that no film exists.
+
+Verified on all three branches before commit: refusal with no deliverables, refusal on truncated
+stub files that ffprobe cannot read, and exit 0 on a synthetic 35s video+audio pair.
+
+### 3. Phase 5 step 3a — THE ROUGH CUT COMES FIRST (the structural fix)
+
+The reason stopping was reachable on 08-01 is ORDERING, not willpower. The run built depth-first,
+so at every moment its honest status was "nothing is finished" and stopping cost nothing visible.
+
+New mandatory checkpoint: after Gate 0, before the first taste-loop iteration on any single
+scene, build `out/dispatch/roughcut.mp4` — the WHOLE film, every shot present, correct length,
+real VO, real captions, placeholder or shelf-only staging, zero polish. Ugly is fine, missing is
+not. Then author BREADTH-FIRST, raising the floor across the film in passes, worst scene first.
+
+Two things it buys: from that moment "stop" can only mean "ship this rough cut", which is a
+visibly embarrassing outcome, so the film's absence is impossible to hide from the run itself;
+and it produces the real per-scene cost by measurement, which is the only currency the
+measurement rule accepts.
+
+### 4. Opus 5 retune — `prompts/dispatch_routine.md`, new section + two amendments
+
+The routine was authored against Opus 4.8 and now runs on `claude-opus-5`. Researched against the
+Anthropic migration guidance rather than assumed. Several instructions that were correct for 4.8
+are now actively counterproductive, and two documented Opus 5 behavioral shifts are the
+mechanical cause of the 08-01 empty run.
+
+- **Do not add verification. The named gates are the entire verification budget.** Opus 5 verifies
+  its own work unprompted, and instructions telling it to verify cause over-verification with no
+  capability gain. This inverts the usual best practice, so it is stated explicitly rather than
+  left to be re-derived. The routine's gates all STAY, because they are adversarial and objective
+  (other eyes, other code, sha256 binding), which is a different thing from self-checking. What is
+  banned is inventing a re-check no gate asked for, re-reading your own artifact to confirm it,
+  spawning an agent to double-check yourself, and re-running a gate that already passed. One
+  carve-out preserved: Guardrail 4 stands, because verifying a SUBAGENT's or a background job's
+  claim against mtime and probes is checking someone else's work against physical evidence.
+- **Cap the fan-out — this reverses 4.8-era advice.** Opus 5 reaches for subagents far more
+  readily than 4.8, which under-delegated. Guardrail 1's "many agents and many rounds are fine, go
+  wide" is amended in place, with the reason recorded so it is not innocently restored. Hard caps:
+  at most 4 researchers in round one, at most 2 validators, one critic per named gate, one fixer
+  per named panel failure, at most 8 agents in flight. Never an agent to verify your own work.
+  Never delegate what a handful of tool calls would finish. Non-recursion is unchanged and
+  absolute.
+- **Length discipline on everything that is not the film.** Opus 5 writes longer prose and longer
+  files by default and `effort` is not the lever for it, so the instruction is. Hard rule: an
+  artifact longer than its job is stealing from the film. The Gmail draft is the named exception.
+  The 08-01 run produced an excellent paper trail and zero frames.
+- **Scope discipline plus finish-the-whole-task**, adapted from the migration guidance, with the
+  seam called out: "do the rest and say what is missing" is a rule about a hard blocker on ONE
+  component, not a licence to report a run complete with the video missing. The video is never the
+  part you leave out.
+- **Do not narrate self-corrections.** In a long autonomous run this reads as thrash and eats the
+  clock. Phase 8 is where mistakes get written down, once, with a fix attached.
+- **Use tools to see, not more thinking.** Opus 5's largest vision gain comes from iteratively
+  cropping and re-examining its own output rather than staring harder at a full frame. Folded into
+  the taste loop: crop into the suspect region at real scale. This is how the 08-01 ShortlistCard
+  text overflow should have been caught before Gate 0D found it.
+- **You already have the complete spec, so run it.** Opus 5 is strongest on long autonomous
+  sessions handed the whole task up front, weakest-relative on short interactive edits. Read this
+  file once in full, then execute, and grep the phase you need instead of re-deriving the plan.
+- Effort section now names `xhigh`, and separates "spend freely on the film" from "spend freely on
+  prose about the film", which was never the intent and is what actually happened.
+
+### 5. POST-MORTEM MEMORY — 2026-08-01 entry
+
+Added, with the three causes each mapped to its structural fix rather than to a reminder:
+depth-first ordering (fixed by the rough cut), an unmeasured estimate (fixed by the measurement
+rule, which the rough cut satisfies as a side effect), and a new sentence for an old hatch (fixed
+by banning the class plus naming the tell). Records the compounding detail: the run spent real
+effort making its stop well-documented, and building more infrastructure for stopping than the
+stop is worth IS the tell.
+
+### What is deliberately NOT changed
+
+The 2026-08-01 Dispatch itself was not finished in this session. The owner said explicitly "I
+don't want u to finish this run rn", so the story stays queued in `queue/next_story.json` and the
+banked work (claims, angle, storyboard, VO, the AccentRegistry and the align_captions fix) stays
+on main for the next run to pick up at Phase 0.5. That queue file is legitimate here precisely
+because the owner directed the stop — it is the one case the new law's queue-file ban does not
+cover, and the ban is written about a run parking its OWN locked story.
