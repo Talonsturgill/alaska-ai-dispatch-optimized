@@ -1,0 +1,104 @@
+{
+ "total": 96.74,
+ "voice": "Sulafat",
+ "model": "gemini-3.1-flash-tts-preview",
+ "lines": [
+  {
+   "idx": 0,
+   "text": "Every eruption in Alaska signs its name in ash. The trick is reading the signature.",
+   "start": 0.0,
+   "end": 6.46
+  },
+  {
+   "idx": 1,
+   "text": "On land the layers stack like pages, then glaciers scrape the page blank.",
+   "start": 7.0,
+   "end": 12.84
+  },
+  {
+   "idx": 2,
+   "text": "So three federal scientists in Anchorage went looking for a copy.",
+   "start": 14.84,
+   "end": 17.14
+  },
+  {
+   "idx": 3,
+   "text": "They found one under the Gulf of Alaska, in long tubes of mud punched from the seafloor.",
+   "start": 18.32,
+   "end": 23.78
+  },
+  {
+   "idx": 4,
+   "text": "Seventy ash layers out of eight tubes, a record they call virtually uninterrupted, reaching into the ice ages.",
+   "start": 25.38,
+   "end": 32.54
+  },
+  {
+   "idx": 5,
+   "text": "They sorted them into thirty seven eruptions, then asked which volcano threw each.",
+   "start": 33.56,
+   "end": 38.7
+  },
+  {
+   "idx": 6,
+   "text": "The answer doesn't always come back with one name.",
+   "start": 39.84,
+   "end": 42.56
+  },
+  {
+   "idx": 7,
+   "text": "Ash carries trace elements, a chemical handwriting.",
+   "start": 43.46,
+   "end": 46.64
+  },
+  {
+   "idx": 8,
+   "text": "A machine learning model reads it and names the most probable source, or sources.",
+   "start": 47.96,
+   "end": 52.88
+  },
+  {
+   "idx": 9,
+   "text": "It's confident about Katmai, Fisher Caldera and Emmons Lake, because each keeps writing the same ratios, eruption after eruption.",
+   "start": 54.12,
+   "end": 62.7
+  },
+  {
+   "idx": 10,
+   "text": "That repetition is what separates one volcano from another. The model reads a difference the rock already made.",
+   "start": 64.18,
+   "end": 70.16
+  },
+  {
+   "idx": 11,
+   "text": "And when the model isn't the right tool, they don't force it. They measure chemical distance.",
+   "start": 71.26,
+   "end": 75.88
+  },
+  {
+   "idx": 12,
+   "text": "None of this forecasts an eruption. Chemistry has traced ash for decades.",
+   "start": 77.3,
+   "end": 81.8
+  },
+  {
+   "idx": 13,
+   "text": "What's new is how carefully they said which volcanoes they could name, and which they couldn't.",
+   "start": 82.94,
+   "end": 87.9
+  },
+  {
+   "idx": 14,
+   "text": "Alaska's record didn't disappear. It settled where nobody was reading.",
+   "start": 89.14,
+   "end": 92.96
+  },
+  {
+   "idx": 15,
+   "text": "What else is down there, with a name still on it?",
+   "start": 93.96,
+   "end": 96.74
+  }
+ ],
+ "realigned_note": "Rebuilt 2026-08-01 from the CORRECTED words.json. The synth's own whole-file pass placed line 0 at 3.52s when the first word actually starts at 0.00s, which would have desynced the entire beat sheet and put the film's opening picture three and a half seconds behind its own narration."
+}

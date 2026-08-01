@@ -42,11 +42,28 @@ def main():
 
     script_text = Path(a.script).read_text().strip() if a.script and Path(a.script).exists() else ""
     model = WhisperModel(a.model, device="cpu", compute_type="int8")
+    # NEVER pass the script as initial_prompt (fixed 2026-08-01, and this is the SECOND time
+    # this exact bug has been paid for). Whisper treats initial_prompt as text that ALREADY
+    # happened, so seeding it with the script's own opening words makes the decoder believe the
+    # opening has been transcribed and skip forward to audio that does not match it.
+    #
+    # Reproduced on this run's take, twice over: with --script, alignment returned 178 words
+    # beginning at 17.42s, silently dropping the film's first FOUR narration lines, and reported
+    # a healthy-looking transcript_match=0.866 while doing it. Without --script, the same audio
+    # and the same model returned 214 words beginning at 0.00s, which is correct.
+    #
+    # ASSET_MANIFEST.md records the identical root cause being fixed in vo_synth_gemini.py's
+    # _align_wholefile on 2026-07-19 ("passed the script's own opening words as Whisper's
+    # initial_prompt, which made Whisper hallucinate-skip the real audio matching it,
+    # reproduced: dropped the first ~14.6s of a real take"). That fix was never carried across
+    # to this file, which is the OTHER caller the routine names as authoritative for caption
+    # timing. --script is still honoured, but ONLY for the post-hoc transcript_match validation
+    # below, which is what it is actually good for.
     segments, info = model.transcribe(
         a.audio,
         word_timestamps=True,
         language="en",
-        initial_prompt=script_text[:200] if script_text else None,
+        initial_prompt=None,
         vad_filter=False,          # the VO is clean studio speech; VAD can clip word onsets
         beam_size=5,
     )

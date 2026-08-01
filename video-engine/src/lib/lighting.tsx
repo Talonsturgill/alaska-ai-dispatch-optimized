@@ -623,3 +623,85 @@ export const DayGrade: React.FC<{
     </>
   );
 };
+
+// ===========================================================================================
+// THE DAYGRADE ACCENT REGISTRY — craft advance 2026-08-01
+// -------------------------------------------------------------------------------------------
+// This is the item the 2026-07-31 run DEFERRED WITH A PLAN, quoted from ASSET_MANIFEST.md:
+//   "DayGrade has no ACCENT REGISTRY. NightGrade's `sources[]` makes 'amber never appears on an
+//    unmonitored slope' a property of the scene graph; DayGrade's reserved colour is held only
+//    by pinned values at call sites, and the 07-31 panel still found three leaks. Add
+//    `accents[]`, permit the reserved hue only at registered rects, throw on an unregistered one."
+//
+// WHY A REGISTRY AND NOT A DOCTRINE NOTE. The 07-31 film's binding palette rule was "red is the
+// threshold and only the threshold". It was enforced by a comment and by hand-pinning every
+// shelf default at its call site, and the panel STILL found three leaks, because a rule a human
+// has to remember at every call site is not a rule, it is a hope. This is the same lesson the
+// manifest already recorded for BoxLabel and StatCard: "a default-off fix is a doctrine reminder
+// wearing a code costume."
+//
+// HOW IT ENFORCES. A scene declares its reserved hues and the exact rects where each is licensed.
+// Any code that wants to PAINT a reserved hue must ask for it through `useAccent()`, which
+// resolves the hue only if the point sits inside a licensed rect and THROWS otherwise. A throw
+// during a Remotion render fails the render, so an unlicensed accent can't reach a frame at all.
+// That makes the palette rule a property of the scene graph, exactly as NightGrade's sources[] is.
+// ===========================================================================================
+
+/** One reserved hue and the rects where it is licensed to appear. Frame coords, 1080x1920. */
+export type AccentLicense = {
+  /** the reserved hex, e.g. '#c0392b'. Compared case-insensitively. */
+  hue: string;
+  /** what this colour MEANS in this film, so a violation message can explain itself */
+  means: string;
+  /** the licensed regions. A point must fall inside one of these. */
+  rects: {x: number; y: number; w: number; h: number}[];
+};
+
+const AccentCtx = React.createContext<AccentLicense[]>([]);
+
+/**
+ * Wrap a scene (or the whole episode) to declare its reserved hues.
+ * Placed OUTSIDE the svg, same as DayGrade/NightGrade, because it emits nothing.
+ */
+export const AccentRegistry: React.FC<{accents: AccentLicense[]; children: React.ReactNode}> = ({
+  accents, children,
+}) => <AccentCtx.Provider value={accents}>{children}</AccentCtx.Provider>;
+
+const norm = (h: string) => h.trim().toLowerCase();
+
+/**
+ * Ask for a reserved hue at a point. Returns the hue if it is licensed there, THROWS if not.
+ *
+ *   const accent = useAccent();
+ *   <circle cx={cx} cy={cy} r={9} fill={accent(MATCH_MAGENTA, cx, cy)} />
+ *
+ * An unreserved hue passes through untouched, so this is safe to route every fill through and
+ * only ever fires on a colour the film has actually declared as reserved.
+ */
+export const useAccent = () => {
+  const licenses = React.useContext(AccentCtx);
+  return React.useCallback((hue: string, x: number, y: number): string => {
+    const lic = licenses.find((l) => norm(l.hue) === norm(hue));
+    if (!lic) return hue;                       // not a reserved colour, nothing to police
+    const ok = lic.rects.some((r) => x >= r.x && x <= r.x + r.w && y >= r.y && y <= r.y + r.h);
+    if (!ok) {
+      throw new Error(
+        `[AccentRegistry] the reserved hue ${hue} was painted at (${Math.round(x)}, ${Math.round(y)}), ` +
+        `which is outside every licensed rect for it. In this film ${hue} means "${lic.means}", ` +
+        `so painting it here would spend the film's one focal signal on something that is not that. ` +
+        `Either move the element inside a licensed rect, license this region in the scene's ` +
+        `accents[], or use a non-reserved colour.`
+      );
+    }
+    return hue;
+  }, [licenses]);
+};
+
+/** Test seam: resolve a licence outside React, so the rule can be unit-checked without a render. */
+export const accentAllowedAt = (
+  licenses: AccentLicense[], hue: string, x: number, y: number,
+): boolean => {
+  const lic = licenses.find((l) => norm(l.hue) === norm(hue));
+  if (!lic) return true;
+  return lic.rects.some((r) => x >= r.x && x <= r.x + r.w && y >= r.y && y <= r.y + r.h);
+};

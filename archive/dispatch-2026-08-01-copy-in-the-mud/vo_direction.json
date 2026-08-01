@@ -1,0 +1,187 @@
+{
+  "run_id": "2026-08-01",
+  "narrator": "Nora, an Alaska public-radio host: warm, grounded, quietly witty",
+  "voice": "Sulafat",
+  "notes": "Style: admiring and plainspoken, a smart Alaskan who has read the paper and is impressed by how careful it is. The valence is curiosity (angle.json), so no hype and no warning: the wit stays holstered and the emotion is restraint, not drama. Pace: brisk, a sharp modern explainer, short natural breaths, never an audiobook. Arc: plain storytelling open, first lift on the find at line four, numbers get room at line five, an open door at line seven, brisk mechanism through eight and nine, a settled certain payoff at line ten, the thesis at line eleven lowest and slowest with a beat before it, the quietest human moment at line twelve, level and unapologetic through thirteen and fourteen, warm at fifteen, and a genuine open question at sixteen. Contrast rule holds across all sixteen lines (no two neighbors share an energy level; spread one to four). Four inline tags total, all from the vetted palette: [curious] bookends the hook and the button, [short pause] opens the open loop and the thesis. Every other emotional instruction lives in the director's notes, never in a tag.",
+  "phonetics": {},
+  "style_prompt": "### DIRECTOR'S NOTES\nStyle: warm, plainspoken and genuinely curious. You are a smart Alaskan who has read this paper and is quietly impressed by how careful the work is. Admiring, never hyped and never ominous. This is a story about patient work, so keep the wit dry and mostly held back, and let the restraint in the material be the feeling. No sell, no alarm, no drama.\nArc: open plain and easy, like the first line of a story. Lift when they find the mud cores, and let the numbers breathe. Leave a door open on the line about one name, lifting slightly at the end of it rather than falling. Settle low, slow and certain for the lines about the rock and the repetition. Go quietest and most human on the line about not forcing it. Stay level and unapologetic through the two lines about what this is not, then warm at the end, and finish on a real question, open and inviting, not a challenge.\nPace: BRISK and energetic, keep it moving like a sharp modern explainer. Short natural breaths only, no long pauses, do not drag. Vary the tone line to line so no two sentences sound the same.\nEmphasis: lean on the key word in each line; let numbers land.",
+  "lines": [
+    {
+      "idx": 0,
+      "text": "[curious] Every eruption in Alaska signs its name in ash. The trick is reading the signature.",
+      "intent": "hook",
+      "emphasis": "signature",
+      "energy": 3,
+      "tags": ["[curious]"],
+      "pause_before": false,
+      "why": "Storytelling open at conversational pace. The curious tag keeps 'signs its name in ash' light instead of portentous, and holding the emphasis for 'signature' turns the image into the puzzle that pulls the viewer forward."
+    },
+    {
+      "idx": 1,
+      "text": "On land the layers stack like pages, then glaciers scrape the page blank.",
+      "intent": "setup",
+      "emphasis": "blank",
+      "energy": 2,
+      "tags": [],
+      "pause_before": false,
+      "why": "Drops a level off the hook so the loss registers. Even pace through the clause, then a small settle onto 'blank' so the sentence ends where the record ends."
+    },
+    {
+      "idx": 2,
+      "text": "So three federal scientists in Anchorage went looking for a copy.",
+      "intent": "setup",
+      "emphasis": "copy",
+      "energy": 3,
+      "tags": [],
+      "pause_before": false,
+      "why": "The pivot from landscape to people, so it comes up out of the drop and gets warmer. Emphasis on 'copy' plants the title idea before the find pays it off."
+    },
+    {
+      "idx": 3,
+      "text": "They found one under the Gulf of Alaska, in long tubes of mud punched from the seafloor.",
+      "intent": "reveal",
+      "emphasis": "punched",
+      "energy": 4,
+      "tags": [],
+      "pause_before": false,
+      "why": "The piece's first real lift. 'Punched' is a physical verb and gets a physical read, brisk and forward, so the discovery has body without tipping into hype."
+    },
+    {
+      "idx": 4,
+      "text": "Seventy ash layers out of eight tubes, a record they call virtually uninterrupted, reaching into the ice ages.",
+      "intent": "stat",
+      "emphasis": "Seventy",
+      "energy": 3,
+      "tags": [],
+      "pause_before": false,
+      "why": "Settles one level off the reveal and slows just on the figures so seventy and eight land as counts, not as filler. 'Virtually uninterrupted' is the paper's own phrase and gets said cleanly, not sold."
+    },
+    {
+      "idx": 5,
+      "text": "They sorted them into thirty seven eruptions, then asked which volcano threw each.",
+      "intent": "setup",
+      "emphasis": "which",
+      "energy": 4,
+      "tags": [],
+      "pause_before": false,
+      "why": "Lifts back up because the second clause is a question being posed. Emphasis on 'which' sets up the open loop in the next line."
+    },
+    {
+      "idx": 6,
+      "text": "[short pause] The answer doesn't always come back with one name.",
+      "intent": "reveal",
+      "emphasis": "one",
+      "energy": 2,
+      "tags": ["[short pause]"],
+      "pause_before": true,
+      "why": "THE OPEN LOOP. Big drop from four to two makes the beat land, and the emphasis sits on 'one'. Slight lift at the end of the line so it reads as a door left open, not as bad news."
+    },
+    {
+      "idx": 7,
+      "text": "Ash carries trace elements, a chemical handwriting.",
+      "intent": "setup",
+      "emphasis": "handwriting",
+      "energy": 3,
+      "tags": [],
+      "pause_before": false,
+      "why": "Mechanism starts, so the energy comes back up and the pace goes brisk and clear. 'Handwriting' carries the callback to the signature from line one."
+    },
+    {
+      "idx": 8,
+      "text": "A machine learning model reads it and names the most probable source, or sources.",
+      "intent": "setup",
+      "emphasis": "probable",
+      "energy": 4,
+      "tags": [],
+      "pause_before": false,
+      "why": "Brightest of the mechanism lines, quick and clear. Emphasis on 'probable' does the whole conformal-prediction job in one word, and 'or sources' is a light throwaway rather than an explainer."
+    },
+    {
+      "idx": 9,
+      "text": "It's confident about Katmai, Fisher Caldera and Emmons Lake, because each keeps writing the same ratios, eruption after eruption.",
+      "intent": "reveal",
+      "emphasis": "eruption",
+      "energy": 3,
+      "tags": [],
+      "pause_before": false,
+      "why": "The payoff of the open loop and the load-bearing factual line. Comes DOWN from four into certainty rather than up into excitement, three names read evenly so none is a punchline, and 'eruption after eruption' slows and settles."
+    },
+    {
+      "idx": 10,
+      "text": "[short pause] That repetition is what separates one volcano from another. The model reads a difference the rock already made.",
+      "intent": "stakes",
+      "emphasis": "already",
+      "energy": 2,
+      "tags": ["[short pause]"],
+      "pause_before": true,
+      "why": "THE THESIS. Lowest, firmest and most deliberate line in the piece, slowest pace of the read, with a beat in front of it. The emphasis is 'already' because that single word hands the confidence back to the rock, which is the film's entire argument."
+    },
+    {
+      "idx": 11,
+      "text": "And when the model isn't the right tool, they don't force it. They measure chemical distance.",
+      "intent": "stakes",
+      "emphasis": "force",
+      "energy": 1,
+      "tags": [],
+      "pause_before": false,
+      "why": "The quietest line in the piece and the human moment. Nearly confiding, almost an aside, admiring without saying so. 'They measure chemical distance' is stated flatly, as a fact about what people chose to do."
+    },
+    {
+      "idx": 12,
+      "text": "None of this forecasts an eruption. Chemistry has traced ash for decades.",
+      "intent": "reveal",
+      "emphasis": "forecasts",
+      "energy": 3,
+      "tags": [],
+      "pause_before": false,
+      "why": "The honesty beat. Jumps two levels out of the quiet so it reads as clear-eyed, not deflating. Level and unhedged, no apology and no downbeat in the voice: this is the film telling the truth on purpose."
+    },
+    {
+      "idx": 13,
+      "text": "What's new is how carefully they said which volcanoes they could name, and which they couldn't.",
+      "intent": "stakes",
+      "emphasis": "carefully",
+      "energy": 4,
+      "tags": [],
+      "pause_before": false,
+      "why": "Lifts because this is the credit line, the thing the piece actually admires. Emphasis on 'carefully'. The balance of 'could name' against 'couldn't' is read even, so neither half sounds like the catch."
+    },
+    {
+      "idx": 14,
+      "text": "Alaska's record didn't disappear. It settled where nobody was reading.",
+      "intent": "stakes",
+      "emphasis": "settled",
+      "energy": 2,
+      "tags": [],
+      "pause_before": false,
+      "why": "Warm and a little moved, slowing off the lift. 'Settled' gets the emphasis and the second sentence lands gently, closing the loop opened by the glaciers in line two."
+    },
+    {
+      "idx": 15,
+      "text": "[curious] What else is down there, with a name still on it?",
+      "intent": "button",
+      "emphasis": "else",
+      "energy": 3,
+      "tags": ["[curious]"],
+      "pause_before": true,
+      "why": "A genuine question to the listener, not rhetorical and not a challenge. Comes up one level, lifts through 'with a name still on it', and stops clean. The curious tag bookends the hook and keeps the ending open instead of pointed."
+    }
+  ],
+  "energy_curve": [3, 2, 3, 4, 3, 4, 2, 3, 4, 3, 2, 1, 3, 4, 2, 3],
+  "contrast_check": {
+    "rule": "VO_DIRECTION.md step 5: no two adjacent lines share an ENERGY level",
+    "adjacent_equal_pairs": [],
+    "pass": true,
+    "min": 1,
+    "max": 4,
+    "spread": 3,
+    "largest_swings": [
+      {"from_idx": 5, "to_idx": 6, "delta": -2, "beat": "into the open loop"},
+      {"from_idx": 10, "to_idx": 11, "delta": -1, "beat": "thesis into the quietest human line"},
+      {"from_idx": 11, "to_idx": 12, "delta": 2, "beat": "quiet into the level honesty beat"},
+      {"from_idx": 13, "to_idx": 14, "delta": -2, "beat": "credit line into the warm close"}
+    ],
+    "note": "Ceiling is deliberately 4, not 5. The earned valence is curiosity, so the top of the read is a physical lift on the find and on the credit line, never brightness or urgency. Expressiveness comes from the spread and the frequency of direction changes (11 changes of direction across 16 lines), not from volume. If the soundcheck still reports MONOTONE, widen by dropping idx 6 to 1 and raising idx 3 and idx 8 to 5 before touching anything else."
+  },
+  "assembled_prompt": "Read ONLY the transcript below aloud as speech. The lines above \"Transcript:\" are direction; never speak them.\n# AUDIO PROFILE: Nora, an Alaska public-radio host: warm, grounded, quietly witty. Neutral American accent, light and natural, not announcer-y.\n### DIRECTOR'S NOTES\nStyle: warm, plainspoken and genuinely curious. You are a smart Alaskan who has read this paper and is quietly impressed by how careful the work is. Admiring, never hyped and never ominous. This is a story about patient work, so keep the wit dry and mostly held back, and let the restraint in the material be the feeling. No sell, no alarm, no drama.\nArc: open plain and easy, like the first line of a story. Lift when they find the mud cores, and let the numbers breathe. Leave a door open on the line about one name, lifting slightly at the end of it rather than falling. Settle low, slow and certain for the lines about the rock and the repetition. Go quietest and most human on the line about not forcing it. Stay level and unapologetic through the two lines about what this is not, then warm at the end, and finish on a real question, open and inviting, not a challenge.\nPace: BRISK and energetic, keep it moving like a sharp modern explainer. Short natural breaths only, no long pauses, do not drag. Vary the tone line to line so no two sentences sound the same.\nEmphasis: lean on the key word in each line; let numbers land.\nTranscript:\n[curious] Every eruption in Alaska signs its name in ash. The trick is reading the signature.\nOn land the layers stack like pages, then glaciers scrape the page blank.\nSo three federal scientists in Anchorage went looking for a copy.\nThey found one under the Gulf of Alaska, in long tubes of mud punched from the seafloor.\nSeventy ash layers out of eight tubes, a record they call virtually uninterrupted, reaching into the ice ages.\nThey sorted them into thirty seven eruptions, then asked which volcano threw each.\n[short pause] The answer doesn't always come back with one name.\nAsh carries trace elements, a chemical handwriting.\nA machine learning model reads it and names the most probable source, or sources.\nIt's confident about Katmai, Fisher Caldera and Emmons Lake, because each keeps writing the same ratios, eruption after eruption.\n[short pause] That repetition is what separates one volcano from another. The model reads a difference the rock already made.\nAnd when the model isn't the right tool, they don't force it. They measure chemical distance.\nNone of this forecasts an eruption. Chemistry has traced ash for decades.\nWhat's new is how carefully they said which volcanoes they could name, and which they couldn't.\nAlaska's record didn't disappear. It settled where nobody was reading.\n[curious] What else is down there, with a name still on it?"
+}

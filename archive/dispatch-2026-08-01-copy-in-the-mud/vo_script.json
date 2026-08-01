@@ -1,0 +1,18 @@
+{
+  "run_id": "2026-08-01",
+  "title": "The Copy In The Mud",
+  "caption_fixups": {
+    "Seventy": "70",
+    "seventy": "70",
+    "thirty seven": "37",
+    "Thirty seven": "37",
+    "eight": "8"
+  },
+  "note": "Numbers are spelled out in the spoken script so the synth reads them correctly, and mapped back to numerals here so the on-screen captions show digits. The 2026-07-26 panel caught TTS spellings painting onto screen when this map was left empty. NO proper noun in this script needs a phonetic respelling in lines[].text: Katmai, Fisher Caldera, Emmons Lake, Anchorage and Alaska all read correctly for Sulafat. Any respelling the vo-director needs goes in the assembled_prompt transcript ONLY, never in lines[].text, because vo_synth_gemini::_assert_plan_matches_script compares tag-stripped lines[].text to vo_script.txt character for character and those same strings drive the captions.",
+  "deliberate_losses": [
+    "The journal, volume, issue and the names Jordan Lubbers, Matthew Loewen and Kristi Wallace are NOT spoken. They cost about 20 words of a 214 word budget and the narration already carries 'three federal scientists in Anchorage'. All of it is DRAWN on screen instead, on a nameplate, which satisfies say-it-show-it in the direction that matters.",
+    "'Back through the mid-Pleistocene' was cut from the narration after Gate 0E found it was an unanchored time depth a listener can't size, and the validators forbade attaching any year figure to it. The verbatim phrase appears ON SCREEN as a quoted label with its source, where a viewer can read it at their own pace.",
+    "The conformal prediction explainer is down to one clause, 'the most probable source, or sources', per the angle room's binding rule. Teaching it honestly needs about 20 seconds and every vivid framing for it is on the cut list.",
+    "1912 and Novarupta are out entirely, per claims.json cultural_note."
+  ]
+}

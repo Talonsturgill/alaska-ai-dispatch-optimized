@@ -22,6 +22,7 @@ import { MaterialShowcase } from './MaterialShowcase';
 import { z } from 'zod';
 import { UnderIceLook } from './UnderIceLook';
 import { GateLook } from './GateLook';
+import { BenchLook } from './BenchLook';
 import { Ep0730, ep0730Schema } from './Ep0730';
 import { Ep0731, ep0731Schema } from './Ep0731';
 
@@ -68,6 +69,14 @@ export const RemotionRoot: React.FC = () => {
         calculateMetadata={({ props }) => ({
           durationInFrames: (props as { total?: number }).total ?? 1800,
         })}
+      />
+      <Composition
+        id="BenchLook"
+        component={BenchLook}
+        durationInFrames={120}
+        fps={30}
+        width={1080}
+        height={1920}
       />
       <Composition
         id="StationLook"

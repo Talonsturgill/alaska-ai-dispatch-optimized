@@ -305,3 +305,77 @@ verdict, so it can show a road closed and nothing else. It cannot show WHY.
   makes "amber never appears on an unmonitored slope" a property of the scene graph; DayGrade's reserved
   colour is held only by pinned values at call sites, and the 07-31 panel still found three leaks. Add
   `accents[]`, permit the reserved hue only at registered rects, throw on an unregistered one.
+
+## Bench science (the library's FIRST INDOOR INSTRUMENT FAMILY) — lib/bench.tsx
+NET-NEW 2026-08-01 ("The Copy In The Mud", USGS AVO tephra attribution). REAL GAP, checked against
+this file in full first: the shelf had an orbital eye, a seafloor ear, a ground ear, two aerial
+machines, a swimmer, records machinery and the civics kit, and EVERY one of them observes a WORLD.
+Nothing read a SAMPLE, and there was no vocabulary for bench science or material evidence. A piece
+of the world brought indoors under a lamp is a different verb and needed different hardware.
+- `AshReader` — THE RUN'S HERO, a brass and enamel bench instrument that reads one ash grain and
+  PRINTS ITS ANSWER — bench.tsx — THE TELL IS THE CARD, NOT A FACE, and that is restraint rather
+  than incapacity: it has eyes, a brow bar and a vitals() idle and deliberately does not use them,
+  because a face at the print beat would make the machine a character with stakes in its own
+  uncertainty and the film's honesty beat depends on it having none. Three state channels, per the
+  thrice-learned one-channel lesson (07-25 horn, 07-26 cone, 07-30 glider): the CARD (loudest), the
+  LAMP (lights ONLY on an asserted match, the SeismicStation discipline), and the THROAT + BROW
+  (telescopes on `straining`, and the brow carries state even when the lamp is dark). `emotion`
+  reading/settled/straining, `feed` 0..1 runs a grain along the stage, `lamp`, `lampFill`, `accent`,
+  `phase`, `groundY`. tones/FormGradient/RimLight/ContactShadow, routed through vitals() — ACTIVE
+- `ShortlistCard` — the printed answer, and the film's thesis AS AN OBJECT — bench.tsx — one name is
+  narrow and calm, three names is WIDE, and the extra width is the honest report of ambiguity, so
+  ambiguity is a SIZE ON SCREEN rather than a label. Built on paper.tsx's numeric shadow contract.
+  HARD-WON: pass 1 used a fixed 76px bay at fontSize 17 and "FISHER CALDERA" (about 148px) ran off
+  the stock entirely on the three-name card. Gate 0D called it a hard blocker on the film's own
+  thesis object. Now the bay is derived from the LONGEST name, the font shrinks only if the card
+  would pass MAXW, and W is derived from the bay. A card whose names overflow is not a subtler bug
+  than a broken render, it is the same bug — ACTIVE
+- `DistanceCalipers` — THE SECOND INSTRUMENT — bench.tsx — brass jaws spanning two points, brought in
+  BY A HUMAN HAND (`handIn`), which is the literal drawing of a distance metric AND of a person
+  choosing. Nearest prior art is props.tsx `MeasuringChain`, and the distinction is real: a chain
+  pays out along ground over a long span, calipers span two points at bench scale, in hand, and
+  read as a tool being PICKED UP. `span`, `tilt`, `handIn`, `label` — ACTIVE
+- `CoreColumn` — one long tube of mud, standing, with its ash bands — bench.tsx — TORN, not turned:
+  irregular edges and imul-hashed grain, because this is the FOUND half of the shape grammar.
+  `bands[]` takes {at, lit, named, still, mark}. PER-BAND MOTION CHANNEL added after Gate 0D: pass 1
+  applied ONE sway to the whole group so bands inherited it wholesale, which made the poster frame's
+  entire argument (named bands DEAD STILL, unnamed ones quietly restless) literally unbuildable.
+  `named` draws a real NAME PLATE on a stem sized by `labelScale`; pass 1 could only tint a band, so
+  the frame that promised named bands had no label geometry at all. `mark` gives a band a
+  double-torn corner and one conspicuously deep tooth so the open-loop band is re-identifiable
+  across a 52-second gap and two shots — ACTIVE
+- `AshCrumbs` — THE CROSS-SCENE GAG AS ONE COMPONENT — bench.tsx — pearl shavings that curl off the
+  glacier blade, drift in the far atmosphere plane of every later scene on a GLOBAL frame phase, and
+  `landing` promotes one out of the drift to seat as a pearl band. Built as one shared deterministic
+  component precisely because a cross-scene continuity requirement re-improvised per scene silently
+  does not happen. imul hash, never Math.random — ACTIVE
+- Look-dev: `BenchLook` (BenchLook.tsx) — every state in the film at full size AND a 0.28-SCALE
+  LEGIBILITY STRIP, run BEFORE any scene is authored, per the GateLook precedent.
+
+## Engine advance 2026-08-01 — the ACCENT REGISTRY (closes the 07-31 deferral)
+- `lib/lighting.tsx` `AccentRegistry` / `useAccent` / `accentAllowedAt` / `AccentLicense` — the item
+  the 2026-07-31 run deferred WITH A PLAN. NightGrade's `sources[]` makes a palette rule a property
+  of the scene graph; DayGrade had no counterpart, so its reserved colour was held only by
+  hand-pinned values at call sites and that run's panel still found three leaks. A scene declares
+  AccentLicense[] (hue, what it MEANS, licensed rects); code painting a reserved hue resolves it
+  through useAccent(hue, x, y), which throws outside every licensed rect, and a throw fails the
+  render. accentAllowedAt() is a pure test seam.
+  HONEST LIMITATIONS, recorded rather than overclaimed (Gate 0D was right to press): it is OPT-IN at
+  paint time, so a literal hex painted directly still slips through and only a repo-level lint would
+  close that; the check is POINT-based while most accents are extents; and licences are in frame
+  coords with no local-to-frame helper for assets nested under stage3d Planes. It NARROWS the hole
+  the 07-31 panel found, it does not seal it. The name is also general, not DayGrade-specific.
+- KNOWN NEXT ADVANCES: a lint or AST gate failing on a reserved-hue literal outside useAccent; an
+  extent/bbox overload; a local-to-frame coordinate helper; a unit test exercising accentAllowedAt.
+
+## Engine fix 2026-08-01 — align_captions.py no longer feeds Whisper the script
+- `scripts/align_captions.py` passed `--script` in as Whisper's `initial_prompt`. Whisper treats
+  initial_prompt as text that ALREADY happened, so seeding it with the script's opening words made
+  the decoder skip forward to audio that did not match. Reproduced twice on this run's take: WITH
+  --script it returned 178 words beginning at 17.42s, silently dropping the film's first FOUR
+  narration lines while reporting a healthy-looking transcript_match=0.866; WITHOUT it, the same
+  audio and model returned 214 words beginning at 0.00s.
+  THIS IS THE SECOND TIME THIS EXACT ROOT CAUSE HAS BEEN PAID FOR. This file already records it
+  being fixed in vo_synth_gemini.py's `_align_wholefile` on 2026-07-19, and that fix was never
+  carried across to align_captions.py, which the routine names as authoritative for caption timing.
+  --script is still honoured, but only for the post-hoc transcript_match validation.

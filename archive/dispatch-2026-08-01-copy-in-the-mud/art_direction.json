@@ -1,0 +1,93 @@
+{
+  "run_date": "2026-08-01",
+  "title": "THE COPY IN THE MUD",
+  "thesis_the_look_must_serve": "The confidence is in the rock first, and the software inherits it. So the picture has to make CHEMICAL CONSISTENCY visible as a physical property of the material, before any machine appears.",
+
+  "palette": {
+    "roles": {
+      "sky": "#0e1418",
+      "ground": "#2b3630",
+      "hero": "#e8e2d2",
+      "accent": "#d94f8a",
+      "shadow": "#070a0c",
+      "brass": "#c9a24a",
+      "core_mud": "#4a4234",
+      "ash_band": "#cfd4cc"
+    },
+    "the_world": "Wet sediment olive-black and drowned green, pearl-grey ash bands, warm brass bench light, and ONE rhyolite magenta.",
+    "mood_it_encodes": "A specimen world. Cold wet material under a warm working lamp. Not a landscape, not an instrument screen, a THING ON A BENCH being looked at closely. The warmth is entirely artificial and entirely local, which says a person is present and working.",
+    "BINDING RULE": "RHYOLITE MAGENTA #d94f8a IS A CHEMICAL MATCH AND NOTHING ELSE. It may appear ONLY where the film asserts that a trace element signature has been matched to a source. It is licensed by the new DayGrade AccentRegistry (lib/lighting.tsx, this run's craft advance) at declared rects, and painting it anywhere else THROWS AND FAILS THE RENDER. Every shelf asset whose default is pink, magenta or hot red is pinned to a non-reserved value at its call site.",
+    "divergence": "Diverges from 2026-07-31 (pale arctic overcast, tundra ochre, gravel, steel grey, threshold red) and from 2026-07-30 (instrument-blue abyss, ice-white lid, survey-yellow, cyan). Neither of those had a dark warm-lamp world and neither reserved a magenta. The last three films were, in order, night-practical blue, document black and amber, and overcast grey-ochre daylight. This one is a dark bench under brass with a single hot pink."
+  },
+
+  "light": {
+    "time_of_day": "None. This is INTERIOR, a lit bench in a dark room, plus one submerged exterior act with no sun in it.",
+    "direction": "Key from UPPER SCREEN LEFT at roughly 35 degrees, a hard practical bench lamp. Every rim in every scene derives from that bearing and does not move between scenes, because one lamp means one room.",
+    "key_fill_rim": "Hard brass key, very little fill so shadows stay deep and graphic (this is the noon-hard axis expressed indoors), and a cool #6f8a90 rim from the room's own darkness to separate the hero from a near-black ground.",
+    "depth_approach": "Three declared depth planes in every scene via stage3d Plane, with Atmosphere on the far plane. Forms read dimensional through tones() ramps plus FormGradient plus ContactShadow, never through outline alone. The core columns get Extrude so they are real cylinders with lit and shaded walls, NOT flat rounded rectangles.",
+    "why_this_story": "A specimen under a working lamp is the honest staging for a paper about material evidence. Hard key with deep shadow also makes an ASH BAND read as a discrete physical stripe rather than as a colour change, which is the whole point of the layer imagery.",
+    "engine_note": "Uses NightGrade for the room (registered practical: the bench lamp) and the new AccentRegistry for the magenta. DayGrade is NOT used, this film has no daylight."
+  },
+
+  "shape_language": {
+    "the_contrast": "TORN AGAINST TURNED. The land, the ice and the sediment are drawn with TORN, irregular, hand-broken silhouettes, no two edges parallel. Every human-made object (the core tube, the bench, the reader, the calipers, the labels) is TURNED, machined, radially symmetric, with visible fabrication marks.",
+    "why_this_story": "The film's argument is that a signal already existed in the material and people built an instrument to read it. Making nature torn and instruments turned states, in silhouette alone, which half is found and which half is built. It also gives the ICE a genuinely different grammar from the 2026-07-30 under-ice film, whose ice was one continuous slab silhouette; here the ice is a hard STRAIGHT-EDGED PLANE that ERASES, a shape that acts.",
+    "the_erasure_shape": "The glacier is drawn as a hard flat blade, the single most rectilinear thing in the film, moving across a torn layered land and leaving flat blankness behind it. The land's texture literally stops at its trailing edge."
+  },
+
+  "casting": {
+    "hero_ai_presence": {
+      "name": "AshReader",
+      "status": "NET-NEW, this run's library addition",
+      "why_net_new": "A real manifest gap, checked against ASSET_MANIFEST.md in full. The shelf has an orbital eye (SatelliteEye), a seafloor ear (ListeningMooring), a ground ear (SeismicStation), two aerial machines (Vale, Petrel), a swimmer (IceGlider), records machinery (RecordsMachine, ThreePipeCutaway) and the civics rules kit (Gate, ThresholdGate). It has NOTHING that reads a SAMPLE, and no asset for material evidence or bench science. Four prior dispatches wanted a bench and improvised.",
+      "shape_language": "TURNED, not rounded-cute and not cold-institutional. A brass and enamel bench instrument with a sample stage, a lens throat, and a CARD SLOT that prints its answer. Squat, heavy, planted, with visible screws and a wear-polished edge where a hand rests. It is a TOOL, and it looks like one somebody has used for years.",
+      "the_emotional_tell": "THE CARD, not a face. The reader prints a shortlist card and the NUMBER OF NAMES ON IT is the whole performance. One name means the chemistry separated cleanly. Three names fanned means it did not, and the card is WIDER, so ambiguity is a physical size on screen. It has eyes, but they are small and subordinate, because this asset's job is to make an OUTPUT legible, not to emote.",
+      "params": "emotion reading/settled/straining, cardNames 1..3, feed 0..1 (a sample travels the stage), lamp 0..1 (lights only when a match is asserted, same discipline as SeismicStation), accent VO reactivity, phase, groundY, routed through vitals()"
+    },
+    "second_instrument": {
+      "name": "DistanceCalipers",
+      "status": "NET-NEW, same commit",
+      "why": "The film's Act 3 needs to SHOW that the humans set the classifier down and used multivariate distance-based metrics instead. Nothing on the shelf can stage a deliberate tool change. A pair of brass calipers, brought in BY A HUMAN HAND, spanning two points, is the literal drawing of a distance metric and the literal drawing of a person choosing.",
+      "params": "span 0..1, tilt, handIn 0..1"
+    },
+    "from_the_manifest": [
+      "Character (Character.tsx) — one recurring scientist in a flannel outfit, the hand that sets the reader down and picks up the calipers. Cast continuity within the film.",
+      "GlacierBG (lib/biomes.tsx) — restaged for the erasure beat, NOT as scenery. Its `calve` is unused; the blade motion is authored.",
+      "Sheet and PaperFiber (lib/paper.tsx) — the shortlist cards, so cards have real body and a printed-stock tooth.",
+      "Nameplate and StatCard (lib/props.tsx) — form-shaded by default since 2026-07-30, used for the USGS AVO credit and the counts.",
+      "MaterialDefs and matFill (lib/materials.tsx) — granite and brushedMetal on the land and the bench, so no surface is a flat fill.",
+      "Extrude, Plane, Atmosphere, CastShadow3D (lib/stage3d.tsx) — the eight core columns as real cylinders.",
+      "vitals(), entrance(), followThrough(), MotionBlur (lib/motion.tsx)."
+    ],
+    "hero_rotation_check": "PASS. Last two heroes were IceGlider (2026-07-30) and ThresholdGate (2026-07-31). AshReader is net-new, so `dedupe.py check --hero AshReader` returns FRESH. Neither prior hero appears in this film in any role."
+  },
+
+  "motion_language": {
+    "the_dominant_move": "HORIZONTAL TRAVERSE. The camera travels ALONG a core laid on its side, which means it travels BACKWARD THROUGH TIME. Everything important in this film is arranged left to right on a timeline you fly down, which is the axis neither of the last four dispatches used.",
+    "named_hero_moves": [
+      "THE BLADE WIPE: the glacier crosses screen left to right at a constant, unhesitating speed and the layered land behind it goes flat. No easing on the blade itself, deliberately, because the ONE mechanical motion in a film full of eased ones reads as inhuman. Everything else obeys the no-linear-easing law.",
+      "THE DROP THROUGH THE WATERLINE: the only vertical move in the film, spent ONCE, at the transition from erased land to kept seafloor. It earns its uniqueness by being the film's single axis change.",
+      "THE CARD PRINT: anticipation (the reader compresses and the lamp dips), disclose (the card snaps out with overshoot), hold 0.6s. The card's WIDTH is the reveal.",
+      "THE SET-DOWN: the hand places the reader down with real weight (squash on contact, a settle, the lamp fading) before the calipers come in. Two beats, not one, because the deliberateness IS the content."
+    ],
+    "what_earns_motion_blur": "The blade wipe and the card print only. 180 degree MotionBlur fed from entrance() .vy.",
+    "overshoot_budget": "ONE element per frame, spent on the card and on the count-ups."
+  },
+
+  "composition": {
+    "focal_hierarchy": "One read per frame. In the bench acts the card is always the brightest small object. In the seafloor act the lit ash band is.",
+    "negative_space_beats": "The single-object-void layout is the spine. A core column or the reader sits in deep near-black with the lamp falling on it and nothing else competing. Two beats are almost empty on purpose, the erased land after the blade passes, and the last frame.",
+    "safe_area_intent": "The 4:5 centred box (y 285 to 1635) is the LinkedIn deliverable and carries every load-bearing element. The core columns are staged so the 9:16 extension adds depth of field above and below, never information. Caption reserve honoured per the Ep0731 pattern so no stat card is ever occluded.",
+    "the_signature_shot": "THE EIGHT COLUMNS. The camera pulls back off a single ash band to reveal eight core columns standing in the dark, bands lit along all of them, and THREE bands hold a steady magenta name label while the others stay pearl and unnamed. It is the film's argument in one frame: most of the record is read, some of it is confidently attributed, and the difference is visible and honest. This is the poster frame and the last image."
+  },
+
+  "craft_advance": {
+    "system": "lib/lighting.tsx — the DayGrade ACCENT REGISTRY (AccentRegistry, useAccent, accentAllowedAt, AccentLicense)",
+    "why_this_one": "It is the item the 2026-07-31 run explicitly deferred WITH A PLAN, quoted in ASSET_MANIFEST.md: NightGrade's sources[] makes a palette rule a property of the scene graph, DayGrade had no counterpart, and the 07-31 panel still found three colour leaks because the rule was enforced by hand-pinning at call sites. Under the routine's repeat-offender rule a deferred finding gets a real code fix on its next appearance.",
+    "how": "A scene declares AccentLicense[] (hue, what it means, and the licensed rects). Any code painting a reserved hue must resolve it through useAccent(hue, x, y), which throws if the point is outside every licensed rect. A throw fails the Remotion render, so an unlicensed accent physically can't reach a frame. accentAllowedAt() is a pure test seam so the rule is checkable without a render.",
+    "used_by_this_film": "The rhyolite magenta binding rule above is enforced by it, which is the point: the run that adds the mechanism is the run that submits to it.",
+    "status": "IMPLEMENTED AND TYPECHECKED (npx tsc --noEmit clean) before the storyboard was written."
+  },
+
+  "what_this_film_will_not_look_like": "No alert dashboards, no monitoring-network graphics, no seismic traces, no Great Sitkin, no map of AVO stations. The 2026-07-09 VOISS-Net dispatch owns that vocabulary and a viewer three weeks later would feel served the same story. This film never shows a volcano erupting in the present tense and never shows a screen with a warning on it."
+}

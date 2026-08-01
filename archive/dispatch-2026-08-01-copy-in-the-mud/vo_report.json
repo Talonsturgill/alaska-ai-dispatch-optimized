@@ -1,0 +1,60 @@
+{
+  "backend": "gemini-tts",
+  "model": "gemini-3.1-flash-tts-preview",
+  "voice": "Sulafat",
+  "take": 0,
+  "takes": 4,
+  "soundcheck": {
+    "pass": true,
+    "score": 0.984,
+    "heard": "Every eruption in Alaska signs its name and ash. The trick is reading the signature. On land, the layers stack like pages. Then glaciers scrape the page blank. So three federal scientists in Anchorage went looking for a copy. They found one, under the Gulf of Alaska. In long tubes of mud, punched from the seafloor. 70 ash layers out of eight tubes. A record they call virtually uninterrupted. Reaching into the ice ages. They sorted them into 37 eruptions. Then asked which volcano through each. The answer doesn't always come back with one name. Ash carries trace elements, a chemical handwriting. A machine learning model reads it, and names the most probable source. Or sources. It's confident about Katmai, Fisher Caldera, and Emmons Lake. Because each keeps writing the same ratios. A eruption after a eruption. That repetition is what separates one volcano from another. The model reads a difference the rock already made. And when the model isn't the right tool, they don't force it. They measure chemical distance. None of this forecasts an eruption. Chemistry has traced ash for decades. What's new is how carefully they said which volcanoes they could name. And which they couldn't. Alaska's record didn't disappear. It's settled where nobody was reading. What else is down there? With a name still on it.",
+    "checks": {
+      "word_accuracy": {
+        "wer": 0.023,
+        "pass": true
+      },
+      "no_leak": {
+        "leaked": [],
+        "pass": true
+      },
+      "expressive": {
+        "pitch_std_semitones": 3.95,
+        "voiced_frac": 0.45,
+        "pass": true
+      },
+      "duration": {
+        "seconds": 97.08,
+        "pass": true
+      },
+      "loudness": {
+        "lufs": null,
+        "pass": true
+      }
+    },
+    "diagnosis": "clean"
+  },
+  "all_reports": [
+    {
+      "pass": true,
+      "score": 0.984,
+      "diagnosis": "clean"
+    },
+    {
+      "pass": false,
+      "score": 0.795,
+      "diagnosis": "WORDS: WER 0.411 too high (dropped/garbled or a 500 text-fallback) \u2014 re-roll."
+    },
+    {
+      "pass": true,
+      "score": 0.982,
+      "diagnosis": "clean"
+    },
+    {
+      "pass": false,
+      "score": 0.858,
+      "diagnosis": "WORDS: WER 0.283 too high (dropped/garbled or a 500 text-fallback) \u2014 re-roll."
+    }
+  ],
+  "watermark": "SynthID (Google) embedded in all Gemini TTS audio",
+  "license": "Google Gemini API preset voice (per-use billing)"
+}
