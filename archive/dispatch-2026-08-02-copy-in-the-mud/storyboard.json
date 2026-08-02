@@ -1,0 +1,1058 @@
+{
+ "run_date": "2026-08-02",
+ "title": "The Copy In The Mud",
+ "concept": "Glaciers scraped Alaska's eruption record off the land, so three USGS Alaska Volcano Observatory scientists in Anchorage read a surviving copy out of Gulf of Alaska seafloor mud, and a machine learning model could only put a confident name on the ash whose chemistry had been writing itself the same way over and over. The film draws trace elements as CUT NOTCHES on the machined edge of a torn ash shard, and proves the finding by REGISTRATION, sliding one shard's notch profile onto another until the teeth seat. The confidence is a property of the rock before it is a property of the classifier, and the picture argues that with repetition instead of with a claim.",
+ "engine": "infographic-2.5d",
+ "derived_from": "scratch",
+ "angle": {
+  "thesis": "Ice scraped a lot of Alaska's eruption record off the land, so three USGS scientists in Anchorage read it out of Gulf of Alaska seafloor mud instead, and the machine could only name a volcano confidently where the volcano had been writing the same chemical signature over and over.",
+  "supporting_facts": [
+   "c11 and c6: the abstract says these records are hard to build in places like Alaska that have experienced numerous glaciation events since the Pleistocene, and that the Gulf of Alaska cores hold a virtually uninterrupted depositional record. Stated side by side, never as a comparison the paper did not make.",
+   "c10, THE LOAD-BEARING FACT: Mount Katmai, Fisher Caldera and Emmons Lake volcanic center have produced nearly invariant incompatible trace element ratio magmas, allowing for them to be confidently identified in long-term tephra records.",
+   "c8 and c7: the answer may carry more than one name, and where machine learning classification is inappropriate the authors use multivariate distance-based metrics instead, a separate non-ML tool chosen by people."
+  ],
+  "fair_counter_point": "Tephrochronology is decades old and ML on geochemical correlation is prior art, so this is not a first. The paper forecasts nothing. Its headline geologic result carries no fraction. The film says the non-forecasting and non-first parts OUT LOUD at line 13, and stages that line with the hero machine's lamp OFF.",
+  "valence": "curiosity",
+  "runner_up_angles_and_why_they_lost": "See out/dispatch/angle.json. The run's ORIGINAL working thesis, 'the machine that says I don't know', was killed by an adversarial validator: a conformal prediction set is a hedged ANSWER, not a refusal, and the real can't-answer path is a separate non-ML distance metric the humans invoke. The pure-archive angle was grafted in as Act 1 and the button; the pure-craft angle was grafted in as Act 3's argument."
+ },
+ "treatment": {
+  "winner": "THE EXPLAINER",
+  "judge_reasoning": "All four lenses independently converged on the same cold open (near black, one hard brass lamp, one pearl ash band in olive mud), the same blade-wipe erasure, the same single vertical drop through the waterline, the same eight-column pull-back as the signature shot, the same wide card as the ambiguity object, and the same two-beat set-down. That convergence means the spine was over-determined by the material, so the winner was decided on what each lens ADDED. The Explainer added the one genuine invention in the room: TRACE ELEMENTS DRAWN AS CUT NOTCHES on a machined shard edge, proven by sliding two shards together until the teeth seat. It solves 'chemical handwriting' for a muted viewer with zero text, it makes the film's thesis PROVABLE as a picture rather than assertable as a claim, and it turns the reserved magenta into something that can only appear where something actually seated. It also solved the numbers honestly: the descent 70 to 37 to 3 staged as a shrinking WIDTH, so a viewer feels a ratio the sources refuse to quantify.",
+  "grafts": [
+   "FROM THE COMEDIAN: the ERASER CRUMBS recurring background gag. Pearl shavings curl off the glacier blade's trailing edge at 9.8s, drift in the far atmosphere plane of every scene after, and one finally LANDS at 86.0s, settling into the seafloor stack as a pearl band identical to the one in frame 1. The gag's punchline is the thesis: the ice never destroyed the record, it relocated the paperwork. Also grafted: the seafloor as the world's most patient filing clerk, so the mud is already stacked in chronological stripes before the tube touches it.",
+   "FROM THE DRAMATIST: the opposing force stated as glaciation plus ambiguity, neither with intent, so no villain gets invented. The moment of maximum pressure at the card print, where AshReader's lamp DIPS and the frame gets DARKER instead of brighter as the answer arrives. And the two-beat set-down staged so the reader is left dignified and rim-lit, never humiliated.",
+   "FROM THE ENTHUSIAST: the honesty picture at line 13. When the narration says none of this forecasts an eruption, the hero machine's lamp is OFF, NO magenta is licensed anywhere in that frame, there is no screen in the shot, and the only lit object is the plain journal nameplate. A film that states its limits while its hero sits dark can't be accused of selling the machine. Also the Anchorage pride beat staged with a nameplate and no skyline, no flag and no map of Alaska."
+  ],
+  "cuts_each_lens_made_on_itself_and_the_room_honored": [
+   "Explainer's force-fit gag (a stamp jamming a shard into a slot that doesn't fit). CUT. It invents an adversary the paper never mentions and turns a methods choice into a morality play.",
+   "Dramatist's dusty folder shelf. CUT. The narration already says chemistry has traced ash for decades, so the shelf argues an uncontested point and adds a second read to a one-read frame.",
+   "Enthusiast's second glacier blade pass. CUT. The blade is the film's ONE unhesitating mechanical motion and running it twice spends the contrast.",
+   "Comedian's volcano police lineup, which it named explicitly as the joke it was NOT making. BINDING PROHIBITION. It would make real volcanoes suspects, smuggle threat imagery in through comedy, hand Katmai the punchline, and invert the finding, because a lineup can only code multiple names as the witness blowing it. The lineup metaphor survives with every piece moved one step sideways: the lineup is the eight cores, the witness is AshReader, and the thing identified is handwriting.",
+   "Comedian's calipers-as-retired-specialist. CUT. It reads as the old ways beating the new machine, which is the wrong argument.",
+   "AshReader's eye-flick reaction at the card print, which both the Comedian and the Enthusiast flagged against their own pitches. CUT. The card's width is the whole performance and a face would steal it and start implying the machine has feelings about being unsure.",
+   "The Explainer's comparator drum keeps NO algorithm name, no branching tree, no node graph and no layers, per its own hedge. Reference strips are blank brass. Naming or drawing the method would be a visual fabrication, since the full text is paywalled and the algorithm family is UNVERIFIED."
+  ]
+ },
+ "fingerprint": {
+  "pov": "macro-closeup",
+  "motion_vector": "horizontal-traverse",
+  "hero_treatment": "multiplicity-swarm",
+  "layout": "single-object-void",
+  "register": "tactile-collage",
+  "camera_strategy": "track-follow",
+  "light_story": "noon-hard",
+  "palette": "wet sediment olive-black and drowned green, pearl-grey ash bands, warm brass bench light, and ONE rhyolite magenta spent only on a chemical match",
+  "metaphor": "an archive nobody built, kept in mud, whose pages are signed in cut notches, and a bench instrument that prints as many names as the handwriting has actually earned"
+ },
+ "palette": "wet sediment olive-black and drowned green, pearl-grey ash bands, warm brass bench light, and ONE rhyolite magenta spent only on a chemical match",
+ "divergence_note": "Diverges on all seven axes from BOTH of the last two dispatches. 2026-07-31 was eye-level-immersive / vertical-descent / instrument-as-subject / fullbleed-split / naturalistic-scene / rack-focus-macro / overcast-diffuse in pale arctic grey and tundra ochre. 2026-07-30 was cross-section-cutaway / radial-emanate / instrument-as-subject / stacked-layers / naturalistic-scene / locked-drift / night-practical in instrument-blue and ice-white. This film is macro-closeup / horizontal-traverse / multiplicity-swarm / single-object-void / tactile-collage / track-follow / noon-hard in olive-black, pearl and brass. The spatial signature triple (macro-closeup, single-object-void, horizontal-traverse) is unique versus the last four dispatches, none of which used a horizontal traverse at all. Structurally the biggest break is the AXIS: this film travels SIDEWAYS along a timeline instead of descending through a world, and it spends its single vertical move once, at 17.4s, which is the one moment the axis changes. It is also the first film in the run of five that is lit by an artificial local practical rather than by weather, and the first whose hero is a count of many things rather than one machine.",
+ "hook": {
+  "pattern": "anomaly-question",
+  "frame1": "near black, a hard brass bench lamp arriving from upper screen left onto ONE pearl ash band lying in wet olive-black mud, filling the width of the frame, torn along its top edge, nothing else lit",
+  "headline": "The copy in the mud",
+  "motion_by_s": 0.5,
+  "loopback": "the last frame is the same lamp-on-one-pearl-band composition with the light taken away, so the film opens on a signature nobody has read and closes on a signature nobody has read yet, and the only thing that changed is that somebody went and got the others"
+ },
+ "open_loop": {
+  "plant_t": 18.4,
+  "pay_t": 71.4,
+  "what": "As the camera reaches the seafloor a brass label slot swings open beside one lit band and stays EMPTY, and the punch a beat later lifts that band out with its slot still open. The film never mentions it again until 72.1s, when the camera returns to that exact band while three others hold steady magenta names, and it is still pearl and its slot is still empty. The promise is that this band will get a name. The honest payoff is that it doesn't, and the film treats that as the correct outcome."
+ },
+ "reveals": [
+  {
+   "t": 26.0,
+   "type": "scale-pullback",
+   "what": "the camera lifts off one lit ash band and keeps going until eight core columns stand full height in the dark with bands lit along every one of them, and the single stripe the film has been staring at since frame 1 turns out to be one line in a stack of stacks",
+   "hold_s": 0.7
+  },
+  {
+   "t": 68.6,
+   "type": "scale-pullback",
+   "what": "the second-half reveal and the film's argument: pull back off the registered notch strips onto all eight columns at once, where three RECURRING names keep reappearing at many depths wherever a notch profile registers, dense near camera and receding unreadably into Atmosphere, while other bands stay pearl and unnamed",
+   "hold_s": 0.8
+  },
+  {
+   "t": 41.9,
+   "type": "build-on",
+   "what": "AshReader hinges open along its brass seam like a pocket watch, every part still moving, and the sample stage, lens throat, comparator drum and print arm assemble into a visible chain from grain to card",
+   "hold_s": 0.6
+  },
+  {
+   "t": 61.2,
+   "type": "morph-to-chart",
+   "what": "a notch profile lifts off an ash band as a thin pearl strip and drops onto the strip from the band before it, teeth landing in register, again and again, until the stacked strips fuse into ONE solid magenta line running the length of the timeline",
+   "hold_s": 0.8
+  }
+ ],
+ "audio_arc": {
+  "build_steps": [
+   0.0,
+   18.4,
+   40.0,
+   68.6
+  ],
+  "dip_at": 71.4,
+  "riser_at": 68.6,
+  "silence_at": 88.3,
+  "payoff_at": 89.2,
+  "button_pattern": "question"
+ },
+ "cultural_note": "1912 and Novarupta are absent from this film entirely, by decision, per claims.json cultural_note. The paper is about the deep record and the only human facts about 1912 that could be verified come from the National Park Service, not from a tribal or primary source. Dramatising a dispossession this run can't source properly would be the worse error, so the film keeps to the deep record and names no community. No Alaska Native subject appears, so no characterized-object humor touches one. The three scientists are real named people: they are drawn warmly, at a bench, never as a joke, and their names appear only on a plain nameplate.",
+ "binding_palette_rule": "RHYOLITE MAGENTA #d94f8a MEANS A CHEMICAL MATCH AND NOTHING ELSE, and it is a FLAT PRINTED INK, never emissive. No bloom, no glow, no falloff, so it reads as a stamp and can never pattern match to the molten ember of the 2026-07-09 dispatch or code as heat or hazard. THE SHORTLIST CARD AT THE PRINT BEAT PRINTS IN PEARL AND BRASS, not magenta, because nothing has been proven to the viewer yet. Its FIRST licensed appearance is the fused registration seam at t=63.3. Licensed thereafter: the recurring name plates from t=68.8, and the ShortlistCard name bays ONLY from the seat flush beat at t=84.7 onward, once a match has actually been asserted. Explicitly NOT licensed at the honesty beat t=81.0, where the hero's lamp is dark. Enforced by the AccentRegistry in lib/lighting.tsx: useAccent() throws outside a licensed rect, which fails the render.",
+ "shots": [
+  {
+   "n": 1,
+   "framing": "macro-closeup",
+   "stage3d": "planes",
+   "pov": "macro-closeup",
+   "layout": "single-object-void",
+   "motion_vector": "horizontal-traverse",
+   "hero_treatment": "multiplicity-swarm",
+   "camera": "truckacross",
+   "scale": "insert",
+   "height": "eye",
+   "t": [
+    0.0,
+    7.0
+   ],
+   "centered": "the band fills the frame width and the notches resolve under the lamp",
+   "means": "open on evidence, not on a subject. A stranger's eye reads a barcode in mud before their brain does.",
+   "hero": {
+    "name": "one pearl ash band in olive mud",
+    "parts": 5,
+    "zones": 2,
+    "detail_note": "torn top edge, grain speckle, a machined notch profile along one edge, wet sheen, hard lamp falloff. The notch edge is planted here and not explained until 44.4s."
+   }
+  },
+  {
+   "n": 2,
+   "framing": "wide-establish",
+   "stage3d": "planes",
+   "pov": "eye-level-immersive",
+   "layout": "stacked-layers",
+   "motion_vector": "horizontal-traverse",
+   "hero_treatment": "landscape-as-subject",
+   "camera": "static:the world moves and the lens does not which is what makes the blade read as inhuman",
+   "scale": "wide",
+   "height": "low",
+   "t": [
+    7.0,
+    13.6
+   ],
+   "centered": "the blade crossing left to right at constant speed with blankness behind it",
+   "means": "the archive is being deleted while you watch, by something with no opinion about what it takes",
+   "hero": {
+    "name": "the torn layered land and the glacier blade",
+    "parts": 8,
+    "zones": 3,
+    "detail_note": "pages seen edge on with torn fore-edges, one lone ridge standing in front of the blade, the blade the single most rectilinear silhouette in the film, pearl eraser crumbs curling off its trailing edge"
+   },
+   "transition_in": "pull-out",
+   "thread": "travel"
+  },
+  {
+   "n": 3,
+   "framing": "subject-portrait",
+   "stage3d": "planes",
+   "pov": "eye-level-immersive",
+   "layout": "single-object-void",
+   "motion_vector": "push-in-only",
+   "hero_treatment": "single-organic-hero",
+   "camera": "truckacross",
+   "scale": "medium",
+   "height": "eye",
+   "t": [
+    13.6,
+    18.32
+   ],
+   "centered": "the lamp clicking on over the bench, landing at frame 1's exact screen geometry",
+   "means": "the search is a person's search, done at a federal bench in Anchorage, and the film's only warmth is one artificial local lamp",
+   "hero": {
+    "name": "the scientist at the bench in Anchorage",
+    "parts": 7,
+    "zones": 3,
+    "detail_note": "flannel forearm, one lamp, a plain brass nameplate carrying the three names and the observatory, a second small plate for the journal and July 2026. No skyline, no flag, no map."
+   },
+   "transition_in": "graphic-match",
+   "thread": "match"
+  },
+  {
+   "n": 4,
+   "framing": "alt-vantage",
+   "stage3d": "planes",
+   "pov": "cross-section-cutaway",
+   "layout": "stacked-layers",
+   "motion_vector": "vertical-descent",
+   "hero_treatment": "structure-as-subject",
+   "camera": "cranedown",
+   "scale": "extreme-wide",
+   "height": "high",
+   "t": [
+    18.32,
+    25.38
+   ],
+   "centered": "the punch, and the empty label slot beside the lit band",
+   "means": "down here nothing scrapes, and the clerk was ready. THE OPEN LOOP IS PLANTED HERE.",
+   "hero": {
+    "name": "the coring tube punching the seafloor",
+    "parts": 6,
+    "zones": 3,
+    "detail_note": "a turned steel tube against torn mud, the plug coming up like a chad, and the mud already stacked in tidy chronological pearl stripes before the tube touches it. One band's brass label slot swings open and stays EMPTY."
+   },
+   "transition_in": "map-travel",
+   "thread": "travel"
+  },
+  {
+   "n": 5,
+   "framing": "wide-establish",
+   "stage3d": "planes",
+   "pov": "eye-level-immersive",
+   "layout": "single-object-void",
+   "motion_vector": "vertical-rise",
+   "hero_treatment": "multiplicity-swarm",
+   "camera": "risewith",
+   "scale": "wide",
+   "height": "low",
+   "t": [
+    25.38,
+    33.56
+   ],
+   "centered": "the columns standing full height with 70 bands lit",
+   "means": "THE FIRST SCALE REVEAL. The stripe you have been staring at is one line in a stack of stacks.",
+   "hero": {
+    "name": "the eight core columns",
+    "parts": 8,
+    "zones": 3,
+    "detail_note": "eight real Extrude cylinders with lit and shaded walls, torn left edges, grain speckle, pearl bands lighting along all of them. The stack spans the frame edge to edge, dense enough that you can't count it."
+   },
+   "transition_in": "assemble",
+   "thread": "build"
+  },
+  {
+   "n": 6,
+   "framing": "data-panel",
+   "stage3d": "planes",
+   "pov": "top-down-map",
+   "layout": "grid-modular",
+   "motion_vector": "horizontal-traverse",
+   "hero_treatment": "data-as-subject",
+   "camera": "truckacross",
+   "scale": "medium",
+   "height": "overhead",
+   "t": [
+    33.56,
+    39.84
+   ],
+   "centered": "the sort, and the count landing on 37 with visible air between the blocks",
+   "means": "REHOOK 1. Evidence becoming events, done visibly by hand rather than by magic, and the width shrinking so a ratio is felt without a percentage.",
+   "hero": {
+    "name": "70 bands merging into 37",
+    "parts": 9,
+    "zones": 2,
+    "detail_note": "bands slide sideways and click into families where their notch patterns register, one stubborn band slides past every stack, hesitates, and reverses into the right one. 37 empty nameplate slots swing open beneath."
+   },
+   "transition_in": "whip-pan",
+   "thread": "travel"
+  },
+  {
+   "n": 7,
+   "framing": "push-detail",
+   "stage3d": "planes",
+   "pov": "macro-closeup",
+   "layout": "hud-instrument-frame",
+   "motion_vector": "assemble-build",
+   "hero_treatment": "instrument-as-subject",
+   "camera": "dollythrough",
+   "scale": "close",
+   "height": "eye",
+   "t": [
+    39.84,
+    47.96
+   ],
+   "centered": "the card's width",
+   "means": "MAXIMUM PRESSURE, then the mechanism. The machine did its job correctly and the frame still feels like a setback. Ambiguity is a SIZE.",
+   "hero": {
+    "name": "AshReader, the wide card, and the opened instrument",
+    "parts": 14,
+    "zones": 4,
+    "detail_note": "the reader compresses, its LAMP DIPS so the frame darkens, and the card snaps out with THREE names, too wide for its own slot, catching at an angle. Then the reader hinges open along its brass seam: sample stage, lens throat, comparator drum with BLANK BRASS strips, print arm. NO algorithm name, NO tree, NO node graph."
+   },
+   "transition_in": "hard-cut",
+   "thread": "carry"
+  },
+  {
+   "n": 8,
+   "framing": "macro-closeup",
+   "stage3d": "planes",
+   "pov": "exploded-diagram",
+   "layout": "stacked-layers",
+   "motion_vector": "assemble-build",
+   "hero_treatment": "multiplicity-swarm",
+   "camera": "orbitreveal",
+   "scale": "insert",
+   "height": "eye",
+   "t": [
+    47.96,
+    54.12
+   ],
+   "centered": "the teeth seating, then the fusing line",
+   "means": "REHOOK 2 and the accent's first licensed appearance. Handwriting proved the way you'd prove handwriting, by repetition.",
+   "hero": {
+    "name": "the notch teeth and the registration stack",
+    "parts": 12,
+    "zones": 3,
+    "detail_note": "the shard's machined edge resolves into cut teeth. Two shards from different depths slide together until the teeth seat with no gap. Then successive notch strips drop onto each other in register until the stack FUSES into one solid magenta line."
+   },
+   "transition_in": "push-in",
+   "thread": "build"
+  },
+  {
+   "n": 9,
+   "framing": "wide-establish",
+   "stage3d": "planes",
+   "pov": "eye-level-immersive",
+   "layout": "single-object-void",
+   "motion_vector": "push-in-only",
+   "hero_treatment": "multiplicity-swarm",
+   "camera": "risewith+truckacross",
+   "scale": "wide",
+   "height": "eye",
+   "t": [
+    54.12,
+    64.18
+   ],
+   "centered": "three steady magenta names in a field of restless pearl",
+   "means": "SCALE REVEAL 2 AND THE TURN. THE SIGNATURE SHOT AND POSTER FRAME. The steadiness is in the columns, not in the software. THE OPEN LOOP IS PAID HERE by the band that never gets a name.",
+   "hero": {
+    "name": "THE EIGHT COLUMNS, named and unnamed",
+    "parts": 8,
+    "zones": 3,
+    "detail_note": "three bands hold a steady magenta name and hold DEAD STILL. Every other band stays pearl, unnamed, and quietly restless. The band from 19.8s is among the pearl ones and its slot is still empty. A neighbouring band's strips are shown landing crossed, never fusing."
+   },
+   "transition_in": "pull-out",
+   "thread": "carry"
+  },
+  {
+   "n": 10,
+   "framing": "two-up",
+   "stage3d": "planes",
+   "pov": "macro-closeup",
+   "layout": "fullbleed-split",
+   "motion_vector": "horizontal-traverse",
+   "hero_treatment": "single-organic-hero",
+   "camera": "static:this beat is about a person deciding so the lens holds while a hand does the moving",
+   "scale": "close",
+   "height": "eye",
+   "t": [
+    64.18,
+    77.3
+   ],
+   "centered": "the lamp going dark, then the brass jaws closing",
+   "means": "the only moment a person overrules the hero. The argument about care is carried by a lamp going out rather than by a word. THE HONESTY PICTURE closes this shot with no magenta licensed anywhere in frame.",
+   "hero": {
+    "name": "the set-down, the calipers, and the dark bench",
+    "parts": 11,
+    "zones": 3,
+    "detail_note": "TWO BEATS, NEVER ONE. The forearm closes over the wear-polished edge and PLACES the reader down with weight, squash, settle, lamp fading so the room loses light. A beat of nothing. Then the same hand brings in DistanceCalipers and spans two points in a field of pale composition dots. The reader stays rim-lit, never humiliated. Then everything goes dark except the plain journal plate."
+   },
+   "transition_in": "hard-cut",
+   "thread": "carry"
+  },
+  {
+   "n": 11,
+   "framing": "two-up",
+   "stage3d": "planes",
+   "pov": "eye-level-immersive",
+   "layout": "fullbleed-split",
+   "motion_vector": "horizontal-traverse",
+   "hero_treatment": "instrument-as-subject",
+   "camera": "dollythrough",
+   "scale": "close",
+   "height": "ground",
+   "t": [
+    77.3,
+    89.14
+   ],
+   "centered": "the dark bench, then the card seating flush into the widened slot",
+   "means": "THE HONESTY PICTURE lands on 'None of this forecasts an eruption' with the hero's lamp off and no magenta licensed in frame, and then the wide card is PAID: it seats flush into a slot cut wide to fit it. The answer was always the right size, the container was wrong.",
+   "hero": {
+    "name": "the crumb that lands, and the unread stripe",
+    "parts": 9,
+    "zones": 3,
+    "detail_note": "ONE eraser crumb from 12.2s finally completes its fall and settles into a slot in the seafloor stack, becoming a pearl band identical to frame 1. The camera retreats until the columns are a small lit island, then pushes past them onto one band at the edge of the lamp's reach, pearl, torn, unlabelled."
+   },
+   "transition_in": "match-cut",
+   "thread": "match"
+  },
+  {
+   "n": 12,
+   "framing": "macro-closeup",
+   "stage3d": "planes",
+   "pov": "macro-closeup",
+   "layout": "single-object-void",
+   "motion_vector": "push-in-only",
+   "hero_treatment": "multiplicity-swarm",
+   "camera": "dollythrough",
+   "scale": "insert",
+   "height": "eye",
+   "t": [
+    89.14,
+    96.74
+   ],
+   "centered": "the crumb seating, then the unread stripe at frame 1's geometry",
+   "means": "THE GAG PAYOFF IS THE THESIS, and then the loop. The ice never destroyed the record, it relocated the paperwork.",
+   "hero": {
+    "name": "the crumb that lands, the wordmark plate, and the unread stripe",
+    "parts": 9,
+    "zones": 3,
+    "detail_note": "ONE eraser crumb from 11.4s completes its fall and seats, and the brass lip of the slot CATCHES THE LAMP as it does, so the payoff is the last BRIGHT thing in the film. The Alaska.Ai wordmark then sets as one more machined plate under the same lamp. The final frame is legibly frame 1, same band, same screen geometry, same notch edge, at a reduced but NON-ZERO key, with the still-open empty slot beside it."
+   },
+   "transition_in": "graphic-match",
+   "thread": "match"
+  }
+ ],
+ "beats": [
+  {
+   "t": 0.0,
+   "title": "THE LAMP ARRIVES",
+   "vo": "Every eruption in Alaska signs its name in ash. The trick is reading the signature.",
+   "vo_line": 0,
+   "draw": {
+    "subject": "one pearl ash band in wet olive-black mud",
+    "action": "a hard brass lamp snaps on from upper screen left and LANDS on the band",
+    "emotion": "held, expectant",
+    "annotation": "none, deliberately"
+   },
+   "shows": "THE LAMP ARRIVES",
+   "sfx": "lamp-clunk",
+   "means": "evidence in a dark room, withholding its label for a full beat",
+   "choreo": {
+    "primary": "the lamp's hard edge arrives, it does not sweep",
+    "reaction": "the band's wet sheen flares along its torn top edge",
+    "ambient": "grain speckle drifting in the near-black around it"
+   }
+  },
+  {
+   "t": 2.0,
+   "title": "THE NOTCHES RESOLVE",
+   "vo": "Every eruption in Alaska signs its name in ash. The trick is reading the signature.",
+   "vo_line": 0,
+   "draw": {
+    "subject": "the band's machined edge",
+    "action": "resolves into a row of cut teeth, deep shallow deep deep shallow",
+    "emotion": "curious",
+    "annotation": "none"
+   },
+   "shows": "THE NOTCHES RESOLVE",
+   "sfx": "focus-tick",
+   "means": "the film's central device planted in the first three seconds and left unexplained for forty",
+   "choreo": {
+    "primary": "the teeth sharpen into hard silhouette against the lamp",
+    "reaction": "a faint specular travelling the notch tops A hand's shadow then crosses the band and STOPS over it, so a person's attention is established before a person is.",
+    "ambient": "mud grain settling"
+   }
+  },
+  {
+   "t": 6.6,
+   "title": "THE STACK",
+   "vo": "On land the layers stack like pages, then glaciers scrape the page blank.",
+   "vo_line": 1,
+   "draw": {
+    "subject": "a torn layered hillside",
+    "action": "pulls back to reveal the band is one page in a stack seen edge on",
+    "emotion": "safe, for now",
+    "annotation": "none"
+   },
+   "shows": "THE STACK",
+   "sfx": "rise-whoosh",
+   "means": "the record looks readable and complete, which is what makes the next beat land",
+   "choreo": {
+    "primary": "the pull-back opening onto the layered wall",
+    "reaction": "each stratum's torn fore-edge catching light",
+    "ambient": "far ridge holding still"
+   }
+  },
+  {
+   "t": 9.8,
+   "title": "THE BLADE ENTERS",
+   "vo": "On land the layers stack like pages, then glaciers scrape the page blank.",
+   "vo_line": 1,
+   "draw": {
+    "subject": "the glacier, drawn as a hard flat blade",
+    "action": "enters screen left at a constant unhesitating speed",
+    "emotion": "none, and that is the point",
+    "annotation": "none"
+   },
+   "shows": "THE BLADE ENTERS",
+   "sfx": "low-grind",
+   "means": "the blade now crosses ON the word glaciers instead of arriving on the last syllable of its own sentence, and it leaves RESIDUE rather than total blankness, because c11 says only that these records are not trivial to build.",
+   "choreo": {
+    "primary": "the blade crossing at flat speed, no easing, no rumble",
+    "reaction": "one lone torn ridge stands in front of it and is not the exception",
+    "ambient": "the far plane darkening"
+   }
+  },
+  {
+   "t": 11.8,
+   "title": "THE CRUMBS CURL OFF",
+   "vo": "On land the layers stack like pages, then glaciers scrape the page blank.",
+   "vo_line": 1,
+   "draw": {
+    "subject": "pearl eraser crumbs",
+    "action": "curl off the blade's trailing edge and begin to fall, like shavings off a plane",
+    "emotion": "indifferent",
+    "annotation": "none"
+   },
+   "shows": "THE CRUMBS CURL OFF",
+   "sfx": "dry-flake",
+   "means": "THE RECURRING GAG IS PLANTED, on the word blank. Sound moved out of the abrasion family so it does not collide with the blade's grind.",
+   "choreo": {
+    "primary": "the crumbs peeling and beginning their fall",
+    "reaction": "blankness spreading behind the blade, texture stopping dead",
+    "ambient": "a wear-polished shine sliding across the blank ground"
+   }
+  },
+  {
+   "t": 14.5,
+   "title": "THE LAMP CLICKS ON",
+   "vo": "So three federal scientists in Anchorage went looking for a copy.",
+   "vo_line": 2,
+   "draw": {
+    "subject": "the bench lamp",
+    "action": "clicks on at frame 1's exact screen geometry",
+    "emotion": "warm",
+    "annotation": "none"
+   },
+   "shows": "THE LAMP CLICKS ON",
+   "sfx": "lamp-clunk",
+   "means": "the graphic match lands ON the cut, so the film's one unimpeachable boundary does its work.",
+   "choreo": {
+    "primary": "the lamp arriving at the matched geometry",
+    "reaction": "the bench resolving out of black",
+    "ambient": "far-plane eraser crumbs drifting, the gag kept alive"
+   }
+  },
+  {
+   "t": 16.5,
+   "title": "THE NAMEPLATE SETTLES",
+   "vo": "So three federal scientists in Anchorage went looking for a copy.",
+   "vo_line": 2,
+   "draw": {
+    "subject": "a plain brass nameplate",
+    "action": "sets into the light and HOLDS",
+    "emotion": "plain",
+    "annotation": "LUBBERS  LOEWEN  WALLACE / USGS ALASKA VOLCANO OBSERVATORY, ANCHORAGE"
+   },
+   "shows": "THE NAMEPLATE SETTLES",
+   "sfx": "plate-set",
+   "means": "three real named people and the Anchorage credit now hold for about 2.5s instead of 0.72s. No skyline, no flag, no map, so the pride is in the staging.",
+   "choreo": {
+    "primary": "the plate settling with a small overshoot",
+    "reaction": "the flannel forearm shifting behind it",
+    "ambient": "far-plane eraser crumbs drifting, the gag kept alive"
+   }
+  },
+  {
+   "t": 19.7,
+   "title": "THE DROP",
+   "vo": "They found one under the Gulf of Alaska, in long tubes of mud punched from the seafloor.",
+   "vo_line": 3,
+   "draw": {
+    "subject": "the waterline",
+    "action": "the camera drops THROUGH it, the film's only vertical move",
+    "emotion": "cold, opening",
+    "annotation": "an empty brass label slot swings open in the mud below"
+   },
+   "shows": "THE DROP",
+   "sfx": "water-plunge",
+   "means": "the axis changes exactly once, and this is it. THE OPEN LOOP IS PLANTED HERE, on the empty slot.",
+   "choreo": {
+    "primary": "the plunge through the surface into drowned green",
+    "reaction": "a neighbour band's slot swings open and TAKES a brass tag with a click, then the target band's slot swings open and stays empty and silent. The target band carries one conspicuously deep tooth and a double torn corner so it is re-identifiable. The slot then tips very slightly closed and back, as if checking whether anyone is coming.",
+    "ambient": "motes rising past the lens"
+   }
+  },
+  {
+   "t": 24.1,
+   "title": "THE PUNCH",
+   "vo": "They found one under the Gulf of Alaska, in long tubes of mud punched from the seafloor.",
+   "vo_line": 3,
+   "draw": {
+    "subject": "a turned steel coring tube",
+    "action": "punches the torn mud and lifts a plug out like a chad",
+    "emotion": "matter-of-fact",
+    "annotation": "none"
+   },
+   "shows": "THE PUNCH",
+   "sfx": "punch-thunk",
+   "means": "the punch lifts that band out with its slot still open. An INSERT punch holds on the empty slot for about 0.6s.",
+   "choreo": {
+    "primary": "the tube driving down and lifting",
+    "reaction": "the empty slot swinging open and holding",
+    "ambient": "silt blooming and settling"
+   }
+  },
+  {
+   "t": 26.1,
+   "title": "THE COLUMNS RISE",
+   "vo": "Seventy ash layers out of eight tubes, a record they call virtually uninterrupted, reaching into the ice ages.",
+   "vo_line": 4,
+   "draw": {
+    "subject": "eight core columns",
+    "action": "rise and stand full height in the dark",
+    "emotion": "steady",
+    "annotation": "8"
+   },
+   "shows": "THE COLUMNS RISE",
+   "sfx": "wet-shift",
+   "means": "the recovered archive standing up in a room. Riser removed, the sound is now the material moving.",
+   "choreo": {
+    "primary": "the columns rising with anticipation and settle",
+    "reaction": "contact shadows spreading beneath them",
+    "ambient": "crumbs drifting behind"
+   }
+  },
+  {
+   "t": 28.8,
+   "title": "SEVENTY",
+   "vo": "Seventy ash layers out of eight tubes, a record they call virtually uninterrupted, reaching into the ice ages.",
+   "vo_line": 4,
+   "draw": {
+    "subject": "70 pearl bands",
+    "action": "light along all eight columns in a running count-up that lands with a hit",
+    "emotion": "dense",
+    "annotation": "70 ... 8 TUBES ... 'virtually uninterrupted'"
+   },
+   "shows": "SEVENTY",
+   "sfx": "counter-wheels",
+   "means": "SCALE REVEAL 1, landing ON the spoken words. The quoted phrase is folded in here as the count's own annotation so it lands within a second of being said instead of seven seconds later over a different sentence. HARD CONSTRAINT: 70 is off screen before 33.5, because the narrator says thirty seven at about 34.",
+   "choreo": {
+    "primary": "bands lighting in sequence up and across",
+    "reaction": "brass counter wheels turning, so the ticks have a visible cause The column keeps running down past the frame edge with no bottom in view, so deep time is drawn rather than only spoken.",
+    "ambient": "far-plane eraser crumbs drifting, the gag kept alive"
+   },
+   "rehook": "the count stops being a tally and becomes the film's first whoa, as the single stripe we have stared at since frame 1 turns out to be one line in a stack of stacks that spans the frame edge to edge"
+  },
+  {
+   "t": 30.8,
+   "title": "THE CLERK WAS READY",
+   "vo": "Seventy ash layers out of eight tubes, a record they call virtually uninterrupted, reaching into the ice ages.",
+   "vo_line": 4,
+   "draw": {
+    "subject": "the seafloor stack",
+    "action": "SHUNTS one notch to make room for the plug, with a crumb already seated in its correct slot",
+    "emotion": "patient",
+    "annotation": "none"
+   },
+   "shows": "THE CLERK WAS READY",
+   "sfx": "drawer-slide",
+   "means": "the clerk ACTS instead of resolving. Deposition order becomes a motion, so time has a visible direction.",
+   "choreo": {
+    "primary": "the stack shunting one notch",
+    "reaction": "a pearl crumb already seated in place",
+    "ambient": "far-plane eraser crumbs drifting, the gag kept alive"
+   }
+  },
+  {
+   "t": 33.8,
+   "title": "THE SORT",
+   "vo": "They sorted them into thirty seven eruptions, then asked which volcano threw each.",
+   "vo_line": 5,
+   "draw": {
+    "subject": "the 70 bands",
+    "action": "slide sideways and click into families where their notch patterns register",
+    "emotion": "busy, deliberate",
+    "annotation": "none"
+   },
+   "shows": "THE SORT",
+   "sfx": "click-run",
+   "means": "REHOOK 1. Evidence becoming events, and one stubborn band slides all the way past every stack, hesitates, and reverses into the right one",
+   "choreo": {
+    "primary": "bands sliding and seating",
+    "reaction": "the stubborn band's hesitation and reversal",
+    "ambient": "the columns holding steady"
+   }
+  },
+  {
+   "t": 35.8,
+   "title": "THIRTY SEVEN",
+   "vo": "They sorted them into thirty seven eruptions, then asked which volcano threw each.",
+   "vo_line": 5,
+   "draw": {
+    "subject": "37 blocks",
+    "action": "land with visible air between them so compression is SEEN, and a brass tag rail runs off into the dark behind them",
+    "emotion": "resolved",
+    "annotation": "37"
+   },
+   "shows": "THIRTY SEVEN",
+   "sfx": "lock",
+   "means": "the width shrinks from 70 shoulder to shoulder to 37 with gaps, so a ratio is felt without a percentage. The slots are deliberately UNCOUNTABLE, because no source states how many eruptions were confidently named.",
+   "choreo": {
+    "primary": "the blocks settling with one overshoot",
+    "reaction": "an unnumbered rail of empty brass tag slots runs back into Atmosphere, too far to count A rail of empty brass tag slots swings open behind them and runs back into Atmosphere, DELIBERATELY too far to count.",
+    "ambient": "the lamp steady"
+   }
+  },
+  {
+   "t": 39.4,
+   "title": "THE CARD PRINTS WIDE",
+   "vo": "The answer doesn't always come back with one name.",
+   "vo_line": 6,
+   "draw": {
+    "subject": "AshReader",
+    "action": "compresses, its lamp DIPS so the frame darkens, and a card snaps out with three names, too wide for its own slot",
+    "emotion": "unembarrassed",
+    "annotation": "three names, no ranking"
+   },
+   "shows": "THE CARD PRINTS WIDE",
+   "sfx": "print-snap",
+   "means": "MAXIMUM PRESSURE, now inside its own line. The machine did its job correctly and the frame still feels like a setback. Ambiguity is a SIZE. The card prints PEARL AND BRASS, not magenta, because nothing has been proven to the viewer yet.",
+   "choreo": {
+    "primary": "the card snapping out with overshoot and catching at an angle",
+    "reaction": "the frame going darker as the lamp dips The reader then hinges open along its brass seam for a 0.7s insert, comparator strips BLANK BRASS, so the machine opens ONCE where it is already the subject.",
+    "ambient": "held, near silence"
+   }
+  },
+  {
+   "t": 44.0,
+   "title": "THE SHARD'S EDGE",
+   "vo": "Ash carries trace elements, a chemical handwriting.",
+   "vo_line": 7,
+   "draw": {
+    "subject": "one ash shard",
+    "action": "the camera pushes into its machined edge until the cut teeth fill frame",
+    "emotion": "revealing",
+    "annotation": "none"
+   },
+   "shows": "THE SHARD'S EDGE",
+   "sfx": "focus-tick",
+   "means": "the notch device from second two finally gets its meaning, and it was never explained until now",
+   "choreo": {
+    "primary": "the push into the teeth",
+    "reaction": "the specular running the notch tops The teeth fill frame in hard silhouette exactly on the word handwriting.",
+    "ambient": "grain drifting"
+   }
+  },
+  {
+   "t": 47.1,
+   "title": "THE GRAIN RUNS THE CHAIN",
+   "vo": "A machine learning model reads it and names the most probable source, or sources.",
+   "vo_line": 8,
+   "draw": {
+    "subject": "one grain of ash",
+    "action": "travels the sample stage, through the lens throat, past the drum and out as a card, in one continuous move",
+    "emotion": "purposeful",
+    "annotation": "MOST PROBABLE SOURCE, OR SOURCES"
+   },
+   "shows": "THE GRAIN RUNS THE CHAIN",
+   "sfx": "feed-whirr",
+   "means": "the mechanism DEMONSTRATES instead of displaying. The conformal clause is one small brass plate catching the light as the card passes, and gets no explainer.",
+   "choreo": {
+    "primary": "the grain travelling the whole chain",
+    "reaction": "the card emerging at the far end TWO notch strips lift off the SAME band and both stay in frame, so the plural in 'or sources' is a shape rather than a spoken clause. A 0.8s wide flash to all eight columns breaks the long tightening and pre-loads the second scale reveal.",
+    "ambient": "far-plane eraser crumbs drifting, the gag kept alive"
+   }
+  },
+  {
+   "t": 51.7,
+   "title": "THE THREE NAME PLATES",
+   "vo": "It's confident about Katmai, Fisher Caldera and Emmons Lake, because each keeps writing the same ratios, eruption after eruption.",
+   "vo_line": 9,
+   "draw": {
+    "subject": "three brass name plates",
+    "action": "set into the light as the names are spoken",
+    "emotion": "plain",
+    "annotation": "KATMAI / FISHER CALDERA / EMMONS LAKE"
+   },
+   "shows": "THE THREE NAME PLATES",
+   "sfx": "plate-set",
+   "means": "the three names land ON the words instead of nine seconds later.",
+   "choreo": {
+    "primary": "the plates settling in sequence",
+    "reaction": "the columns holding behind them",
+    "ambient": "far-plane eraser crumbs drifting, the gag kept alive"
+   }
+  },
+  {
+   "t": 55.6,
+   "title": "TWO SHARDS INTERLOCK",
+   "vo": "It's confident about Katmai, Fisher Caldera and Emmons Lake, because each keeps writing the same ratios, eruption after eruption.",
+   "vo_line": 9,
+   "draw": {
+    "subject": "two shards from different depths",
+    "action": "slide together until the teeth seat with no gap",
+    "emotion": "satisfying",
+    "annotation": "none"
+   },
+   "shows": "TWO SHARDS INTERLOCK",
+   "sfx": "seat-click",
+   "means": "handwriting proved the way you'd prove handwriting. Each shard is lifted from its OWN band at widely separated depths, with a ghost of both origin bands held in frame, so 'ages apart' is visible rather than asserted.",
+   "choreo": {
+    "primary": "the slide and the seat",
+    "reaction": "a small settle as they mesh A third shard from a third depth then joins and seats, so the proof ESCALATES to three rather than restating two.",
+    "ambient": "the lamp holding"
+   }
+  },
+  {
+   "t": 60.2,
+   "title": "THE STRIPS STACK",
+   "vo": "It's confident about Katmai, Fisher Caldera and Emmons Lake, because each keeps writing the same ratios, eruption after eruption.",
+   "vo_line": 9,
+   "draw": {
+    "subject": "successive notch strips",
+    "action": "drop onto each other in perfect register, again and again",
+    "emotion": "mounting certainty",
+    "annotation": "KATMAI / FISHER CALDERA / EMMONS LAKE"
+   },
+   "shows": "THE STRIPS STACK",
+   "sfx": "stack-clicks",
+   "means": "REHOOK 2. Repetition made visible as a physical stack, before any claim is made about it",
+   "choreo": {
+    "primary": "strips landing teeth-on-teeth",
+    "reaction": "the stack thickening and aligning",
+    "ambient": "the columns behind, out of focus"
+   },
+   "rehook": "the film stops describing the method and starts PROVING it, as strip after strip lands teeth-on-teeth in front of you and the stack visibly thickens"
+  },
+  {
+   "t": 63.4,
+   "title": "MAGENTA FUSES",
+   "vo": "That repetition is what separates one volcano from another. The model reads a difference the rock already made.",
+   "vo_line": 10,
+   "draw": {
+    "subject": "the stacked strips",
+    "action": "the last strip DROPS onto the stack, the whole column SNAPS together, and a magenta seam runs the length of the timeline",
+    "emotion": "certain",
+    "annotation": "none"
+   },
+   "shows": "MAGENTA FUSES",
+   "sfx": "clamp",
+   "means": "the reserved accent's FIRST licensed appearance, as a FLAT PRINTED INK, earned by the rock's own repetition and not asserted by the machine. The chord lives in the music; the beat's own sound is the clamp.",
+   "choreo": {
+    "primary": "the final strip falling and the stack clamping shut with a hard settle",
+    "reaction": "the seam tearing along the joint and the reader's lamp coming up only AFTERWARD",
+    "ambient": "crumbs drifting past in the far plane"
+   }
+  },
+  {
+   "t": 67.4,
+   "title": "OUT OF REGISTER",
+   "vo": "That repetition is what separates one volcano from another. The model reads a difference the rock already made.",
+   "vo_line": 10,
+   "draw": {
+    "subject": "a neighbouring band's strips",
+    "action": "land crossed, teeth over teeth, and never fuse",
+    "emotion": "honest",
+    "annotation": "no label"
+   },
+   "shows": "OUT OF REGISTER",
+   "sfx": "soft-miss",
+   "means": "the counterexample drawn in the same grammar, so a viewer sees WHY three names and not thirty seven",
+   "choreo": {
+    "primary": "strips landing misaligned",
+    "reaction": "the stack staying a pearl blur",
+    "ambient": "no magenta anywhere in frame"
+   }
+  },
+  {
+   "t": 69.4,
+   "title": "THE PULL BACK",
+   "vo": "That repetition is what separates one volcano from another. The model reads a difference the rock already made.",
+   "vo_line": 10,
+   "draw": {
+    "subject": "all eight columns",
+    "action": "the camera pulls back until every column is in frame at once",
+    "emotion": "wide, settled",
+    "annotation": "three recurring names, appearing again and again down the columns"
+   },
+   "shows": "THE PULL BACK",
+   "sfx": "riser",
+   "means": "SCALE REVEAL 2 AND THE TURN. THE SIGNATURE SHOT AND POSTER FRAME. The film's ONE riser is spent here, on the argument. The magenta marks a NAME-CLASS that keeps recurring, never a count of specimens, and the field runs past legibility on purpose so no viewer can total it.",
+   "choreo": {
+    "primary": "the pull-back opening onto the full stack",
+    "reaction": "the three name plates RECUR at many depths on many columns, dense near camera and receding unreadably into Atmosphere, while other bands stay pearl",
+    "ambient": "crumbs drifting in the far plane"
+   }
+  },
+  {
+   "t": 72.6,
+   "title": "THE EMPTY SLOT HOLDS",
+   "vo": "And when the model isn't the right tool, they don't force it. They measure chemical distance.",
+   "vo_line": 11,
+   "draw": {
+    "subject": "the band with the deep tooth and the double torn corner, at the SAME screen geometry it held at the plant",
+    "action": "sits still pearl, its brass slot still open and still empty",
+    "emotion": "unresolved, and at peace with it",
+    "annotation": "none"
+   },
+   "shows": "THE EMPTY SLOT HOLDS",
+   "sfx": "hold",
+   "means": "OPEN LOOP PAID, honestly. The promised name never arrives, and the film treats that as the correct outcome",
+   "choreo": {
+    "primary": "the slow settle onto the unnamed band",
+    "reaction": "the recurring magenta names hold IN FRAME and legible behind it, so the absence has something to be absent against",
+    "ambient": "near silence"
+   }
+  },
+  {
+   "t": 74.6,
+   "title": "THE SET DOWN",
+   "vo": "And when the model isn't the right tool, they don't force it. They measure chemical distance.",
+   "vo_line": 11,
+   "draw": {
+    "subject": "a flannel forearm",
+    "action": "closes over the wear-polished edge and PLACES AshReader down with real weight",
+    "emotion": "deliberate",
+    "annotation": "none"
+   },
+   "shows": "THE SET DOWN",
+   "sfx": "brass-set",
+   "means": "the only moment a person overrules the hero. Squash on contact, a settle, and the lamp fading so the room actually loses light",
+   "choreo": {
+    "primary": "the placement, squash, settle",
+    "reaction": "the lamp dying and the room darkening",
+    "ambient": "a beat of nothing after"
+   }
+  },
+  {
+   "t": 77.3,
+   "title": "THE CALIPERS",
+   "vo": "And when the model isn't the right tool, they don't force it. They measure chemical distance.",
+   "vo_line": 11,
+   "draw": {
+    "subject": "brass DistanceCalipers on a human hand",
+    "action": "come in from outside frame and span two points in a field of pale composition dots",
+    "emotion": "careful",
+    "annotation": "the span, drawn as a dashed bar"
+   },
+   "shows": "THE CALIPERS",
+   "sfx": "felt-case",
+   "means": "the calipers open ON 'they measure chemical distance'. Sound moved out of the brass family so putting a tool DOWN and picking a different one UP do not read as the same object twice.",
+   "choreo": {
+    "primary": "the jaws opening and closing on the nearest dot",
+    "reaction": "the dashed span bar filling and stopping",
+    "ambient": "the set-down reader still rim-lit, not humiliated"
+   }
+  },
+  {
+   "t": 79.3,
+   "title": "THE DARK BENCH",
+   "vo": "None of this forecasts an eruption. Chemistry has traced ash for decades.",
+   "vo_line": 12,
+   "draw": {
+    "subject": "the whole bench",
+    "action": "sits with the hero's lamp OFF and nothing glowing",
+    "emotion": "level, unapologetic",
+    "annotation": "GEOCHEMISTRY, GEOPHYSICS, GEOSYSTEMS, JULY 2026"
+   },
+   "shows": "THE DARK BENCH",
+   "sfx": "room-tone",
+   "means": "THE HONESTY PICTURE, landing exactly on 'None of this forecasts an eruption'. Lamp fully off by now, no magenta licensed anywhere in frame, no screen in the shot, and the only lit object is the plain journal plate.",
+   "choreo": {
+    "primary": "the plate holding in a single shaft",
+    "reaction": "the reader dark at the rim A worn brass reference strip, visibly older than the instrument, turns up under the lamp's last edge, so 'chemistry has traced ash for decades' is said with a prop and not a claim.",
+    "ambient": "dust settling"
+   }
+  },
+  {
+   "t": 81.9,
+   "title": "THE SLOT CUT WIDE",
+   "vo": "What's new is how carefully they said which volcanoes they could name, and which they couldn't.",
+   "vo_line": 13,
+   "draw": {
+    "subject": "the same three name card from the print beat",
+    "action": "returns and SEATS FLUSH into a slot that has been cut wide to fit it, and the lamp comes up as it clicks home",
+    "emotion": "resolved",
+    "annotation": "none"
+   },
+   "shows": "THE SLOT CUT WIDE",
+   "sfx": "seat-click",
+   "means": "the muted payoff of the pressure beat. The answer was always the right size, the container was wrong. A transformation of the film's own object rather than a new prop, and it removes the invented ratio that used to sit here.",
+   "choreo": {
+    "primary": "the widened slot receiving the card with a hard seat",
+    "reaction": "the lamp rising as it clicks home",
+    "ambient": "crumbs drifting past"
+   }
+  },
+  {
+   "t": 85.2,
+   "title": "COULD AND COULDN'T",
+   "vo": "What's new is how carefully they said which volcanoes they could name, and which they couldn't.",
+   "vo_line": 13,
+   "draw": {
+    "subject": "the recurring named bands and the unnamed ones",
+    "action": "hold together in one frame, named ones steady, unnamed ones breathing, no total countable",
+    "emotion": "plain",
+    "annotation": "none"
+   },
+   "shows": "COULD AND COULDN'T",
+   "sfx": "rail-slide",
+   "means": "what is still unattributed is the last thing the viewer carries at scale, WITHOUT a fraction, because no source states one.",
+   "choreo": {
+    "primary": "the two groups holding in one frame",
+    "reaction": "the field receding past legibility",
+    "ambient": "far-plane eraser crumbs drifting, the gag kept alive"
+   }
+  },
+  {
+   "t": 87.4,
+   "title": "THE CRUMB LANDS",
+   "vo": "Alaska's record didn't disappear. It settled where nobody was reading.",
+   "vo_line": 14,
+   "draw": {
+    "subject": "one eraser crumb from the blade wipe",
+    "action": "completes its fall and settles into a slot in the seafloor stack with a tiny compression, becoming a pearl band",
+    "emotion": "quietly satisfying",
+    "annotation": "none"
+   },
+   "shows": "THE CRUMB LANDS",
+   "sfx": "settle",
+   "means": "THE GAG PAYOFF IS THE THESIS. The brass lip of the slot CATCHES THE LAMP as the crumb seats, a brief lift, so the payoff is the last BRIGHT thing in the film instead of happening inside a diminishing frame.",
+   "choreo": {
+    "primary": "the crumb completing its fall and seating",
+    "reaction": "the band it becomes matching frame 1 exactly",
+    "ambient": "the camera finally holding still"
+   }
+  },
+  {
+   "t": 90.6,
+   "title": "THE PLATE SETS",
+   "vo": "Alaska's record didn't disappear. It settled where nobody was reading.",
+   "vo_line": 14,
+   "draw": {
+    "subject": "the Alaska.Ai wordmark on a brass plate",
+    "action": "sets into the lamp's last light beside the columns",
+    "emotion": "quiet",
+    "annotation": "ALASKA.AI"
+   },
+   "shows": "THE PLATE SETS",
+   "sfx": "plate-set",
+   "means": "the branded outro, on register. The wordmark arrives as one more machined plate under the same lamp, never as an overlay.",
+   "choreo": {
+    "primary": "the retreat and the light pool shrinking",
+    "reaction": "three magenta names still legible at distance",
+    "ambient": "black closing in"
+   }
+  },
+  {
+   "t": 94.5,
+   "title": "THE UNREAD STRIPE",
+   "vo": "What else is down there, with a name still on it?",
+   "vo_line": 15,
+   "draw": {
+    "subject": "one pearl band at the very edge of the lamp's reach",
+    "action": "holds, torn, unlabelled, as the light falls off it",
+    "emotion": "open",
+    "annotation": "none"
+   },
+   "shows": "THE UNREAD STRIPE",
+   "sfx": "tail",
+   "means": "THE LOOP, asked over its own picture. The final frame is legibly frame 1, same band, same screen geometry, same notch edge, at a reduced but NON-ZERO key with the lamp edge just off frame, and the still-open empty slot beside it so the last image is a rhyme rather than a repeat.",
+   "choreo": {
+    "primary": "the final push and the light dying",
+    "reaction": "the still open EMPTY label slot sits beside it, so the last image is a rhyme and not a repeat, and it pays the open loop in picture exactly as the button asks the question Then a 1.2s hold at a reduced but NON-ZERO key, one last crumb crossing the lens, so the frame-1 rhyme is recognisable and the loop clicks.",
+    "ambient": "one last crumb drifting past the lens"
+   }
+  }
+ ]
+}

@@ -1,0 +1,103 @@
+{
+  "total": 96.2,
+  "voice": "Sulafat",
+  "model": "gemini-3.1-flash-tts-preview",
+  "lines": [
+    {
+      "idx": 0,
+      "text": "Every eruption in Alaska signs its name in ash. The trick is reading the signature.",
+      "start": 0.0,
+      "end": 6.32
+    },
+    {
+      "idx": 1,
+      "text": "On land the layers stack like pages, then glaciers scrape the page blank.",
+      "start": 7.12,
+      "end": 12.24
+    },
+    {
+      "idx": 2,
+      "text": "So three federal scientists in Anchorage went looking for a copy.",
+      "start": 13.1,
+      "end": 16.84
+    },
+    {
+      "idx": 3,
+      "text": "They found one under the Gulf of Alaska, in long tubes of mud punched from the seafloor.",
+      "start": 17.52,
+      "end": 23.32
+    },
+    {
+      "idx": 4,
+      "text": "Seventy ash layers out of eight tubes, a record they call virtually uninterrupted, reaching into the ice ages.",
+      "start": 24.1,
+      "end": 31.74
+    },
+    {
+      "idx": 5,
+      "text": "They sorted them into thirty seven eruptions, then asked which volcano threw each.",
+      "start": 31.74,
+      "end": 37.12
+    },
+    {
+      "idx": 6,
+      "text": "The answer doesn't always come back with one name.",
+      "start": 38.78,
+      "end": 41.48
+    },
+    {
+      "idx": 7,
+      "text": "Ash carries trace elements, a chemical handwriting.",
+      "start": 42.38,
+      "end": 45.66
+    },
+    {
+      "idx": 8,
+      "text": "A machine learning model reads it and names the most probable source, or sources.",
+      "start": 46.54,
+      "end": 51.46
+    },
+    {
+      "idx": 9,
+      "text": "It's confident about Katmai, Fisher Caldera and Emmons Lake, because each keeps writing the same ratios, eruption after eruption.",
+      "start": 52.6,
+      "end": 60.9
+    },
+    {
+      "idx": 10,
+      "text": "That repetition is what separates one volcano from another. The model reads a difference the rock already made.",
+      "start": 63.28,
+      "end": 69.86
+    },
+    {
+      "idx": 11,
+      "text": "And when the model isn't the right tool, they don't force it. They measure chemical distance.",
+      "start": 70.68,
+      "end": 75.68
+    },
+    {
+      "idx": 12,
+      "text": "None of this forecasts an eruption. Chemistry has traced ash for decades.",
+      "start": 76.9,
+      "end": 81.56
+    },
+    {
+      "idx": 13,
+      "text": "What's new is how carefully they said which volcanoes they could name, and which they couldn't.",
+      "start": 82.46,
+      "end": 87.38
+    },
+    {
+      "idx": 14,
+      "text": "Alaska's record didn't disappear. It settled where nobody was reading.",
+      "start": 88.42,
+      "end": 92.44
+    },
+    {
+      "idx": 15,
+      "text": "What else is down there, with a name still on it?",
+      "start": 93.34,
+      "end": 96.2
+    }
+  ]
+}

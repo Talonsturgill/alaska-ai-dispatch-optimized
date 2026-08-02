@@ -1202,3 +1202,63 @@ dispatch_history:
       red reserved for a size line
     metaphor: a sorting slot that was never cut, so every load is the same size to
       it
+- date: '2026-08-02'
+  topic: 'THE COPY IN THE MUD: glaciers scraped Alaska''s eruption record off the
+    land, so Lubbers, Loewen and Wallace of the USGS Alaska Volcano Observatory in
+    Anchorage read a surviving copy out of Gulf of Alaska seafloor mud. 70 marine
+    core tephras, 37 eruptions across eight cores, machine learning classification
+    and conformal prediction assigning the most probable source OR SOURCES, and multivariate
+    distance metrics where classification was not the right instrument. Earned angle:
+    the confidence is a property of the ROCK before it is a property of the classifier,
+    because Katmai, Fisher Caldera and Emmons Lake had been writing nearly invariant
+    trace element ratios for a very long time. Abstract-only sourcing, disclosed on
+    the draft. Says on screen that it forecasts nothing and that this is not a first.'
+  slug: copy-in-the-mud
+  key_entities:
+  - tephra
+  - tephrochronology
+  - marine cores
+  - seafloor mud
+  - ash layers
+  - katmai
+  - fisher caldera
+  - emmons lake
+  - trace element ratios
+  - mid-pleistocene
+  - conformal prediction
+  - lubbers
+  - loewen
+  - wallace
+  - usgs alaska volcano observatory
+  archetype: ''
+  palette: wet sediment olive-black and drowned green, pearl-grey ash bands, warm
+    brass bench light, and ONE rhyolite magenta spent only on a chemical match
+  voice: ''
+  stance: curious
+  angle: The confidence is a property of the rock before it is a property of the classifier.
+    The machine could name a volcano confidently only where that volcano had been
+    writing the same chemical signature over and over.
+  hero: AshReader
+  cast:
+  - AshReader
+  - ShortlistCard
+  - DistanceCalipers
+  - CoreColumn
+  - AshCrumbs
+  - LayeredLand
+  - ErasingBlade
+  - CoringTube
+  - BrassPlate
+  - MatchPlate
+  - RoomBack
+  composition:
+    pov: macro-closeup
+    layout: single-object-void
+    motion_vector: horizontal-traverse
+    hero_treatment: multiplicity-swarm
+    register: tactile-collage
+    camera_strategy: track-follow
+    light_story: noon-hard
+    palette: wet sediment olive-black, pearl ash, warm brass, one rhyolite magenta
+    metaphor: an archive nobody built, kept in mud, whose pages are signed in cut
+      notches

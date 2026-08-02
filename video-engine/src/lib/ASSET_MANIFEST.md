@@ -352,6 +352,36 @@ of the world brought indoors under a lamp is a different verb and needed differe
 - Look-dev: `BenchLook` (BenchLook.tsx) — every state in the film at full size AND a 0.28-SCALE
   LEGIBILITY STRIP, run BEFORE any scene is authored, per the GateLook precedent.
 
+### Grown 2026-08-02 ("The Copy In The Mud", the run that actually built the film)
+- `LayeredLand` — the FOUND half of the grammar as a reusable hillside — bench.tsx — a torn layered
+  sediment stack whose every layer is its own jittered polyline, so no two edges are parallel.
+  `erased` 0..1 wipes the texture out from screen left and leaves a FLAT BLANK behind, which is what
+  the ice takes rather than a scar it leaves. Clip-path driven, so the erasure is exact — ACTIVE
+- `ErasingBlade` — the glacier as the most RECTILINEAR object in the film — bench.tsx — fills the
+  manifest gap that `GlacierBG` could not: that asset is a torn serac WALL with no tint param, and
+  this story needed ice as a hard straight-edged PLANE THAT ACTS. Internal strata are parallel and
+  regular, the deliberate opposite of the torn land it eats. Exposes no easing hook ON PURPOSE, so
+  callers cannot ease it: the one unaeased motion in a film of eased ones is what reads as
+  inhuman — ACTIVE
+- `CoringTube` — the TURNED answer to the torn seafloor — bench.tsx — machined barrel with
+  fabrication rings and a hardened cutting shoe, `drive` punches it in and `lift` pulls it back with
+  a banded plug visible through the barrel window. Head weight so the punch reads as MASS — ACTIVE
+- `BrassPlate` — naming an actor as a PHYSICAL OBJECT rather than a HUD chip — bench.tsx — a
+  countersunk machined plate that SETS into the light with weight, for the §4.2 name-actors-before-
+  you-use-them law. Multi-line, scales, and carries its own contact shadow — ACTIVE
+- `CoreColumn` gains `bands[].side` ('left' | 'right', default 'right') — the name plate used to
+  always hang right, which is correct on a left-hand column and broken on a right-hand one: at the
+  signature pull-back's label scale the right-hand plates ran past x=1080 and the POSTER FRAME read
+  "MA", "ER", "ONS". A named band whose name is cut off is worse than an unnamed one, because that
+  frame's entire claim is that these three could be NAMED.
+- `DistanceCalipers` UPGRADED to the bar — the 08-01 look-dev flagged it as a flat V and it was: two
+  thin strokes off a stick. Now a real instrument with a shaded beam, a knurled thumb wheel, jaws
+  with hardened measuring tips, and the span called out between the tips with arrowheads at both
+  ends, so the DISTANCE is the focal object rather than the tool holding it.
+- KNOWN NEXT ADVANCE for this family: `AshReader`'s head still reads as a box on a column at small
+  scale. It survives because the film stages it large, but a run that needs it in a wide shot should
+  give the housing a silhouette that is legible at 0.28 before leaning on it there.
+
 ## Engine advance 2026-08-01 — the ACCENT REGISTRY (closes the 07-31 deferral)
 - `lib/lighting.tsx` `AccentRegistry` / `useAccent` / `accentAllowedAt` / `AccentLicense` — the item
   the 2026-07-31 run deferred WITH A PLAN. NightGrade's `sources[]` makes a palette rule a property

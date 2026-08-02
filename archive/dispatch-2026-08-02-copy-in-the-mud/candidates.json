@@ -1,0 +1,207 @@
+{
+ "run_date": "2026-08-02",
+ "window_reported_by_gate": 10,
+ "search_budget_exhausted": true,
+ "search_budget_note": "Two of four round-one researchers (science_wildlife_rural, energy_defense_aviation) reported the shared 20-call WebSearch cap exhausted; the other two used 19 of 20. Per the Phase 1 budget law this is disclosed here and in the Gmail draft. It did NOT produce a blind run: all four beats leaned on uncapped WebFetch (roughly 45, 25, 40 and 60 fetches respectively) across outlet indexes, agency dockets, Crossref, Europe PMC, the NSF awards API, the Federal Register API and simpler.grants.gov.",
+ "uncapped_sweep_done": true,
+ "uncapped_sweep_note": "A dedicated outlet_index_sweep beat WebFetched roughly 300 headlines across adn.com, alaskapublic.org, ktoo.org, kyuk.org, kucb.org, kdlg.org, kmxt.org, knom.org, kfsk.org, krbd.org, newsminer.com, alaskasnewssource.com, webcenterfairbanks.com, juneauempire.com, homernews.com, northernjournal.com, thealaskacurrent.com, alaskalandmine.com, mustreadalaska.com, alaska-native-news.com, uaf.edu/news, gi.alaska.edu/news and gov.alaska.gov/newsroom for 2026-07-20 to 2026-08-01.",
+ "rungs": [
+  {
+   "rung": "queued_story",
+   "attempted": true,
+   "result": "queue/next_story.json queued_for 2026-08-02, story already worked and fact-checked. Phase 0.5 applies: research skipped, claims re-read from claims.json which remains the only source of truth."
+  },
+  {
+   "rung": "in_window_sweep",
+   "attempted": true,
+   "candidates_found": 6,
+   "note": "Four parallel beat researchers swept 2026-07-20 to 2026-08-01. The week was genuinely thin for Alaska-original machine learning in the NEWSPAPERS: every 'AI' item on an Alaska front page was national wire (Anthropic, Zoox, Google satellite imagery, Rwanda drone delivery) or automation that is not ML. The signal was in the journals and the federal dockets, not the newsrooms, which is a real finding and not a slow week."
+  },
+  {
+   "rung": "outlet_index_sweep",
+   "attempted": true,
+   "candidates_found": 5,
+   "note": "Uncapped WebFetch across roughly 22 Alaska outlet indexes; ~300 headlines read. Surfaced the AWOS outage, the Rocket Lab Kodiak contract, the Skipper Science guide-logbook app, the Northern Alaska Environmental Center AI governance brief and the UAF public AI lecture."
+  },
+  {
+   "rung": "widened_window",
+   "attempted": true,
+   "candidates_found": 3,
+   "note": "Re-swept to 30 days. Surfaced the NSF Critical Mineral Accelerator (already covered 2026-07-17), the Alaska Tribal Health System AI symposium paper (2026-05-23, outside 30 days, flagged evergreen) and the MBARI MOLA under-ice AUV at Utqiagvik (2026-04-24, outside 30 days, flagged evergreen)."
+  },
+  {
+   "rung": "carried_leads",
+   "attempted": true,
+   "candidates_found": 1,
+   "note": "Reviewed recent archive story_pick material and the ledger's open threads. The live carried lead is the XPRIZE Wildfire winner announcement, still pending to September 2026 per the 07-20 dispatch; nothing to report yet."
+  },
+  {
+   "rung": "primary_source_mining",
+   "attempted": true,
+   "candidates_found": 5,
+   "note": "NSF awards API (every July 2026 Alaska award abstract read; only 2608510 GAIA and 2532372 Critical Minerals carry AI and both are already covered), Federal Register API, simpler.grants.gov, Crossref, Europe PMC, PubMed Central, NOAA Fisheries, USGS, state DOH. This rung produced the two genuine unreported scoops of the run: the USGS Alaska Volcano Observatory tephra classifier paper and the HHS ANA AI3 Action Institute funding opportunity. akleg.gov and legiscan.com returned 403 through the proxy, so the Alaska AI bill thread could not be verified from primary text and is deliberately absent."
+  },
+  {
+   "rung": "follow_up",
+   "attempted": true,
+   "candidates_found": 2,
+   "note": "The Alaska Earthquake Center landslide-detection expansion (covered 2026-07-25) and the ONR Arctic Mobile Observing System IHA (covered 2026-07-30) both had in-window developments, but neither is a new development large enough to re-open a subject covered within the last week."
+  },
+  {
+   "rung": "pegged_explainer",
+   "attempted": true,
+   "candidates_found": 1,
+   "note": "The floor rung was available and did not need to be spent: an explainer on calibrated uncertainty in scientific machine learning, pegged to the UAF 'Beyond the Hype' public AI lecture on 2026-08-05. Held in reserve because a real reported story cleared the bar."
+  }
+ ],
+ "locked_story": {
+  "headline": "THE COPY IN THE MUD: glaciers scraped Alaska's eruption record off the land, so three USGS Alaska Volcano Observatory scientists in Anchorage read a surviving copy out of Gulf of Alaska seafloor mud, and the machine could name a volcano confidently only where the volcano had been writing the same chemical signature over and over",
+  "found_at_rung": "queued",
+  "primary_source": "Lubbers, Loewen and Wallace, Geochemistry Geophysics Geosystems (AGU), published 2026-07-27, doi 10.1029/2026GC013096",
+  "why_this_one": "Queued by the 2026-08-01 run per Phase 0.5. Genuine unreported scoop from primary literature, real supervised machine learning, all three authors USGS Alaska Volcano Observatory Anchorage. NOTE: the original 'machine that says I don't know' thesis and the '700,000 years' figure were BOTH killed in adversarial validation (see claims.json cut_list and angle.json runner_up_angles). The earned angle is angle.json's: the confidence is a property of the rock before it is a property of the classifier.",
+  "dedupe": "FRESH on the honest distinctive entity set (tephra, katmai, novarupta, conformal prediction, seafloor core, ash layer, volcanic source attribution, jordan lubbers, geochemistry classifier). The first check DUP'd only on the generic pair ['alaska','gulf'] against the 2026-07-05 Chinook depth-model dispatch, which is a token collision and not a subject repeat. Adjacency acknowledged and managed: this channel ran VOISS-Net on 2026-07-09, a live seismo-acoustic CNN classifying what Great Sitkin is doing right now. This film is a different signal (trace-element geochemistry, not sound), a different time direction (the deep past, not the live present), and a different thesis (a model with a declared domain of validity, not a model that names but cannot foresee). The film will not lean on volcano-monitoring framing.",
+  "thesis_correction_note": "Headline rewritten 2026-08-02. The queued headline's framing survived; the candidates.json headline did not and was carrying two cut-listed items."
+ },
+ "candidates": [
+  {
+   "id": "tephra_classifier",
+   "headline": "USGS AVO tephra classifier with conformal prediction reads 37 eruptions out of 70 Gulf of Alaska marine core tephras; Katmai is the most probable source",
+   "beat": "science_wildlife_rural",
+   "date": "2026-07-27",
+   "ai_reality": "real supervised ML classification plus conformal prediction",
+   "reported_elsewhere": "none",
+   "dedupe": "FRESH",
+   "verdict": "LOCKED"
+  },
+  {
+   "id": "awos_outage",
+   "headline": "More than 50 Alaska automated weather stations went dark on 2026-07-27, about a third of the network; air carriers ask for repairs before 150 new stations",
+   "beat": "outlet_index_sweep + energy_defense_aviation (found independently by two beats)",
+   "date": "2026-07-29",
+   "ai_reality": "NOT machine learning; 1990s sensor automation and a comms link. The honest angle is that the whole AI-forecasting layer stands on observations that vanish a third of the time.",
+   "reported_elsewhere": "local only",
+   "dedupe": "token DUP only",
+   "verdict": "RUNNER-UP, NOT PICKED. The strongest live Alaska stakes of the week and a real film is in it. Rejected because the honest AI angle is 'this is not AI', which is exactly what the 07-25, 07-26 and 07-30 dispatches each concluded. A fourth in five weeks is a monotony of form, not a fresh story. QUEUE CANDIDATE for a near-future run."
+  },
+  {
+   "id": "rural_health_272m",
+   "headline": "Alaska's $272,174,856 Rural Health Transformation year-one award starts its subrecipient performance period 2026-08-01; the federal eligible-use language explicitly funds AI-enabled tools and wearables",
+   "beat": "science_wildlife_rural",
+   "date": "2026-08-01 (hook) / 2026-06 (reporting)",
+   "ai_reality": "a funding eligibility category, not a deployed model; the TCC village drone delivery piece is genuine autonomy hardware",
+   "reported_elsewhere": "local only",
+   "dedupe": "token DUP only",
+   "verdict": "STRONG RUNNER-UP, NOT PICKED. Perfectly timed hook and a real two-sided argument. Rejected on FORM rotation: the 07-26, 07-29 and 07-31 dispatches were all money-and-rules films, and a fourth would make the channel monotone in shape even with a distinct subject. Its best quote is also from June reporting rather than the in-window hook."
+  },
+  {
+   "id": "ana_ai3_institute",
+   "headline": "HHS Administration for Native Americans posts a $3.5M single-award AI3 Action Institute for Indian Country with ANCSA villages eligible, after 32 comment submissions raised Indigenous data sovereignty",
+   "beat": "primary_source_mining",
+   "date": "2026-07-28 / 2026-07-30",
+   "ai_reality": "AI governance and procurement capacity, not model building",
+   "reported_elsewhere": "none",
+   "dedupe": "token DUP only",
+   "verdict": "GENUINE SCOOP, NOT PICKED THIS RUN. Real and unreported, and the data-sovereignty comment record is a serious thread. Rejected because it is a third federal-notice film in a fortnight and because doing an Alaska Native subject justice needs the story to be about named Alaska organizations acting, not about a grant notice's eligibility list. Worth queueing once an Alaska applicant or a named tribal position exists to report."
+  },
+  {
+   "id": "rocket_lab_kodiak",
+   "headline": "Rocket Lab wins a record $266M Space Force contract for up to 18 HASTE suborbital missile-defense launches from the state-owned Kodiak spaceport",
+   "beat": "outlet_index_sweep + energy_defense_aviation",
+   "date": "2026-07-28",
+   "ai_reality": "autonomous guidance and flight termination, not machine learning; the AI relevance is downstream and speculative",
+   "reported_elsewhere": "local only",
+   "dedupe": "not run",
+   "verdict": "REJECTED. Big Alaska money and a real capability story, but the AI angle would have to be asserted rather than sourced. Calling the rockets AI would be dishonest."
+  },
+  {
+   "id": "ntsb_bering_air",
+   "headline": "NTSB final report on Bering Air Flight 445, 10 killed near Nome; recommends certificated dispatchers, expanded flight data monitoring and crash-resistant recorders for Part 135",
+   "beat": "energy_defense_aviation",
+   "date": "2026-07-30",
+   "ai_reality": "the crash is human factors and organizational; the remedy implies algorithmic exceedance detection, which is analytics",
+   "reported_elsewhere": "national",
+   "dedupe": "not run",
+   "verdict": "REJECTED. A fatal-accident story deserves better than being repurposed as an AI peg, and the machine angle lives only in a recommendation."
+  },
+  {
+   "id": "skipper_science_app",
+   "headline": "Alaska Guide Network builds a phone logbook inside Skipper Science to rebuild the Bristol Bay sport-fishery data ADF&G cut in 2019",
+   "beat": "outlet_index_sweep",
+   "date": "2026-07-20",
+   "ai_reality": "none at all; manual data entry and citizen science",
+   "reported_elsewhere": "local only",
+   "dedupe": "not run",
+   "verdict": "REJECTED as a lead, KEPT as context. A lovely counterweight beat about the unglamorous input layer under every AI fisheries pitch, but there is no machine in it."
+  },
+  {
+   "id": "sstar_thermal_tool",
+   "headline": "SSTAR, an open tool detecting roughly 1 Kelvin of diffuse thermal unrest at Aleutian volcanoes including Shishaldin, published 2026-07-23 with a UAF Geophysical Institute lead-author address",
+   "beat": "science_wildlife_rural",
+   "date": "2026-07-23",
+   "ai_reality": "statistical anomaly detection, explicitly NOT machine learning",
+   "reported_elsewhere": "none",
+   "dedupe": "not run",
+   "verdict": "REJECTED. Same beat-week volcano adjacency as the locked story and no ML in it, so running it would both crowd the pick and require the 'not actually AI' framing again."
+  },
+  {
+   "id": "nasa_uaf_methane_drone",
+   "headline": "Hexacopter methane flux measurements over the Bonanza Creek fen read 0.0077 mol/s against the tower's 0.0036 mol/s, published 2026-07-30 with two UAF Institute of Arctic Biology co-authors",
+   "beat": "science_wildlife_rural",
+   "date": "2026-07-30",
+   "ai_reality": "autonomy plus hyperspectral land-cover classification; not an AI methane sensor",
+   "reported_elsewhere": "none",
+   "dedupe": "not run",
+   "verdict": "REJECTED as lead, STRONG QUEUE CANDIDATE. Two instruments disagreeing by a factor of two over the same swamp is a genuinely great drawable premise, but the machine-learning content is a bookkeeping classifier."
+  },
+  {
+   "id": "abr_beluga_drone_permit",
+   "headline": "ABR Inc. of Fairbanks applies for a 5-year-3-month NOAA permit for crewed and uncrewed surveys of 14 marine mammal species at Tuxedni Bay, the proposed ore barge site for the Johnson Tract gold project",
+   "beat": "primary_source_mining",
+   "date": "2026-07-27",
+   "ai_reality": "autonomy only; the filing claims no automated detection",
+   "reported_elsewhere": "none",
+   "dedupe": "not run",
+   "verdict": "REJECTED. Unreported and genuinely interesting, but this channel ran a Cook Inlet beluga film on 2026-07-23 and a second beluga subject inside ten days is the repeat a viewer would actually feel."
+  },
+  {
+   "id": "northern_center_ai_brief",
+   "headline": "Northern Alaska Environmental Center publishes an AI governance brief arguing Alaska has no law on algorithmic discrimination, deepfakes or chatbot safety",
+   "beat": "outlet_index_sweep",
+   "date": "2026-07-20",
+   "ai_reality": "advocacy position paper",
+   "reported_elsewhere": "none",
+   "dedupe": "not run",
+   "verdict": "REJECTED. Advocacy rather than news, and its data-center argument is the subject this channel covered on 07-31."
+  },
+  {
+   "id": "athc_ai_symposium",
+   "headline": "Peer-reviewed symposium finds generative AI scribes already in use in Alaska tribal primary care with no governing policy implemented",
+   "beat": "primary_source_mining",
+   "date": "2026-05-23",
+   "ai_reality": "real clinical ML: a sepsis early-detection model, a suicide-risk prediction algorithm, LLM scribes",
+   "reported_elsewhere": "none",
+   "dedupe": "not run",
+   "verdict": "REJECTED ON RECENCY. 70 days old, outside even the 30-day allowance. Genuinely important and completely unreported; belongs in the queue tied to a fresher hook."
+  },
+  {
+   "id": "mbari_mola_auv",
+   "headline": "MBARI's briefcase-sized MOLA AUV completes its first under-ice deployment off Utqiagvik with UAF and North Slope Borough Wildlife Management",
+   "beat": "primary_source_mining",
+   "date": "2026-04-24",
+   "ai_reality": "autonomy and onboard perception",
+   "reported_elsewhere": "national",
+   "dedupe": "not run",
+   "verdict": "REJECTED. Outside the 30-day allowance and too close to the 07-30 under-ice glider film."
+  },
+  {
+   "id": "uaf_ai_lecture",
+   "headline": "UAF Discover Alaska lecture 'Beyond the Hype: Understanding AI in Your Daily Life' scheduled 2026-08-05",
+   "beat": "outlet_index_sweep",
+   "date": "2026-07-31",
+   "ai_reality": "public AI literacy",
+   "reported_elsewhere": "none",
+   "dedupe": "not run",
+   "verdict": "REJECTED as a lead, RETAINED as the pegged-explainer hook had the ladder needed its floor rung."
+  }
+ ]
+}

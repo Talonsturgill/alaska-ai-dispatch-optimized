@@ -1,0 +1,31 @@
+{
+  "recorded_at": "2026-08-02T08:44:33Z",
+  "median": 7.64,
+  "judges": [
+    7.3,
+    7.64,
+    8.18
+  ],
+  "threshold": 7.5,
+  "notes": "",
+  "artifacts": {
+    "master_9x16.mp4": "93962b1751b85c0fd120633e5ae3d8f500e16c003e53132eb0109e32c908dc96",
+    "master_4x5.mp4": "d39b457f67c6e711e14776e0cf37c397eb8ad936a9c1599ad21640ca6c3af150",
+    "master_9x16_720.mp4": "8094b51ab90663d974976daffd03ef41b5a5222a2d909a988af2d7cfbf3a093b"
+  },
+  "evidence": {
+    "frame_counter_settles_at_70.png": "657e75781bea0ce7a62083d6c374ae7ec72cc35324f40b11e4c6d5525860697f",
+    "sheet_0.png": "1f0db7911395e0120d12c6b4c315d21ce885ebc485a3de7d2ec22fdc5d361fc7",
+    "sheet_1.png": "bc3a28fae1099d411930273b2272d809be53a746184ccb2bd981f3337fc86b6e",
+    "sheet_2.png": "045b5bff41d967bb547655fd0a2471f7b551b4fb7dc0e82ef6e395e98e978d00",
+    "sheet_3.png": "9cae98abf0fa94506c355109ca2f14b10f53ace3aec120edcec94d12b4151a90",
+    "sheet_4.png": "edb96047d0dba26cd0e0aaff9d828f70b05662ddf16742a7656ae69cfd542284",
+    "strip_blade.png": "19df06326ba800bf9d032c8034876efb1f234d10760690a02df49f93fe86d202",
+    "strip_card.png": "9d0ed0436d53aa6fbe66c20200396d30d12c886fec807eb94bb71c45dd225aaf",
+    "strip_closing.png": "3c290075f1d2d86b020a67e0d972699edbc1790adb5c38f0f0cd25af451c16bf",
+    "strip_columns.png": "4b8336a9d35efb2d4455a6fc5f46618e714910cba48402eb2d247d89a1c2f2f4",
+    "strip_fuse.png": "1c72fead62afae030000fcdc988ea3579c52ddc4d50970fd3fe831cea419430d",
+    "strip_pull.png": "db9a89b71e0760b609fe1350196c48de00bdfffe28b356ec3ac0c10216ca1752",
+    "strip_punch.png": "975274f42edba7b614476ea1f73a326c922c5219cbd8d6ad03b9475c1e57dde6"
+  }
+}

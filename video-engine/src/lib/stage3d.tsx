@@ -223,8 +223,21 @@ export const Atmosphere: React.FC<{
       }}>
         {children}
       </div>
-      {/* the air itself: a sky-colored veil over the plane */}
-      <div style={{position: 'absolute', inset: 0, background: skyTint, opacity: 0.34 * a, pointerEvents: 'none'}} />
+      {/*
+        THE AIR ITSELF: a sky-colored veil over the plane.
+
+        THE INSET IS NEGATIVE ON PURPOSE (fixed 2026-08-02). At `inset: 0` this veil is exactly
+        the composition's size, and then its Plane scales it by PERSPECTIVE/(PERSPECTIVE+z). On
+        any plane with z > 0 that makes the veil SMALLER than the frame, so it stops partway
+        across and prints its own rectangle edge into the picture as a hard-edged lighter panel
+        floating behind the subject. It cost this run a render to find, because the artifact
+        reads as a lighting mistake rather than as a div with a border.
+
+        A far plane can be pushed arbitrarily deep, so the veil is oversized enough to survive
+        any plausible depth: at inset -150% it still covers frame down to a 0.25x scale, i.e.
+        z of about 4200 at the default perspective. It is a flat fill, so overdraw is free.
+      */}
+      <div style={{position: 'absolute', inset: '-150%', background: skyTint, opacity: 0.34 * a, pointerEvents: 'none'}} />
     </div>
   );
 };

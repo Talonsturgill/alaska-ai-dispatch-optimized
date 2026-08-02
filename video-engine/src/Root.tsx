@@ -25,6 +25,7 @@ import { GateLook } from './GateLook';
 import { BenchLook } from './BenchLook';
 import { Ep0730, ep0730Schema } from './Ep0730';
 import { Ep0731, ep0731Schema } from './Ep0731';
+import { Ep0802, ep0802Schema } from './Ep0802';
 
 const standoffSchema = z.object({
   yesCount: z.number(),
@@ -264,6 +265,19 @@ export const RemotionRoot: React.FC = () => {
         defaultProps={{ captions: [] }}
         calculateMetadata={({ props }) => ({
           durationInFrames: (props as {total?: number}).total ?? 2799,
+        })}
+      />
+      <Composition
+        id="Dispatch0802"
+        component={Ep0802}
+        durationInFrames={2964}
+        fps={30}
+        width={1080}
+        height={1920}
+        schema={ep0802Schema}
+        defaultProps={{ captions: [] }}
+        calculateMetadata={({ props }) => ({
+          durationInFrames: (props as {total?: number}).total ?? 2964,
         })}
       />
     </>

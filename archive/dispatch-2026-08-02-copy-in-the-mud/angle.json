@@ -1,0 +1,54 @@
+{
+ "run_date": "2026-08-02",
+ "thesis": "Ice scraped a lot of Alaska's eruption record off the land, so three USGS scientists in Anchorage read it out of Gulf of Alaska seafloor mud instead, and the machine could only name a volcano confidently where the volcano had been writing the same chemical signature for ages.",
+ "supporting_facts": [
+  {
+   "claim_ids": [
+    "c11",
+    "c6"
+   ],
+   "what_it_proves": "The problem is structural and Alaskan. The paper's own abstract says these records are hard to build in places like Alaska that have experienced numerous glaciation events since the Pleistocene, and that the Gulf of Alaska cores hold a virtually uninterrupted depositional record back through the mid-Pleistocene. Two facts stated side by side, never as a comparison the paper did not make."
+  },
+  {
+   "claim_ids": [
+    "c10"
+   ],
+   "what_it_proves": "THE LOAD-BEARING FACT AND THE FILM'S ARGUMENT. Mount Katmai, Fisher Caldera and Emmons Lake volcanic center have produced nearly invariant incompatible trace element ratio magmas, allowing for them to be confidently identified in long-term tephra records. The confidence is a property of the rock BEFORE it is a property of the classifier. The software inherits it."
+  },
+  {
+   "claim_ids": [
+    "c8",
+    "c7"
+   ],
+   "what_it_proves": "The answer is allowed to carry more than one name (most probable source or sources), and where machine learning classification is inappropriate the authors reach for multivariate distance-based metrics instead. A separate, non-ML tool, chosen by people."
+  }
+ ],
+ "fair_counter_point_it_must_honor": "Tephrochronology is decades of established craft and machine learning on geochemical correlation is published prior art, so this is not a first and not a breakthrough. The paper forecasts nothing and warns nobody. Its headline geologic result carries no fraction, no count and no percentage. And the full text is paywalled, so everything the film says comes from an abstract. The film states the non-forecasting and non-first parts OUT LOUD in the narration, and the Gmail draft discloses the abstract-only sourcing.",
+ "valence": "curiosity",
+ "valence_defense": "All three analysts landed here independently. Celebration would need a first or a quantified result and claim c15 forecloses the first while the abstract withholds the numbers. Caution would need a harm and there is none, so reaching for one would be the manufactured downside config/brand.yaml explicitly forbids. What is genuinely earned is admiration for careful work, held at the level the evidence supports.",
+ "stance_for_ledger": "curious",
+ "the_turn": "Not a caveat and not a downbeat. Three bands on the core light up and HOLD steady with names attached while the bands around them flicker and stay unnamed, because Katmai, Fisher Caldera and Emmons Lake keep writing nearly the same trace element ratios. The picture says the confidence came out of the ground, and the machine is reading a signal that was already there.",
+ "the_button": "Alaska's record didn't disappear, it settled where nobody was reading, and the closing question asks what else is down there waiting on somebody to go core it.",
+ "runner_up_angles": [
+  {
+   "angle": "THE MACHINE THAT SAYS I DON'T KNOW. That a model built with conformal prediction is allowed to decline.",
+   "why_it_lost": "KILLED BY ADVERSARIAL VALIDATION, and it was this run's original working thesis. A conformal prediction set is a hedged ANSWER, not a refusal. An empty set is a pathology and a full set is vacuous, neither maps onto the human phrase. The guarantee is marginal, so the model has no mechanism for knowing it is uncertain about one particular shard, and a source volcano absent from the training catalog is silently uncoverable. Decisively, the paper's real can't-answer path is a SEPARATE NON-ML distance metric that the humans invoke, so the framing credited the wrong component. Recorded here because a run that quietly drops a killed thesis will re-derive it next month."
+  },
+  {
+   "angle": "THE ARCHIVE ALASKA DIDN'T KNOW IT HAD. Value sits in the record, not the model, and the state should fund collection and preservation.",
+   "why_it_lost": "Strong, and GRAFTED IN WHOLE as Act 1 and as the button. It lost as the spine because on its own it makes the model incidental and skips the paper's actual finding in c10, which is the more interesting and more specific thing."
+  },
+  {
+   "angle": "THE CRAFT OF HONEST MACHINE LEARNING. An output sized to the evidence, plus a deliberate non-ML fallback, as a standard Alaskans can hold vendors to.",
+   "why_it_lost": "Also strong, and GRAFTED IN as Act 3's argument and as the second half of the turn. It lost as the spine because on its own it risks reading virtue into one methods sentence of an abstract nobody can read past, which is the overclaiming instinct that already cost this run one thesis."
+  }
+ ],
+ "binding_rules_for_the_writers_room": [
+  "Katmai is NEVER the punchline and never the headline position. It appears only inside claim c10, as one of three centers whose chemistry is stable enough to identify confidently. No fraction, no count, no percentage exists anywhere.",
+  "1912 and Novarupta stay OUT of the film entirely. The paper is about the deep record, and dramatising a dispossession this run can't source properly would be the worse error.",
+  "Conformal prediction gets a clause, not an explainer. It needs twenty honest seconds and every vivid framing for it is on the cut list.",
+  "No forecasting, warning or aviation implication, including by juxtaposition or by a closing line like 'next time we'll know sooner'.",
+  "No visual that echoes the 2026-07-09 VOISS-Net dispatch. No alert dashboards, no monitoring-network graphics, no Great Sitkin, and not the 50,000-people-a-day air-route statistic."
+ ],
+ "dissent_on_the_docket": "The skeptic analyst filed a formal dissent worth carrying forward: the $272M Rural Health Transformation program, whose federal rulebook steers Alaska toward AI-enabled tools and whose spending clock started 2026-08-01, is the bigger civic story for this audience on stakes, and it should be queued next rather than left to age. The run-it verdict on this film was explicitly conditional on the narrow thesis above."
+}

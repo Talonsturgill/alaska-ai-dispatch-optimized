@@ -35,7 +35,7 @@ OUT = os.path.join(REPO, "out", "dispatch")
 AUD = os.path.join(OUT, "audio")
 FF = os.environ.get("FFMPEG_BIN", "ffmpeg")
 SR = 44100
-DATE = "2026-07-30"   # episode seed for the shuffle-bag + jitter
+DATE = "2026-08-02"   # episode seed for the shuffle-bag + jitter
 
 
 def run(cmd):
@@ -80,43 +80,52 @@ _TAIL = 2.6   # matches scripts/build_scenes.py TAIL (hold after the last word)
 VIDEO_SECS = max(x["end"] for x in _lines) + _TAIL   # derive from VO; never hardcode
 
 EVENTS = [
-    # ---- 2026-07-31 "The Gate With No Number". 12 shots, 19 VO lines, 33 beats.
-    # Every event is motivated by a visible mechanical action. The single riser is
-    # spent on the shadow that crosses both panels of the split, which is the frame
-    # where the whole argument resolves.
-    (0.58, "thud", "hero", 0.0),
-    (2.93, "creak", "standard", 0.0),
-    (4.09, "pop", "standard", 0.0),
-    (4.99, "snap", "standard", 0.0),
-    (6.33, "clank", "standard", 0.0),
-    (7.95, "tick", "texture", 0.0),
-    (10.4, "chain", "standard", 0.0),
-    (12.67, "thud", "hero", 0.0),
-    (15.51, "tick", "standard", 0.0),
-    (17.68, "snap", "standard", 0.0),
-    (19.33, "thud", "hero", 0.0),
-    (22.86, "whoosh", "texture", 0.0),
-    (27.5, "chain", "standard", 0.0),
-    (30.41, "tick", "hero", 0.0),
-    (33.25, "paper", "standard", 0.0),
-    (38.07, "tick", "standard", 0.0),
-    (41.06, "creak", "texture", 0.0),
-    (43.14, "tick", "standard", 0.0),
-    (46.24, "whoosh", "texture", 0.0),
-    (48.52, "clank", "texture", 0.0),
-    (52.06, "whoosh", "standard", 0.0),
-    (56.52, "chime", "hero", 0.0),
-    (58.41, "tick", "hero", 0.0),
-    (60.72, "pop", "standard", 0.0),
-    (65.19, "riser", "hero", 0.0),
-    (68.66, "creak", "texture", 0.0),
-    (70.15, "boom", "hero", 0.0),
-    (73.93, "snap", "hero", 0.0),
-    (78.1, "clank", "standard", 0.0),
-    (80.76, "chime", "hero", 0.0),
-    (82.53, "tick", "standard", 0.0),
-    (85.13, "pop", "standard", 0.0),
-    (87.74, "stamp", "hero", 0.0),
+    # ---- 2026-08-02 "The Copy In The Mud". 12 shots, 16 VO lines, 32 beats.
+    # Every event is motivated by a visible mechanical action, and the times are DERIVED from
+    # the shipped take's vo_lines.json rather than typed, so a re-synth moves the sound with
+    # the picture. The single riser is spent on the signature pull-back onto eight columns,
+    # which is the frame where the film's argument resolves.
+    (0.18, "thud", "hero", -0.2),
+    (1.95, "tick", "texture", -0.1),
+    (7.37, "paper", "standard", 0.0),
+    (9.51, "chain", "hero", -0.3),
+    (11.55, "creak", "texture", 0.25),
+    (13.26, "snap", "hero", -0.25),
+    (14.87, "clank", "standard", 0.0),
+    (18.97, "whoosh", "hero", 0.0),
+    (22.85, "boom", "hero", 0.0),
+    (23.84, "creak", "texture", 0.15),
+    (25.02, "chain", "standard", -0.2),
+    (27.16, "tick", "hero", 0.0),
+    (28.84, "pop", "texture", 0.2),
+    (30.21, "tick", "standard", 0.1),
+    (32.3, "paper", "standard", -0.15),
+    (34.56, "stamp", "hero", 0.0),
+    (38.88, "creak", "texture", 0.0),
+    (39.64, "snap", "hero", 0.0),
+    (42.82, "whoosh", "texture", 0.15),
+    (46.89, "pop", "standard", -0.3),
+    (48.14, "tick", "standard", 0.0),
+    (49.59, "clank", "standard", 0.3),
+    (52.92, "chime", "standard", 0.0),
+    (54.52, "snap", "hero", 0.0),
+    (59.01, "tick", "texture", 0.18),
+    (59.86, "pop", "texture", -0.18),
+    (60.72, "tick", "texture", 0.18),
+    (61.57, "pop", "texture", -0.18),
+    (62.53, "boom", "hero", 0.0),
+    (62.91, "ding", "hero", 0.0),
+    (66.48, "clank", "texture", 0.25),
+    (68.43, "riser", "hero", 0.0),
+    (71.88, "paper", "texture", -0.2),
+    (73.98, "thud", "hero", -0.15),
+    (77.35, "clank", "standard", 0.3),
+    (78.95, "pop", "texture", 0.0),
+    (81.5, "snap", "standard", 0.2),
+    (84.66, "chime", "hero", 0.0),
+    (86.91, "tick", "texture", 0.0),
+    (89.84, "stamp", "hero", 0.0),
+    (93.94, "creak", "texture", -0.25),
 ]
 
 

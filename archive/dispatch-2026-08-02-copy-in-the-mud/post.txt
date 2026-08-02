@@ -1,0 +1,19 @@
+Glaciers scraped a lot of Alaska's eruption record off the land. Three USGS scientists went and found a copy in the mud.
+
+The paper is Lubbers, Loewen and Wallace of the Alaska Volcano Observatory in Anchorage, published in Geochemistry, Geophysics, Geosystems in July 2026. They worked 70 marine core tephras from the Gulf of Alaska, a record they describe as virtually uninterrupted going back through the mid-Pleistocene, and resolved them into 37 eruptions across eight cores.
+
+Then the harder question. Which volcano threw each one?
+
+They used machine learning classification and conformal prediction to assign the most probable source, or sources. Note the plural. The answer is allowed to come back carrying more than one name. And where classification was not the right instrument, they reached for multivariate distance metrics instead, which is a person choosing a different tool rather than a model being made to produce a name it hasn't earned.
+
+Here is the line that carries the whole thing. They report that large centers like Mount Katmai, Fisher Caldera and Emmons Lake volcanic center have produced nearly invariant incompatible trace element ratio magmas, which is what allows them to be confidently identified in a long tephra record.
+
+Read that again. The confidence is a property of the rock before it is a property of the classifier. Those volcanoes had been writing the same chemical signature over and over for a very long time, and the model is reading a difference the ground already made.
+
+That is a decent test for a lot of the AI work landing in Alaska right now. Not how good is the model. What signal was already in the material, and how honest is the output about where that signal runs out.
+
+Worth saying plainly. None of this forecasts an eruption. Matching ash to its source by chemistry is decades of established craft, and machine learning has been pointed at geochemical data before. What is new is how carefully they said which volcanoes they could name and which they couldn't.
+
+Where have you seen a model take credit for something the data was already doing?
+
+#Alaska #MachineLearning #Geoscience #DataScience #AI

@@ -86,7 +86,7 @@ export const ShortlistCard: React.FC<{
   }
   const H = 116;
   const o = Math.max(0, Math.min(1, out));
-  const slide = (1 - o) * -H * 0.9;                 // rises out of the slot
+  const slide = (1 - o) * -H * 2.6;                 // rises OUT OF the slot, real travel
   const flutter = Math.sin(f / 13 + x) * 0.8 * o;   // paper is never dead still
   return (
     <g transform={`translate(${x},${y + slide}) rotate(${rot + flutter}) scale(${scale})`} opacity={Math.min(1, o * 1.6)}>
@@ -263,31 +263,50 @@ export const DistanceCalipers: React.FC<{
   return (
     <g transform={`translate(${x + enter},${y}) rotate(${tilt + settle}) scale(${scale})`} opacity={Math.min(1, h * 1.4)}>
       <FormGradient id={id} t={brass} softness={0.55} />
-      {/* the beam */}
-      <rect x={-14} y={-150} width={28} height={150} rx={5} fill={`url(#${id})`} stroke={INK} strokeWidth={4.5} />
-      {/* graduations up the beam, the turned-instrument tell */}
-      {Array.from({length: 9}).map((_, i) => (
-        <line key={i} x1={-14} y1={-138 + i * 15} x2={i % 3 === 0 ? 8 : 0} y2={-138 + i * 15}
-              stroke={INK} strokeWidth={i % 3 === 0 ? 2.6 : 1.6} opacity={0.65} />
+      {/* THE BEAM. Pass 1 drew this whole instrument as two thin strokes off a stick and the
+          look-dev read it as a flat wishbone, not a tool. Everything here is now given real
+          width, a shaded body and fabrication marks, per the TURNED half of the grammar. */}
+      <rect x={-19} y={-168} width={38} height={168} rx={6} fill={`url(#${id})`} stroke={INK} strokeWidth={5} />
+      {Array.from({length: 11}).map((_, i) => (
+        <line key={i} x1={-19} y1={-156 + i * 14} x2={i % 3 === 0 ? 13 : 2} y2={-156 + i * 14}
+              stroke={INK} strokeWidth={i % 3 === 0 ? 3 : 1.8} opacity={0.7} />
+      ))}
+      {/* the thumb wheel: the part a hand actually turns */}
+      <ellipse cx={0} cy={-176} rx={30} ry={13} fill={brass.key} stroke={INK} strokeWidth={4.5} />
+      {Array.from({length: 7}).map((_, i) => (
+        <line key={i} x1={-24 + i * 8} y1={-183} x2={-24 + i * 8} y2={-169} stroke={INK} strokeWidth={2} opacity={0.5} />
       ))}
       {/* the pivot */}
-      <circle cx={0} cy={-6} r={13} fill={brass.key} stroke={INK} strokeWidth={4} />
-      <circle cx={0} cy={-6} r={4} fill={INK} />
-      {/* the two jaws, opening by `span`. THIS is the measurement. */}
+      <circle cx={0} cy={-6} r={17} fill={brass.key} stroke={INK} strokeWidth={5} />
+      <circle cx={0} cy={-6} r={5.5} fill={INK} />
+      {/* THE TWO JAWS, opening by `span`. This is the measurement, so it gets real metal. */}
       {[-1, 1].map((sgn) => (
         <g key={sgn}>
-          <path d={`M0,-6 L${sgn * jaw},74 L${sgn * (jaw - 13)},84 L0,4 Z`}
-                fill={`url(#${id})`} stroke={INK} strokeWidth={4.5} strokeLinejoin="round" />
-          <path d={`M${sgn * jaw},74 L${sgn * (jaw - 5)},92`} stroke={INK} strokeWidth={4} strokeLinecap="round" />
+          <path d={`M0,-14 L${sgn * jaw},70 L${sgn * jaw},96 L${sgn * (jaw - 26)},96 L${sgn * (jaw - 30)},74 L0,10 Z`}
+                fill={`url(#${id})`} stroke={INK} strokeWidth={5} strokeLinejoin="round" />
+          {/* the hardened measuring tip */}
+          <rect x={sgn > 0 ? jaw - 9 : -jaw - 3} y={92} width={12} height={22} rx={2}
+                fill={brass.shade} stroke={INK} strokeWidth={4} />
+          <RimLight d={`M${sgn * 6},-8 L${sgn * (jaw - 16)},70`} w={3} color="#fff3d0" opacity={0.5} />
         </g>
       ))}
-      {/* the span read out as a bar between the jaw tips, so the DISTANCE is the focal object */}
-      <line x1={-jaw + 8} y1={92} x2={jaw - 8} y2={92} stroke={INK} strokeWidth={3} strokeDasharray="9 7" opacity={0.75} />
+      {/* THE SPAN, called out between the tips, so the DISTANCE is the focal object and not
+          the tool holding it. Arrowheads at both ends, because a dashed line alone reads as
+          decoration rather than as a measurement. */}
+      <line x1={-jaw + 4} y1={126} x2={jaw - 4} y2={126} stroke={INK} strokeWidth={4} strokeDasharray="11 8" opacity={0.85} />
+      {[-1, 1].map((sgn) => (
+        <path key={sgn} d={`M${sgn * (jaw - 4)},126 L${sgn * (jaw - 24)},116 L${sgn * (jaw - 24)},136 Z`}
+              fill={INK} opacity={0.85} />
+      ))}
       {label && (
-        <text x={0} y={122} textAnchor="middle" fontSize={22} fontFamily="Arial Black, Arial, sans-serif"
-              fill={INK}>{label}</text>
+        <g>
+          <rect x={-label.length * 7.4} y={148} width={label.length * 14.8} height={38} rx={4}
+                fill="#141c21" stroke={INK} strokeWidth={3.5} />
+          <text x={0} y={175} textAnchor="middle" fontSize={24} fontFamily="Arial Black, Arial, sans-serif"
+                fill="#e8e2d2">{label}</text>
+        </g>
       )}
-      <RimLight d="M-11,-146 L-11,-14" w={3} color="#fff3d0" opacity={0.55} />
+      <RimLight d="M-15,-162 L-15,-16" w={4} color="#fff3d0" opacity={0.6} />
     </g>
   );
 };
@@ -313,7 +332,7 @@ export const CoreColumn: React.FC<{
    * mark  a re-identifiable tell (a double-torn corner plus one conspicuously deep tooth) so
    *       the open-loop band can be recognised 52 seconds and two shots later.
    */
-  bands: {at: number; lit?: number; named?: string; still?: boolean; mark?: boolean}[];
+  bands: {at: number; lit?: number; named?: string; still?: boolean; mark?: boolean; side?: 'left' | 'right'}[];
   accentFill?: string;                                     // resolved accent, from useAccent()
   phase?: number;
   labelScale?: number;                                     // name plates scale with the pull-back
@@ -367,19 +386,233 @@ export const CoreColumn: React.FC<{
             {/* THE NAME PLATE. Gate 0D: the poster frame promises named bands and pass 1 could
                 only TINT one, so the frame's whole point had no geometry. A small machined plate
                 on a stem, sized by labelScale so it survives the pull-back. */}
-            {b.named && (
-              <g transform={`translate(${w / 2 + 10},${by + 6}) scale(${labelScale})`}>
-                <line x1={0} y1={0} x2={13} y2={0} stroke={INK} strokeWidth={3} />
-                <rect x={13} y={-13} width={b.named.length * 8.4 + 16} height={26} rx={3}
-                      fill={accentFill || '#cfd4cc'} stroke={INK} strokeWidth={3} />
-                <text x={13 + (b.named.length * 8.4 + 16) / 2} y={6} textAnchor="middle" fontSize={15}
-                      fontFamily="Arial Black, Arial, sans-serif" fill={INK}>{b.named}</text>
-              </g>
-            )}
+            {b.named && (() => {
+              /* LABEL SIDE (added 2026-08-02). The plate used to always hang to the RIGHT, which
+                 is fine for a column on the left of frame and broken for one on the right: at
+                 the pull-back's label scale the plates on the right-hand columns ran past 1080
+                 and the poster frame showed "MA", "ER", "ONS". A named band whose name is cut
+                 off is worse than an unnamed one, because the frame's whole claim is that these
+                 three could be NAMED. The side is now the caller's choice, defaulting to the
+                 old behaviour so no existing scene moves. */
+              const sgn = (b.side ?? 'right') === 'left' ? -1 : 1;
+              const pw = b.named.length * 20 + 40;
+              return (
+                <g transform={`translate(${sgn * (w / 2 + 10)},${by + 6}) scale(${labelScale})`}>
+                  <line x1={0} y1={0} x2={sgn * 13} y2={0} stroke={INK} strokeWidth={3} />
+                  <rect x={sgn > 0 ? 13 : -13 - pw} y={-26} width={pw} height={52} rx={5}
+                        fill={accentFill || '#cfd4cc'} stroke={INK} strokeWidth={4} />
+                  {/* a dark bed under the type: pink-on-pink microcaps was the exact complaint */}
+                  <rect x={(sgn > 0 ? 13 : -13 - pw) + 6} y={-19} width={pw - 12} height={38} rx={3}
+                        fill="#1a0d14" opacity={0.72} />
+                  <text x={sgn > 0 ? 13 + pw / 2 : -13 - pw / 2} y={11} textAnchor="middle" fontSize={30}
+                        fontFamily="Arial Black, Arial, sans-serif" fill="#ffffff"
+                        textLength={pw - 24} lengthAdjust="spacingAndGlyphs">{b.named}</text>
+                </g>
+              );
+            })()}
           </g>
         );
       })}
       <RimLight d={`M${w / 2 - 3},${-h + 6} L${w / 2 - 3},-8`} w={3} color="#d8c79a" opacity={0.4} />
+    </g>
+  );
+};
+
+// -----------------------------------------------------------------------------
+// LayeredLand — the FOUND half of the grammar, as a reusable hillside.
+// A torn layered stack of sediment pages. `erased` 0..1 wipes the texture out from
+// screen left, which is what the blade leaves behind: not a scar, a BLANK.
+// Deliberately built with no two parallel edges, per the TORN rule.
+// -----------------------------------------------------------------------------
+export const LayeredLand: React.FC<{
+  x: number; y: number; w?: number; h?: number; f: number;
+  layers?: number;
+  erased?: number;                 // 0..1 how far the flattening has advanced from the left
+  bandEvery?: number;              // every Nth layer is a pearl ash band
+}> = ({x, y, w = 1160, h = 520, f, layers = 11, erased = 0, bandEvery = 3}) => {
+  const id = uid(`land${x}${y}`);
+  const soil = tones('#3b4034');
+  const E = Math.max(0, Math.min(1, erased));
+  const cut = -w / 2 + E * w;                       // the trailing edge of the blade
+  // a torn top ridge: every vertex jittered off a deterministic hash, no straight run
+  const ridge = Array.from({length: 15}).map((_, i) => {
+    const p = i / 14;
+    const j = (Math.abs(Math.imul(i + 5, 2654435761)) % 1000) / 1000;
+    return `${-w / 2 + p * w},${-h - 26 + j * 34}`;
+  }).join(' L');
+  return (
+    <g transform={`translate(${x},${y})`}>
+      <FormGradient id={id} t={soil} softness={0.7} />
+      <path d={`M${ridge} L${w / 2},0 L${-w / 2},0 Z`} fill={`url(#${id})`} stroke={INK} strokeWidth={5} strokeLinejoin="round" />
+      {/* THE PAGES. Clipped to the un-erased right side, so the blade visibly takes them. */}
+      <defs>
+        <clipPath id={`${id}c`}>
+          <rect x={cut} y={-h - 60} width={Math.max(0, w / 2 - cut)} height={h + 60} />
+        </clipPath>
+      </defs>
+      <g clipPath={`url(#${id}c)`}>
+        {Array.from({length: layers}).map((_, i) => {
+          const ly = -(i + 1) * (h / (layers + 1));
+          const isBand = i % bandEvery === 1;
+          const j = (Math.abs(Math.imul(i + 17, 40503)) % 1000) / 1000;
+          // each layer is its own torn polyline, never a rect
+          const pts = Array.from({length: 9}).map((_, k) => {
+            const p = k / 8;
+            const jj = (Math.abs(Math.imul(i * 9 + k, 2654435761)) % 1000) / 1000;
+            return `${-w / 2 + p * w},${ly + (jj - 0.5) * 7}`;
+          }).join(' L');
+          return (
+            <g key={i}>
+              {/* THE PAGE ITSELF: a lit leaf, not a hairline. The narration says the layers
+                  stack like pages and then the ice scrapes the page blank, so the stack has to
+                  be legible BEFORE the blade arrives or the erasure erases nothing the viewer
+                  ever saw. Pass 1 drew these at a few percent contrast and a judge correctly
+                  reported that the film's whole premise never landed. */}
+              <path d={`M${pts}`} stroke={isBand ? '#d9ddd4' : '#0c1210'} strokeWidth={isBand ? 20 + j * 8 : 5}
+                    fill="none" opacity={isBand ? 0.98 : 0.75} strokeLinecap="round" />
+              {isBand && (
+                <>
+                  <path d={`M${pts}`} stroke="#ffffff" strokeWidth={5} fill="none" opacity={0.8}
+                        transform="translate(0,-8)" />
+                  <path d={`M${pts}`} stroke="#7d8478" strokeWidth={4} fill="none" opacity={0.7}
+                        transform="translate(0,9)" />
+                </>
+              )}
+            </g>
+          );
+        })}
+        {/* grain, so soil is a substance */}
+        {Array.from({length: 60}).map((_, i) => {
+          const hx = (Math.abs(Math.imul(i + 3, 2654435761)) % 1000) / 1000;
+          const hy = (Math.abs(Math.imul(i + 41, 40503)) % 1000) / 1000;
+          return <circle key={i} cx={-w / 2 + hx * w} cy={-hy * h} r={1.6} fill={INK} opacity={0.2} />;
+        })}
+      </g>
+      {/* THE BLANK the blade leaves: flat, featureless, and lighter than the layers it ate */}
+      {E > 0.005 && (
+        <rect x={-w / 2} y={-h * 0.42} width={Math.max(0, cut + w / 2)} height={h * 0.42}
+              fill={soil.shade} stroke="none" opacity={0.96} />
+      )}
+      {E > 0.005 && (
+        <path d={`M${-w / 2},${-h * 0.42} L${cut},${-h * 0.42}`} stroke={INK} strokeWidth={4} opacity={0.7} />
+      )}
+      <RimLight d={`M${-w / 2 + 10},-6 L${w / 2 - 10},-6`} w={3} color="#8fa39a" opacity={0.3} />
+    </g>
+  );
+};
+
+// -----------------------------------------------------------------------------
+// ErasingBlade — the glacier, drawn as the single most rectilinear object in the film.
+// THE MANIFEST GAP: biomes.tsx GlacierBG is a torn serac WALL and has no tint param,
+// so it can't play a hard flat edge that ACTS. This story needs ice as a straight-edged
+// PLANE that erases, which is a different shape and a different verb.
+// It moves at a CONSTANT speed by contract (no easing hook is exposed on purpose) —
+// the one mechanical motion in a film of eased ones is what reads as inhuman.
+// -----------------------------------------------------------------------------
+export const ErasingBlade: React.FC<{
+  x: number; groundY: number; h?: number; f: number; tint?: string;
+}> = ({x, groundY, h = 660, f, tint = '#9fb6bd'}) => {
+  const id = uid(`blade${h}`);
+  const ice = tones(tint);
+  return (
+    <g transform={`translate(${x},${groundY})`}>
+      <FormGradient id={id} t={ice} softness={0.5} />
+      {/* the body: hard, flat, machine-straight. Its LEADING edge is the only vertical
+          line in a film where nothing else is vertical. */}
+      <path d={`M-620,0 L-620,${-h} L0,${-h} L0,0 Z`} fill={`url(#${id})`} stroke={INK} strokeWidth={6} />
+      {/* internal strata: parallel, regular, the opposite of the torn land it is eating */}
+      {Array.from({length: 9}).map((_, i) => (
+        <line key={i} x1={-612} y1={-h + 40 + i * (h / 10)} x2={-8} y2={-h + 46 + i * (h / 10)}
+              stroke="#ffffff" strokeWidth={3} opacity={0.16} />
+      ))}
+      {/* the working face: a bright hard rim exactly on the leading edge */}
+      <path d={`M0,${-h} L0,0`} stroke="#eaf4f6" strokeWidth={7} opacity={0.85} />
+      <path d={`M-6,${-h + 8} L-6,-8`} stroke="#ffffff" strokeWidth={3} opacity={0.4} />
+      {/* the base shear: where it meets ground it grinds, so a thin bright dust line */}
+      <path d={`M-620,-4 L4,-4`} stroke="#dfeaec" strokeWidth={5} opacity={0.5} />
+      <ContactShadow cx={-310} cy={6} rx={330} ry={20} opacity={0.55} blur={18} />
+    </g>
+  );
+};
+
+// -----------------------------------------------------------------------------
+// CoringTube — the TURNED counterpart to the torn seafloor: a machined steel tube that
+// punches a plug of mud out of the ground. `drive` 0..1 pushes it in, `lift` 0..1 pulls
+// it back with a plug of sediment held inside it.
+// -----------------------------------------------------------------------------
+export const CoringTube: React.FC<{
+  x: number; y: number; f: number; drive?: number; lift?: number; scale?: number;
+  plugBands?: number[];            // fractions down the captured plug that are ash
+}> = ({x, y, f, drive = 0, lift = 0, scale = 1, plugBands = [0.22, 0.55, 0.78]}) => {
+  const id = uid(`tube${x}${y}`);
+  const steel = tones('#8d99a3');
+  const mud = tones('#4a4234');
+  const D = Math.max(0, Math.min(1, drive));
+  const L = Math.max(0, Math.min(1, lift));
+  const TH = 430;
+  const dy = D * 150 - L * 320;
+  return (
+    <g transform={`translate(${x},${y + dy}) scale(${scale})`}>
+      <FormGradient id={id} t={steel} softness={0.5} />
+      <FormGradient id={`${id}m`} t={mud} softness={0.7} />
+      {/* the captured plug, visible through an open window in the barrel */}
+      {L > 0.02 && (
+        <g opacity={Math.min(1, L * 2)}>
+          <rect x={-26} y={-TH + 40} width={52} height={TH - 70} fill={`url(#${id}m)`} stroke={INK} strokeWidth={3} />
+          {plugBands.map((b, i) => (
+            <path key={i} d={`M-26,${-TH + 40 + b * (TH - 70)} L26,${-TH + 37 + b * (TH - 70)}`}
+                  stroke="#cfd4cc" strokeWidth={9} opacity={0.9} />
+          ))}
+        </g>
+      )}
+      {/* the barrel: turned, with fabrication rings */}
+      <rect x={-34} y={-TH} width={68} height={TH} rx={4} fill={`url(#${id})`} stroke={INK} strokeWidth={5}
+            opacity={L > 0.02 ? 0.86 : 1} />
+      {Array.from({length: 7}).map((_, i) => (
+        <line key={i} x1={-34} y1={-TH + 46 + i * (TH / 8)} x2={34} y2={-TH + 46 + i * (TH / 8)}
+              stroke={INK} strokeWidth={2.4} opacity={0.5} />
+      ))}
+      {/* the cutting shoe: a hardened bevel, the business end */}
+      <path d="M-34,0 L34,0 L26,26 L-26,26 Z" fill={steel.shade} stroke={INK} strokeWidth={5} strokeLinejoin="round" />
+      <path d="M-26,26 L26,26" stroke="#e8f0f4" strokeWidth={4} opacity={0.6} />
+      {/* the head weight, so the punch reads as MASS not as a poke */}
+      <rect x={-52} y={-TH - 44} width={104} height={44} rx={5} fill={steel.key} stroke={INK} strokeWidth={5} />
+      <RimLight d={`M-30,${-TH + 8} L-30,-10`} w={3} color="#ecf4f8" opacity={0.5} />
+    </g>
+  );
+};
+
+// -----------------------------------------------------------------------------
+// BrassPlate — a machined nameplate that SETS into the light. The film's way of naming
+// an actor before it uses it (the §4.2 name-actors-first law), as a physical object
+// rather than a HUD chip. `set` 0..1 drops it in with weight.
+// -----------------------------------------------------------------------------
+export const BrassPlate: React.FC<{
+  x: number; y: number; lines: string[]; set?: number; scale?: number; w?: number; size?: number;
+}> = ({x, y, lines, set = 1, scale = 1, w = 660, size = 34}) => {
+  const id = uid(`plate${x}${y}${lines.join()}`);
+  const brass = tones(BRASS);
+  const s = Math.max(0, Math.min(1, set));
+  const e = s * s * (3 - 2 * s);
+  const h = 34 + lines.length * (size + 12);
+  return (
+    <g transform={`translate(${x},${y - (1 - e) * 46}) scale(${scale})`} opacity={Math.min(1, s * 1.7)}>
+      <FormGradient id={id} t={brass} softness={0.55} />
+      <ContactShadow cx={0} cy={h / 2 + 10} rx={w / 2} ry={13} opacity={0.45} blur={13} />
+      <rect x={-w / 2} y={-h / 2} width={w} height={h} rx={6} fill={`url(#${id})`} stroke={INK} strokeWidth={5} />
+      {/* four countersunk screws: the fabrication tell */}
+      {[[-w / 2 + 20, -h / 2 + 18], [w / 2 - 20, -h / 2 + 18], [-w / 2 + 20, h / 2 - 18], [w / 2 - 20, h / 2 - 18]].map(([sx, sy], i) => (
+        <g key={i}>
+          <circle cx={sx} cy={sy} r={5.5} fill={brass.shade} stroke={INK} strokeWidth={2.5} />
+          <line x1={sx - 3.4} y1={sy} x2={sx + 3.4} y2={sy} stroke={INK} strokeWidth={1.8} />
+        </g>
+      ))}
+      {lines.map((L, i) => (
+        <text key={i} x={0} y={-h / 2 + 34 + i * (size + 12)} textAnchor="middle" fontSize={i === 0 ? size : size * 0.8}
+              fontFamily="Arial Black, Arial, sans-serif" fill={INK}
+              opacity={i === 0 ? 1 : 0.82} letterSpacing={0.6}>{L}</text>
+      ))}
+      <RimLight d={`M${-w / 2 + 8},${-h / 2 + 4} L${w / 2 - 8},${-h / 2 + 4}`} w={3} color="#fff3d0" opacity={0.55} />
     </g>
   );
 };

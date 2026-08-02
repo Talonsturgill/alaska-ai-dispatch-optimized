@@ -7,6 +7,115 @@ back on if a later run regresses. Newest first.
 
 ---
 
+## 2026-08-02 — "The Copy In The Mud" (the USGS ash archive nobody built, read out of Gulf of Alaska mud)
+
+**Shipped:** 98.8s vertical + 4:5 Dispatch, Gemini narrator (Sulafat, 16-line read, soundcheck 0.986 clean,
+96.2s). Story: glaciers scraped a lot of Alaska's eruption record off the land, so Lubbers, Loewen and
+Wallace of the USGS Alaska Volcano Observatory in Anchorage read a surviving copy out of Gulf of Alaska
+seafloor mud. 70 marine core tephras, 37 eruptions across eight cores, machine learning classification and
+conformal prediction assigning the most probable source **or sources**, and multivariate distance metrics
+where classification was not the right instrument. The earned angle: the confidence is a property of the
+ROCK before it is a property of the classifier, because Katmai, Fisher Caldera and Emmons Lake had been
+writing nearly invariant trace element ratios for a very long time.
+
+**THIS RUN EXISTS BECAUSE THE LAST ONE DID NOT SHIP.** The 2026-08-01 run planned and gated this exact
+film, synthesized its VO, fixed two engine bugs, and then wrote a queue file and shipped no frames. This
+run took the queued story per Phase 0.5, rebuilt what the container had lost, and built the film.
+
+**Sourcing limitation, disclosed:** the full text is paywalled (Wiley 402, pubs.usgs.gov 403). EVERYTHING
+on screen comes from the abstract, retrieved verbatim and identically from two independent indexes. The
+algorithm is never named or drawn, no year span is given, and no Katmai fraction is stated, because none
+of those are verifiable. The film says out loud that it forecasts nothing and that this is not a first.
+
+**Gates:** story_gate PASS (queued). dedupe FRESH on the honest distinctive set; the first two checks
+DUP'd only on generic tokens ('alaska','gulf' against a salmon story, then 'center','data' against a data
+centre story), which is token collision, not subject repeat. storyboard_check PASS (9/9 and 8/9 axes
+diverge from the last two). flow_check PASS (32 beats, median gap 3.1s, max 4.6s, 2 rehooks, 53s open
+loop, 41 sfx events, >=2 per shot). caption_check PASS. Audio: -14.0 LUFS, TP -1.2 dBTP, 0.90s silence
+dip fitted inside a real VO gap.
+
+**Two real bugs the ROUGH CUT caught, both of which would have shipped silently:**
+
+1. **`Stage` wrapped its children in an `<svg>`, so `Stage3D`'s `<div>`s landed in the SVG namespace and
+   painted NOTHING.** Every scene rendered as an empty graded rectangle with only captions on it. This is
+   the same failure class the Ep0731 header documents for DayGrade, arriving from the opposite direction:
+   there an HTML grade was placed inside a scene's svg, here the entire 3D stage was. Fixed by making
+   Stage a plain HTML container, with MaterialDefs in one hidden document-level svg since SVG defs
+   resolve by id across the document.
+
+2. **Scenes were timing their beats to ABSOLUTE seconds copied off the storyboard.** The board was timed
+   against the 08-01 synth; this run re-synthesized, and every line start moved by a different amount, up
+   to 1.8s. Nothing fails loudly, because `build_scenes.py` derives the scene BOUNDARIES from the new
+   line table, so the cuts stay right and only the beats inside them drift onto the wrong words.
+   **PERMANENT FIX, and it is a code fix rather than a doctrine reminder:** `build_scenes.py` now emits
+   the VO line start table into `episode_props.json`, `ep0802Schema` carries it, and every scene takes
+   `L(i)` and expresses each beat as an offset from the line it belongs to. Re-synth the voice and the
+   picture re-times itself. (Caught because the schedule generator hard-errored on the missing key, which
+   is the only reason it was noticed at all — worth making other consumers fail that loudly too.)
+
+**Upgrades committed this run:**
+- `scripts/build_scenes.py` — ships the VO line start table (the fix above).
+- `video-engine/src/Ep0802.tsx` — the twelve-scene film; `SceneProps`/`L()` line-anchored beat timing.
+- `video-engine/src/lib/bench.tsx` — net-new `LayeredLand`, `ErasingBlade`, `CoringTube`, `BrassPlate`;
+  `CoreColumn.bands[].side` so a name plate can hang inboard; `DistanceCalipers` rebuilt to the bar.
+- `video-engine/src/lib/ASSET_MANIFEST.md` — all of the above registered, with the next advance named.
+- `config/music_sources.yaml` — two ambient tracks added. **This was a real shortage, not a nicety:** the
+  curious/wonder branch of `angle_to_mood` had exactly three usable tracks and by this run all three had
+  played within ten days, so "source a fresh track" and "match the committed valence" had become
+  impossible to satisfy at once. Daily cadence drains a narrow branch fast.
+- `scripts/dispatch_mix.py` — this film's 41-event schedule, derived from the shipped take's line table
+  rather than typed, so the sound moves with the picture on a re-synth.
+
+**Panel: FOUR ROUNDS, medians 6.08 -> 7.04 -> 7.02 -> 7.64 against a 7.5 bar.** Passed on round 4.
+ship_gate PASS, hash-bound to the graded cut. Two HARD BLOCKERS were tripped and cleared along the way,
+both of them real and both found by the panel rather than by me:
+
+1. ROUND 2, a genuine SOURCING ERROR. A card read "THREE NAMES, NOT ONE" over KATMAI / FISHER CALDERA /
+   EMMONS LAKE as the picture for "the answer doesn't always come back with one name". That asserts a set
+   size the abstract never states (c7 records only "the most probable volcanic source or sources" and its
+   label says the plural is load-bearing; c9 forbids adding a quantifier), AND it illustrated AMBIGUITY
+   using the exact three centres c10 says can be CONFIDENTLY identified. The frame inverted its own
+   source. Fixed to "A NAME, OR NAMES" over three blank candidate slots. The asset's performance survived
+   intact because the tell was never the names, it was the card's WIDTH.
+
+2. ROUND 3, "ATMAI" ON SCREEN. The KATMAI match plate was clipped by the left frame edge. Verified at
+   full resolution before acting, because the third judge explicitly refused to trip a blocker they could
+   not substantiate and asked for the check. The K was cut.
+
+   THE ROOT CAUSE IS THE PART WORTH KEEPING. A plate's position was DERIVED FROM ITS COLUMN and never
+   checked against the frame. Round 2 the plates hung right and the next column overpainted them; round 3
+   they hung left and the leftmost column pushed one off the edge. BOTH earlier fixes treated a symptom,
+   which is exactly why it recurred. The plates now render in their own pass after every column,
+   projected onto their bands through the same camera, CLAMPED into the safe box, with a leader line that
+   stretches to absorb the clamp. The frame gets the last word, so no camera state can carry a name off an
+   edge again. Generalizable lesson: any element positioned relative to a moving subject needs a
+   frame-space clamp, not a better relative offset.
+
+Other things the panel was right about and which are now fixed: two of five headline motion beats had no
+motion at all (the fuse held its assembled stack, the punch travelled a few pixels); the strata in act 1
+were a few percent contrast, so the blade erased something the viewer had never registered and the film's
+premise never landed; the closing extinguish was added at an amplitude below perception and had to be
+redone; and a COULD NAME / COULDN'T panel showing three against three implied a nameable/unnameable ratio
+no source states, which is the same error class as blocker 1, caught by the same judge.
+
+**Evidence-pack lesson, and it cost real score.** In round 1 all three judges had to grade Sound design
+blind because the pack carried no audio artifact at all, and two capped Accuracy because claims.json was
+not in it. Both axes jumped once the evidence was supplied and the FILM had not changed. The pack now
+ships AUDIO_EVIDENCE.txt, claims.json and sources.json as standard. A judge cannot credit work they
+cannot see, and that is the pack's fault, not theirs.
+
+**Panel anchors are still missing.** config/panel_protocol.md specifies config/panel_anchors.md as the
+fix for scale drift, and that file has never been created. Judges are still pinning a scale from word
+descriptors alone. Round 3 to 4 showed one judge move Accuracy 7 to 9 and correctly declare "MY STANDARD
+MOVED, not the film", which is the protocol working as designed, but anchors would have prevented the
+under-read in the first place. Flagged here rather than deferred silently.
+
+**Known issue, named rather than deferred quietly:** `AshReader`'s head reads as a box on a column at
+small scale. The film survives it by staging the reader large, and the manifest now carries it as the
+family's next advance so a run that needs it in a wide shot fixes it first.
+
+---
+
 ## 2026-07-25 — "The One It Didn't Hear" (Alaska's landslide detector + the NSF award nobody reported)
 
 **Shipped:** 61.3s vertical + 4:5 Dispatch, Gemini narrator (Sulafat, 12-line read, soundcheck 0.989 clean).

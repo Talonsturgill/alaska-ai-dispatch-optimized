@@ -1,0 +1,57 @@
+{
+  "run_date": "2026-08-02",
+  "story": "USGS Alaska Volcano Observatory tephra source attribution from Gulf of Alaska marine cores, using machine learning classification, compositional data analysis and conformal prediction",
+  "sourcing_limitation": "EVERYTHING the film states about this paper comes from its ABSTRACT. The full text is paywalled (Wiley returns HTTP 402, pubs.usgs.gov returns HTTP 403). The abstract was retrieved verbatim and identically from two independent indexes, and the paper's existence was confirmed on three routes (OpenAlex, Semantic Scholar Graph API, Crossref REST). Nothing about sample sites, core names, dating methods, model architecture, accuracy figures or coverage levels is stated anywhere in the film, because none of it is verifiable from the abstract. ON THE RECORD'S AGE: the abstract says 'through the mid-Pleistocene' and carries NO year figure, so no year span appears on screen or in the narration. The VO's phrase is 'reaching into the ice ages', a plain-language gloss of the same span that introduces no number the abstract does not support.",
+  "sources": [
+    {
+      "title": "Lubbers, Loewen and Wallace, Constraining Sources of Mid-Pleistocene to Present Explosive Volcanism in the Gulf of Alaska Using Machine Learning and Compositional Data Analysis, Geochemistry Geophysics Geosystems 27(7), July 2026",
+      "outlet": "AGU, Geochemistry Geophysics Geosystems",
+      "url": "https://doi.org/10.1029/2026GC013096",
+      "note": "THE primary source. Carries claims c1 to c12. All three authors are U.S. Geological Survey Alaska Volcano Observatory, Anchorage. AVO is a three-agency consortium and this paper is the USGS arm only, so UAF is deliberately not credited on screen."
+    },
+    {
+      "title": "OpenAlex work record for doi 10.1029/2026GC013096 (title, authors, affiliations, issue date)",
+      "outlet": "OpenAlex",
+      "url": "https://api.openalex.org/works/doi:10.1029/2026GC013096",
+      "note": "Independent index 1. Used to verify the exact title and the author list and affiliations."
+    },
+    {
+      "title": "Semantic Scholar Graph API record for doi 10.1029/2026GC013096 (verbatim abstract)",
+      "outlet": "Semantic Scholar",
+      "url": "https://api.semanticscholar.org/graph/v1/paper/DOI:10.1029/2026GC013096",
+      "note": "Independent index 2. Source of the verbatim abstract behind the 70 tephras, the 37 eruptions over eight cores, the virtually uninterrupted mid-Pleistocene record, the most probable source or sources, the distance-based fallback, and the nearly invariant trace element ratios at Katmai, Fisher Caldera and Emmons Lake."
+    },
+    {
+      "title": "Crossref record for doi 10.1029/2026GC013096 (journal, volume, issue, publication dates)",
+      "outlet": "Crossref",
+      "url": "https://api.crossref.org/works/10.1029/2026GC013096",
+      "note": "Journal metadata. Crossref gives published-online 2026-07-27, and OpenAlex and Semantic Scholar show the issue date 2026-07-01. The film says July 2026, which both support."
+    },
+    {
+      "title": "Angelopoulos and Bates, A Gentle Introduction to Conformal Prediction and Distribution-Free Uncertainty Quantification",
+      "outlet": "arXiv",
+      "url": "https://arxiv.org/abs/2107.07511",
+      "note": "Methods explainer ONLY, for what conformal prediction is. Never cited as a statement about this study and never with a percentage attached to it. The coverage guarantee is marginal, averaged over many cases, not a per-sample certainty."
+    },
+    {
+      "title": "Lowe, Tephrochronology and its application, a review",
+      "outlet": "Quaternary Geochronology",
+      "url": "https://doi.org/10.1016/j.quageo.2010.08.003",
+      "note": "Prior art. This is why the film says out loud that matching ash to a source by chemistry is decades of established craft and that this is not a first or a breakthrough."
+    },
+    {
+      "title": "U.S. Geological Survey Alaska Volcano Observatory",
+      "outlet": "USGS",
+      "url": "https://www.usgs.gov/observatories/avo",
+      "note": "Institutional context for AVO Anchorage. No volcano count and no monitoring count is shown on screen, because the official pages do not agree on one."
+    }
+  ],
+  "cut_for_lack_of_evidence": [
+    "Any quote attributed to Lubbers, Loewen or Wallace as a person speaking. No interview, press release or author statement exists. Both validators searched.",
+    "Any year span for the record, including 700,000 years. It appears in no source. The abstract's own phrase is 'through the mid-Pleistocene'. The film glosses that in plain language as 'reaching into the ice ages', which adds no figure the abstract does not support.",
+    "The name of the machine learning algorithm. Random forest, neural network, XGBoost and the rest are all unverified with the full text paywalled, so the film never draws or labels an architecture.",
+    "Any fraction, count or percentage of tephras attributed to Katmai. No such figure is stated anywhere.",
+    "Any forecasting, early-warning or aviation implication, including by juxtaposition. The film says on screen that this forecasts nothing.",
+    "The 1912 Novarupta eruption. Kept out entirely. The paper is about the deep record, and the only verified human facts concern residents forced to abandon their homes, which this run could not source well enough to dramatise responsibly."
+  ]
+}

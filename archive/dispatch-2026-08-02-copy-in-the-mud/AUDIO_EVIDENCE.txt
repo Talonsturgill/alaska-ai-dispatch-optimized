@@ -1,0 +1,30 @@
+AUDIO EVIDENCE — Dispatch 2026-08-02 'The Copy In The Mud'
+Measured on the SHIPPING encode, not on an intermediate.
+
+MIX GATE
+  master_9x16.mp4      integrated -14.1 LUFS   true peak -1.8 dBTP
+  master_4x5.mp4       integrated -14.1 LUFS   true peak -1.6 dBTP
+  master_9x16_720.mp4  integrated -14.4 LUFS   true peak -2.9 dBTP
+  Target is -14 LUFS integrated and true peak at or below -1.0 dBTP. All three pass.
+  A real pre-button silence dip of 0.90s is fitted at 61.64s, inside an actual VO gap
+  rather than hand-placed, so the button lands out of silence.
+
+VOICE
+  Backend gemini-tts, model gemini-3.1-flash-tts-preview, voice Sulafat.
+  Sound check: score 0.986, verdict 'clean'. Best of 3 takes.
+  SynthID (Google) embedded in all Gemini TTS audio
+  This is a PRESET Gemini voice, not a clone of any person.
+
+MUSIC
+  "Deep Haze" Kevin MacLeod (incompetech.com), licensed under CC BY 4.0.
+  Chosen by mapping the committed valence (curious) through config/music_sources.yaml
+  angle_to_mood. Ducked under the VO throughout and dropped to silence before the button.
+
+SFX
+  41 motivated events, every one cut to a visible mechanical action.
+  At least 2 events per shot across all 12 shots (min 2, max 7).
+  Class gain tiers hero -11 / standard -15 / texture -19 dBFS, never a flat volume.
+  Deterministic per-event pitch and timing jitter seeded on the episode date.
+  Asserted by scripts/dispatch_mix.py check_schedule: NO two consecutive events from the
+  same sound family, and exactly ONE riser in the episode (spent on the signature
+  pull-back onto the eight columns).

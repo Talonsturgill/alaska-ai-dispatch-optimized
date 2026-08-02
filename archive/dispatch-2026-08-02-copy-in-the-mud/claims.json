@@ -1,0 +1,136 @@
+{
+ "run_date": "2026-08-02",
+ "story": "USGS Alaska Volcano Observatory tephra source attribution with machine learning, compositional data analysis and conformal prediction",
+ "verification": "Two independent adversarial validators. Paper existence confirmed on three routes (OpenAlex, Semantic Scholar Graph API, Crossref REST). Full text NOT read: Wiley returns HTTP 402 and pubs.usgs.gov returns HTTP 403. EVERYTHING known about this paper comes from its ABSTRACT, retrieved verbatim and identically from two independent indexes. Nothing about sample sites, core names, dating methods, model architecture, accuracy figures or coverage levels may be stated.",
+ "safe_set": [
+  {
+   "id": "c1",
+   "fact": "Constraining Sources of Mid-Pleistocene to Present Explosive Volcanism in the Gulf of Alaska Using Machine Learning and Compositional Data Analysis",
+   "label": "the paper's exact title",
+   "url": "https://api.openalex.org/works/doi:10.1029/2026GC013096"
+  },
+  {
+   "id": "c2",
+   "fact": "Jordan Lubbers, Matthew Loewen and Kristi Wallace, all three of the U.S. Geological Survey Alaska Volcano Observatory in Anchorage",
+   "label": "author list and affiliations, in order. AVO is a three-agency consortium; this paper is the USGS arm only, so do NOT credit UAF.",
+   "url": "https://api.openalex.org/works/doi:10.1029/2026GC013096"
+  },
+  {
+   "id": "c3",
+   "fact": "Geochemistry, Geophysics, Geosystems, volume 27, issue 7, July 2026, doi 10.1029/2026GC013096",
+   "label": "journal metadata. Crossref gives published-online 2026-07-27; OpenAlex and Semantic Scholar show the issue date 2026-07-01. ON SCREEN SAY 'July 2026'.",
+   "url": "https://api.crossref.org/works/10.1029/2026GC013096"
+  },
+  {
+   "id": "c4",
+   "fact": "70 marine core tephras from the Gulf of Alaska",
+   "label": "per the paper abstract. 70 TEPHRAS, not 70 cores.",
+   "url": "https://api.semanticscholar.org/graph/v1/paper/DOI:10.1029/2026GC013096"
+  },
+  {
+   "id": "c5",
+   "fact": "37 eruptions over the span of eight cores",
+   "label": "per the paper abstract, verbatim",
+   "url": "https://api.semanticscholar.org/graph/v1/paper/DOI:10.1029/2026GC013096"
+  },
+  {
+   "id": "c6",
+   "fact": "a virtually uninterrupted depositional record going back through the mid-Pleistocene",
+   "label": "per the paper abstract. NO year figure exists in any source.",
+   "url": "https://api.semanticscholar.org/graph/v1/paper/DOI:10.1029/2026GC013096"
+  },
+  {
+   "id": "c7",
+   "fact": "machine learning classification and conformal prediction algorithms assign the most probable volcanic source or sources to each eruption",
+   "label": "per the paper abstract. The plural is load-bearing.",
+   "url": "https://api.semanticscholar.org/graph/v1/paper/DOI:10.1029/2026GC013096"
+  },
+  {
+   "id": "c8",
+   "fact": "multivariate distance-based metrics are used when machine learning classification algorithms are inappropriate",
+   "label": "per the paper abstract, verbatim. This is a SEPARATE NON-ML tool the authors invoke, not something the classifier does.",
+   "url": "https://api.semanticscholar.org/graph/v1/paper/DOI:10.1029/2026GC013096"
+  },
+  {
+   "id": "c9",
+   "fact": "the Mount Katmai magmatic system is the most probable volcanic source for analyzed tephras",
+   "label": "per the paper abstract, EXACT phrasing, no quantifier may be added. It does NOT say all, most, or any fraction.",
+   "url": "https://api.semanticscholar.org/graph/v1/paper/DOI:10.1029/2026GC013096"
+  },
+  {
+   "id": "c10",
+   "fact": "large volcanic centers such as Mount Katmai, Fisher Caldera and Emmons Lake volcanic center have produced nearly invariant incompatible trace element ratio magmas, allowing for them to be confidently identified in long-term tephra records",
+   "label": "per the paper abstract, verbatim",
+   "url": "https://api.semanticscholar.org/graph/v1/paper/DOI:10.1029/2026GC013096"
+  },
+  {
+   "id": "c11",
+   "fact": "these records can only be accurately constructed if they are both well preserved and correctly linked to source volcanoes, not a trivial task, especially in areas such as Alaska that have experienced numerous glaciation events since the Pleistocene",
+   "label": "per the paper abstract. GLACIATION only. The abstract never says erosion or vegetation.",
+   "url": "https://api.semanticscholar.org/graph/v1/paper/DOI:10.1029/2026GC013096"
+  },
+  {
+   "id": "c12",
+   "fact": "the long-term eruptive record of a region helps better elucidate magmatic processes at depth as well as volcanic hazards at the surface",
+   "label": "per the paper abstract. This is the ONLY forward-looking sentence in it and it is about understanding hazards, NOT predicting eruptions.",
+   "url": "https://api.semanticscholar.org/graph/v1/paper/DOI:10.1029/2026GC013096"
+  },
+  {
+   "id": "c13",
+   "fact": "conformal prediction produces sets that are guaranteed to contain the ground truth with a user-specified probability",
+   "label": "Angelopoulos and Bates, A Gentle Introduction to Conformal Prediction and Distribution-Free Uncertainty Quantification. Cited as a METHODS EXPLAINER only, never as a statement about this paper, and never with a specific percentage attached to this study. The guarantee is MARGINAL, averaged over many cases, not a per-sample certainty.",
+   "url": "https://arxiv.org/abs/2107.07511"
+  },
+  {
+   "id": "c14",
+   "fact": "more than 50 Alaska volcanoes have been active within historical time",
+   "label": "USGS Alaska Volcano Observatory. This is the ONLY volcano count both official pages agree on: usgs.gov/observatories/avo says 'over 130' active in two million years and the AVO FAQ says 'over 140', so no unattributed total may be shown.",
+   "url": "https://www.usgs.gov/observatories/avo"
+  },
+  {
+   "id": "c15",
+   "fact": "matching volcanic ash to its source volcano by chemistry is long-established craft (tephrochronology), and machine learning has been applied to geochemical correlation before",
+   "label": "context, so the film never claims a first or a breakthrough. Lowe 2010 review and prior ML-on-geochemistry work.",
+   "url": "https://doi.org/10.1016/j.quageo.2010.08.003"
+  }
+ ],
+ "quotes_cleared": [
+  {
+   "text": "We utilize compositional data analysis techniques to quantify 37 eruptions over the span of eight cores, machine learning classification and conformal prediction algorithms to assign the most probable volcanic source(s) to each eruption, and multivariate distance-based metrics when machine learning classification algorithms are inappropriate.",
+   "speaker": "the paper abstract (Lubbers, Loewen and Wallace). NOT attributable to any single author as spoken words.",
+   "url": "https://api.semanticscholar.org/graph/v1/paper/DOI:10.1029/2026GC013096"
+  },
+  {
+   "text": "Here we present data from 70 marine core tephras from the Gulf of Alaska, which have a virtually uninterrupted depositional record going back through the mid-Pleistocene.",
+   "speaker": "the paper abstract",
+   "url": "https://api.semanticscholar.org/graph/v1/paper/DOI:10.1029/2026GC013096"
+  },
+  {
+   "text": "We find that the Mount Katmai magmatic system is the most probable volcanic source for analyzed tephras",
+   "speaker": "the paper abstract",
+   "url": "https://api.semanticscholar.org/graph/v1/paper/DOI:10.1029/2026GC013096"
+  }
+ ],
+ "cut_list": [
+  "ANY quote attributed to Jordan Lubbers, Matthew Loewen or Kristi Wallace as a person speaking. No interview, press release or author statement exists anywhere. Both validators searched. Given the 2026-07-30 fabricated-quote incident this is a hard fail.",
+  "'700,000 years' or ANY year span for the record. It appears in no source. Say 'through the mid-Pleistocene'.",
+  "Naming the ML algorithm. Random forest, neural network, XGBoost, SVM, gradient boosting, decision tree are all UNVERIFIED and the full text is paywalled. A decision-tree or neural-net motion graphic labelled as the method is a visual fabrication.",
+  "'The model is allowed to say I don't know', 'the AI knows what it doesn't know', 'an AI that admits uncertainty', 'the model refuses to guess'. THIS WAS THE RUN'S ORIGINAL WORKING THESIS AND THE SECOND VALIDATOR KILLED IT. A conformal prediction set is a hedged ANSWER, not a refusal, and the genuine can't-answer path in this paper is a separate NON-ML distance metric the humans invoke.",
+  "'Guaranteed X percent accurate' or any per-sample certainty language. Conformal coverage is marginal and rests on an exchangeability assumption this application strains: a source volcano absent from the training catalog is silently uncoverable.",
+  "Any forecasting, early-warning, eruption-prediction or aviation-protection implication, including by juxtaposition, alert-level dashboards, or a closing line like 'next time we will know sooner'. The abstract claims none.",
+  "'Breakthrough', 'first time', 'AI solves what geologists could not'. Prior art exists.",
+  "'All the ash came from Katmai', 'most of the 37 eruptions were Katmai', or any count or percentage of Katmai attributions. No fraction is stated anywhere.",
+  "'Erosion' or 'vegetation' as named mechanisms degrading the onshore record. The abstract cites glaciation only.",
+  "'Complete' or 'perfect' marine record. The paper's word is 'virtually uninterrupted'.",
+  "Stating as the paper's claim that offshore records are 'more complete than' onshore records. That comparative is an inference; state the two facts side by side instead.",
+  "'AVO monitors N volcanoes' for any N. UNVERIFIED, no reachable page carries a monitoring count.",
+  "Any flights-per-day figure for North Pacific routes. UNVERIFIED.",
+  "An unattributed total number of Alaska volcanoes.",
+  "Crediting UAF or the AVO consortium broadly. All three authors are USGS AVO Anchorage.",
+  "Reused Great Sitkin imagery, AVO monitoring-network graphics or alert-level dashboards from the 2026-07-09 VOISS-Net dispatch, and the '50,000 people a day over Pacific routes' statistic, which risks reading as the same story three weeks apart.",
+  "The 1912 Novarupta eruption as spectacle. See cultural_note. If used at all it is a single dated reference point.",
+  "Naming Savonoski, or applying the Sugpiaq or Alutiiq ethnonym, in connection with 1912 displacement. UNVERIFIED sourcing; naming a specific Alaska Native community and its dispossession on unverified sourcing is worse than omitting the name."
+ ],
+ "cultural_note": "If the film references 1912 at all, it may not treat the eruption as an unpeopled geological spectacle. The only verified human facts (National Park Service, Katmai National Park) are that local residents were forced to abandon their homes during the eruption and never returned, and that ash nearly buried Katmai Village. Do not name Savonoski and do not apply an ethnonym on this sourcing. The safest edit, and the one this run takes, is to keep 1912 out of the film entirely: the paper is about the deep record, not about 1912, and dramatising a dispossession the run cannot source properly would be the worse error.",
+ "retro_flag_for_phase_8": "Validator 2 searched OpenAlex and found no VOISS-Net paper at GREAT SITKIN; the VOISS-Net literature it located is Tan, Fee et al. 2024 at PAVLOF (doi 10.1029/2024JB029194) and a generalized 24-volcano model, Fee et al. 2025 (doi 10.30909/vol/rjss1878). The 2026-07-09 dispatch ledger entry attributes VOISS-Net training to seven volcanoes and pairs it with an ongoing Great Sitkin eruption. That pairing may be correct as juxtaposition (an eruption happening while the tool exists) rather than as attribution, but it deserves a retro-check in Phase 8."
+}

@@ -1,0 +1,272 @@
+[
+  {
+    "text": "Every eruption in Alaska signs",
+    "start": 0.0,
+    "end": 2.45,
+    "seg": 0
+  },
+  {
+    "text": "its name in ash.",
+    "start": 2.48,
+    "end": 3.76,
+    "seg": 0
+  },
+  {
+    "text": "The trick is reading the signature.",
+    "start": 4.3,
+    "end": 6.32,
+    "seg": 0
+  },
+  {
+    "text": "On land the layers stack like",
+    "start": 7.12,
+    "end": 8.99,
+    "seg": 1
+  },
+  {
+    "text": "pages, then glaciers scrape the",
+    "start": 9.02,
+    "end": 11.63,
+    "seg": 1
+  },
+  {
+    "text": "page blank.",
+    "start": 11.66,
+    "end": 12.36,
+    "seg": 1
+  },
+  {
+    "text": "So three federal scientists in",
+    "start": 13.1,
+    "end": 15.030000000000001,
+    "seg": 2
+  },
+  {
+    "text": "Anchorage went looking for a copy.",
+    "start": 15.06,
+    "end": 16.84,
+    "seg": 2
+  },
+  {
+    "text": "They found one under the Gulf",
+    "start": 17.52,
+    "end": 19.169999999999998,
+    "seg": 3
+  },
+  {
+    "text": "of Alaska, in long tubes of",
+    "start": 19.2,
+    "end": 21.65,
+    "seg": 3
+  },
+  {
+    "text": "mud punched from the seafloor.",
+    "start": 21.68,
+    "end": 23.32,
+    "seg": 3
+  },
+  {
+    "text": "Seventy ash layers out of eight",
+    "start": 24.1,
+    "end": 26.049999999999997,
+    "seg": 4
+  },
+  {
+    "text": "tubes, a record they call virtually",
+    "start": 26.08,
+    "end": 29.214,
+    "seg": 4
+  },
+  {
+    "text": "uninterrupted, reaching into the",
+    "start": 29.244,
+    "end": 30.39,
+    "seg": 4
+  },
+  {
+    "text": "ice ages.",
+    "start": 30.42,
+    "end": 31.709999999999997,
+    "seg": 4
+  },
+  {
+    "text": "They sorted them into thirty seven",
+    "start": 31.74,
+    "end": 33.73,
+    "seg": 5
+  },
+  {
+    "text": "eruptions, then asked which volcano",
+    "start": 33.76,
+    "end": 36.129999999999995,
+    "seg": 5
+  },
+  {
+    "text": "threw each.",
+    "start": 36.16,
+    "end": 37.12,
+    "seg": 5
+  },
+  {
+    "text": "The answer doesn't always come",
+    "start": 38.78,
+    "end": 41.29,
+    "seg": 6
+  },
+  {
+    "text": "back with one name.",
+    "start": 41.32,
+    "end": 42.02,
+    "seg": 6
+  },
+  {
+    "text": "Ash carries trace elements, a chemical",
+    "start": 42.38,
+    "end": 44.87,
+    "seg": 7
+  },
+  {
+    "text": "handwriting.",
+    "start": 44.9,
+    "end": 45.66,
+    "seg": 7
+  },
+  {
+    "text": "A machine learning model reads",
+    "start": 46.54,
+    "end": 48.23,
+    "seg": 8
+  },
+  {
+    "text": "it and names the most probable",
+    "start": 48.26,
+    "end": 49.949999999999996,
+    "seg": 8
+  },
+  {
+    "text": "source, or sources.",
+    "start": 49.98,
+    "end": 51.46,
+    "seg": 8
+  },
+  {
+    "text": "It's confident about Katmai, Fisher",
+    "start": 52.6,
+    "end": 54.61,
+    "seg": 9
+  },
+  {
+    "text": "Caldera and Emmons Lake, because",
+    "start": 54.64,
+    "end": 56.79,
+    "seg": 9
+  },
+  {
+    "text": "each keeps writing the same ratios,",
+    "start": 56.82,
+    "end": 58.88,
+    "seg": 9
+  },
+  {
+    "text": "eruption after eruption.",
+    "start": 59.36,
+    "end": 60.9,
+    "seg": 9
+  },
+  {
+    "text": "That repetition is what separates",
+    "start": 63.28,
+    "end": 64.81,
+    "seg": 10
+  },
+  {
+    "text": "one volcano from another.",
+    "start": 64.84,
+    "end": 66.3,
+    "seg": 10
+  },
+  {
+    "text": "The model reads a difference the",
+    "start": 66.82,
+    "end": 68.57,
+    "seg": 10
+  },
+  {
+    "text": "rock already made.",
+    "start": 68.6,
+    "end": 69.86,
+    "seg": 10
+  },
+  {
+    "text": "And when the model isn't the",
+    "start": 70.68,
+    "end": 72.25,
+    "seg": 11
+  },
+  {
+    "text": "right tool, they don't force it.",
+    "start": 72.28,
+    "end": 73.86,
+    "seg": 11
+  },
+  {
+    "text": "They measure chemical distance.",
+    "start": 74.38,
+    "end": 75.68,
+    "seg": 11
+  },
+  {
+    "text": "None of this forecasts an eruption.",
+    "start": 76.9,
+    "end": 79.1,
+    "seg": 12
+  },
+  {
+    "text": "Chemistry has traced ash for decades.",
+    "start": 79.7,
+    "end": 81.56,
+    "seg": 12
+  },
+  {
+    "text": "What's new is how carefully they",
+    "start": 82.46,
+    "end": 84.21,
+    "seg": 13
+  },
+  {
+    "text": "said which volcanoes they could",
+    "start": 84.24,
+    "end": 85.69,
+    "seg": 13
+  },
+  {
+    "text": "name, and which they couldn't.",
+    "start": 85.72,
+    "end": 87.38,
+    "seg": 13
+  },
+  {
+    "text": "Alaska's record didn't disappear.",
+    "start": 88.42,
+    "end": 90.1,
+    "seg": 14
+  },
+  {
+    "text": "It settled where nobody was reading.",
+    "start": 90.78,
+    "end": 92.44,
+    "seg": 14
+  },
+  {
+    "text": "What else is down there, with",
+    "start": 93.34,
+    "end": 95.13,
+    "seg": 15
+  },
+  {
+    "text": "a name still on it?",
+    "start": 95.16,
+    "end": 96.2,
+    "seg": 15
+  }
+]

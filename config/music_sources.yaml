@@ -110,6 +110,26 @@ pool:
 # The music is a CREATIVE CHOICE tied to the angle room's earned angle (Phase 3.5),
 # not a default drone. Map the angle's stance/register to a mood, then pick a track
 # with that mood (fresh vs the ledger — never reuse a recent track):
+  # ADDED 2026-08-02. The curious/wonder branch of angle_to_mood had exactly three usable
+  # tracks (Frost Waltz, Thinking Music, Echoes of Time v2) and by this run all three had
+  # played within ten days, so "source a fresh track" and "match the committed valence" had
+  # become impossible to satisfy at the same time. Two ambient-cold entries widen the branch
+  # that a daily cadence drains fastest.
+  - title: Deep Haze
+    composer: Kevin MacLeod
+    source: incompetech.com
+    url: https://incompetech.com/music/royalty-free/mp3-royaltyfree/Deep%20Haze.mp3
+    license: CC BY 4.0
+    credit: '"Deep Haze" Kevin MacLeod (incompetech.com), licensed under CC BY 4.0'
+    mood: [wonder, ambient, pondering, deep, curious]
+  - title: Long Note Two
+    composer: Kevin MacLeod
+    source: incompetech.com
+    url: https://incompetech.com/music/royalty-free/mp3-royaltyfree/Long%20Note%20Two.mp3
+    license: CC BY 4.0
+    credit: '"Long Note Two" Kevin MacLeod (incompetech.com), licensed under CC BY 4.0'
+    mood: [delicate, pondering, reflective, curious]
+
 angle_to_mood:
   celebratory: [uplifting, hopeful, warm, celebratory]
   cautionary: [tense, urgent, somber, driving]
