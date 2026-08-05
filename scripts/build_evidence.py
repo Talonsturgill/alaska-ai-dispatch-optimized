@@ -34,15 +34,23 @@ MOVES = [
     # between two samples, so a judge reported that the exact figure "does not appear on
     # screen at any sampled second" and marked claims c1's stated safeguard unmet. It was
     # on screen the whole time. The film's single most important frame gets its own strip.
-    ("award", 2, 4.75),      # the OBLIGATED stamp presses and $1,588,147 lands
-    ("punch", 7, 0.78),      # the punch head drives and cuts the window
-    ("drain", 15, 1.30),     # the ember wash tears loose and runs off frame
-    ("windows", 16, 1.10),   # the apertures open across the map and harden
+    # RE-ANCHORED 2026-08-05 for "The Net Comes First", and the previous values were a
+    # live evidence bug rather than a stale comment: these five names and offsets were the
+    # 08-03 film's beats (a stamp, a punch head, an ember wash, apertures on a map), and
+    # NONE of those exist in this film. Two strips landed inside the SAME shot, so a judge
+    # correctly reported that one beat "reuses the identical still" from another. It was
+    # the sampler pointing twice at one scene, not the film reusing art. Anchor names are
+    # per-run data and a run that changes the film must change them here in the same commit.
+    ("strip", 0, 0.40),      # the beetle's fill and shading are STRIPPED to a contour
+    ("pin", 3, 2.30),        # the specimen descends, seats, and takes its contact tick
+    ("resolve", 9, 1.20),    # eighty dashed forms run the belt and resolve to filled
+    ("reveal", 10, 2.60),    # the author plate turns and SIKES lights on the spoken name
+    ("pullback", 12, 1.60),  # THE SIGNATURE SHOT opening out to the unnamed field
     # A CHARACTER SHOT. A judge pointed out that none of the strips covered a frame with a
     # human in it, so idle life on the five held figures could not be confirmed or refuted
     # from the pack, and said so rather than assuming a freeze. That is an evidence gap, not
     # a film defect, and it is the pack's job to close it.
-    ("crew", 14, 2.50),      # the three-person crew with no day to go on
+    ("sweep", 15, 1.30),     # the net sweeps tussock, the film's one big gestural move
 ]
 
 

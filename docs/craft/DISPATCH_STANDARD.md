@@ -173,3 +173,40 @@ python3 scripts/build_evidence.py
 
 A gate that reports zero measurements is a failure, not a pass. Every one of these prints
 what it actually checked; read that line.
+
+---
+
+## 8. Things the 2026-08-05 panel found that were knowable in advance
+
+Added under this file's own maintenance rule. Each one is a defect a judge actually
+found on "The Net Comes First", with the measurement, and each was avoidable.
+
+- **A scene built only out of `interpolate()` events is a slideshow.** An event that has
+  finished is a still photograph, and §2's "no shot may go quiet" was read as being about
+  long holds when it is really about EVERY frame. A frame-difference sweep of that film's
+  first delivered cut found 76.6 percent of frames at or above 99 percent identical to the
+  frame before, with a 13.5 second unbroken run. **Every scene wrapper carries a continuous
+  slow push (about 1.00 to 1.10 across the shot) plus a lateral drift on an irrational
+  period, and one always-running ambient layer, before any event is authored.** Measure it,
+  do not eyeball it:
+  `ffmpeg -i cut.mp4 -vf "scale=160:284,tblend=all_mode=difference,blackframe=amount=0:threshold=6" -f null -`
+  and read the pblack values. Anything over about 60 percent means the film is mostly still.
+- **A silhouette used by the absence grammar must carry the whole subject.** `lib/absence.tsx`
+  strokes a path with no fill, so whatever the path omits simply is not there. A beetle's
+  elytra outline, unfilled, is an egg, and that film's hook AND its signature shot were both
+  built on the dashed form. Export a full silhouette (body plus head, limbs and antennae) for
+  anything that will be drawn as an absence, and look at it dashed before building on it.
+- **Evidence-pack filmstrip anchors are PER-RUN DATA.** `scripts/build_evidence.py`'s strip
+  list still held the previous film's beat names, so two strips sampled the same shot and a
+  judge correctly reported that one beat "reuses the identical still" from another. It was
+  the sampler pointing twice at one scene. A run that changes the film changes those anchors
+  in the same commit, and the offsets are CONTACT times, not line starts plus a guess.
+- **A `Character` rig next to form-shaded props needs an explicit `ContactShadow` and
+  comparable staging scale.** Three judges independently wrote that the human read flatter
+  than the cabinet beside him. The rig is form-shaded internally, so the tell is not the
+  shading, it is that everything around him casts and he did not.
+- **A gate that rules a net-new asset a duplicate of the shelf is usually answered by moving
+  its SHAPE LANGUAGE, not by arguing behaviour.** Gate 0D correctly called the first
+  `NameEngine` a second `AshReader`. The differences on offer were behavioural and a viewer
+  cannot see behaviour in a silhouette. Putting the machine on the opposite side of the
+  film's own shape grammar fixed it and made the film better.

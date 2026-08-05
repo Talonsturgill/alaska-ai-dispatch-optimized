@@ -195,11 +195,12 @@ export const UnnamedField: React.FC<{
           d={d}
           fill={isSolid ? color : VOID_TINT}
           stroke={color}
-          strokeWidth={isSolid ? 6 : 7}
+          strokeWidth={isSolid ? 6 : 11}
           strokeLinejoin="round"
-          strokeDasharray={isSolid ? undefined : '24 20'}
+          strokeLinecap="round"
+          strokeDasharray={isSolid ? undefined : '30 24'}
           strokeDashoffset={isSolid ? undefined : -(f * 0.5 + i * 13) % 1000}
-          opacity={isSolid ? 0.95 : 0.66}
+          opacity={isSolid ? 0.95 : 0.88}
         />
       </g>,
     );
