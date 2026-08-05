@@ -76,6 +76,13 @@ spoken for Sulafat across a few takes):
   [warmly], [happy], [sad], and any multi-word direction like [sarcastically, one slow word...].
 - Placement rules: lowercase in square brackets, inline immediately before the span; separate tags
   with text or punctuation; NEVER place two tags adjacent.
+- **NEVER START A LINE WITH A TAG.** A tag needs spoken words in front of it on the same line.
+  MEASURED 2026-08-05: in one probe take the model spoke the words "short pause" aloud, and the
+  only tag it did that to was the one line-initial `[short pause]` in the script. The identical
+  tag mid-line, after a period, was read correctly in the same take and in every other take.
+  A tag opening a line looks like a heading; a tag after "...isn't the gap. [short pause] Somebody
+  already..." looks like a stage direction inside prose. Move it after the first clause, or drop it
+  and let the period do the work.
 
 ## Step 7 — Assemble the PROMPT (exact structure)
 
@@ -84,15 +91,44 @@ Read ONLY the transcript below aloud as speech. The lines above "Transcript:" ar
 # AUDIO PROFILE: <narrator name + one-line persona>
 ### DIRECTOR'S NOTES
 Style: <warm, natural, conversational, the angle's emotional register, dry wit where earned>
-Pace: BRISK and energetic, keep it moving like a sharp modern explainer. Short natural breaths only,
-no long pauses, do not drag. Vary the tone line to line so no two sentences sound the same.
+Pace: MEASURED and unhurried. THIS IS A TWO MINUTE PIECE, about one hundred and twenty seconds, and
+the read must FILL it, so give every sentence room to land and take a real breath at every period.
+Do not rush the numbers. Vary the tone line to line so no two sentences sound the same.
 Emphasis: lean on the key word in each line; let numbers land.
 Transcript:
 <the annotated script: the exact spoken words + the sparse vetted inline tags from Steps 4-6>
 ```
 
 The preamble + the `Transcript:` delimiter are REQUIRED (they stop the model reading the notes aloud).
-The brisk-pace line is REQUIRED (default reads drag ~30% too slow without it).
+`scripts/vo_synth_gemini.py` now REFUSES to synth a prompt that is missing either one, or missing
+the Style / Pace / AUDIO PROFILE blocks, or whose transcript does not match the plan's lines. See
+`_assert_prompt_intact`. That guard exists because on 2026-08-05 a hand-patch of this prompt cut it
+at the first occurrence of the substring `Transcript:` — which appears inside the preamble's own
+sentence — and silently deleted every block above. The film shipped narrated with no direction at
+all. **Never split this prompt on the bare substring; split on the newline-delimited form.**
+
+### THE PACE LINE MUST NAME THE RUNTIME. It is the only reliable length control we have.
+
+MEASURED 2026-08-05 by `scripts/vo_length_probe.py`, same model, same voice, same 288-word script:
+
+| pace line | takes | rate |
+|---|---|---|
+| the old "BRISK and energetic..." | 104.8s, 105.2s, 106.3s | 163-165 wpm |
+| the anchored line above, naming 120 seconds | **121.3s, 119.9s** | 142-144 wpm |
+
+A 15 percent pace difference from one sentence, and it is the difference between a 105-second
+film and a 120-second one. Two further findings from the same probe:
+
+- **Within one prompt the rate is stable to 1.4 percent.** The read is not a lottery. What moved
+  the rate across the archive from 136 to 165 wpm was the DIRECTOR'S NOTES being rewritten from
+  scratch every run, so the format's runtime depended on how verbose one agent felt that day.
+  Keep the Pace paragraph verbatim; write your own Style line.
+- **The fast read is a worse read.** At 165 wpm the ASR misheard "the day it arrives" as "the
+  data", "profiled him" as "profile tim", and "summer" as "somewhere". At 143 wpm none of those
+  errors occurred. Slowing down buys intelligibility, not just seconds.
+
+**If the format's target runtime changes, change this line and re-run the probe.** Do not
+extrapolate a word count from an old rate; the rate is a property of this paragraph.
 
 ## Step 8 — Emit the plan, then synth, then CHECK, then maybe re-plan
 

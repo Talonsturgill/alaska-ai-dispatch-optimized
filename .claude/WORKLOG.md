@@ -64,14 +64,105 @@ that is inevitable"* — hence this file.
 
 Do not re-derive these; they cost real synths and renders.
 
-| fact | measured value | note |
+### 2a. CORRECTION — read this before trusting any wpm number
+
+An earlier context recorded "the house VO rate is 161.5 wpm, so the routine's 137.5 claim
+is stale by 17 percent". **That was wrong, and the reason it was wrong is a live bug this
+branch fixes.**
+
+During the 08-05 run I hand-patched `out/dispatch/vo_direction.json` to add a VO line, and
+rebuilt `assembled_prompt` by cutting at the first occurrence of the substring
+`Transcript:`. That substring occurs inside the preamble's own sentence (`The lines above
+"Transcript:" are direction; never speak them`), so the cut destroyed the AUDIO PROFILE,
+the DIRECTOR'S NOTES, the Style line, the **Pace line**, and the `Transcript:` delimiter
+itself. The 08-05 film was narrated with **no direction of any kind**. That is why it came
+in as the fastest read ever recorded, and 161.5 wpm is an artifact of the bug, not a house
+rate.
+
+`docs/craft/VO_DIRECTION.md` says outright: "The brisk-pace line is REQUIRED (default reads
+drag ~30% too slow without it)." It turns out the failure runs the other way too.
+
+**Measured across all seven archived runs whose prompt was intact:**
+
+| run | words | secs | wpm | pace instruction |
+|---|---|---|---|---|
+| 2026-07-26 | 144 | 55.3 | 156.2 | BRISK |
+| 2026-07-29 | 132 | 57.6 | 137.5 | BRISK |
+| 2026-07-30 | 152 | 66.7 | 136.8 | none |
+| 2026-07-31 | 218 | 90.7 | 144.2 | BRISK |
+| 2026-08-01 | 219 | 96.7 | 135.8 | BRISK |
+| 2026-08-02 | 219 | 96.2 | 136.6 | BRISK |
+| 2026-08-03 | 206 | 81.2 | 152.3 | MEASURED, "about 138 wpm" |
+| 2026-08-05 | 232 | 86.2 | **161.5** | **NONE — prompt destroyed by the bug above** |
+
+Two things fall out of that table, and both matter more than the headline number:
+
+1. **The pace instruction has weak control.** 08-03 asked for "about 138 words per minute"
+   and got 152.3. Asking for a number does not deliver it. Do not plan around it.
+2. **LONGER PIECES RUN AT A TIGHTER, SLOWER RATE.** The two fast outliers (156.2, 152.3)
+   are the two shortest pieces. The three pieces near 90 seconds cluster at
+   **135.8 / 136.6 / 144.2**, mean **138.9**. A 120-second piece belongs to that cluster,
+   not to the 55-second one. This is the sample the word band must be derived from.
+
+### 2c. WHAT ACTUALLY CONTROLS THE RATE (measured 2026-08-05 by `scripts/vo_length_probe.py`)
+
+The §2a table implies the rate is noisy. It is not noisy in the way that matters. Three
+takes of the SAME 288-word prompt came back at **104.8 / 105.2 / 106.3 seconds**, a
+**1.4 percent spread**. The rate is highly reproducible *within* a prompt.
+
+It varies **between** prompts, a lot: the same script and the same verbatim "Pace: BRISK"
+sentence produced 136 wpm in the archive and 165 wpm in the probe. The difference is the
+rest of the director's notes, which **the vo-director agent rewrites from scratch every
+run**. So the format's runtime currently depends on how verbose one agent felt that day,
+which is not a property anything should depend on.
+
+Two consequences, and they are the design of this upgrade:
+
+1. **The word band is only meaningful if the notes are standardized.** Deriving a word
+   count from a rate that moves 20 percent with prose style is deriving it from noise.
+2. **The 12.5 percent take spread seen on 08-05 (86.6 / 86.8 / 97.4) was one outlier
+   take, not the normal distribution.** Selecting takes on runtime still helps, but it is
+   a safety net, not the primary control.
+
+**The primary control is a standardized, duration-anchored Pace paragraph.** Status of
+that experiment: see task 2b in the table.
+
+### 2b. The numbers this upgrade is actually built on
+
+**These are now DIRECTLY MEASURED at 120 seconds, not extrapolated.** `vo_length_probe.py`
+synthesized the 288-word probe script five times.
+
+| fact | value | evidence |
 |---|---|---|
-| house VO rate | **161.5 wpm** (232 words / 86.2s on the shipped 08-05 take) | `dispatch_routine.md` §4.2 claimed 137.5 wpm "MEASURED". Stale by 17%. Every word-count estimate built on it was wrong. |
-| take-to-take spread, SAME script | 86.6s / 86.8s / 97.4s = **143 to 161 wpm** | never recorded before. This is why the runtime band must be wider than a naive scaling of 84-96. |
-| derived word band for 120s | **295-320 words** | 300 words @161wpm = 112s; @143wpm = 126s. |
-| derived runtime band | **112-130s** | must absorb the measured take variance or good reads get re-synthed. |
-| render cost | ~2664 frames final-res in 6-8 min → 3600 frames ≈ **9-11 min** | acceptable. |
+| **VO word band** | **280 to 300 words**, target **288** | 288 words with the ANCHORED pace line delivered **121.3s and 119.9s**. Both in band. |
+| **runtime band** | **112 to 130s**, target **120** | the two anchored takes landed 119.9-121.3, well inside |
+| rate, anchored pace | **142.5 and 144.1 wpm** | the two takes above |
+| rate, house BRISK pace | **164.8 / 164.3 / 162.6 wpm** → 104.8 / 105.2 / 106.3s | the SAME 288 words. This is why the pace line must be anchored. |
+| **truncation at 288 words** | **NONE.** 288/288 words aligned, 23/23 lines timed | the risk the whole plan was gated on |
+| **alignment at 120s** | **CLEAN.** monotonic, speech_end 120.82s, first word 0.0s, 61 cues, 0 degenerate, min dwell 0.7s | the second gating risk |
+| render cost | ~2664 frames final-res in 6-8 min → 3600 frames ≈ **9-11 min** | acceptable |
 | deliverable size | 34.7 MB @86.2s → ≈ **48 MB @120s** | ceiling is 100 MB. Fine. |
+
+**Two defects found by the probe and fixed on this branch** (neither is caused by the
+length change; both are made dangerous by it):
+
+- **A line-initial `[short pause]` was SPOKEN ALOUD.** The same tag mid-line, after
+  punctuation, was not. VO_DIRECTION's placement rules must forbid a line-initial tag.
+- **Year normalization scored clean takes as errors.** `_year_words` mapped every
+  1000-2999 number to two 2-digit groups, so `2008` became "twenty eight" where the house
+  script says "two thousand eight", and `1,000` became "ten hundred" where the script says
+  "a thousand". The probe's anchored takes scored 0.074 and 0.077 against a **0.08 fail
+  ceiling**, almost entirely on this. At 288 words there are more numbers to trip it, so a
+  clean take was one mishearing from a spurious re-synth.
+
+**Superseded numbers.** Anything saying 295-320 words (from the bug-inflated 161.5 rate)
+or 270-290 (from the archive extrapolation) is stale. The measured answer is **280-300,
+target 288, with an anchored pace line**. Without the anchored pace line 288 words runs
+105 seconds, not 120.
+
+**The superseded plan said 295-320 words.** That came from the bug-inflated 161.5 rate, and
+at the real rate 300 words would run **132.5s on a slow read, over the ceiling**. If you
+find 295-320 anywhere, it is stale; the number is **270-290**.
 
 ---
 
@@ -126,7 +217,10 @@ window is backward-compatible by construction.
 |---|---|---|---|
 | 1 | Plan of record written (`docs/craft/TWO_MINUTE_UPGRADE.md`) | DONE | committed on this branch |
 | 1b | This worklog, so the plan survives compaction | DONE | committed on this branch |
-| 2 | **VERIFY THE TTS RISK EMPIRICALLY.** Synth a real ~310-word script in ONE Gemini call. Measure: duration, `transcript_match`, no truncation, cue count, and whether whole-file forced alignment stays monotonic at 120s. **NOTHING ELSE PROCEEDS UNTIL THIS PASSES.** | IN PROGRESS | |
+| 2 | **VERIFY THE TTS RISK EMPIRICALLY.** Synth a real ~285-word script in ONE Gemini call, using a CORRECTLY assembled prompt. Measure: duration, WER, no truncation, cue count, and whether whole-file forced alignment stays monotonic at 120s. **NOTHING ELSE PROCEEDS UNTIL THIS PASSES.** | IN PROGRESS | `scripts/vo_length_probe.py` |
+| 2a | **Fix the prompt-integrity bug** found while designing the probe (see §2a). A code guard in `vo_synth_gemini.py` that REFUSES to synth a prompt missing the `Transcript:` delimiter or the Pace line, so no future context can silently narrate an undirected read again. | DONE | `_assert_prompt_intact`. Verified: 9/10 archived prompts pass, the two real defects (07-30 missing Pace, 08-05 destroyed) fail, and 3 synthetic negative controls fail with the right diagnosis. Deliberately tolerant of phonetic respellings (07-31) and paragraph reflow (07-22). |
+| 2b | **Standardize the Pace paragraph on an explicit runtime anchor.** THE DECISIVE RESULT: the identical 288-word script ran **105s** with the house "Pace: BRISK" line and **121.3s** with a pace line naming the target ("THIS IS A TWO MINUTE PIECE, about one hundred and twenty seconds, and the read must FILL it"). Same model, same voice, same words. Naming the runtime is worth ~15 percent of pace and is the only reliable length control found. | IN PROGRESS | must be written into `docs/craft/VO_DIRECTION.md` step 7 as REQUIRED text, not a suggestion |
+| 2c | **Runtime-aware take selection** in `vo_soundcheck.pick_best`: among passing takes prefer those inside the tight band from `state.yaml`, quality decides within that set, and if none is in band take the one closest to target. Makes `dispatch_target_seconds` / the tight band do something in code for the first time. | DONE | regression-checked against the 08-05 run: picks take 1 (86.80s), exactly what shipped |
 | 3 | Config numbers: `state.yaml`, `visual_flow.yaml`, `shot_structure.yaml`, `align_captions.py --total` | TODO | |
 | 4 | Gate logic: `storyboard_check.py` (thirds rule + throughline declaration), `flow_check.py` (second open loop) | TODO | |
 | 5 | Doctrine: `ENGAGEMENT.md` §2.7 (the 120-second format) + `dispatch_routine.md` §4.2/§4.3/Gate 0, incl. correcting the stale 137.5 wpm to 161.5 | TODO | |

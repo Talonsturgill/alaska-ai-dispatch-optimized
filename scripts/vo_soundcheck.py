@@ -46,6 +46,31 @@ def _duration_window():
 
 DUR_LO, DUR_HI = _duration_window()
 
+
+def _target_band():
+    """The TIGHT band and target the format actually wants, straight from config.
+
+    Distinct from _duration_window() above, which is the deliberately-wide sanity check.
+    This is what take SELECTION uses (see pick_best), and until 2026-08-05 nothing in
+    code read it at all: `dispatch_target_seconds` and the tight `dispatch_seconds_band`
+    existed only as prose for the routine prompt to honour by hand.
+    """
+    lo, hi, target = None, None, None
+    try:
+        import yaml
+        cfg = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "config", "state.yaml")
+        c = yaml.safe_load(open(cfg)) or {}
+        band = c.get("dispatch_seconds_band")
+        if band and len(band) == 2:
+            lo, hi = float(band[0]), float(band[1])
+        if c.get("dispatch_target_seconds"):
+            target = float(c["dispatch_target_seconds"])
+    except Exception:
+        pass
+    if target is None and lo is not None:
+        target = (lo + hi) / 2
+    return lo, hi, target
+
 # tolerances (tuned for a ~55s brisk social VO)
 WER_MAX = 0.08          # <= 8% word error
 PITCH_STD_MIN = 1.6     # semitones; below this = monotone
@@ -55,15 +80,38 @@ NOTE_WORDS = {"transcript", "director", "profile", "narrator", "audio", "preambl
 
 
 def _year_words(n):
-    """Natural date reading for a 4-digit year (1000-2999): two 2-digit groups,
-    e.g. 2024 -> 'twenty twenty four', matching how VO_DIRECTION.md mandates years
-    be spelled phonetically in the script (never num2words' formal 'two thousand
-    twenty-four', which never matches a real script)."""
+    """Natural date reading for a 4-digit number, MATCHING HOUSE SCRIPT CONVENTION.
+
+    The script is always spelled out in words (VO_DIRECTION mandates it) and only the
+    ASR transcript contains digits, so this function's only job is to turn whisper's
+    digits into the words a house script would have used. Getting that mapping wrong
+    scores word errors against a take that said exactly the right sentence.
+
+    It was wrong for two whole decades' worth of numbers (fixed 2026-08-05, measured on
+    a 288-word probe). The rule was "two 2-digit groups" for everything from 1000 to
+    2999, which is correct for 2024 ('twenty twenty four') and wrong for:
+
+      2008  ->  gave 'twenty eight'.   House scripts write 'two thousand eight', and
+                every Dispatch that cites a paper year hits this. The 2026-08-05 script
+                said 'two thousand eight' and 'two thousand six'; both scored as errors.
+      1,000 ->  gave 'ten hundred'. A round thousand is a QUANTITY, not a year, and this
+                format puts a round thousand in almost every script ('about a thousand
+                species a decade'). Three separate instances in one probe script.
+
+    Those two bugs alone contributed most of a 0.074 WER against a 0.08 fail ceiling, so
+    a clean take was one mishearing away from a spurious re-synth. At 288 words there are
+    simply more numbers for it to happen to, which is why a latent bug became a blocker.
+    """
     from num2words import num2words
+    words = lambda k: num2words(k).replace("-", " ").replace(" and ", " ").split()
+    # A round thousand reads as a quantity. Nobody says "ten hundred".
+    if n % 1000 == 0:
+        return words(n)
+    # 2000-2009 reads "two thousand eight", not "twenty oh eight" or "twenty eight".
+    if 2000 <= n <= 2009:
+        return words(n)
     hi, lo = n // 100, n % 100
-    hi_w = num2words(hi).replace("-", " ").split()
-    lo_w = (["hundred"] if lo == 0 else num2words(lo).replace("-", " ").split())
-    return hi_w + lo_w
+    return words(hi) + (["hundred"] if lo == 0 else words(lo))
 
 
 def _canon_token(tok):
@@ -253,12 +301,45 @@ def _diagnose(c):
 
 
 def pick_best(wavs, spoken_text, tags=None):
+    """Choose the take to ship: quality first, but RUNTIME IS A SELECTION CRITERION.
+
+    WHY (2026-08-05, measured during the 90s -> 120s upgrade). Take-to-take duration
+    spread on an IDENTICAL prompt is large and quality spread is not. The 2026-08-05
+    run's three takes ran 86.6 / 86.8 / 97.4 seconds, a 12.5 percent spread, while their
+    quality scores were 0.963 / 0.969 / 0.967, a spread of 0.006. Selecting on score
+    alone therefore picked the runtime essentially at random, out of a set that contained
+    a take much closer to the format's target.
+
+    That was survivable at 90 seconds and is not at 120. The longer the piece, the more
+    of the runtime band a single stochastic take can eat, and runtime is the one thing
+    the format promises. So: among takes that PASS, prefer the ones inside the tight band
+    from config/state.yaml, and let quality decide within that set. If none is in band,
+    take the passing one closest to target rather than the most expressive one.
+
+    Quality is never traded away. A failing take is still never preferred to a passing
+    one, and the in-band set is still ranked by the same score as before.
+    """
     reports = [check(w, spoken_text, tags) for w in wavs]
-    passing = [(i, r) for i, r in enumerate(reports) if r["pass"]]
-    if passing:
-        best = max(passing, key=lambda ir: ir[1]["score"])[0]
+    for r, w in zip(reports, wavs):
+        r["seconds"] = r["checks"]["duration"]["seconds"]
+    passing = [i for i, r in enumerate(reports) if r["pass"]]
+    pool = passing or list(range(len(reports)))
+
+    lo, hi, target = _target_band()
+    if lo is None:
+        best = max(pool, key=lambda i: reports[i]["score"])
     else:
-        best = max(range(len(reports)), key=lambda i: reports[i]["score"])
+        inband = [i for i in pool if lo <= reports[i]["seconds"] <= hi]
+        if inband:
+            best = max(inband, key=lambda i: reports[i]["score"])
+        else:
+            best = min(pool, key=lambda i: abs(reports[i]["seconds"] - target))
+        for i, r in enumerate(reports):
+            r["in_target_band"] = lo <= r["seconds"] <= hi
+        reports[best]["selection"] = (
+            f"in the {lo:.0f}-{hi:.0f}s band, best quality of {len(inband)} in-band take(s)"
+            if inband else
+            f"NO take landed in {lo:.0f}-{hi:.0f}s; chose the one closest to {target:.0f}s")
     return best, reports
 
 
