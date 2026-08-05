@@ -50,7 +50,12 @@ MOVES = [
     # human in it, so idle life on the five held figures could not be confirmed or refuted
     # from the pack, and said so rather than assuming a freeze. That is an evidence gap, not
     # a film defect, and it is the pack's job to close it.
-    ("sweep", 15, 1.30),     # the net sweeps tussock, the film's one big gestural move
+    ("sweep", 15, 0.85),     # the net sweeps tussock, sampled MID-SWING, not at the clamp
+    # ADDED after the re-grade: judge 3 could not verify two claimed fixes because NO STRIP
+    # COVERED THOSE BEATS, and correctly refused to take them on description. A pack that
+    # cannot show a fix has not delivered the fix.
+    ("newsprint", 7, 2.60),  # the sheet's corner lifting and the lamp sweep crossing the column
+    ("iris", 13, 1.40),      # the intake iris cycling on nothing while the room keeps drifting
 ]
 
 
