@@ -128,6 +128,27 @@ def run_gates(sb, tag):
     return [q for q in problems if not any(k in q for k in IGNORE)]
 
 
+def check_pace_line_matches_the_measurement():
+    """The pace paragraph the pipeline GENERATES must be the one that was MEASURED.
+
+    vo_synth_gemini._pace_line() builds this text from config/state.yaml so it tracks the
+    format target, and vo_length_probe.PACE_MODES["anchored"] is the exact string that was
+    synthesized and timed at 121.3s and 119.9s. The entire word band rests on that
+    measurement. If the two drift apart, the pipeline is shipping a pace instruction nobody
+    ever timed, while the docs still quote the old numbers as evidence.
+    """
+    import vo_synth_gemini as vs
+    import vo_length_probe as pr
+    import vo_soundcheck as sc
+    _, _, target = sc._target_band()
+    gen, tested = vs._pace_line(target or 120.0), pr.PACE_MODES["anchored"]
+    if gen == tested:
+        print("PACE LINE: generated text is byte-identical to the measured probe prompt")
+        return []
+    return [f"the generated pace line no longer matches the measured one.\n"
+            f"      generated: {gen}\n      measured:  {tested}"]
+
+
 def main():
     base = json.load(open(BASE))
     beats = [float(str(b["t"]).split("-")[0]) for b in base["beats"]]
@@ -135,6 +156,7 @@ def main():
     print(f"base board: {len(base['beats'])} beats, ends {end:.1f}s\n")
 
     fails = []
+    fails += check_pace_line_matches_the_measurement()
 
     # ---- LEGACY: the shipped 86s board must still pass the runtime rules ----
     legacy = run_gates(base, "legacy")
