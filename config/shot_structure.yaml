@@ -21,10 +21,12 @@
 #      must be a real visual discontinuity at each declared boundary, not just a relabel. A 'oner' FAILS.
 
 rule:
-  min_shots: 6                 # >= 6 distinct shots in ~90s (a scene change at least every ~15s)
-  target_shots: [7, 10]        # aim for 7-10 (~9-13s each) at 90s. RAISED from 5-8: holding the old
-                               # count over a longer runtime would have stretched every shot toward the
-                               # 16s oner ceiling, which is exactly the failure this file exists to stop.
+  min_shots: 8                 # >= 8 distinct shots in ~120s (a scene change at least every ~15s)
+  target_shots: [9, 13]        # aim for 9-13 (~9-13s each) at 120s. RAISED from 7-10 at 90s, on the
+                               # same reasoning that raised it from 5-8 at 60s: holding the old count
+                               # over a longer runtime stretches every shot toward the 16s oner ceiling,
+                               # which is exactly the failure this file exists to stop. The per-shot
+                               # seconds stay where they are; only the count tracks the runtime.
   min_shot_seconds: 3.0        # no shot shorter than this (no nervous flash-cutting)
   max_shot_seconds: 16.0       # NO shot may dominate the runtime — a single shot longer than this IS the 'oner' failure
   min_distinct_framings: 3     # >= 3 different framings/vantages across the shots (not the same frame trivially reframed)
