@@ -1262,3 +1262,48 @@ dispatch_history:
     palette: wet sediment olive-black, pearl ash, warm brass, one rhyolite magenta
     metaphor: an archive nobody built, kept in mud, whose pages are signed in cut
       notches
+- date: '2026-08-03'
+  topic: NSF award to UAF to build a prescribed-burn window forecast for Alaska
+  slug: days-you-are-allowed-to-burn
+  key_entities:
+  - NSF
+  - University of Alaska Fairbanks
+  - Christine F. Waigl
+  - Alaska Fire and Fuels
+  archetype: the absent instrument
+  palette: ember-ochre / boreal-green / safety-yellow / walnut
+  voice: Sulafat
+  stance: celebratory with a named limit
+  angle: 'the opposite verb: everything about wildfire AI is detection or suppression,
+    this award is about permission'
+  hero: BurnWindowEngine
+  cast:
+  - wildland fire crew in Nomex and hard hats
+- date: '2026-08-03'
+  topic: NSF award to UAF to build a prescribed-burn window forecast for Alaska
+  slug: days-you-are-allowed-to-burn
+  key_entities:
+  - NSF
+  - University of Alaska Fairbanks
+  - Christine F. Waigl
+  - Alaska Fire and Fuels
+  archetype: the absent instrument
+  palette: ember-ochre / boreal-green / safety-yellow / walnut
+  voice: Sulafat
+  stance: celebratory with a named limit
+  angle: 'the opposite verb: everything about wildfire AI is detection or suppression,
+    this award is about permission'
+  hero: BurnWindowEngine
+  cast:
+  - wildland fire crew in Nomex and hard hats
+  composition:
+    S1: map bookend, danger wash, two counters
+    S2: award packet, brass plate, obligated stamp
+    S3: fire two-shot, drip torch held, burn line
+    S4: machine on a bench, gantry, punch
+    S5: safe-days card on plank ground
+    S6: four hands on one sheet
+    S7: jurisdiction planks colliding
+    S8: award timeline, scanned track, four chips
+    S9: crew of three, staked NO DAY sign
+    S10: inverted map, green windows, counter pair

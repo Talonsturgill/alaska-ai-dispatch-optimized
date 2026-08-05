@@ -1,0 +1,197 @@
+{
+  "run_date": "2026-08-03",
+  "title": "THE DAYS YOU ARE ALLOWED TO BURN",
+  "target_seconds": [
+    84,
+    96
+  ],
+  "house_rate_wpm": 137.5,
+  "notes": "Every factual line traces to the NSF award 2536745 record, re-verified directly against api.nsf.gov by the orchestrator. Numbers and acronyms are written PHONETICALLY for the synth and carry caption_fixups so the real spelling paints on screen. The Tok burn-permit suspension and the 52-percent human-caused figure were CUT by the angle room as category errors, not for length.",
+  "lines": [
+    {
+      "i": 0,
+      "act": 1,
+      "t": "Alaska has spent decades mapping the days you must not burn."
+    },
+    {
+      "i": 1,
+      "act": 1,
+      "t": "Nobody has mapped the days you can."
+    },
+    {
+      "i": 2,
+      "act": 1,
+      "t": "On July thirty first, the National Science Foundation paid the University of Alaska Fairbanks one point six million dollars to find them."
+    },
+    {
+      "i": 3,
+      "act": 1,
+      "t": "A prescribed burn is a fire you set on purpose, so a wildfire has less to eat."
+    },
+    {
+      "i": 4,
+      "act": 1,
+      "t": "It works, and Alaska barely uses it."
+    },
+    {
+      "i": 5,
+      "act": 1,
+      "t": "N S F says Alaska lacks the forecasting tools."
+    },
+    {
+      "i": 6,
+      "act": 2,
+      "t": "So the Fairbanks team is reading decades of weather with machine learning, hunting for the days that were safe."
+    },
+    {
+      "i": 7,
+      "act": 2,
+      "t": "That isn't a forecast. It's a count of safe days."
+    },
+    {
+      "i": 8,
+      "act": 2,
+      "t": "And a count is something you can hand to people who don't agree."
+    },
+    {
+      "i": 9,
+      "act": 2,
+      "t": "Because land around one village can answer to four governments at once."
+    },
+    {
+      "i": 10,
+      "act": 2,
+      "t": "Four parties who've never had the same sheet of paper."
+    },
+    {
+      "i": 11,
+      "act": 2,
+      "t": "So the grant pays to get those four talking."
+    },
+    {
+      "i": 12,
+      "act": 3,
+      "t": "But it isn't finished. None of this reaches a fire crew until twenty thirty."
+    },
+    {
+      "i": 13,
+      "act": 3,
+      "t": "And who pays when a burn escapes isn't in this award."
+    },
+    {
+      "i": 14,
+      "act": 3,
+      "t": "But nothing moves without that count. You can't staff a crew for a day nobody calls safe."
+    },
+    {
+      "i": 15,
+      "act": 3,
+      "t": "Alaska knows exactly which days it's in danger."
+    },
+    {
+      "i": 16,
+      "act": 3,
+      "t": "Somebody is finally paid to count the days it's allowed."
+    }
+  ],
+  "caption_fixups": {
+    "N S F": "NSF",
+    "July thirty first": "July 31",
+    "one point six million dollars": "$1.6 million",
+    "twenty thirty": "2030"
+  },
+  "chain_test": "0 sets the frame. 1 is the BUT against it. 2 is THEREFORE somebody paid. 3 is BECAUSE the viewer needs to know what a prescribed burn is. 4 is BUT it is barely used. 5 is BECAUSE the tools are missing. 6 is THEREFORE they are porting one. 7 is THEREFORE the ML runs. 8 is WHICH MEANS it is a count not a forecast. 9 is BECAUSE a count is for handing to the four parties. 10 names them as a problem. 11 is THEREFORE the grant funds that too. 12 is BUT the clock. 13 is AND the gap. 14 is BUT it is still upstream of everything. 15 and 16 are the button pair, echoing line 0 and line 1 exactly.",
+  "story_question": "Which days is an Alaskan actually allowed to light a fire on purpose, and why has nobody counted them?",
+  "estimated_line_starts": [
+    {
+      "i": 0,
+      "start": 0.0,
+      "dur": 4.8
+    },
+    {
+      "i": 1,
+      "start": 5.05,
+      "dur": 3.05
+    },
+    {
+      "i": 2,
+      "start": 8.35,
+      "dur": 9.6
+    },
+    {
+      "i": 3,
+      "start": 18.2,
+      "dur": 7.42
+    },
+    {
+      "i": 4,
+      "start": 25.87,
+      "dur": 3.05
+    },
+    {
+      "i": 5,
+      "start": 29.18,
+      "dur": 3.93
+    },
+    {
+      "i": 6,
+      "start": 33.35,
+      "dur": 8.29
+    },
+    {
+      "i": 7,
+      "start": 41.9,
+      "dur": 4.36
+    },
+    {
+      "i": 8,
+      "start": 46.51,
+      "dur": 5.67
+    },
+    {
+      "i": 9,
+      "start": 52.43,
+      "dur": 5.24
+    },
+    {
+      "i": 10,
+      "start": 57.92,
+      "dur": 4.36
+    },
+    {
+      "i": 11,
+      "start": 62.53,
+      "dur": 3.93
+    },
+    {
+      "i": 12,
+      "start": 66.71,
+      "dur": 6.11
+    },
+    {
+      "i": 13,
+      "start": 73.07,
+      "dur": 4.8
+    },
+    {
+      "i": 14,
+      "start": 78.12,
+      "dur": 7.42
+    },
+    {
+      "i": 15,
+      "start": 85.79,
+      "dur": 3.49
+    },
+    {
+      "i": 16,
+      "start": 89.53,
+      "dur": 3.49
+    }
+  ],
+  "estimated_total_s": 93.0,
+  "gate_0e_fixes": "Cold read returned ship:false. Fixes, one per named confusion: UAF is now EXPANDED on first use (line 2); the undefined 'index' is now named as a Canadian index and the planner is ATTRIBUTED to NSF rather than asserted, which also closes the fact-checker's C5 (the Prescribed Fire and Smoke Planner could not be independently located, so the film never asserts it exists on its own authority); 'a count you can hand to somebody' lost its unnamed recipient by cutting the line and letting the four parties arrive immediately; 'that part' is now 'that coordination'; the jargon 'burn boss' is now 'a fire crew'; and the ambiguous 'it' in the thesis line is now 'that count'.",
+  "screen_only_facts": "Carried on screen rather than in the narration, so each fact survives without spending seconds: the Canadian Fire Weather Index (Alaska has run its fire danger on it since 1992, verified independently at akff.mesowest.org) and the fact that the planner being adapted is one NSF DESCRIBES as already used across the Lower 48 (the fact-check could not independently locate that tool, so the film never asserts its existence on its own authority); the four governing entities in the abstract's own words MUNICIPAL / FEDERAL / TRIBAL / NON-PROFIT; the new four-year wildland fire management degree; the exact figure $1,588,147; the window Sept 1 2026 to Aug 31 2030; and that NSF's own program-element list on this award carries 'Artificial Intelligence (AI)'.",
+  "brand_fix": "The vo-director flagged that line 12 opened with \"Here's the honest part\", which config/brand.yaml lists in banned_phrases. Confirmed against the file and rewritten to \"But it isn't finished.\" The Act 3 turn signal is preserved and the word count is unchanged, so the Gate 0E cold-read result and the runtime estimate both still hold. Caught BEFORE the synth produced a usable take, so it cost no delivered audio.",
+  "accuracy_fix_button": "Gate 0B caught that the button, \"Somebody is finally counting the days it's allowed\", used the present continuous for work that has not started. The award was obligated 2026-07-31 but the project period begins 2026-09-01 (claims.json c13), so on the air date nobody is counting. It also contradicted the 2030 limit the film states fifteen seconds earlier. Rewritten to \"Somebody is finally paid to count the days it's allowed\", which is true on the air date, keeps the callback to line 1, and keeps the celebration. This cost a re-synth and was worth it."
+}

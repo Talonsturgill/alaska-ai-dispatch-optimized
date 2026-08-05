@@ -1,0 +1,31 @@
+{
+  "run_date": "2026-08-03",
+  "thesis": "Alaska has spent decades mapping the days you must not burn, and nobody has mapped the days you can, so NSF paid UAF $1,588,147 to have machine learning read decades of weather and find them.",
+  "valence": "celebratory",
+  "valence_defense": "All three analysts landed here independently. The claim is about a funding decision, which is complete, dated and verified, not about acres burned. NSF looked at Alaska's fire problem on 2026-07-31, agreed the binding constraint is that nobody can tell an Alaskan which days are safe to burn, and paid to fix exactly that. Reaching for mixed would mean manufacturing a downside, which config/brand.yaml bans. Celebratory WITH THE CLOCK SHOWN is the honest register.",
+  "supporting_facts": [
+    "THE VERB INVERSION, and it is the funder's framing not ours. Almost every wildfire-and-AI story is about detecting or fighting fire. This award is about identifying 'windows of conditions favorable for safe prescribed burning'. It is a permission calendar, not a detection system.",
+    "IT IS A PORT, NOT A MOONSHOT. The Prescribed Fire and Smoke Planner already runs across the contiguous United States. The Alaska job is rebuilding it on the Canadian Forest Fire Weather Index system 'on which Alaska's fire management relies'. The Lower 48 tool does not fail here because Alaska is cold, it fails because Alaska runs a different index than the tool speaks.",
+    "NSF'S OWN AWARD RECORD carries an 'Artificial Intelligence (AI)' program element alongside 'FIRE-Wildland Fire', so the AI framing belongs to the funder.",
+    "THE MONEY BUYS SOMETHING THAT OUTLIVES IT: a curriculum for a new four-year wildland fire management program at UAF. Money leaves and models age, a degree program stays."
+  ],
+  "fair_counterpoint_it_must_honor": "The forecast is not the whole chain, and the film says so on screen. Nothing reaches a burn boss until the award ends on 2030-08-31. A perfect burn-window calendar still does not clear a burn plan, settle a smoke complaint, staff a crew, or get a neighbour's consent. And liability for an escaped prescribed fire, which practitioners name as the real blocker, appears nowhere in this award. The honest version is that the forecast is the upstream input every other link depends on, not that it finishes the job.",
+  "runners_up": [
+    {
+      "lens": "systems analyst",
+      "thesis": "NSF refused to buy only the tool, splitting the award across the forecast, the consent layer and a degree, which is money aimed at the whole chain instead of the legible link.",
+      "why_it_lost": "It is a meta-argument about grant design rather than about Alaska, and a muted viewer cannot see 'well-shaped award'. GRAFTED: its fourth box, outlined and empty and labeled LIABILITY with no arrow into it, becomes the film's fair counter-point image."
+    },
+    {
+      "lens": "practitioner",
+      "thesis": "The machine learning matters less as a fire tool than as a consent tool, converting a burn boss's private judgment into a shared calendar four institutions can argue over from the same page.",
+      "why_it_lost": "It is the most sophisticated read in the room and it needs a beat of setup the hook cannot afford. GRAFTED WHOLESALE AS ACT 2: the sheet slides sideways and three more pairs of hands come into frame around it. One person guessing becomes four people reading."
+    }
+  ],
+  "cuts_the_room_agreed_on": [
+    "THE TOK BURN PERMIT SUSPENSION. Caught by the enthusiast and it is a real category error, not a taste call. A suspended burn permit governs a private landowner's debris pile. A prescribed fire is an agency operation with a burn boss and a written prescription. Different activities, different authorities. Stacking them into one ironic beat would tell a knowledgeable Alaskan in one second that the film does not know the difference. CUT, although it was the orchestrator's own favourite hook.",
+    "THE 52 PERCENT HUMAN-CAUSED FIGURE. All three analysts cut it independently. Human-caused there means ACCIDENTAL ignition, and this award is about DELIBERATE ignition. Putting them together invites a viewer to fuse 'people start too many fires' with 'this project has people start fires', which argues against the piece by accident.",
+    "THE FOUR CO-PI NAMES. Waigl as PI is enough attribution for ninety seconds. A roster read-out is credits, not story."
+  ],
+  "story_question": "Which days is an Alaskan actually allowed to light a fire on purpose, and why has nobody counted them?"
+}

@@ -8,7 +8,7 @@ Gmail create_draft connector (use --poster-url, not --poster, to keep that paylo
 Usage:
   python scripts/dispatch_email.py \
     --post out/dispatch/post.txt \
-    --video-url-vertical "<9:16 url>" --video-url-square "<4:5 url>" \
+    --video-url-vertical "<9:16 url>" --video-url-square "<1:1 square url>" \
     --poster-url "<poster url>" \
     --voice "Kokoro af_heart" --music '"Title" Composer (source) - CC BY 4.0' \
     --sources out/dispatch/sources.json --score "9.2/10" \
@@ -129,16 +129,18 @@ def render(post, poster_html, vids, voice, music, sources, score, note, temporar
     if voice: cl.append(f"Voice, {esc(voice)}")
     comment_text = "\n".join(cl)
     buttons = ""
-    # LinkedIn is PRIMARY, so the 4:5 leads: 4:5 shows in the MAIN HOME FEED beside the post copy;
-    # 9:16 gets routed into LinkedIn's swipe-only vertical Video tab. Post the 4:5 to LinkedIn.
+    # LinkedIn is PRIMARY, so the SQUARE leads. CORRECTED 2026-08-03 on owner evidence: LinkedIn
+    # routes ANY video taller than square into the swipe-only Video tab, and 1080x1350 is taller
+    # than square, so the old 4:5 label was sending every dispatch to the wrong feed. 1080x1080
+    # lands in the MAIN HOME FEED beside the post copy. The 9:16 is the TikTok cut.
     if vids.get("square"):
-        buttons += (f'<a class="dl" href="{vids["square"]}">&#9660;&nbsp; Post to LinkedIn &middot; 4:5 (main feed)'
-                    f'<small>1080&times;1350 &middot; ~90s &middot; H.264 MP4 &middot; stays in the home feed</small></a>')
+        buttons += (f'<a class="dl" href="{vids["square"]}">&#9660;&nbsp; Post to LinkedIn &middot; 1:1 square (main feed)'
+                    f'<small>1080&times;1080 &middot; ~84s &middot; H.264 MP4 &middot; square stays in the home feed</small></a>')
     if vids.get("vertical"):
         buttons += (f'<a class="dl alt" href="{vids["vertical"]}">&#9660;&nbsp; TikTok &middot; 9:16 (full-screen)'
                     f'<small>1080&times;1920 &middot; on LinkedIn this goes to the vertical Video tab, not the feed</small></a>')
     feed_guide = ('<div class="warn" style="background:#eaf4ff;border-color:#b6d8f5;color:#245c8a;">'
-                  'For LinkedIn use the <b>4:5</b> cut (top button) so the video lands in the <b>main feed</b> '
+                  'For LinkedIn use the <b>1:1 square</b> cut (top button) so the video lands in the <b>main feed</b> '
                   'next to your caption. The 9:16 is TikTok-native, and uploaded to LinkedIn it gets pulled into the '
                   'swipe-only Video tab instead of the feed.</div>') if vids.get("square") else ''
     warn = '<div class="warn">Heads up: these download links are temporary (~1 hour). Save the file before it expires, or configure a permanent host.</div>' if temporary else ""

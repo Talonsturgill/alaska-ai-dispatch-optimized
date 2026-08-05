@@ -1858,3 +1858,72 @@ banked work (claims, angle, storyboard, VO, the AccentRegistry and the align_cap
 on main for the next run to pick up at Phase 0.5. That queue file is legitimate here precisely
 because the owner directed the stop — it is the one case the new law's queue-file ban does not
 cover, and the ban is written about a run parking its OWN locked story.
+
+## 2026-08-03 — "THE DAYS YOU ARE ALLOWED TO BURN"
+
+**Shipped:** a ~84s Dispatch on NSF award 2536745, $1,588,147 obligated to UAF on
+2026-07-31 to use machine learning over decades of weather reanalysis to find the
+windows when a prescribed burn is safe in Alaska. Unreported by any outlet at air
+time; found by primary-source mining on the NSF award API, not by search.
+
+### What was upgraded, and why
+
+1. **`lib/lighting.tsx` — the AccentRegistry EXTENT overload (craft advance).**
+   Closes the deferral the 2026-08-01 run logged with a plan rather than carrying it
+   a third run. The registry's check was POINT-based while, as that run recorded
+   honestly, most accents are extents: a rect whose centre sits inside a licensed
+   region passed even when half of it hung outside. `useAccentExtent` /
+   `accentExtentAllowedAt` require the WHOLE bbox inside a SINGLE licensed rect
+   (deliberately not the union, because the gap between two adjacent rects is
+   unlicensed by construction). Verified against 8 cases including edge-exact,
+   straddling-two-rects, and negative width/height. This film made the gap
+   load-bearing: every licensed green is a window with a real width and height.
+   NOT SHIPPED and not claimed: the local-to-frame helper for licences on assets
+   nested under moving stage3d Planes, which the same manifest line logs. Gate 0D
+   was right that this film touches it; the film avoids it by declaring the map
+   shot's licences in that shot's own space rather than using an oversized
+   catch-all rect. Logged to the backlog.
+
+2. **`lib/firecraft.tsx` — the fire family (net-new).** `BurnWindowEngine`,
+   `DripTorch`, `FireDangerWash`, `PunchedWindow`. The gap claim was checked against
+   ASSET_MANIFEST.md in full and then re-checked by Gate 0D: every instrument on the
+   shelf reads a PLACE or a THING and nothing read TIME, and nothing anywhere could
+   draw a person deliberately STARTING a fire (Vale suppresses, HazeOverlay grades
+   smoke). Deltas against the nearest prior art are stated rather than left for a
+   reviewer to find: civics.tsx ThresholdGate already opens a sized aperture on a met
+   condition and lights a lamp only on a real firing, so the real difference is that a
+   gate RETAINS NOTHING while this engine ACCUMULATES a punched record, making the
+   count an object with a length. bench.tsx CoringTube already owned the punch
+   mechanism, so the punch head reuses it.
+
+3. **`scripts/build_scenes.py`, `scripts/dispatch_mix.py`** retimed and rewritten for
+   this run. The sfx events are DERIVED from the shipped take's vo_lines.json rather
+   than typed, so a re-synth moves the sound with the picture.
+
+### Repeat offenders addressed
+
+- **The board and the shots disagreeing after a late re-time.** All three Gate 0
+  critics independently found the same root cause: beats were re-timed to break a
+  metronome and re-anchored to VO lines, but the SHOTS kept their old boundaries, so
+  seven beats played inside shots that did not contain their subject, pictures landed
+  one VO line behind the narration, and one shot ran 20.2s against a 16.0s ceiling
+  that `storyboard_check` did not catch because it reads the declared times. FIX: the
+  board is now DERIVED, not patched. Beats are authored per VO line and placed inside
+  that line's own span, which makes say-it-show-it true by construction, and shots are
+  cut FROM the beat table afterward.
+- **A palette correction that lived in only one file.** Gate 0A caught warm brass as a
+  structural repeat of the 08-02 world. The correction went into art_direction.json and
+  NOT into storyboard.json, where the build actually reads its shot heroes, so six
+  strings still said brass. Gate 0D caught it. Purged everywhere.
+
+### Known issues, deferred with a plan
+
+- `useAccentExtent` still has no local-to-frame helper for plane-nested licences (see
+  above). Plan: resolve a licence declared in a Plane's local space through the live
+  camera transform, and add a negative test that a straddling window under a moving
+  Plane actually FAILS THE RENDER rather than being neutered by an oversized rect.
+- `config/brand.yaml` sets `no_hashtags: true` while
+  `config/linkedin_caption_rubric.yaml` requires 3 to 5 hashtags. brand.yaml governs
+  the weekly Facebook post and the rubric governs the LinkedIn caption, so this run
+  scored against the rubric, but the two documents should be reconciled by the
+  maintainer rather than re-adjudicated every run.

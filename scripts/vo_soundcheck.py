@@ -72,8 +72,16 @@ def _canon_token(tok):
     errors. Digits -> words via num2words; leave the rest."""
     t = tok.strip("+%").replace(",", "")
     m = re.match(r"^(\d+)(st|nd|rd|th)$", t)
+    # DECIMALS. "1.6" fails isdigit(), so it used to pass through verbatim while the
+    # script said "one point six", scoring three word errors on the one token that
+    # matters most in a funding story. Every Dispatch has a money figure in it.
+    dec = re.match(r"^(\d+)\.(\d+)$", t)
     try:
         from num2words import num2words
+        if dec:
+            whole = num2words(int(dec.group(1))).replace("-", " ").replace(" and ", " ").split()
+            frac = [num2words(int(d)) for d in dec.group(2)]
+            return whole + ["point"] + frac
         if m:
             return num2words(int(m.group(1)), to="ordinal").replace("-", " ").replace(" and ", " ").split()
         if t.isdigit():
@@ -91,8 +99,27 @@ def _norm_words(s):
     # currency/percent SYMBOLS carry a spoken word that a bare regex strip would
     # silently drop ("$50,000" -> heard has no "dollars"; "60%" -> no "percent"),
     # inflating WER on every number-heavy script (this format has one every run).
+    # SCALED CURRENCY FIRST. "$1.6 million" under the bare rule below became
+    # "1.6 dollars million", i.e. the spoken word landed in the wrong place and the
+    # scale word was orphaned, so a take that said exactly the right sentence scored
+    # two more errors on top of the decimal. Whisper writes money this way every time.
+    s = re.sub(r"\$\s?(\d[\d,]*(?:\.\d+)?)\s+(million|billion|trillion|thousand)",
+               r"\1 \2 dollars", s)
     s = re.sub(r"\$\s?(\d[\d,]*(?:\.\d+)?)", r"\1 dollars", s)
     s = re.sub(r"(\d)\s?%", r"\1 percent", s)
+    # DECIMALS BEFORE THE STRIP. The general regex below replaces every non
+    # [a-z0-9\'] character with a space, so "1.6" became "1 6" and the decimal branch
+    # in _canon_token could never see a dot. Spell it out here, while the dot exists.
+    def _dec(m):
+        try:
+            from num2words import num2words
+            whole = num2words(int(m.group(1))).replace("-", " ").replace(" and ", " ")
+            frac = " ".join(num2words(int(d)) for d in m.group(2))
+            return f" {whole} point {frac} "
+        except Exception:
+            return m.group(0)
+    s = re.sub(r"(?<![\d.])(\d+)\.(\d+)(?![\d.])", _dec, s)
+
     # thousands-separator commas glue a number into one token ("50,000" is ONE
     # value); stripped by the general regex below they'd split into "50" + "000"
     # and canonicalize as "fifty" + "zero" instead of "fifty thousand".

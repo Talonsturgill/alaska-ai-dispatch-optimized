@@ -35,7 +35,7 @@ OUT = os.path.join(REPO, "out", "dispatch")
 AUD = os.path.join(OUT, "audio")
 FF = os.environ.get("FFMPEG_BIN", "ffmpeg")
 SR = 44100
-DATE = "2026-08-02"   # episode seed for the shuffle-bag + jitter
+DATE = "2026-08-03"   # episode seed for the shuffle-bag + jitter
 
 
 def run(cmd):
@@ -80,52 +80,40 @@ _TAIL = 2.6   # matches scripts/build_scenes.py TAIL (hold after the last word)
 VIDEO_SECS = max(x["end"] for x in _lines) + _TAIL   # derive from VO; never hardcode
 
 EVENTS = [
-    # ---- 2026-08-02 "The Copy In The Mud". 12 shots, 16 VO lines, 32 beats.
-    # Every event is motivated by a visible mechanical action, and the times are DERIVED from
-    # the shipped take's vo_lines.json rather than typed, so a re-synth moves the sound with
-    # the picture. The single riser is spent on the signature pull-back onto eight columns,
-    # which is the frame where the film's argument resolves.
-    (0.18, "thud", "hero", -0.2),
-    (1.95, "tick", "texture", -0.1),
-    (7.37, "paper", "standard", 0.0),
-    (9.51, "chain", "hero", -0.3),
-    (11.55, "creak", "texture", 0.25),
-    (13.26, "snap", "hero", -0.25),
-    (14.87, "clank", "standard", 0.0),
-    (18.97, "whoosh", "hero", 0.0),
-    (22.85, "boom", "hero", 0.0),
-    (23.84, "creak", "texture", 0.15),
-    (25.02, "chain", "standard", -0.2),
-    (27.16, "tick", "hero", 0.0),
-    (28.84, "pop", "texture", 0.2),
-    (30.21, "tick", "standard", 0.1),
-    (32.3, "paper", "standard", -0.15),
-    (34.56, "stamp", "hero", 0.0),
-    (38.88, "creak", "texture", 0.0),
-    (39.64, "snap", "hero", 0.0),
-    (42.82, "whoosh", "texture", 0.15),
-    (46.89, "pop", "standard", -0.3),
-    (48.14, "tick", "standard", 0.0),
-    (49.59, "clank", "standard", 0.3),
-    (52.92, "chime", "standard", 0.0),
-    (54.52, "snap", "hero", 0.0),
-    (59.01, "tick", "texture", 0.18),
-    (59.86, "pop", "texture", -0.18),
-    (60.72, "tick", "texture", 0.18),
-    (61.57, "pop", "texture", -0.18),
-    (62.53, "boom", "hero", 0.0),
-    (62.91, "ding", "hero", 0.0),
-    (66.48, "clank", "texture", 0.25),
-    (68.43, "riser", "hero", 0.0),
-    (71.88, "paper", "texture", -0.2),
-    (73.98, "thud", "hero", -0.15),
-    (77.35, "clank", "standard", 0.3),
-    (78.95, "pop", "texture", 0.0),
-    (81.5, "snap", "standard", 0.2),
-    (84.66, "chime", "hero", 0.0),
-    (86.91, "tick", "texture", 0.0),
-    (89.84, "stamp", "hero", 0.0),
-    (93.94, "creak", "texture", -0.25),
+    # ---- 2026-08-03 "The Days You Are Allowed To Burn". 10 shots, 17 VO lines, 30 beats.
+    # Times are DERIVED from the shipped take's vo_lines.json, not typed, so a re-synth moves
+    # the sound with the picture. Every event is motivated by a visible mechanical action in its
+    # own beat. The single riser is spent on the drain, where the prohibition map tears loose.
+    (0.00, "tick", "standard", -0.11),   # THE WASH FLOODS OUT
+    (2.73, "clank", "texture", -0.28),   # THE COUNTER RUNS AWAY
+    (5.00, "pop", "standard", 0.28),   # THE SECOND COUNTER IS DEAD
+    (8.58, "thud", "hero", 0.00),   # NSF SETS DOWN
+    (11.50, "clank", "standard", -0.17),   # UAF SLIDES IN AND LOCKS
+    (14.74, "stamp", "hero", 0.00),   # THE FIGURE STAMPS
+    (17.95, "pop", "standard", 0.00),   # THE TORCH TILTS
+    (20.65, "creak", "texture", 0.08),   # THE LINE CRAWLS
+    (24.21, "tick", "standard", -0.24),   # ONE TREATED PATCH
+    (27.64, "snap", "hero", 0.00),   # THE CRADLE IS EMPTY
+    (31.37, "clank", "standard", 0.11),   # THE ENGINE ASSEMBLES
+    (33.51, "tick", "standard", -0.08),   # THE INTAKE IS RE-CUT
+    (36.06, "thud", "standard", -0.16),   # THE REJECT CHUTE
+    (38.12, "clank", "hero", 0.00),   # THE PUNCH
+    (39.89, "tick", "standard", 0.18),   # PULL BACK ALONG THE RIBBON
+    (42.45, "paper", "standard", 0.01),   # THE SHEET IS PUSHED ACROSS
+    (44.11, "tick", "texture", 0.16),   # THE PLANNER STAYS BEHIND
+    (45.83, "clank", "hero", 0.00),   # FOUR FIELDS COLLIDE
+    (48.35, "thud", "texture", -0.07),   # THE GROUND UNDER ALL FOUR
+    (50.85, "paper", "texture", 0.17),   # FOUR HANDS ARRIVE
+    (54.21, "clank", "standard", -0.21),   # THE PLATES TURN TO FACE
+    (58.30, "tick", "hero", 0.00),   # THE RULE SNAPS IN
+    (60.39, "boom", "standard", 0.07),   # FOUR SEASONS BURN PAST
+    (63.17, "snap", "hero", 0.00),   # THREE ARROWS STRIKE
+    (65.14, "creak", "texture", -0.14),   # THE ARROW DISASSEMBLES
+    (67.96, "clank", "standard", -0.18),   # THE TORCH SWINGS DOWN
+    (70.96, "paper", "texture", 0.19),   # THE BLANK SHEET LOWERS
+    (74.01, "riser", "hero", 0.00),   # THE WASH DRAINS OFF
+    (77.77, "chime", "hero", 0.00),   # THE WINDOWS OPEN
+    (80.75, "tick", "standard", -0.11),   # THE PULASKI FLIPS
 ]
 
 
@@ -152,26 +140,34 @@ EVENTS = [
 # Multipliers are relative to the bed's base level, so the shape lives here and the level
 # lives in one place in the graph.
 BED_ARC = [
-    (0.0,  1.00),   # cold open: the claim, bed present
-    (9.8,  0.92),   # "real gates already stand here" -- evidence, step back
-    (22.3, 1.14),   # "now go north" -- the turn
-    (31.8, 1.24),   # the wellhead lease, top of the indictment
-    (37.5, 1.12),   # the comment count
-    # ROUND 9, judge 2: "the picture goes quiet exactly where the bed thins to half...
-    # either restore the roll-through or lift the bed 2 to 3 LU across 43.4-51.5s". The
-    # thinning was right in principle and too deep in practice: the concession is the
-    # film's most credibility-critical move and burying it in near-silence made the whole
-    # passage read as a sag rather than as a lowered voice. Lifted about 2.5 dB. It is
-    # still the quietest bed in the film, which is the point, but the beat is no longer
-    # the emptiest thing in the piece.
-    (43.4, 0.70),   # CONCESSION. "So he's right that there's a hole."
-    (51.5, 0.68),   # "a patchwork, not a process" -- still the honest limit
-    (55.7, 0.76),   # New York comparison, bed rebuilds under analysis
-    (63.8, 0.94),
-    (70.0, 1.20),   # "at the wellhead it's the only thing in the way" -- the paradox
-    (77.2, 0.88),   # the prescription, spoken plainly
-    (82.5, 1.34),   # the questions. Swell.
-    (87.9, 1.52),
+    # REWRITTEN 2026-08-04. The arc that was here belonged to a different episode: its
+    # breakpoints were labelled "go north", "the wellhead lease" and "New York comparison",
+    # and its last two nodes sat at 82.5s and 87.9s on a film that ends at 83.76s. So the
+    # bed was following someone else's story and the last move never played. Two judges
+    # measured the consequence from opposite directions, LRA 3.0 across the whole piece and
+    # "the arc is not in the dynamics, so the punch cannot punch". These nodes are this
+    # film's beats, taken from vo_lines.json, and the range is deliberately wider.
+    (0.0,  0.96),   # cold open: decades of days you must not burn
+    (5.0,  1.18),   # "Nobody has mapped the days you can" -- the inversion, lift
+    (8.1,  1.30),   # the award lands
+    (17.8, 1.02),   # what a prescribed burn is, explanatory, step back
+    (23.9, 0.90),   # "It works, and Alaska barely uses it"
+    (27.2, 0.82),   # NSF says the state lacks the tools -- the problem, quietest so far
+    (31.1, 1.10),   # the machine reads decades of weather -- build
+    (38.1, 1.34),   # "That isn't a forecast. It's a count of safe days." -- the turn
+    (45.7, 1.06),   # four entities over one piece of ground
+    (54.5, 0.92),   # the grant pays to get them talking
+    (58.0, 0.62),   # THE HONEST TURN: "But it isn't finished."
+    (63.1, 0.56),   # who pays when a burn escapes -- the floor of the film
+    (67.3, 0.98),   # "But nothing moves without that count" -- rebuild
+    (73.9, 1.26),   # the wash drains
+    (77.7, 1.55),   # the windows open. The payoff, and the loudest the bed gets.
+    (81.2, 1.20),   # tail under the credit
+    # RESOLVE, DON'T CUT. A judge measured the bed still at about -25 dBFS a tenth of a
+    # second from the last frame, ramping off in roughly 60ms, so the film's final audible
+    # moment was a splice rather than an ending. Fade it under the credit card instead.
+    (82.9, 0.94),
+    (83.7, 0.00),
 ]
 
 # A WIND BED FOR THE COUNTRY THE FILM DRIVES INTO. The same panel note asked for ambience,
@@ -306,19 +302,66 @@ def main():
     # in the post-VO tail where there's no voice to serve
     dip0, dip1 = SILENCE_DIP_AT, SILENCE_DIP_AT + DIP_LEN
     vo_end = max(x["end"] for x in _lines)
-    arc = pw_expr(BED_ARC + [(vo_end + 0.4, 1.60)])
+    # AND THE TAIL LIFT WAS APPENDED OUT OF ORDER. BED_ARC already ends with points at
+    # 81.2, 82.4 and 83.7; appending (vo_end + 0.4, 1.60) put a t=81.5 point AFTER the
+    # t=83.7 one, so the piecewise envelope was non-monotonic in time and the lift the
+    # comment above promises never happened. A judge measured the 2.6s tail, the one
+    # stretch in the film with no voice at all, sitting at -30.5 dBFS and fading rather
+    # than opening. Sort by time, and hold the lift long enough to be heard before the
+    # credit fade takes it.
+    arc = pw_expr(sorted(BED_ARC + [(vo_end + 0.4, 1.62), (vo_end + 1.4, 1.55)]))
+
+    # OPEN THE BED INTO THE GAPS THAT ACTUALLY EXIST (2026-08-05).
+    #
+    # Three judges measured the same thing from three directions: the bed sits 9 to 15 dB
+    # under the VO and stays there THROUGH the gaps, so the mix never breathes and LRA
+    # sticks at about 4.1 against a 6 to 9 target. The longest gap in the film measured
+    # within 1 dB of the average gap, which is the signature of a bed that is not
+    # responding to the voice at all in the direction that matters.
+    #
+    # Chasing this through the sidechain compressor did not work: shortening the release
+    # from 320ms to 150ms changed the delivered LRA by nothing measurable. So this stops
+    # asking the compressor to infer the gaps and states them. The gaps are KNOWN, to the
+    # word, in the same forced-alignment data the captions are built from. Each one over
+    # half a second gets an explicit lift, ramped in and out so it swells rather than
+    # steps, applied downstream of the duck where it is a clean level move.
+    gap_lift = [(0.0, 1.0)]
+    try:
+        _w = json.load(open(os.path.join(AUD, "words.json")))["words"]
+        _gaps = [(a["e"], b["s"]) for a, b in zip(_w, _w[1:]) if b["s"] - a["e"] >= 0.5]
+        for a, b in _gaps:
+            gap_lift += [(a + 0.05, 1.0), (a + 0.22, 2.05), (b - 0.22, 2.05), (b - 0.05, 1.0)]
+        print(f"bed opens into {len(_gaps)} gaps of 0.5s or longer "
+              f"({sum(b - a for a, b in _gaps):.1f}s of room)")
+    except Exception as e:
+        print(f"bed gap-lift SKIPPED ({e}); the mix will be flatter than it should be")
+    gap_expr = pw_expr(sorted(gap_lift))
     fc.append(
         f"[1:a]aformat=sample_rates={SR}:channel_layouts=stereo,aloop=loop=-1:size={int(SR*200)},"
         f"atrim=0:{VIDEO_SECS},equalizer=f=3000:t=q:w=1:g=-2.5,volume=0.30[bedraw]"
     )
     # sidechain duck the bed under the VO (uses the key copy)
-    fc.append(f"[bedraw][vok]sidechaincompress=threshold=0.04:ratio=9:attack=6:release=320:makeup=1[bedduck]")
+    # THE BED NEVER OPENED INTO GAPS THAT ALREADY EXISTED (2026-08-04). Two judges
+    # measured this independently in the same round: the VO leaves 21 gaps of 0.35s or
+    # longer, 13 of them over 0.50s, about 11.9s of silence in total, and the bed sat
+    # flat through all of them. The run's own evidence pack had been claiming there was
+    # only one such gap and that the flat loudness range was structural, so the fix kept
+    # being aimed at cutting VO instead of at this line.
+    #
+    # release=320ms was the cause. After a line ends the gain recovers on a 320ms time
+    # constant, so a 0.5s gap closes again before the bed has come up meaningfully and a
+    # 0.7s gap only gets part way. At 150ms the bed is substantially back inside every
+    # gap over about 0.4s, which is 13 of them. Ratio eases 9 -> 6 so the duck is a lean
+    # rather than a clamp, and the threshold rises slightly so quiet consonants stop
+    # holding the bed down through the tail of a line.
+    fc.append(f"[bedraw][vok]sidechaincompress=threshold=0.055:ratio=6:attack=8:release=150:makeup=1[bedduck]")
     # THE ARC GOES AFTER THE DUCK, NOT BEFORE IT. Placed upstream, the arc feeds a ratio-9
     # compressor: a quieter bed sits closer to the threshold, gets less gain reduction, and
     # comes out the far side pushed back toward where it started. The compressor was undoing
     # the shape. Downstream it is a clean level move on an already-ducked bed, so the written
     # arc is the arc you hear.
-    fc.append(f"[bedduck]volume=volume={arc}:eval=frame,"
+    fc.append(f"[bedduck]volume=volume={gap_expr}:eval=frame,"
+              f"volume=volume={arc}:eval=frame,"
               f"volume=enable='between(t,{dip0},{dip1})':volume=0.015[bed]")
 
     # SFX: per-event performance — pitch/volume/timing jitter, class gain, pan
@@ -373,14 +416,14 @@ def main():
          "-ar", str(SR), "-ac", "2", "-t", str(VIDEO_SECS), premix])
 
     p = subprocess.run([FF, "-i", premix, "-af",
-                        "loudnorm=I=-14:TP=-1.2:LRA=11:print_format=json", "-f", "null", "-"],
+                        "loudnorm=I=-14:TP=-1.8:LRA=11:print_format=json", "-f", "null", "-"],
                        capture_output=True, text=True)
     m = re.search(r"\{[^{}]*input_i[^{}]*\}", p.stderr, re.S)
     if not m:
         raise SystemExit("dispatch_mix: loudnorm analysis pass produced no JSON")
     a = json.loads(m.group(0))
     print(f"premix measured: {a['input_i']} LUFS  TP {a['input_tp']}  LRA {a['input_lra']}")
-    ln = (f"loudnorm=I=-14:TP=-1.2:LRA=11:linear=true"
+    ln = (f"loudnorm=I=-14:TP=-1.8:LRA=11:linear=true"
           f":measured_I={a['input_i']}:measured_TP={a['input_tp']}"
           f":measured_LRA={a['input_lra']}:measured_thresh={a['input_thresh']}"
           f":offset={a['target_offset']}:print_format=summary")

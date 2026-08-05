@@ -68,14 +68,30 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "out" / "dispatch"
-RENDER = OUT / "render"
-REVIEW = OUT / "review"
+# THE GATE WAS POINTING AT A DIRECTORY AND A NAMING SCHEME THE PIPELINE STOPPED USING
+# (fixed 2026-08-05). It expected out/dispatch/render/{master_9x16,master_4x5,
+# master_9x16_720}.mp4 while encode_deliverables.sh has been writing
+# out/dispatch/{dispatch_master,dispatch_square,dispatch_master_720}.mp4. So the gate
+# could never pass, on any cut, for any score: it failed on missing deliverables before
+# it ever looked at a verdict, and the failure message said "go back into the loop",
+# which reads as a quality problem and sent every run back to editing.
+#
+# Worse, one of the three files it demanded was master_4x5.mp4. This repo documents
+# 1080x1350 as the WRONG LinkedIn cut in two places, because a taller-than-square video
+# routes into the swipe-only Video tab instead of the main feed. The gate was requiring
+# the one deliverable the routine forbids.
+RENDER = OUT
+# Same staleness as DELIVERABLES above: the evidence pack the panel actually reads is
+# built by scripts/build_evidence.py into out/evidence (contact sheet, 14 stills, 5
+# filmstrips, audio_report.json). The gate was looking in out/dispatch/review, which
+# nothing has written to in this pipeline's lifetime.
+REVIEW = ROOT / "out" / "evidence"
 VERDICT = OUT / "panel_verdict.json"
 ATTEMPTS = OUT / "gate_attempts.json"
 RUBRIC = ROOT / "config" / "dispatch_rubric.yaml"
 
 # every artifact a viewer could actually receive
-DELIVERABLES = ["master_9x16.mp4", "master_4x5.mp4", "master_9x16_720.mp4"]
+DELIVERABLES = ["dispatch_master.mp4", "dispatch_square.mp4", "dispatch_master_720.mp4"]
 
 # Everything whose contents can change what a frame looks like. If any of it is NEWER than
 # the deliverables, the deliverables were rendered from code that no longer exists.
@@ -203,7 +219,12 @@ def artifact_state():
     arts = {n: sha(RENDER / n) for n in DELIVERABLES}
     ev = {}
     if REVIEW.exists():
-        for p in sorted(REVIEW.glob("*.png")):
+        # build_evidence.py writes the contact sheet, the stills and the filmstrips as
+        # JPEG. Globbing only *.png found nothing, so the gate reported that the panel
+        # "cannot have looked at anything" while a full evidence pack sat beside it.
+        # Third instance of the same drift in this file: the gate was written against an
+        # older pipeline and never re-pointed when the pipeline changed.
+        for p in sorted(list(REVIEW.glob("*.png")) + list(REVIEW.glob("*.jpg"))):
             ev[p.name] = sha(p)
     return arts, ev
 
@@ -268,7 +289,7 @@ def check_not_blank(n=28):
     import numpy as np
     from PIL import Image
 
-    vid = RENDER / "master_9x16.mp4"
+    vid = RENDER / "dispatch_master.mp4"
     if not vid.exists():
         return
     tmp = tempfile.mkdtemp(prefix="shipgate_blank_")

@@ -1,0 +1,83 @@
+{
+  "run_date": "2026-08-03",
+  "title": "THE DAYS YOU ARE ALLOWED TO BURN",
+  "binding": "This plan is an INPUT the build executes against, not a description written afterward. Gate 0D checks it and Phase 6 checks the render against it.",
+  "palette": {
+    "roles": {
+      "sky": "#e8c9a4",
+      "ground": "#6b4a3a",
+      "hero": "#e6e2d6",
+      "hero_secondary": "#7d8f92",
+      "dark": "#1f3833",
+      "danger": "#e2571f",
+      "accent": "#3fbf7f",
+      "shadow": "#7a5a48",
+      "bone": "#f2e8d8"
+    },
+    "mood": "A SMOKE-LIT INTERIOR SUMMER DAY. The air itself is the antagonist, amber haze that has swallowed the sun, sitting on near-black boreal spruce over tan duff. It is bright and you still can't see far, which is what an Alaska fire season actually feels like and what makes one clear day worth counting.",
+    "divergence": "The last two dispatches were 2026-07-31 (cool pale-blue sky #c3d3de over tan gravel, citron #b9d24a accent) and 2026-08-02 (a near-black interior room, #0e1418 sky, lit by one hard brass practical, rhyolite magenta accent). This world is neither: it is HIGH-KEY, WARM and OUTDOORS, an amber-haze exterior with no cool sky anywhere in it. The accent is deliberately pushed to a COOL BLUE-GREEN #3fbf7f rather than a yellow-green, specifically so it does not rhyme with 07-31's citron. Against amber smoke a cool green reads as a hole into different air, which is the whole idea. CORRECTION MADE AT GATE 0A, and it is a real one rather than a relabel. The first draft cast the instruments in warm brass, and the objective divergence check caught that as a repeat of the 08-02 world, whose palette was warm brass plus one reserved accent. The structure was the collision, not just the hue. Brass is now gone from this film entirely. Instruments are CHALK ENAMEL #e6e2d6 and OXIDIZED STEEL #7d8f92, a cool dry pairing that reads as field equipment rather than bench hardware and sits AGAINST the warm haze instead of dissolving into it, which also helps the instruments hold their silhouette in a low-contrast smoke world.",
+    "accent_law": "#3fbf7f MEANS 'A DAY YOU MAY BURN' AND NOTHING ELSE. No plant, no light, no label, no UI chrome may use it. Enforced at paint time by the AccentRegistry (lib/lighting.tsx) via useAccent, so an unlicensed green physically can't reach a frame. Scenes before the first window is found license NOTHING, because no burnable day has been asserted yet. FIRST LICENCE IS AT THE PUNCH, not at the ending. The punched window's INTERIOR carries #3fbf7f from that beat onward while the hard beam it throws stays bone #f2e8d8, so the accent lives on the aperture and the light stays uncoloured. Gate 0D caught that the plan otherwise introduced its meaning-carrying colour for the first time in the last eight seconds of a ninety second film."
+  },
+  "light": {
+    "time_of_day": "midday, smoke-obscured",
+    "direction": "overhead and omnidirectional. There is no key.",
+    "key_fill_rim": "Smoke KILLS SHADOW, so this film deliberately runs the opposite of the 08-02 plan: almost no directional key, a very high fill, and rim light only as a faint warm wrap. Contrast is LOW on purpose and the value ladder does the separating instead.",
+    "depth_approach": "DayGrade with a heavily LIFTED floor (shadows fill with amber skylight and never approach black) plus strong aerial perspective per depth plane, so distance reads as the haze eating contrast rather than as a darkening. Three declared planes in every scene with an enforced 10 to 12 percent L step.",
+    "the_one_exception_and_it_is_the_thesis": "When the engine PUNCHES A WINDOW, hard clean unsmoked light falls THROUGH the aperture in a sharp-edged beam with a real cast shadow. It is the only hard light in the film. The light itself performs the argument: a burnable day is literally a hole in the smoke.",
+    "dark_anchor_obligation": "ADDED AT GATE 0D, and it is the fix for the plan's real hole. A keyless, very-high-fill, lifted-floor world separates PLANES well and OBJECTS badly: a chalk-enamel body at L~89 on an amber haze field at L~82 is a 7 point separation and the hero has no silhouette. So: EVERY SHOT must carry at least 8 percent of frame area at or below L 25 (the palette already holds #1f3833 for it), and no hero may sit against a background within 18 L points of its own body value. Named per shot in storyboard.shots[].hero.detail_note, including the four instrument and chart shots that had no ground and no spruce to inherit it from.",
+    "contact_shadow_exemption": "ContactShadow is RETAINED as ambient occlusion and is EXEMPT from the lifted floor. A tight, small-radius, >=30 percent darkening sits directly under every object in the warm shadow hue #7a5a48. Lifting the floor and killing the key would otherwise erase the only thing making these objects sit rather than float, and half the beats in the board depend on weight (plates that seat, a stamp that strikes, plates that land hard enough to jump a sheet)."
+  },
+  "shape_language": {
+    "grammar": "FLOOD AGAINST APERTURE.",
+    "prohibition": "Everything that says NO is drawn as a CONTINUOUS UNBOUNDED WASH with no edge you could point at: smoke banks, ember glow, the fire-danger layer bleeding past the coastline. It has no silhouette, which is why it cannot be reasoned with.",
+    "permission": "Everything that says YES is a CUT RECTANGLE with hard machined edges, a real border, and a measurable size. A window has a frame. A flood does not.",
+    "why_this_story": "The film's claim is that Alaska has mapped the prohibition in exhaustive detail and never mapped the permission. Drawing prohibition as edgeless and permission as edged means a muted viewer can tell which one is being shown from the silhouette alone, before reading a single label.",
+    "third_grammar": "DASHED-UNFILLED, declared explicitly after Gate 0D caught the collision. The plan claimed a muted viewer could tell prohibition from permission by silhouette, then drew the LIABILITY absence as a hard-edged dashed RECTANGLE twenty-six seconds after hard-edged rectangles had been established as permission. In silhouette those are the same object. So the void is now separated GEOMETRICALLY as well: every burn window is PORTRAIT with a 3px bevel, the liability void is WIDE LANDSCAPE with NO bevel and visible haze drifting through its true interior. Precedent: the 2026-07-30 RingedSealGhost, where a dashed contour reads as not-filled-in while a solid one reads as a style choice."
+  },
+  "casting": {
+    "hero": {
+      "name": "BurnWindowEngine",
+      "status": "NET-NEW this run",
+      "gap_it_fills": "Checked against ASSET_MANIFEST.md in full first. The shelf has an orbital eye, a seafloor ear, a ground ear, a bench sample-reader, two aerial machines, a swimmer, records machinery and the civics rules kit. Every one of them reads a PLACE or a THING. NOTHING ON THE SHELF READS TIME. This story's verb is finding windows in a calendar, so the gap is real and load-bearing.",
+      "design": "A chalk-enamel and oxidized-steel almanac instrument. A long dense ribbon of WEATHER feeds in one side (decades of it, endless, never stopping). A ribbon of DAYS runs out the other, almost entirely solid. When a day qualifies the engine PUNCHES A REAL WINDOW in it, and light comes through the hole. THE TELL IS THE PUNCH, because a window is literally an aperture cut in time. Three state channels per the thrice-learned one-channel lesson (07-25 horn, 07-26 cone, 07-30 glider): the PUNCHED RIBBON (loudest, and it accumulates so the count is visible as an object), the LAMP (lights ONLY on an asserted window, the SeismicStation discipline), and the BROW plus FEED RATE (carries state even when the lamp is dark).",
+      "why_it_fits": "It is patient, rounded and COOL against the film's edgeless hot flood, and it is the only object in the film that MAKES an edge.",
+      "dedupe": "Hero-rerun gate run and FRESH. The last two heroes were ThresholdGate (07-31) and AshReader (08-02).",
+      "deltas_against_nearest_prior_art": "Named after Gate 0D pressed on the gap claim. civics.tsx ThresholdGate is closer than the first draft admitted (it already opens a sized aperture on a met condition and lights a lamp only when one actually fires, and it was the 07-31 hero). The real delta is the VERB and the SILHOUETTE: a gate passes or blocks a flow and RETAINS NOTHING, while this engine ACCUMULATES a punched record so the count becomes an object with a length; and it is a long low horizontal feed-through with no clock face anywhere on it, deliberately not a standing gate with a crown clock. bench.tsx CoringTube already owns the punch mechanism (hardened cutting shoe, head weight so the punch reads as mass), so the punch head REUSES that geometry rather than re-authoring it. lighting.tsx HazeOverlay is FireDangerWash's prior art; the delta is that HazeOverlay is a full-frame grade and cannot be bound to a coastline or drain downward off a landmass."
+    },
+    "supporting_from_shelf": [
+      "Character (worker and vest outfits) as the fire crew, and in Act 2 as the four pairs of hands around the sheet",
+      "DawnForestBG re-tinted through the smoke haze as the boreal stand that is the fuel",
+      "AlaskaMini for the signature inverted-map turn",
+      "TallyCounter (odometer variant) as the count of burnable days, a physical object rather than a HUD number",
+      "StatCard, FatArrow, StatBurst, ContactShadow, RimLight, DayGrade, MotionBlur, vitals, entrance, followThrough",
+      "bench.tsx BrassPlate, used for the NSF and UAF name plates per the name-actors-first law, but RE-TINTED to chalk enamel #e6e2d6. The asset's NAME says brass and this film has none, which is a naming artifact rather than a palette contradiction. The asset already takes a tint, so this needs no fork and no new asset."
+    ],
+    "net_new_supporting": [
+      "DripTorch \u2014 the human tool that STARTS a prescribed fire, held in a hand. The shelf has Vale (a machine that suppresses fire) and HazeOverlay (smoke as a grade) and no object anywhere that deliberately sets one. Without it the film cannot draw its own subject.",
+      "FireDangerWash \u2014 the edgeless prohibition layer, drawn as the FLOOD half of the shape grammar so the aperture has something to be cut out of."
+    ]
+  },
+  "motion_language": {
+    "world": "The smoke DRIFTS constantly and never rests, so the frame is always alive even when nothing is happening. That drift is the film's baseline and it is deliberately monotonous, because the story is about how long nothing changes.",
+    "hero_moves": [
+      "THE FEED: the weather ribbon runs in at a relentless even rate, the one unaeased motion in a film of eased ones, because data does not care.",
+      "THE PUNCH: anticipation (the engine compresses, the feed stalls for 5 frames), then a hard SNAP with a 2 to 4px screen shake, then settle. Earns full 180-degree motion blur. This is the beat the whole film is built around and it happens rarely on purpose.",
+      "THE DRAIN: at the turn the fire-danger flood does not cut away, it RUNS OFF the map downward under its own weight, which is the only way an edgeless thing can be removed.",
+      "Secondary followThrough on every ribbon end, tag and lanyard. Idle vitals() on the engine and every Character."
+    ]
+  },
+  "composition": {
+    "focal_hierarchy": "The punched window is always the smallest and the brightest thing in frame, and it is always at or near centre at its key moment. Everything else is large, warm and dim.",
+    "negative_space": "The film uses HAZE as negative space rather than emptiness. There is always something in the far plane, it is just unreadable.",
+    "safe_areas": "The 4:5 LinkedIn crop is the deliverable, so every load-bearing element lives between y=285 and y=1635, and no card enters the caption reserve above y=1420.",
+    "signature_shot": "THE INVERTED MAP. Open on the image every Alaskan already carries: the state with the Interior glowing in the fire-danger wash, familiar, edgeless, held long enough to be recognised. Then the legend flips. The red DRAINS off the map entirely and what lights up in its place is a scatter of small hard-edged green windows, far fewer, clustered in a narrow date band. The corner counter falls from something that reads like everywhere-all-season to a number you could hold in one hand, and the icon in the corner swaps from a hose to a drip torch. Nothing else moves. A muted viewer reads the entire thesis in one shot. THE CORNER ICON IS PLANTED IN FRAME ONE. Gate 0D caught that the button flipped a hose icon the viewer had never seen, and that a hose is the wrong tool for Alaska wildland fire anyway. It is now a PULASKI, planted in shot 1 beside the counters and carried through the film, so at the button it has been on screen for ninety seconds before it moves.",
+    "legibility_minimums": "ADDED AT GATE 0D. Every licensed window is >= 44px on its short side at 1080 width (>= 12px at 0.28 feed scale) with a >= 3px bevel stroke; the signature shot's scatter is capped at 11 windows so each can hold that size; per-window date ticks are DROPPED and the date goes on ONE hero window at 2x near frame centre, so the cluster reads as shape and one window reads as a date. The waiting crew is staged at >= 18 percent of frame height rather than extreme-wide, because the beat's meaning requires reading them as people. No card carries more than one claim."
+  },
+  "craft_advance": {
+    "system": "lib/lighting.tsx AccentRegistry",
+    "what": "Add the EXTENT/BBOX OVERLOAD that the 2026-08-01 run logged as a KNOWN NEXT ADVANCE and deferred with a plan. The registry's check is currently POINT-based (useAccent(hue, x, y)) while, as that run recorded honestly, most accents are extents. This film's accents ARE extents by construction (every licensed green is a rectangular window with a real width and height), so a point check would pass a window whose centre is licensed while its edges hang outside the licence.",
+    "how": "Add useAccentExtent(hue, x, y, w, h) and accentExtentAllowedAt(), which require the WHOLE bbox to sit inside a single licensed rect and throw otherwise, plus a unit-testable pure seam. This closes a logged deferral with code rather than carrying it a third run.",
+    "verification": "tsc --noEmit clean, plus a direct exercise of accentExtentAllowedAt for the inside, straddling and outside cases before commit.",
+    "scope_note": "Shipped as specified and verified (8 of 8 cases on the pure seam, tsc clean). Gate 0D correctly noted that the SAME manifest line logs a second hole this film also touches, a local-to-frame helper for licences on assets nested under moving stage3d Planes. That is NOT shipped this run and is not claimed as shipped. It is logged to the backlog with the critic's reasoning attached, and this film avoids the hole rather than papering over it: the licensed windows are declared in the map shot's own local space with the licence travelling with the plane, so no oversized catch-all licence rect is used."
+  }
+}

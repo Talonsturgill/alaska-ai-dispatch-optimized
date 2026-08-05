@@ -21,13 +21,13 @@ import {TalkMouth, ambientMouth} from './voice';
 
 export const INK = '#101423';
 
-export type Pose = 'stand' | 'arms-crossed' | 'point' | 'panic' | 'raise';
+export type Pose = 'stand' | 'arms-crossed' | 'point' | 'panic' | 'raise' | 'carry';
 export type Emotion = 'neutral' | 'angry' | 'worried' | 'shock' | 'smug';
 // Everyday Alaskan gear (deliberately NOT the fur-ruff parka, which reads as
 // Inupiat/Inuit-coded; the crowd must read as generic residents). 'parka' is kept
 // for legacy scenes but new crowds use puffer/flannel/vest + varied headgear.
-export type Outfit = 'parka' | 'suit' | 'worker' | 'puffer' | 'flannel' | 'vest' | 'referee';
-export type Headgear = 'bare' | 'beanie' | 'cap' | 'trapper' | 'hood';
+export type Outfit = 'parka' | 'suit' | 'worker' | 'puffer' | 'flannel' | 'vest' | 'referee' | 'nomex';
+export type Headgear = 'bare' | 'beanie' | 'cap' | 'trapper' | 'hood' | 'hardhat';
 
 export interface CharacterProps {
   frame: number;
@@ -56,6 +56,13 @@ export interface CharacterProps {
   eyes?: string;
   /** round wire glasses (cast differentiation for officials/experts) */
   glasses?: boolean;
+  /** 0..1 drive for a gesture pose. At 0 the arm is tucked, at 1 fully extended, and
+   *  the pose adds its own anticipation and overshoot in between, so a scene can PLAY a
+   *  point rather than hold one. Added 2026-08-04: two judges measured the film's only
+   *  character gesture as already-extended in the first frame of its shot and unchanged
+   *  for 6.6s, which is a pose wearing a gesture's clothes. Defaults to 1 so every
+   *  existing call site keeps the pose it was composed with. */
+  gesture?: number;
   /** per-figure multiplier on the idle weight-shift/sway amplitude (default 1). Lets a specific
       scene widen ONLY that figure's sway when a large camera move (e.g. S5's truck-pan) visually
       dominates the default-amplitude idle, without touching the shared idle system for every other
@@ -78,6 +85,9 @@ const OUTFITS: Record<Outfit, {main: string; shade: string; trim: string; pants:
   // the official's shirt (2026-07-20b, "The Referee Arrives"): cream base, ink
   // stripes drawn as an outfit overlay below; pants stay dark
   referee: {main: '#f2efe6', shade: '#cfc9b8', trim: '#101423', pants: '#2c3440'},
+  // wildland fire Nomex: the yellow shirt over green trousers that every fire crew in
+  // Alaska wears. Distinct from `worker` amber, which is a hi-viz construction tone.
+  nomex: {main: '#e3c247', shade: '#b99a27', trim: '#3f4a33', pants: '#3f4a33'},
 };
 
 export const Character: React.FC<CharacterProps> = ({
@@ -98,14 +108,16 @@ export const Character: React.FC<CharacterProps> = ({
   eyes = '#41607d',
   glasses = false,
   idleGain = 1,
+  gesture = 1,
   trim,
 }) => {
   const c = {...OUTFITS[outfit], ...(trim ? {trim} : {})};
   // breathing: a visible chest rise+fall. Bumped round 10 — the panel kept reading standers as
   // "frozen sprites" partly because the old amplitude was too small to register in a ~0.5s review
   // strip; a clearer breath (plus the weight-shift below) means any half-second window shows life.
-  const breath = 1 + 0.03 * Math.sin(f / 12);
-  const bob = 4.2 * Math.sin(f / 12);
+  // a real chest rise and a head that follows it, at a rate a 0.27s strip resolves
+  const breath = 1 + 0.055 * Math.sin(f / 11);
+  const bob = 6.4 * Math.sin(f / 11);
   // idle weight-shift: a slow lateral hip sway + matching lean while standing still, so a
   // held beat (fork impasse, tally jam, button) reads as a person shifting their weight, not
   // a frozen sprite (a 2026-07-21 panel note across 5 rounds: "characters go static between
@@ -142,9 +154,15 @@ export const Character: React.FC<CharacterProps> = ({
   // camera move would otherwise swamp (S5's Hollister under the truck-pan) -- targeted, so no other
   // standing cast member is affected.
   const idleAmp = idleGain * poseIdleScale;
+  // RATES RETUNED 2026-08-04, second time a judge has measured a held figure as having no
+  // idle at all. The amplitudes were never the problem, the PERIODS were: sin(f/88) turns
+  // 0.09 rad over an 8-frame strip and sin(f/34) turns 0.24, so the whole rig moved under
+  // two pixels across the window a panel actually inspects, and at review downsampling that
+  // rounds to zero displacement. A slow weight-shift is still right for the body, but it
+  // needs a faster term layered on it that a quarter-second can see.
   const shift = idle ? idleAmp * 9 * Math.sin(f / 88 + swayPhase) : 0;   // weight-shift onto a hip
-  const sway = idle ? shift + idleAmp * 3.4 * Math.sin(f / 34 + swayPhase * 1.7) : 0;
-  const swayTilt = idle ? idleAmp * (2.4 * Math.sin(f / 88 + swayPhase) + 0.6 * Math.sin(f / 34 + swayPhase * 1.7)) : 0;
+  const sway = idle ? shift + idleAmp * 4.6 * Math.sin(f / 13 + swayPhase * 1.7) : 0;
+  const swayTilt = idle ? idleAmp * (2.4 * Math.sin(f / 88 + swayPhase) + 1.5 * Math.sin(f / 13 + swayPhase * 1.7)) : 0;
   // ---- articulated walk cycle (2026-07-21 panel: the human leads "translate as rigid sprites,
   // they don't walk"). When `walking`, the two legs swing fore/aft in opposition around the hips,
   // the body bobs at 2x the step rate (up on mid-stride), and the arms counter-swing. Phase comes
@@ -243,14 +261,25 @@ export const Character: React.FC<CharacterProps> = ({
         ) : (
           <>
             {emotion === 'angry' && <path d="M-14,14 q15,-9 29,0" fill="none" stroke={INK} strokeWidth={6} strokeLinecap="round" />}
-            {emotion === 'worried' && <path d="M-10,14 q11,7 22,0 q-11,10 -22,0 Z" fill="#7a2f2f" stroke={INK} strokeWidth={4.5} />}
+            {/* THIS DREW A SMILE. The old path was a thin lens whose both curves bulged
+                DOWNWARD, so at face scale a "worried" character rendered a gentle upward
+                mouth line. Three crew stood under "you can't staff a crew for a day nobody
+                calls safe" grinning, and two judges called it out as the picture
+                contradicting its own caption. A frown curves UP at the corners. */}
+            {emotion === 'worried' && (
+              <path d="M-13,21 q13,-11 26,0" fill="none" stroke={INK} strokeWidth={6} strokeLinecap="round" />
+            )}
             {emotion === 'shock' && <ellipse cx={2} cy={18} rx={12} ry={16} fill="#7a2f2f" stroke={INK} strokeWidth={5} />}
             {emotion === 'smug' && <path d="M-12,12 q16,10 30,-4" fill="none" stroke={INK} strokeWidth={6} strokeLinecap="round" />}
-            {emotion === 'neutral' && <path d="M-10,14 q12,6 24,0" fill="none" stroke={INK} strokeWidth={6} strokeLinecap="round" />}
+            {/* and 'neutral' bulged downward too, i.e. every default face in the film was
+                quietly smiling. Flattened. */}
+            {emotion === 'neutral' && <path d="M-11,16 q11,3 22,0" fill="none" stroke={INK} strokeWidth={6} strokeLinecap="round" />}
           </>
         )}
-        {/* worried/angry sweat drop */}
-        {(emotion === 'worried' || emotion === 'shock') && (
+        {/* The sweat drop was a manga cue used nowhere else in this house style, and a
+            judge flagged it as reading as a different visual language. Kept for 'shock'
+            only, where it is a beat rather than a mood. */}
+        {(emotion === 'shock') && (
           <path d={`M44,-30 q7,${10 + 3 * Math.sin(f / 9)} 0,${18 + 3 * Math.sin(f / 9)} q-7,-8 0,-18 Z`} fill="#9fd8ff" stroke={INK} strokeWidth={3} />
         )}
         {/* round wire glasses (cast differentiation — e.g. the district official). Drawn last so
@@ -289,6 +318,16 @@ export const Character: React.FC<CharacterProps> = ({
       <path d={`M${r * 0.38},${r * 0.05} v${r * 0.66}`} stroke={INK} strokeWidth={2.2} opacity={0.4} strokeLinecap="round" fill="none" />
       {/* knuckle highlight (key light from upper-left) */}
       <path d={`M${-r * 0.5},${-r * 0.45} q${r * 0.5},${-r * 0.3} ${r},0`} stroke="#fff" strokeWidth={2.5} opacity={0.24} fill="none" strokeLinecap="round" />
+      {/* FINISH PARITY WITH THE PROPS. On a 15px palm a bounding-box gradient spans too
+          few pixels to read, so the hand went out flat next to a drip torch carrying a
+          gradient, a rim light, rivets and a fuel window. A core-shade crescent on the
+          away side and a cast tick under the cuff are what actually turn the disc into
+          a form at this size. */}
+      <path d={`M${r * 0.28},${-r * 0.86} a${r},${r} 0 0 1 0,${r * 1.72} a${r * 0.72},${r} 0 0 0 0,${-r * 1.72} Z`}
+            fill={INK} opacity={0.17} />
+      <path d={`M${-r * 0.72},${-r * 0.5} a${r * 0.86},${r * 0.86} 0 0 1 ${r * 0.9},${-r * 0.24}`}
+            fill="none" stroke="#fff" strokeWidth={2} opacity={0.3} strokeLinecap="round" />
+      <ellipse cx={0} cy={-r * 1.1} rx={r * 0.78} ry={r * 0.24} fill={INK} opacity={0.16} />
     </g>
   );
 
@@ -302,6 +341,7 @@ export const Character: React.FC<CharacterProps> = ({
             <path d="M-52,278 q30,26 62,18 L52,282" fill="none" stroke={c.main} strokeWidth={22} strokeLinecap="round" />
             <path d="M52,294 q-30,24 -62,16 L-52,296" fill="none" stroke={INK} strokeWidth={34} strokeLinecap="round" />
             <path d="M52,294 q-30,24 -62,16 L-52,296" fill="none" stroke={c.shade} strokeWidth={22} strokeLinecap="round" />
+            <path d="M-50,274 q29,25 60,17" fill="none" stroke="#ffffff" strokeWidth={5} strokeLinecap="round" opacity={0.18} />
             {hand(-54, 296, 90)}
             {hand(54, 282, -90)}
           </g>
@@ -309,17 +349,83 @@ export const Character: React.FC<CharacterProps> = ({
       case 'point':
         return (
           <g>
-            {/* rear arm at side */}
+            {/* rear arm at side. IT HAD NO HAND: the stroke ended in a round cap, so
+                this figure pointed with one arm and terminated the other in a blank
+                stub, in a film where every other arm is cuffed and handed. A judge
+                found it at 3x zoom and was right. */}
             <path d="M-46,266 q-16,44 -8,84" fill="none" stroke={INK} strokeWidth={34} strokeLinecap="round" />
             <path d="M-46,266 q-16,44 -8,84" fill="none" stroke={c.shade} strokeWidth={22} strokeLinecap="round" />
-            {/* pointing arm extended forward */}
-            <path d={`M46,262 q52,-6 96,${-18 + 3 * Math.sin(f / 11)}`} fill="none" stroke={INK} strokeWidth={34} strokeLinecap="round" />
-            <path d={`M46,262 q52,-6 96,${-18 + 3 * Math.sin(f / 11)}`} fill="none" stroke={c.main} strokeWidth={22} strokeLinecap="round" />
-            <g transform={`translate(148,${242 + 3 * Math.sin(f / 11)})`}>
-              {hand(0, 0, -90)}
-              {/* extended pointing finger stays on top of the new hand */}
-              <rect x={8} y={-7} width={30} height={13} rx={6.5} fill={skin} stroke={INK} strokeWidth={4.5} />
+            {hand(-54, 352, 0, 14)}
+            {/* pointing arm. ANTICIPATION, EXTENSION, SETTLE: the reach pulls back
+                below zero before it goes out and overshoots past the target before it
+                lands, so the arm arrives rather than appearing. */}
+            {(() => {
+              const gg = Math.max(0, Math.min(1, gesture));
+              // -0.18 windup, +1.09 overshoot, settling to 1
+              const ext = gg <= 0 ? -0.18
+                : gg >= 1 ? 1
+                : -0.18 + 1.27 * gg + 0.11 * Math.sin(gg * Math.PI) - 0.2 * Math.sin(gg * Math.PI * 2) * (1 - gg);
+              const reach = 96 * ext;
+              // ANGLED DOWN, because the thing being pointed at is below the shoulder.
+              // The arm used to rise, so a judge traced the fingertip vector and found it
+              // never entered the card it is supposed to indicate.
+              const rise = 34 * ext + 3 * Math.sin(f / 11);
+              return (
+                <g>
+            <path d={`M46,262 q${52 * ext},-6 ${reach},${rise}`} fill="none" stroke={INK} strokeWidth={34} strokeLinecap="round" />
+            <path d={`M46,262 q${52 * ext},-6 ${reach},${rise}`} fill="none" stroke={c.main} strokeWidth={22} strokeLinecap="round" />
+            <g transform={`translate(${46 + reach + 6},${262 + rise - 2})`}>
+              {/* ONE MERGED SILHOUETTE, NOT THREE STACKED SHAPES. Two judges found this
+                  hand independently and both called it the worst-built shape in the
+                  film, on the frame's focal gesture. It was hand() (a stroked palm disc
+                  plus a stroked thumb ellipse) with a separately stroked finger capsule
+                  laid over the top, so three closed outlines crossed inside the
+                  silhouette and the sleeve stroke dead-ended in the middle of the palm.
+                  Every other hand in the film is a single closed form with INTERNAL
+                  lines, which is what this is now. */}
+              <path d="M-16,-15 q16,-9 30,-5 l30,3 q11,1 11,8 q0,7 -11,8 l-29,3
+                       q4,10 -3,15 q-9,6 -18,1 q-12,-7 -13,-17 q-1,-11 3,-16 Z"
+                    fill={skin} stroke={INK} strokeWidth={5} strokeLinejoin="round" />
+              {/* the cuff, rotated onto the arm axis rather than 20 degrees off it */}
+              <rect x={-30} y={-14} width={16} height={28} rx={6} fill={c.trim}
+                    stroke={INK} strokeWidth={4} />
+              {/* internal lines: the knuckle break and the thumb crease */}
+              <path d="M2,-9 q3,9 0,17" fill="none" stroke={INK} strokeWidth={2.6} opacity={0.45} strokeLinecap="round" />
+              <path d="M-9,6 q7,4 13,3" fill="none" stroke={INK} strokeWidth={2.4} opacity={0.4} strokeLinecap="round" />
+              <path d="M-14,-11 q13,-6 26,-3" fill="none" stroke="#fff" strokeWidth={2.4} opacity={0.26} strokeLinecap="round" />
             </g>
+                </g>
+              );
+            })()}
+          </g>
+        );
+      case 'carry':
+        // CARRYING A TOOL. The near arm reaches down and forward so the fist clears the
+        // torso silhouette entirely, which is what was missing: an arm hanging straight
+        // at the side puts the hand INSIDE the body outline, so any prop placed at it
+        // either disappears behind the figure or has to be nudged out into open air,
+        // where it reads as floating. That nudge is how the drip torch ended up held by
+        // nobody for ten seconds.
+        //
+        // HAND ANCHOR, for scenes placing a prop: this hand is at arms-space (120,330),
+        // which is local (150,500)-space (150 + 120*facing, 310). A scene at
+        // translate(X,Y) scale(S) therefore finds the fist at
+        //     (X + 120*S*facing, Y - 190*S)
+        // and should pass exactly that to the prop's grip origin.
+        return (
+          <g>
+            {/* off arm at the side */}
+            <path d={`M-46,266 q-14,46 -6,${88 + 2 * Math.sin(f / 13)}`} fill="none" stroke={INK} strokeWidth={34} strokeLinecap="round" />
+            <path d={`M-46,266 q-14,46 -6,${88 + 2 * Math.sin(f / 13)}`} fill="none" stroke={c.main} strokeWidth={22} strokeLinecap="round" />
+            <path d={`M-49,270 q-13,42 -6,${80 + 2 * Math.sin(f / 13)}`} fill="none" stroke="#ffffff" strokeWidth={5} strokeLinecap="round" opacity={0.2} />
+            {hand(-52, 358, 0, 14)}
+            {/* carrying arm: shoulder, elbow forward, fist out past the silhouette. The
+                load makes it hang a little heavier than the free arm, so it breathes on
+                the same cycle at a slightly smaller amplitude. */}
+            <path d={`M46,264 q46,20 74,${64 + 1.5 * Math.sin(f / 13)}`} fill="none" stroke={INK} strokeWidth={34} strokeLinecap="round" />
+            <path d={`M46,264 q46,20 74,${64 + 1.5 * Math.sin(f / 13)}`} fill="none" stroke={c.main} strokeWidth={22} strokeLinecap="round" />
+            <path d={`M44,258 q44,18 70,${58 + 1.5 * Math.sin(f / 13)}`} fill="none" stroke="#ffffff" strokeWidth={5} strokeLinecap="round" opacity={0.2} />
+            {hand(120, 330 + 1.5 * Math.sin(f / 13), -22, 14)}
           </g>
         );
       case 'panic':
@@ -352,10 +458,18 @@ export const Character: React.FC<CharacterProps> = ({
       default: // stand
         return (
           <g>
+            {/* PAINT ORDER BUG, fixed 2026-08-04. The right arm drew its 22px GARMENT stroke
+                first and its 34px INK stroke on top, so the ink covered the sleeve
+                completely and the arm rendered as a solid black tube on every standing
+                figure in the film. Three judges reported it independently as "flat black
+                fills with zero shading sitting against form-shaded jacket bodies", and it
+                was not a shading gap, it was one pair of lines in the wrong order. */}
             <path d={`M-46,266 q-14,46 -6,${88 + 2 * Math.sin(f / 13)}`} fill="none" stroke={INK} strokeWidth={34} strokeLinecap="round" />
             <path d={`M-46,266 q-14,46 -6,${88 + 2 * Math.sin(f / 13)}`} fill="none" stroke={c.main} strokeWidth={22} strokeLinecap="round" />
-            <path d={`M46,266 q14,46 6,${88 - 2 * Math.sin(f / 13)}`} fill="none" stroke={c.shade} strokeWidth={22} strokeLinecap="round" />
+            <path d={`M-49,270 q-13,42 -6,${80 + 2 * Math.sin(f / 13)}`} fill="none" stroke="#ffffff" strokeWidth={5} strokeLinecap="round" opacity={0.2} />
             <path d={`M46,266 q14,46 6,${88 - 2 * Math.sin(f / 13)}`} fill="none" stroke={INK} strokeWidth={34} strokeLinecap="round" />
+            <path d={`M46,266 q14,46 6,${88 - 2 * Math.sin(f / 13)}`} fill="none" stroke={c.shade} strokeWidth={22} strokeLinecap="round" />
+            <path d={`M43,270 q13,42 6,${80 - 2 * Math.sin(f / 13)}`} fill="none" stroke="#ffffff" strokeWidth={4} strokeLinecap="round" opacity={0.11} />
             {hand(-52, 358, 0, 14)}
             {hand(52, 356, 0, 14)}
           </g>
@@ -363,8 +477,15 @@ export const Character: React.FC<CharacterProps> = ({
     }
   };
 
+  // THE FEET SKATED. The idle weight-shift was applied at the ROOT, so the boots and
+  // their contact shadows slid along the ground with the torso: a judge measured the boot
+  // band travelling 18px while the sign post planted beside it moved 1px and the
+  // background drifted 5. A person shifting their weight pivots ABOVE the feet. The root
+  // carries only the lean now; the lateral sway is applied inside, to everything except
+  // the boots, and the legs take a reduced share so the shift travels up the body instead
+  // of teleporting the whole figure sideways.
   return (
-    <g transform={`translate(${x},${y}) scale(${scale * facing},${scale}) translate(-150,-500) translate(${sway},0) rotate(${swayTilt} 150 500)`}>
+    <g transform={`translate(${x},${y}) scale(${scale * facing},${scale}) translate(-150,-500) rotate(${swayTilt} 150 500)`}>
       {/* form-shading gradients for this figure (jacket + skin + pants), lit by the global sun dir.
           Softness is deliberately tighter than the FormGradient default (1): at 1 the light/shade
           stops fall mostly OUTSIDE the shape's own bounds, so only a sliver of the key-to-shade
@@ -379,7 +500,7 @@ export const Character: React.FC<CharacterProps> = ({
         {/* legs + boots grouped PER SIDE around each hip (pivot at the leg top, y=-160) so a walk
             swings each leg as a unit; the cloth crease + boot ride with their leg. Left and right
             swing in opposition (legSwing / -legSwing) for a real alternating stride. */}
-        <g transform={`rotate(${legSwing} -23 -160)`}>
+        <g transform={`translate(${sway * 0.34},0) rotate(${legSwing} -23 -160)`}>
           <rect x={-40} y={-160} width={34} height={150} rx={16} fill={`url(#${uid}_pants)`} stroke={INK} strokeWidth={6} />
           {/* leg volume: lit highlight down the sun-facing edge + shade down the shadow edge, so
               the pipe reads as a cylinder, not a flat fill (2026-07-21 round-9 rig pass: legs were
@@ -392,7 +513,7 @@ export const Character: React.FC<CharacterProps> = ({
           {/* sole seam — the boot has a built sole, not a painted blob */}
           <path d="M-54,-3 h52" stroke={INK} strokeWidth={2.4} opacity={0.45} strokeLinecap="round" />
         </g>
-        <g transform={`rotate(${-legSwing} 25 -160)`}>
+        <g transform={`translate(${sway * 0.34},0) rotate(${-legSwing} 25 -160)`}>
           <rect x={8} y={-160} width={34} height={150} rx={16} fill={`url(#${uid}_pants)`} stroke={INK} strokeWidth={6} />
           <rect x={10} y={-156} width={9} height={142} rx={4.5} fill="#fff" opacity={0.12} />
           <rect x={32} y={-158} width={10} height={146} rx={5} fill={INK} opacity={0.26} />
@@ -401,8 +522,8 @@ export const Character: React.FC<CharacterProps> = ({
           <path d="M4,-14 h20 v16 h-26 a8,8 0 0 1 -8,-8 q0,-8 14,-8 Z" fill="#fff" opacity={0.14} />
           <path d="M-6,-3 h52" stroke={INK} strokeWidth={2.4} opacity={0.45} strokeLinecap="round" />
         </g>
-        {/* torso (breath + walk bob) */}
-        <g transform={`translate(0,${-160 + bob + walkBob}) scale(1,${breath}) translate(0,160)`}>
+        {/* torso (breath + walk bob), carrying the full lateral weight-shift */}
+        <g transform={`translate(${sway},${-160 + bob + walkBob}) scale(1,${breath}) translate(0,160)`}>
           <g transform="translate(0,-160)">
             <path d="M-92,-150 q6,-56 92,-56 q86,0 92,56 l10,144 q2,16 -16,16 h-172 q-18,0 -16,-16 Z" fill={`url(#${uid}_body)`} stroke={INK} strokeWidth={7} strokeLinejoin="round" />
             {/* core shade on the shadow side + rim light on the sun-facing (left) contour */}
@@ -420,6 +541,18 @@ export const Character: React.FC<CharacterProps> = ({
             <ellipse cx={-14} cy={-124} rx={30} ry={86} fill="#ffffff" opacity={0.08} />
             <path d="M-92,-150 q6,-56 30,-58 l-3,22 q-22,7 -25,42 l-5,66 q-4,-40 3,-72 Z" fill={tMain.shade} opacity={0.24} />
             <path d="M-84,-16 q84,26 168,0 l3,22 q-86,24 -174,0 Z" fill={INK} opacity={0.15} />
+            {/* EVERY GARMENT OVERLAY IS CLIPPED TO THE BODY (2026-08-04). Plaid, quilting
+                and stripes are all authored at fixed widths (the flannel plaid runs a flat
+                180px, the referee stripes 200px tall) while the torso silhouette tapers, so
+                an overlay stroke could and did escape the jacket. Three judges independently
+                reported the same defect in three different shots: "an orphaned thin red arc
+                crosses outside the character silhouette", which is the flannel's #8a2a2a
+                plaid hanging past the coat. Clipping is the fix that holds for every outfit
+                rather than nudging one path until that one frame looks right. */}
+            <clipPath id={`${uid}_garment`}>
+              <path d="M-92,-150 q6,-56 92,-56 q86,0 92,56 l10,144 q2,16 -16,16 h-172 q-18,0 -16,-16 Z" />
+            </clipPath>
+            <g clipPath={`url(#${uid}_garment)`}>
             {outfit === 'parka' && (
               <g>
                 <path d="M0,-196 L0,4" stroke={INK} strokeWidth={5} />
@@ -489,6 +622,36 @@ export const Character: React.FC<CharacterProps> = ({
                 </g>
               </g>
             )}
+            {/* NOMEX. The wildland fire shirt: a collar, a button placket, two flap
+                chest pockets and turned cuffs. It reads as WORK CLOTHING rather than
+                recreation, which is the whole difference a judge was pointing at when
+                they said the crew looked like it was going hiking. Deliberately flatter
+                than the quilted coats so it does not compete with them for volume. */}
+            {outfit === 'nomex' && (
+              <g>
+                {/* yoke seam across the shoulders */}
+                <path d="M-88,-152 q88,30 176,0" fill="none" stroke={INK} strokeWidth={3.5} opacity={0.45} />
+                {/* button placket, offset from centre the way a real front closure is */}
+                <path d="M-8,-196 L-8,4" stroke={INK} strokeWidth={4.5} opacity={0.7} />
+                {[-168, -132, -96, -60, -24].map((by) => (
+                  <circle key={by} cx={-8} cy={by} r={4} fill={c.shade} stroke={INK} strokeWidth={2.4} />
+                ))}
+                {/* collar */}
+                <path d="M-42,-196 q34,26 42,4 q8,22 42,-4 l-6,-16 q-36,20 -72,0 Z"
+                      fill={c.shade} stroke={INK} strokeWidth={5} strokeLinejoin="round" />
+                {/* two flap chest pockets */}
+                {[-56, 22].map((px, i) => (
+                  <g key={i}>
+                    <rect x={px} y={-128} width={40} height={46} rx={4}
+                          fill={c.shade} opacity={0.55} stroke={INK} strokeWidth={4} />
+                    <path d={`M${px},-128 h40 v13 h-40 Z`} fill={c.shade} stroke={INK} strokeWidth={4} />
+                    <circle cx={px + 20} cy={-112} r={3.2} fill={c.main} stroke={INK} strokeWidth={2} />
+                  </g>
+                ))}
+                {/* shirt tail hem, tucked */}
+                <path d="M-84,-14 q84,24 168,0" fill="none" stroke={INK} strokeWidth={3} opacity={0.4} />
+              </g>
+            )}
             {outfit === 'vest' && (
               <g>
                 <path d="M-52,-196 q52,-8 104,0 l0,200 h-104 Z" fill={c.shade} opacity={0.35} />
@@ -506,6 +669,7 @@ export const Character: React.FC<CharacterProps> = ({
                 <circle cx={0} cy={-108} r={4.5} fill="#c9cfd8" stroke={INK} strokeWidth={2.5} />
               </g>
             )}
+            </g>
             {/* LIGHT-WRAP + GROUNDING (2026-07-21 parity pass): the three cues that marry the
                 garment to the light and the head to the body — a left-contour rim on the lit edge,
                 the head's cast shadow on the chest (under-chin AO), and a stitched hem. Drawn over
@@ -610,6 +774,31 @@ export const Character: React.FC<CharacterProps> = ({
                   <g>
                     <path d="M-60,-22 a60,42 0 0 1 120,0 l-8,6 h-104 Z" fill="#f2c230" stroke={INK} strokeWidth={6} />
                     <rect x={-70} y={-20} width={140} height={14} rx={7} fill="#f2c230" stroke={INK} strokeWidth={5} />
+                  </g>
+                )}
+                {/* WILDLAND HARD HAT. The full brim, the comb ridge down the crown and
+                    the chin strap are the three things that separate it from a bike
+                    helmet at a glance, and a fire crew without one reads as hikers.
+                    Reachable as a headgear in its own right: the old hat could only be
+                    summoned by pairing outfit 'worker' with headgear 'bare', so no scene
+                    could put a hard hat on anything else. */}
+                {hg === 'hardhat' && (
+                  <g>
+                    {/* THE BRIM SAT ON THE EYES. Authored at cy=-18 with ry=15 it spanned
+                        y -33..-3 and the eyes are at y=-13, so the first render put a hard
+                        rule straight across both faces and read as spectacles, not a hat.
+                        The whole hat sits 20px higher, which is where a hat goes. */}
+                    <ellipse cx={0} cy={-38} rx={76} ry={13} fill="#e0a81f" stroke={INK} strokeWidth={5.5} />
+                    {/* crown */}
+                    <path d="M-56,-40 a56,46 0 0 1 112,0 Z" fill="#f2c230" stroke={INK} strokeWidth={6} />
+                    {/* comb ridge + the shading that makes the crown a dome */}
+                    <path d="M0,-86 q-3,26 -2,46" stroke={INK} strokeWidth={5} opacity={0.55} fill="none" strokeLinecap="round" />
+                    <path d="M-40,-54 a44,38 0 0 1 30,-30 l6,4 a38,34 0 0 0 -26,28 Z" fill="#fff" opacity={0.26} />
+                    <path d="M28,-78 a52,44 0 0 1 28,38 l-22,0 a42,36 0 0 0 -18,-32 Z" fill={INK} opacity={0.16} />
+                    {/* NO CHIN STRAP. It was drawn before face(), so the head fill covered
+                        everything below the brim and all that survived were two dark stubs
+                        sitting exactly where eyebrows go, on a face that already has
+                        eyebrows. A full-brim hat reads as a hard hat on its own. */}
                   </g>
                 )}
                 {face()}

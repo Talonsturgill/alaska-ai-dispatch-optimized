@@ -191,11 +191,100 @@ hatch with better manners.
 
 ## PLATFORMS: LINKEDIN FIRST, ALSO TIKTOK
 
-- Master 9:16 1080x1920 @30fps. ALSO export a 4:5 1080x1350 center-crop; keep hero action and
-  captions inside the centered 4:5 safe box so the crop never amputates the story.
-- THE 4:5 IS THE LINKEDIN DELIVERABLE: 4:5 lands in the main home feed next to the caption;
-  9:16 gets routed into LinkedIn's swipe-only Video tab. The 9:16 is the TikTok cut. Label both
-  correctly in the draft (dispatch_email.py already does).
+- Master 9:16 1080x1920 @30fps. ALSO export a 1:1 SQUARE 1080x1080 center-crop; keep hero action
+  and captions inside the centered 1:1 safe box (y 420 to 1500 of the master) so the crop never
+  amputates the story.
+
+### BUILD TO THE STANDARD BEFORE YOU BUILD A FRAME (AUTHORITATIVE, owner's call 2026-08-05)
+
+**READ `docs/craft/DISPATCH_STANDARD.md` IN FULL AT THE START OF THE AUTHORING PHASE.**
+
+**AND RUN `python3 scripts/preflight.py` BEFORE CONVENING A PANEL. If it exits nonzero,
+the panel is NOT convened.** (owner, 2026-08-05: "I'm frustrated at ur pre-panel
+performance.")
+
+The mechanical gates in this repo were good and were being run inconsistently, after the
+fact, one at a time, by a run that remembered to. So cuts reached the panel carrying
+defects a script could have named in four seconds, three judges spent twenty minutes each
+rediscovering them, and a whole fix round went on arithmetic. A checklist in a document is
+a suggestion; preflight.py is that checklist as a program. It typechecks the engine,
+measures every plated string against its plate, asserts the cut on disk is NEWER than every
+file that can change a frame, and reports the crop and dead-space meters.
+
+A judge's attention is the most expensive thing in this loop. It must never be spent on
+something a regex can find.
+Not at review time. Before the first frame exists.
+
+The owner's words: "it seems like the video should just be way better before it ever gets
+to the judges, we're relying on so many rounds of improvements and it's masking the fact
+that whoever is creating the video just needs to be upgraded based on everything that the
+judges have been saying, so they output better stuff that's more in-line with what the
+judges even want."
+
+That is the correct diagnosis of what this loop had become. Thirteen rounds of panel
+findings were living in commit messages and inline comments, where the NEXT run's authoring
+step never reads them, so each run rebuilt the same defects and paid three judges to
+rediscover them. The review loop was doing the generator's job.
+
+DISPATCH_STANDARD.md is those findings distilled into instructions you can build from:
+every prop parented to a documented hand anchor, everything grounded casting a contact
+shadow, the weight-shift applied above the feet, plates sized to their strings by
+arithmetic, the ledger recording what the film paints rather than what it planned. Each
+line is a defect a judge actually found, with the measurement.
+
+**THE MAINTENANCE RULE, and it is not optional: every time the panel finds something that
+was knowable in advance, it goes back into DISPATCH_STANDARD.md in the same run.** A
+finding that recurs across runs is a failure of that document, not of the judge. Phase 12
+treats a repeat finding as a standard-file bug.
+
+### ONE GRADED CUT, ONE DERIVED CUT (AUTHORITATIVE, owner's call 2026-08-04)
+
+**THE PANEL GRADES THE 9:16 MASTER, AND ONLY THE 9:16 MASTER.** The square is derived from
+it and checked mechanically. Do not convene judges on both.
+
+The owner's words: "why not just make one right, THEN reformat a version and make a couple
+tweaks to it, but idk why you would check both videos every single time seems like more
+effort that not even needed to get to the same outcome."
+
+They are right, and it was actively costing quality, not just time. Grading both meant:
+- judges split their findings across two cuts, so half the fix budget each round went to
+  the one with narrower distribution;
+- the composition axis was marked down TWICE for what is a single authoring decision, once
+  as "the 9:16 is a padded square" and once as "the square crop collides with X";
+- the same defect arrived twice in different clothes and got fixed twice.
+
+So the loop is: build the master until the panel passes, then derive the square and run
+ONE mechanical check on it.
+
+    python3 scripts/crop_safety.py
+
+That samples the master at the square's two crop lines (y=420 and y=1500) and reports any
+moment where the crop cuts through something built, which is the only question the derived
+cut raises that the master's own grade does not already answer. Read its output rather than
+its exit code alone: a decorative foreground element crossing the line is fine and expected,
+a headline plate or a character's head is not. It prints how many frames it sampled, and a
+run that sampled nothing is a failure, not a pass.
+
+The square is still the LinkedIn main-feed deliverable and still ships. It is simply no
+longer a second thing to have opinions about. Both cuts still get the aspect and audio
+asserts in encode_deliverables.sh, which are cheap and catch the wrong-ratio class of error
+that this file has been burned by before.
+
+WHEN THE JUDGE PROMPTS ARE WRITTEN, point them at dispatch_master.mp4 and say plainly that
+the square is derived and out of scope. A judge given both WILL grade both.
+- THE 1:1 SQUARE IS THE LINKEDIN DELIVERABLE (CORRECTED 2026-08-03 on owner evidence).
+  LinkedIn routes ANY video TALLER THAN SQUARE into the swipe-only Video tab. Square lands in the
+  MAIN HOME FEED next to the caption. The 9:16 is the TikTok cut.
+  THIS FILE PREVIOUSLY SAID 4:5 1080x1350 WAS THE MAIN-FEED CUT AND THAT WAS WRONG. 1080x1350 is
+  0.8 aspect, still taller than wide, so every dispatch shipped under that rule was being routed
+  into the Video tab. The owner noticed the symptom directly: engagement rate up, impressions
+  down, which is what a smaller and more committed Video-tab audience looks like. The owner
+  supplied a main-feed video for comparison and it probes 1080x1080.
+  WHY THIS REGRESSED ONCE BEFORE: the same claim was written in three places that each read as
+  authoritative alone (this file, scripts/dispatch_email.py's button labels, and the encode
+  command's own ffprobe assert). Fixing one left the other two contradicting it and the next run
+  believed the doc. If you are changing the delivery aspect again, change all three, and change
+  the assert, because the assert is the only one that fails loudly.
 - Open captions always (most plays are muted). The hook must be legible and MOVING by ~1.3s.
 - Endings invite thoughtful comments (a genuine question, not engagement bait).
 
@@ -384,7 +473,7 @@ enforced in code by DEDUPE_WINDOW_DAYS in scripts/dedupe.py, so `list` and `chec
   caption cues come from its words JSON. Approximated/scaled/hand-shifted timings are banned.
 - scripts/dedupe.py; scripts/get_music.py (archive.org reachable; Kevin MacLeod CC-BY proven);
   scripts/upload_video.py (permanent GitHub media-branch links, verify HTTP 200);
-  scripts/dispatch_email.py (4:5-primary buttons; omit --temporary, links are permanent);
+  scripts/dispatch_email.py (1:1-square-primary buttons; omit --temporary, links are permanent);
   scripts/caption_check.py + config/linkedin_caption_rubric.yaml;
   scripts/make_review_sheets.py (contact sheets + motion filmstrips; any frames dir);
   scripts/storyboard_check.py (Gate 0A; accepts engine: infographic-2.5d);
@@ -655,7 +744,7 @@ every visual lever, each with a WHY tied to THIS story:
   net-new only where the story finds a real gap — each with a reason it fits this story.
 - `motion_language`: how the world moves and what earns 180-degree motion blur / anticipation /
   overshoot — the key hero moves named, so motion is designed, not an afterthought.
-- `composition`: the staging approach (focal hierarchy, negative-space beats, the 9:16 AND 4:5
+- `composition`: the staging approach (focal hierarchy, negative-space beats, the 9:16 AND 1:1 square
   safe-area intent), and the one signature shot this piece will be remembered for.
 - `craft_advance`: the ONE engine system this run pushes forward (§4.3a) and how.
 
@@ -1034,8 +1123,36 @@ config/linkedin_caption_rubric.yaml (ship 8.5, zero hard_fails). Loop until both
 
 ## PHASE 7: DELIVER, FULLY DONE (no pending states)
 
-0. **THE SHIP GATE, AND IT RUNS FIRST.** Encode everything (step 1), rebuild the review
-   evidence from THAT encode, have the 3-judge panel grade THAT evidence, then:
+0. **THE SHIP GATE, AND IT RUNS FIRST.** Encode everything (step 1), then run the
+   dead-space meter on the SQUARE CUT before you spend a panel on it:
+
+       python3 scripts/dead_space_check.py --every 30
+       python3 scripts/text_fit_check.py
+
+   `text_fit_check.py` asserts that every plated monospace string fits inside the plate
+   drawn behind it. Run it BEFORE the render, not after: it reads the engine source and
+   needs no frames, so it is the cheapest gate in the run and it catches the single most
+   repeated defect in this film's history. Three strings shipped past every other gate in
+   one cut, one of them scored a hard blocker and held to the final frame of both
+   deliverables. The failure is always the same: type gets resized to answer a legibility
+   note and the plate behind it does not get re-measured. That is arithmetic, not taste,
+   and no judge should have to catch it.
+
+   Read its coverage line. It prints every string it could NOT measure and why. A pass
+   with a string you care about sitting in the "not measured" list is not a pass on that
+   string. The first build of this gate reported green while silently skipping the exact
+   blocker, because the plate's x was written `{540 - 358}` rather than as a bare number.
+
+   It samples the cut that ships, reports low-information area per shot, and EXITS 1 on a
+   regression. Rewritten 2026-08-04 because the previous version read PNGs from a directory
+   the pipeline has never produced and returned 0 no matter what it measured, so it was
+   skipped on every run while the panel kept finding empty frames by eye. Read its own
+   docstring before trusting a pass: it measures texture-free area, NOT whether a shot has a
+   subject, and the ceilings are a ratchet against regression rather than a bar. A green
+   meter does not mean the shots are populated.
+
+   Then rebuild the review evidence from THAT encode, have the 3-judge panel grade THAT
+   evidence, then:
 
        python3 scripts/ship_gate.py record --judges <j1>,<j2>,<j3>
        python3 scripts/ship_gate.py check
@@ -1085,8 +1202,11 @@ config/linkedin_caption_rubric.yaml (ship 8.5, zero hard_fails). Loop until both
    of that instruction and it exits 1 until two real cuts exist. Note it is NOT part of this
    delivery sequence and must never be added to it — it refuses stops, ship_gate refuses ships.
 
-1. Encode 9:16 master + 4:5 center-crop (H.264 High, faststart, AAC 48k, -14 LUFS, each
-   < 100 MB); ffprobe-assert 1080x1920 and 1080x1350 so a wrong-ratio cut can never ship.
+1. Encode 9:16 master + 1:1 SQUARE center-crop (H.264 High, faststart, AAC 48k, -14 LUFS, each
+   < 100 MB); ffprobe-assert 1080x1920 and 1080x1080 so a wrong-ratio cut can never ship.
+   The square crop is `crop=1080:1080:0:420` off the 1080x1920 master (centred vertically).
+   A 1080x1350 cut is NOT the LinkedIn deliverable and must never be labelled as the main-feed
+   cut; see the PLATFORMS section for the evidence and for why that error survived one fix.
    ALSO encode the MOBILE FEED RENDITION from the 9:16 master -- the alaskaaihq.com/videos
    feed serves this to phones (the 1080p master is 15MB+; phones need ~3-6MB to feel
    TikTok-smooth):
@@ -1112,7 +1232,7 @@ config/linkedin_caption_rubric.yaml (ship 8.5, zero hard_fails). Loop until both
    note so the owner knows the site feed is stale and why. Title/caption rules: the title is
    the run's display title (the storyboard/treatment title, short); the caption uses only
    verified fact-check-safe-set language, no clickbait beyond what the sources support.
-3. dispatch_email.py (NO --temporary): post text, 4:5-primary download buttons, poster, VOICE
+3. dispatch_email.py (NO --temporary): post text, 1:1-square-primary download buttons, poster, VOICE
    credit ("Gemini native TTS, voice Sulafat, model gemini-3.1-flash-tts-preview; preset voice
    with a SynthID watermark, not a clone") plus the vo_report.json sound-check scorecard, MUSIC
    credit with composer + license, SOURCES with per-figure attribution,

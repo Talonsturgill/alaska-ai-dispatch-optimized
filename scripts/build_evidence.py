@@ -1,0 +1,112 @@
+#!/usr/bin/env python3
+"""Build the panel evidence pack, with sample times DERIVED FROM THE SHIPPED TAKE.
+
+WHY THIS EXISTS (2026-08-03). The evidence pack for this run's first panel was cut at
+STORYBOARD times while the shipped take's line starts differ by up to ~12s. The result
+was that two of the three motion filmstrips sampled windows in which nothing was
+happening: the punch fires at 38.1s and the strip was cut at 40.0, the drain runs
+74.1 to 76.5 and the strip was cut at 74.0 and caught only its first 0.27s. All three
+judges then reported, correctly and independently, that the film's signature events
+"do not happen on screen", and the panel median came in at 6.43 against a 7.5 bar on
+evidence that misrepresented the film.
+
+That is the same class of bug as the 2026-07-15 stale-frame incident: an artifact read
+BY PATH that looked plausible and was wrong. The fix is the same shape, a code guard
+rather than a doctrine note. Filmstrip centres are now computed from vo_lines.json plus
+a named offset INTO the line, so re-synthesising the voice moves the evidence with the
+picture exactly as it moves the scenes.
+
+Usage: python3 scripts/build_evidence.py [--video out/dispatch/dispatch_square.mp4]
+"""
+import argparse, glob, json, os, subprocess, sys
+
+REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+OUT = os.path.join(REPO, "out", "dispatch")
+EV = os.path.join(REPO, "out", "evidence")
+
+# (name, vo_line, seconds INTO that line where the move actually peaks)
+MOVES = [
+    # CONTACT is 20 frames (0.67s) after the line start: 10 rear-back + 6 hold + 4 drive.
+    # The strip is 8 frames (0.27s) centred on the offset, so 0.35 sampled 38.34-38.60 and
+    # the impact at 38.79 fell OUTSIDE it. Second time this class of bug has cost a panel
+    # round; the offset must be the CONTACT time, not the line start plus a guess.
+    # THE MONEY. The contact sheet samples every ~5.8s and the stamp beat lands at 15.1s,
+    # between two samples, so a judge reported that the exact figure "does not appear on
+    # screen at any sampled second" and marked claims c1's stated safeguard unmet. It was
+    # on screen the whole time. The film's single most important frame gets its own strip.
+    ("award", 2, 4.75),      # the OBLIGATED stamp presses and $1,588,147 lands
+    ("punch", 7, 0.78),      # the punch head drives and cuts the window
+    ("drain", 15, 1.30),     # the ember wash tears loose and runs off frame
+    ("windows", 16, 1.10),   # the apertures open across the map and harden
+    # A CHARACTER SHOT. A judge pointed out that none of the strips covered a frame with a
+    # human in it, so idle life on the five held figures could not be confirmed or refuted
+    # from the pack, and said so rather than assuming a freeze. That is an evidence gap, not
+    # a film defect, and it is the pack's job to close it.
+    ("crew", 14, 2.50),      # the three-person crew with no day to go on
+]
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--video", default=os.path.join(OUT, "dispatch_square.mp4"))
+    ap.add_argument("--frames", type=int, default=14)
+    a = ap.parse_args()
+
+    lines = json.load(open(os.path.join(OUT, "vo_lines.json")))["lines"]
+    start = {L["idx"]: L["start"] for L in lines}
+    end = max(L["end"] for L in lines)
+
+    os.makedirs(EV, exist_ok=True)
+    for f in glob.glob(os.path.join(EV, "*.jpg")):
+        os.remove(f)
+
+    from PIL import Image, ImageDraw
+
+    # ---- contact sheet, evenly spread across the real runtime ----
+    times = [round(end * (i + 0.5) / a.frames, 2) for i in range(a.frames)]
+    paths = []
+    for t in times:
+        p = os.path.join(EV, f"f{t:05.1f}.jpg")
+        subprocess.run(["ffmpeg", "-y", "-ss", str(t), "-i", a.video, "-frames:v", "1",
+                        "-q:v", "3", p, "-v", "error"], check=True)
+        paths.append((t, p))
+    ims = [(t, Image.open(p).convert("RGB")) for t, p in paths]
+    w, h = ims[0][1].size
+    tw, th = int(w * 0.32), int(h * 0.32)
+    cols = 5
+    rows = (len(ims) + cols - 1) // cols
+    sheet = Image.new("RGB", (cols * tw, rows * (th + 18)), "white")
+    d = ImageDraw.Draw(sheet)
+    for i, (t, im) in enumerate(ims):
+        x, y = (i % cols) * tw, (i // cols) * (th + 18)
+        sheet.paste(im.resize((tw, th)), (x, y))
+        d.text((x + 4, y + th + 3), f"t={t:.1f}s", fill="black")
+    sheet.save(os.path.join(EV, "contact_square.jpg"), quality=90)
+    print(f"contact sheet: {len(ims)} frames across {end:.1f}s ->", sheet.size)
+
+    # ---- motion filmstrips, CENTRED ON THE REAL MOVE ----
+    for name, line, off in MOVES:
+        if line not in start:
+            print(f"  SKIP {name}: vo line {line} missing")
+            continue
+        centre = start[line] + off
+        t0 = max(0.0, centre - 0.13)          # 8 frames at 30fps spans ~0.27s
+        subprocess.run(["ffmpeg", "-y", "-ss", f"{t0:.3f}", "-i", a.video, "-frames:v", "8",
+                        "-vsync", "0", "-q:v", "3",
+                        os.path.join(EV, f"s_{name}_%d.jpg"), "-v", "error"], check=True)
+        g = sorted(glob.glob(os.path.join(EV, f"s_{name}_*.jpg")),
+                   key=lambda q: int(q.rsplit("_", 1)[1].split(".")[0]))
+        xs = [Image.open(q).convert("RGB") for q in g]
+        t2, h2 = int(w * 0.22), int(h * 0.22)
+        st = Image.new("RGB", (len(xs) * t2, h2), "white")
+        for i, im in enumerate(xs):
+            st.paste(im.resize((t2, h2)), (i * t2, 0))
+        st.save(os.path.join(EV, f"filmstrip_{name}.jpg"), quality=90)
+        for q in g:
+            os.remove(q)
+        print(f"  filmstrip {name}: vo line {line} +{off}s -> centred {centre:.2f}s, "
+              f"strip starts {t0:.2f}s")
+
+
+if __name__ == "__main__":
+    main()

@@ -70,13 +70,13 @@ case "$MODE" in
   draft)
     COMP="${2:-${RUN_COMP:-Dispatch}}"; assert_comp "$COMP"; OUT="../out/dispatch/render/draft.mp4"; [[ -n "${3:-}" ]] && OUT="$(resolve_out "$3")"
     exec npx remotion render src/index.ts "$COMP" "$OUT" \
-      --props="$PROPS" --codec=h264 --muted --concurrency=2 \
+      --props="$PROPS" --codec=h264 --muted --concurrency=4 \
       --scale=0.5 --crf=30 --every-nth-frame=1
     ;;
   final)
     COMP="${2:-${RUN_COMP:-Dispatch}}"; assert_comp "$COMP"; OUT="../out/dispatch/render/video_mute.mp4"; [[ -n "${3:-}" ]] && OUT="$(resolve_out "$3")"
     exec npx remotion render src/index.ts "$COMP" "$OUT" \
-      --props="$PROPS" --codec=h264 --muted --concurrency=2 --crf=19
+      --props="$PROPS" --codec=h264 --muted --concurrency=4 --crf=19
     ;;
   still)
     FRAME="${2:?frame number}"; COMP="${3:-${RUN_COMP:-Dispatch}}"; assert_comp "$COMP"

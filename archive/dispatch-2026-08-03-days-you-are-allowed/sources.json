@@ -1,0 +1,48 @@
+{
+  "run_date": "2026-08-03",
+  "title": "THE DAYS YOU ARE ALLOWED TO BURN",
+  "note": "Every figure, date and characterisation on screen traces to the NSF award record for award 2536745, which the run orchestrator fetched and read directly from api.nsf.gov rather than accepting from a subagent summary. The two supporting items were verified independently by the fact-check.",
+  "sources": [
+    {
+      "title": "NSF Award 2536745 — Collaborative Research: FIRE-WUI: A research-informed fire weather toolkit to advance controlled burning in Alaska",
+      "url": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2536745",
+      "api_url": "https://api.nsf.gov/services/v1/awards.json?id=2536745&printFields=abstractText,title,fundsObligatedAmt,startDate,expDate,pdPIName,program",
+      "what_it_carries": "the $1,588,147 figure, the 07/31/2026 obligation date, the Sept 1 2026 to Aug 31 2030 project period, PI Christine F. Waigl, the University of Alaska Fairbanks as awardee, the full verbatim abstract (prescribed burning as a proven strategy, underused in Alaska, the state lacking forecasting tools, the Prescribed Fire and Smoke Planner, the Canadian Forest Fire Weather Index, statistical and machine-learning techniques, the municipal / federal / Tribal / non-profit governance mix, and the new four-year wildland fire management program), and NSF's own program-element list which includes 'Artificial Intelligence (AI)'.",
+      "primary": true,
+      "note": "The nsf.gov/awardsearch HTML page is JavaScript-rendered and returns an empty template to an automated fetcher. The API is the working primary source and is what was actually read."
+    },
+    {
+      "title": "NSF Award 2536746 — the companion award to the University of Washington",
+      "url": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2536746",
+      "what_it_carries": "FIRE-WUI is a TWO-AWARD collaborative project. UAF's award is $1,588,147, which is what the film says, but the project as a whole is UAF plus the University of Washington under the same title and abstract. Disclosed here so the film's figure is never mistaken for the project total.",
+      "primary": true
+    },
+    {
+      "title": "Alaska Fire & Fuels — about the Canadian Forest Fire Weather Index in Alaska",
+      "url": "https://akff.mesowest.org/about/",
+      "what_it_carries": "independent corroboration that Alaska runs its fire danger on the Canadian system: 'Alaska has used the Canadian Forest Fire Danger Rating System's (CFFDRS) Fire Weather Index (FWI) system since 1992.' Built under contract between the Alaska Fire Service and University of Utah MesoWest.",
+      "primary": true
+    }
+  ],
+  "verified_absences": [
+    {
+      "claim": "no liability or insurance provision appears in this award",
+      "how_verified": "the complete abstractText and the full award record were read; the words liability, insurance, indemnity and escaped do not occur anywhere in either. The film states this as a gap in THIS AWARD and never as a claim that Alaska has no liability law."
+    }
+  ],
+  "cut_after_fact_check": [
+    {
+      "item": "the Alphabet Hills prescribed fire, summer 2026",
+      "why": "The burn was ANNOUNCED for mid-to-late July 2026 and the fact-check could find no evidence it was ever ignited. A past-tense 'they set this fire on purpose' line would have been unsupported, so it was dropped from the film entirely rather than shipped hedged."
+    },
+    {
+      "item": "the Tok Fire Prevention Area burn permit suspension of Aug 1, and the 52 percent human-caused figure",
+      "why": "Both VERIFIED true, and both cut anyway by the angle room as category errors. A burn permit governs a private landowner's debris pile while a prescribed fire is an agency operation under a written prescription, and the 52 percent figure counts ACCIDENTAL ignitions while this award is about deliberate ones. Either would have told a knowledgeable Alaskan the film did not know the difference."
+    },
+    {
+      "item": "Alaska season-to-date acres burned",
+      "why": "The fact-check could not reproduce the figure on a second read of the same page, which meant it had been synthesized by the fetch layer rather than transcribed. Cut."
+    }
+  ],
+  "illustrative_note": "The film shows a scatter of burnable-day windows on the Alaska map. Those are ILLUSTRATIVE. The project has not started and has published no day counts, which is why the windows are drawn as dashed outlines that harden rather than as a tally, and why the second counter shows a dash rather than a number."
+}

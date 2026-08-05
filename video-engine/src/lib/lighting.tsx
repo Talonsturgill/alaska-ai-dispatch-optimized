@@ -705,3 +705,63 @@ export const accentAllowedAt = (
   if (!lic) return true;
   return lic.rects.some((r) => x >= r.x && x <= r.x + r.w && y >= r.y && y <= r.y + r.h);
 };
+
+// -------------------------------------------------------------------------------------------
+// THE EXTENT OVERLOAD — craft advance 2026-08-03, closing a logged deferral rather than
+// carrying it a third run.
+//
+// The 2026-08-01 run shipped the registry above and recorded its own honest limitation in
+// ASSET_MANIFEST.md: "the check is POINT-based while most accents are extents." That is not a
+// cosmetic gap. A point check licenses a SHAPE by its anchor, so a rect whose centre sits inside
+// a licensed region passes even when half of it hangs outside — the accent leaks and the render
+// still succeeds, which is precisely the silent-pass failure the registry exists to stop.
+//
+// This film makes the gap load-bearing. Its reserved hue marks BURNABLE DAYS, and every one of
+// them is drawn as a window with a real width and height. Under the point check a window could be
+// licensed by its centre and still spill the film's one focal signal across the frame. So the
+// extent form requires the WHOLE bbox to sit inside a SINGLE licensed rect. Single, not the union:
+// a bbox straddling two adjacent licences is exactly the case a caller thinks is fine and is not,
+// because the gap between two rects is unlicensed by construction.
+// -------------------------------------------------------------------------------------------
+
+/** Test seam for the extent form: the whole w-by-h box at (x,y) must sit inside ONE licensed rect. */
+export const accentExtentAllowedAt = (
+  licenses: AccentLicense[], hue: string, x: number, y: number, w: number, h: number,
+): boolean => {
+  const lic = licenses.find((l) => norm(l.hue) === norm(hue));
+  if (!lic) return true;
+  // normalise so a caller may pass negative width/height without silently defeating the check
+  const x0 = Math.min(x, x + w), x1 = Math.max(x, x + w);
+  const y0 = Math.min(y, y + h), y1 = Math.max(y, y + h);
+  return lic.rects.some((r) => x0 >= r.x && x1 <= r.x + r.w && y0 >= r.y && y1 <= r.y + r.h);
+};
+
+/**
+ * Ask for a reserved hue across an EXTENT. Returns the hue if the whole box is licensed, THROWS if not.
+ *
+ *   const accentBox = useAccentExtent();
+ *   <rect x={x} y={y} width={w} height={h} fill={accentBox(BURNABLE, x, y, w, h)} />
+ *
+ * Use this for anything with a real size (a window, a bar, a fill region). Keep useAccent() for
+ * genuine points (a dot, a lamp centre, a stroke terminus).
+ */
+export const useAccentExtent = () => {
+  const licenses = React.useContext(AccentCtx);
+  return React.useCallback((hue: string, x: number, y: number, w: number, h: number): string => {
+    const lic = licenses.find((l) => norm(l.hue) === norm(hue));
+    if (!lic) return hue;                       // not a reserved colour, nothing to police
+    if (!accentExtentAllowedAt(licenses, hue, x, y, w, h)) {
+      throw new Error(
+        `[AccentRegistry] the reserved hue ${hue} was painted across the box ` +
+        `(${Math.round(x)}, ${Math.round(y)}) ${Math.round(w)}x${Math.round(h)}, which is not ` +
+        `wholly inside any single licensed rect for it. In this film ${hue} means "${lic.means}". ` +
+        `A point check would have passed this box on its anchor alone while part of it spilled ` +
+        `outside the licence, which is the leak the extent form exists to catch. Either shrink the ` +
+        `element, widen the licence in the scene's accents[], or use a non-reserved colour. ` +
+        `Note a box straddling TWO adjacent rects still fails, because the gap between them is ` +
+        `unlicensed by construction.`
+      );
+    }
+    return hue;
+  }, [licenses]);
+};

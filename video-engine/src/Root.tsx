@@ -26,6 +26,7 @@ import { BenchLook } from './BenchLook';
 import { Ep0730, ep0730Schema } from './Ep0730';
 import { Ep0731, ep0731Schema } from './Ep0731';
 import { Ep0802, ep0802Schema } from './Ep0802';
+import { Ep0803, ep0803Schema } from './Ep0803';
 
 const standoffSchema = z.object({
   yesCount: z.number(),
@@ -41,6 +42,19 @@ const standoffSchema = z.object({
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      <Composition
+        id="Dispatch0803"
+        component={Ep0803}
+        durationInFrames={2800}
+        fps={30}
+        width={1080}
+        height={1920}
+        schema={ep0803Schema}
+        defaultProps={{ captions: [] }}
+        calculateMetadata={({ props }) => ({
+          durationInFrames: (props as { total?: number }).total ?? 2800,
+        })}
+      />
       <Composition
         id="Dispatch0729"
         component={Ep0729}

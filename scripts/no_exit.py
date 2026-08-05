@@ -62,9 +62,43 @@ RENDER = OUT / "render"
 STAMP = OUT / ".run_stamp.json"
 ROUGHCUT = OUT / "roughcut.mp4"
 
-# Same list ship_gate.py binds its hashes to. A run has "a video" when the two cuts a
-# viewer could actually receive exist and carry real streams.
-DELIVERABLES = ["master_9x16.mp4", "master_4x5.mp4"]
+# THE TWO CUTS A VIEWER COULD ACTUALLY RECEIVE.
+#
+# HARDENED 2026-08-03, and this was a REAL HOLE that let a run stop with a finished
+# film on disk. The list used to read ["master_9x16.mp4", "master_4x5.mp4"] under
+# out/dispatch/render/, and the pipeline has never written those paths: Phase 7 encodes
+# out/dispatch/dispatch_master.mp4 and out/dispatch/dispatch_4x5.mp4. So this gate could
+# never see a delivered film. It refused every stop identically whether the run had ten
+# shots encoded or nothing at all, which is worse than not existing, because a gate that
+# is always red teaches the run to stop reading it. On 2026-08-03 the run encoded both
+# cuts, passed every audio and structure gate, and still wrote a PR body explaining what
+# was unfinished plus a "did not ship" notification, without ever invoking this check.
+#
+# Each entry is a list of ACCEPTED PATHS, relative to out/dispatch/, newest naming first.
+DELIVERABLES = [
+    ("9:16 master", ["dispatch_master.mp4", "render/master_9x16.mp4"]),
+    # dispatch_4x5.mp4 USED TO BE LISTED HERE AS AN ALIAS AND THAT WAS A HOLE (2026-08-04).
+    # 4:5 is the aspect this routine deliberately moved AWAY from, because LinkedIn routes
+    # anything taller than square into the swipe-only Video tab, so accepting a 1080x1350
+    # file as proof of "the 1:1 square cut" let the gate be satisfied by the exact mistake
+    # the encode script exists to prevent. Worse, a judge found a stale 4:5 from the PREVIOUS
+    # DAY still sitting in out/dispatch carrying the old VO ("paid" where the record says
+    # obligated), a PI name missing its middle initial, plates that no longer exist in the
+    # film and text clipped at both frame edges. That file satisfied this gate.
+    ("1:1 square LinkedIn cut", ["dispatch_square.mp4", "render/master_4x5.mp4"]),
+]
+
+# A FILM ON DISK IS NOT A DELIVERED FILM. The second half of the hole: even with the
+# paths corrected this gate only ever asked whether BYTES existed, so a run could encode
+# both cuts, look at them, and still stop without the draft that puts the film in front
+# of the owner. Delivery is what the routine promises, so delivery is what this checks.
+# scripts/dispatch_email.py writes this receipt after the Gmail connector accepts a draft.
+DRAFT_RECEIPT = "gmail_draft_receipt.json"
+
+# A deliverable OLDER than the mute render is a leftover from a previous cut, not this run's
+# film. This is how a day-old 4:5 with the wrong voice track sat in the run directory for a
+# whole session looking like a finished artifact.
+FRESHNESS_REFERENCE = "render_mute.mp4"
 
 MIN_BYTES = 200_000          # anything smaller is a stub, not a film
 MIN_SECONDS = 30.0           # the format band is 84-96s; 30 is a generous floor for "a film"
@@ -92,12 +126,13 @@ def video_state():
     """The honest state of this run's film. Returns (delivered: bool, lines: list[str])."""
     lines = []
     delivered = True
-    for name in DELIVERABLES:
-        p = RENDER / name
-        if not p.exists():
-            lines.append(f"  MISSING  {name}")
+    for label, candidates in DELIVERABLES:
+        p = next((OUT / c for c in candidates if (OUT / c).exists()), None)
+        if p is None:
+            lines.append(f"  MISSING  {label} (looked for {', '.join(candidates)})")
             delivered = False
             continue
+        name = f"{label} [{p.name}]"
         size = p.stat().st_size
         info = probe(p)
         if info is None:
@@ -106,6 +141,11 @@ def video_state():
             continue
         secs, has_v, has_a = info
         problems = []
+        # STALE-DELIVERABLE GUARD. A cut older than the render it is supposed to come from is
+        # a leftover, and a leftover looks exactly like a finished artifact from the outside.
+        ref = OUT / FRESHNESS_REFERENCE
+        if ref.exists() and p.stat().st_mtime + 1 < ref.stat().st_mtime:
+            problems.append(f"older than {FRESHNESS_REFERENCE}, so it is a previous cut")
         if size < MIN_BYTES:
             problems.append(f"{size} bytes is a stub")
         if secs < MIN_SECONDS:
@@ -119,8 +159,28 @@ def video_state():
             delivered = False
         else:
             lines.append(f"  OK       {name} ({secs:.1f}s, {size/1e6:.1f} MB, video+audio)")
-    return delivered, lines
+    # ---- THE DELIVERY LEG. Bytes on disk are not a delivered film. -------------
+    # This is the half of the hole that survived the path fix: with the paths correct
+    # the gate said "this run may end" while no draft existed anywhere, which is exactly
+    # the state the 2026-08-03 run stopped in. The routine promises the owner a draft in
+    # their inbox, so the gate asks for the receipt, not for the encode.
+    receipt = OUT / DRAFT_RECEIPT
+    if not receipt.exists():
+        lines.append(f"  MISSING  the Gmail draft. Both cuts encode, and nobody has been")
+        lines.append(f"           handed the film. Run scripts/dispatch_email.py and hand")
+        lines.append(f"           the payload to the Gmail connector, then write")
+        lines.append(f"           out/dispatch/{DRAFT_RECEIPT}.")
+        delivered = False
+    else:
+        try:
+            r = json.loads(receipt.read_text())
+            lines.append(f"  OK       Gmail draft {r.get('draft_id', '(no id)')} "
+                         f"to {r.get('to', '?')} at {r.get('created_at', '?')}")
+        except (OSError, ValueError) as e:
+            lines.append(f"  UNREADABLE  {DRAFT_RECEIPT} ({e})")
+            delivered = False
 
+    return delivered, lines
 
 def elapsed_note():
     if not STAMP.exists():

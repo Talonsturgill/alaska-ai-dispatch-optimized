@@ -1,0 +1,982 @@
+{
+ "run_date": "2026-08-03",
+ "title": "THE DAYS YOU ARE ALLOWED TO BURN",
+ "engine": "infographic-2.5d",
+ "derived_from": "scratch",
+ "concept": "Alaska has mapped the days you must not burn in exhaustive detail and has never mapped the days you can. NSF paid UAF $1,588,147 on July 31 to have machine learning read decades of weather and find them. The film draws prohibition as an edgeless flood and permission as a hard-edged cut window, so a muted viewer can tell them apart by silhouette alone.",
+ "angle": {
+  "run_date": "2026-08-03",
+  "thesis": "Alaska has spent decades mapping the days you must not burn, and nobody has mapped the days you can, so NSF paid UAF $1,588,147 to have machine learning read decades of weather and find them.",
+  "valence": "celebratory",
+  "valence_defense": "All three analysts landed here independently. The claim is about a funding decision, which is complete, dated and verified, not about acres burned. NSF looked at Alaska's fire problem on 2026-07-31, agreed the binding constraint is that nobody can tell an Alaskan which days are safe to burn, and paid to fix exactly that. Reaching for mixed would mean manufacturing a downside, which config/brand.yaml bans. Celebratory WITH THE CLOCK SHOWN is the honest register.",
+  "supporting_facts": [
+   "THE VERB INVERSION, and it is the funder's framing not ours. Almost every wildfire-and-AI story is about detecting or fighting fire. This award is about identifying 'windows of conditions favorable for safe prescribed burning'. It is a permission calendar, not a detection system.",
+   "IT IS A PORT, NOT A MOONSHOT. The Prescribed Fire and Smoke Planner already runs across the contiguous United States. The Alaska job is rebuilding it on the Canadian Forest Fire Weather Index system 'on which Alaska's fire management relies'. The Lower 48 tool does not fail here because Alaska is cold, it fails because Alaska runs a different index than the tool speaks.",
+   "NSF'S OWN AWARD RECORD carries an 'Artificial Intelligence (AI)' program element alongside 'FIRE-Wildland Fire', so the AI framing belongs to the funder.",
+   "THE MONEY BUYS SOMETHING THAT OUTLIVES IT: a curriculum for a new four-year wildland fire management program at UAF. Money leaves and models age, a degree program stays."
+  ],
+  "fair_counterpoint_it_must_honor": "The forecast is not the whole chain, and the film says so on screen. Nothing reaches a burn boss until the award ends on 2030-08-31. A perfect burn-window calendar still does not clear a burn plan, settle a smoke complaint, staff a crew, or get a neighbour's consent. And liability for an escaped prescribed fire, which practitioners name as the real blocker, appears nowhere in this award. The honest version is that the forecast is the upstream input every other link depends on, not that it finishes the job.",
+  "runners_up": [
+   {
+    "lens": "systems analyst",
+    "thesis": "NSF refused to buy only the tool, splitting the award across the forecast, the consent layer and a degree, which is money aimed at the whole chain instead of the legible link.",
+    "why_it_lost": "It is a meta-argument about grant design rather than about Alaska, and a muted viewer cannot see 'well-shaped award'. GRAFTED: its fourth box, outlined and empty and labeled LIABILITY with no arrow into it, becomes the film's fair counter-point image."
+   },
+   {
+    "lens": "practitioner",
+    "thesis": "The machine learning matters less as a fire tool than as a consent tool, converting a burn boss's private judgment into a shared calendar four institutions can argue over from the same page.",
+    "why_it_lost": "It is the most sophisticated read in the room and it needs a beat of setup the hook cannot afford. GRAFTED WHOLESALE AS ACT 2: the sheet slides sideways and three more pairs of hands come into frame around it. One person guessing becomes four people reading."
+   }
+  ],
+  "cuts_the_room_agreed_on": [
+   "THE TOK BURN PERMIT SUSPENSION. Caught by the enthusiast and it is a real category error, not a taste call. A suspended burn permit governs a private landowner's debris pile. A prescribed fire is an agency operation with a burn boss and a written prescription. Different activities, different authorities. Stacking them into one ironic beat would tell a knowledgeable Alaskan in one second that the film does not know the difference. CUT, although it was the orchestrator's own favourite hook.",
+   "THE 52 PERCENT HUMAN-CAUSED FIGURE. All three analysts cut it independently. Human-caused there means ACCIDENTAL ignition, and this award is about DELIBERATE ignition. Putting them together invites a viewer to fuse 'people start too many fires' with 'this project has people start fires', which argues against the piece by accident.",
+   "THE FOUR CO-PI NAMES. Waigl as PI is enough attribution for ninety seconds. A roster read-out is credits, not story."
+  ],
+  "story_question": "Which days is an Alaskan actually allowed to light a fire on purpose, and why has nobody counted them?"
+ },
+ "treatment": {
+  "winner": "THE ENTHUSIAST, drawn honestly with the clock shown",
+  "judge_reasoning": "All three analysts independently returned celebratory, so the room did not need a tiebreak on valence, it needed the best DRAWING of it. The enthusiast supplied the inverted map, which states the entire thesis in one silent shot and loops back to frame one. The systems analyst's outlined empty LIABILITY box was grafted in as the fair counter-point at 72.6s, because it draws the film's own limit instead of narrating it. The practitioner's four-hands-around-one-sheet was grafted wholesale as Act 2, because it answers what a count is actually FOR. The comedian lens was not convened, deliberately: this story has no villain and a personified-object gag aimed at a village's land authorities would be exactly the cheap shot the brand bans.",
+  "grafts": [
+   "inverted map (enthusiast) as the signature shot and button",
+   "empty LIABILITY box (systems analyst) as the fair counter-point",
+   "four hands on one sheet (practitioner) as the whole of Act 2"
+  ]
+ },
+ "fingerprint": {
+  "pov": "map-overhead",
+  "motion_vector": "radial-bleed",
+  "hero_treatment": "absence-as-subject",
+  "layout": "field-fill",
+  "register": "smoke-diffused-infographic",
+  "camera_strategy": "anchored-reveal",
+  "light_story": "smoke-flat-with-one-hard-aperture",
+  "palette": "sun-blocked amber haze #e8c9a4 over tan duff #6b4a3a and near-black boreal spruce #1f3833, ember orange #e2571f as the prohibition, chalk enamel #e6e2d6 and oxidized steel #7d8f92 for every instrument, and a single cool spring green #3fbf7f spent only on a day you are allowed to burn",
+  "metaphor": "a prohibition drawn as a flood with no edge, and a permission drawn as a window punched clean through it, so the thing nobody counted is the only object in the film with a border"
+ },
+ "palette": "sun-blocked amber haze, tan duff, near-black spruce, ember orange prohibition, chalk enamel and oxidized steel instruments, a single cool green permission",
+ "binding_palette_rule": "#3fbf7f MEANS A DAY YOU MAY BURN AND NOTHING ELSE. It is first licensed at the PUNCH (41.90s), where the window's interior carries it while the hard beam it throws stays bone #f2e8d8, so the accent lives on the aperture and the light stays uncoloured. Shots 1 to 4 license NOTHING, because no safe day has been asserted yet. Enforced at paint time by the AccentRegistry, using this run's craft advance useAccentExtent, because every licensed green here is a window with a real width and height and a point check would license one by its centre while its edges spilled outside. NO chalk-enamel APPEARS ANYWHERE IN THIS FILM.",
+ "divergence_note": "The last two dispatches were 2026-07-31, a cool pale-blue sky over tan gravel with a citron accent and a rules-kit hero, and 2026-08-02, a near-black interior bench room lit by one hard chalk-enamel practical with a rhyolite magenta accent and a sample-reading hero. This film is neither. It is a HIGH-KEY WARM EXTERIOR in amber smoke with no cool sky anywhere in it, its light plan is deliberately the inverse of 08-02 (smoke kills shadow, so there is almost no key, very high fill, and low contrast, with exactly one hard-edged beam in the whole film), and its accent is pushed to a COOL BLUE-GREEN specifically so it does not rhyme with 07-31's yellow-green citron. The hero is net-new and fills a real gap: every instrument on the shelf reads a PLACE or a THING and nothing on it reads TIME. The dominant move is a VERTICAL PUNCH against 08-02's horizontal traverse. PALETTE CORRECTION made at Gate 0A: the first draft reached for warm chalk-enamel instruments, which the divergence check caught as a repeat of the 08-02 world's chalk-enamel-plus-one-accent structure. chalk-enamel is gone from this film entirely. The instruments are CHALK ENAMEL and OXIDIZED STEEL, a cool dry pairing that reads as field equipment rather than bench hardware and sits deliberately against the warm haze instead of joining it.",
+ "cultural_note": "The film names the four governing entities in the NSF abstract's own words, MUNICIPAL / FEDERAL / TRIBAL / NON-PROFIT, as neutral chalk-enamel plates of equal size and weight. No Alaska Native organization is characterized, given a face, or made the subject of a gag, and no Native iconography or Native-language word appears. The four-hands beat deliberately shows four equal parties around one document, never a hierarchy and never a holdout.",
+ "hook": {
+  "pattern": "anomaly-question",
+  "frame1": "the state of Alaska under an ember wash that bleeds past its own coastline, with TWO chalk-enamel counters bolted at the frame edge, the left one already blurring and the right one dark at zero, and a pulaski icon in the corner",
+  "headline": "Which days are you allowed to burn",
+  "motion_by_s": 0.4,
+  "loopback": "the last shot is the same overhead Alaska with the wash drained off it and hard-edged windows open in its place, and the corner pulaski flips to a drip torch"
+ },
+ "open_loop": {
+  "plant_t": 15.26,
+  "pay_t": 89.62,
+  "what": "A blank date plate swings in on the stamp stroke at 15.26s and stays EMPTY. The film never mentions it again for 74.4 seconds. At 89.62s the windows open and the plate finally carries a date, and the date is 2030, which is the honest answer rather than the flattering one."
+ },
+ "reveals": [
+  {
+   "t": 44.43,
+   "type": "scale-pullback",
+   "what": "the camera pulls back off one punched window until the whole season stands in frame, nearly solid, so the count is felt as a size rather than read as a number",
+   "hold_s": 1.2
+  },
+  {
+   "t": 73.26,
+   "type": "build-on",
+   "what": "three arrows drive into three boxes and fill them while a fourth stays a wide dashed void",
+   "hold_s": 0.5
+  },
+  {
+   "t": 89.62,
+   "type": "morph-to-chart",
+   "what": "the wash drains off the Alaska map and the same landmass re-lights as hard-edged windows, the prohibition map inverted into a permission map",
+   "hold_s": 1.2
+  }
+ ],
+ "audio_arc": {
+  "build_steps": [
+   0.0,
+   8.35,
+   33.35,
+   66.71
+  ],
+  "riser_at": 85.93,
+  "dip_at": 88.92,
+  "silence_at": 89.27,
+  "payoff_at": 89.62,
+  "button_pattern": "callback",
+  "note": "exactly ONE riser in the piece, at the drain. The 44s pullback was demoted to a run of hole-ticks after Gate 0C counted two risers."
+ },
+ "shots": [
+  {
+   "n": 1,
+   "framing": "map-territory",
+   "scale": "wide",
+   "height": "overhead",
+   "pov": "map-overhead",
+   "layout": "field-fill",
+   "motion_vector": "radial-bleed",
+   "hero_treatment": "absence-as-subject",
+   "camera": "craneDown",
+   "stage3d": "planes",
+   "t": [
+    0.0,
+    8.1
+   ],
+   "centered": "the state drowning in an edgeless wash with two counters at the frame edge, one blurring and one dark at zero",
+   "means": "open on the prohibition and the absence in the same frame",
+   "hero": {
+    "name": "the Alaska field under the wash, with the paired counters",
+    "parts": 7,
+    "zones": 3,
+    "detail_note": "coastline with real inlets and the Aleutian tail, interior relief hatching as a substance not a fill, the ember wash bleeding PAST the coast so it has no border, two chalk-enamel counters bolted at the frame edge with digit windows, mount screws and a swinging ID tag, and the pulaski corner icon planted here for the button 90s later. Dark anchor: near-black spruce band #1f3833 along the lower third."
+   }
+  },
+  {
+   "n": 2,
+   "framing": "data-panel",
+   "scale": "medium",
+   "height": "eye",
+   "pov": "bench-frontal",
+   "layout": "paired-objects",
+   "motion_vector": "vertical-drop",
+   "hero_treatment": "object-as-actor",
+   "camera": "craneDown+dollyThrough",
+   "stage3d": "planes",
+   "t": [
+    8.1,
+    17.95
+   ],
+   "centered": "two chalk-enamel plates seating into the haze and the figure stamping between them",
+   "means": "name the actors as physical objects before the film uses them",
+   "hero": {
+    "name": "the two countersunk chalk-enamel name plates and the stamp",
+    "parts": 6,
+    "zones": 2,
+    "detail_note": "machined bevel, four countersunk screw heads with slot detail, engraved lettering with a cut shadow inside each stroke, brushedMetal on the oxidized-steel stamp body, and a tight high-opacity occlusion shadow under each plate that is EXEMPT from the lifted floor. Dark anchor: the shadowed bench face #1f3833 behind the plates."
+   },
+   "transition_in": "graphic-match",
+   "thread": "match"
+  },
+  {
+   "n": 3,
+   "framing": "subject-portrait",
+   "scale": "close",
+   "height": "ground",
+   "pov": "ground-level",
+   "layout": "horizon-band",
+   "motion_vector": "lateral-crawl",
+   "hero_treatment": "human-scale",
+   "camera": "truckAcross",
+   "stage3d": "planes",
+   "t": [
+    17.95,
+    28.93
+   ],
+   "centered": "a gloved hand tilting a drip torch and a low deliberate flame line crawling through duff",
+   "means": "show the verb the whole film turns on, a fire a person starts on purpose",
+   "hero": {
+    "name": "the gloved hand and drip torch over the duff cross-section",
+    "parts": 8,
+    "zones": 3,
+    "detail_note": "canvas glove with stitched seams and a knuckle crease, torch body with a fuel-level window, coiled wick spout, hinged lid latch, a flame bead leaving the spout with follow-through, and the duff drawn as three shaded strata so fuel is a substance. Dark anchor: near-black spruce trunks filling the upper third."
+   },
+   "transition_in": "match-action",
+   "thread": "carry"
+  },
+  {
+   "n": 4,
+   "framing": "push-detail",
+   "scale": "insert",
+   "height": "low",
+   "pov": "bench-frontal",
+   "layout": "single-object-void",
+   "motion_vector": "vertical-drop",
+   "hero_treatment": "absence-as-subject",
+   "camera": "dollyThrough",
+   "stage3d": "planes",
+   "t": [
+    28.93,
+    33.1
+   ],
+   "centered": "one empty machined cradle in a rack of filled ones, found by a lamp",
+   "means": "the instrument that would answer the question has never been built",
+   "hero": {
+    "name": "the empty cradle in the rack",
+    "parts": 5,
+    "zones": 2,
+    "detail_note": "machined cradle with locating pins and a wear witness mark, filled cradles either side left DARK so the empty one is the only lit thing, dust settling through the lamp cone, and a true void interior. Dark anchor: the unlit rack body #1f3833 filling most of frame."
+   },
+   "transition_in": "hard-cut",
+   "thread": "build"
+  },
+  {
+   "n": 5,
+   "framing": "two-up",
+   "scale": "medium",
+   "height": "eye",
+   "pov": "instrument-three-quarter",
+   "layout": "paired-objects",
+   "motion_vector": "horizontal-feed",
+   "hero_treatment": "mechanism-cutaway",
+   "camera": "orbitReveal",
+   "stage3d": "planes",
+   "t": [
+    33.1,
+    46.26
+   ],
+   "centered": "the engine assembling into the cradle, the intake re-cut, and the punch driving one window through the stock",
+   "means": "the machine built, fed and finally asserting a single safe day",
+   "hero": {
+    "name": "the BurnWindowEngine, first look, through the punch",
+    "parts": 11,
+    "zones": 3,
+    "detail_note": "chalk-enamel and oxidized-steel housing with fabrication rings, intake throat with re-cuttable sprocket teeth, weather ribbon with printed density, classifier plates behind glass, a lamp bezel DARK until the punch, brow bar over two lidded eyes, vent slots, rivets, and a punch head reusing bench.tsx CoringTube's hardened cutting shoe and head weight rather than re-authoring it. Dark anchor: the machine's own dark cutaway interior and vent slots behind the enamel housing."
+   },
+   "transition_in": "assemble",
+   "thread": "build"
+  },
+  {
+   "n": 6,
+   "framing": "alt-vantage",
+   "scale": "wide",
+   "height": "high",
+   "pov": "table-overhead",
+   "layout": "radial-convergence",
+   "motion_vector": "inward-converge",
+   "hero_treatment": "multiplicity-swarm",
+   "camera": "riseWith",
+   "stage3d": "planes",
+   "t": [
+    46.26,
+    57.67
+   ],
+   "centered": "the punched sheet pushed across a plank table, then four hatched fields colliding over one piece of ground",
+   "means": "the count handed over, and the ground it has to be agreed on",
+   "hero": {
+    "name": "the punched sheet on the plank table and the four-way overlap",
+    "parts": 8,
+    "zones": 3,
+    "detail_note": "plank table with visible grain and end-joins as the DARK ANCHOR, the sheet with its bevelled punched windows and a curled corner, light falling through the holes onto the planks, four hatched jurisdiction fields in four distinct hatch angles, and four chalk-enamel plates each with its own engraving. No party is characterized or given a face."
+   },
+   "transition_in": "pull-out",
+   "thread": "carry"
+  },
+  {
+   "n": 7,
+   "framing": "push-detail",
+   "scale": "close",
+   "height": "low",
+   "pov": "hands-close",
+   "layout": "single-object-void",
+   "motion_vector": "rotational",
+   "hero_treatment": "multiplicity-swarm",
+   "camera": "truckAcross",
+   "stage3d": "planes",
+   "t": [
+    57.67,
+    66.46
+   ],
+   "centered": "four pairs of hands stopping short of one sheet, then four plates turning to face each other, seen close and low across the planks",
+   "means": "one person guessing becomes four parties reading, which is what a count is for",
+   "hero": {
+    "name": "four hands and four turning plates around one sheet",
+    "parts": 8,
+    "zones": 3,
+    "detail_note": "four pairs of hands in four distinct sleeve treatments (canvas, wool, oilskin, plain cuff) so the parties read as different without any being caricatured, each plate rotating about its own centre with a detent, the sheet flat and lit from beneath through its own punched holes. Dark anchor: the plank table."
+   },
+   "transition_in": "match-cut",
+   "thread": "carry"
+  },
+  {
+   "n": 8,
+   "framing": "data-panel",
+   "scale": "medium",
+   "height": "eye",
+   "pov": "chart-frontal",
+   "layout": "timeline-axis",
+   "motion_vector": "horizontal-traverse",
+   "hero_treatment": "absence-as-subject",
+   "camera": "truckAcross",
+   "stage3d": "planes",
+   "t": [
+    66.46,
+    77.87
+   ],
+   "centered": "a 2026 to 2030 rule snapping in, four stands burning past it, and a fourth box that nothing ever enters",
+   "means": "the clock and the gap, both drawn rather than narrated",
+   "hero": {
+    "name": "the funding rule, the four burning stands and the wide dashed void",
+    "parts": 7,
+    "zones": 3,
+    "detail_note": "a machined rule with year ticks and season marks, three filled boxes each taking a fat arrow, and a fourth box in a deliberately WIDE LANDSCAPE aspect (every burn window is portrait) with a dashed contour, NO bevel, and haze visibly drifting THROUGH its true void interior, so the absence can never be confused with an aperture in silhouette. Dark anchor: the near-black chart ground #1f3833."
+   },
+   "transition_in": "hard-cut",
+   "thread": "build"
+  },
+  {
+   "n": 9,
+   "framing": "wide-establish",
+   "scale": "wide",
+   "height": "eye",
+   "pov": "ground-level",
+   "layout": "horizon-band",
+   "motion_vector": "slow-push",
+   "hero_treatment": "human-scale",
+   "camera": "dollyThrough",
+   "stage3d": "planes",
+   "t": [
+    77.87,
+    85.54
+   ],
+   "centered": "a fire crew at the edge of the spruce with the torch unlit and a blank sheet in the boss's hand",
+   "means": "the argument made physical, a crew that can't go because no day has been called safe",
+   "hero": {
+    "name": "the waiting fire crew",
+    "parts": 7,
+    "zones": 3,
+    "detail_note": "three figures at roughly 20 percent of frame height so they read as PEOPLE rather than specks, hard hats with brim shadow, vest webbing, one unlit drip torch swinging against a boot, a blank day sheet, boot occlusion shadows in the duff, and the engine reduced to a pale enamel speck deep in the haze plane. Dark anchor: the spruce wall behind them."
+   },
+   "transition_in": "match-cut",
+   "thread": "match"
+  },
+  {
+   "n": 10,
+   "framing": "map-territory",
+   "scale": "wide",
+   "height": "overhead",
+   "pov": "map-overhead",
+   "layout": "field-fill",
+   "motion_vector": "drain-downward",
+   "hero_treatment": "absence-as-subject",
+   "camera": "craneDown",
+   "stage3d": "planes",
+   "t": [
+    85.54,
+    93.9
+   ],
+   "centered": "the same Alaska from frame one as the wash drains off it and hard-edged windows open in its place",
+   "means": "the loopback and the whole thesis in one shot, prohibition inverted into permission",
+   "hero": {
+    "name": "the inverted Alaska field",
+    "parts": 7,
+    "zones": 3,
+    "detail_note": "the same coastline and relief as shot 1 for an exact loopback, the wash tearing loose and running off in sheets with trailing edges, then 11 windows opening across the Interior, each at least 44px on its short side with a 3px bevel, DASHED first and hardening to solid, ONE hero window at 2x near frame centre carrying the only date, and the dead counter finally lighting to show a DASH rather than a number. The pulaski corner icon flips to a drip torch."
+   },
+   "transition_in": "morph",
+   "thread": "match"
+  }
+ ],
+ "beats": [
+  {
+   "t": 0.0,
+   "title": "THE WASH FLOODS OUT",
+   "vo_line": 0,
+   "vo": "Alaska has spent decades mapping the days you must not burn.",
+   "draw": {
+    "subject": "the state of Alaska with two counters bolted at the frame edge",
+    "action": "an ember wash BURSTS out from the Interior and SWALLOWS the coastline, spilling past the map's own edge",
+    "emotion": "oppressive, unbounded",
+    "annotation": "WHICH DAYS ARE YOU ALLOWED TO BURN"
+   },
+   "shows": "THE WASH FLOODS",
+   "sfx": "digit-snap",
+   "means": "open on the prohibition, drawn with no edge so it can't be argued with, with both counters already in frame",
+   "choreo": {
+    "primary": "the wash bursts out and overruns the coastline",
+    "reaction": "the left counter's first digit SNAPS over",
+    "ambient": "haze bands drifting across the plate"
+   }
+  },
+  {
+   "t": 2.98,
+   "title": "THE COUNTER RUNS AWAY",
+   "vo_line": 0,
+   "vo": "Alaska has spent decades mapping the days you must not burn.",
+   "draw": {
+    "subject": "the left tally counter, chalk enamel",
+    "action": "its digit wheel SPINS up until it blurs and the mount screws rattle loose a turn",
+    "emotion": "indifferent",
+    "annotation": "DAYS YOU MUST NOT BURN"
+   },
+   "shows": "THE COUNTER RUNS",
+   "sfx": "tick-roll",
+   "means": "a number that only goes one way is not a decision aid",
+   "choreo": {
+    "primary": "the digit wheel spins up into blur",
+    "reaction": "the ID tag swings off the mount",
+    "ambient": "the wash still creeping behind it"
+   }
+  },
+  {
+   "t": 5.05,
+   "title": "THE SECOND COUNTER IS DEAD",
+   "vo_line": 1,
+   "vo": "Nobody has mapped the days you can.",
+   "draw": {
+    "subject": "the right counter, already in frame since 0.0",
+    "action": "its lamp stays DARK and its window holds at ZERO while a dust puff lifts off the housing",
+    "emotion": "hollow",
+    "annotation": "DAYS YOU CAN, 0"
+   },
+   "shows": "THE OTHER COLUMN IS EMPTY",
+   "sfx": "hollow-pop",
+   "means": "the premise in one prop, and it pays a counter the viewer has been looking at since frame 1",
+   "choreo": {
+    "primary": "the dark counter holds at zero",
+    "reaction": "the spinning counter blurs on beside it",
+    "ambient": "dust settling through the haze"
+   }
+  },
+  {
+   "t": 8.84,
+   "title": "NSF SETS DOWN",
+   "vo_line": 2,
+   "vo": "On July thirty first, the National Science Foundation paid the University of Alaska Fairbanks one point six million dollars to find them.",
+   "draw": {
+    "subject": "a countersunk chalk-enamel plate reading NATIONAL SCIENCE FOUNDATION",
+    "action": "it DROPS out of the haze and SEATS with weight, throwing a tight occlusion shadow",
+    "emotion": "declarative",
+    "annotation": "NATIONAL SCIENCE FOUNDATION"
+   },
+   "shows": "NSF SETS DOWN",
+   "sfx": "plate-set",
+   "means": "name the funder as an object before the film uses it",
+   "choreo": {
+    "primary": "the plate drops and seats",
+    "reaction": "the duff compresses under it and puffs",
+    "ambient": "haze closing over the drop path"
+   }
+  },
+  {
+   "t": 11.96,
+   "title": "UAF SLIDES IN AND LOCKS",
+   "vo_line": 2,
+   "vo": "On July thirty first, the National Science Foundation paid the University of Alaska Fairbanks one point six million dollars to find them.",
+   "draw": {
+    "subject": "a second plate reading UNIVERSITY OF ALASKA FAIRBANKS",
+    "action": "it SLIDES in laterally and LOCKS under the first plate's lip with a detent",
+    "emotion": "declarative",
+    "annotation": "UNIVERSITY OF ALASKA FAIRBANKS / Christine Waigl, principal investigator"
+   },
+   "shows": "UAF LOCKS IN",
+   "sfx": "plate-slide-lock",
+   "means": "a DIFFERENT physical event from the first plate, so the pair is two beats and not one stretched over two",
+   "choreo": {
+    "primary": "the plate slides in and locks under the lip",
+    "reaction": "the first plate jumps on the detent",
+    "ambient": "haze drift"
+   }
+  },
+  {
+   "t": 15.41,
+   "title": "THE FIGURE STAMPS",
+   "vo_line": 2,
+   "vo": "On July thirty first, the National Science Foundation paid the University of Alaska Fairbanks one point six million dollars to find them.",
+   "draw": {
+    "subject": "the exact award figure",
+    "action": "a stamp DRIVES down between the plates and strikes the figure into the ground with an impact star",
+    "emotion": "emphatic",
+    "annotation": "$1,588,147 obligated July 31, 2026"
+   },
+   "shows": "THE FIGURE STAMPS",
+   "sfx": "stamp-hit",
+   "means": "the number lands as a physical event, and it is the exact one, not the rounded one",
+   "choreo": {
+    "primary": "the stamp drives down and strikes",
+    "reaction": "3px screen shake and an impact star",
+    "ambient": "a dust ring expanding from the strike"
+   },
+   "open_loop_plant": true,
+   "plant_note": "the blank date plate swings in on the same stroke and stays EMPTY"
+  },
+  {
+   "t": 18.4,
+   "title": "THE TORCH TILTS",
+   "vo_line": 3,
+   "vo": "A prescribed burn is a fire you set on purpose, so a wildfire has less to eat.",
+   "draw": {
+    "subject": "a gloved hand holding a drip torch",
+    "action": "the hand TILTS the torch and a bead of flame FALLS free and lands in the duff",
+    "emotion": "deliberate, unhurried",
+    "annotation": "A FIRE YOU SET ON PURPOSE"
+   },
+   "shows": "THE TORCH TILTS",
+   "sfx": "torch-drip",
+   "means": "the verb, drawn. A person choosing, not a disaster",
+   "choreo": {
+    "primary": "the flame bead falls and lands",
+    "reaction": "the duff catches and flares small",
+    "ambient": "smoke lifting off the strike point"
+   }
+  },
+  {
+   "t": 22.06,
+   "title": "THE LINE CRAWLS",
+   "vo_line": 3,
+   "vo": "A prescribed burn is a fire you set on purpose, so a wildfire has less to eat.",
+   "draw": {
+    "subject": "a low flame line in black spruce duff",
+    "action": "it CRAWLS left to right at walking pace, eating the fuel layer and leaving bare ground behind it",
+    "emotion": "controlled",
+    "annotation": "less for a wildfire to eat"
+   },
+   "shows": "THE LINE CRAWLS",
+   "sfx": "fuel-crackle",
+   "means": "the mechanism made visible, low and slow and nothing like a wildfire",
+   "choreo": {
+    "primary": "the flame line advances across frame",
+    "reaction": "the duff bar behind it collapses a notch",
+    "ambient": "smoke sheeting off to the right"
+   }
+  },
+  {
+   "t": 26.22,
+   "title": "ONE TREATED PATCH",
+   "vo_line": 4,
+   "vo": "It works, and Alaska barely uses it.",
+   "draw": {
+    "subject": "a row of spruce stands with one treated patch",
+    "action": "the treated patch PASSES a fixed frame register and a stand-counter CLICKS once, then runs on untreated",
+    "emotion": "stark",
+    "annotation": "RARELY USED HERE"
+   },
+   "shows": "BARELY USED",
+   "sfx": "register-click",
+   "means": "the underuse as a ratio you can see, with a motivated click instead of a mood tone",
+   "choreo": {
+    "primary": "the treated patch passes the register and clicks",
+    "reaction": "the counter holds while untreated stands keep passing",
+    "ambient": "haze thickening to the far plane"
+   }
+  },
+  {
+   "t": 29.73,
+   "title": "THE CRADLE IS EMPTY",
+   "vo_line": 5,
+   "vo": "N S F says Alaska lacks the forecasting tools.",
+   "draw": {
+    "subject": "a machined cradle in a rack of filled ones",
+    "action": "a lamp SNAPS on over it and finds the cradle EMPTY, dust still settling in the hollow",
+    "emotion": "expectant",
+    "annotation": "NSF: the state lacks the forecasting tools"
+   },
+   "shows": "THE MISSING INSTRUMENT",
+   "sfx": "lamp-snap",
+   "means": "REHOOK. The instrument has never been built, and the empty cradle rhymes with the dead ZERO counter at the open",
+   "choreo": {
+    "primary": "the lamp snaps on and lands on an empty cradle",
+    "reaction": "dust drifts down through the beam",
+    "ambient": "the filled cradles either side sit dark"
+   },
+   "rehook": "the thing that would answer the question has never existed"
+  },
+  {
+   "t": 33.68,
+   "title": "THE ENGINE ASSEMBLES",
+   "vo_line": 6,
+   "vo": "So the Fairbanks team is reading decades of weather with machine learning, hunting for the days that were safe.",
+   "draw": {
+    "subject": "the BurnWindowEngine, chalk enamel and oxidized steel",
+    "action": "it ASSEMBLES into the empty cradle, panel by panel, and a reel DROPS into its spool",
+    "emotion": "absorbed",
+    "annotation": "the machine that reads time"
+   },
+   "shows": "THE ENGINE ARRIVES",
+   "sfx": "assemble-clack",
+   "means": "the instrument the previous beat said was missing is built in front of you, which is why the cradle had to be empty first",
+   "choreo": {
+    "primary": "the housing assembles and the reel drops in",
+    "reaction": "the cradle takes the weight and settles",
+    "ambient": "haze moving past the housing"
+   }
+  },
+  {
+   "t": 36.47,
+   "title": "THE INTAKE IS RE-CUT",
+   "vo_line": 6,
+   "vo": "So the Fairbanks team is reading decades of weather with machine learning, hunting for the days that were safe.",
+   "draw": {
+    "subject": "a ribbon arriving from the Lower 48 whose sprocket gauge will not fit",
+    "action": "the ribbon JAMS at the intake, and the intake teeth are RE-CUT to the Alaska index before it threads through",
+    "emotion": "problem-solving",
+    "annotation": "Prescribed Fire and Smoke Planner, re-cut to the Canadian Fire Weather Index"
+   },
+   "shows": "THE RE-CUT",
+   "sfx": "gauge-jam",
+   "means": "the port drawn as a physical mismatch. The Lower 48 tool does not fail here because Alaska is cold, it fails because Alaska runs a different index",
+   "choreo": {
+    "primary": "the ribbon jams, the teeth re-cut, the ribbon threads",
+    "reaction": "the reel takes up the slack with a snap",
+    "ambient": "haze"
+   }
+  },
+  {
+   "t": 39.81,
+   "title": "THE REJECT CHUTE",
+   "vo_line": 6,
+   "vo": "So the Fairbanks team is reading decades of weather with machine learning, hunting for the days that were safe.",
+   "draw": {
+    "subject": "the engine's cutaway interior",
+    "action": "a classifier plate SLAMS shut on a day and EJECTS it down a chute onto a growing reject pile",
+    "emotion": "methodical",
+    "annotation": "statistical and machine-learning techniques (NSF)"
+   },
+   "shows": "THE SORT",
+   "sfx": "plate-slam",
+   "means": "the AI drawn as a sorting mechanism, labelled in the funder's own words",
+   "choreo": {
+    "primary": "the plate slams and ejects a day down the chute",
+    "reaction": "the reject pile grows and slumps sideways",
+    "ambient": "the ribbon running on behind it"
+   }
+  },
+  {
+   "t": 41.9,
+   "title": "THE PUNCH",
+   "vo_line": 7,
+   "vo": "That isn't a forecast. It's a count of safe days.",
+   "draw": {
+    "subject": "the punch head above the day ribbon",
+    "action": "it COMPRESSES, stalls, then DRIVES down and cuts one hard-edged window clean through the stock",
+    "emotion": "decisive",
+    "annotation": "ONE SAFE DAY"
+   },
+   "shows": "THE PUNCH",
+   "sfx": "punch-hit",
+   "means": "the film's single hard light falls through the hole and is HELD. A burnable day is literally an aperture in the smoke",
+   "choreo": {
+    "primary": "the punch drives down and cuts the window",
+    "reaction": "the waste slug curls away and drops, 3px shake",
+    "ambient": "clean unsmoked light held through the new hole"
+   },
+   "accent_first_license": true
+  },
+  {
+   "t": 44.28,
+   "title": "PULL BACK ALONG THE RIBBON",
+   "vo_line": 7,
+   "vo": "That isn't a forecast. It's a count of safe days.",
+   "draw": {
+    "subject": "the whole season of days",
+    "action": "the camera PULLS back off the one window until the season stands in frame, nearly solid, only a scatter of holes in it",
+    "emotion": "awe, then sobering",
+    "annotation": "a season, mostly closed"
+   },
+   "shows": "THE SCATTER",
+   "sfx": "hole-ticks",
+   "means": "REVEAL 1, scale-pullback. The count made physical, and it is small. A run of ticks, not a second riser",
+   "choreo": {
+    "primary": "the camera pulls back and the ribbon keeps arriving",
+    "reaction": "each punched hole ticks past the gate as it clears",
+    "ambient": "haze thinning as the frame widens"
+   },
+   "reveal": true,
+   "hold_s": 1.2
+  },
+  {
+   "t": 47.41,
+   "title": "THE SHEET IS PUSHED ACROSS",
+   "vo_line": 8,
+   "vo": "And a count is something you can hand to people who don't agree.",
+   "draw": {
+    "subject": "the punched sheet lifted off the machine deck",
+    "action": "a hand PUSHES the sheet across a plank table toward a second pair of hands and lets go",
+    "emotion": "offering",
+    "annotation": "A COUNT YOU CAN HAND OVER"
+   },
+   "shows": "HANDED ACROSS",
+   "sfx": "paper-push",
+   "means": "line 8 drawn literally. A count is something you can hand to somebody, so somebody hands it",
+   "choreo": {
+    "primary": "the sheet is pushed across and released",
+    "reaction": "the second pair of hands stops just short of it",
+    "ambient": "light through the punched holes onto the planks"
+   }
+  },
+  {
+   "t": 50.21,
+   "title": "THE PLANNER STAYS BEHIND",
+   "vo_line": 8,
+   "vo": "And a count is something you can hand to people who don't agree.",
+   "draw": {
+    "subject": "a weather map still pinned above the bench",
+    "action": "the map STAYS pinned while the sheet travels away from it down the table",
+    "emotion": "clarifying",
+    "annotation": "NOT A FORECAST. A COUNT."
+   },
+   "shows": "NOT A FORECAST",
+   "sfx": "pin-creak",
+   "means": "the distinction drawn as two objects going different ways, rather than one object exiting frame",
+   "choreo": {
+    "primary": "the sheet travels on and the map stays pinned",
+    "reaction": "the map's corner lifts in the draught",
+    "ambient": "haze"
+   }
+  },
+  {
+   "t": 52.59,
+   "title": "FOUR FIELDS COLLIDE",
+   "vo_line": 9,
+   "vo": "Because land around one village can answer to four governments at once.",
+   "draw": {
+    "subject": "a village on its land, seen from above",
+    "action": "four hatched jurisdiction fields SWEEP in from four sides and COLLIDE over the same ground, each one's plate HAMMERING down as it lands",
+    "emotion": "tangled",
+    "annotation": "MUNICIPAL / FEDERAL / TRIBAL / NON-PROFIT"
+   },
+   "shows": "THE OVERLAP",
+   "sfx": "sweep-hammer",
+   "means": "merged from two beats that ran the same four-from-four-sides move twice. One event, four impacts",
+   "choreo": {
+    "primary": "four fields sweep in and collide, four plates hammer down",
+    "reaction": "the overlap region darkens where all four cross",
+    "ambient": "haze over the whole plate"
+   }
+  },
+  {
+   "t": 55.57,
+   "title": "THE GROUND UNDER ALL FOUR",
+   "vo_line": 9,
+   "vo": "Because land around one village can answer to four governments at once.",
+   "draw": {
+    "subject": "the collided overlap region",
+    "action": "the camera PUSHES into the one patch of ground that carries all four hatches at once",
+    "emotion": "uncomfortable",
+    "annotation": "one piece of ground, four authorities"
+   },
+   "shows": "THE SHARED GROUND",
+   "sfx": "low-press",
+   "means": "the problem localized to a single patch, so the abstraction becomes a place",
+   "choreo": {
+    "primary": "the camera pushes into the four-way overlap",
+    "reaction": "the hatch lines tighten as it closes",
+    "ambient": "haze"
+   }
+  },
+  {
+   "t": 58.07,
+   "title": "FOUR HANDS ARRIVE",
+   "vo_line": 10,
+   "vo": "Four parties who've never had the same sheet of paper.",
+   "draw": {
+    "subject": "four pairs of hands",
+    "action": "they COME IN from four sides of the sheet and STOP short, none of them touching it",
+    "emotion": "wary",
+    "annotation": "never the same sheet of paper"
+   },
+   "shows": "FOUR HANDS",
+   "sfx": "cloth-rustle",
+   "means": "REHOOK. The count exists and the actual obstacle just walked in",
+   "choreo": {
+    "primary": "four pairs of hands enter and stop short",
+    "reaction": "the sheet's curled corner lifts in the draught",
+    "ambient": "haze"
+   },
+   "rehook": "the machine finished and the hard part just arrived"
+  },
+  {
+   "t": 62.77,
+   "title": "THE PLATES TURN TO FACE",
+   "vo_line": 11,
+   "vo": "So the grant pays to get those four talking.",
+   "draw": {
+    "subject": "the four plates around the table",
+    "action": "they ROTATE in place until all four face one another, and the four hands DROP onto the sheet's edges together",
+    "emotion": "resolving",
+    "annotation": "the grant pays for this part too"
+   },
+   "shows": "THE TURN",
+   "sfx": "plate-turn",
+   "means": "line 11 gets its own picture, the coordination, instead of borrowing the clock's",
+   "choreo": {
+    "primary": "the plates rotate to face one another and four hands land",
+    "reaction": "the sheet settles flat under them",
+    "ambient": "light through the holes onto the planks"
+   }
+  },
+  {
+   "t": 67.08,
+   "title": "THE RULE SNAPS IN",
+   "vo_line": 12,
+   "vo": "But it isn't finished. None of this reaches a fire crew until twenty thirty.",
+   "draw": {
+    "subject": "a 2026 to 2030 timeline",
+    "action": "a machined rule SNAPS into place and year ticks HAMMER in along it one at a time",
+    "emotion": "sobering",
+    "annotation": "Sept 1, 2026 to Aug 31, 2030"
+   },
+   "shows": "THE TIMELINE",
+   "sfx": "tick-hammer",
+   "means": "the clock, stated flat inside a celebratory piece, now under the line that actually says it",
+   "choreo": {
+    "primary": "the rule snaps in and the ticks hammer along it",
+    "reaction": "each tick strike jumps the rule",
+    "ambient": "haze behind the rule"
+   }
+  },
+  {
+   "t": 69.83,
+   "title": "FOUR SEASONS BURN PAST",
+   "vo_line": 12,
+   "vo": "But it isn't finished. None of this reaches a fire crew until twenty thirty.",
+   "draw": {
+    "subject": "four spruce stands along the timeline",
+    "action": "as the rule passes each stand it CATCHES, collapses and regrows, untreated, four times over",
+    "emotion": "patient, uncomfortable",
+    "annotation": "no crew reaches this until 2030"
+   },
+   "shows": "FOUR SEASONS",
+   "sfx": "burn-whump",
+   "means": "the cost of the wait, drawn rather than argued. Four discrete whumps, not one transition whoosh",
+   "choreo": {
+    "primary": "each stand catches, collapses and regrows in turn",
+    "reaction": "ash sheets blowing off each burn",
+    "ambient": "the rule continuing to draw right"
+   }
+  },
+  {
+   "t": 73.11,
+   "title": "THREE ARROWS STRIKE",
+   "vo_line": 13,
+   "vo": "And who pays when a burn escapes isn't in this award.",
+   "draw": {
+    "subject": "three boxes and a fourth",
+    "action": "three fat arrows DRIVE into three boxes and fill them, and the fourth stays a wide dashed void with nothing entering it",
+    "emotion": "honest",
+    "annotation": "LIABILITY, who pays when a burn escapes"
+   },
+   "shows": "THE EMPTY BOX",
+   "sfx": "arrow-strike",
+   "means": "the fair counter-point as an absence. The sound is on the three that actually strike",
+   "choreo": {
+    "primary": "three arrows drive in and the boxes fill",
+    "reaction": "the fourth box's dashed contour flickers once and holds",
+    "ambient": "haze drifting THROUGH the void interior"
+   }
+  },
+  {
+   "t": 75.76,
+   "title": "THE ARROW DISASSEMBLES",
+   "vo_line": 13,
+   "vo": "And who pays when a burn escapes isn't in this award.",
+   "draw": {
+    "subject": "the empty fourth box",
+    "action": "a fourth arrow head ENTERS, reaches the dashed contour, and comes APART into pieces that fall away",
+    "emotion": "still",
+    "annotation": "not in this award"
+   },
+   "shows": "THE ARROW COMES APART",
+   "sfx": "silence-hold",
+   "means": "a new motion rather than a repeat, and the film's one planned rest",
+   "choreo": {
+    "primary": "the arrow reaches the contour and disassembles",
+    "reaction": "the pieces drop out of frame",
+    "ambient": "haze drifting through the void"
+   }
+  },
+  {
+   "t": 78.91,
+   "title": "THE TORCH SWINGS DOWN",
+   "vo_line": 14,
+   "vo": "But nothing moves without that count. You can't staff a crew for a day nobody calls safe.",
+   "draw": {
+    "subject": "a fire crew at the edge of the spruce, torch unlit",
+    "action": "the crew boss's arm DROPS and the unlit torch swings down and knocks against a boot",
+    "emotion": "held, ready, waiting",
+    "annotation": "a crew with no day to go on"
+   },
+   "shows": "THE CREW WAITS",
+   "sfx": "torch-knock",
+   "means": "the argument made physical and human, now under the line that argues it",
+   "choreo": {
+    "primary": "the arm drops and the torch knocks the boot",
+    "reaction": "the other two shift their weight",
+    "ambient": "smoke sheeting past at knee height"
+   }
+  },
+  {
+   "t": 82.72,
+   "title": "THE BLANK SHEET LOWERS",
+   "vo_line": 14,
+   "vo": "But nothing moves without that count. You can't staff a crew for a day nobody calls safe.",
+   "draw": {
+    "subject": "the day sheet in the crew boss's hand",
+    "action": "the sheet comes up, shows NO punched window, and LOWERS out of the light",
+    "emotion": "resigned but not defeated",
+    "annotation": "no day called safe"
+   },
+   "shows": "THE BLANK SHEET",
+   "sfx": "paper-lower",
+   "means": "you can't staff a crew for a day nobody calls safe, drawn",
+   "choreo": {
+    "primary": "the sheet lifts, holds blank, and lowers",
+    "reaction": "the boss's shoulders drop a little",
+    "ambient": "haze closing over the crew"
+   }
+  },
+  {
+   "t": 85.93,
+   "title": "THE WASH DRAINS OFF",
+   "vo_line": 15,
+   "vo": "Alaska knows exactly which days it's in danger.",
+   "draw": {
+    "subject": "the Alaska map from frame one",
+    "action": "the ember wash TEARS loose from the coastline and RUNS off the bottom of frame in sheets",
+    "emotion": "release",
+    "annotation": "DAYS IN DANGER, mapped for decades"
+   },
+   "shows": "THE WASH DRAINS",
+   "sfx": "sheet-tear",
+   "means": "the loopback. The drain reveals that the wash WAS a perfect danger map, which is exactly what this line says",
+   "choreo": {
+    "primary": "the wash tears loose and runs off the bottom",
+    "reaction": "the coastline reappears behind it",
+    "ambient": "trailing edges whipping as they go"
+   },
+   "riser": true
+  },
+  {
+   "t": 89.62,
+   "title": "THE WINDOWS OPEN",
+   "vo_line": 16,
+   "vo": "Somebody is finally paid to count the days it's allowed.",
+   "draw": {
+    "subject": "the bare map",
+    "action": "hard-edged windows SNAP open across the Interior one after another, dashed at first, then HARDENING to solid bevelled apertures",
+    "emotion": "quiet wonder",
+    "annotation": "the days you are allowed, still to be counted"
+   },
+   "shows": "THE WINDOWS OPEN",
+   "sfx": "punch-soft",
+   "means": "REVEAL 2 and the signature shot, on the button line where it belongs. Drawn as dashed-then-hardening so the film never claims a count that does not exist yet",
+   "choreo": {
+    "primary": "windows snap open and harden across the map",
+    "reaction": "the dead ZERO counter finally lights, showing a dash not a number",
+    "ambient": "haze thinning off the plate"
+   },
+   "reveal": true,
+   "hold_s": 1.6,
+   "open_loop_pay": true
+  },
+  {
+   "t": 92.61,
+   "title": "THE PULASKI FLIPS",
+   "vo_line": 16,
+   "vo": "Somebody is finally paid to count the days it's allowed.",
+   "draw": {
+    "subject": "the corner icon planted since frame one",
+    "action": "the pulaski FLIPS on its hinge and LANDS as a drip torch, and nothing else in frame moves",
+    "emotion": "quietly decisive",
+    "annotation": "somebody is finally paid to count"
+   },
+   "shows": "THE SWAP",
+   "sfx": "hinge-tick",
+   "means": "the button. One icon carries the whole thesis change, and it has been on screen for ninety seconds",
+   "choreo": {
+    "primary": "the icon flips on its hinge and lands",
+    "reaction": "the hinge pin catches the light once",
+    "ambient": "the windows holding steady behind it"
+   }
+  }
+ ],
+ "shape_language_note": "THREE grammars, not two, declared after Gate 0D caught the collision. FLOOD is prohibition and has no edge. APERTURE is permission, hard-edged, bevelled, and always PORTRAIT. DASHED-UNFILLED is a stated absence (the 2026-07-30 RingedSealGhost precedent) and is always WIDE LANDSCAPE with NO bevel and visible haze drifting through its interior, so the liability void can never be mistaken for a burn window in silhouette."
+}

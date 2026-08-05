@@ -1,0 +1,19 @@
+Alaska has spent decades mapping the days you must not burn. Nobody has mapped the days you can.
+
+On July 31 the National Science Foundation obligated $1,588,147 to the University of Alaska Fairbanks to go find them.
+
+Almost everything I read about wildfire and AI is about spotting a fire or fighting one. This award is about the opposite verb. Prescribed burning is called a proven strategy in the award text, which then says it stays underused here because Alaska lacks both the forecasting tools and the community partnerships for it.
+
+Starting September 1 the team will adapt the Prescribed Fire and Smoke Planner, already used across the contiguous US, build in the Canadian Forest Fire Weather Index system Alaska fire management relies on, and run machine learning over decades of weather reanalysis to find the windows when a burn would be safe.
+
+What that produces isn't a fire warning. It's a calendar of the days that would have been safe. And a calendar is something you can put in front of people who don't agree, which matters in a place where governance and land management involve a mix of municipal, federal, Tribal and non-profit entities, NSF's own words.
+
+If calling this an AI story sounds like a stretch, it isn't mine to make. NSF's own program element list for the award reads Artificial Intelligence.
+
+Two limits. The project period doesn't start until September 1 and runs to August 31, 2030, so none of it reaches a crew this season. And liability. Who pays when a prescribed fire escapes doesn't appear in this award anywhere. I read the full record and the words liability, insurance and indemnity are not in it.
+
+I still think it's pointed at the right thing. You can't staff a crew, file a burn plan, or ask a neighbor to accept smoke, for a day nobody can call safe.
+
+So which one really moves prescribed fire in Alaska first, the forecast or the liability question?
+
+#Alaska #WildlandFire #MachineLearning #PrescribedFire #UAF

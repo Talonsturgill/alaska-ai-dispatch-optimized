@@ -1,0 +1,236 @@
+{
+  "run_date": "2026-08-03",
+  "title": "THE DAYS YOU ARE ALLOWED TO BURN",
+  "narrator": "Nora, an Alaska public-radio host: warm, grounded, quietly witty",
+  "voice": "Sulafat",
+  "notes": "Style: celebratory with the clock shown. A real win for Alaska, told plain, never hyped and never deflated. Quietly glad, with a dry half smile on the two throwaway lines (four and ten) and a level, unflinching tone through the limits in Act 3. Pace: measured, about 138 words per minute, filling a ninety second piece, with a real breath at every period and a further slow on the money figure and the year. Arc: curious open, brighter and more crowded through the middle, then a settle into the honest close. Lines one and sixteen are the two quietest moments and carry the most weight; they must land certain, not big. Phonetics: the script already carries every hard token in spoken form (N S F, July thirty first, one point six million dollars, twenty thirty) and no remaining proper noun needs respelling, so the transcript is left word-identical to vo_script.txt. Real spelling is restored on screen by caption_fixups.",
+  "style_prompt": "Style: warm, grounded, plainspoken, and quietly glad. This is genuinely good news for Alaska and it is told without hype, so let it be a real win rather than a sales pitch, with a dry half smile on the two throwaway lines. Three gears: a curious open, a brighter and busier middle where the problem gets crowded, then an honest, settled close that states the limits without sulking. The final two lines are the quietest and the most certain in the whole read; land them soft and sure, never triumphant.\nPace: MEASURED and unhurried, about 138 words per minute. This is a ninety second piece and the read must fill it, so give every sentence room to land and take a real breath at every period. Do not rush the numbers or the final two lines. Vary the tone line to line so no two sentences sound the same, but never trade clarity for speed.\nEmphasis: lean on the key word in each line; let numbers land. Slow just slightly on the money figure and on the year, then pick the pace straight back up.",
+  "arc": "Act 1 (0 to 5): a curious hook at 4, dropping to the quiet thesis at 2, then a bright news beat on the money at 4, easing into the definition and a dry aside. Act 2 (6 to 11): the mechanism lifts to 4, the correction drops to 2, then the film's top note at 5 on four governments, a wry drop, and a satisfied 4 to close the act. Act 3 (12 to 16): a two step downshift to 2 for the unfinished part, level at 3 for the liability gap, a conviction rise to 4 on the argument, then settling to 3 and finally to the quietest 1 of the read on the button.",
+  "energy_contour": [
+    4,
+    2,
+    4,
+    3,
+    2,
+    3,
+    4,
+    2,
+    3,
+    5,
+    2,
+    4,
+    2,
+    3,
+    4,
+    3,
+    1
+  ],
+  "contrast_check": "No two adjacent lines share an energy level (step 5 satisfied). Full 1 to 5 spread is used: peak 5 at line 9, floor 1 at line 16. Adjacent deltas range 1 to 3, with the largest single jump (9 to 10) sitting on the wry beat, which is where a human read naturally drops hardest.",
+  "tags_used": [
+    "[curious]",
+    "[short pause]",
+    "[wry]"
+  ],
+  "lines": [
+    {
+      "idx": 0,
+      "text": "[curious] Alaska has spent decades mapping the days you must not burn.",
+      "intent": "hook",
+      "emphasis": "not",
+      "energy": 4,
+      "pace": "measured, forward lean",
+      "tags": [
+        "[curious]"
+      ],
+      "pause_before": false,
+      "why": "Sets the frame the whole film flips. The lift on not is what makes the missing half audible before line one names it."
+    },
+    {
+      "idx": 1,
+      "text": "[short pause] Nobody has mapped the days you can.",
+      "intent": "reveal",
+      "emphasis": "can",
+      "energy": 2,
+      "pace": "slightly slower, unhurried",
+      "tags": [
+        "[short pause]"
+      ],
+      "pause_before": true,
+      "why": "The thesis and the shortest line in the script. Dropping two levels under the hook makes it land as a realization rather than an announcement."
+    },
+    {
+      "idx": 2,
+      "text": "On July thirty first, the National Science Foundation paid the University of Alaska Fairbanks one point six million dollars to find them.",
+      "intent": "stat",
+      "emphasis": "million",
+      "energy": 4,
+      "pace": "measured, easing just slightly through the figure",
+      "tags": [],
+      "pause_before": false,
+      "why": "The news beat and the proof somebody agreed. Bright after the quiet thesis, with the number given room so it does not blur past the ear."
+    },
+    {
+      "idx": 3,
+      "text": "A prescribed burn is a fire you set on purpose, so a wildfire has less to eat.",
+      "intent": "setup",
+      "emphasis": "purpose",
+      "energy": 3,
+      "pace": "even, informative, still moving",
+      "tags": [],
+      "pause_before": false,
+      "why": "Plain definition for the viewer who needs it. Even and unshowy so the explanation does not compete with the news beat before it."
+    },
+    {
+      "idx": 4,
+      "text": "It works, and Alaska barely uses it.",
+      "intent": "wry",
+      "emphasis": "barely",
+      "energy": 2,
+      "pace": "quicker, a light throwaway",
+      "tags": [],
+      "pause_before": false,
+      "why": "A dry beat that earns its irony by underplaying it. Dropping the energy here also keeps the definition from turning into a lecture."
+    },
+    {
+      "idx": 5,
+      "text": "N S F says Alaska lacks the forecasting tools.",
+      "intent": "setup",
+      "emphasis": "lacks",
+      "energy": 3,
+      "pace": "measured, firmer, attributed",
+      "tags": [],
+      "pause_before": false,
+      "why": "This is the funder's diagnosis, not ours, so it firms up out of the aside and reads as citation rather than opinion."
+    },
+    {
+      "idx": 6,
+      "text": "So the Fairbanks team is reading decades of weather with machine learning, hunting for the days that were safe.",
+      "intent": "reveal",
+      "emphasis": "hunting",
+      "energy": 4,
+      "pace": "measured, engine of the piece",
+      "tags": [],
+      "pause_before": false,
+      "why": "The mechanism, and the most active verb in the script. Lifting here gives Act 2 its motor and sets up the correction that follows."
+    },
+    {
+      "idx": 7,
+      "text": "That isn't a forecast. It's a count of safe days.",
+      "intent": "reveal",
+      "emphasis": "count",
+      "energy": 2,
+      "pace": "slower, precise, two clean beats",
+      "tags": [],
+      "pause_before": false,
+      "why": "A correction, so it pulls in rather than pushes out. The drop from four makes the precision feel deliberate instead of pedantic."
+    },
+    {
+      "idx": 8,
+      "text": "And a count is something you can hand to people who don't agree.",
+      "intent": "stakes",
+      "emphasis": "hand",
+      "energy": 3,
+      "pace": "grounded, a touch warmer",
+      "tags": [],
+      "pause_before": false,
+      "why": "The turn from machine to people begins here. Warmer and a step up, opening the door to the four parties."
+    },
+    {
+      "idx": 9,
+      "text": "Because land around one village can answer to four governments at once.",
+      "intent": "reveal",
+      "emphasis": "four",
+      "energy": 5,
+      "pace": "measured, brightest point of the read",
+      "tags": [],
+      "pause_before": false,
+      "why": "The film's top note: the complication a viewer feels in their gut. Genuine surprise, not outrage, and the one line that earns a five."
+    },
+    {
+      "idx": 10,
+      "text": "[wry] Four parties who've never had the same sheet of paper.",
+      "intent": "wry",
+      "emphasis": "never",
+      "energy": 2,
+      "pace": "quicker, dropped, half smile",
+      "tags": [
+        "[wry]"
+      ],
+      "pause_before": false,
+      "why": "The biggest fall in the read. Underplaying the absurdity is what makes it funny and keeps the piece off the soapbox."
+    },
+    {
+      "idx": 11,
+      "text": "So the grant pays to get those four talking.",
+      "idx_note": "closes Act 2",
+      "intent": "stakes",
+      "emphasis": "talking",
+      "energy": 4,
+      "pace": "measured, resolved",
+      "tags": [],
+      "pause_before": false,
+      "why": "A small satisfying resolution, and the lift is what makes the two level drop into the unfinished part read as a gear change."
+    },
+    {
+      "idx": 12,
+      "text": "But it isn't finished. [short pause] None of this reaches a fire crew until twenty thirty.",
+      "intent": "stakes",
+      "emphasis": "twenty thirty",
+      "energy": 2,
+      "pace": "settle, slight slow onto the year",
+      "tags": [
+        "[short pause]"
+      ],
+      "pause_before": false,
+      "why": "The act break. Settling the voice signals the film is about to argue against itself, and the year gets room to sting on its own."
+    },
+    {
+      "idx": 13,
+      "text": "And who pays when a burn escapes isn't in this award.",
+      "intent": "stakes",
+      "emphasis": "pays",
+      "energy": 3,
+      "pace": "level, unflinching, no editorial curl",
+      "tags": [],
+      "pause_before": false,
+      "why": "The gap stated flat. Any lean here would sound like a gotcha; level delivery keeps the honesty honest."
+    },
+    {
+      "idx": 14,
+      "text": "But nothing moves without that count. You can't staff a crew for a day nobody calls safe.",
+      "intent": "stakes",
+      "emphasis": "nothing",
+      "energy": 4,
+      "pace": "measured, conviction, second sentence riding straight on",
+      "tags": [],
+      "pause_before": false,
+      "why": "The argument, and the rise that keeps Act 3 from deflating. This is where the read takes its position out loud."
+    },
+    {
+      "idx": 15,
+      "text": "Alaska knows exactly which days it's in danger.",
+      "intent": "button",
+      "emphasis": "danger",
+      "energy": 3,
+      "pace": "slowing, settled",
+      "tags": [],
+      "pause_before": false,
+      "why": "First half of the button pair, echoing line zero. Coming down off the argument sets the floor the last line drops through."
+    },
+    {
+      "idx": 16,
+      "text": "[short pause] Somebody is finally paid to count the days it's allowed.",
+      "intent": "button",
+      "emphasis": "allowed",
+      "energy": 1,
+      "pace": "slowest of the read, direct, no lift at the end",
+      "tags": [
+        "[short pause]"
+      ],
+      "pause_before": true,
+      "why": "The quietest line in the film and the one that has to land. Certainty, not triumph: a statement set down, not a flourish."
+    }
+  ],
+  "assembled_prompt": "Read ONLY the transcript below aloud as speech. The lines above \"Transcript:\" are direction; never speak them.\n# AUDIO PROFILE: Nora, an Alaska public-radio host: warm, grounded, quietly witty. Neutral American accent, light and natural, not announcer-y.\n### DIRECTOR'S NOTES\nStyle: warm, grounded, plainspoken, and quietly glad. This is genuinely good news for Alaska and it is told without hype, so let it be a real win rather than a sales pitch, with a dry half smile on the two throwaway lines. Three gears: a curious open, a brighter and busier middle where the problem gets crowded, then an honest, settled close that states the limits without sulking. The final two lines are the quietest and the most certain in the whole read; land them soft and sure, never triumphant.\nPace: MEASURED and unhurried, about 138 words per minute. This is a ninety second piece and the read must fill it, so give every sentence room to land and take a real breath at every period. Do not rush the numbers or the final two lines. Vary the tone line to line so no two sentences sound the same, but never trade clarity for speed.\nEmphasis: lean on the key word in each line; let numbers land. Slow just slightly on the money figure and on the year, then pick the pace straight back up.\nTranscript:\n[curious] Alaska has spent decades mapping the days you must not burn.\n[short pause] Nobody has mapped the days you can.\nOn July thirty first, the National Science Foundation paid the University of Alaska Fairbanks one point six million dollars to find them.\nA prescribed burn is a fire you set on purpose, so a wildfire has less to eat.\nIt works, and Alaska barely uses it.\nN S F says Alaska lacks the forecasting tools.\nSo the Fairbanks team is reading decades of weather with machine learning, hunting for the days that were safe.\nThat isn't a forecast. It's a count of safe days.\nAnd a count is something you can hand to people who don't agree.\nBecause land around one village can answer to four governments at once.\n[wry] Four parties who've never had the same sheet of paper.\nSo the grant pays to get those four talking.\nBut it isn't finished. [short pause] None of this reaches a fire crew until twenty thirty.\nAnd who pays when a burn escapes isn't in this award.\nBut nothing moves without that count. You can't staff a crew for a day nobody calls safe.\nAlaska knows exactly which days it's in danger.\n[short pause] Somebody is finally paid to count the days it's allowed.\n",
+  "pace_correction": "First synth returned takes of 70.7 to 80.6s against an accepted band of 84 to 96s. 206 words in 75.9s is about 163 wpm, well above the measured house rate of 137.5. The cause was this plan's own 'MEASURED and energetic, do not drag' pace note, so the fix is in the PLAN rather than in the script, which stays exactly as Gate 0E passed it."
+}

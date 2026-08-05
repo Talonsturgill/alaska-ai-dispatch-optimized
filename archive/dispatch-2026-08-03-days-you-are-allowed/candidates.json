@@ -1,0 +1,67 @@
+{
+  "run_date": "2026-08-03",
+  "window_days": 10,
+  "rungs": [
+    {"rung": "in_window_sweep", "attempted": true, "note": "4 researchers, beats: gov/edu science, energy/grid/defense, fisheries/wildlife/rural, breaking-news wildcard. Search cap 20 WebSearch each, WebFetch-first."},
+    {"rung": "outlet_index_sweep", "attempted": true, "note": "wildcard researcher ran the Alaska outlet index sweep (ADN, Alaska Beacon, Alaska Public Media, KTOO, KUAC, KYUK, KUCB, KDLG, Northern Journal, News-Miner, akbizmag, uaf.edu/news)."},
+    {"rung": "primary_source_mining", "attempted": true, "note": "NSF Award Search API (awardeeStateCode=AK) surfaced the locked story. api.nsf.gov works where nsf.gov/awardsearch renders empty to WebFetch. Also grants.gov, GovInfo Federal Register, USGS, NTSB, akfireinfo.com."}
+  ],
+  "candidates": [
+    {
+      "slug": "fire-weather-window-machine-learning",
+      "headline": "NSF puts $1,588,147 behind a machine-learning hunt for the days Alaska can safely light a fire on purpose",
+      "verdict": "LOCKED",
+      "why": "Three days old (obligated 2026-07-31), genuinely unreported by any outlet, primary-sourced from the NSF award record which the orchestrator re-verified directly, an honest and modest ML claim, and it rotates stance away from the recent curious/mixed run. NSF's own award record carries an 'Artificial Intelligence (AI)' program element, so the AI framing is the funder's, not ours.",
+      "dedupe": "FRESH on the subject-bearing entity set. Two earlier DUP hits were on funding-metadata and generic tokens only (nsf, award, uaf, smoke-inside-a-proper-noun) and are the token-collision class the routine explicitly says is not a repeat. Nearest prior subjects: 2026-07-11 (correcting a smoke CONCENTRATION forecast) and 2026-07-20 (autonomous wildfire SUPPRESSION). This is neither, it is when a person may light one on purpose."
+    },
+    {
+      "slug": "ai3-replaces-seds-alaska",
+      "headline": "ANA retires SEDS-AK and stands up a $3.5M national Indigenous AI institute",
+      "verdict": "RUNNER-UP",
+      "why": "Strong, federal, primary-sourced, unreported, and squarely on the Alaska-Native-led tech beat. Lost on two counts: the story is a grant-program restructuring whose Alaska consequence is genuinely uncertain until awards land on August 27, and the cultural-stakes handling would need a validator round the schedule can carry only for the lead. Carried forward as a lead."
+    },
+    {
+      "slug": "erate-alaska-bandwidth-cliff",
+      "headline": "FCC reconsiders E-Rate, the subsidy under nearly all rural Alaska school and library internet",
+      "verdict": "CONSIDERED",
+      "why": "Excellent numbers and already well covered by ADN and Alaska Public Media in the window, so it is not a scoop. The AI angle is real but indirect (bandwidth is the substrate under every classroom AI tool). Carried forward."
+    },
+    {
+      "slug": "alaska-weather-observation-gap",
+      "headline": "NTSB final report on Bering Air 445 plus a failing Alaska weather-observation network",
+      "verdict": "REJECTED",
+      "why": "Ten people died and the NTSB's actual finding is aircraft weight and oversight, not forecasting. The researcher flagged this correctly. Turning it into an AI story would repeat the error the safety system made."
+    },
+    {
+      "slug": "suicide-basin-no-algorithm",
+      "headline": "Juneau's glacial outburst flood window opens Aug 8-12 with no learned model anywhere in the forecast",
+      "verdict": "CONSIDERED",
+      "why": "Genuinely good honest-negative piece and time-critical. Loses to the lead on freshness of the news event and because the last several dispatches have already leaned on 'the interesting thing is that this is not AI'. Carried forward for the flood week."
+    },
+    {
+      "slug": "shishaldin-listening-without-a-model",
+      "headline": "NSF award to UAF for eruption source physics at Shishaldin, pointedly not an ML award",
+      "verdict": "CONSIDERED",
+      "why": "Clean unreported primary-source find and a natural same-week pair with the lead. Too thin to carry 90 seconds on its own."
+    },
+    {
+      "slug": "cook-inlet-beluga-deep-listening",
+      "headline": "Cook Inlet belugas absent from the Kenai in dipnet season, plus an open-source deep-learning detector",
+      "verdict": "REJECTED",
+      "why": "The beat has run two beluga dispatches inside 30 days (GAIA satellite vision 07-23, the AI-image hoax 07-12) and the ML component of the new Kenai finding could not be verified."
+    },
+    {
+      "slug": "rhtp-272m-ai-drones",
+      "headline": "Alaska signing grant agreements on $272M rural health money whose plan names AI, robotics and drones",
+      "verdict": "CONSIDERED",
+      "why": "Strong future story, but today it is a category on a form. Revisit once the subrecipient list publishes."
+    }
+  ],
+  "locked_story": {
+    "slug": "fire-weather-window-machine-learning",
+    "found_at_rung": "primary_source_mining",
+    "headline": "NSF puts $1,588,147 behind a machine-learning hunt for the days Alaska can safely light a fire on purpose",
+    "title_working": "THE DAYS YOU ARE ALLOWED TO BURN",
+    "one_line": "NSF wired 1,588,147 dollars to UAF on July 31 to use machine learning on decades of weather data and find the windows when Alaska can safely set a fire on purpose. The next morning the state suspended burn permits around Tok."
+  }
+}

@@ -1,0 +1,109 @@
+{
+  "total": 81.16,
+  "voice": "Sulafat",
+  "model": "gemini-2.5-pro-preview-tts",
+  "lines": [
+    {
+      "idx": 0,
+      "text": "Alaska has spent decades mapping the days you must not burn.",
+      "start": 0.0,
+      "end": 4.4
+    },
+    {
+      "idx": 1,
+      "text": "Nobody has mapped the days you can.",
+      "start": 5.0,
+      "end": 7.4
+    },
+    {
+      "idx": 2,
+      "text": "On July thirty first, the National Science Foundation paid the University of Alaska Fairbanks one point six million dollars to find them.",
+      "start": 8.12,
+      "end": 17.12
+    },
+    {
+      "idx": 3,
+      "text": "A prescribed burn is a fire you set on purpose, so a wildfire has less to eat.",
+      "start": 17.8,
+      "end": 23.28
+    },
+    {
+      "idx": 4,
+      "text": "It works, and Alaska barely uses it.",
+      "start": 23.92,
+      "end": 26.46
+    },
+    {
+      "idx": 5,
+      "text": "N S F says Alaska lacks the forecasting tools.",
+      "start": 27.16,
+      "end": 30.6
+    },
+    {
+      "idx": 6,
+      "text": "So the Fairbanks team is reading decades of weather with machine learning, hunting for the days that were safe.",
+      "start": 31.12,
+      "end": 37.46
+    },
+    {
+      "idx": 7,
+      "text": "That isn't a forecast. It's a count of safe days.",
+      "start": 38.12,
+      "end": 41.36
+    },
+    {
+      "idx": 8,
+      "text": "And a count is something you can hand to people who don't agree.",
+      "start": 41.92,
+      "end": 45.28
+    },
+    {
+      "idx": 9,
+      "text": "Because land around one village can answer to four governments at once.",
+      "start": 45.7,
+      "end": 50.12
+    },
+    {
+      "idx": 10,
+      "text": "Four parties who've never had the same sheet of paper.",
+      "start": 50.74,
+      "end": 54.0
+    },
+    {
+      "idx": 11,
+      "text": "So the grant pays to get those four talking.",
+      "start": 54.0,
+      "end": 57.36
+    },
+    {
+      "idx": 12,
+      "text": "But it isn't finished. None of this reaches a fire crew until twenty thirty.",
+      "start": 58.02,
+      "end": 62.66
+    },
+    {
+      "idx": 13,
+      "text": "And who pays when a burn escapes isn't in this award.",
+      "start": 63.14,
+      "end": 66.7
+    },
+    {
+      "idx": 14,
+      "text": "But nothing moves without that count. You can't staff a crew for a day nobody calls safe.",
+      "start": 67.34,
+      "end": 73.18
+    },
+    {
+      "idx": 15,
+      "text": "Alaska knows exactly which days it's in danger.",
+      "start": 73.88,
+      "end": 77.0
+    },
+    {
+      "idx": 16,
+      "text": "Somebody is finally paid to count the days it's allowed.",
+      "start": 77.68,
+      "end": 81.16
+    }
+  ]
+}

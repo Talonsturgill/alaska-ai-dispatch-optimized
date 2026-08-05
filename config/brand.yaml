@@ -55,6 +55,14 @@ brand:
     - "here is what matters"
     - "here's where the frame breaks"
     - "here is where the frame breaks"
+  # SCOPE, made explicit 2026-08-04. Everything in this block describes the WEEKLY FACEBOOK
+  # POST (the 280 to 420 word essay), not the daily LinkedIn Dispatch caption. A panel judge
+  # read no_hashtags as global and raised the Dispatch's five hashtags as a brand violation
+  # with caption_check.py failing to enforce its own config, which was a fair reading of an
+  # ambiguous file: prompts/dispatch_routine.md requires the LinkedIn post body to END in
+  # hashtags and scripts/caption_check.py validates 3 to 5 of them in the tail block, so the
+  # two surfaces have had opposite rules and only one of them said which was which.
+  applies_to: "facebook_weekly_post"
   length_target_words: [280, 420]
   ends_with: "engagement_question"
-  no_hashtags: true
+  no_hashtags: true          # FACEBOOK ONLY. LinkedIn Dispatch captions take 3 to 5, in the tail.

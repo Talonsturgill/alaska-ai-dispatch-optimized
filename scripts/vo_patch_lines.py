@@ -341,6 +341,28 @@ def main():
     with open(os.path.join(OUT, "vo_script.txt"), "w") as fh:
         fh.write("\n".join(l["text"] for l in meta["lines"]) + "\n")
 
+    # AND vo_script.json, WHICH IS THE ONE THAT ACTUALLY MATTERS (2026-08-04).
+    # The note above was written when this tool was taught to update vo_script.txt, and it
+    # stopped one file short. vo_script.json is the file captions_from_words.py takes
+    # caption TEXT from, so patching the audio and leaving the json behind burns the OLD
+    # wording onto the screen over the NEW voice. That is not a bookkeeping slip, it is a
+    # caption that contradicts the narration, and a judge scored it a hard blocker: the
+    # voice said "the team WILL READ decades of weather" while the screen painted "the
+    # team READS", which also reasserted the present tense the run had just corrected.
+    # Every artifact that states the narration moves together, and json is one of them.
+    sp = os.path.join(OUT, "vo_script.json")
+    if os.path.exists(sp):
+        doc = json.load(open(sp))
+        by_idx = {l["idx"]: l["text"] for l in meta["lines"]}
+        changed = 0
+        for line in doc.get("lines", []):
+            new_t = by_idx.get(line.get("i"))
+            if new_t is not None and line.get("t") != new_t:
+                line["t"] = new_t
+                changed += 1
+        json.dump(doc, open(sp, "w"), indent=1)
+        print(f"  vo_script.json: {changed} line(s) brought into line with the audio")
+
     # The invariant that makes this safe: nothing after a patch moved.
     assert abs(len(new_audio) - len(vo)) < 2, "patched vo.wav changed length"
     print("\n" + "=" * 66)
