@@ -1,0 +1,19 @@
+Alaska might hold thirty thousand kinds of insect.
+It has names for about nine thousand.
+The strange part isn't the gap. Somebody already built a machine to close it.
+Derek Sikes runs the insect collection at Alaska's Museum of the North.
+Since two thousand six its catalog went from one thousand entries to four hundred thousand.
+Those entries cover about two million pinned insects, each logged the day it arrives.
+Sequence one, and if it matches nothing in the world's databases, you might be holding something new.
+The Anchorage Daily News profiled him this week. This part wasn't in it.
+In two thousand eight, a study taught a neural network to name species from a gene.
+Ninety seven point five percent, on eighty unknown ground beetles.
+That's the machine. One of its four authors was Derek Sikes.
+Eighteen years on, Alaska's list grows about a thousand species a decade.
+Twenty one thousand unnamed, at a thousand a decade. Two hundred ten years.
+So the model was never what was holding this up.
+A classifier needs a D N A sequence. A sequence needs a specimen.
+And a specimen needs somebody in a field with a net.
+Maybe a newer model moves that. Nobody's tested one here.
+Those two million insects are what any method has to read first.
+So what should Alaska buy. A smarter model, or another summer in the field?

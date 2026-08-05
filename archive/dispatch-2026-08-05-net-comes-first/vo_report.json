@@ -1,0 +1,55 @@
+{
+  "backend": "gemini-tts",
+  "model": "gemini-3.1-flash-tts-preview",
+  "voice": "Sulafat",
+  "take": 1,
+  "takes": 3,
+  "soundcheck": {
+    "pass": true,
+    "score": 0.969,
+    "heard": "Alaska might hold 30,000 kinds of insect. It has names for about 9,000. The strange part isn't the gap. Somebody already built a machine to close it. Derek Sykes runs the Insect Collection at Alaska's Museum of the North. Since 2006, its catalog went from 1,000 entries to 400,000. Those entries cover about 2 million pinned insects. Each logged the day it arrives. Sequence 1, and if it matches nothing in the world's databases, you might be holding something new. The Anchorage Daily News profiled him this week. This part wasn't in it. In 2008, a study taught a neural network to name species from a gene. 97.5% on 80 unknown ground beetles. That's the machine. One of its four authors was Derek Sykes. 18 years on, Alaska's list grows about 1,000 species a decade. 21,000 unnamed at 1,000 a decade. 210 years. So the model was never what was holding this up. A classifier needs a DNA sequence. A sequence needs a specimen. And a specimen needs somebody in a field with a net. Maybe a newer model moves that? Nobody's tested one here. Those 2 million insects are what any method has to read first. So what should Alaska buy? A smarter model, or another summer in the field.",
+    "checks": {
+      "word_accuracy": {
+        "wer": 0.061,
+        "pass": true
+      },
+      "no_leak": {
+        "leaked": [],
+        "pass": true
+      },
+      "expressive": {
+        "pitch_std_semitones": 6.24,
+        "voiced_frac": 0.53,
+        "pass": true
+      },
+      "duration": {
+        "seconds": 86.8,
+        "pass": true
+      },
+      "loudness": {
+        "lufs": null,
+        "pass": true
+      }
+    },
+    "diagnosis": "clean"
+  },
+  "all_reports": [
+    {
+      "pass": true,
+      "score": 0.963,
+      "diagnosis": "clean"
+    },
+    {
+      "pass": true,
+      "score": 0.969,
+      "diagnosis": "clean"
+    },
+    {
+      "pass": true,
+      "score": 0.967,
+      "diagnosis": "clean"
+    }
+  ],
+  "watermark": "SynthID (Google) embedded in all Gemini TTS audio",
+  "license": "Google Gemini API preset voice (per-use billing)"
+}

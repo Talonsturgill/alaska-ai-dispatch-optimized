@@ -1,0 +1,169 @@
+{
+  "run_date": "2026-08-05",
+  "window_reported_by_gate": 10,
+  "rungs": [
+    {
+      "rung": "in_window_sweep",
+      "attempted": true,
+      "note": "4 researchers, beats: gov/edu + primary-source award mining, energy/grid/data-centers/defense, fisheries/wildlife/Native/rural, outlet index wildcard. Search budget respected: round one capped at 4 researchers with an explicit 20-WebSearch cap each. The fisheries researcher self-reported ~30 calls, over its cap, and that is recorded here rather than hidden.",
+      "result": "thin on three of four beats; most live territory sat on the 30-day exclusion list"
+    },
+    {
+      "rung": "outlet_index_sweep",
+      "attempted": true,
+      "outlets": [
+        "alaskabeacon.com",
+        "adn.com",
+        "alaskapublic.org",
+        "ktoo.org",
+        "kuac.org (503)",
+        "alaskasnewssource.com",
+        "newsminer.com (429)",
+        "juneauempire.com",
+        "northernjournal.com",
+        "alaskalandmine.com",
+        "mustreadalaska.com",
+        "arctictoday.com",
+        "highnorthnews.com",
+        "kyuk.org",
+        "knom.org",
+        "kdlg.org",
+        "kucb.org",
+        "nomenugget.com",
+        "uaf.edu/news",
+        "alaska.edu/news",
+        "gov.alaska.gov/newsroom"
+      ],
+      "result": "produced the locked story (ADN 2026-08-02) plus the NTSB Bering Air and Girdwood raven candidates"
+    },
+    {
+      "rung": "primary_source_mining",
+      "attempted": true,
+      "sources": [
+        "NSF award API",
+        "science.osti.gov",
+        "USAspending",
+        "Federal Register",
+        "DVIDS",
+        "USGS Alaska Science Center",
+        "NOAA Fisheries AFSC",
+        "UAF GI news",
+        "RCA",
+        "FERC",
+        "akleg.gov"
+      ],
+      "result": "surfaced the NSF GAIA/EarthScope cluster (2532369, $4.99M, 2026-07-16) but its Alaska arm is award 2608510, already covered on 2026-07-25; correctly not resurfaced under a new framing"
+    }
+  ],
+  "candidates_evaluated": [
+    {
+      "slug": "uam-insect-inventory",
+      "headline": "One curator, 400,000 records, and the classifier that has been ready since 2008",
+      "source": "ADN 2026-08-02 (Iris Samuels)",
+      "status": "LOCKED",
+      "why": "in-window, fact-checked hard including the 2008 Systematic Biology paper by DOI, fresh subject with no 30-day neighbour, and an AI angle that is honest in the direction this channel does best: it says precisely where the technology does and does not bind"
+    },
+    {
+      "slug": "shinkei-psdn-s-cook-inlet",
+      "headline": "Vision-guided ike jime robot arrives in Cook Inlet's sockeye fleet",
+      "source": "trade press 2026-07-30",
+      "status": "RUNNER-UP",
+      "why_not": "genuinely strong and in-window, but it would be the THIRD computer-vision-and-salmon Dispatch in 30 days after Wood River sockeye counting (07-10) and NOAA AFSC bycatch YOLOv11 (07-21). dedupe.py flagged the overlap on computer/fish/sockeye/vision. The viewer test decided it, not the token count: a third fish-vision film inside a month reads as monotone. Held as a strong lead for a later run, by which point the Alaska-outlet coverage gap may also have closed."
+    },
+    {
+      "slug": "ntsb-bering-air-445",
+      "headline": "NTSB final report on Bering Air Flight 445",
+      "status": "REJECTED",
+      "why_not": "no AI angle at all (a conventional autopilot is not machine learning), and a 10-fatality crash is the wrong subject for this format's characterized-object register"
+    },
+    {
+      "slug": "girdwood-raven-outage",
+      "headline": "A raven blacked out Girdwood",
+      "status": "REJECTED",
+      "why_not": "charming and in-window but the AI content is nil; it is a tonal counterweight, not a story about AI"
+    },
+    {
+      "slug": "aleutian-thunder",
+      "headline": "Aleut Corporation subsidiary launches AI-focused 8(a) joint venture",
+      "status": "REJECTED",
+      "why_not": "announced 2026-06-04, outside even the 30-day lookback, and the AI content is reseller/integrator rather than Alaska-built"
+    },
+    {
+      "slug": "uaa-raise-mini-grants",
+      "headline": "UAA rural AI mini-grants hit first report deadline",
+      "status": "HELD",
+      "why_not": "primary-source program pages only, no outcomes published; a credible pipeline story rather than a result. Worth a follow-up once the cohort's final reports surface."
+    },
+    {
+      "slug": "rocket-lab-kodiak-haste",
+      "headline": "Space Force awards Rocket Lab $266M for Kodiak hypersonic tests",
+      "status": "REJECTED",
+      "why_not": "in-window and well sourced, but the researcher checked explicitly and found no AI/ML/autonomy angle in any primary source"
+    }
+  ],
+  "locked_story": {
+    "slug": "uam-insect-inventory",
+    "title": "The Net Comes First",
+    "hook": "Anchorage Daily News profile of Derek Sikes, 2026-08-02, three days before this run",
+    "found_at_rung": "outlet_index_sweep",
+    "entities": [
+      "derek sikes",
+      "university of alaska museum of the north",
+      "uaf",
+      "insect collection",
+      "taxonomy",
+      "dna sequencing",
+      "species inventory",
+      "back-propagation neural network",
+      "systematic biology 2008"
+    ],
+    "dedupe": "dedupe.py check returned DUP only on the generic tokens 'alaska' and 'north', both of which come from the institution's own name. Re-tested and treated as spurious per the routine's generic-token clause. No subject neighbour exists in the 30-day window.",
+    "headline": "The classifier has been ready since 2008. Alaska's insect count still moves about a thousand species a decade, because the step that is starved is the one before the model."
+  },
+  "candidates": [
+    {
+      "slug": "uam-insect-inventory",
+      "headline": "One curator, 400,000 records, and the classifier that has been ready since 2008",
+      "source": "ADN 2026-08-02 (Iris Samuels)",
+      "status": "LOCKED",
+      "why": "in-window, fact-checked hard including the 2008 Systematic Biology paper by DOI, fresh subject with no 30-day neighbour, and an AI angle that is honest in the direction this channel does best: it says precisely where the technology does and does not bind"
+    },
+    {
+      "slug": "shinkei-psdn-s-cook-inlet",
+      "headline": "Vision-guided ike jime robot arrives in Cook Inlet's sockeye fleet",
+      "source": "trade press 2026-07-30",
+      "status": "RUNNER-UP",
+      "why_not": "genuinely strong and in-window, but it would be the THIRD computer-vision-and-salmon Dispatch in 30 days after Wood River sockeye counting (07-10) and NOAA AFSC bycatch YOLOv11 (07-21). dedupe.py flagged the overlap on computer/fish/sockeye/vision. The viewer test decided it, not the token count: a third fish-vision film inside a month reads as monotone. Held as a strong lead for a later run, by which point the Alaska-outlet coverage gap may also have closed."
+    },
+    {
+      "slug": "ntsb-bering-air-445",
+      "headline": "NTSB final report on Bering Air Flight 445",
+      "status": "REJECTED",
+      "why_not": "no AI angle at all (a conventional autopilot is not machine learning), and a 10-fatality crash is the wrong subject for this format's characterized-object register"
+    },
+    {
+      "slug": "girdwood-raven-outage",
+      "headline": "A raven blacked out Girdwood",
+      "status": "REJECTED",
+      "why_not": "charming and in-window but the AI content is nil; it is a tonal counterweight, not a story about AI"
+    },
+    {
+      "slug": "aleutian-thunder",
+      "headline": "Aleut Corporation subsidiary launches AI-focused 8(a) joint venture",
+      "status": "REJECTED",
+      "why_not": "announced 2026-06-04, outside even the 30-day lookback, and the AI content is reseller/integrator rather than Alaska-built"
+    },
+    {
+      "slug": "uaa-raise-mini-grants",
+      "headline": "UAA rural AI mini-grants hit first report deadline",
+      "status": "HELD",
+      "why_not": "primary-source program pages only, no outcomes published; a credible pipeline story rather than a result. Worth a follow-up once the cohort's final reports surface."
+    },
+    {
+      "slug": "rocket-lab-kodiak-haste",
+      "headline": "Space Force awards Rocket Lab $266M for Kodiak hypersonic tests",
+      "status": "REJECTED",
+      "why_not": "in-window and well sourced, but the researcher checked explicitly and found no AI/ML/autonomy angle in any primary source"
+    }
+  ]
+}

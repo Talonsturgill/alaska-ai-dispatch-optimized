@@ -1,0 +1,45 @@
+{
+  "note": "frame 1 vs frame 8 of each filmstrip window, measured on the delivered cut. changed_pct is the share of pixels differing by more than 12/255. A judge who cannot SEE motion in a strip should read this before recording that the beat is frozen.",
+  "strips": {
+    "strip": {
+      "centre_s": 0.4,
+      "changed_pct": 11.6,
+      "peak_delta": 240
+    },
+    "pin": {
+      "centre_s": 14.8,
+      "changed_pct": 7.9,
+      "peak_delta": 248
+    },
+    "resolve": {
+      "centre_s": 45.2,
+      "changed_pct": 5.0,
+      "peak_delta": 215
+    },
+    "reveal": {
+      "centre_s": 50.76,
+      "changed_pct": 5.8,
+      "peak_delta": 235
+    },
+    "pullback": {
+      "centre_s": 58.64,
+      "changed_pct": 25.0,
+      "peak_delta": 242
+    },
+    "sweep": {
+      "centre_s": 70.11,
+      "changed_pct": 8.0,
+      "peak_delta": 216
+    },
+    "newsprint": {
+      "centre_s": 36.7,
+      "changed_pct": 23.2,
+      "peak_delta": 224
+    },
+    "iris": {
+      "centre_s": 64.18,
+      "changed_pct": 7.5,
+      "peak_delta": 237
+    }
+  }
+}
