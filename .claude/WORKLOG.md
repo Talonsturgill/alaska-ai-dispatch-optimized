@@ -227,7 +227,8 @@ window is backward-compatible by construction.
 | 5 | Doctrine: `ENGAGEMENT.md` §2.7 (the 120-second format, four acts A-G) + `dispatch_routine.md` §4.2/§4.3/Gate 0/Phase 5, and the plan of record's own stale numbers corrected | DONE | the prompt now says DO NOT plan from a wpm figure, and explains why |
 | 6 | **The rooms.** | DONE | angle room: must answer whether the thesis has a SECOND MOVEMENT. Writers room: every pitch owes a 4-part RETENTION PLAN (the Act 3 test, the throughline object, the two loops, the padding test) and the room argues THE TWO-MINUTE QUESTION as its own round; the scorer weighs it. Both Gate-0 critics briefed, and both must name the weakest third even when they ship. |
 | 7 | Verify: conforming 120s board passes, padded fails, legacy 08-05 still passes | **DONE — PASSING** | `scripts/format_gate_selftest.py`. Legacy 0 problems, padded caught by all 5 two-minute rules by name, conforming 0 problems. RE-RUN THIS after any gate edit. |
-| 8 | Ship: commit, push, ready (NOT draft) PR, merge to `main` before the 08-06 run fires | TODO | |
+| 7b | Sweep for anything else that breaks at 120s: engine frame counts, `VIDEO_SECS`, the music bed, the quality gate, `render.sh` | DONE | all derive from the VO or loop; the music bed loops to 200s. Added a STALE PER-RUN DATA guard to `dispatch_mix.py` (BED_ARC/EVENTS must cover the film) — it fires on the real 08-05 case, where the arc ended at 83.7s of an 88.8s film. |
+| 8 | Ship: commit, push, ready (NOT draft) PR, merge to `main` before the 08-06 run fires | IN PROGRESS | |
 
 ---
 

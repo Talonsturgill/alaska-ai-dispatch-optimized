@@ -180,6 +180,56 @@ AMB_IN, AMB_OUT = 21.9, 42.6
 AMB_LEVEL = 0.085
 
 
+def _assert_per_run_data_covers_the_film():
+    """BED_ARC and EVENTS are PER-RUN DATA. Fail loudly when they belong to another film.
+
+    This has already cost a panel round once. On 2026-08-04 the arc in this file still
+    carried the previous episode's breakpoints, labelled "go north" and "the wellhead
+    lease", with its last two nodes at 82.5s and 87.9s on a film that ended at 83.76s. The
+    bed spent the whole run following someone else's story and its final move never played.
+    Two judges measured the consequence from opposite directions, LRA 3.0 across the piece
+    and "the arc is not in the dynamics, so the punch cannot punch", and neither could see
+    the cause from the audio alone. It is the same class as the stale-frame and
+    wrong-filmstrip-anchor bugs: an artifact read BY PATH that looked plausible and
+    described a different film.
+
+    The 120-second format makes it worse rather than better. An arc left over from a 90s
+    run now stops two thirds of the way through and leaves the last forty seconds flat,
+    which is exactly the stretch the two-minute format is fighting hardest to hold.
+
+    A warning rather than a hard fail: a run may legitimately resolve its bed a little
+    before the last frame, and blocking a mix on a judgement call is worse than a loud
+    line in the log. The numbers make the diagnosis immediate either way.
+    """
+    warn = []
+    arc_end = max(t for t, _ in BED_ARC) if BED_ARC else 0.0
+    # 0.95, not 0.9. The arc is supposed to RESOLVE at the end rather than stop near it, and
+    # the looser threshold missed a live case: the 2026-08-05 film ran 88.8s against an arc
+    # ending at 83.7s, which is 94 percent and would have passed while leaving the last five
+    # seconds, the button, with no bed move at all.
+    if arc_end < VIDEO_SECS * 0.95:
+        warn.append(f"BED_ARC ends at {arc_end:.1f}s but the film runs {VIDEO_SECS:.1f}s. The last "
+                    f"{VIDEO_SECS - arc_end:.1f}s have no bed automation. Re-anchor BED_ARC to THIS "
+                    f"film's beats from vo_lines.json.")
+    if arc_end > VIDEO_SECS + 1.0:
+        warn.append(f"BED_ARC runs to {arc_end:.1f}s past a {VIDEO_SECS:.1f}s film; its last moves "
+                    f"never play. These are the previous episode's breakpoints.")
+    ev_end = max((t for t, *_ in EVENTS), default=0.0)
+    if ev_end < VIDEO_SECS * 0.85:
+        warn.append(f"EVENTS stop at {ev_end:.1f}s on a {VIDEO_SECS:.1f}s film; the last "
+                    f"{VIDEO_SECS - ev_end:.1f}s carry no motivated sound. Re-anchor EVENTS to "
+                    f"THIS film's beats.")
+    if ev_end > VIDEO_SECS + 1.0:
+        warn.append(f"EVENTS run to {ev_end:.1f}s past a {VIDEO_SECS:.1f}s film; those sounds fire "
+                    f"after the last frame.")
+    for w in warn:
+        print(f"  !! STALE PER-RUN DATA: {w}")
+    return warn
+
+
+_assert_per_run_data_covers_the_film()
+
+
 def pw_expr(points, var="t"):
     """A piecewise-linear ffmpeg volume expression through (time, value) breakpoints.
 
