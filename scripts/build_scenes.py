@@ -59,7 +59,18 @@ TAIL = 2.6  # hold after the last word
 # S6 L8-L9 (the sheet handed across + the four fields colliding), S7 L10-L11 (four hands + the
 # plates turning), S8 L12-L13 (the 2026-2030 rule + the empty liability box), S9 L14 (the waiting
 # crew), S10 L15-L16 (the wash drains, the windows open, the pulaski flips).
-SCENE_START_LINE = [0, 2, 3, 5, 6, 8, 10, 12, 14, 15]
+# 2026-08-05 "The Net Comes First": EIGHT shots onto 19 VO lines. Shot boundaries are
+# anchored to VO LINE STARTS so the picture can never drift from the words.
+# NINE shots (S2 was split at L5: 21.6s was past the 16s oner ceiling).
+# S1 L0-L2 (the beetle stripped to a contour + the two counters + the gap + the shuttered machine),
+# S2 L3-L6 (the collection room, the drawer, the pin, the odometer, born digital, the sequence, no match),
+# S3 L7-L8 (the newspaper laid down, the hole in the column, the NameEngine assembling, the gene window),
+# S4 L9-L10 (eighty beetles resolve, the two misses, the author plate turns, SIKES lights on his own name),
+# S5 L11-L12 (the decade dial's one tooth, THE SIGNATURE PULL-BACK, the 210-year plate),
+# S6 L13-L14 (the machine still, the cutaway iris opening on nothing, the chain running backwards),
+# S7 L15-L16 (the net sweep in tussock, the ghost of a newer model),
+# S8 L17-L18 (the drawer wall rolling closed, the caught beetle named, the question).
+SCENE_START_LINE = [0, 3, 5, 7, 9, 11, 13, 15, 17]
 
 
 def _apply_caption_fixups(caps):

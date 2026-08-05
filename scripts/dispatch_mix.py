@@ -185,13 +185,35 @@ def pw_expr(points, var="t"):
 
     Held flat before the first point and after the last, linear in between. Single-quoted
     at the call site so the commas survive the filtergraph parser.
+
+    FLAT SUM OF GATED SEGMENTS, NOT NESTED ifs (rewritten 2026-08-05, and it was a real
+    outage rather than a tidy-up). This function used to wrap one `if(lt(t,..),..,..)`
+    around the previous result per breakpoint, so the nesting depth equalled the number of
+    breakpoints. ffmpeg's expression evaluator gives up somewhere above roughly a hundred
+    levels, and it does not fail with "too deep", it fails with a bare "Invalid argument"
+    on the whole filtergraph, which points at nothing.
+
+    That threshold is a function of THE NARRATION, not of the code: the bed lifts into
+    every inter-line gap of 0.5s or longer, at four breakpoints each. A VO with 25 such
+    gaps, which is an ordinary 90-second read and exactly what this run produced, emits
+    106 nested ifs and the entire mix dies. Any future run with a slightly breathier
+    delivery would have hit it too.
+
+    A sum of half-open interval gates has NO nesting at all, so the depth is constant no
+    matter how many breakpoints there are. `gte(t,a)*lt(t,b)` is used rather than
+    `between(t,a,b)` on purpose: between() is inclusive at both ends, so adjacent segments
+    would both fire on their shared boundary and the sum would double there.
     """
     pts = sorted(points)
-    expr = f"{pts[-1][1]:.4f}"
-    for (t0, v0), (t1, v1) in reversed(list(zip(pts, pts[1:]))):
-        seg = f"({v0:.4f}+({v1 - v0:.4f})*({var}-{t0:.3f})/{t1 - t0:.3f})"
-        expr = f"if(lt({var}\\,{t1:.3f})\\,{seg}\\,{expr})"
-    return f"if(lt({var}\\,{pts[0][0]:.3f})\\,{pts[0][1]:.4f}\\,{expr})"
+    terms = [f"lt({var}\\,{pts[0][0]:.3f})*{pts[0][1]:.4f}"]
+    for (t0, v0), (t1, v1) in zip(pts, pts[1:]):
+        span = t1 - t0
+        if span <= 0:
+            continue
+        seg = f"({v0:.4f}+({v1 - v0:.4f})*({var}-{t0:.3f})/{span:.3f})"
+        terms.append(f"gte({var}\\,{t0:.3f})*lt({var}\\,{t1:.3f})*{seg}")
+    terms.append(f"gte({var}\\,{pts[-1][0]:.3f})*{pts[-1][1]:.4f}")
+    return "(" + "+".join(terms) + ")"
 
 
 # THE BREATH BEFORE THE PAYOFF, NOW SELF-FITTING (hardened 2026-07-30 after code review).

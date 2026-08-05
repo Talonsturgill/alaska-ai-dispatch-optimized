@@ -1,0 +1,104 @@
+{
+  "title": "The Net Comes First",
+  "date": "2026-08-05",
+  "format_seconds": 90,
+  "lines": [
+    {
+      "idx": 0,
+      "text": "Alaska might hold thirty thousand kinds of insect."
+    },
+    {
+      "idx": 1,
+      "text": "It has names for about nine thousand."
+    },
+    {
+      "idx": 2,
+      "text": "The strange part isn't the gap. Somebody already built a machine to close it."
+    },
+    {
+      "idx": 3,
+      "text": "Derek Sikes runs the insect collection at Alaska's Museum of the North."
+    },
+    {
+      "idx": 4,
+      "text": "Since two thousand six its catalog went from one thousand entries to four hundred thousand."
+    },
+    {
+      "idx": 5,
+      "text": "Those entries cover about two million pinned insects, each logged the day it arrives."
+    },
+    {
+      "idx": 6,
+      "text": "Sequence one, and if it matches nothing in the world's databases, you might be holding something new."
+    },
+    {
+      "idx": 7,
+      "text": "The Anchorage Daily News profiled him this week. This part wasn't in it."
+    },
+    {
+      "idx": 8,
+      "text": "In two thousand eight, a study taught a neural network to name species from a gene."
+    },
+    {
+      "idx": 9,
+      "text": "Ninety seven point five percent, on eighty unknown ground beetles."
+    },
+    {
+      "idx": 10,
+      "text": "That's the machine. One of its four authors was Derek Sikes."
+    },
+    {
+      "idx": 11,
+      "text": "Eighteen years on, Alaska's list grows about a thousand species a decade."
+    },
+    {
+      "idx": 12,
+      "text": "Twenty one thousand unnamed, at a thousand a decade. Two hundred ten years."
+    },
+    {
+      "idx": 13,
+      "text": "So the model was never what was holding this up."
+    },
+    {
+      "idx": 14,
+      "text": "A classifier needs a D N A sequence. A sequence needs a specimen."
+    },
+    {
+      "idx": 15,
+      "text": "And a specimen needs somebody in a field with a net."
+    },
+    {
+      "idx": 16,
+      "text": "Maybe a newer model moves that. Nobody's tested one here."
+    },
+    {
+      "idx": 17,
+      "text": "Those two million insects are what any method has to read first."
+    },
+    {
+      "idx": 18,
+      "text": "So what should Alaska buy. A smarter model, or another summer in the field?"
+    }
+  ],
+  "caption_fixups": {
+    "D N A": "DNA",
+    "U A F": "UAF"
+  },
+  "deliberate_losses": [
+    "the Sweden 1,000-in-the-1700s starting figure (kept only the 30,000 total and the century)",
+    "the museum's own 425,000-records-as-of-January-2026 refinement (ADN's 'more than 400,000' is the spoken figure, the precise number sits in the claims file)",
+    "the skipper-butterfly accuracy figures from the 2008 abstract (95.63, 96.10 and 100 percent), cut because one accuracy number lands and four become a table",
+    "the Sweden comparison in full, cut at Gate 0E round 2 for failing the cold read twice"
+  ],
+  "gate_0e_fixes": [
+    "line 6/7 said 'paper' twice in adjacent lines for a NEWSPAPER and an ACADEMIC PAPER; the cold reader backtracked. Now 'a newspaper' and 'a study'.",
+    "records vs specimens were indistinguishable by ear, which is the exact unit conflation claims.json forbids. Now 'catalog entries' and 'pinned insects'.",
+    "the 210-year figure arrived without its derivation. The arithmetic is now audible: 'at a thousand a decade'.",
+    "the Sweden line had no stated connection to the argument. It now says what it is for: less ground, later start.",
+    "ROUND 2: 'the shortcut' was an undefined abstraction the listener carried for seven lines and the payoff was never stated outright. The plant is now a concrete object ('somebody already built a machine to close it') and line 9 names the payoff ('That's the machine').",
+    "ROUND 2: the Sweden comparison was CUT as a whole fact. Two cold reads in a row could not place it in the argument and it failed the swap test against the fair-counter line. Trimming a whole fact is the correct move over trimming connective tissue.",
+    "ROUND 2: the newspaper is now named (Anchorage Daily News), so the reference is checkable.",
+    "ROUND 2: the entries-to-insects relationship is now stated rather than left for the listener to infer ('Those entries cover about two million pinned insects').",
+    "ROUND 3: restored the DNA-sequencing mechanism as a new line 6. The first synth came in at 79.3s against an 84 to 96s band, and this was the most valuable thing the earlier trim had thrown away: it establishes what a SEQUENCE is before line 14 says a classifier needs one."
+  ]
+}

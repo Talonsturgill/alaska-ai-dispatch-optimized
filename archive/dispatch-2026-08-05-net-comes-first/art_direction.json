@@ -1,0 +1,91 @@
+{
+  "run_date": "2026-08-05",
+  "title": "The Net Comes First",
+  "palette": {
+    "why": "The last two dispatches were an amber smoke-haze field (08-03) and a warm brass bench under a lamp (08-02). Both ran warm and low-contrast. This film goes COOL AND HIGH-CONTRAST: a museum collection room, cabinet green against bone-white specimen label paper, so it cannot be mistaken for either of them at a glance.",
+    "sky": "#EDE7DA",
+    "ground": "#1E332C",
+    "hero": "#C9963F",
+    "accent": "#35C8C0",
+    "shadow": "#101A17",
+    "accent_law": "#35C8C0 MEANS A SPECIES THAT HAS A NAME AND NOTHING ELSE. PINNED AT GATE 0D: the licence opens at the AUTHOR-PLATE PAYOFF beat, not at the vague 'the 97.5 percent beat'. Before that point nothing paints it, INCLUDING the museum's own already-identified specimens in Act 1, whose labels render in bone and ink. Gate 0D was right that 'nothing has been named on screen yet' is not literally true of the room's contents, so the rule is stated as a paint instruction rather than as a description.",
+    "dark_anchor": "#101A17 cabinet face carries >= 8 percent of every frame, because a brass instrument and a bone label on a pale field is a low-separation problem at feed size."
+  },
+  "light": {
+    "time_of_day": "an interior working day, high cool skylight from a clerestory window, plus warm brass practical lamps at the bench",
+    "direction": "key from upper screen-left through the window, weak; fill very high off the bone walls; rim cool on every form so the cabinet greens separate from each other",
+    "depth_approach": "DayGrade with a LIFTED FLOOR indoors (a high-albedo bone room never crushes to black), and the ONE genuinely dark thing in the film is the open mouth of a specimen drawer. Dark reads as unexamined.",
+    "why": "The story is about a room where everything is already lit and catalogued, and a world outside it that nobody has looked at. Light does that work: the interior is evenly, boringly lit, and the field beat at the end brings the only real key light in the film.",
+    "dark_anchor_reconciliation": "Gate 0D caught a real contradiction. The >=8 percent dark anchor comes from the cabinet's OCCLUDED surfaces (drawer gaps, runners, unlit joinery, the undersides of overhanging units), which stay dark because occlusion is not ambient fill and a lifted floor does not reach into a 4mm gap. That is a different surface from the open drawer MOUTH, which is the film's only true void. Both can hold at once, and ContactShadow stays exempt from the lifted floor or nothing sits on anything."
+  },
+  "shape_language": {
+    "grammar": "THREE grammars, deliberately, so the thesis is legible in silhouette",
+    "rectilinear_stacked": "THE CABINET. Drawers, card grids, unit trays, the classifier's housing. Order that has been imposed. Every edge parallel, every corner square.",
+    "organic_irregular": "THE LIVING WORLD. The beetle, the tussocks, the curve of a net. Nothing parallel to anything. This is what the grid can only hold once somebody hands it over.",
+    "dashed_unfilled": "AN UNNAMED SPECIES. Dashed contour, true void interior, no fill, no shading, and it drifts. Never used for anything else. This is the 21,000.",
+    "why": "The film's whole claim is that the ordered thing was ready and the irregular thing never arrived. If a muted viewer can tell a filled beetle from a dashed one, they have the argument.",
+    "exclusivity_rule": "Gate 0D caught the dashed-unfilled grammar being spent on two things that are NOT unnamed species: a documentation gap in the newsprint and a hypothetical newer classifier. A grammar reused on its first outing means 'anything incomplete'. So: the newsprint gap is a CLEAN UNPRINTED HOLE in the type, the hypothetical machine is a FLAT TRANSLUCENT GHOST, and dashed-unfilled stays bijective with 'a species with no name'."
+  },
+  "casting": {
+    "hero": {
+      "asset": "GroundBeetle",
+      "status": "NET-NEW",
+      "why": "The bestiary holds 21 species and not one insect except a comic Mosquito, while this story is entirely about Alaska's insect fauna, and the 2008 paper's headline result is specifically on GROUND BEETLES. That is a real gap, not invented work. It is also a deliberate variety break: the last five heroes were machines and instruments (BurnWindowEngine, AshReader, ThresholdGate, IceGlider, RecordsMachine) and this one is an animal."
+    },
+    "supporting": [
+      {
+        "asset": "NameEngine",
+        "status": "NET-NEW",
+        "why": "the 2008 classifier as a physical object, with an intake slot and a name plate that prints. Its emotional tell is APPETITE, and its state through most of the film is READY WITH AN EMPTY INTAKE, which is the thesis drawn rather than narrated. Deliberately NOT another AshReader: that machine judges a sample it has been given and prints a hedge, this one is starved and prints a single clean name the moment it is fed.",
+        "redesign_at_0D": "Gate 0D ruled the first NameEngine design too close to bench.tsx AshReader, and it was right: a brass bench instrument that reads a sample and prints an answer, staged in the same macro-closeup-under-a-lamp treatment two runs ago. The differences were behavioural and a viewer cannot see behaviour in a silhouette. So the SHAPE moved: the machine is now RECTILINEAR AND STACKED, drawer-proportioned, machined panel lines, and it belongs to the cabinet's ordering grammar. Its one round element is the INTAKE IRIS, which AshReader does not have, which is legible at feed size because it is the only circle among right angles, and which is the thesis: the machine works and there is nothing to put in it."
+      },
+      {
+        "asset": "Character",
+        "status": "SHELF",
+        "why": "Derek Sikes. A REAL NAMED INDIVIDUAL, so no characterized-object humor is applied to him and he is drawn straight, working. Outfit flannel, headgear bare."
+      },
+      {
+        "asset": "PaperOfficeBG",
+        "status": "SHELF, RE-TINTED",
+        "why": "the library's only interior biome, built as a records room with filing cabinets in one-point recession. A museum collection room is the same architecture. Re-tinted from its cream to cabinet green so it does not read as the 07-26 film."
+      },
+      {
+        "asset": "Sheet / PaperFiber / BrassPlate",
+        "status": "SHELF",
+        "why": "specimen labels, the pinned label under each insect, and the actor name plates for the name-actors-before-you-use-them law"
+      },
+      {
+        "asset": "Mosquito",
+        "status": "SHELF",
+        "why": "one cameo, the only insect already on the shelf, used as the one species everybody in Alaska can already name"
+      },
+      {
+        "asset": "TallyCounter (clicker and odometer)",
+        "status": "SHELF",
+        "why": "cast explicitly at Gate 0D's insistence for the five counter beats that were silently improvising a counter the shelf already owns"
+      }
+    ]
+  },
+  "motion_language": {
+    "hero_moves": [
+      "THE PIN. A specimen descends and seats, and the drawer takes it. Anticipation, overshoot, settle, with a real contact tick.",
+      "THE FILL. An unnamed dashed contour resolves into a filled, shaded, named beetle. The accent arrives with the name and not before.",
+      "THE EMPTY INTAKE. The NameEngine's intake iris opens, holds, and closes on nothing. Repeated three times across the film on an irrational period so it never reads as a loop.",
+      "THE SWEEP. The net's arc in the final shot, the only large gestural motion in a film of small precise ones."
+    ],
+    "what_earns_blur": "the net sweep and the pin drop only. Everything else in this film is deliberately small and controlled, so a motion-blurred move is an event.",
+    "why": "A museum moves in millimetres and a field moves in metres. The film's last shot should feel physically bigger than everything before it."
+  },
+  "composition": {
+    "signature_shot": "THE PULL-BACK. Hold on ONE named beetle on a pin, filled and accented, then pull back until the frame is a wall of unit trays: about nine thousand filled forms below, and above them a field of dashed unfilled contours that keeps going past the top of frame. The named one stays identifiable the whole way out. HARD FLOOR, set at Gate 0D: the named beetle's silhouette never drops below 110px tall in the 1080-wide master at ANY frame of the pull-back, including the last one. It is held on a nearer depth plane than the swarm field so distance cannot eat it. Verified on a still taken at the pull-back's END frame, not mid-pull.",
+    "focal_hierarchy": "one focal object per shot, always centred at its key moment; labels and plates are furniture and never compete",
+    "negative_space": "the drawer interiors are the only true voids, and they are used as rests between the dense grid shots",
+    "safe_area": "the 9:16 master is the graded cut and is composed for. Content above y=420 is clerestory window and cabinet tops, content below y=1500 is bench foreground. The 1:1 crop at y 420 to 1500 always holds the focal object and every plated string.",
+    "signature_shot_floor_px": 110
+  },
+  "craft_advance": {
+    "system": "lib/absence.tsx \u2014 an `Unnamed` primitive that renders ANY child silhouette as a stated absence: dashed contour, true void interior, a slow interior drift so it reads as not-filled-in rather than not-finished, and a REQUIRED caller-supplied label so the absence is named rather than inferred.",
+    "why": "This closes a KNOWN WEAKNESS recorded in ASSET_MANIFEST.md twice. The 07-26 ThreePipeCutaway's capped pipe was found by two panel judges to not read as an absence, and the 07-30 RingedSealGhost solved it once, for one animal, inline. Generalising it means the next film that needs to draw a thing that is not there inherits the solution instead of re-improvising it.",
+    "verification": "tsc --noEmit clean, plus a look-dev still showing a filled form and its Unnamed counterpart at full size AND at 0.28 scale, AND, at Gate 0D's insistence, a SWARM-DENSITY still at the signature shot's true per-form pixel size, because that is where the primitive actually has to survive and a single pair does not test it. Dash length scales up as instance size drops so the dashes never alias to grey noise under H.264."
+  }
+}

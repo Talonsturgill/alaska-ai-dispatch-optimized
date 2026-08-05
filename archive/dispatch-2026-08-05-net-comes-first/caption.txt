@@ -1,0 +1,19 @@
+Alaska has names for about nine thousand of its insects. Scientists think it may hold thirty thousand.
+
+That gap is roughly twenty one thousand species. At the pace the Anchorage Daily News reports, about a thousand added per decade, closing it takes something like two hundred ten years. That last figure is our arithmetic on their two numbers, not a projection anyone published.
+
+The part that reframed the story for me is eighteen years older than the story.
+
+In 2008, Systematic Biology published a method that taught a neural network to identify a species from a short stretch of one gene. It got 97.5 percent of eighty unknown ground beetles right. One of its four authors was Derek Sikes, who runs the insect collection at the University of Alaska Museum of the North, and who has spent since 2006 taking that collection from about a thousand catalog entries to more than four hundred thousand, covering roughly two million pinned specimens.
+
+So a working naming method has existed for eighteen years, co authored by the man doing the pinning, and the count still moves about a thousand a decade.
+
+The honest reading is that the model was never the binding constraint. A classifier needs a DNA sequence. A sequence needs a specimen. A specimen needs somebody in a field with a net. Every one of those steps is a person, a season, and a budget line.
+
+Push back on me here, because there is a fair objection. A 2008 back propagation network tested on two well studied groups is not a 2026 model, and nobody has run a modern one at this problem. That is a genuine unknown and I am not going to pretend otherwise.
+
+It still points somewhere useful. If Alaska wants to know what lives in it, the leverage right now looks like field seasons and taxonomists rather than a better classifier. And the two million specimens already in Fairbanks are the asset any future method has to read first.
+
+So which would you fund. A smarter model, or another summer in the field?
+
+#Alaska #AI #MachineLearning #Biodiversity #ScienceFunding

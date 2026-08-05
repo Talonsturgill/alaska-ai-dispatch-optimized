@@ -1,0 +1,1048 @@
+{
+  "date": "2026-08-05",
+  "title": "The Net Comes First",
+  "engine": "infographic-2.5d",
+  "derived_from": "scratch",
+  "concept": "A museum collection room where everything is catalogued, next to a world nobody has been out to look at. The film holds one named beetle against a field of dashed unnamed contours, reveals that the curator who pins them co-authored a neural network that named ground beetles at 97.5 percent in 2008, and lands on the step the machine cannot do: somebody has to go out with a net.",
+  "angle": {
+    "thesis": "Alaska's insect count moves about a thousand species a decade and it is not because nobody built the algorithm. The curator pinning the specimens co-authored a neural network that named ground beetles from DNA at 97.5 percent in 2008. The step that is starved is the one before the model.",
+    "supporting_facts": [
+      "c7/c8/c9: Systematic Biology 2008, DOI 10.1080/10635150802032982, 97.50 percent on 80 unknown ground beetle sequences, and D.S. Sikes is one of four authors",
+      "c1/c2/c10/c11: per ADN about 30,000 possible against about 9,000 identified, growing about 1,000 a decade, which is about 21,000 unnamed and about 210 years by our own arithmetic",
+      "c4/c5/c6: the collection went from about 1,000 records to more than 400,000, covering about 2 million pinned specimens, each born digital at intake"
+    ],
+    "fair_counter_point_it_must_honor": "A 2008 back-propagation network tested on two well-studied groups is not a 2026 model, and nobody has tested a modern one against this constraint. The film says so out loud at line 15 and draws it. The collection itself is also the genuine win: two million specimens are the asset any future method has to read first.",
+    "runners_up": [
+      "ALASKA'S SELF-KNOWLEDGE (analyst A): kept its 210-year scale reveal as the signature shot, but lost as the lead because the thesis has no AI hinge and this is an AI channel.",
+      "THE FRONTIER, A GENUINE WIN (analyst C): kept as the button and as the fair counter-point, but lost as the lead because on its own it says nothing about where the technology binds."
+    ],
+    "stance": "wry"
+  },
+  "treatment": {
+    "winner": "THE EXPLAINER, grafted",
+    "logline": "The machine that could name Alaska's insects has existed for eighteen years, and the thing it is waiting for is a person in a field with a net.",
+    "judge_reasoning": "The Explainer wins because this story's whole payload is an arithmetic and a mechanism, and both are drawable: 21,000 unnamed against 1,000 a decade is 210 years, and the chain classifier-sequence-specimen-net is a cutaway with moving parts. Grafted from the Dramatist: the open loop, holding back WHO wrote the shortcut until 46 seconds. Grafted from the Enthusiast: the button, where two million pinned specimens stop being a backlog and become the asset. Grafted from the Comedian: the NameEngine's empty intake opening and closing on nothing, the film's one running gag, which is also its thesis.",
+    "the_turn": "The intake iris opens on nothing. The chain runs backwards from the machine to a hand holding a net.",
+    "the_button": "Back at the drawer wall, the one named beetle still lit, and the question of what Alaska should actually buy."
+  },
+  "fingerprint": {
+    "pov": "eye-level-immersive",
+    "layout": "grid-modular",
+    "motion_vector": "vertical-descent",
+    "hero_treatment": "single-organic-hero",
+    "register": "naturalistic-scene",
+    "camera_strategy": "rise-reveal",
+    "light_story": "overcast-diffuse",
+    "palette": "cabinet green, bone specimen paper, brass, one named-species teal",
+    "metaphor": "a room that has a place for everything, and a world that has not been brought into it"
+  },
+  "palette": "cabinet green #1E332C, bone #EDE7DA, brass #C9963F, named-species teal #35C8C0 (reserved), shadow #101A17",
+  "divergence_note": "The last two dispatches were a warm smoke-haze field (08-03) and a warm brass bench under one lamp at macro-closeup on a single-object void (08-02). This film inverts all three of the signature axes against 08-02: eye-level-immersive rather than macro-closeup, grid-modular rather than single-object-void, and vertical-descent rather than horizontal-traverse. It also runs cool where both ran warm, and its hero is an ANIMAL where the last five heroes were machines and instruments. The register moves from tactile-collage to naturalistic-scene and the camera from track-follow to rise-reveal, so seven of nine axes differ from the most recent fingerprinted board.",
+  "hook": {
+    "pattern": "anomaly-question",
+    "frame1": "A ground beetle, fully drawn and form-shaded, large and dead centre on a bone field. It is the most finished thing this film will draw, and it lasts 0.35 seconds.",
+    "headline": "21,000 ALASKA INSECTS HAVE NO NAME",
+    "motion_by_s": 0.35,
+    "motion_at_frame_1": "at 0.35s the beetle is STRIPPED to a dashed contour in a single hard pass, which is a real interrupt (something is taken away) rather than a plate easing in",
+    "loopback": "the button restores a beetle to the filled state beside this same still-dashed contour"
+  },
+  "open_loop": {
+    "plant_t": 7.5,
+    "pay_t": 46.5,
+    "what": "line 2 promises that somebody already built a machine to close the gap, and refuses to say who until line 9 names the four authors and the last one is the curator we have been watching pin insects for thirty seconds"
+  },
+  "reveals": [
+    {
+      "t": 26.0,
+      "type": "scale-pullback",
+      "what": "one open drawer pulls back into a wall of unit trays as the catalog counter passes four hundred thousand",
+      "hold_s": 0.6
+    },
+    {
+      "t": 38.5,
+      "type": "build-on",
+      "what": "the 2008 study assembles into the NameEngine, part by part, gene window then intake then name plate",
+      "hold_s": 0.5
+    },
+    {
+      "t": 58.0,
+      "type": "scale-pullback",
+      "what": "THE SIGNATURE SHOT. From the one named beetle out to nine thousand filled forms below and a field of dashed contours above that keeps going past the top of frame, with 210 YEARS landing",
+      "hold_s": 0.8
+    },
+    {
+      "t": 74.0,
+      "type": "morph-to-chart",
+      "what": "the chain classifier-sequence-specimen resolves into a single human hand closing on a net handle",
+      "hold_s": 0.5
+    }
+  ],
+  "audio_arc": {
+    "build_steps": [
+      12.0,
+      29.0,
+      41.0,
+      51.0
+    ],
+    "dip_at": 62.0,
+    "riser_at": 56.0,
+    "silence_at": 84.5,
+    "payoff_at": 46.5,
+    "button_pattern": "question",
+    "second_dip_note": "the 86.0 dip is the real pre-button silence and it precedes the closing pin tick; Gate 0C caught that only one dip was declared",
+    "second_dip_at": 86.0
+  },
+  "shots": [
+    {
+      "id": "S1",
+      "t": "0.0-12.5",
+      "framing": "macro-closeup",
+      "scale": "insert",
+      "height": "eye",
+      "pov": "macro-closeup",
+      "layout": "single-object-void",
+      "motion_vector": "radial-emanate",
+      "hero_treatment": "single-organic-hero",
+      "transition_in": null,
+      "thread": null,
+      "centered": "the dashed unnamed beetle contour, then the two counters resolving around it",
+      "means": "opens on the absence itself so the rest of the film is about closing it",
+      "camera": "static:the hook's only motion must be the contour and the snapping counters so any move would dilute it",
+      "stage3d": "flat:one contour on an empty field has no world to move through and depth would invent one",
+      "hero": {
+        "name": "the unnamed ground beetle contour",
+        "parts": 4,
+        "zones": 3,
+        "detail_note": "the dash phase advances slowly and unevenly so the outline reads as NOT FILLED IN rather than as an unfinished drawing, and the interior carries a faint drift so it is never a dead hole",
+        "part_list": [
+          "dashed elytra outline",
+          "dashed head and pronotum",
+          "six dashed legs",
+          "two antennae"
+        ],
+        "zone_list": [
+          "the void interior that drifts",
+          "the dashed silhouette edge",
+          "the label stem below"
+        ]
+      }
+    },
+    {
+      "id": "S2",
+      "t": "12.5-22.54",
+      "framing": "wide-establish",
+      "scale": "wide",
+      "height": "eye",
+      "pov": "eye-level-immersive",
+      "layout": "grid-modular",
+      "motion_vector": "vertical-descent",
+      "hero_treatment": "structure-as-subject",
+      "transition_in": "graphic-match",
+      "thread": "match",
+      "centered": "Sikes at the open drawer, seating a specimen, with the catalog counter climbing behind him",
+      "means": "the contour's oval becomes the oval of a drawer pull, so the absence becomes the place the absence would be filed",
+      "camera": "craneDown+dollyThrough",
+      "stage3d": "planes",
+      "hero": {
+        "name": "the unit tray wall and Sikes at the open drawer",
+        "parts": 5,
+        "zones": 3,
+        "detail_note": "the open drawer is the only true void in the room and every pin casts a small contact tick onto the tray floor so the specimens sit ON something",
+        "part_list": [
+          "the pulled drawer with its brass pull",
+          "rows of pinned specimens",
+          "printed labels under each pin",
+          "the cabinet face and runners",
+          "Sikes at the tray"
+        ],
+        "zone_list": [
+          "the lit drawer interior",
+          "the dark cabinet face above",
+          "the bench foreground"
+        ]
+      }
+    },
+    {
+      "id": "S2B",
+      "t": "22.54-34.1",
+      "framing": "data-panel",
+      "scale": "insert",
+      "height": "overhead",
+      "pov": "macro-closeup",
+      "layout": "stacked-layers",
+      "motion_vector": "scroll-data",
+      "hero_treatment": "data-as-subject",
+      "transition_in": "match-action",
+      "thread": "match",
+      "centered": "the sequence strip feeding out over the bench edge, then the database wall failing to seat it",
+      "means": "the pin's downward motion completes as a strip feeding down out of a slot",
+      "camera": "craneDown",
+      "stage3d": "planes",
+      "hero": {
+        "name": "the sequence strip and the database wall",
+        "part_list": [
+          "the printed strip",
+          "the vial and its rack",
+          "the slot it feeds from",
+          "the wall of database entries",
+          "the one slot that stays open"
+        ],
+        "zone_list": [
+          "the lit bench top",
+          "the dark slot throat",
+          "the scrolling wall behind"
+        ],
+        "parts": 5,
+        "zones": 3,
+        "detail_note": "the strip keeps creeping out through the whole hold, so the shot has a motion that never completes, and the open slot is the only still thing on a scrolling wall"
+      }
+    },
+    {
+      "id": "S3",
+      "t": "34.1-44.0",
+      "framing": "push-detail",
+      "scale": "close",
+      "height": "high",
+      "pov": "macro-closeup",
+      "layout": "stacked-layers",
+      "motion_vector": "assemble-build",
+      "hero_treatment": "instrument-as-subject",
+      "transition_in": "mask-wipe",
+      "thread": "build",
+      "centered": "the newspaper sheet laid down on the bench, then the NameEngine assembling on top of it",
+      "means": "a page is set down and the thing it did not print builds up out of it",
+      "camera": "craneDown",
+      "stage3d": "planes",
+      "hero": {
+        "name": "the NameEngine assembling",
+        "parts": 5,
+        "zones": 3,
+        "detail_note": "parts arrive in three ascending clicks and each one seats with an overshoot, so the machine is BUILT on screen rather than revealed already whole",
+        "part_list": [
+          "the gene window",
+          "the intake iris",
+          "the name plate bay",
+          "the brass housing with fabrication rings",
+          "the feed stage"
+        ],
+        "zone_list": [
+          "the lit brass front face",
+          "the shaded side wall",
+          "the dark intake throat"
+        ]
+      }
+    },
+    {
+      "id": "S4",
+      "t": "44.0-52.56",
+      "framing": "data-panel",
+      "scale": "medium",
+      "height": "eye",
+      "pov": "instrument-screen",
+      "layout": "hud-instrument-frame",
+      "motion_vector": "scroll-data",
+      "hero_treatment": "data-as-subject",
+      "transition_in": "fui-boot",
+      "thread": "build",
+      "centered": "the accuracy readout landing on 97.5, then the author plate turning to show four names",
+      "means": "the machine's own result becomes the machine's own byline, which is the payoff",
+      "camera": "dollyThrough",
+      "stage3d": "flat:this is the instrument's own readout surface and depth would fight the legibility of four names",
+      "hero": {
+        "name": "the accuracy readout and the author plate",
+        "parts": 4,
+        "zones": 3,
+        "detail_note": "the author plate turns on a real hinge with weight, and the fourth name lights a beat AFTER the other three so the reveal is staged rather than simultaneous",
+        "part_list": [
+          "the percentage readout",
+          "the sample counter",
+          "the four-name author plate",
+          "the plate's pivot hinge"
+        ],
+        "zone_list": [
+          "the lit readout face",
+          "the plate's shadowed reverse",
+          "the bezel"
+        ]
+      }
+    },
+    {
+      "id": "S5",
+      "t": "52.56-62.78",
+      "framing": "map-territory",
+      "scale": "extreme-wide",
+      "height": "low",
+      "pov": "top-down-map",
+      "layout": "grid-modular",
+      "motion_vector": "vertical-rise",
+      "hero_treatment": "multiplicity-swarm",
+      "transition_in": "pull-out",
+      "thread": "travel",
+      "centered": "THE SIGNATURE SHOT. the one named beetle held identifiable while nine thousand filled forms and a field of dashed contours open out around it",
+      "means": "the reveal that the gap is a size, not a statistic",
+      "camera": "riseWith",
+      "stage3d": "planes",
+      "hero": {
+        "name": "the field of named and unnamed forms",
+        "parts": 4,
+        "zones": 3,
+        "detail_note": "the named beetle never leaves the frame centre through the whole pull-back, so the viewer keeps their anchor while the scale changes underneath it",
+        "part_list": [
+          "the one named beetle held identifiable",
+          "nine thousand filled forms",
+          "the dashed unnamed field",
+          "the tray grid behind them"
+        ],
+        "zone_list": [
+          "the filled lower band",
+          "the dashed upper field",
+          "the dark tray gutters between"
+        ]
+      }
+    },
+    {
+      "id": "S6",
+      "t": "62.78-69.66",
+      "framing": "alt-vantage",
+      "scale": "close",
+      "height": "eye",
+      "pov": "cross-section-cutaway",
+      "layout": "fullbleed-split",
+      "motion_vector": "horizontal-traverse",
+      "hero_treatment": "instrument-as-subject",
+      "transition_in": "match-cut",
+      "thread": "carry",
+      "centered": "the NameEngine opened along its length, the intake iris opening and closing on nothing, the chain running backwards out of frame",
+      "means": "the thesis drawn as a physical absence inside a working machine",
+      "camera": "truckAcross",
+      "stage3d": "planes",
+      "hero": {
+        "name": "the NameEngine opened along its length",
+        "parts": 5,
+        "zones": 3,
+        "detail_note": "the iris leaves are individually drawn and overlap correctly as they close, and they close on visible empty air rather than on a black fill",
+        "part_list": [
+          "the cutaway housing",
+          "the intake iris leaves",
+          "the empty feed bay",
+          "the three chain bays",
+          "the name plate at the far end"
+        ],
+        "zone_list": [
+          "the lit cut face",
+          "the dark interior throat",
+          "the shaded outer shell"
+        ]
+      }
+    },
+    {
+      "id": "S7",
+      "t": "69.66-77.88",
+      "framing": "subject-portrait",
+      "scale": "wide",
+      "height": "ground",
+      "pov": "eye-level-immersive",
+      "layout": "centered-hero-lowerthird",
+      "motion_vector": "horizontal-traverse",
+      "hero_treatment": "landscape-as-subject",
+      "transition_in": "match-action",
+      "thread": "match",
+      "centered": "the net sweeping through tussock, the film's one big gestural move, with the beetle in it",
+      "means": "the chain's last link completes as a real motion in a real place",
+      "camera": "dollyThrough",
+      "stage3d": "planes",
+      "hero": {
+        "name": "the net and the hand",
+        "parts": 5,
+        "zones": 3,
+        "detail_note": "the bag lags the hoop through the whole arc and settles after it stops, which is the only followThrough big enough to see in this film",
+        "part_list": [
+          "the net hoop",
+          "the canvas bag with a real sag",
+          "the handle",
+          "the hand closing on it",
+          "the tussock it sweeps"
+        ],
+        "zone_list": [
+          "the sunlit grass plane",
+          "the shadowed net interior",
+          "the sky band above"
+        ]
+      }
+    },
+    {
+      "id": "S8",
+      "t": "77.88-88.8",
+      "framing": "wide-establish",
+      "scale": "medium",
+      "height": "high",
+      "pov": "macro-closeup",
+      "layout": "grid-modular",
+      "motion_vector": "push-in-only",
+      "hero_treatment": "single-organic-hero",
+      "transition_in": "carried-element",
+      "thread": "carry",
+      "centered": "the caught beetle set into the tray beside the still-dashed contour from the hook, and the closing question",
+      "means": "the net's catch arrives at the drawer, which is where the film opened",
+      "camera": "craneDown",
+      "stage3d": "planes",
+      "hero": {
+        "name": "the tray with the caught beetle and the still-dashed contour",
+        "parts": 5,
+        "zones": 3,
+        "detail_note": "the two forms are the SAME silhouette drawn in the two grammars, filled and dashed, side by side, so the film's whole argument is one comparison in one frame",
+        "part_list": [
+          "the newly named beetle",
+          "the hook's unnamed contour beside it",
+          "two pins",
+          "two printed labels",
+          "the tray floor"
+        ],
+        "zone_list": [
+          "the lit tray floor",
+          "the dark cabinet beyond",
+          "the label row"
+        ]
+      }
+    }
+  ],
+  "beats": [
+    {
+      "i": 1,
+      "t": 0.0,
+      "vo": 0,
+      "sfx": "a dry papery strip and a hollow drop",
+      "means": "the absence exists before anything else",
+      "draw": {
+        "subject": "a ground beetle, fully drawn, form-shaded, filling the frame",
+        "action": "holds for a third of a second and is then STRIPPED to a bare dashed contour, fill and shading peeling off it at once",
+        "emotion": "matter-of-fact then gone",
+        "annotation": "UNNAMED"
+      },
+      "choreo": {
+        "primary": "the fill and shading are stripped off the beetle in one pass, leaving the dashed contour",
+        "reaction": "the label plate under it blanks at the same instant",
+        "ambient": "the contour's interior begins its drift the moment the fill is gone"
+      },
+      "shows": "the film's whole grammar in one gesture: filled means named, dashed means not"
+    },
+    {
+      "i": 2,
+      "t": 1.59,
+      "vo": 0,
+      "sfx": "a hard wooden snap",
+      "means": "the possible total lands as an object",
+      "draw": {
+        "subject": "a counter plate",
+        "action": "SNAPS up from below with overshoot",
+        "emotion": "assertive",
+        "annotation": "~30,000 POSSIBLE (per ADN)"
+      },
+      "choreo": {
+        "primary": "the counter plate snaps up and overshoots",
+        "reaction": "the contour flinches back a few pixels",
+        "ambient": "motes"
+      },
+      "shows": "the number of insect species Alaska may hold",
+      "cast": "TallyCounter clicker"
+    },
+    {
+      "i": 3,
+      "t": 4.31,
+      "vo": 1,
+      "sfx": "a dull felt-lined thud, lower and softer than the plate before it",
+      "means": "the named total is visibly the smaller object",
+      "draw": {
+        "subject": "a second counter plate, physically shorter",
+        "action": "snaps up beside the first and stops well below it",
+        "emotion": "deflating",
+        "annotation": "~9,000 IDENTIFIED (per ADN)"
+      },
+      "choreo": {
+        "primary": "the second plate snaps up and stops short",
+        "reaction": "the first plate's edge glints",
+        "ambient": "motes"
+      },
+      "shows": "the number it has names for",
+      "cast": "TallyCounter clicker"
+    },
+    {
+      "i": 4,
+      "t": 6.38,
+      "vo": 2,
+      "sfx": "an iris sweep, then a hard latch clunk over a low brass hum",
+      "means": "OPEN LOOP PLANT",
+      "draw": {
+        "subject": "a rectilinear machine face behind frosted glass, one round iris visible on it",
+        "action": "the iris opens once, wide enough to be unmistakably a machine, before a brass shutter DROPS across the glass and latches",
+        "emotion": "withholding",
+        "annotation": "ALREADY BUILT"
+      },
+      "choreo": {
+        "primary": "the iris opens and the shutter drops across it and latches",
+        "reaction": "the two counters dim behind the glass",
+        "ambient": "the hum's glow pulsing on the frosted pane"
+      },
+      "shows": "that the thing which could close the gap is a MACHINE, and that we are not being shown it yet"
+    },
+    {
+      "vo": 2,
+      "sfx": "a low rule drawing across the gap",
+      "means": "the gap is drawn as a distance, not stated as a subtraction",
+      "shows": "how far apart the two numbers actually are",
+      "draw": {
+        "subject": "the space between the two counter plates",
+        "action": "a measuring rule draws across the gap between them and stops with a tick at each end",
+        "emotion": "plain",
+        "annotation": "THE GAP"
+      },
+      "choreo": {
+        "primary": "a rule draws across the empty space between the two plates",
+        "reaction": "both plates settle a few pixels under the rule's arrival",
+        "ambient": "the dashed contour still drifting below"
+      },
+      "i": 5,
+      "t": 8.83,
+      "rehook": null
+    },
+    {
+      "i": 6,
+      "t": 12.5,
+      "vo": 3,
+      "sfx": "a drawer rolling out on wooden runners",
+      "means": "name the actor before using him",
+      "draw": {
+        "subject": "Derek Sikes at a cabinet",
+        "action": "pulls a unit tray fully open",
+        "emotion": "absorbed",
+        "annotation": "DEREK SIKES / CURATOR OF INSECTS / UA MUSEUM OF THE NORTH"
+      },
+      "choreo": {
+        "primary": "the drawer rolls fully out, overtravels, and rebounds into its stop",
+        "reaction": "Sikes leans back to let it pass and steadies it with two fingers",
+        "ambient": "dust lifting off the runners and drifting through the whole hold"
+      },
+      "shows": "the man who keeps the collection"
+    },
+    {
+      "i": 7,
+      "t": 14.14,
+      "vo": 3,
+      "sfx": "a fine pin tick and a paper settle",
+      "means": "the physical unit of the work",
+      "draw": {
+        "subject": "a pinned beetle and its label",
+        "action": "descends, seats, and settles with a contact tick",
+        "emotion": "careful",
+        "annotation": null
+      },
+      "choreo": {
+        "primary": "the pin descends and seats",
+        "reaction": "the tray floor takes a contact tick",
+        "ambient": "neighbouring pins tremble"
+      },
+      "shows": "how one specimen physically enters it"
+    },
+    {
+      "i": 8,
+      "t": 16.6,
+      "vo": 4,
+      "sfx": "a mechanical counter rolling",
+      "means": "twenty years of work as one climbing number",
+      "draw": {
+        "subject": "a brass odometer on the cabinet face",
+        "action": "rolls from 1,000 up through 400,000 and lands hard",
+        "emotion": "relentless",
+        "annotation": "1,000 -> 400,000 CATALOG ENTRIES"
+      },
+      "choreo": {
+        "primary": "the odometer digits roll and land",
+        "reaction": "Sikes glances up at it",
+        "ambient": "cabinet reflections drift"
+      },
+      "shows": "twenty years of cataloguing as one number",
+      "cast": "TallyCounter odometer"
+    },
+    {
+      "vo": 4,
+      "sfx": "trays sliding home, one after another",
+      "means": "twenty years as accumulating physical mass, not just a number",
+      "shows": "that the number is made of objects",
+      "cast": "unit trays",
+      "draw": {
+        "subject": "unit trays behind Sikes",
+        "action": "stack in behind him one after another, each one seating with a knock, until they fill the wall",
+        "emotion": "accumulating",
+        "annotation": null
+      },
+      "choreo": {
+        "primary": "trays slide home and stack up the wall behind him",
+        "reaction": "Sikes never looks up from the tray in front of him",
+        "ambient": "the odometer still rolling"
+      },
+      "i": 9,
+      "t": 18.98,
+      "rehook": null
+    },
+    {
+      "i": 10,
+      "t": 22.54,
+      "vo": 5,
+      "sfx": "a soft label printer chirp",
+      "means": "the specimen count is a DIFFERENT unit and the film says so",
+      "draw": {
+        "subject": "a tray of pinned insects with printed labels",
+        "action": "labels print and seat one after another down the row",
+        "emotion": "matter-of-fact",
+        "annotation": "~2 MILLION SPECIMENS / BORN DIGITAL"
+      },
+      "choreo": {
+        "primary": "labels print and seat down the row",
+        "reaction": "each specimen settles as its label lands",
+        "ambient": "the printer's feed wheel turning"
+      },
+      "shows": "that every specimen is logged as it arrives"
+    },
+    {
+      "i": 11,
+      "t": 24.66,
+      "vo": 5,
+      "sfx": "a long wooden rumble",
+      "means": "REVEAL 1, scale-pullback, and the first REHOOK window",
+      "rehook": "the drawer turns out to be one of a wall, and the wall turns out to have holes in it",
+      "draw": {
+        "subject": "the wall of unit trays",
+        "action": "opens out around the one drawer, and in the far trays a scatter of DASHED contours is visible among the filled specimens",
+        "emotion": "vast",
+        "annotation": null
+      },
+      "choreo": {
+        "primary": "the wall of trays opens out around the drawer",
+        "reaction": "the one open drawer stays lit",
+        "ambient": "far trays losing contrast with depth"
+      },
+      "shows": "that the wall itself already contains gaps, which plants the 21,000 forty seconds early"
+    },
+    {
+      "vo": 6,
+      "sfx": "a glass vial stoppering, then a thin printer feed",
+      "means": "the mechanism the whole back half depends on",
+      "shows": "what a sequence physically is",
+      "draw": {
+        "subject": "a single leg dropped into a vial, and a sequence strip feeding out of a slot",
+        "action": "the vial stoppers and a printed strip of letters feeds out and curls onto the bench",
+        "emotion": "methodical",
+        "annotation": "ONE SEQUENCE"
+      },
+      "choreo": {
+        "primary": "the strip feeds out of the slot and curls over the bench edge",
+        "reaction": "the vial rocks once and settles in its rack",
+        "ambient": "the strip's tail still creeping out through the whole hold"
+      },
+      "i": 12,
+      "t": 27.84,
+      "rehook": null
+    },
+    {
+      "vo": 6,
+      "sfx": "a rapid chatter of comparisons resolving into one hollow tock",
+      "means": "no match is the thing that means something new",
+      "shows": "that a blank is the interesting result",
+      "draw": {
+        "subject": "a wall of database entries",
+        "action": "the strip is held up and entries flick past it in a blur, and every one of them fails to seat, leaving one slot open",
+        "emotion": "expectant",
+        "annotation": "NO MATCH"
+      },
+      "choreo": {
+        "primary": "entries flick past the held strip and none of them seats",
+        "reaction": "the open slot holds while the rest of the wall keeps scrolling",
+        "ambient": "the strip trembling in the hand"
+      },
+      "i": 13,
+      "t": 30.34,
+      "rehook": null
+    },
+    {
+      "i": 14,
+      "t": 34.1,
+      "vo": 7,
+      "sfx": "a newspaper sheet laid flat",
+      "means": "the pivot into act two",
+      "draw": {
+        "subject": "a newspaper sheet on the bench",
+        "action": "slaps down onto the bench and its far corner lifts and settles",
+        "emotion": "casual",
+        "annotation": "ANCHORAGE DAILY NEWS, 2026-08-02"
+      },
+      "choreo": {
+        "primary": "the newspaper slaps down and its corner settles",
+        "reaction": "the bench tools jump slightly",
+        "ambient": "paper fibre catching the light"
+      },
+      "shows": "the newspaper that profiled him"
+    },
+    {
+      "i": 15,
+      "t": 36.09,
+      "vo": 7,
+      "sfx": "a small hollow pop",
+      "means": "states the absence in the source honestly",
+      "draw": {
+        "subject": "a clean rectangular hole in the newsprint column",
+        "action": "the type reflows and a bare unprinted rectangle opens in the middle of the column",
+        "emotion": "pointed",
+        "annotation": "NOT IN IT"
+      },
+      "choreo": {
+        "primary": "a rectangle of type lifts out of the column and leaves unprinted stock",
+        "reaction": "the surrounding lines close up around the hole",
+        "ambient": "the sheet's edge lifting in the draught"
+      },
+      "shows": "what the profile left out",
+      "note": "NOT the dashed grammar. This is a documentation gap, not an unnamed species, and Gate 0D was right that reusing the dashed language here would make it mean 'anything incomplete'."
+    },
+    {
+      "i": 16,
+      "t": 39.08,
+      "vo": 8,
+      "sfx": "parts seating, three ascending clicks",
+      "means": "REVEAL 2, build-on",
+      "draw": {
+        "subject": "the NameEngine",
+        "action": "assembles part by part out of the page, gene window then intake then name plate",
+        "emotion": "eager",
+        "annotation": "SYSTEMATIC BIOLOGY, 2008"
+      },
+      "choreo": {
+        "primary": "the NameEngine's parts seat one after another",
+        "reaction": "the bench takes each part's weight",
+        "ambient": "brass warming under the lamp"
+      },
+      "shows": "the 2008 classifier, built on screen"
+    },
+    {
+      "i": 17,
+      "t": 41.05,
+      "vo": 8,
+      "sfx": "a thin scanning tone",
+      "means": "the mechanism, drawn",
+      "draw": {
+        "subject": "a short bright window on a gene strip",
+        "action": "slides along the strip and locks on one segment",
+        "emotion": "focused",
+        "annotation": "ONE GENE"
+      },
+      "choreo": {
+        "primary": "the gene window slides and locks on one segment",
+        "reaction": "the strip tightens as it locks",
+        "ambient": "the scan line sweeping"
+      },
+      "shows": "the one gene the method reads"
+    },
+    {
+      "i": 18,
+      "t": 44.0,
+      "vo": 9,
+      "sfx": "eighty rapid ticks resolving into one chime",
+      "means": "the number made physical",
+      "draw": {
+        "subject": "eighty small beetle forms on the intake belt",
+        "action": "run through and resolve from dashed to filled, all but two",
+        "emotion": "satisfied",
+        "annotation": "97.5% / 80 UNKNOWN GROUND BEETLES"
+      },
+      "choreo": {
+        "primary": "eighty forms run the belt and resolve from dashed to filled",
+        "reaction": "the readout climbs with them",
+        "ambient": "belt texture scrolling"
+      },
+      "shows": "the accuracy, as eighty beetles resolving"
+    },
+    {
+      "i": 19,
+      "t": 45.66,
+      "vo": 9,
+      "sfx": "two dull clunks into a tin cup",
+      "means": "the accuracy is honest because the misses are drawn",
+      "draw": {
+        "subject": "two beetle forms that did not resolve",
+        "action": "tip off the end of the belt and drop into a reject cup",
+        "emotion": "unbothered",
+        "annotation": "2 OF 80"
+      },
+      "choreo": {
+        "primary": "two forms tip off the belt into a cup",
+        "reaction": "the cup rocks and settles",
+        "ambient": "belt continuing"
+      },
+      "shows": "the two it got wrong"
+    },
+    {
+      "i": 20,
+      "t": 48.16,
+      "vo": 10,
+      "sfx": "a brass plate turning over on its hinge",
+      "means": "OPEN LOOP PAYOFF, the film's biggest moment",
+      "draw": {
+        "subject": "the study's author plate",
+        "action": "turns over on its hinge and settles, all four names dim",
+        "emotion": "held",
+        "annotation": "ZHANG - SIKES - MUSTER - LI"
+      },
+      "choreo": {
+        "primary": "the plate turns over on a real hinge and settles with weight",
+        "reaction": "the bench takes the plate's weight",
+        "ambient": "lamp flicker"
+      },
+      "shows": "who wrote it: four names, none of them lit yet"
+    },
+    {
+      "i": 21,
+      "t": 49.92,
+      "vo": 10,
+      "sfx": "a single clean chime and the room going quiet",
+      "means": "THE OPEN LOOP PAYOFF, landing exactly on the spoken name",
+      "shows": "that the SECOND name is the man we have been watching pin insects",
+      "rehook": null,
+      "note": "Gate 0C caught that the reveal fired ~4s before its own line. The highlight is now timed to the spoken words 'Derek Sikes', and Gate 0B caught that it was lighting the fourth name when Sikes is the second. It lights SIKES, by name, not by position.",
+      "draw": {
+        "subject": "the SECOND name on the plate, SIKES",
+        "action": "lights and lifts a few pixels off the brass while the other three stay dim, and a hairline rule draws from it back to the curator's nameplate from the opening",
+        "emotion": "quiet recognition",
+        "annotation": "SIKES"
+      },
+      "choreo": {
+        "primary": "the second name lights and lifts off the plate",
+        "reaction": "a hairline rule draws back to the nameplate seen at beat 5",
+        "ambient": "everything else on the bench holding still"
+      }
+    },
+    {
+      "i": 22,
+      "t": 52.56,
+      "vo": 11,
+      "sfx": "a slow ratchet, one tooth at a time",
+      "means": "the pace, felt as slowness",
+      "draw": {
+        "subject": "the odometer again, now on a decade dial",
+        "action": "advances ONE tooth and stops",
+        "emotion": "patient to the point of pain",
+        "annotation": "~1,000 PER DECADE (per ADN)"
+      },
+      "choreo": {
+        "primary": "the decade dial advances exactly one tooth and stops",
+        "reaction": "the pawl drops behind it and the escapement spring keeps flexing against the load",
+        "ambient": "behind it, Sikes keeps working a tray at the far end of the room for the whole hold"
+      },
+      "shows": "the pace, as one tooth of a decade dial",
+      "note": "Gate 0C flagged 51-56s as dead. The dial's single tooth is now the EVENT and the continuously working figure behind it is what never stops.",
+      "cast": "TallyCounter odometer on a decade dial"
+    },
+    {
+      "i": 23,
+      "t": 57.04,
+      "vo": 12,
+      "sfx": "a riser under a widening rumble",
+      "means": "REVEAL 3, THE SIGNATURE SHOT, and the second REHOOK window",
+      "rehook": "the gap stops being a statistic and becomes a physical field that runs off the top of frame",
+      "draw": {
+        "subject": "nine thousand filled forms and a field of dashed contours",
+        "action": "opens out around the one named beetle until the dashed field leaves frame",
+        "emotion": "overwhelming",
+        "annotation": "~21,000 UNNAMED"
+      },
+      "choreo": {
+        "primary": "the field opens out and runs off the top of frame",
+        "reaction": "the named beetle holds frame centre",
+        "ambient": "dashed forms drifting out of phase"
+      },
+      "shows": "the gap as a physical field, not a statistic"
+    },
+    {
+      "i": 24,
+      "t": 59.34,
+      "vo": 12,
+      "sfx": "a heavy plate landing on wood",
+      "means": "the arithmetic lands as an object, labeled as ours",
+      "draw": {
+        "subject": "a year plate",
+        "action": "drops in and hits the tray rail hard enough to bounce once",
+        "emotion": "blunt",
+        "annotation": "~210 YEARS (our arithmetic)"
+      },
+      "choreo": {
+        "primary": "the year plate drops and bounces once on the rail",
+        "reaction": "the tray rings",
+        "ambient": "dust jumping off the rail"
+      },
+      "shows": "how long that pace takes, labeled as our arithmetic",
+      "cast": "TallyCounter odometer"
+    },
+    {
+      "i": 25,
+      "t": 62.78,
+      "vo": 13,
+      "sfx": "everything drops out, a 6dB dip",
+      "means": "the thesis, underplayed",
+      "draw": {
+        "subject": "the NameEngine alone on the bench",
+        "action": "its last cover chip seats with a click and every moving part stops at once",
+        "emotion": "unaccused",
+        "annotation": "NOT THE MODEL"
+      },
+      "choreo": {
+        "primary": "the last cover chip seats and every part stops",
+        "reaction": "the lamp steadies",
+        "ambient": "the room going quiet"
+      },
+      "shows": "the machine is not the thing at fault"
+    },
+    {
+      "i": 26,
+      "t": 65.7,
+      "vo": 14,
+      "sfx": "an iris opening on air, twice",
+      "means": "the running gag that is also the argument",
+      "draw": {
+        "subject": "the NameEngine's intake iris, cut away along its length",
+        "action": "opens, holds, and closes on nothing",
+        "emotion": "hungry",
+        "annotation": "NEEDS: A SEQUENCE"
+      },
+      "choreo": {
+        "primary": "the intake iris opens, holds, and closes on air",
+        "reaction": "the feed bay stays empty behind it",
+        "ambient": "the housing breathing"
+      },
+      "shows": "the intake has nothing in it"
+    },
+    {
+      "i": 27,
+      "t": 67.28,
+      "vo": 14,
+      "sfx": "two hollow knocks travelling left",
+      "means": "the chain runs backwards",
+      "draw": {
+        "subject": "a newer, sleeker classifier drawn as a flat translucent ghost",
+        "action": "rises into frame beside the brass one at low opacity and never solidifies",
+        "emotion": "honest uncertainty",
+        "annotation": "A NEWER MODEL, NOT TESTED HERE"
+      },
+      "choreo": {
+        "primary": "the three bays empty right to left",
+        "reaction": "each knock travels down the chain",
+        "ambient": "the far bay dark"
+      },
+      "shows": "the chain runs backwards to an empty bay",
+      "note": "A translucent ghost, NOT the dashed grammar. This is a machine that might exist, not an unnamed species."
+    },
+    {
+      "i": 28,
+      "t": 69.66,
+      "vo": 15,
+      "sfx": "a canvas whoosh and a soft compressed-tussock thud",
+      "means": "REVEAL 4, morph-to-chart, the answer to the empty bay",
+      "draw": {
+        "subject": "a hand closing on a net handle in tussock",
+        "action": "sweeps the net through the grass in one motion-blurred arc",
+        "emotion": "purposeful",
+        "annotation": "SOMEBODY IN A FIELD"
+      },
+      "choreo": {
+        "primary": "the net sweeps through tussock in one blurred arc",
+        "reaction": "the bag lags the hoop and settles after it",
+        "ambient": "grass heads recoiling"
+      },
+      "shows": "what fills the empty bay, a person with a net"
+    },
+    {
+      "i": 29,
+      "t": 73.54,
+      "vo": 16,
+      "sfx": "a single soft question-mark chime",
+      "means": "the fair counter-point, given real room",
+      "draw": {
+        "subject": "a newer, sleeker classifier drawn as a dashed unfilled outline",
+        "action": "rises into frame beside the brass one and stays unfilled",
+        "emotion": "honest uncertainty",
+        "annotation": "A NEWER MODEL, NOT TESTED HERE"
+      },
+      "choreo": {
+        "primary": "the dashed newer classifier rises into frame",
+        "reaction": "the brass one dims beside it",
+        "ambient": "its interior drifting, unfilled"
+      },
+      "shows": "the fair counter, a newer model nobody has tested here"
+    },
+    {
+      "i": 30,
+      "t": 77.88,
+      "vo": 17,
+      "sfx": "the wall of drawers rolling closed in sequence",
+      "means": "the genuine win, stated as an asset",
+      "draw": {
+        "subject": "the drawer wall",
+        "action": "rolls closed tray by tray toward the camera",
+        "emotion": "solid",
+        "annotation": "~2 MILLION SPECIMENS, ALREADY READ-ABLE"
+      },
+      "choreo": {
+        "primary": "the drawer wall rolls closed tray by tray",
+        "reaction": "each tray takes the one before it",
+        "ambient": "the room darkening toward the camera"
+      },
+      "shows": "two million specimens as an asset already in hand"
+    },
+    {
+      "i": 31,
+      "t": 81.84,
+      "vo": 18,
+      "sfx": "the label printer's chirp and the specimen seating",
+      "means": "the button, looping back to frame 1",
+      "draw": {
+        "subject": "the caught beetle, now filled and named, beside the hook's still-dashed contour",
+        "action": "seats into the tray next to it and the accent arrives",
+        "emotion": "open",
+        "annotation": "NAMED"
+      },
+      "choreo": {
+        "primary": "the caught beetle seats into the tray",
+        "reaction": "the accent arrives with its label",
+        "ambient": "the neighbouring dashed form still drifting"
+      },
+      "shows": "the caught beetle arriving where the film began, and getting the name the hook took away"
+    },
+    {
+      "i": 32,
+      "t": 84.62,
+      "vo": 18,
+      "sfx": "one low pin tick into full silence",
+      "means": "the button's last image, the loop closed",
+      "draw": {
+        "subject": "the two silhouettes side by side, one filled and one dashed",
+        "action": "the tray slides shut until only the two of them are lit",
+        "emotion": "open",
+        "annotation": "A SMARTER MODEL, OR ANOTHER SUMMER?"
+      },
+      "choreo": {
+        "primary": "the tray slides shut until only two silhouettes are lit",
+        "reaction": "the pin tick lands",
+        "ambient": "silence"
+      },
+      "shows": "the question"
+    }
+  ],
+  "scene_start_line": [
+    0,
+    3,
+    5,
+    7,
+    9,
+    11,
+    13,
+    15,
+    17
+  ],
+  "total_seconds": 88.8
+}

@@ -409,3 +409,74 @@ of the world brought indoors under a lamp is a different verb and needed differe
   being fixed in vo_synth_gemini.py's `_align_wholefile` on 2026-07-19, and that fix was never
   carried across to align_captions.py, which the routine names as authoritative for caption timing.
   --script is still honoured, but only for the post-hoc transcript_match validation.
+
+## Insects (the library's FIRST ARTHROPOD YOU CAN LOOK AT) — lib/bugs.tsx
+NET-NEW 2026-08-05 ("The Net Comes First"). REAL GAP, checked against this file in full
+first: the 21-species bestiary is every one a vertebrate except KingCrab, and the only
+other arthropod is `Mosquito`, which is explicitly a gag asset with a whiny wing blur and
+a divebomb. There was no insect that could be looked at seriously, and this story is
+entirely about Alaska's insect fauna with a headline result specifically on ground beetles.
+- `GroundBeetle` — THE RUN'S HERO, and a deliberate variety break: the last five heroes were
+  machines and instruments (BurnWindowEngine, AshReader, ThresholdGate, IceGlider,
+  RecordsMachine) and this one is an animal — bugs.tsx — SHAPE-LANGUAGE DECISION: the beetle
+  is the ORGANIC-IRREGULAR half of a film whose other half is a rectilinear cabinet, so
+  NOTHING on it is parallel to anything. Six legs at six different angles with three segments
+  each, a pronotum that matches neither head nor body, crossed asymmetric mandibles. A beetle
+  with mirrored legs reads as clip art. THE ONE-CHANNEL LESSON APPLIED (07-25 horn, 07-26
+  cone, 07-30 glider): state is carried by THREE things, the ANTENNAE (forward and searching
+  or folded back), the LEG SET (planted, walking, drawn in), and the ELYTRA SHEEN (dull when
+  unnamed, a hard specular band when named). `state` still/walking/caught/named, `sheen`,
+  `accentColor` (supplied by the caller so the accent licence stays at the call site),
+  `label`, `pinned` (a real entomological pin through the RIGHT elytron, which is where
+  entomology puts it, with a contact tick where it enters). Alternating-tripod gait, which is
+  the gait a beetle actually has. Deterministic imul-hashed elytral punctures and six striae.
+  tones/FormGradient/RimLight/ContactShadow, routed through vitals() — ACTIVE
+- `BEETLE_PATH` — the elytra outline alone, for filled use.
+- `BEETLE_SIL` — THE FULL SILHOUETTE, body plus head, pronotum, six legs and two antennae, as
+  a compound path. HARD-WON, and found by looking at the rough cut rather than by reasoning:
+  the absence grammar strokes a path with no fill, and BEETLE_PATH unfilled is AN EGG. The
+  hook and the signature shot are both built entirely on the dashed form, so the film's two
+  most important frames were showing a stranger an oval and calling it an insect. A filled
+  beetle gets its legs from separate drawn elements; an unfilled one has only its outline, so
+  the outline has to carry the whole animal. Any future asset intended for `Unnamed` needs the
+  same treatment.
+
+## THE ABSENCE GRAMMAR — lib/absence.tsx (CRAFT ADVANCE 2026-08-05)
+The shelf had paid for this lesson twice and solved it once, inline, for one animal.
+07-26 records.tsx `ThreePipeCutaway` drew a capped pipe meaning "no record comes back" and TWO
+panel judges found it did not read as an absence, which this file still carried as an open
+known weakness. 07-30 underice.tsx `RingedSealGhost` solved it properly (dashed contour, true
+void interior, caller-supplied label) and welded the solution to a seal, so every later film
+needing to draw a thing that is not there had to re-improvise it.
+- `Unnamed` — renders ANY silhouette as A STATED ABSENCE — absence.tsx — the contract is four
+  clauses and each one is a defect somebody already found: (1) DASHED, never solid, and the
+  dash phase CRAWLS, because a solid outline reads as a style choice; (2) a TRUE VOID interior,
+  no hatch, because a hatched absence reads as a material; (3) a slow sparse DRIFT inside the
+  void, which is THE FOURTH THING this run added and the one that stops an absence reading as
+  UNFINISHED rather than unfilled, since a static dashed outline in a world of form-shaded
+  solids looks like an asset that failed to render; (4) a REQUIRED `label` prop, not optional,
+  because an unlabelled absence is indistinguishable from an oversight and a caller who has to
+  type the label has to decide what the missing thing IS. `solid` 0..1 animates the SAME path
+  from an absence into a filled outline without swapping components mid-shot — ACTIVE
+- `UnnamedField` — a POPULATION of absences — absence.tsx — deterministic hash scatter, never
+  Math.random, with `resolved` 0..1 filling them in from the left. Dash length scales up as
+  instance size drops so the dashes never alias to grey noise under H.264 — ACTIVE
+
+## THE NAME ENGINE — lib/nameengine.tsx (net-new 2026-08-05)
+- `NameEngine` — the 2008 classifier as a physical object — nameengine.tsx — REDESIGNED AT GATE
+  0D AND THE CRITIC WAS RIGHT. The first design was a brass bench instrument with an intake that
+  reads a sample and prints an answer, staged in macro-closeup under a lamp, which is bench.tsx's
+  `AshReader` staged in `AshReader`'s own treatment two runs earlier. The stated differences were
+  BEHAVIOURAL and a viewer cannot see behaviour in a silhouette. So the SHAPE moved instead, and
+  moving it made the film better: this machine is RECTILINEAR AND STACKED, drawer-proportioned,
+  machined panel lines and recessed corner screws, and it belongs to the CABINET's ordering
+  grammar rather than to the bench. THE ONE ROUND ELEMENT IN A SQUARE MACHINE IS THE INTAKE IRIS,
+  six overlapping leaves that open, hold and close on visible empty air. AshReader has no iris, it
+  is legible at feed size because it is the only circle among right angles, and it IS the film's
+  thesis: the machine works and there is nothing to put in it. Three state channels: the IRIS, the
+  FEED BAY (`feed` 0 leaves it visibly empty, which is the point of the asset), and the LAMP,
+  which lights ONLY when `plate` is non-null, the SeismicStation discipline. `cut` 0..1 opens the
+  housing along its length so the empty bay can be seen from inside — ACTIVE
+- LESSON WORTH KEEPING: when a gate says a net-new asset duplicates the shelf, the cheapest real
+  fix is usually to move its SHAPE LANGUAGE onto the other side of the film's own grammar, not to
+  argue that its behaviour differs.

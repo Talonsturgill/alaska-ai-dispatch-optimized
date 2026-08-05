@@ -1307,3 +1307,57 @@ dispatch_history:
     S8: award timeline, scanned track, four chips
     S9: crew of three, staked NO DAY sign
     S10: inverted map, green windows, counter pair
+- date: '2026-08-05'
+  topic: 'THE NET COMES FIRST: Alaska may hold about 30,000 insect species and has
+    names for about 9,000 (per ADN, 2026-08-02), growing about 1,000 a decade, which
+    is about 21,000 unnamed and about 210 years by our own arithmetic. The curator
+    who pins the specimens at the UA Museum of the North, Derek Sikes, co-authored
+    a 2008 Systematic Biology neural network (DOI 10.1080/10635150802032982) that
+    identified 97.5 percent of 80 unknown ground beetle DNA sequences. Eighteen years
+    on the count has not moved faster, so the model was never the binding constraint:
+    a classifier needs a sequence, a sequence needs a specimen, and a specimen needs
+    somebody in a field with a net. Fair counter stated on screen: a 2008 network
+    on two well-studied groups is not a 2026 model and nobody has tested one here.
+    Abstract-only sourcing disclosed. The AI connection is the film''s own synthesis
+    and it says so.'
+  slug: uam-insect-inventory
+  key_entities:
+  - derek sikes
+  - university of alaska museum of the north
+  - uaf entomology
+  - insect collection
+  - taxonomy
+  - dna sequencing
+  - species inventory
+  - back-propagation neural network
+  - systematic biology 2008
+  - ground beetles
+  - anchorage daily news
+  archetype: ''
+  palette: 'cabinet green #1E332C, bone #EDE7DA, brass #C9963F, named-species teal
+    #35C8C0 (reserved), shadow #101A17'
+  voice: ''
+  stance: wry
+  angle: Alaska's insect count moves about a thousand species a decade and it is not
+    because nobody built the algorithm; the step that is starved is the one before
+    the model.
+  hero: GroundBeetle
+  cast:
+  - GroundBeetle
+  - NameEngine
+  - Unnamed/UnnamedField
+  - Character (Sikes)
+  - TallyCounter
+  - BrassPlate
+  - TrayWall
+  composition:
+    pov: eye-level-immersive
+    layout: grid-modular
+    motion_vector: vertical-descent
+    hero_treatment: single-organic-hero
+    register: naturalistic-scene
+    camera_strategy: rise-reveal
+    light_story: overcast-diffuse
+    palette: cabinet green, bone specimen paper, brass, one named-species teal
+    metaphor: a room that has a place for everything, and a world that has not been
+      brought into it

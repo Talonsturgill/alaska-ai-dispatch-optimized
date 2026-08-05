@@ -1,0 +1,45 @@
+{
+  "run_date": "2026-08-05",
+  "title": "THE NET COMES FIRST",
+  "sourcing_limitation": "THE 2008 PAPER WAS REACHED AT ABSTRACT LEVEL ONLY. The Systematic Biology full text is paywalled (the OUP article page returns an abstract-level view). The abstract was retrieved verbatim from PubMed and cross-confirmed via the Semantic Scholar record for the DOI, and the same-person identification of D.S. Sikes was confirmed on the curator's own Google Scholar profile against the museum's staff page. The film therefore states NO methodological detail beyond the one abstract sentence quoted below. SECOND AND MORE IMPORTANT: the connection between that 2008 paper and the 2026 ADN profile is THIS FILM'S OWN SYNTHESIS. The ADN piece contains zero mentions of AI, machine learning or neural networks, and neither ADN nor Sikes drew this line. The film says so rather than implying the reporting made the connection.",
+  "sources": [
+    {
+      "title": "One entomologist is on a quest to pin down every Alaska insect. Thousands remain.",
+      "outlet": "Anchorage Daily News, reported by Iris Samuels, published 2026-08-02",
+      "url": "https://www.adn.com/alaska-news/science/2026/08/02/one-entomologist-is-on-a-quest-to-pin-down-every-alaska-insect-thousands-remain/",
+      "primary": true,
+      "what_it_carries": "Derek Sikes as curator of insects at the University of Alaska Museum and professor of entomology at UAF, in charge since 2006 (c3). The collection going from roughly 1,000 records to more than 400,000, representing about 2 million specimens (c4, c5). Sikes quoted that every specimen that comes in is born digital (c6), which refers to PHYSICAL barcode tracking labels at intake and NOT to DNA barcoding, a distinction the film keeps. DNA sequencing described as another clue when genetic information matches nothing in international databases (c13). And the labeled figures: Alaska may contain as many as 30,000 insect species with only about 9,000 identified (c1, c2), and every decade another 1,000 are added to the list (c10).",
+      "note": "ADN attributes the 30,000 / 9,000 / 1,000-per-decade figures only to unnamed scientists and does not clarify whether identified means described to science or recorded present in Alaska. The film labels all three on screen as per ADN and does not resolve that ambiguity on ADN's behalf."
+    },
+    {
+      "title": "Zhang, Sikes, Muster and Li, Inferring species membership using DNA sequences with back-propagation neural networks, Systematic Biology 57(2) 202-215, 2008",
+      "outlet": "Systematic Biology (Oxford University Press), via PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/18398766/",
+      "doi": "10.1080/10635150802032982",
+      "primary": true,
+      "what_it_carries": "The film's hinge (c7, c8, c9). Verbatim from the abstract: \"With a 630-to 690-bp fragment of the COI gene, we identified 97.50% of 80 unknown sequences of ground beetles, 95.63%, 96.10%, and 100% of 275, 205, and 9 unknown sequences of the neotropical skipper butterfly to their correct species, respectively.\" The film uses the ground-beetle figure only; the three skipper-butterfly figures were deliberately cut because one accuracy number lands and four become a table. Author order Zhang, Sikes, Muster, Li is what the on-screen plate paints, and the reveal lights SIKES by name rather than by position because he is the SECOND author, not the fourth.",
+      "note": "ABSTRACT ONLY. Full text paywalled. Nothing about network architecture, training regime or generalisation beyond the quoted sentence appears anywhere in the film."
+    },
+    {
+      "title": "University of Alaska Museum of the North, entomology collections",
+      "outlet": "University of Alaska Fairbanks",
+      "url": "https://www.uaf.edu/museum/collections/ento/",
+      "primary": true,
+      "what_it_carries": "The independent second source on the collection's size: about 425,000 records representing over 2 million specimens as of January 2026, with 282,206 pinned specimens databased. This is what confirms ADN's rounder figures and, critically, defines RECORDS as catalog entries and SPECIMENS as physical objects. The film never conflates the two units and never says 400,000 specimens or 2 million records."
+    },
+    {
+      "title": "Derek S. Sikes, Google Scholar profile",
+      "outlet": "Google Scholar",
+      "url": "https://scholar.google.com/citations?user=-C5IMzoAAAAJ",
+      "what_it_carries": "The same-person confirmation. The 2008 paper is listed on the profile of the Derek S. Sikes identified by the museum's own staff page as its curator of insects, which is what makes the film's central claim about authorship checkable rather than inferred from a surname."
+    }
+  ],
+  "derived_figures": [
+    {
+      "figure": "about 21,000 unnamed, and about 210 years at the current pace",
+      "how": "Arithmetic on ADN's own two labeled numbers: 30,000 minus 9,000 is about 21,000, and 21,000 divided by 1,000 per decade is about 210 years.",
+      "labeled_on_screen": "our arithmetic on ADN's figures",
+      "note": "This is NOT an ADN projection and the film never presents it as one."
+    }
+  ]
+}

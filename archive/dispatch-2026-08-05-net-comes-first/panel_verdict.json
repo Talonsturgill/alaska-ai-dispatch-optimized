@@ -1,0 +1,41 @@
+{
+  "recorded_at": "2026-08-05T09:03:58Z",
+  "median": 7.52,
+  "judges": [
+    7.52,
+    7.9,
+    7.48
+  ],
+  "threshold": 7.5,
+  "notes": "Round 7. Panel median 7.52 vs a 7.5 bar, two of three judges ship. The deciding fix was the net sweep: both dissenting judges independently measured it as the film's lowest-motion beat (4.8 percent of pixels changed against 25.0 for the pull-back) landing on the VO's one physical-action line. It is now a 145 degree arc in under a second with velocity-driven blur, bag lag and grass displacement, measuring 8.0 percent. Judge 1 moved 7.46 to 7.52 and flipped to ship; judge 3 moved 7.33 to 7.48 and moved VO-sync 6.8 to 7.6 on that beat alone. Known and NOT fixed, carried to the next run: the open loop resolves by denial across two half-teases rather than one clean reveal (judge 3 rank 1, a back-half structural rewrite); the net still does not read as a woven mesh (judge 2 rank 1); Sikes is still flatter-finished than the props beside him (all three judges); the shelving grid has no AO between rows.",
+  "artifacts": {
+    "dispatch_master.mp4": "8961598badefc9bf05e73948e67fda2e81c8440f97e4523b269427e24cc2e113",
+    "dispatch_square.mp4": "f301d5a759c60c7084fb949f426a76e6e707dc38aa5969b0b0517dcf12ff57c8",
+    "dispatch_master_720.mp4": "9095703b085175d6f03f705595ddbe1bc0175c6199e0df1dc126d9a413d94afa"
+  },
+  "evidence": {
+    "contact_square.jpg": "5cd60a0e16a9c0af54c3726136bfbe68245a153f4c86b734cf32c1db068b88d9",
+    "f003.1.jpg": "da6951a5dcb2ab1f179f8d4282c9d7445ffc3f52476c0373610264ee0390a1aa",
+    "f009.2.jpg": "a2fec466e1133b4f27070840298e2319a4fb124d6f93020dd049c9bab586e2e2",
+    "f015.4.jpg": "ddc48d2ea35de0b5ef67a0a11bd057fd46d3dbcc731524f05fc761c9433e39a9",
+    "f021.6.jpg": "19f13959209355648bbe37fc0bf741a576a4cd770d4ee15bfc8e69efcced0d0a",
+    "f027.7.jpg": "21fa10610009babb63d5fb6a13a61c0650c32b5174d2b32b4bf1df2698111d64",
+    "f033.9.jpg": "a32ac4d1dad444b4171c9875aad752f9afa53ba8c0f70280d0e06b578fb4736f",
+    "f040.0.jpg": "386b502e17676f7ca9a9ecf1f6c17946222e3b70de1b5883c214f86246899a9c",
+    "f046.2.jpg": "12023f3b441db8b7567e16608c93cedd3141c7aa2bc675ea98296e16e809c07b",
+    "f052.3.jpg": "13311d00a296cfcf742618ccb2cbcda945da3fe7e1d60cd6d06c9bbbe00463ed",
+    "f058.5.jpg": "b0f4be1d5750edb4e952f4f0ea5a0d8b5baeba1267ae4d3ed12b07c87ef9da97",
+    "f064.7.jpg": "1e5995c40083c07b41dcbe6021830a13ada363947c406b72b26126f7c0d8d8fe",
+    "f070.8.jpg": "e570334879625628c679058e90c41d4602deca4a591a69c93f9f1c85877dbb41",
+    "f077.0.jpg": "66aa85ac41e106fe94513db7b97824a7745a7cb4e12943ef05c9b26b00d16ae8",
+    "f083.1.jpg": "56e9ee271b49212446048f7941d081635b43412a3903545b12ae0e7ee7054ebe",
+    "filmstrip_iris.jpg": "03f020c6dd9597efc14e13c70b76cdbf0dd3af79580c4ef317f6e4671ee0266e",
+    "filmstrip_newsprint.jpg": "e084adaaf3e8b092554771f68791f757cdca6fa8fcb9d893bdac6a5d7352468c",
+    "filmstrip_pin.jpg": "58e13fa7593bb0a65bcc985e3006289ffa854f531f145243f346b1e29c05d970",
+    "filmstrip_pullback.jpg": "0c20e84e563109af5652f6cb5b05f9356f1c8c117197d92225e5d8d1075a362f",
+    "filmstrip_resolve.jpg": "888cf659e1a7f4aa850beeb7f4f25f31276ae5f1cf825f047515252734437e95",
+    "filmstrip_reveal.jpg": "7e6baa9b9ffe4dacd6e512cdc4ff6f11c99d6eac4bb520e0af9b19500918c691",
+    "filmstrip_strip.jpg": "36a40dee263103d5ec1e43fcf39e4ff4ba97d87ec8f798f9eff82b500efee253",
+    "filmstrip_sweep.jpg": "cc9d596a12cda86bc8d6de7dcfe4f3f211715b44ed814d14ab90ad8e723d1c8a"
+  }
+}
