@@ -100,8 +100,8 @@ const World: React.FC<{f: number; children: React.ReactNode; bg?: string; dur?: 
   // an irrational period, so no frame in the film is ever identical to the one before
   // it, whatever the events are doing.
   const k = 1 + 0.105 * push * Math.min(1, f / Math.max(1, dur));
-  const dx = Math.sin(f / 97) * 16 * push;
-  const dy = Math.cos(f / 131) * 12 * push;
+  const dx = (Math.sin(f / 97) * 16 + Math.sin(f / 19) * 6) * push;
+  const dy = (Math.cos(f / 131) * 12 + Math.cos(f / 23) * 5) * push;
   return (
     <AbsoluteFill style={{background: bg}}>
       <svg viewBox="0 0 1080 1920" width="100%" height="100%">
@@ -114,9 +114,9 @@ const World: React.FC<{f: number; children: React.ReactNode; bg?: string; dur?: 
           {Array.from({length: 40}, (_, i) => {
             const h = (i * 2654435761) >>> 0;
             const bx = h % 1080;
-            const sp = 0.22 + ((h >>> 7) % 5) * 0.06;
+            const sp = 1.6 + ((h >>> 7) % 5) * 0.55;
             const y = ((h >>> 11) % 1500) + 300 - ((f * sp) % 1500);
-            const x = bx + Math.sin(f / (61 + (h % 23)) + i) * 26;
+            const x = bx + Math.sin(f / (17 + (h % 11)) + i) * 30;
             return <circle key={i} cx={x} cy={y} r={2.2 + (h % 3) * 0.8} fill={SHADOW} opacity={0.55} />;
           })}
         </g>
@@ -694,7 +694,7 @@ const S7: React.FC<SceneProps> = ({from, L}) => {
   const still = interpolate(t, [L(13), L(13) + 0.8], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const cut = interpolate(t, [L(14) - 0.2, L(14) + 1.2], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: E_OUT});
   // the iris opens, HOLDS, and closes on nothing, on an irrational period
-  const irisCycle = Math.sin(g / 23.7) * 0.5 + 0.5;
+  const irisCycle = Math.sin(g / 8.9) * 0.5 + 0.5;
   const chain = interpolate(t, [L(14) + 1.6, L(14) + 3.4], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
 
   return (
