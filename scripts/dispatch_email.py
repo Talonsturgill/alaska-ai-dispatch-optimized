@@ -183,7 +183,7 @@ def main():
     ap.add_argument("--post", required=True)
     ap.add_argument("--video-url-vertical", required=True, help="9:16 1080x1920 TikTok cut (dispatch_master.mp4)")
     ap.add_argument("--video-url-square", default="",
-                    help="4:5 1080x1350 LinkedIn feed cut (dispatch_master_4x5.mp4). ALWAYS pass this — it is the "
+                    help="1:1 1080x1080 LinkedIn MAIN FEED cut (dispatch_square.mp4). ALWAYS pass this — it is the primary LinkedIn deliverable; without it the draft only offers the 9:16, which LinkedIn routes to the swipe-only Video tab. CORRECTED 2026-08-05: this help string still said 4:5 1080x1350 long after the 08-03 correction, and prompts/dispatch_routine.md names exactly this as the reason the error survived one fix: the claim lives in three places that each read as authoritative alone, and only encode_deliverables.sh fails loudly. This was the third place."
                          "primary LinkedIn deliverable; without it the draft only offers the 9:16, which LinkedIn "
                          "routes to the Video tab instead of the main feed.")
     ap.add_argument("--poster-url", default="", help="hosted poster (preferred, keeps payload small)")
