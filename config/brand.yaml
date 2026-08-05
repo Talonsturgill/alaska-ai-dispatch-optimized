@@ -34,6 +34,22 @@ brand:
       - "Don't use emojis."
       - "Don't write 'we' or 'us' implying speaking for Alaskans. Speak about Alaska, not as Alaska."
       - "Don't invent quotes or numbers."
+  date_format:
+    # OWNER RULE 2026-08-05: "rn ur saying '10 August', the normal way to say it is August 10th."
+    rule: "In any sentence a human READS OR HEARS, write the month name first and the day as an ordinal. August 10th. Never '10 August', never a bare 'August 10', never 'the 10th of August', never an abbreviated month in prose ('Aug 10')."
+    good: ["August 10th", "July 3rd", "December 1st", "August 2026 (no day, so no ordinal needed)"]
+    bad: ["10 August", "August 10", "Aug 10", "the 10th of August", "10th August"]
+    applies_to: "VO, LinkedIn post copy, on-screen text that is a SENTENCE, the Gmail draft's prose, the weekly Facebook post."
+    iso_is_still_correct_for: "filenames, ledger and JSON fields, and a PROVENANCE STAMP on screen or in a source list, where the date is a citation rather than a sentence. 'ANCHORAGE DAILY NEWS, 2026-08-02' under a masthead is a stamp and stays ISO. 'The paper ran it on August 2nd' is a sentence and takes the ordinal."
+    enforced_by: "scripts/caption_check.py DATE_FORMS (hard fail on the post text). VO, on-screen labels and the Gmail draft are the writer's responsibility, same as the em-dash ban."
+
+  comma_discipline:
+    # OWNER RULE 2026-08-05: "reduce comma usage by 10% on the captions moving forward."
+    rule: "Captions carry FEWER commas. The ceiling is 4.9 commas per 100 words of post body, which is 10 percent below the measured mean of every caption this channel had shipped as of 2026-08-05."
+    measured_baseline: "18 shipped captions, mean 5.41 commas per 100 words, median 5.36, range 3.57 to 7.38. The 10 percent cut lands at 4.86, and the ceiling is set at 4.9."
+    how_to_cut_them: "Do NOT just delete commas and leave a run-on, which trades a comma for a worse sentence. Split the sentence at the comma and let it be two sentences. Cut the introductory clause that was only there to be qualified. Drop the appositive that restates a noun the reader already has. This voice is already short and declarative, so the commas that go are almost always the ones bolting a second thought onto a finished one."
+    enforced_by: "scripts/caption_check.py COMMA_PER_100W (hard fail on the post text)."
+
   banned_words:
     # Formal-register words with a mandatory contraction. Enforced in code by
     # scripts/caption_check.py > BANNED_FORMAL, not just documented here.

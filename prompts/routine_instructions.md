@@ -203,6 +203,16 @@ PHASE 4: PRODUCE LIKE A FILM STUDIO (dimensional-first; vary everything)
 - WRITE the VO to the writing rules (no em/en dashes, no semicolons, no curly quotes,
   contractions, vary sentence length, <=3 commas, banned-word/phrase list in config/brand.yaml,
   ranges "X to Y", phonetic numbers/acronyms). ~60s ≈ 130-150 words; trim >=5%.
+- DATES TAKE THE ORDINAL, MONTH FIRST: "August 10th". Never "10 August", never a bare
+  "August 10", never "the 10th of August", never "Aug 10" (owner directive 2026-08-05, "the
+  normal way to say it is August 10th"). Applies to the VO, the post copy, on-screen sentences
+  and the Gmail draft. ISO stays correct where the date is a CITATION rather than a sentence,
+  so a source stamp like "ADN, 2026-08-02" is fine. Read it aloud: if it sounds like a person
+  talking, it takes the ordinal. Full rule in config/brand.yaml > date_format.
+- FEWER COMMAS IN POST COPY: ceiling 4.9 per 100 words of body (owner directive 2026-08-05,
+  ten percent below this channel's measured shipped mean of 5.41). The cure is splitting the
+  sentence at the comma, NOT deleting the comma and leaving a run-on. Full rule in
+  config/brand.yaml > comma_discipline.
 - VOICE: pick from config/voices.yaml to fit the story's tone and VARY it run-to-run. Kokoro
   (Apache-2.0) is the publish backbone; edge-tts drafts only.
 - MUSIC, SOURCE A FRESH TRACK EVERY RUN (do not reuse a past track, do not default to a synth).
