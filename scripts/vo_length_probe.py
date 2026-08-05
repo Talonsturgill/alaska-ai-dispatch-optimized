@@ -11,13 +11,21 @@ never spoken.
 
 That risk cannot be retired by argument, only by a take. So this script renders the
 probe script below at the proposed length, runs the real soundcheck on it, runs the
-REAL alignment function out of vo_synth_gemini, and prints the four numbers that
-decide whether the format change is safe:
+REAL alignment function out of vo_synth_gemini, and prints the numbers that decide
+whether the format change is safe.
 
-  duration          does the read land in the proposed band
-  WER               did anything get dropped or truncated
-  alignment span    does the alignment cover the whole take, monotonically
-  cue count         does the caption cutter still produce sane cues
+THREE of them are real evidence, because all three can fail:
+
+  duration          measured from the audio: does the read land in the proposed band
+  WER               an independent ASR pass against the script: was anything dropped
+  speech_end        where that ASR last heard a word, which is what a truncated
+                    synth gives away
+
+The rest (monotonic, lines_timed, degenerate_cues, aligned_words) are STRUCTURAL
+INVARIANTS of _align_wholefile, which clamps ends, fills untimed words from their
+neighbours, forces non-decreasing starts, and emits one entry per intended token.
+They cannot fail, they are labelled as such in the output, and they must never be
+cited as evidence that a longer script aligns cleanly.
 
 It also prints words-per-minute, which is the number every word band is derived from
 and which this repo has twice recorded wrong.
@@ -107,8 +115,12 @@ def main():
     ap.add_argument("--takes", type=int, default=2)
     ap.add_argument("--script", help="file with one spoken line per line; defaults to PROBE_LINES")
     ap.add_argument("--band", default="112,130", help="proposed runtime band, lo,hi")
-    ap.add_argument("--pace", default="brisk", choices=sorted(PACE_MODES),
-                    help="which Pace line to put in the director's notes")
+    # DEFAULTS TO THE PACE MODE THE FORMAT ACTUALLY USES. It defaulted to `brisk`, the
+    # superseded line, so the documented "re-run the probe after a format change" would
+    # have measured the wrong variable and reported a 105s runtime as the house rate.
+    ap.add_argument("--pace", default="anchored", choices=sorted(PACE_MODES),
+                    help="which Pace line to put in the director's notes; `anchored` is "
+                         "the one VO_DIRECTION.md step 7 requires")
     ap.add_argument("--tag", default="", help="suffix for the take/report filenames")
     a = ap.parse_args()
 
@@ -185,17 +197,29 @@ def main():
         "degenerate_cues": sum(1 for c in cues if c["end"] <= c["start"]),
     }
     for k, v in align.items():
-        print(f"  {k}: {v}")
+        tag = "  (invariant of the aligner, cannot fail)" if k in (
+            "monotonic", "lines_timed", "degenerate_cues", "aligned_words") else ""
+        print(f"  {k}: {v}{tag}")
 
+    # WHAT IS EVIDENCE HERE AND WHAT IS NOT (corrected 2026-08-05 in review).
+    #
+    # `monotonic`, `lines_timed` and `degenerate_cues` are STRUCTURAL INVARIANTS of
+    # _align_wholefile, not independent observations. That function clamps every end to
+    # >= its start, fills untimed words from their neighbours, forces starts to be
+    # non-decreasing, and floors each span at 40ms. It also emits exactly one entry per
+    # INTENDED token, so aligned_words == script_words by construction too. Those four
+    # numbers therefore CANNOT fail, and reporting them as passing checks overstates the
+    # evidence for a format change.
+    #
+    # They are still worth printing: they confirm the repair path runs cleanly end to end
+    # at this length rather than throwing. But the actual proof that a long script
+    # survives one synth call is the three checks below, all of which can genuinely fail:
+    # the duration is measured from the audio, the WER is measured against the script by
+    # an independent ASR pass, and speech_end is where that ASR last heard a word, which
+    # is what a truncated synth would give away.
     verdict = []
     if not all(r["words_ok"] for r in results):
         verdict.append("FAIL: a take dropped or garbled words (possible truncation).")
-    if align["lines_timed"] != align["lines_total"]:
-        verdict.append("FAIL: alignment did not time every line.")
-    if not monotonic:
-        verdict.append("FAIL: alignment is not monotonic at this length.")
-    if align["degenerate_cues"]:
-        verdict.append("FAIL: degenerate caption cues.")
     if align["speech_end"] < min(r["seconds"] for r in results) * 0.9:
         verdict.append("FAIL: alignment covers less than 90 percent of the take (truncation "
                        "or a whisper drop-out).")

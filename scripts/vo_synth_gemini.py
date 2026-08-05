@@ -336,6 +336,53 @@ def _assert_prompt_intact(prompt, plan_lines):
                            "lines), or re-run the vo-director agent on the current script.")
 
 
+def _assert_runtime_in_band(report, n_words):
+    """HARD GATE on the delivered runtime. Nothing else enforced it (added 2026-08-05).
+
+    The format's target runtime lived in config/state.yaml and in prose in the routine
+    prompt, and NOTHING in code ever failed a take for being the wrong length. The
+    soundcheck's own duration window is deliberately wide (currently ~62 to 176s) because
+    its job is catching a grossly broken synth, not policing pace. So the run's actual
+    runtime was enforced by whoever happened to read the number.
+
+    That was survivable while a human noticed. It is not survivable now, because the exact
+    failure it lets through is the DEFAULT one at this length: the old "Pace: BRISK" line
+    on a 288-word script delivers 105 seconds, three takes in a row, comfortably inside the
+    wide window and comfortably outside the format. `pick_best` would report "NO take
+    landed in 112-130s", pick the closest, print "clean", and the run would ship a
+    105-second film believing it had made a two-minute one. Every downstream gate would
+    agree with it, because none of them measure runtime either.
+
+    The remediation is already documented in the routine (Phase 5: if long, TRIM THE
+    SCRIPT), so this fails with the arithmetic rather than just the complaint, and it names
+    the pace paragraph first because that is what the measurement says moves the number.
+    """
+    lo, hi, target = sc._target_band()
+    if lo is None:
+        return
+    secs = report["checks"]["duration"]["seconds"]
+    if lo <= secs <= hi:
+        print(f"  runtime {secs:.1f}s is inside the {lo:.0f}-{hi:.0f}s band")
+        return
+    rate = n_words / secs * 60 if secs else 0
+    want = int(round(target * rate / 60))
+    delta = want - n_words
+    raise SystemExit(
+        f"\nRUNTIME OUT OF BAND. The best take is {secs:.1f}s; the format is "
+        f"{lo:.0f} to {hi:.0f}s (target {target:.0f}s). Refusing to build a film at the "
+        f"wrong length.\n"
+        f"  this read delivered {rate:.1f} words per minute over {n_words} words\n"
+        f"  at that rate, {target:.0f}s wants about {want} words "
+        f"({'add' if delta > 0 else 'cut'} roughly {abs(delta)})\n"
+        f"FIX THE PACE PARAGRAPH FIRST, not the word count. docs/craft/VO_DIRECTION.md step 7 "
+        f"requires a Pace line that NAMES the target runtime, and it is worth about 15 percent "
+        f"of pace: the same 288-word script runs 105s with a generic 'BRISK and energetic' line "
+        f"and 120s with one that says it is a two minute piece and the read must fill it. A take "
+        f"this far off usually means that paragraph was rewritten or dropped. If the pace "
+        f"paragraph is already correct and verbatim, then adjust the script by the word count "
+        f"above and re-synth.")
+
+
 def main():
     os.makedirs(AUD, exist_ok=True)
     plan = json.load(open(os.path.join(OUT, "vo_direction.json")))
@@ -367,6 +414,7 @@ def main():
     best_i, reports = sc.pick_best([p for p, _ in takes], spoken, tags)
     best_wav, best_model = takes[best_i]
     print(f"BEST take {best_i} ({best_model}): {reports[best_i]['diagnosis']}  score={reports[best_i]['score']}")
+    _assert_runtime_in_band(reports[best_i], len(spoken.split()))
 
     # write the winning VO at 44.1k for the pipeline
     from scipy.io import wavfile

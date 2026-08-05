@@ -60,6 +60,39 @@ def _t_num(v, default=0.0):
         except ValueError:
             return default
 
+def piece_runtime(sb, beats=None):
+    """THE PIECE'S RUNTIME, which is not the same thing as its last beat's start time.
+
+    Every length-gated rule in this repo keys off "how long is this film", and both gates
+    were answering that with the START timestamp of the final beat. That is short by
+    however long the last beat runs plus the outro hold: on the shipped 2026-08-05 board
+    the last beat starts at 84.6s and the film is 88.8s, a 4.2s gap.
+
+    At 90s a 4-second error was invisible because no threshold sat near the end of the
+    band. At 120s it silently disarms the entire two-minute format. A perfectly legal
+    112.8s film whose last beat starts at 108.6s reads as a 108.6s piece, falls under the
+    110s threshold, and skips the throughline gate, the reveal-per-third rule, the 60s
+    loop span, the 85s payoff floor and the mandatory second open loop. Verified: only the
+    rehook rule fires, because its windows are absolute rather than length-derived.
+
+    So: trust the board's declared `total_seconds` first, since that is the runtime the
+    film is actually cut to. Fall back to the last beat's END, then to its start.
+    """
+    for key in ("total_seconds", "total"):
+        try:
+            v = float(sb.get(key))
+            if v > 0:
+                return v
+        except (TypeError, ValueError):
+            pass
+    if beats is None:
+        beats, _ = load_beats(sb)
+    timed = [b for b in beats if b["t0"] is not None]
+    if not timed:
+        return 0.0
+    return max((b["t1"] or b["t0"]) for b in timed)
+
+
 def load_beats(sb):
     """Return (beats_normalized, fmt) where fmt in {'object','string','mixed','none'}."""
     raw = sb.get("beats") or []
@@ -100,7 +133,7 @@ def analyze(dirp):
     # beats and still needs 18 after the format moves to 120s. The configured `min` stays
     # as the fallback for boards whose beats carry no timestamps.
     need = bc["min"]
-    _pe0 = max((b["t1"] or b["t0"]) for b in timed) if timed else None
+    _pe0 = piece_runtime(sb, beats) or None
     if _pe0:
         need = max(1, math.ceil(_pe0 / bc["max_gap_s"]))
         R["metrics"]["beats_required"] = need
@@ -108,6 +141,13 @@ def analyze(dirp):
         R["problems"].append(
             f"beats_min: {len(beats)} beats < {need} required story-advancing beats"
             + (f" for a {_pe0:.0f}s piece at the {bc['max_gap_s']}s never-rest ceiling" if _pe0 else ""))
+    # beats.max was config that nothing read. It is ADVISORY, not a hard fail: "more than
+    # this is usually strobing, not storytelling" is a judgement about whether the cuts
+    # carry story, which a count cannot settle. But config that no code consults is config
+    # that quietly drifts out of true, so it surfaces as a warning the flow-critic can weigh.
+    if bc.get("max") and len(beats) > bc["max"]:
+        R["warnings"].append(f"beats_max: {len(beats)} beats > {bc['max']}; check this is density "
+                             f"and not strobing (VISUAL_FLOW.md: each beat must ADVANCE the story)")
     if len(timed) >= 2:
         starts = sorted(b["t0"] for b in timed)
         gaps = [round(starts[i + 1] - starts[i], 2) for i in range(len(starts) - 1)]
@@ -156,7 +196,7 @@ def analyze(dirp):
             # to reach. At 60s there was one window. The 90s format has two, because the
             # 25-38s cliff gets a sibling once a viewer has been watching a full minute with
             # no idea how much is left. A window the piece never reaches is exempt.
-            piece_end = max((b["t1"] or b["t0"]) for b in timed)
+            piece_end = piece_runtime(sb, beats)
             windows = eng.get("rehook_windows_s") or [eng["rehook_window_s"]]
             found_total = 0
             for rlo, rhi in windows:

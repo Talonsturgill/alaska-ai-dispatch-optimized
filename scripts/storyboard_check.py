@@ -102,6 +102,40 @@ def _t_num(v, default=0.0):
         except ValueError:
             return default
 
+def _piece_runtime(sb):
+    """THE PIECE'S RUNTIME, which is not the last beat's START time.
+
+    Kept in step with flow_check.piece_runtime; duplicated rather than imported because
+    flow_check is only imported lazily inside a try/except here, and a length gate that
+    silently changes behaviour depending on whether an optional import succeeded is worse
+    than nine lines of duplication.
+
+    Every length-gated rule keys off "how long is this film", and this gate was answering
+    with the final beat's start timestamp. That is short by however long the last beat runs
+    plus the outro hold: on the shipped 2026-08-05 board the last beat starts at 84.6s and
+    the film is 88.8s. At 90s that 4-second error was invisible. At 120s it disarms the
+    whole two-minute format: a legal 112.8s film whose last beat starts at 108.6s reads as
+    108.6s, falls under the 110s threshold, and skips the throughline gate, the
+    reveal-per-third rule and the mandatory second open loop.
+    """
+    for key in ("total_seconds", "total"):
+        try:
+            v = float(sb.get(key))
+            if v > 0:
+                return v
+        except (TypeError, ValueError):
+            pass
+    ends = []
+    for b in (sb.get("beats") or []):
+        t = b.get("t") if isinstance(b, dict) else None
+        if t is None:
+            continue
+        s = str(t).replace(" to ", "-")
+        parts = [p for p in s.split("-") if p.strip()]
+        ends.append(_t_num(parts[-1] if parts else t))
+    return max(ends) if ends else 0.0
+
+
 def main():
     sb_path = Path(sys.argv[1]) if len(sys.argv) > 1 else DEFAULT_SB
     if not sb_path.exists():
@@ -143,9 +177,21 @@ def main():
 
     # ---- 1b. SHOT STRUCTURE: the board must be a SEQUENCE of shots, not one 'oner' (config/shot_structure.yaml) ----
     shots = sb.get("shots") or []
-    if len(shots) < srule["min_shots"]:
-        problems.append(f"only {len(shots)} shots; need >= {srule['min_shots']} distinct shots with motivated "
-                        f"transitions (a scene change ~every 10-15s — NOT one continuous 'oner' like the sonar Dispatch).")
+    # THE SHOT FLOOR IS DERIVED FROM RUNTIME, not a flat number (2026-08-05). It was 5 at
+    # 60s, 6 at 90s and would be 8 at 120s, and every one of those is the same arithmetic
+    # by hand: at the max_shot_seconds oner ceiling a film cannot be legal with fewer than
+    # runtime / ceiling shots. Raising it as a constant with the format broke the archive
+    # exactly the way the flat beat floor would have: the legal 7-shot 2026-07-30 board
+    # (a 90s film) started FAILING a gate it had already passed, because the number now
+    # described a two-minute film. Same fix, same reason.
+    _rt = _piece_runtime(sb)
+    _min_shots = srule["min_shots"]
+    if _rt:
+        _min_shots = max(3, -(-int(_rt) // int(srule["max_shot_seconds"])))
+    if len(shots) < _min_shots:
+        problems.append(f"only {len(shots)} shots; need >= {_min_shots} distinct shots with motivated "
+                        f"transitions for a {_rt:.0f}s piece at the {srule['max_shot_seconds']}s oner ceiling "
+                        f"(a scene change ~every 10-15s — NOT one continuous 'oner' like the sonar Dispatch).")
     else:
         framings = [str(s.get("framing", "")).strip().lower() for s in shots]
         if len({f for f in framings if f}) < srule["min_distinct_framings"]:
@@ -368,8 +414,7 @@ def main():
                             "every piece gets at least one true-scale 'whoa' beat aligned to the escalation "
                             "(ENGAGEMENT.md §3)")
         else:
-            beat_ts = [_t_num(b.get("t")) for b in (sb.get("beats") or []) if b.get("t") is not None]
-            piece_end = max(beat_ts) if beat_ts else 0.0
+            piece_end = _piece_runtime(sb)
             # ONE PER THIRD ABOVE 110s, one per half above 75s. Same argument applied
             # twice: a single "whoa" beat cannot carry ninety seconds, and two cannot carry
             # a hundred and twenty. At two minutes a final third with no reveal of its own
@@ -416,8 +461,7 @@ def main():
     # one (the beetle: filled, then stripped to a dashed contour, then named again at the
     # button) and both dissenting judges named that pairing as the image they remembered.
     # Nothing had asked for it, so the next film would not have had one.
-    _bts = [_t_num(b.get("t")) for b in (sb.get("beats") or []) if b.get("t") is not None]
-    _pe = max(_bts) if _bts else 0.0
+    _pe = _piece_runtime(sb)
     if _pe >= 110:
         th = sb.get("throughline") or {}
         states = th.get("states") or []
