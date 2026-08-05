@@ -210,3 +210,23 @@ found on "The Net Comes First", with the measurement, and each was avoidable.
   `NameEngine` a second `AshReader`. The differences on offer were behavioural and a viewer
   cannot see behaviour in a silhouette. Putting the machine on the opposite side of the
   film's own shape grammar fixed it and made the film better.
+
+- **VERIFY A FIX RENDERED BEFORE YOU DEFEND IT TO A JUDGE.** This cost four panel rounds on
+  2026-08-05. Three judges said the newsprint beat was frozen; the run reported it fixed
+  twice, and both reports were false. The edits were string replacements written against
+  source text an earlier edit had already changed, so they matched nothing and silently
+  no-opped. **A no-op edit is indistinguishable from a delivered fix from the orchestrator's
+  side**, and the panel is the only thing that catches it, which is the most expensive
+  possible place to catch it. After any fix to a specific beat: re-render, re-cut that
+  beat's strip, and LOOK at it. If the judges disagree with you about a frame, they are
+  looking at the frame and you are looking at your intention.
+- **"It measurably changes every frame" is not the same as "it moves".** The same beat
+  measured 100 percent of frames changing while being visually static, because the change
+  was dust and a sub-pixel push. The judge's arithmetic is the right test: a moving element
+  should traverse a visible fraction of the frame inside the 8-frame, 0.27 second window the
+  evidence pack samples. If it moves 40px in a 1080px frame, it is a rounding error to a
+  viewer. Size the motion to the window it will be judged in.
+- **Check what is actually on screen at the moment you are fixing.** The machine meant to
+  carry that beat had opacity 0 for the first five seconds of its own shot, so the newspaper
+  was the entire frame and nothing in it moved. Before animating a scene, list what is
+  visible at the timecode in question.
