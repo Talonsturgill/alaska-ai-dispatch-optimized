@@ -30,6 +30,39 @@ AI_TELLS=["delve","tapestry","testament","landscape of","ever-evolving","ever-ch
 # them. Owner directive 2026-07-30, starting with "cannot". Add to this table rather than
 # scattering one-off checks.
 BANNED_FORMAL={"cannot":"can't"}
+
+# DATE FORM (owner rule 2026-08-05: "rn ur saying '10 August', the normal way to say it is
+# August 10th"). Month name first, day as an ordinal. ISO stays correct for a PROVENANCE
+# STAMP (a citation line, a filename, a ledger field) but a sentence a human reads takes
+# "August 10th". These patterns catch the four wrong forms without touching a bare month,
+# a bare year, or an ISO stamp.
+MONTHS = ("January|February|March|April|May|June|July|August|September|October|November|December")
+ABBREV = r"Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sept|Sep|Oct|Nov|Dec"
+DATE_FORMS = [
+    # "10 August" / "10th August" -- day first
+    (re.compile(r"\b(\d{1,2})(?:st|nd|rd|th)?\s+(" + MONTHS + r")\b"),
+     "day-first", "write the month first with an ordinal day, e.g. August 10th"),
+    # "August 10" with no ordinal, but NOT "August 2026" and NOT "August 10th"
+    (re.compile(r"\b(" + MONTHS + r")\s+(\d{1,2})(?!\s*(?:st|nd|rd|th))(?!\d)"),
+     "no ordinal", "add the ordinal, e.g. August 10th"),
+    # "the 10th of August"
+    (re.compile(r"\bthe\s+\d{1,2}(?:st|nd|rd|th)\s+of\s+(" + MONTHS + r")\b"),
+     "of-form", "write it plainly, e.g. August 10th"),
+    # "Aug 10" -- abbreviated month in prose
+    (re.compile(r"\b(" + ABBREV + r")\.?\s+\d{1,2}\b"),
+     "abbreviated month", "spell the month out with an ordinal day, e.g. August 10th"),
+]
+
+# COMMA DISCIPLINE (owner rule 2026-08-05: "reduce comma usage by 10% on the captions
+# moving forward"). MEASURED, not guessed: across the 18 captions this channel had shipped
+# as of that date the mean was 5.41 commas per 100 words of body (median 5.36, range 3.57
+# to 7.38). Ten percent below the mean is 4.86, so the ceiling is 4.9.
+#
+# The cure is NOT deleting commas and leaving a run-on, which trades a comma for a worse
+# sentence. Split at the comma and let it be two sentences, or cut the clause that was only
+# there to be qualified. This voice is already short and declarative, so the commas that go
+# are the ones bolting a second thought onto a finished one.
+COMMA_PER_100W = 4.9
 BANNED_PUNCT={"—":"em dash","–":"en dash",";":"semicolon",":":"colon","“":"curly quote","”":"curly quote","‘":"curly quote","’":"curly apostrophe"}
 # Sources + music/voice credit belong in the copy-paste COMMENT block (dispatch_email.py), never
 # in the post body (2026-07-21 owner catch: they got pasted into the post AND duplicated, and the
@@ -95,6 +128,31 @@ def lint(text):
             fails.append(f"REGISTER: '{mm.group(0)}' is banned, write \"{good}\" (owner rule, "
                          f"contractions keep the voice human, not institutional)")
             break
+    # DATE FORM. Hard fail, same reasoning as the contraction law: a style rule nobody
+    # checks drifts back within a few runs.
+    for rx, what, fix in DATE_FORMS:
+        mm = rx.search(t)
+        if mm:
+            fails.append(f"DATE: '{mm.group(0)}' is the {what} form — {fix} "
+                         f"(owner rule 2026-08-05). ISO is still right for a citation stamp, "
+                         f"but this is a sentence.")
+            break
+
+    # COMMA DISCIPLINE. Measured against the body with the hashtag block excluded, which is
+    # how the 5.41 baseline was measured, so the ceiling and the measurement agree.
+    body_only = re.sub(r"(?m)^\s*#\S+.*$", "", t)
+    body_words = len(body_only.split())
+    n_commas = body_only.count(",")
+    if body_words >= 100:
+        per100 = 100.0 * n_commas / body_words
+        m["commas_per_100w"] = round(per100, 2)
+        if per100 > COMMA_PER_100W:
+            allowed = int(COMMA_PER_100W * body_words / 100)
+            fails.append(f"COMMAS: {n_commas} commas in {body_words} words is {per100:.2f} per 100, "
+                         f"over the {COMMA_PER_100W} ceiling (owner rule 2026-08-05, 10 percent below "
+                         f"this channel's shipped mean of 5.41). Cut at least {n_commas - allowed}. "
+                         f"Split the sentence at the comma rather than deleting the comma.")
+
     # sources + credits must NOT be in the post body — they go in the copy-paste comment block
     if URL_RE.search(t): fails.append("BODY: a URL/domain is in the post — sources go ONLY in the Gmail draft's comment block, never in the post text")
     cred=CREDIT_RE.search(t)

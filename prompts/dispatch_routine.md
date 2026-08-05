@@ -422,6 +422,31 @@ enforced in code by DEDUPE_WINDOW_DAYS in scripts/dedupe.py, so `list` and `chec
    2026-07-17 dispatch shipped SILENT: a bare `ffmpeg -i video -i audio` with no `-map` took
    the render's empty audio track, and the quality gate only probed the wav, not the mp4.
    Always volumedetect the delivered cuts before upload.
+5a. DATES ARE SPOKEN THE NORMAL WAY: **MONTH FIRST, DAY AS AN ORDINAL. "August 10th."**
+   (owner directive 2026-08-05, "rn ur saying '10 August', the normal way to say it is August
+   10th"). NEVER "10 August", never a bare "August 10", never "the 10th of August", never an
+   abbreviated month in prose ("Aug 10"). This applies to every surface a human READS OR HEARS:
+   the VO, the LinkedIn post, on-screen text that is a SENTENCE, the Gmail draft's prose.
+   ISO 8601 IS STILL CORRECT where the date is a CITATION rather than a sentence: filenames,
+   ledger and JSON fields, and a provenance stamp on screen or in a source list. "ANCHORAGE
+   DAILY NEWS, 2026-08-02" under a masthead is a stamp and stays ISO. "The paper ran it on
+   August 2nd" is a sentence and takes the ordinal. If you are unsure which one you are
+   writing, read it aloud: if it sounds like a person talking, it takes the ordinal.
+   Enforced as a hard fail on the post text by scripts/caption_check.py DATE_FORMS. The VO,
+   on-screen labels and the Gmail draft are YOUR responsibility, same as the em-dash ban.
+
+5b. FEWER COMMAS IN THE CAPTION. Ceiling **4.9 commas per 100 words** of post body (owner
+   directive 2026-08-05, "reduce comma usage by 10% on the captions moving forward"). That
+   number is measured, not guessed: across the 18 captions this channel had shipped as of
+   that date the mean was 5.41 per 100 words (median 5.36, range 3.57 to 7.38), and ten
+   percent below the mean is 4.86. THE CURE IS NOT DELETING COMMAS. Deleting a comma and
+   leaving the sentence standing trades a comma for a run-on, which is worse writing and
+   the owner did not ask for worse writing. Split the sentence at the comma and let it be
+   two sentences. Cut the introductory clause that only existed to be qualified. Drop the
+   appositive restating a noun the reader already has. This voice is already short and
+   declarative, so the commas that go are almost always the ones bolting a second thought
+   onto a finished one. Enforced as a hard fail by scripts/caption_check.py COMMA_PER_100W.
+
 5. NO EM DASHES OR EN DASHES, NO SEMICOLONS, NO COLONS. ANYWHERE. EVER. AND NEVER THE WORD
    "CANNOT", ALWAYS "CAN'T" (owner directive 2026-07-30, "ban the word cannot, always use can't
    instead, especially in the captions"). Contractions over the formal register, everywhere:
@@ -1116,6 +1141,10 @@ AND duplicated, and the music credit sat above the hashtags blocking the copy of
 They are delivered SEPARATELY in the Gmail draft's copy-paste comment block (dispatch_email.py
 renders it) as plain "Title / URL" lines the owner drops into the LinkedIn FIRST COMMENT, not
 the post. So caption.txt ends at the hashtags: no "Sources:" list, no URLs, no "Music" line.
+
+DATES TAKE THE ORDINAL ("August 10th", never "10 August") and COMMAS ARE CAPPED at 4.9 per
+100 words of body. Both are guardrail 5a and 5b, both are owner directives from 2026-08-05, and
+both are hard fails in the linter below. Write to them the first time rather than being sent back.
 
 GATE A: `python3 scripts/caption_check.py out/dispatch/caption.txt` exit 0 (it hard-fails a
 colon, any URL, or a sources/credit line in the body). GATE B: editor then scorer vs
