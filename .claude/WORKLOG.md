@@ -6,7 +6,12 @@ rationale lives in `docs/craft/TWO_MINUTE_UPGRADE.md` (the plan of record); this
 is the *state*: what is done, what is next, what was measured, and what must not break.
 
 Branch: `tsturg/sweet-cray-rg1lsr`, based on `origin/main` at `de0a126`.
-Started 2026-08-05. Delete this file when every task below is DONE and shipped.
+Started 2026-08-05. **SHIPPED 2026-08-05 as PR #94, merged to `main`.**
+
+**STATUS: the machine is upgraded; the format has not yet produced a film.** Every task
+below is DONE. What remains is not work, it is OBSERVATION: the 2026-08-06 run is the
+first one that will use this, and §7 lists what to watch. Delete this file once that run
+has shipped a two-minute film and nothing in §7 turned out to be wrong.
 
 ---
 
@@ -228,7 +233,7 @@ window is backward-compatible by construction.
 | 6 | **The rooms.** | DONE | angle room: must answer whether the thesis has a SECOND MOVEMENT. Writers room: every pitch owes a 4-part RETENTION PLAN (the Act 3 test, the throughline object, the two loops, the padding test) and the room argues THE TWO-MINUTE QUESTION as its own round; the scorer weighs it. Both Gate-0 critics briefed, and both must name the weakest third even when they ship. |
 | 7 | Verify: conforming 120s board passes, padded fails, legacy 08-05 still passes | **DONE — PASSING** | `scripts/format_gate_selftest.py`. Legacy 0 problems, padded caught by all 5 two-minute rules by name, conforming 0 problems. RE-RUN THIS after any gate edit. |
 | 7b | Sweep for anything else that breaks at 120s: engine frame counts, `VIDEO_SECS`, the music bed, the quality gate, `render.sh` | DONE | all derive from the VO or loop; the music bed loops to 200s. Added a STALE PER-RUN DATA guard to `dispatch_mix.py` (BED_ARC/EVENTS must cover the film) — it fires on the real 08-05 case, where the arc ended at 83.7s of an 88.8s film. |
-| 8 | Ship: commit, push, ready (NOT draft) PR, merge to `main` before the 08-06 run fires | IN PROGRESS | |
+| 8 | Ship: commit, push, ready (NOT draft) PR, merge to `main` before the 08-06 run fires | **DONE** | PR #94 merged to `main` 2026-08-05. Verified on `main`: state.yaml reads 120 / 112-130 / 280-300 and the self-test passes. |
 
 ---
 
@@ -244,3 +249,38 @@ window is backward-compatible by construction.
   deleting/overwriting shipped `runs/` artifacts.
 - House writing rules still apply to everything written here and in prompts: ordinal
   dates ("August 10th"), no em/en dashes, no emojis, straight quotes.
+
+---
+
+## 7. WHAT THE FIRST TWO-MINUTE RUN MUST VERIFY
+
+The upgrade is measured and self-tested, but no film has been made at this length yet.
+These are the specific things a probe and a synthetic board cannot tell you. If one of
+them goes wrong, fix it in the machine rather than by hand in the run, and record it here.
+
+1. **Does the delivered VO land in 112-130s?** The probe says 280-300 words with the
+   anchored pace paragraph gives 119.9-121.3s. A real run writes its own Style line around
+   that paragraph, and the Style line is the thing that moved the archive from 136 to 165
+   wpm. If the take lands outside the band, the FIRST suspect is the notes, not the word
+   count. Check `vo_report.json` for the take durations and which one `pick_best` chose.
+2. **Does `_assert_prompt_intact` fire on a legitimate prompt?** It was tested against ten
+   archived prompts and three synthetic defects, but never against a prompt the vo-director
+   writes fresh under the new instructions. A false positive here BLOCKS the run. If it
+   fires wrongly, loosen the specific clause; do not disable the guard.
+3. **Does the writers room actually produce a retention plan, or does it fill in the
+   fields?** This is the owner's stated priority and the part with no code enforcement.
+   Read the four parts in the winning treatment and ask whether Act 3 is a test or a
+   restatement.
+4. **Is the throughline object visible, not just declared?** The gate checks that states
+   exist, are spread, and land in the button. It cannot check that a viewer can SEE the
+   difference. This is the storyboard-critic's job and the first place to look if the film
+   feels long.
+5. **Render and mix at 3600 frames.** Estimated 9-11 min for the final render; the music
+   bed loops to 200s so it covers. Watch for the new `!! STALE PER-RUN DATA` warning from
+   `dispatch_mix.py` — at this length an un-rewritten BED_ARC leaves ~40s with no bed
+   automation, which is exactly the stretch the format is fighting to hold.
+6. **The panel is grading a two-minute film against an unchanged rubric.** That was
+   deliberate, so a score move is attributable to the format rather than to a moved bar.
+   If the median drops, read WHY before touching the rubric: the interesting question is
+   whether the back half earned itself, and the judges' prose will say so.
+
