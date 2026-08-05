@@ -34,7 +34,7 @@ def main():
     ap.add_argument("--audio", required=True)
     ap.add_argument("--script", default="", help="intended VO text (optional, improves + validates)")
     ap.add_argument("--out", required=True)
-    ap.add_argument("--total", type=float, default=90.0)   # 90s format, 2026-07-30
+    ap.add_argument("--total", type=float, default=120.0)  # 120s format, 2026-08-05 (90s from 07-30)
     ap.add_argument("--model", default="base", help="faster-whisper model size (base is enough for alignment)")
     a = ap.parse_args()
 

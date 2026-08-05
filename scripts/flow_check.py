@@ -14,7 +14,7 @@ Two roles:
 Beat schema (new): each beat is an object {t:"9.0-13.5", vo, shows, sfx, means}. See VISUAL_FLOW.md §3.
 numpy-free; stdlib + pyyaml only.
 """
-import sys, os, json, argparse, re
+import sys, os, json, argparse, re, math
 from pathlib import Path
 import yaml
 
@@ -86,13 +86,28 @@ def analyze(dirp):
     bc = CFG["beats"]; cov = CFG["coverage"]; sc = CFG["sfx"]
     R = {"beat_format": fmt, "n_beats": len(beats), "problems": [], "warnings": [], "metrics": {}}
 
-    # ---- beat count ----
-    if len(beats) < bc["min"]:
-        R["problems"].append(f"beats_min: {len(beats)} beats < {bc['min']} required story-advancing beats")
-
     # ---- timing / never-rest gap (only computable when beats declare t) ----
     timed = [b for b in beats if b["t0"] is not None]
     R["metrics"]["timed_beats"] = len(timed)
+
+    # ---- beat count: DERIVED FROM THE PIECE'S OWN LENGTH, not a flat number -------
+    # The floor was a constant that had to be hand-raised at every format change (12 at
+    # 60s, 18 at 90s, 24 at 120s), and each of those numbers was really the same
+    # arithmetic written out by hand: a piece cannot satisfy the never-rest ceiling with
+    # fewer than piece_end / max_gap_s beats. Computing it means the floor tracks the
+    # runtime automatically, and, more importantly, it means raising the format's target
+    # does not retroactively fail a legal SHORTER board. An archived 86s film needs 18
+    # beats and still needs 18 after the format moves to 120s. The configured `min` stays
+    # as the fallback for boards whose beats carry no timestamps.
+    need = bc["min"]
+    _pe0 = max((b["t1"] or b["t0"]) for b in timed) if timed else None
+    if _pe0:
+        need = max(1, math.ceil(_pe0 / bc["max_gap_s"]))
+        R["metrics"]["beats_required"] = need
+    if len(beats) < need:
+        R["problems"].append(
+            f"beats_min: {len(beats)} beats < {need} required story-advancing beats"
+            + (f" for a {_pe0:.0f}s piece at the {bc['max_gap_s']}s never-rest ceiling" if _pe0 else ""))
     if len(timed) >= 2:
         starts = sorted(b["t0"] for b in timed)
         gaps = [round(starts[i + 1] - starts[i], 2) for i in range(len(starts) - 1)]
@@ -179,6 +194,58 @@ def analyze(dirp):
                         R["problems"].append(f"OPEN LOOP: plant {pt}s to pay {yt}s spans "
                                              f"{_t_num(yt)-_t_num(pt):.1f}s, needs >= {min_span}s to be a loop")
                     R["metrics"]["open_loop_span_s"] = round(_t_num(yt) - _t_num(pt), 2)
+
+                    # ---- TWO-MINUTE RULES ------------------------------------------
+                    # One loop cannot hold two minutes. The 2026-08-05 film planted at
+                    # 7.5s and paid at 46s, which is correct at 90s and would leave
+                    # SEVENTY SECONDS of inertia at 120s. Above the threshold the primary
+                    # loop must reach into minute two, and a second, staggered loop has to
+                    # carry the middle. Everything here is gated on piece length, so a 90s
+                    # or 60s board is untouched by it.
+                    long_from = eng.get("open_loop_long_from_s")
+                    if long_from and piece_end >= long_from:
+                        long_span = eng.get("open_loop_long_min_span_s")
+                        pay_after = eng.get("open_loop_pay_after_s")
+                        span = _t_num(yt) - _t_num(pt)
+                        if long_span and span < long_span:
+                            R["problems"].append(
+                                f"OPEN LOOP: a {piece_end:.0f}s piece spans only {span:.1f}s "
+                                f"({pt}s to {yt}s); needs >= {long_span}s. A loop that closes "
+                                f"early leaves the back half running on inertia.")
+                        if pay_after and _t_num(yt) < pay_after:
+                            R["problems"].append(
+                                f"OPEN LOOP: paid at {yt}s, must land no earlier than {pay_after}s "
+                                f"in a {piece_end:.0f}s piece, or minute two owes the viewer nothing.")
+
+                        # THE SECOND LOOP, deliberately staggered.
+                        ol2 = (sb.get("open_loop_2") or {}) if isinstance(sb, dict) else {}
+                        if not ol2 and isinstance(sb.get("open_loops"), list) and len(sb["open_loops"]) > 1:
+                            ol2 = sb["open_loops"][1] or {}
+                        w2 = eng.get("open_loop_2_plant_window_s")
+                        span2_min = eng.get("open_loop_2_min_span_s")
+                        sep_min = eng.get("open_loop_2_min_payoff_separation_s")
+                        p2, y2 = ol2.get("plant_t"), ol2.get("pay_t")
+                        if p2 is None or y2 is None or not str(ol2.get("what", "")).strip():
+                            R["problems"].append(
+                                f"OPEN LOOP 2: a {piece_end:.0f}s piece declares no `open_loop_2` "
+                                f"{{plant_t, pay_t, what}}. One loop cannot hold two minutes; the "
+                                f"middle needs its own unanswered promise (ENGAGEMENT.md §2.7).")
+                        else:
+                            if w2 and not (w2[0] <= _t_num(p2) <= w2[1]):
+                                R["problems"].append(
+                                    f"OPEN LOOP 2: planted at {p2}s, must be planted inside "
+                                    f"{w2[0]}-{w2[1]}s. Earlier and it competes with the primary "
+                                    f"plant; later and it cannot span far enough to matter.")
+                            if span2_min and _t_num(y2) - _t_num(p2) < span2_min:
+                                R["problems"].append(
+                                    f"OPEN LOOP 2: plant {p2}s to pay {y2}s spans "
+                                    f"{_t_num(y2)-_t_num(p2):.1f}s, needs >= {span2_min}s.")
+                            if sep_min and abs(_t_num(y2) - _t_num(yt)) < sep_min:
+                                R["problems"].append(
+                                    f"OPEN LOOP 2: pays at {y2}s, {abs(_t_num(y2)-_t_num(yt)):.1f}s "
+                                    f"from the primary payoff at {yt}s. Keep them >= {sep_min}s "
+                                    f"apart; two payoffs landing together leave a vacuum behind them.")
+                            R["metrics"]["open_loop_2_span_s"] = round(_t_num(y2) - _t_num(p2), 2)
     elif fmt != "object":
         R["problems"].append(f"beats are the OLD prose format ({fmt}); upgrade to timed objects "
                              f"{{t,vo,shows,sfx,means}} so cadence + coverage are checkable (VISUAL_FLOW.md §3)")

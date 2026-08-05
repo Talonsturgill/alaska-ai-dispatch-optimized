@@ -253,12 +253,96 @@ def _assert_plan_matches_script(lines):
     raise SystemExit("\n".join(msg))
 
 
+def _assert_prompt_intact(prompt, plan_lines):
+    """HARD GATE (added 2026-08-05 after this shipped an undirected read).
+
+    `_assert_plan_matches_script` guards ONE edge of a three-way relationship:
+
+        vo_script.txt  <->  vo_direction.json["lines"]  <->  assembled_prompt
+
+    The third edge was unguarded, and it is the one that actually reaches the model.
+    Nothing downstream reads `lines`; the synth call sends `assembled_prompt` and only
+    `assembled_prompt`. So a plan whose lines are perfect and whose prompt is wrong
+    passes every check and narrates the wrong thing at the right length.
+
+    That is exactly what happened on 2026-08-05. A gate demanded an extra VO line, so
+    the plan was hand-patched, and the prompt's transcript block was rebuilt by cutting
+    at the first occurrence of the substring "Transcript:". That substring occurs inside
+    the preamble's OWN sentence ('The lines above "Transcript:" are direction; never
+    speak them'), so the cut landed 75 characters into the prompt and deleted the AUDIO
+    PROFILE, the DIRECTOR'S NOTES, the Style line, the Pace line, and the delimiter. The
+    film was narrated with no direction of any kind and shipped that way.
+
+    It did not fail loudly because an undirected read is still fluent audio: the
+    soundcheck passed, the alignment was monotonic, the words were right. The only
+    symptom was the pace, which came in at 161.5 wpm against a house rate near 139, the
+    fastest read in the archive by nine percent. VO_DIRECTION.md warns that a missing
+    pace line drags a read 30 percent slow; the failure runs the other way too, and at
+    120 seconds a 16 percent pace error is the difference between landing in the runtime
+    band and overrunning it.
+
+    Same treatment as every other silent-wrong-artifact bug in this pipeline: a code
+    guard that fails the run, not a note somebody has to remember.
+    """
+    problems = []
+    delim = "\nTranscript:\n"
+    if delim not in prompt:
+        problems.append(
+            "  - NO 'Transcript:' DELIMITER on its own line. Without it the model reads the "
+            "director's notes aloud. NOTE: the string 'Transcript:' also appears inside the "
+            "preamble sentence, so never split this prompt on the bare substring; split on "
+            "the newline-delimited form.")
+    else:
+        head, body = prompt.split(delim, 1)
+        if "Pace:" not in head:
+            problems.append("  - NO 'Pace:' line in the director's notes. VO_DIRECTION.md step 7 "
+                            "marks it REQUIRED: the read drifts far off the house rate without it, "
+                            "which moves the runtime out of the band in config/state.yaml.")
+        if "Style:" not in head:
+            problems.append("  - NO 'Style:' line in the director's notes.")
+        if "AUDIO PROFILE" not in head:
+            problems.append("  - NO '# AUDIO PROFILE:' block.")
+        # CONTENT, NOT LAYOUT. Two techniques legitimately make the prompt's transcript
+        # differ from the plan's `lines` verbatim, and both are in the archive:
+        #   2026-07-31  a PHONETIC RESPELLING ("Choo-gatch" for Chugach). The plan carries
+        #               the real spelling for captions; the prompt carries the one that
+        #               makes Sulafat say it right. vo_direction has a phonetic_decisions
+        #               field precisely for this.
+        #   2026-07-22  the transcript set as flowing paragraphs rather than one line per
+        #               plan entry.
+        # An exact-equality check rejects both and would have failed the next run. What
+        # this actually needs to catch is CONTENT GOING MISSING, so it compares normalized
+        # word sequences with tolerance for a handful of substitutions.
+        tok = lambda s: re.findall(r"[a-z0-9]+", _strip_tags(s).lower())
+        got = tok(body)
+        want = tok(" ".join(l["text"] for l in plan_lines))
+        ratio = difflib.SequenceMatcher(a=want, b=got, autojunk=False).ratio()
+        if len(got) < 0.95 * len(want):
+            problems.append(
+                f"  - THE PROMPT'S TRANSCRIPT IS SHORTER THAN THE PLAN: {len(got)} words vs "
+                f"{len(want)}. Content was dropped between the plan and the string that is "
+                f"actually sent. The synth sends the PROMPT, so the prompt is what ships.")
+        elif ratio < 0.90:
+            problems.append(
+                f"  - THE PROMPT'S TRANSCRIPT DOES NOT MATCH THE PLAN (word similarity "
+                f"{ratio:.2f}, floor 0.90). A phonetic respelling or a paragraph reflow will "
+                f"not move this; a rewritten or stale transcript will.")
+    if problems:
+        raise SystemExit("ASSEMBLED PROMPT IS DAMAGED. Refusing to synth.\n"
+                         + "\n".join(problems)
+                         + "\nRebuild assembled_prompt per docs/craft/VO_DIRECTION.md step 7 "
+                           "(preamble, AUDIO PROFILE, DIRECTOR'S NOTES with Style + Pace + "
+                           "Emphasis, then 'Transcript:' on its own line, then the annotated "
+                           "lines), or re-run the vo-director agent on the current script.")
+
+
 def main():
     os.makedirs(AUD, exist_ok=True)
     plan = json.load(open(os.path.join(OUT, "vo_direction.json")))
     prompt = plan["assembled_prompt"]
     lines = [_strip_tags(l["text"]) for l in plan["lines"]]  # SPOKEN words only (no tags)
     _assert_plan_matches_script(lines)
+    _assert_prompt_intact(prompt, plan["lines"])
     spoken = " ".join(lines)
     tags = sorted({t for l in plan["lines"] for t in l.get("tags", [])})
 

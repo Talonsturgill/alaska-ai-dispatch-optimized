@@ -370,16 +370,32 @@ def main():
         else:
             beat_ts = [_t_num(b.get("t")) for b in (sb.get("beats") or []) if b.get("t") is not None]
             piece_end = max(beat_ts) if beat_ts else 0.0
-            if piece_end >= 75:                       # long-format only
-                mid = piece_end / 2.0
-                first = [r for r in scale_rv if _t_num(r.get("t")) < mid]
-                second = [r for r in scale_rv if _t_num(r.get("t")) >= mid]
-                if len(scale_rv) < 2 or not first or not second:
+            # ONE PER THIRD ABOVE 110s, one per half above 75s. Same argument applied
+            # twice: a single "whoa" beat cannot carry ninety seconds, and two cannot carry
+            # a hundred and twenty. At two minutes a final third with no reveal of its own
+            # coasts to the button, which is the specific way a long film goes flat.
+            if piece_end >= 110:
+                n = 3
+                label = "THIRD"
+            elif piece_end >= 75:
+                n = 2
+                label = "HALF"
+            else:
+                n = 0
+                label = ""
+            if n:
+                edges = [piece_end * i / n for i in range(n + 1)]
+                parts = [[r for r in scale_rv if edges[i] <= _t_num(r.get("t")) < edges[i + 1]]
+                         for i in range(n)]
+                parts[-1] += [r for r in scale_rv if _t_num(r.get("t")) >= edges[-1]]
+                empty = [i + 1 for i, p in enumerate(parts) if not p]
+                if len(scale_rv) < n or empty:
                     problems.append(
                         f"a {piece_end:.0f}s piece declares {len(scale_rv)} scale-class reveal(s), "
-                        f"{len(first)} in the first half and {len(second)} in the second. At this length "
-                        f"the format needs at least ONE PER HALF (ENGAGEMENT.md §3), because a single "
-                        f"whoa beat cannot carry ninety seconds and a back half with no reveal goes flat.")
+                        f"distributed {[len(p) for p in parts]} across its {n} {label.lower()}s "
+                        f"(empty: {label.lower()} {empty}). At this length the format needs at least "
+                        f"ONE PER {label} (ENGAGEMENT.md §3), because a stretch of a long film with no "
+                        f"reveal of its own is where it goes flat.")
         for r in rv:
             try:
                 hold = float(r.get("hold_s", -1))
@@ -389,6 +405,55 @@ def main():
                 problems.append(f"reveal '{r.get('what', r.get('type'))}' hold_s={r.get('hold_s')} — every "
                                 f"reveal lands with a 0.4-0.8s still HOLD (accepted band 0.3-1.2); the pause "
                                 f"is the punctuation")
+    # ---- THE THROUGHLINE OBJECT (two-minute format, 2026-08-05) -------------------
+    # At 90 seconds the viewer's implicit question at 70s is "where is this going". At
+    # 120 seconds the question at 80s is "HOW MUCH LONGER IS THIS", and nothing else in
+    # the format answers it. A throughline object does, without a progress bar: one thing
+    # introduced in the first ten seconds that is visibly DIFFERENT at each act boundary,
+    # so its state tells the viewer how far in they are.
+    #
+    # This is promoting an accident to a mechanism. The 2026-08-05 film happened to have
+    # one (the beetle: filled, then stripped to a dashed contour, then named again at the
+    # button) and both dissenting judges named that pairing as the image they remembered.
+    # Nothing had asked for it, so the next film would not have had one.
+    _bts = [_t_num(b.get("t")) for b in (sb.get("beats") or []) if b.get("t") is not None]
+    _pe = max(_bts) if _bts else 0.0
+    if _pe >= 110:
+        th = sb.get("throughline") or {}
+        states = th.get("states") or []
+        if not str(th.get("object", "")).strip() or not states:
+            problems.append(
+                f"a {_pe:.0f}s piece declares no `throughline` {{object, states:[{{at_s, state}}], "
+                f"lands_in_button}}. At two minutes the viewer cannot tell how far in they are; "
+                f"ONE object that visibly changes state at every act boundary answers that without "
+                f"a progress bar (ENGAGEMENT.md §2.7).")
+        else:
+            ts = sorted(_t_num(s.get("at_s")) for s in states if s.get("at_s") is not None)
+            unstated = [i for i, s in enumerate(states) if not str(s.get("state", "")).strip()]
+            if unstated:
+                problems.append(f"throughline states {unstated} declare no `state` — each entry says "
+                                f"what the object LOOKS LIKE at that moment, not merely that it recurs")
+            if len(ts) < 4:
+                problems.append(
+                    f"throughline '{th.get('object')}' declares {len(ts)} state(s); a "
+                    f"{_pe:.0f}s piece needs >= 4, one per act. Fewer means it is a recurring "
+                    f"prop, not an orientation mechanism.")
+            if ts and ts[0] > 10:
+                problems.append(f"throughline '{th.get('object')}' first appears at {ts[0]:.0f}s; it must "
+                                f"be introduced by 10s or the viewer never learns to read it.")
+            if ts and ts[-1] < 0.85 * _pe:
+                problems.append(f"throughline '{th.get('object')}' last changes at {ts[-1]:.0f}s, before "
+                                f"{0.85*_pe:.0f}s. Its FINAL state is the film's argument; it has to land "
+                                f"in the button.")
+            big = [(ts[i], ts[i + 1]) for i in range(len(ts) - 1) if ts[i + 1] - ts[i] > 40]
+            if big:
+                problems.append(f"throughline '{th.get('object')}' goes unchanged across {big} "
+                                f"(> 40s). It has to change at every act boundary, or the stretch "
+                                f"it sits out is a stretch with no sense of progress.")
+            if not str(th.get("lands_in_button", "")).strip():
+                problems.append("throughline declares no `lands_in_button` — say what its final state "
+                                "IS at the button, so the payoff is designed rather than hoped for")
+
     aa = sb.get("audio_arc") or {}
     if not aa:
         problems.append("missing top-level `audio_arc` block (VOICE_AND_SCORE.md: {build_steps, dip_at, "

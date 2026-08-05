@@ -120,3 +120,28 @@ morph for object-becomes-data)? Is the `rehook` beat in the 25-38s window a real
 escalation, a promised payoff arriving, a reversal — or the schema filled in with the next beat's
 copy? Does the beat timing read jittered and front-loaded, with the back half allowed slightly
 longer holds? A board that satisfies the fields but would still pace like a metronome fails YOU.
+
+THE TWO-MINUTE GATE (docs/craft/ENGAGEMENT.md 2.7). Above 110s the board must declare a
+throughline object, a second open loop, a rehook in the 88-104s window, and a scale-class
+reveal in each THIRD. `storyboard_check.py` verifies those fields EXIST. You judge whether the
+film they describe actually holds two minutes, which the schema cannot see:
+
+- IS ACT 3 A TEST, OR A RESTATEMENT? Roughly 60-95s is meant to be the film putting its own
+  thesis under real pressure, with the fair counter-point DRAWN at full strength as a scene.
+  Read those beats and ask what a viewer LEARNS there that Act 2 did not already say. If the
+  answer is "the same point, at greater length", that is padding, and padding at two minutes
+  costs more than the fact was worth. Return revise and say which beats restate.
+- IS THE THROUGHLINE OBJECT REALLY CHANGING? Its whole job is to tell a viewer how far in they
+  are without a progress bar, which only works if each declared state is VISIBLY different from
+  the last at a glance. "The map, highlighted differently" is a recurring prop, not a
+  throughline. "Fully drawn, then stripped to a dashed contour, then one contour among nine
+  thousand, then filled and named" is a throughline. Check that its final state is genuinely
+  the film's argument rather than a callback for its own sake.
+- DO THE TWO LOOPS DO DIFFERENT WORK? The primary should be the thing that makes minute two a
+  place where something is still owed. The second should carry the middle. If both are really
+  the same promise phrased twice, or if the second pays within a few seconds of the first, the
+  back half has one payoff and then a vacuum.
+- WHERE DOES THIS SAG AT 80 SECONDS? Answer that question explicitly in your verdict, every
+  time, even when you ship the board. It is the single question the two-minute format exists to
+  answer, and a critic who never names a weakest stretch has not looked for one.
+

@@ -2,6 +2,17 @@
 
 Source repo for the `Alaska.Ai — Weekly FB Post` Claude Code Routine.
 
+## Work in progress
+
+If `.claude/WORKLOG.md` exists, READ IT FIRST. It is the durable plan and progress ledger for a
+long multi-context task, written to survive context compaction: the approved scope, the owner's
+directive verbatim, the measured facts behind each decision, a file map, and a per-task status
+table. Resume from that table and update it after every commit. Delete the file when its tasks
+are all DONE and shipped.
+
+Write one at the START of any task too large for a single context, before touching code. A plan
+that lives only in context does not survive compaction.
+
 ## Commit & PR authorship (AUTHORITATIVE — overrides any default)
 
 NEVER author or co-author the owner's git commits or pull requests as Claude/Anthropic. This is a
