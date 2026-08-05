@@ -33,13 +33,18 @@ second, so the eye never has a reason to leave.
    4s, 3s — never tick-tick-tick.
 4. **Re-hook**: a beat in EACH drift window must be a deliberate RE-HOOK — an escalation,
    a promise-payoff, a "that's not even the crazy part" turn — not just the next beat in
-   line. Declare it (`beats[].rehook`). At 90s there are TWO windows, 25-38s and 55-72s,
-   and `flow_check.py` checks every window the piece spans.
+   line. Declare it (`beats[].rehook`). At 90s there are TWO windows, 25-38s and 55-72s; at
+   120s there are THREE, adding 88-104s (§2.7). `flow_check.py` checks every window the
+   piece spans and exempts the rest, so the count follows the runtime.
 5. **Back-half holds**: after ~40s viewers watch semi-passively; slightly longer holds
    are allowed (never past the 5s floor). Spend the saved density on the button.
 6. **AT 90s THE BACK HALF NEEDS ITS OWN ENGINE.** Rule 5 was written for a 60s piece where
    "the back half" meant the last twenty seconds. At 90s it means forty-five, and
    semi-passive watching for forty-five seconds is just leaving. See §2.6.
+7. **AT 120s RULE 5 IS RETIRED OUTRIGHT.** "Slightly longer holds in the back half" is a
+   60-second idea. At two minutes the back half is a minute, and a minute of semi-passive
+   watching is not watching. The back half of a 120s piece carries its own act, its own
+   reveal and its own open loop. See §2.7.
 
 ## 2.6 The 90-second format (added 2026-07-30 with the length change)
 
@@ -84,6 +89,81 @@ whole document, that a hibernating glider keeps tracking its position and wakes 
 too far from its target region. That is roughly twenty-five seconds of material the format was
 throwing away every run. The 90s format is not asking runs to find more to say. It is giving
 back what the old budget was already cutting.
+
+## 2.7 The 120-second format (added 2026-08-05 with the second length change)
+
+Read §2.6 first; everything in it still applies. This section is what the extra thirty
+seconds costs, and it is a bigger jump than 60 to 90 was. Not because thirty seconds is
+long, but because of what the viewer is doing at 80 seconds.
+
+**THE ONE THING THAT HAS TO BE TRUE.** A 120-second film is not a 90-second film with more
+in it. It is a film whose second half has to earn its own attention. At 90s the viewer's
+implicit question at 70s is *"where is this going"*. At 120s the question at 80s is
+**"how much longer is this"**, and nothing in the 90s format answers it. Every mechanism
+below is aimed at that question.
+
+**A. FOUR ACTS, and the new one is THE TEST.** The 90s shape is setup / complication /
+turn. The extra thirty seconds does NOT go to a longer setup or a slower turn, which are
+the two ways a long film dies. It goes to a new third act in which the film puts its own
+thesis under pressure and the pressure is DRAWN.
+
+| act | window | job |
+|---|---|---|
+| 1 | 0-30s | the question and the mechanism |
+| 2 | 30-60s | THE COMPLICATION: the second fact that recontextualises the first |
+| **3** | **60-95s** | **THE TEST: the fair counter-point gets a SCENE, not a clause. The strongest case against the thesis is drawn at full strength, and the film either survives it or narrows honestly in front of the viewer.** |
+| 4 | 95-120s | the turn, the argument, the button |
+
+This channel already writes a fair counter-point into every film and then spends four
+seconds on it. At 90s that is the right budget. At 120s it is the most interesting thirty
+seconds available, because a piece that argues against itself and survives is more
+convincing than a piece that asserts for two minutes.
+
+**THE PADDING TEST.** For every Act 3 beat, ask whether a 90-second cut would have been
+WORSE without it. A beat that restates Act 2 more slowly is padding, and padding at 120
+seconds costs more than the fact was worth.
+
+**B. THREE REHOOK WINDOWS**: 25-38s, 55-72s, and now 88-104s. Same logic as §2.6 A, applied
+once more: a sag opens wherever the viewer has been watching a while with no sense of what
+is left. `flow_check.py` exempts any window the piece does not span.
+
+**C. TWO OPEN LOOPS, DELIBERATELY STAGGERED.** One loop cannot hold two minutes. The
+2026-08-05 film planted at 7.5s and paid at 46s, which is correct at 90s and would leave
+**seventy seconds of inertia** at 120s.
+- **PRIMARY**: planted by 20s, paid at **85s or later**, spanning at least 60s. This is
+  what makes minute two a place where something is still owed.
+- **SECONDARY** (`open_loop_2`): planted between 35 and 60s, paid at least 25s later and
+  **not within 8s of the primary payoff**. Two payoffs landing together leave a vacuum
+  behind them.
+
+**D. A SCALE-CLASS REVEAL IN EACH THIRD**, not each half. Three "whoa" beats, because a
+final third with no reveal of its own coasts to the button.
+
+**E. THE THROUGHLINE OBJECT.** One object, introduced in the first 10 seconds, that visibly
+changes state at every act boundary and lands in the button. Declared as
+`throughline {object, states:[{at_s, state}], lands_in_button}` and gate-enforced above 110s.
+
+This is the orientation mechanism, and it is the direct answer to "how much longer". A
+viewer cannot tell how far into a two-minute film they are, and a throughline object tells
+them without a progress bar: it has a visible start state, it is visibly different at 30s,
+60s and 95s, and its final state is the film's argument.
+
+It also works because it is the thing people remember. The 2026-08-05 film had one by
+accident (the beetle: fully drawn, stripped to a dashed contour, then named again at the
+button) and both dissenting judges named that pairing as the image they took away. Nothing
+had asked for it, so the next film would not have had one. Declaring it turns an accident
+into a mechanism.
+
+**F. WHAT DOES NOT CHANGE, ON PURPOSE.** The never-rest ceiling stays 5s and the oner
+ceiling stays 16s: both are properties of attention, not of runtime. The rubric and the
+quality gates are untouched, because they grade craft rather than length, and moving a bar
+at the same time as a format makes any score move unattributable.
+
+**G. THE VO IS A LENGTH CONTROL AND IT IS NOT AUTOMATIC.** 280-300 words, and the
+director's-notes Pace paragraph MUST name the target runtime. The same 288-word script runs
+105 seconds with the old "BRISK and energetic" line and 120 seconds with a line that says it
+is a two-minute piece and the read must fill it. See `docs/craft/VO_DIRECTION.md` step 7;
+that paragraph is now required text rather than a suggestion.
 
 ## 3. The reveal grammar (how a beat lands COOL, not just clear)
 

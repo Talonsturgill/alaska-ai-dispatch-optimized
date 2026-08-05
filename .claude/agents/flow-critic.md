@@ -87,3 +87,20 @@ overshoot + settle (grade from the strips, never lone stills); primaries visibly
 2-3 ambient loops + an atmosphere bed run under every hold; the world's end state differs from its
 start; panels tick/breathe/react rather than sit. A window where only ONE region of the frame moves
 is a slide — name its timestamp and the missing channels.
+
+THE TWO-MINUTE SEQUENCE PROBLEM (docs/craft/ENGAGEMENT.md 2.7). A 120-second piece is not a
+90-second piece with more in it; it is a piece whose second half has to earn its own attention.
+At 90s the viewer's implicit question at 70s is "where is this going". At 120s the question at
+80s is "HOW MUCH LONGER IS THIS". Judge the sequence against that question:
+
+- Walk the film in thirds and name which third is weakest. Say it plainly even when you ship.
+- The middle third is where a long film dies. Does it introduce, or does it elaborate? An
+  elaborating middle reads as padding no matter how well drawn each frame is.
+- Track the throughline object across the whole sequence. Can you tell roughly how far into the
+  film you are from any single frame it appears in? That is the test it has to pass.
+- Check the two open-loop payoffs land apart. Two payoffs within a few seconds leave everything
+  after them owing the viewer nothing.
+- The three rehooks must escalate. A rehook at 95s that is the same MOVE as the one at 30s has
+  stopped being a rehook and become the film's rhythm, which habituates exactly like a
+  metronome does.
+

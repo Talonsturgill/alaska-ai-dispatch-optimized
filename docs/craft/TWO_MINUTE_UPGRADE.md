@@ -25,22 +25,29 @@ move because the runtime moved.
 
 ## 1. Measured facts this plan is built on (not assumptions)
 
-| fact | measured | where the old number was wrong |
+> **CORRECTED 2026-08-05, after the probe.** This section originally read "the house VO rate is
+> 161.5 wpm, so the routine's 137.5 claim is stale by 17 percent", and derived a word band of
+> 295-320 from it. **Both were wrong.** The 161.5 figure came from a take whose prompt had been
+> destroyed by a bad string patch, so it was narrated with no pace direction at all. Deriving a
+> word count from it would have produced a film 12 seconds over the ceiling on a slow read. The
+> numbers below are what `scripts/vo_length_probe.py` actually measured at 120 seconds.
+
+| fact | measured | how |
 |---|---|---|
-| house VO rate | **161.5 wpm** on the delivered 08-05 take (232 words / 86.2s) | `dispatch_routine.md` §4.2 said "137.5 words per minute, MEASURED from real synths". It is off by 17 percent and every word-count estimate built on it was wrong. |
-| take-to-take spread | **143 to 161 wpm** on the SAME script (three takes: 86.6s, 86.8s, 97.4s) | never recorded anywhere. This is why the runtime band has to be wider than the 84-96 the 90s format used. |
+| **VO word band** | **280 to 300 words**, target 288 | 288 words delivered **121.3s and 119.9s** with the anchored pace line |
+| **runtime band** | **112 to 130s**, target 120 | both probe takes landed inside with room to spare |
+| pace control | **the Pace line is worth ~15 percent of runtime** | the SAME 288 words ran 104.8 / 105.2 / 106.3s with "BRISK", and 121.3 / 119.9s with a line naming two minutes |
+| within-prompt variance | **1.4 percent** | three takes of one prompt: 104.8 / 105.2 / 106.3s. The read is not a lottery. |
+| between-prompt variance | **136 to 165 wpm** | the same verbatim "BRISK" sentence across the archive. The director's notes are rewritten every run, so the runtime depended on how verbose one agent felt that day. This is the thing the anchored pace paragraph fixes. |
+| truncation at 288 words | **none** | 288/288 words aligned, 23/23 lines timed |
+| alignment at 120s | **clean** | monotonic, speech_end 120.82s, first word 0.0s, 61 cues, 0 degenerate |
 | render cost | ~2664 frames final-res in 6 to 8 min | 3600 frames ≈ 9 to 11 min. Acceptable. |
 | deliverable size | 34.7 MB at 86.2s | ≈ 48 MB at 120s, well under the 100 MB ceiling. 720p rendition ≈ 8 MB. |
 
-**Word band derivation.** Targeting the middle of the take spread (~152 wpm) rather than the fast
-end, so a slow take does not blow the ceiling:
-
-- 300 words at 161 wpm (fast take) = 112s
-- 300 words at 143 wpm (slow take) = 126s
-
-So: **target 120s, band 112 to 130s, words 295 to 320.** A band that cannot absorb the measured
-take variance would force a re-synth on perfectly good reads, which is how the old 84-96 band would
-have behaved at this length.
+**Word band derivation.** Not extrapolated from a rate. A 288-word script was synthesized five
+times and measured, and 280-300 is the band around what landed. The rate follows from the pace
+paragraph rather than the other way round, which is why `docs/craft/VO_DIRECTION.md` step 7 now
+carries that paragraph as required text.
 
 ---
 
@@ -115,8 +122,8 @@ Declared as `throughline {object, states: [{at_s, state}], lands_in_button}`, re
 |---|---|---|---|
 | target seconds | 90 | **120** | `config/state.yaml` |
 | runtime band | 84-96 | **112-130** | `config/state.yaml` (read by `vo_soundcheck.py`) |
-| VO words | 190-215 | **295-320** | `config/state.yaml`, `dispatch_routine.md` §4.2 |
-| beats | 18-30 | **24-40** | `config/visual_flow.yaml` |
+| VO words | 190-215 | **280-300** | `config/state.yaml`, `dispatch_routine.md` §4.2 |
+| beats | 18-30 | **24-40**, and now DERIVED from piece length rather than a flat number | `config/visual_flow.yaml`, `flow_check.py` |
 | max beat gap | 5.0s | **5.0s (unchanged)** | the never-rest ceiling is a constant, not a function of length |
 | rehook windows | 2 | **3** | `config/visual_flow.yaml` |
 | open loops | 1 | **2** | `config/visual_flow.yaml`, `flow_check.py` |
@@ -145,23 +152,25 @@ Declared as `throughline {object, states: [{at_s, state}], lands_in_button}`, re
 
 | risk | why it matters | how it is retired |
 |---|---|---|
-| **Gemini TTS truncates or drifts on a ~310-word single call** | the whole pipeline is one call; a truncation ships a short film with wrong captions | SYNTH A REAL 310-WORD SCRIPT AND MEASURE IT. Not reasoning, a take. |
-| whole-file forced alignment degrades at 120s | captions would desync, a hard blocker | measure `transcript_match` and cue count on that same take |
-| a legal 120s board is rejected by a gate | tomorrow's run blocks | run every gate against a synthetic conforming 120s board |
-| a legacy/shorter board breaks | the archive and any re-run | run every gate against the shipped 08-05 board and confirm it still passes |
+| **Gemini TTS truncates or drifts on a long single call** | the whole pipeline is one call; a truncation ships a short film with wrong captions | **RETIRED.** 288 words synthesized five times, no truncation, 288/288 words aligned. |
+| whole-file forced alignment degrades at 120s | captions would desync, a hard blocker | **RETIRED.** Monotonic, 23/23 lines timed, 61 cues, none degenerate, speech_end 120.82s. |
+| a legal 120s board is rejected by a gate | tomorrow's run blocks | **RETIRED.** `format_gate_selftest.py`: conforming board, 0 runtime problems. |
+| a legacy/shorter board breaks | the archive and any re-run | **RETIRED.** Same self-test: the shipped 08-05 board, 0 runtime problems. The beat floor is derived from length precisely so this stays true. |
 | deliverable size / render time | upload limits, session length | arithmetic above; both fine |
 
 ---
 
 ## 6. Order of work
 
-1. Plan (this file).
-2. Verify the TTS risk empirically. **Nothing else proceeds until a ~310-word take exists and
-   measures clean.**
-3. Config numbers (`state.yaml`, `visual_flow.yaml`, `shot_structure.yaml`).
-4. Gate logic (`storyboard_check.py` thirds + throughline, `flow_check.py` second loop).
-5. Doctrine (`ENGAGEMENT.md` §2.7) and the routine prompt (§4.2, §4.3, Gate 0).
-6. The rooms: angle room, directors room, storyboard-critic, flow-critic all briefed on the
-   two-minute retention problem, because the owner is right that this starts in pre-planning.
-7. Verify: conforming 120s board passes, padded board fails, 08-05 board still passes.
+1. ~~Plan (this file).~~ DONE
+2. ~~Verify the TTS risk empirically.~~ **DONE, PASSED.** `scripts/vo_length_probe.py`.
+3. ~~Config numbers.~~ DONE
+4. ~~Gate logic.~~ DONE
+5. ~~Doctrine + routine prompt.~~ DONE
+6. ~~The rooms.~~ DONE. The angle room now has to answer whether the thesis has a second
+   movement; the writers room owes a four-part RETENTION PLAN per pitch and argues it as its own
+   round; both Gate-0 critics are briefed on the two-minute sequence problem.
+7. ~~Verify.~~ **DONE, PASSING.** `scripts/format_gate_selftest.py`.
 8. Ship.
+
+Live state and the per-task table live in `.claude/WORKLOG.md` while this is in flight.
