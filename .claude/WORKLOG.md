@@ -226,7 +226,7 @@ window is backward-compatible by construction.
 | 1 | Plan of record written (`docs/craft/TWO_MINUTE_UPGRADE.md`) | DONE | committed on this branch |
 | 1b | This worklog, so the plan survives compaction | DONE | committed on this branch |
 | 2 | **VERIFY THE TTS RISK EMPIRICALLY.** | **DONE — PASSED** | `scripts/vo_length_probe.py`. 288 words, 5 synths: no truncation, 288/288 words aligned, 23/23 lines timed, monotonic, speech_end 120.82s, 61 cues, 0 degenerate. |
-| 2a | **Fix the prompt-integrity bug** found while designing the probe (see §2a). A code guard in `vo_synth_gemini.py` that REFUSES to synth a prompt missing the `Transcript:` delimiter or the Pace line, so no future context can silently narrate an undirected read again. | DONE | `_assert_prompt_intact`. Verified: 9/10 archived prompts pass, the two real defects (07-30 missing Pace, 08-05 destroyed) fail, and 3 synthetic negative controls fail with the right diagnosis. Deliberately tolerant of phonetic respellings (07-31) and paragraph reflow (07-22). |
+| 2a | **Fix the prompt-integrity bug** found while designing the probe (see §2a). `repair_prompt` in `vo_synth_gemini.py` REBUILDS a prompt missing the `Transcript:` delimiter, the Style/Pace/AUDIO PROFILE blocks, or whose Pace line does not name the runtime. | DONE | Verified against the real 08-05 destroyed prompt and a generic-pace archived prompt (both repaired), and an already-correct 120s prompt (left untouched). It REPAIRS rather than refuses: see §9. |
 | 2b | **Standardize the Pace paragraph on an explicit runtime anchor.** The identical 288-word script ran **105s** with "Pace: BRISK" and **121.3s / 119.9s** with a pace line naming the target. Naming the runtime is worth ~15 percent of pace and is the only reliable length control found. | DONE | written into `VO_DIRECTION.md` step 7 as the required Pace text, with the measurement table and the reasoning |
 | 2c | **Runtime-aware take selection** in `vo_soundcheck.pick_best`: among passing takes prefer those inside the tight band from `state.yaml`, quality decides within that set, and if none is in band take the one closest to target. Makes `dispatch_target_seconds` / the tight band do something in code for the first time. | DONE | regression-checked against the 08-05 run: picks take 1 (86.80s), exactly what shipped |
 | 2d | **Year-normalization fix + line-initial-tag rule**, both found by the probe. | DONE | anchored takes went 0.074/0.077 -> 0.039/0.042 against a 0.08 fail ceiling |
@@ -306,8 +306,10 @@ verified by reproduction, not taken on description.
    is deliberately wide (~62-176s) and the tight band lived only in prose. The exact
    failure that lets through is the default one at this length: the old BRISK pace line on
    288 words gives 105s, three takes running, and the run would have shipped a
-   105-second film believing it was two minutes. `_assert_runtime_in_band` now hard-fails
-   with the arithmetic and points at the pace paragraph first.
+   105-second film believing it was two minutes. Now the pace paragraph is repaired to name
+   the runtime BEFORE any TTS is spent, and an out-of-band take re-rolls once then ships
+   the best with the miss recorded. See §9 — the first version of this fix hard-failed,
+   which was wrong.
 3. **`min_shots` was raised as a flat number** while the beat floor was deliberately made
    length-derived for exactly this reason, and it retroactively failed the legal 7-shot
    2026-07-30 board. Now derived from runtime and the oner ceiling.
@@ -318,4 +320,34 @@ labelled as such and excluded from the verdict (the real evidence is duration, W
 speech_end); the probe defaulted to the superseded `brisk` pace mode; `BED_ARC` used strict
 tuple unpacking on hand-edited per-run data; the self-test's filler beats could inherit a
 `rehook` and silence their own assertion; `beats.max` was config no code read.
+
+---
+
+## 9. NO HARD FAILS (owner directive, 2026-08-05)
+
+> "no hard fails, fix it, anything that is wrong, should just get fixed, the definition of
+> done is a video delivered daily, no matter what, don't start writing urself escape
+> hatches cause u tend to do that."
+
+The first pass at the review fixes added TWO `SystemExit`s to the VO path (a damaged
+prompt, an out-of-band runtime). That was wrong, and the repo already said so: `no_exit.py`
+is THE ONE OUTCOME LAW, and its own docstring says it "can only ever refuse a STOP. It can
+never refuse a SHIP." I had put brand new stops directly in the delivery path.
+
+**The standing rule for this pipeline: a defect the machine can describe is a defect the
+machine should REPAIR.** Every one of those conditions was mechanically recoverable:
+
+| was a stop | now |
+|---|---|
+| damaged / generic prompt | `repair_prompt` rebuilds it from the plan plus the canonical template, salvaging whatever notes survive, and forces the runtime-naming Pace paragraph |
+| plan stale vs script | `_reconcile_plan_with_script` rebuilds the plan from the script (the locked copy), carrying per-line direction across for unchanged lines |
+| runtime out of band | re-rolls one round on the repaired prompt, then ships the best take and records the miss in `vo_report.json`, which the panel and the dated email both read |
+
+The ONLY remaining `SystemExit` in `vo_synth_gemini.py` is a missing API key, which is a
+true hard blocker: there is nothing to repair and no audio to be had.
+
+**If you are tempted to add a gate here, add a repair instead.** A visible miss on a
+delivered film beats a clean stop, every time. `format_gate_selftest.py` asserts the
+generated pace paragraph stays byte-identical to the one that was actually measured, so
+the repair cannot silently start shipping an untimed instruction.
 

@@ -212,8 +212,9 @@ def _strip_tags(s):
     return re.sub(r"\s+", " ", re.sub(r"\[[^\]]*\]", "", s)).strip()
 
 
-def _assert_plan_matches_script(lines):
-    """HARD GATE (added 2026-07-26 after this script silently narrated a stale draft).
+def _reconcile_plan_with_script(lines):
+    """RECONCILE the plan against the script (added 2026-07-26 after this script silently
+    narrated a stale draft; converted from a hard gate to a repair 2026-08-05).
 
     This script reads ONLY vo_direction.json. That file is written by the
     vo-director agent, so it is a SNAPSHOT of whatever the script said at the
@@ -235,11 +236,11 @@ def _assert_plan_matches_script(lines):
     """
     sp = os.path.join(OUT, "vo_script.txt")
     if not os.path.exists(sp):
-        return  # nothing to compare against; the plan is the only source of truth
+        return None, []   # nothing to compare against; the plan is the only source of truth
     want = [l.strip() for l in open(sp).read().strip().split("\n") if l.strip()]
     got = [l.strip() for l in lines]
     if want == got:
-        return
+        return None, []
     msg = [
         "VO PLAN IS STALE. vo_direction.json does not match vo_script.txt.",
         f"  script lines: {len(want)}    plan lines: {len(got)}",
@@ -249,138 +250,146 @@ def _assert_plan_matches_script(lines):
         g = got[i] if i < len(got) else "<missing from plan>"
         if w != g:
             msg.append(f"  line {i}:\n    script: {w}\n    plan:   {g}")
-    msg.append("Re-run the vo-director agent on the CURRENT script, then re-synth.")
-    raise SystemExit("\n".join(msg))
+    msg.append("REPAIRING: the SCRIPT is the source of truth (it is the locked copy the "
+               "fact-check and the caption both key off), so the plan is rebuilt from it. "
+               "Per-line direction is preserved for every line whose spoken text is "
+               "unchanged; changed or new lines carry no inline tags, which is the safe "
+               "default because an unvetted tag risks being read aloud.")
+    return want, msg
 
 
-def _assert_prompt_intact(prompt, plan_lines):
-    """HARD GATE (added 2026-08-05 after this shipped an undirected read).
+def _num_words(n):
+    """120 -> 'one hundred and twenty', for a pace line the model reads as prose."""
+    try:
+        from num2words import num2words
+        return num2words(int(n))
+    except Exception:
+        return str(int(n))
 
-    `_assert_plan_matches_script` guards ONE edge of a three-way relationship:
 
-        vo_script.txt  <->  vo_direction.json["lines"]  <->  assembled_prompt
+def _pace_line(target):
+    """THE REQUIRED PACE PARAGRAPH, built around the CURRENT target from config.
 
-    The third edge was unguarded, and it is the one that actually reaches the model.
-    Nothing downstream reads `lines`; the synth call sends `assembled_prompt` and only
-    `assembled_prompt`. So a plan whose lines are perfect and whose prompt is wrong
-    passes every check and narrates the wrong thing at the right length.
-
-    That is exactly what happened on 2026-08-05. A gate demanded an extra VO line, so
-    the plan was hand-patched, and the prompt's transcript block was rebuilt by cutting
-    at the first occurrence of the substring "Transcript:". That substring occurs inside
-    the preamble's OWN sentence ('The lines above "Transcript:" are direction; never
-    speak them'), so the cut landed 75 characters into the prompt and deleted the AUDIO
-    PROFILE, the DIRECTOR'S NOTES, the Style line, the Pace line, and the delimiter. The
-    film was narrated with no direction of any kind and shipped that way.
-
-    It did not fail loudly because an undirected read is still fluent audio: the
-    soundcheck passed, the alignment was monotonic, the words were right. The only
-    symptom was the pace, which came in at 161.5 wpm against a house rate near 139, the
-    fastest read in the archive by nine percent. VO_DIRECTION.md warns that a missing
-    pace line drags a read 30 percent slow; the failure runs the other way too, and at
-    120 seconds a 16 percent pace error is the difference between landing in the runtime
-    band and overrunning it.
-
-    Same treatment as every other silent-wrong-artifact bug in this pipeline: a code
-    guard that fails the run, not a note somebody has to remember.
+    docs/craft/VO_DIRECTION.md step 7 makes this required text, because it is the
+    format's only reliable length control: the same 288-word script runs 105 seconds
+    with a generic "BRISK and energetic" line and 120 with one that names the runtime.
+    Generating it from config/state.yaml means the next format change moves it too,
+    instead of leaving a sentence that names the old length.
     """
-    problems = []
-    delim = "\nTranscript:\n"
-    if delim not in prompt:
-        problems.append(
-            "  - NO 'Transcript:' DELIMITER on its own line. Without it the model reads the "
-            "director's notes aloud. NOTE: the string 'Transcript:' also appears inside the "
-            "preamble sentence, so never split this prompt on the bare substring; split on "
-            "the newline-delimited form.")
-    else:
-        head, body = prompt.split(delim, 1)
-        if "Pace:" not in head:
-            problems.append("  - NO 'Pace:' line in the director's notes. VO_DIRECTION.md step 7 "
-                            "marks it REQUIRED: the read drifts far off the house rate without it, "
-                            "which moves the runtime out of the band in config/state.yaml.")
-        if "Style:" not in head:
-            problems.append("  - NO 'Style:' line in the director's notes.")
-        if "AUDIO PROFILE" not in head:
-            problems.append("  - NO '# AUDIO PROFILE:' block.")
-        # CONTENT, NOT LAYOUT. Two techniques legitimately make the prompt's transcript
-        # differ from the plan's `lines` verbatim, and both are in the archive:
-        #   2026-07-31  a PHONETIC RESPELLING ("Choo-gatch" for Chugach). The plan carries
-        #               the real spelling for captions; the prompt carries the one that
-        #               makes Sulafat say it right. vo_direction has a phonetic_decisions
-        #               field precisely for this.
-        #   2026-07-22  the transcript set as flowing paragraphs rather than one line per
-        #               plan entry.
-        # An exact-equality check rejects both and would have failed the next run. What
-        # this actually needs to catch is CONTENT GOING MISSING, so it compares normalized
-        # word sequences with tolerance for a handful of substitutions.
-        tok = lambda s: re.findall(r"[a-z0-9]+", _strip_tags(s).lower())
-        got = tok(body)
-        want = tok(" ".join(l["text"] for l in plan_lines))
-        ratio = difflib.SequenceMatcher(a=want, b=got, autojunk=False).ratio()
-        if len(got) < 0.95 * len(want):
-            problems.append(
-                f"  - THE PROMPT'S TRANSCRIPT IS SHORTER THAN THE PLAN: {len(got)} words vs "
-                f"{len(want)}. Content was dropped between the plan and the string that is "
-                f"actually sent. The synth sends the PROMPT, so the prompt is what ships.")
-        elif ratio < 0.90:
-            problems.append(
-                f"  - THE PROMPT'S TRANSCRIPT DOES NOT MATCH THE PLAN (word similarity "
-                f"{ratio:.2f}, floor 0.90). A phonetic respelling or a paragraph reflow will "
-                f"not move this; a rewritten or stale transcript will.")
-    if problems:
-        raise SystemExit("ASSEMBLED PROMPT IS DAMAGED. Refusing to synth.\n"
-                         + "\n".join(problems)
-                         + "\nRebuild assembled_prompt per docs/craft/VO_DIRECTION.md step 7 "
-                           "(preamble, AUDIO PROFILE, DIRECTOR'S NOTES with Style + Pace + "
-                           "Emphasis, then 'Transcript:' on its own line, then the annotated "
-                           "lines), or re-run the vo-director agent on the current script.")
+    mins = target / 60.0
+    unit = (f"{_num_words(round(mins)).upper()} MINUTE PIECE" if abs(mins - round(mins)) < 0.05
+            else f"{_num_words(round(target)).upper()} SECOND PIECE")
+    return (f"Pace: MEASURED and unhurried. THIS IS A {unit}, about {_num_words(round(target))} "
+            f"seconds, and the read must FILL it, so give every sentence room to land and take a "
+            f"real breath at every period. Do not rush the numbers. Vary the tone line to line so "
+            f"no two sentences sound the same.")
 
 
-def _assert_runtime_in_band(report, n_words):
-    """HARD GATE on the delivered runtime. Nothing else enforced it (added 2026-08-05).
+def _pace_names_runtime(head, target):
+    """Does the Pace line actually NAME the target runtime, or is it generic?"""
+    m = re.search(r"^Pace:.*$", head, re.M)
+    if not m:
+        return False
+    line = m.group(0).lower()
+    mins = target / 60.0
+    ok = {str(int(target)), _num_words(round(target)).lower()}
+    if abs(mins - round(mins)) < 0.05:
+        ok |= {f"{_num_words(round(mins))} minute".lower(), f"{int(round(mins))} minute"}
+    return any(tok in line for tok in ok)
 
-    The format's target runtime lived in config/state.yaml and in prose in the routine
-    prompt, and NOTHING in code ever failed a take for being the wrong length. The
-    soundcheck's own duration window is deliberately wide (currently ~62 to 176s) because
-    its job is catching a grossly broken synth, not policing pace. So the run's actual
-    runtime was enforced by whoever happened to read the number.
 
-    That was survivable while a human noticed. It is not survivable now, because the exact
-    failure it lets through is the DEFAULT one at this length: the old "Pace: BRISK" line
-    on a 288-word script delivers 105 seconds, three takes in a row, comfortably inside the
-    wide window and comfortably outside the format. `pick_best` would report "NO take
-    landed in 112-130s", pick the closest, print "clean", and the run would ship a
-    105-second film believing it had made a two-minute one. Every downstream gate would
-    agree with it, because none of them measure runtime either.
+def repair_prompt(prompt, plan):
+    """REPAIR a damaged or generic prompt IN PLACE. Never stops the run.
 
-    The remediation is already documented in the routine (Phase 5: if long, TRIM THE
-    SCRIPT), so this fails with the arithmetic rather than just the complaint, and it names
-    the pace paragraph first because that is what the measurement says moves the number.
+    THE ONE OUTCOME LAW (scripts/no_exit.py): the only terminal state is a delivered
+    video. An earlier version of this raised SystemExit on a damaged prompt, which put a
+    brand new stop in the delivery path -- exactly the kind of thing that law exists to
+    prevent. A damaged prompt is not a reason to have no video; it is a reason to rebuild
+    the prompt, which is mechanical, because every part of it is recoverable from the plan
+    plus the canonical template.
+
+    WHAT IT GUARDS, and why each clause is a defect somebody already shipped:
+
+      the `Transcript:` delimiter   Without it the model reads the director's notes aloud.
+                                    On 2026-08-05 a hand-patch cut assembled_prompt at the
+                                    FIRST occurrence of the substring `Transcript:`, which
+                                    appears inside the preamble's own sentence, deleting
+                                    the audio profile, the notes, the style and pace lines
+                                    and the delimiter. The film shipped narrated with no
+                                    direction at all and nothing noticed, because an
+                                    undirected read is still fluent audio.
+      the Pace line NAMING the      A generic pace line is worth ~15 percent of runtime.
+      runtime                       At 288 words that is a 105-second film in a 112-130
+                                    band, and it happens on three takes out of three, so
+                                    it is the DEFAULT failure rather than an unlucky one.
+                                    Catching it here fixes it before any TTS is spent.
+      the transcript matching       Nothing downstream reads `lines`; the synth sends
+      the plan                      `assembled_prompt` and only that. A plan whose lines
+                                    are perfect and whose prompt is stale narrates the
+                                    wrong thing at the right length.
+
+    Returns (prompt, notes). notes is a list of human-readable repairs made, which the
+    caller prints and records in vo_report.json so a silent rescue is still visible.
     """
     lo, hi, target = sc._target_band()
-    if lo is None:
-        return
-    secs = report["checks"]["duration"]["seconds"]
-    if lo <= secs <= hi:
-        print(f"  runtime {secs:.1f}s is inside the {lo:.0f}-{hi:.0f}s band")
-        return
-    rate = n_words / secs * 60 if secs else 0
-    want = int(round(target * rate / 60))
-    delta = want - n_words
-    raise SystemExit(
-        f"\nRUNTIME OUT OF BAND. The best take is {secs:.1f}s; the format is "
-        f"{lo:.0f} to {hi:.0f}s (target {target:.0f}s). Refusing to build a film at the "
-        f"wrong length.\n"
-        f"  this read delivered {rate:.1f} words per minute over {n_words} words\n"
-        f"  at that rate, {target:.0f}s wants about {want} words "
-        f"({'add' if delta > 0 else 'cut'} roughly {abs(delta)})\n"
-        f"FIX THE PACE PARAGRAPH FIRST, not the word count. docs/craft/VO_DIRECTION.md step 7 "
-        f"requires a Pace line that NAMES the target runtime, and it is worth about 15 percent "
-        f"of pace: the same 288-word script runs 105s with a generic 'BRISK and energetic' line "
-        f"and 120s with one that says it is a two minute piece and the read must fill it. A take "
-        f"this far off usually means that paragraph was rewritten or dropped. If the pace "
-        f"paragraph is already correct and verbatim, then adjust the script by the word count "
-        f"above and re-synth.")
+    target = target or 120.0
+    plan_lines = plan.get("lines") or []
+    notes = []
+    delim = "\n" + "Transcript:" + "\n"
+    head, body = (prompt.split(delim, 1) if delim in prompt else (None, None))
+
+    if head is None:
+        notes.append("NO 'Transcript:' delimiter on its own line: the whole notes block was "
+                     "missing or the prompt had been split on the bare substring (which also "
+                     "occurs inside the preamble sentence). Rebuilt from the plan.")
+    else:
+        if "Pace:" not in head:
+            notes.append("no Pace line in the director's notes")
+        elif not _pace_names_runtime(head, target):
+            notes.append(f"the Pace line did not name the target runtime, which is the format's "
+                         f"only reliable length control; replaced with the required "
+                         f"{target:.0f}s paragraph")
+        if "Style:" not in head:
+            notes.append("no Style line")
+        if "AUDIO PROFILE" not in head:
+            notes.append("no '# AUDIO PROFILE:' block")
+        tok = lambda x: re.findall(r"[a-z0-9]+", _strip_tags(x).lower())
+        got, want = tok(body), tok(" ".join(l["text"] for l in plan_lines))
+        if len(got) < 0.95 * len(want):
+            notes.append(f"the prompt's transcript was shorter than the plan ({len(got)} words vs "
+                         f"{len(want)}); the synth sends the PROMPT, so content was going missing")
+        elif difflib.SequenceMatcher(a=want, b=got, autojunk=False).ratio() < 0.90:
+            notes.append("the prompt's transcript did not match the plan's lines")
+
+    if not notes:
+        return prompt, []
+
+    # Rebuild. Salvage whatever of the head is still good; force the Pace paragraph.
+    def _salvage(pat, fallback):
+        m = re.search(pat, head or "", re.M)
+        return m.group(0).strip() if m else fallback
+    profile = _salvage(r"^# AUDIO PROFILE:.*$",
+                       "# AUDIO PROFILE: the house narrator: warm, grounded, quietly witty. "
+                       "Neutral American accent, light and natural, not announcer-y.")
+    style = _salvage(r"^Style:.*$", None) or (
+        (plan.get("style_prompt") or "").split("\n")[0].strip()
+        or "Style: warm, grounded and conversational; let the facts carry the weight.")
+    if not style.startswith("Style:"):
+        style = "Style: " + style.lstrip()
+    emphasis = _salvage(r"^Emphasis:.*$",
+                        "Emphasis: lean on the key word in each line; let numbers land.")
+    rebuilt = "\n".join([
+        'Read ONLY the transcript below aloud as speech. The lines above "Transcript:" '
+        "are direction; never speak them.",
+        profile,
+        "### DIRECTOR'S NOTES",
+        style,
+        _pace_line(target),
+        emphasis,
+        "Transcript:",
+        *[l["text"] for l in plan_lines],
+    ])
+    return rebuilt, notes
 
 
 def main():
@@ -388,8 +397,24 @@ def main():
     plan = json.load(open(os.path.join(OUT, "vo_direction.json")))
     prompt = plan["assembled_prompt"]
     lines = [_strip_tags(l["text"]) for l in plan["lines"]]  # SPOKEN words only (no tags)
-    _assert_plan_matches_script(lines)
-    _assert_prompt_intact(prompt, plan["lines"])
+    # THE SCRIPT WINS, AND A MISMATCH IS REPAIRED RATHER THAN FATAL (THE ONE OUTCOME LAW).
+    # A stale plan used to stop the run. But vo_script.txt is the locked copy that the
+    # fact-check and the caption both key off, so reconciling is mechanical: take the
+    # script's lines, and carry each line's direction across wherever the spoken text is
+    # unchanged. Only genuinely new or edited lines lose their per-line notes.
+    _want, _fixes = _reconcile_plan_with_script(lines)
+    if _want is not None:
+        by_text = {_strip_tags(l["text"]).strip(): l for l in plan["lines"]}
+        plan["lines"] = [
+            dict(by_text[w], idx=i) if w in by_text
+            else {"idx": i, "text": w, "intent": "", "emphasis": "", "energy": 3, "tags": []}
+            for i, w in enumerate(_want)
+        ]
+        lines = [_strip_tags(l["text"]) for l in plan["lines"]]
+    prompt, _pfixes = repair_prompt(prompt, plan)
+    _fixes = list(_fixes) + list(_pfixes)
+    for _f in _fixes:
+        print(f"  !! PROMPT REPAIRED: {_f}")
     spoken = " ".join(lines)
     tags = sorted({t for l in plan["lines"] for t in l.get("tags", [])})
 
@@ -412,9 +437,63 @@ def main():
         print(f"take {n}: {len(pcm)/24000:.1f}s ({used})")
 
     best_i, reports = sc.pick_best([p for p, _ in takes], spoken, tags)
+
+    # ---- RUNTIME: RE-ROLL, THEN ACCEPT. NEVER STOP. -------------------------------
+    # The format's target runtime was enforced nowhere in code: the soundcheck's window
+    # is deliberately wide (~62-176s) because its job is catching a grossly broken synth
+    # rather than policing pace. So a 105-second take passed everything and the run would
+    # have shipped it believing it had made a two-minute film.
+    #
+    # The first version of this fix raised SystemExit, which was wrong for a reason the
+    # repo already had written down: THE ONE OUTCOME LAW (scripts/no_exit.py) says the
+    # only terminal state is a delivered video, and I had put a brand new stop directly in
+    # the delivery path. A wrong-length take is not a reason to have no video.
+    #
+    # So it re-rolls instead. repair_prompt has already forced the runtime-naming pace
+    # paragraph, which is the lever that is actually worth 15 percent of pace, so the
+    # common case is fixed before any of this runs. If takes still land outside the band,
+    # spend one more round rather than none, then take the best available and CARRY THE
+    # MISS FORWARD LOUDLY in vo_report.json, where the panel and the dated email both read
+    # it. A visible miss on a delivered film beats a clean stop.
+    lo, hi, target = sc._target_band()
+    runtime_note = None
+    if lo is not None:
+        for extra in range(1):                       # one re-roll, then accept
+            secs = reports[best_i]["checks"]["duration"]["seconds"]
+            if lo <= secs <= hi:
+                break
+            n_words = len(spoken.split())
+            rate = n_words / secs * 60 if secs else 0
+            want = int(round(target * rate / 60))
+            print(f"  !! RUNTIME {secs:.1f}s outside the {lo:.0f}-{hi:.0f}s band "
+                  f"({rate:.1f} wpm over {n_words} words; {target:.0f}s wants about {want}). "
+                  f"Re-rolling {TAKES} more take(s) on the repaired prompt.")
+            for n in range(TAKES):
+                q = os.path.join(AUD, f"vo_take_r{extra}{n}.wav")
+                pcm, used = _synth_retry(prompt)
+                _save_24k(pcm, q)
+                takes.append((q, used))
+                print(f"re-roll take {n}: {len(pcm)/24000:.1f}s ({used})")
+            best_i, reports = sc.pick_best([p for p, _ in takes], spoken, tags)
+        secs = reports[best_i]["checks"]["duration"]["seconds"]
+        if not (lo <= secs <= hi):
+            n_words = len(spoken.split())
+            rate = n_words / secs * 60 if secs else 0
+            want = int(round(target * rate / 60))
+            delta = want - n_words
+            runtime_note = (
+                f"RUNTIME {secs:.1f}s is outside the {lo:.0f}-{hi:.0f}s band (target {target:.0f}s) "
+                f"after a re-roll. Delivered {rate:.1f} wpm over {n_words} words; at that rate "
+                f"{target:.0f}s wants about {want} words ({'add' if delta > 0 else 'cut'} roughly "
+                f"{abs(delta)}). The pace paragraph was already repaired to name the runtime, so "
+                f"the remaining gap is script length. SHIPPING THE BEST TAKE ANYWAY: a delivered "
+                f"film with a stated miss beats a stopped run.")
+            print(f"  !! {runtime_note}")
+        else:
+            print(f"  runtime {secs:.1f}s is inside the {lo:.0f}-{hi:.0f}s band")
+
     best_wav, best_model = takes[best_i]
     print(f"BEST take {best_i} ({best_model}): {reports[best_i]['diagnosis']}  score={reports[best_i]['score']}")
-    _assert_runtime_in_band(reports[best_i], len(spoken.split()))
 
     # write the winning VO at 44.1k for the pipeline
     from scipy.io import wavfile
@@ -437,6 +516,7 @@ def main():
     json.dump(cues, open(os.path.join(OUT, "captions.json"), "w"), indent=2)
     json.dump({"backend": "gemini-tts", "model": best_model, "voice": VOICE, "take": best_i,
                "takes": TAKES, "soundcheck": reports[best_i],
+               "prompt_repairs": _fixes, "runtime_warning": runtime_note,
                "all_reports": [{"pass": r["pass"], "score": r["score"], "diagnosis": r["diagnosis"]} for r in reports],
                "watermark": "SynthID (Google) embedded in all Gemini TTS audio",
                "license": "Google Gemini API preset voice (per-use billing)"},

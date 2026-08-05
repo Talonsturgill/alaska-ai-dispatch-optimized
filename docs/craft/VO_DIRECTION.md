@@ -100,12 +100,20 @@ Transcript:
 ```
 
 The preamble + the `Transcript:` delimiter are REQUIRED (they stop the model reading the notes aloud).
-`scripts/vo_synth_gemini.py` now REFUSES to synth a prompt that is missing either one, or missing
-the Style / Pace / AUDIO PROFILE blocks, or whose transcript does not match the plan's lines. See
-`_assert_prompt_intact`. That guard exists because on 2026-08-05 a hand-patch of this prompt cut it
-at the first occurrence of the substring `Transcript:` — which appears inside the preamble's own
-sentence — and silently deleted every block above. The film shipped narrated with no direction at
-all. **Never split this prompt on the bare substring; split on the newline-delimited form.**
+`scripts/vo_synth_gemini.py` REPAIRS a prompt that is missing either one, or missing the Style /
+Pace / AUDIO PROFILE blocks, or whose transcript does not match the plan's lines, or whose Pace
+line does not NAME the target runtime. See `repair_prompt`. It rebuilds from the plan, salvaging
+whatever of the notes is still good, and prints and records every repair in `vo_report.json`.
+
+It repairs rather than refuses ON PURPOSE, and an earlier version of it got this wrong. THE ONE
+OUTCOME LAW (`scripts/no_exit.py`) says the only terminal state is a delivered video, and a
+damaged prompt is not a reason to have no video: every part of the prompt is recoverable from the
+plan plus the template below, so recovering it is mechanical. Do not turn this back into a gate.
+
+The repair exists because on 2026-08-05 a hand-patch of this prompt cut it at the first occurrence
+of the substring `Transcript:` — which appears inside the preamble's own sentence — and silently
+deleted every block above. The film shipped narrated with no direction at all.
+**Never split this prompt on the bare substring; split on the newline-delimited form.**
 
 ### THE PACE LINE MUST NAME THE RUNTIME. It is the only reliable length control we have.
 
@@ -127,8 +135,13 @@ film and a 120-second one. Two further findings from the same probe:
   data", "profiled him" as "profile tim", and "summer" as "somewhere". At 143 wpm none of those
   errors occurred. Slowing down buys intelligibility, not just seconds.
 
-**If the format's target runtime changes, change this line and re-run the probe.** Do not
-extrapolate a word count from an old rate; the rate is a property of this paragraph.
+**The pace paragraph is GENERATED from `config/state.yaml`** by `vo_synth_gemini._pace_line()`, so
+changing the format target moves it automatically. `scripts/format_gate_selftest.py` asserts the
+generated text stays byte-identical to the string that was actually measured, so the two cannot
+drift apart and leave the pipeline shipping a pace instruction nobody ever timed.
+
+**If the format's target runtime changes, re-run the probe.** Do not extrapolate a word count from
+an old rate; the rate is a property of this paragraph.
 
 ## Step 8 — Emit the plan, then synth, then CHECK, then maybe re-plan
 
