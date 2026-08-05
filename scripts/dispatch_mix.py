@@ -202,7 +202,10 @@ def _assert_per_run_data_covers_the_film():
     line in the log. The numbers make the diagnosis immediate either way.
     """
     warn = []
-    arc_end = max(t for t, _ in BED_ARC) if BED_ARC else 0.0
+    # `for t, *_` not `for t, _`: BED_ARC is hand-rewritten every run, and a node written
+    # with a trailing comment value or a third element would raise inside the guard that
+    # exists to protect the mix, killing it at import. EVENTS is already tolerant.
+    arc_end = max(t for t, *_ in BED_ARC) if BED_ARC else 0.0
     # 0.95, not 0.9. The arc is supposed to RESOLVE at the end rather than stop near it, and
     # the looser threshold missed a live case: the 2026-08-05 film ran 88.8s against an arc
     # ending at 83.7s, which is 94 percent and would have passed while leaving the last five

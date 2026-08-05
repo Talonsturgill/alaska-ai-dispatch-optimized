@@ -199,15 +199,18 @@ runtime.
 
 | file | what is length-dependent | status |
 |---|---|---|
-| `config/state.yaml` | `dispatch_target_seconds: 90`, `dispatch_seconds_band: [84,96]`, `dispatch_vo_words_band: [190,215]` | TODO |
-| `config/visual_flow.yaml` | `beats.min/max 18/30`, `rehook_windows_s` (2), `open_loop_*`, `sfx.min_events_total 12` | TODO |
-| `config/shot_structure.yaml` | `min_shots 6`, `target_shots [7,10]` | TODO |
-| `scripts/storyboard_check.py` | reveals split by HALF when `piece_end >= 75` (~line 373); no throughline check | TODO |
-| `scripts/flow_check.py` | L145 reads `rehook_windows_s` as a list (already good); L148 exempts windows a piece doesn't span (already good); L166 open-loop binding at `piece_end >= 75`; single loop only | TODO |
-| `scripts/align_captions.py` | L37 `--total` default `90.0` | TODO |
-| `prompts/dispatch_routine.md` | §4.2 word band + the stale 137.5 wpm claim + 84-96 band + 18-30 beats + 2 rehooks + 1 open loop; §4.3; the Gate 0 block; the room briefs | TODO |
-| `docs/craft/ENGAGEMENT.md` | §2.6 is the 90-second format section; needs a §2.7 for 120s | TODO |
+| `config/state.yaml` | `dispatch_target_seconds: 90`, `dispatch_seconds_band: [84,96]`, `dispatch_vo_words_band: [190,215]` | DONE |
+| `config/visual_flow.yaml` | `beats.min/max 18/30`, `rehook_windows_s` (2), `open_loop_*`, `sfx.min_events_total 12` | DONE |
+| `config/shot_structure.yaml` | `min_shots 6`, `target_shots [7,10]` | DONE |
+| `scripts/storyboard_check.py` | reveals split by HALF when `piece_end >= 75` (~line 373); no throughline check | DONE |
+| `scripts/flow_check.py` | L145 reads `rehook_windows_s` as a list (already good); L148 exempts windows a piece doesn't span (already good); L166 open-loop binding at `piece_end >= 75`; single loop only | DONE |
+| `scripts/align_captions.py` | L37 `--total` default `90.0` | DONE |
+| `prompts/dispatch_routine.md` | §4.2 word band + the stale 137.5 wpm claim + 84-96 band + 18-30 beats + 2 rehooks + 1 open loop; §4.3; the Gate 0 block; the room briefs | DONE |
+| `docs/craft/ENGAGEMENT.md` | §2.6 is the 90-second format section; needs a §2.7 for 120s | DONE |
 | `config/dispatch_rubric.yaml` | **DELIBERATELY UNCHANGED** (see constraint 4) | N/A |
+
+**Post-review corrections (2026-08-05, `/code-review` on the merged branch).** Three real
+defects were found in the shipped work and fixed on top; see §8.
 
 **Already well-parameterised — do not "fix":** `vo_soundcheck.py` reads its duration
 window from `config/state.yaml > dispatch_seconds_band`. `flow_check.py` reads
@@ -283,4 +286,36 @@ them goes wrong, fix it in the machine rather than by hand in the run, and recor
    deliberate, so a score move is attributable to the format rather than to a moved bar.
    If the median drops, read WHY before touching the rubric: the interesting question is
    whether the back half earned itself, and the judges' prose will say so.
+
+---
+
+## 8. POST-REVIEW CORRECTIONS (the shipped upgrade had three real holes)
+
+A code review of the merged branch found nine issues; the three that mattered were
+verified by reproduction, not taken on description.
+
+1. **The two-minute rules could be silently skipped by a legal two-minute film.** Every
+   length gate measured "how long is this film" as the START timestamp of the last beat,
+   which is short by the last beat's duration plus the outro hold (4.2s on the shipped
+   08-05 board). A legal 112.8s film whose last beat starts at 108.6s read as 108.6s, fell
+   under the 110s threshold, and skipped the throughline gate, the reveal-per-third rule,
+   the 60s loop span, the 85s payoff floor and the mandatory second open loop. Reproduced:
+   only the rehook rule fired, because its windows are absolute. Fixed by
+   `piece_runtime()` / `_piece_runtime()`, which trust the board's `total_seconds` first.
+2. **Nothing in code failed a film for being the wrong LENGTH.** The soundcheck's window
+   is deliberately wide (~62-176s) and the tight band lived only in prose. The exact
+   failure that lets through is the default one at this length: the old BRISK pace line on
+   288 words gives 105s, three takes running, and the run would have shipped a
+   105-second film believing it was two minutes. `_assert_runtime_in_band` now hard-fails
+   with the arithmetic and points at the pace paragraph first.
+3. **`min_shots` was raised as a flat number** while the beat floor was deliberately made
+   length-derived for exactly this reason, and it retroactively failed the legal 7-shot
+   2026-07-30 board. Now derived from runtime and the oner ceiling.
+
+Smaller: the probe's `monotonic` / `lines_timed` / `degenerate_cues` / `aligned_words`
+checks are structural invariants of `_align_wholefile` and can never fail, so they are now
+labelled as such and excluded from the verdict (the real evidence is duration, WER and
+speech_end); the probe defaulted to the superseded `brisk` pace mode; `BED_ARC` used strict
+tuple unpacking on hand-edited per-run data; the self-test's filler beats could inherit a
+`rehook` and silence their own assertion; `beats.max` was config no code read.
 

@@ -60,6 +60,10 @@ def _pad(sb, end, target=120.0):
         b["t"] = t
         b["i"] = len(out["beats"]) + 1
         b["means"] = "more of the same"
+        # A filler beat must not inherit the source beat's `rehook`. Padding is supposed to
+        # be caught BY the rehook rule, and a copied rehook could land inside the 88-104s
+        # window and silence the very assertion this board exists to trigger.
+        b.pop("rehook", None)
         out["beats"].append(b)
     out["total_seconds"] = target
     return out
@@ -68,9 +72,12 @@ def _pad(sb, end, target=120.0):
 def _conform(sb):
     """Add exactly what the two-minute format asks for, and nothing else."""
     out = copy.deepcopy(sb)
-    # the primary loop must reach into minute two
-    out["open_loop"]["pay_t"] = 96.0
-    out["open_loop"]["plant_t"] = 10.0
+    # the primary loop must reach into minute two (don't assume the key exists)
+    ol = out.setdefault("open_loop", {})
+    ol.setdefault("what", "a promise planted early and withheld into minute two")
+    ol["pay_t"] = 96.0
+    ol["plant_t"] = 10.0
+    out.setdefault("reveals", [])
     # a second, staggered loop for the middle
     out["open_loop_2"] = {
         "plant_t": 44.0, "pay_t": 78.0,
