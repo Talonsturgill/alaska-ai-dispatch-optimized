@@ -1927,3 +1927,74 @@ time; found by primary-source mining on the NSF award API, not by search.
   the weekly Facebook post and the rubric governs the LinkedIn caption, so this run
   scored against the rubric, but the two documents should be reconciled by the
   maintainer rather than re-adjudicated every run.
+
+## 2026-08-05 — "The Net Comes First" (UA Museum of the North insect inventory)
+
+SHIPPED: a 86.2s Dispatch on the gap between Alaska's estimated 30,000 insect species and the
+~9,000 it has named, hinging on the fact that the curator who pins the specimens co-authored a
+2008 Systematic Biology neural network that identified ground beetles from DNA at 97.5 percent.
+The film's thesis is that the model was never the binding constraint: a classifier needs a
+sequence, a sequence needs a specimen, and a specimen needs somebody in a field with a net.
+
+### Engine and gate fixes committed this run
+
+1. **`scripts/dispatch_mix.py` `pw_expr` rewritten from nested ifs to a flat sum of gated
+   segments.** This was a real outage, not a tidy-up. The function wrapped one
+   `if(lt(t,..),..,..)` per breakpoint, so nesting depth equalled breakpoint count. The bed
+   lifts into every inter-line VO gap of 0.5s or longer at four breakpoints each; this run's
+   narration has 25 such gaps, which emitted 106 nested ifs, and ffmpeg's expression evaluator
+   gives up above roughly a hundred levels. It does NOT fail with "too deep", it fails with a
+   bare `Invalid argument` on the entire filtergraph, which points at nothing and cost real time
+   to localise. The threshold is a property of THE NARRATION, so any future run with a slightly
+   breathier read would have hit it. Now emitted as `gte(t,a)*lt(t,b)*segment` terms summed,
+   which has constant nesting depth. `gte*lt` rather than `between()` on purpose: between() is
+   inclusive at both ends so adjacent segments would double-count on their shared boundary.
+   VERIFIED: `pw_expr` on a 4-point input now contains zero `if(`, and the full mix runs to
+   completion at -14.01 LUFS / TP -1.76 / LRA 6.00.
+
+2. **`video-engine/src/lib/absence.tsx` (NEW) — the craft advance.** Generalises the
+   dashed-unfilled absence grammar that was solved inline for one animal on 07-30
+   (`RingedSealGhost`) and left open as a known weakness from 07-26 (`ThreePipeCutaway`'s capped
+   pipe, which two panel judges found did not read as an absence). Adds a fourth clause the
+   earlier solution lacked: a slow interior DRIFT, which is what stops an absence reading as
+   UNFINISHED rather than unfilled. `label` is a required prop by design.
+
+3. **`video-engine/src/lib/bugs.tsx` (NEW) — `GroundBeetle` + `BEETLE_SIL`.** Fills a genuine
+   bestiary gap (21 species, every one a vertebrate except KingCrab, and the only other
+   arthropod a gag Mosquito). `BEETLE_SIL` is the hard-won part and it was found by LOOKING at
+   the rough cut: the absence grammar strokes an unfilled path, and the elytra outline alone
+   unfilled is an egg. The hook and the signature shot are both built on the dashed form, so
+   the film's two most important frames were showing a stranger an oval.
+
+4. **`video-engine/src/lib/nameengine.tsx` (NEW) — redesigned at Gate 0D.** The critic ruled the
+   first design a duplicate of `AshReader` and was right. Fixed by moving the SHAPE LANGUAGE to
+   the opposite side of the film's own grammar (rectilinear cabinet rather than organic bench),
+   keeping the intake iris as its unique tell.
+
+5. **`scripts/build_scenes.py` `SCENE_START_LINE`** updated to this run's nine-shot map.
+
+### What the gates cost, honestly
+
+- Gate 0E (naive cold read) took THREE rounds. Round 1 caught "paper" used for a newspaper and
+  an academic paper in adjacent lines, and record-vs-specimen units indistinguishable by ear.
+  Round 2 caught an undefined abstraction ("the shortcut") carried seven lines with its payoff
+  never stated outright, and a Sweden comparison that two cold readers in a row could not place
+  in the argument. The Sweden fact was CUT as a whole fact, which is the correct trim.
+- Gate 0A took four rounds, all mechanical: camera vocabulary, hero blocks as counts rather than
+  lists, per-beat choreo and shows, and beat cadence. A 21.6s shot was over the 16s oner ceiling
+  and S2 was split into two.
+- Gate 0B caught a FACTUAL staging error that no script could have found: the author-plate reveal
+  lit the FOURTH name when Sikes is the SECOND of four. That is the film's single most
+  load-bearing beat and it was pointing at the wrong person.
+- Gate 0D caught the dashed grammar being spent on two things that are not unnamed species (a
+  newsprint gap and a hypothetical newer model), which would have made it mean "anything
+  incomplete" on its first outing.
+
+### Deferred, with a plan
+
+- `crop_safety.py` still reports 5 low-structure crossings at the square's crop lines (worst
+  0.15 structured), all of them tray-wall background texture rather than a plate or a head. Not
+  fixed this run because the fix is a per-shot composition pass and the crossings are exactly the
+  "decorative element crossing the line is fine" case the tool's own docstring names. PLAN: give
+  `TrayWall` a `bandTop`/`bandBottom` prop so a scene can align its rows to the crop lines
+  instead of tiling through them.
