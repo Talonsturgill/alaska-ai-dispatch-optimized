@@ -533,9 +533,11 @@ const S4: React.FC<SceneProps> = ({from, L}) => {
             ================================================================== */}
         {/* a hard shadow raking across the sheet, wide and dark enough to see */}
         <rect x={-390 + ((g * 11) % 1000) - 200} y={-290} width={250} height={540}
-              fill={SHADOW} opacity={0.26} />
-        <rect x={-390 + ((g * 11) % 1000) - 200} y={-290} width={30} height={540}
-              fill={SHADOW} opacity={0.42} />
+              fill={SHADOW} opacity={0.34} />
+        <rect x={-390 + ((g * 11) % 1000) - 200} y={-290} width={34} height={540}
+              fill={SHADOW} opacity={0.55} />
+        <rect x={-390 + ((g * 11) % 1000) + 50} y={-290} width={18} height={540}
+              fill="#FFFBEF" opacity={0.5} />
         {/* the top-right corner curling and falling in the draught, at real amplitude */}
         <path d={`M 390 ${-290 + 210 + Math.sin(g / 8) * 96}
                   L 390 -290
@@ -805,20 +807,21 @@ const S8: React.FC<SceneProps> = ({from, L}) => {
   // 17 of those were in the first two seconds. That is DISPATCH_STANDARD section 0's
   // dead middle, on the shot the film is named after. The arm now works a continuous
   // sweep cycle, so the hero action never finishes while the shot is on screen.
-  const sweep = interpolate(t, [L(15) + 0.2, L(15) + 1.5], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: E_OUT});
-  const cyc = Math.max(0, t - (L(15) + 1.5));
+  const sweep = interpolate(t, [L(15) + 0.15, L(15) + 1.05], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: E_OUT});
+  const cyc = Math.max(0, t - (L(15) + 1.05));
   // an eased back-and-forth on an irrational period so it never reads as a loop
-  const swing = Math.sin(cyc / 1.27) * 0.5 + 0.5;
-  const swing2 = Math.sin(cyc / 2.11 + 1.1) * 0.5 + 0.5;
+  const swing = Math.sin(cyc / 0.95) * 0.5 + 0.5;
+  const swing2 = Math.sin(cyc / 1.43 + 1.1) * 0.5 + 0.5;
   const ghost = interpolate(t, [L(16), L(16) + 1.4], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: E_OUT});
   // once the first swing lands, the arm keeps working rather than freezing
-  const ang = cyc <= 0 ? interpolate(sweep, [0, 1], [-58, 46])
-                       : interpolate(swing, [0, 1], [12, 52]);
-  const lag = cyc <= 0 ? interpolate(sweep, [0, 1], [-22, 14])
-                       : interpolate(swing2, [0, 1], [-16, 16]);
+  // a 145 degree arc in under a second, then a wide working cycle
+  const ang = cyc <= 0 ? interpolate(sweep, [0, 1], [-85, 60])
+                       : interpolate(swing, [0, 1], [-30, 62]);
+  const lag = cyc <= 0 ? interpolate(sweep, [0, 1], [-52, 34])
+                       : interpolate(swing2, [0, 1], [-38, 38]);
   // angular velocity drives the blur, so the blur is always honest about the speed
-  const angV = cyc <= 0 ? (sweep > 0 && sweep < 1 ? 34 : 0)
-                        : Math.abs(Math.cos(cyc / 1.27)) * 11;
+  const angV = cyc <= 0 ? (sweep > 0 && sweep < 1 ? 52 : 0)
+                        : Math.abs(Math.cos(cyc / 0.95)) * 30;
 
   return (
     <World f={f} dur={246} bg="#DCE3D2">
@@ -830,8 +833,8 @@ const S8: React.FC<SceneProps> = ({from, L}) => {
         const h = (i * 2654435761) >>> 0;
         const x = (h % 1080), y = 760 + ((h >>> 9) % 900);
         // the grass is pushed by the net as it passes, then springs back
-        const near = Math.max(0, 1 - Math.abs(x - (560 + ang * 6)) / 300);
-        const sway = Math.sin(g / 26 + i) * 7 + near * Math.sin(g / 9 + i) * 13;
+        const near = Math.max(0, 1 - Math.abs(x - (560 + ang * 7)) / 420);
+        const sway = Math.sin(g / 26 + i) * 7 + near * (26 + Math.sin(g / 5 + i) * 20);
         return (
           <path key={i} d={`M ${x} ${y} q ${sway} -46 ${sway * 1.6} -84`}
                 stroke="#5F6E3C" strokeWidth={5} fill="none" strokeLinecap="round" opacity={0.75} />

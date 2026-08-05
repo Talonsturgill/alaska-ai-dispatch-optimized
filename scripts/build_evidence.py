@@ -50,7 +50,12 @@ MOVES = [
     # human in it, so idle life on the five held figures could not be confirmed or refuted
     # from the pack, and said so rather than assuming a freeze. That is an evidence gap, not
     # a film defect, and it is the pack's job to close it.
-    ("sweep", 15, 0.85),     # the net sweeps tussock, sampled MID-SWING, not at the clamp
+    # RE-ANCHORED AGAIN 2026-08-05. The swing was sped up (0.15s to 1.05s into the line)
+    # to make the title beat the most kinetic shot in the film, and that moved the fastest
+    # part of the arc EARLIER. Sampling at +0.85 then caught the eased settle, and the
+    # measured delta went DOWN from 4.8 to 3.9 percent even though the swing got bigger.
+    # An offset is a CONTACT time and it has to move whenever the motion it samples moves.
+    ("sweep", 15, 0.45),     # the net at maximum angular velocity, not at its settle
     # ADDED after the re-grade: judge 3 could not verify two claimed fixes because NO STRIP
     # COVERED THOSE BEATS, and correctly refused to take them on description. A pack that
     # cannot show a fix has not delivered the fix.
