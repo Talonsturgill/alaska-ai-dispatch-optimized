@@ -38,6 +38,15 @@ CHECKS = [
     # clean, the render succeeds, and two annotations are stacked in the same pixels.
     ("nothing informational sits in the caption band",
      [sys.executable, "scripts/caption_band_check.py"], True),
+    # Two elements in the same pixels cost score in three separate panel rounds on
+    # 2026-08-06 and were invisible to every other check, because each element is
+    # individually fine and the defect lives only in the relationship.
+    ("no two text plates share pixels",
+     [sys.executable, "scripts/plate_overlap_check.py"], True),
+    # The fact-checker's instructions are obligations, not suggestions. Seven were
+    # silently declined in one run and judges found all seven.
+    ("every claim obligation the fact-checker wrote is honoured",
+     [sys.executable, "scripts/claims_contract_check.py"], True),
     ("the square crop cuts nothing built",
      [sys.executable, "scripts/crop_safety.py"], False),
     ("dead space within ceilings",

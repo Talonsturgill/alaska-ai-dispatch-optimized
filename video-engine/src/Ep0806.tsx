@@ -1237,7 +1237,7 @@ const S8: React.FC<SceneProps> = ({from}) => {
             attribution, so a credit line can never be adjacent to someone else's words. */}
         <g opacity={spool * (1 - bury)}>
           <Plate x={540} y={496} text="FREE UNDER 5 STAFF HOURS A MONTH" size={24} />  {/* plate-overlap-ok: sequenced, each card retires before the next */}
-          <Plate x={540} y={550} text="CHIEF RON DUPEE, VIA KUAC" size={17} fill="#A9BCCC" />
+          <Plate x={540} y={550} text="CHIEF RON DUPEE, VIA KUAC" size={17} fill="#A9BCCC" />  {/* plate-overlap-ok: the Sanders quote retires on `spool` before this lands */}
         </g>
         {/* c19, THE FAIRBANKS COUNTER-POINT IN THE CITY'S OWN MOUTH, and it had not shipped
             at all. Two judges named its absence: the film concedes twice that the problem is
@@ -1247,7 +1247,7 @@ const S8: React.FC<SceneProps> = ({from}) => {
             which is exactly why the city deserves to say it in its own words. */}
         <g opacity={bury}>
           <Plate x={540} y={512} size={24} lines={['"WE JUST DON\'T HAVE', 'THE PERSONNEL"']} />  {/* plate-overlap-ok: sequenced, each card retires before the next */}
-          <Plate x={540} y={596} text="CHIEF RON DUPEE, VIA KUAC" size={17} fill="#A9BCCC" />
+          <Plate x={540} y={596} text="CHIEF RON DUPEE, VIA KUAC" size={17} fill="#A9BCCC" />  {/* plate-overlap-ok: the Sanders quote retires on `spool` before this lands */}
         </g>
         {/* the burial IS the frames, so the throughline never leaves the film */}
         <g opacity={bury}>
