@@ -70,12 +70,12 @@ MOVES = [
     ("carry", 8, 0.30),       # S4  the room smears and THE FRAME does not move one pixel
     ("boxes", 9, 0.40),       # S5  the two grey boxes land flat with NO overshoot
     ("stuck", 10, 0.50),      # S5  the sixth frame arrives, stops, and its rail crawls
-    ("collapse", 11, 4.30),   # S6  FIND collapses to a sliver and DECIDE does not move
+    ("collapse", 11, 3.40),   # S6  FIND collapses to a sliver and DECIDE does not move
     ("desk", 14, 0.60),       # S7  the technician arrives at the one desk the stack lands on
     ("spool", 16, 0.50),      # S8  the five-hour spool runs off its own end
     ("stamp", 19, 0.40),      # S9  the stamp descends onto the request and never touches it
     ("fusion", 20, 3.40),     # S10 the two frames fuse and carry brackets AND boxes at once
-    ("pullback", 22, 2.00),   # S11 the signature pull-back, spent exactly once
+    ("pullback", 22, 2.50),   # S11 the signature pull-back, spent exactly once
 ]
 
 
