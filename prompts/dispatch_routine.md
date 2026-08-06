@@ -1187,6 +1187,40 @@ A shot passes when the picture at each line's offset is about that line. This is
 say-it-show-it standard Gate 0C applies to the board, applied to the code, and it is the one
 place where the board passing tells you nothing — the board was right and the wiring moved.
 
+### KNOWN DEAD GATE: ship_gate's beat-delivery check has never run (found 2026-08-06)
+
+`ship_gate.check_beats_delivered()` opens with:
+
+    if not _g.glob(str(OUT / "frames" / "frame_*.png")):
+        return
+
+`out/dispatch/frames` does not exist on a normal run and never has — the pipeline renders
+straight to mp4. So the check returns silently every time, and the guard that is supposed
+to catch "a build that quietly stops drawing what the board promised" has never once looked
+at a frame. It is dead code wearing the costume of a gate.
+
+This is the SAME defect dead_space_check's own docstring describes and fixed for itself in
+August: "A check with a precondition no run satisfies is not a check." It was fixed there
+by sampling the SHIPPED VIDEO with ffmpeg instead of reading a directory nobody produces.
+beat_delivery needs the same treatment and has not had it.
+
+NOT fixed in the 2026-08-06 run, deliberately, and the reason matters. `check_beats_delivered`
+ends in `fail(problems)`, so making it live arms a HARD gate that has never been observed
+passing, on the critical path, mid-delivery. Turning on a dormant blocker right before
+shipping is how a run dies at 3am for a reason nobody has ever seen. The honest increment,
+for whoever picks this up:
+
+  1. sample the delivered square cut into a temp dir (360x640 is enough; beat_delivery
+     downsamples by 3 anyway), the way dead_space_check already does it;
+  2. pass the EPISODE's CAPTION_TOP, not beat_delivery's hardcoded 1420 — this film uses
+     1310, and the 110-row difference means burned captions currently count as beat motion,
+     which makes the check too LENIENT, not too strict;
+  3. run it ADVISORY for at least one full run and read what it says;
+  4. promote it to a hard fail only once it has been seen passing a good film.
+
+Do not skip step 3. The whole reason this gate is worthless today is that nobody ever
+watched it work.
+
 ## PHASE 6: GATES + PANEL (the human is never the QA)
 
 - Objective checks on the full render: caption alignment error vs the aligned words JSON
