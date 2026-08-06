@@ -534,7 +534,6 @@ const S3: React.FC<SceneProps> = ({from}) => {
           <text x={540} y={748} textAnchor="middle" fill={HERO}
                 style={{font: `700 30px ${MONO}`, letterSpacing: 1.5}}>RECOGNITION</text>
         </g>
-        <Plate x={540} y={520} text="THE RULE NAMES ONE CATEGORY" size={26} op={seat} />
         {/* THE SOCKET the code cuts, drawn as a stated absence */}
         <g opacity={open}>
           <Unnamed
@@ -566,9 +565,14 @@ const S3: React.FC<SceneProps> = ({from}) => {
           </g>
         </g>
         {/* c7, verbatim and attributed by the narration one beat earlier */}
+        {/* c7, verbatim, WITH the attribution its note explicitly requires ("HIS
+            CHARACTERIZATION, not a finding... Attribute on screen"). The build shipped
+            the quote bare, so a viewer read a contested characterisation as a finding
+            about the code. c22 carries the district. */}
         <g opacity={ask}>
-          <Plate x={640} y={1168} text={`"THE CODE CAN'T ANSWER`} size={26} />
-          <Plate x={640} y={1240} text={`ANY OF THOSE QUESTIONS"`} size={26} />
+          <Plate x={640} y={1118} text={`"THE CODE CAN'T ANSWER`} size={26} />
+          <Plate x={640} y={1186} text={`ANY OF THOSE QUESTIONS"`} size={26} />
+          <Plate x={640} y={1248} text="KEITH McCORMICK, ASSEMBLY D6" size={19} fill="#8FA2B4" />
         </g>
         {/* the probe: it enters the empty socket, sweeps its whole width, exits with
             nothing. 4.1 seconds of continuous travel across what used to be dead tail. */}
@@ -780,7 +784,7 @@ const S5: React.FC<SceneProps> = ({from}) => {
         <g opacity={vend}>
           <rect x={330} y={1212} width={420} height={54} rx={4} fill="#0B141F" opacity={0.94} />
           <rect x={342} y={1222} width={252} height={34} fill={REDACTION} />
-          <text x={610} y={1248} fill="#7E93A6" style={{font: `700 22px ${MONO}`}}>NOT NAMED</text>
+          <text x={610} y={1248} fill="#7E93A6" style={{font: `700 20px ${MONO}`}}>NO VENDOR NAMED</text>
         </g>
         {/* the technician, and she is never still: this figure measured pixel-identical
             across the judged 8-frame strip window, which is what "no idle life" meant. */}
@@ -1053,7 +1057,6 @@ const S8: React.FC<SceneProps> = ({from}) => {
               </g>
             );
           })}
-          <Plate x={540} y={530} text="WRITTEN BEFORE BODY CAMERAS" size={23} op={bury} />
         </g>
       </World>
     </ScreenLit>
