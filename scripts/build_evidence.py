@@ -71,7 +71,9 @@ MOVES = [
     # 46.9s and the nearest strip sat at 47.2s, just after they clear, so a judge reported
     # them as absent from every strip and every contact tile — a true statement about the
     # evidence and a false one about the film. The fairness beat gets its own strip.
-    ("counter", 7, 1.20),     # S4  the three Anchorage concession cards, drawn and attributed
+    # 3.6, not 1.2. c10 lands at +0.5s, c9 at +1.7s and c11 at +3.0s, and the strip at +1.2s
+    # caught only the first — so judges reported Anchorage's ledger as one card. It is three.
+    ("counter", 7, 3.60),     # S4  the three Anchorage concession cards, drawn and attributed
     ("carry", 8, 0.30),       # S4  the room smears and THE FRAME does not move one pixel
     ("boxes", 9, 0.40),       # S5  the two grey boxes land flat with NO overshoot
     ("stuck", 10, 0.50),      # S5  the sixth frame arrives, stops, and its rail crawls
@@ -92,7 +94,14 @@ def main():
 
     lines = json.load(open(os.path.join(OUT, "vo_lines.json")))["lines"]
     start = {L["idx"]: L["start"] for L in lines}
-    end = max(L["end"] for L in lines)
+    # THE FILM, NOT THE NARRATION. `end` was the last VO line's end (122.84s), so the
+    # contact sheet stopped there and never photographed the final 2.6 seconds — which is
+    # exactly where the sign-off plate and the music credit live. Five judges across three
+    # rounds wrote "no composer credit is verifiable / the sign-off falls outside the
+    # sampled stills" and every one of them was right about the pack. Sample the whole film.
+    import json as _j
+    _props = _j.load(open(os.path.join(OUT, "episode_props.json")))
+    end = max(max(L["end"] for L in lines), _props["total"] / 30.0)
 
     os.makedirs(EV, exist_ok=True)
     for f in glob.glob(os.path.join(EV, "*.jpg")):
