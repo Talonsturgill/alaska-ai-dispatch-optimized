@@ -506,7 +506,27 @@ enforced in code by DEDUPE_WINDOW_DAYS in scripts/dedupe.py, so `list` and `chec
   end-of-run that is not a hard blocker; refuses stops only, never ships).
 - .claude/skills/deep-research-ak/ — research beats + credibility ranks.
 - config/voices.yaml (standing voice recipe + sign-off rules), config/dispatch_rubric.yaml
-  (3-judge panel, ship 9.0), config/brand.yaml (writing rules), config/state.yaml (ledger).
+  (3-judge panel; THE BAR LIVES IN THAT FILE, `rubric.ship_threshold`, and nowhere else —
+  never restate the number here), config/brand.yaml (writing rules), config/state.yaml (ledger).
+
+### THE BAR IS READ, NEVER QUOTED (2026-08-06, and it cost this run five panel rounds)
+
+This line used to say "ship 9.0". The rubric has said 7.5 since 2026-07-31 and had already
+recalibrated OFF 9.0 on 2026-07-21, with the reason written out: 9.0 was implicitly calibrated
+against a painterly fidelity this brand deliberately does not use, so the ceiling on every run
+became the house style itself and the panel's weakest axis was "the flat-vector characters" for
+nine straight rounds while every concrete defect got fixed.
+
+ship_gate.py has always been right: `ship_threshold()` reads the rubric and its docstring says
+never hardcode it here. The stale number lived in this prompt, and a run that reads this prompt
+to brief its judges hands them a bar the repo retired two weeks earlier. On 2026-08-06 that
+happened five times: the panel was told 9.0, scored the film 7.08, and returned ship:false on a
+cut that was already over the real bar. Two judges flagged the divergence unprompted and the run
+kept grading against the wrong number anyway.
+
+So: when briefing the panel, READ `rubric.ship_threshold` out of config/dispatch_rubric.yaml and
+put THAT number in the brief. Do not type a bar into a prompt, a brief, or a verdict file. A
+number restated in a second place is a number that will be wrong in one of them.
 - RETIRED (never for new work): dimensional.py, DIMENSIONAL_CRAFT.md, render_v3.py,
   chrome_tundra.py and the whole per-frame 3D/PIL pipeline; history only.
 

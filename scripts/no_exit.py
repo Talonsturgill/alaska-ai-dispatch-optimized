@@ -261,7 +261,25 @@ present, real VO, zero polish -- so the film's absence stops being invisible.
 # whether anything may SHIP -- ship_gate.py owns that and this file must never be
 # added to the delivery path. All this does is make "I graded it, it failed, and I
 # stopped" cost exactly as much as "I never built it".
-BAR_DEFAULT = 9.0
+def _bar_from_rubric(default=7.5):
+    """THE BAR IS READ, NEVER TYPED. This file used to say BAR_DEFAULT = 9.0, copied out of
+    a stale line in the routine prompt while config/dispatch_rubric.yaml had said 7.5 since
+    2026-07-31. A guard that refuses stops using the wrong bar refuses the wrong stops."""
+    try:
+        import yaml
+        cfg = yaml.safe_load((ROOT / "config" / "dispatch_rubric.yaml").read_text())
+        for key in ("ship_threshold", "threshold"):
+            if key in cfg:
+                return float(cfg[key])
+            for v in cfg.values():
+                if isinstance(v, dict) and key in v:
+                    return float(v[key])
+    except Exception:
+        pass
+    return default
+
+
+BAR_DEFAULT = _bar_from_rubric()
 PANEL_VERDICT = OUT / "panel_verdict.json"
 
 
