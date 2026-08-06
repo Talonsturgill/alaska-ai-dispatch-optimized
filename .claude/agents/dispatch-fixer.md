@@ -38,6 +38,41 @@ reading/diagnosis/editing HERE, in your own context, not the master's.
    no other check regressed.
 4. If a full re-render is needed (a global change like caption logic), say so explicitly.
 
+## Four ways a fix round makes the film WORSE, all four observed on 2026-08-06
+
+The panel median went 5.12, 6.24, 7.08, then DOWN to 6.70, then DOWN again to 6.48, before
+6.81. Both drops were caused by fix rounds. Read these before you patch anything.
+
+1. **Do not add a card to a band that already holds one.** Adding the Fairbanks counter-point
+   stacked it onto a quote from a different named official, clipping the quote and leaving a
+   `CHIEF RON DUPEE` credit sitting inside Chief of Staff Mike Sanders's quotation. Two judges
+   hard-failed it. The attribution fix for THAT then rendered underneath another card, so a
+   judge reported the quote as the film's only unattributed one. It was attributed, and
+   invisible. Run `scripts/plate_overlap_check.py` after any change that adds a Plate.
+
+2. **Do not optimise a metric without looking at the frame.** Varying the room brightness
+   dropped dead space from 50.3% to 40.4% and dissolved the scene's signature object into the
+   background. It was reported up the chain as progress. All three judges caught it. A number
+   moving the right way is not evidence the picture improved; open the frame.
+
+3. **Measure the quantity the note is about.** Told the figures looked static, the run measured
+   frame-to-frame change, got 6.3% to 15.4%, and argued with three judges for two rounds. That
+   number is almost entirely CAMERA: every shot rides `scale(1 + 0.062*push)`, which repaints
+   the frame while every figure in it is a statue. Use `scripts/motion_check.py`, which solves
+   the camera out and reports `registered` and `block_max` next to `gross`. If your evidence
+   agrees with you and three independent judges do not, suspect the evidence first.
+
+4. **Never write an exemption comment you have not verified.** Two `plate-overlap-ok` markers
+   were written claiming "the Sanders quote retires on `spool` before this lands". Sanders is
+   `quote*(1-spool)`, the credit is `spool*(1-bury)`, and `spool` ramps 186..214, so for 28
+   frames both are drawn in the same 302x16px band and the text ghosts. The marker silenced a
+   checker that was correct. If you suppress a gate, quote the actual expressions and the
+   actual frame numbers in the comment, or do not suppress it.
+
+Related: a note in `claims.json` is an INSTRUCTION, not a suggestion. Seven were silently
+declined in one cut and the panel found all seven. `scripts/claims_contract_check.py` now
+enforces them; run it rather than deciding a note does not apply.
+
 ## Return (keep it SHORT, this is all the master sees)
 A few lines, no frame dumps, no pasted code:
 - `check`: which gate check you fixed
