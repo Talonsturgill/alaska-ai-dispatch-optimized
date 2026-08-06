@@ -115,13 +115,39 @@ export const FrameOfEvidence: React.FC<{
                 fill={`url(#${id}-bez)`} opacity={0.18} />
         )}
 
-        {/* THE FACE FIELD — organic-irregular, nothing parallel to anything */}
+        {/* THE FACE FIELD — organic-irregular, nothing parallel to anything.
+            REBUILT after all three judges found the film's hero reading PLAINER than
+            the bezel enclosing it, which is this channel's most repeated craft note.
+            It is now form-shaded with a real terminator, a core shade, a screen-lit
+            highlight from below (the key is a monitor, so the light comes up), hair
+            mass, brow, nose and jaw. It is a person, not an emoji on a plate. */}
         <g transform={`translate(${-W / 2 + face.x},${-H / 2 + face.y})`} opacity={dead ? 0.5 : 1}>
+          <defs>
+            <linearGradient id={`${id}-skin`} x1="0" y1="1" x2="0.25" y2="0">
+              <stop offset="0%" stopColor="#8A9CAC" />
+              <stop offset="42%" stopColor="#6E8090" />
+              <stop offset="100%" stopColor="#4A5A6A" />
+            </linearGradient>
+          </defs>
+          {/* neck and shoulder mass, so the head is attached to a body */}
+          <path d="M40,132 C40,152 30,158 18,166 L112,166 C100,158 88,152 88,132 Z" fill="#3E4E5D" />
           <path d="M8,84 C4,44 26,10 62,8 C98,6 122,36 120,78 C118,116 96,142 64,144 C32,146 12,122 8,84 Z"
-                fill="#5D6E7E" opacity={0.92} />
-          <path d="M22,60 C34,50 50,50 60,58" stroke="#39485A" strokeWidth={5} fill="none" strokeLinecap="round" />
-          <path d="M74,58 C86,50 102,52 110,62" stroke="#39485A" strokeWidth={5} fill="none" strokeLinecap="round" />
-          <path d="M44,104 C58,116 78,114 90,102" stroke="#39485A" strokeWidth={5} fill="none" strokeLinecap="round" />
+                fill={`url(#${id}-skin)`} />
+          {/* core shade crescent on the far side, not a bbox gradient */}
+          <path d="M96,20 C120,44 122,104 88,136 C112,116 114,52 96,20 Z" fill="#3B4A59" opacity={0.75} />
+          {/* hair mass, an irregular contour that matches nothing else in frame */}
+          <path d="M10,66 C6,26 34,6 64,7 C96,8 122,30 120,68 C112,44 96,30 62,32 C34,34 18,44 10,66 Z"
+                fill="#2B3846" />
+          <path d="M22,58 C34,48 50,49 60,57" stroke="#2E3B49" strokeWidth={5} fill="none" strokeLinecap="round" />
+          <path d="M74,57 C86,48 102,50 110,61" stroke="#2E3B49" strokeWidth={5} fill="none" strokeLinecap="round" />
+          <ellipse cx={41} cy={74} rx={7} ry={8} fill="#26313C" />
+          <ellipse cx={92} cy={74} rx={7} ry={8} fill="#26313C" />
+          <ellipse cx={43} cy={71} rx={2.4} ry={2.4} fill="#C3D2DC" opacity={0.85} />
+          <ellipse cx={94} cy={71} rx={2.4} ry={2.4} fill="#C3D2DC" opacity={0.85} />
+          <path d="M64,80 C60,94 56,100 62,104" stroke="#3B4A59" strokeWidth={4} fill="none" strokeLinecap="round" />
+          <path d="M44,116 C58,126 76,125 88,114" stroke="#2E3B49" strokeWidth={5} fill="none" strokeLinecap="round" />
+          {/* the screen key, from BELOW, which is what makes it read as screen-lit */}
+          <path d="M18,104 C34,132 96,134 112,102 C100,140 32,142 18,104 Z" fill="#9FD8E8" opacity={0.16} />
         </g>
 
         {/* THE PLATE FIELD — rectilinear, the grid's own kind of object */}
@@ -182,6 +208,7 @@ export const FrameStack: React.FC<{
       const settle = Math.min(1, Math.max(0, (f - i * 2) / 10));
       return (
         <g key={i} transform={`translate(${jx},${-i * 26 * settle})`} opacity={settle}>
+          <ContactShadow cx={0} cy={168} rx={250} ry={16} opacity={0.34} blur={9} />
           <FrameOfEvidence
             id={`stk${i}`} x={0} y={0} f={f} s={1} dead
             faceState="hidden" plateState="hidden" progress={0} phase={i * 0.7}

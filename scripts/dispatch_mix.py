@@ -80,51 +80,48 @@ _TAIL = 2.6   # matches scripts/build_scenes.py TAIL (hold after the last word)
 VIDEO_SECS = max(x["end"] for x in _lines) + _TAIL   # derive from VO; never hardcode
 
 EVENTS = [
-    # ---- 2026-08-06 "The Same Face, The Same Plate". 11 shots, 25 VO lines, 40 beats.
-    # Times are DERIVED from the shipped take's vo_lines.json, never typed, so a re-synth
-    # moves the sound with the picture. Families deliberately alternate: Gate 0C found the
-    # first sheet had three consecutive ticks at 0.0/0.4/2.6 and three consecutive heavy
-    # lands at 14.9/18.2/21.0, which check_schedule hard-asserts against. The SINGLE riser
-    # is spent on the convergence into the fusion, and nothing else in the film rises.
-    (0.00, "tick", "standard", -0.35),   # the two objects exist before anything is claimed abo
-    (0.42, "clank", "standard", 0.02),   # the machine attends, instantly
-    (2.74, "thud", "hero", 0.0),   # the ban is drawn before it is spoken
-    (5.48, "paper", "texture", 0.06),   # the two cities enter as two lit rectangles
-    (8.95, "snap", "hero", 0.0),   # THE PRIMARY LOOP IS PLANTED
-    (13.06, "pop", "standard", 0.1),   # the pull-back begins
-    (15.69, "creak", "texture", -0.23),   # REVEAL ONE, the HEADROOM the capture side is built f
-    (19.16, "stamp", "hero", 0.0),   # the price lands on the room
-    (22.11, "chime", "standard", -0.19),   # the rule Anchorage actually wrote, drawn as the one 
-    (25.48, "clank", "standard", 0.18),   # THROUGHLINE STATE TWO, scoped honestly. Claim c6 lim
-    (28.22, "tick", "standard", -0.15),   # the code opens, and it is NOT empty. A surveillance-
-    (30.54, "thud", "standard", 0.22),   # REHOOK ONE. Not a hole in the law, a MISMATCH: the c
-    (33.70, "tick", "standard", -0.11),   # the objection gets a name, a district and the APPROV
-    (35.38, "clank", "standard", 0.26),   # ANCHORAGE'S REAL CARDS, and v1 gave them none. c11 i
-    (38.96, "thud", "hero", 0.0),   # THE FILM'S TITLE, PAID. The frame is the still point
-    (42.33, "paper", "texture", 0.3),   # the corridor, and the primary loop touched once in t
-    (46.23, "snap", "hero", 0.0),   # THROUGHLINE STATE THREE and THE SECOND LOOP PLANTED.
-    (50.86, "pop", "standard", 0.34),   # the honest report
-    (54.23, "creak", "texture", 0.01),   # the tool's competence asserted by REPETITION AND SPE
-    (58.55, "stamp", "hero", 0.0),   # the mechanism opens
-    (61.71, "chime", "standard", 0.05),   # the half the machine took
-    (66.13, "clank", "standard", -0.28),   # REVEAL TWO and REHOOK TWO, the film's mechanism
-    (69.92, "tick", "standard", 0.09),   # who the judgment half actually is
-    (73.18, "thud", "standard", -0.24),   # the load arrives
-    (76.76, "tick", "standard", 0.13),   # the curve breaks
-    (78.03, "clank", "standard", -0.2),   # THE DIP and THROUGHLINE STATE FOUR
-    (83.08, "thud", "hero", 0.0),   # the other side speaks and it is not a straw man. The
-    (87.40, "paper", "texture", -0.16),   # the law drawn as a KNOWN OBJECT WITH FIXED CAPACITY 
-    (92.56, "snap", "hero", 0.0),   # the throughline object is BACK, and the thing that b
-    (96.24, "pop", "standard", -0.12),   # the idea floated at the table, drawn as a slip that 
-    (99.30, "creak", "texture", 0.25),   # THE CONCESSION, drawn on a THING. The problem is rea
-    (102.14, "stamp", "hero", 0.0),   # THE SECOND LOOP PAYS WITH AN EVENT AND A UNIT. v1 pa
-    (106.88, "chime", "standard", 0.29),   # the film's sharpest line, drawn
-    (110.56, "riser", "hero", 0.0),   # the film's argument in one line gets the two operati
-    (114.46, "tick", "standard", 0.33),   # REVEAL THREE and THE PRIMARY LOOP PAYS
-    (117.41, "thud", "standard", 0.0),   # the one thing a viewer is meant to act on, drawn as 
-    (119.51, "tick", "standard", -0.33),   # the pre-button dip
-    (121.73, "clank", "standard", 0.04),   # THE SIGNATURE SHOT, and it now states the thesis as 
-    (125.31, "thud", "hero", 0.0),   # the button
+    # 2026-08-06, RE-DERIVED against the shipped take after the VO was re-cut. Times come
+    # from vo_lines.json, never typed. Families alternate so no two consecutive events
+    # share one (check_schedule hard-asserts). ONE riser, on the convergence.
+    (0.00, "tick", "standard", -0.35),   # the two objects exist before anything is claimed a
+    (0.41, "clank", "standard", 0.02),   # the machine attends, instantly
+    (2.65, "thud", "hero", 0.0),   # the ban is drawn before it is spoken
+    (5.31, "paper", "texture", 0.06),   # the two cities enter as two lit rectangles
+    (8.67, "snap", "hero", 0.0),   # THE PRIMARY LOOP IS PLANTED
+    (12.65, "pop", "standard", 0.1),   # the pull-back begins
+    (15.20, "creak", "texture", -0.23),   # REVEAL ONE, the HEADROOM the capture side is built
+    (18.57, "stamp", "hero", 0.0),   # the price lands on the room
+    (21.43, "chime", "standard", -0.19),   # the rule Anchorage actually wrote, drawn as the on
+    (24.69, "clank", "standard", 0.18),   # THROUGHLINE STATE TWO, scoped honestly. Claim c6 l
+    (27.34, "tick", "standard", -0.15),   # the code opens, and it is NOT empty. A surveillanc
+    (29.59, "thud", "standard", 0.22),   # REHOOK ONE. Not a hole in the law, a MISMATCH: the
+    (32.65, "tick", "standard", -0.11),   # the objection gets a name, a district and the APPR
+    (34.28, "clank", "standard", 0.26),   # ANCHORAGE'S REAL CARDS, and v1 gave them none. c11
+    (37.75, "thud", "hero", 0.0),   # THE FILM'S TITLE, PAID. The frame is the still poi
+    (41.01, "paper", "texture", 0.3),   # the corridor, and the primary loop touched once in
+    (44.79, "snap", "hero", 0.0),   # THROUGHLINE STATE THREE and THE SECOND LOOP PLANTE
+    (49.28, "pop", "standard", 0.34),   # the honest report
+    (52.54, "creak", "texture", 0.01),   # the tool's competence asserted by REPETITION AND S
+    (56.73, "stamp", "hero", 0.0),   # the mechanism opens
+    (59.79, "chime", "standard", 0.05),   # the half the machine took
+    (64.07, "clank", "standard", -0.28),   # REVEAL TWO and REHOOK TWO, the film's mechanism
+    (67.75, "tick", "standard", 0.09),   # who the judgment half actually is
+    (70.91, "thud", "standard", -0.24),   # the load arrives
+    (74.38, "tick", "standard", 0.13),   # the curve breaks
+    (75.60, "clank", "standard", -0.2),   # THE DIP and THROUGHLINE STATE FOUR
+    (80.50, "thud", "hero", 0.0),   # the other side speaks and it is not a straw man. T
+    (84.68, "paper", "texture", -0.16),   # the law drawn as a KNOWN OBJECT WITH FIXED CAPACIT
+    (89.68, "snap", "hero", 0.0),   # the throughline object is BACK, and the thing that
+    (93.25, "pop", "standard", -0.12),   # the idea floated at the table, drawn as a slip tha
+    (96.21, "creak", "texture", 0.25),   # THE CONCESSION, drawn on a THING. The problem is r
+    (98.97, "stamp", "hero", 0.0),   # THE SECOND LOOP PAYS WITH AN EVENT AND A UNIT. v1 
+    (103.56, "chime", "standard", 0.29),   # the film's sharpest line, drawn
+    (107.13, "riser", "hero", 0.0),   # the film's argument in one line gets the two opera
+    (110.90, "tick", "standard", 0.33),   # REVEAL THREE and THE PRIMARY LOOP PAYS
+    (113.76, "thud", "standard", 0.0),   # the one thing a viewer is meant to act on, drawn a
+    (115.80, "tick", "standard", -0.33),   # the pre-button dip
+    (117.94, "clank", "standard", 0.04),   # THE SIGNATURE SHOT, and it now states the thesis a
+    (121.41, "thud", "hero", 0.0),   # the button
 ]
 
 
@@ -151,24 +148,22 @@ EVENTS = [
 # Multipliers are relative to the bed's base level, so the shape lives here and the level
 # lives in one place in the graph.
 BED_ARC = [
-    # 2026-08-06. Nodes are THIS film's VO line starts, so the bed follows this story and
-    # the last move actually plays. The floor at the technician's desk and again before the
-    # button are the two real drops; the two peaks are the mechanism and the thesis.
+    # 2026-08-06, re-derived on the shipped take. Two real floors (the desk, the pre-button),
+    # two peaks (the mechanism, the thesis). Depth set so LRA clears its 6.0-9.0 target.
     (0.00, 0.874),
-    (10.72, 1.21),
-    (24.10, 1.378),
-    (35.70, 1.042),
-    (45.34, 1.462),
-    (55.58, 0.706),
-    (62.76, 1.63),
-    (74.50, 1.336),
-    (85.36, 0.58),
-    (96.54, 1.252),
-    (103.74, 1.546),
-    (115.14, 0.42),
-    (123.60, 1.714),
-    (127.98, 1.105),
-    (129.78, 0.79),
+    (10.36, 1.21),
+    (24.76, 1.378),
+    (36.04, 1.042),
+    (46.90, 1.462),
+    (56.26, 0.706),
+    (65.32, 1.63),
+    (78.90, 1.336),
+    (93.20, 0.58),
+    (104.66, 1.252),
+    (115.14, 1.546),
+    (118.84, 0.42),
+    (124.04, 1.05),
+    (125.84, 0.9),
 ]
 
 # A WIND BED FOR THE COUNTRY THE FILM DRIVES INTO. The same panel note asked for ambience,
@@ -370,7 +365,7 @@ def main():
     # So the same script-shaped curve is applied to the VOICE, at a third of the depth: a
     # documentary narrator does drop under a concession and does lift into a closing
     # question, and unlike the bed it is the thing the meter is listening to.
-    vo_arc = pw_expr([(t, 1.0 + (m - 1.0) * 0.52) for t, m in BED_ARC])
+    vo_arc = pw_expr([(t, 1.0 + (m - 1.0) * 0.78) for t, m in BED_ARC])
     fc.append(f"[0:a]aformat=sample_rates={SR}:channel_layouts=stereo,apad=whole_dur={VIDEO_SECS},"
               f"volume=volume={vo_arc}:eval=frame,asplit=2[vo][vok]")
     # Music: loop, trim, base level, VO-slot EQ (wide -2.5dB dip at 3k so the bed
@@ -492,18 +487,18 @@ def main():
          "-ar", str(SR), "-ac", "2", "-t", str(VIDEO_SECS), premix])
 
     p = subprocess.run([FF, "-i", premix, "-af",
-                        "loudnorm=I=-14:TP=-1.8:LRA=11:print_format=json", "-f", "null", "-"],
+                        "loudnorm=I=-14:TP=-2.0:LRA=11:print_format=json", "-f", "null", "-"],
                        capture_output=True, text=True)
     m = re.search(r"\{[^{}]*input_i[^{}]*\}", p.stderr, re.S)
     if not m:
         raise SystemExit("dispatch_mix: loudnorm analysis pass produced no JSON")
     a = json.loads(m.group(0))
     print(f"premix measured: {a['input_i']} LUFS  TP {a['input_tp']}  LRA {a['input_lra']}")
-    ln = (f"loudnorm=I=-14:TP=-1.8:LRA=11:linear=true"
+    ln = (f"loudnorm=I=-14:TP=-2.0:LRA=11:linear=true"
           f":measured_I={a['input_i']}:measured_TP={a['input_tp']}"
           f":measured_LRA={a['input_lra']}:measured_thresh={a['input_thresh']}"
           f":offset={a['target_offset']}:print_format=summary")
-    run([FF, "-y", "-i", premix, "-af", f"{ln},alimiter=limit=0.86:level=false",
+    run([FF, "-y", "-i", premix, "-af", f"{ln},alimiter=limit=0.89:level=false",
          "-ar", str(SR), "-ac", "2", master])
     os.remove(premix)
     print("wrote", master)

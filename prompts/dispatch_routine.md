@@ -1040,6 +1040,14 @@ worlds, no flat single-tone fills, no glyphs that read as broken assets.
   flow_check enforces FRONTLOAD / METRONOME / REHOOK / OPEN LOOP.
 - GATE 0A: `python3 scripts/storyboard_check.py` exit 0 (divergence vs recent history, shot
   structure, flow block; 2.5D boards skip the legacy 3D camera/light vocab).
+- GATE 0A': `python3 scripts/caption_band_check.py` exit 0. A SOURCE gate, and it must run
+  BEFORE the render, not after: its whole value is refusing to spend seven minutes rendering
+  a frame that was already wrong. It refuses two things the engine cannot see at runtime —
+  raw `<rect>`/`<text>` authored into the open-caption band (the Plate clamp only guards
+  Plate), and any Plate whose authored y is not the y it renders at, because a silent clamp
+  makes the source lie and on 2026-08-06 it silently stacked two plates in the same pixels.
+  Background that genuinely belongs under the caption card declares `data-band="ok"` on the
+  element. Do not mark an element exempt to make the gate quiet; move the element.
 - GATE 0B: storyboard-critic agent red-teams for genuine divergence + silent-first
   storytelling + retention; iterate to ship:true.
 - GATE 0C: flow-critic agent (MODE=PRE) red-teams the beat map (never-rest cadence,
@@ -1154,6 +1162,30 @@ worlds, no flat single-tone fills, no glyphs that read as broken assets.
    Also pull one 8-consecutive-frame strip at the fastest move and check the motion reads
    (eased, anticipated, settled — not linear, not popping). A scene failing 0 or 5 does not
    ship. Fix forward scene by scene; renders are cheap.
+
+### RE-SOLVING THE SHOT MAP INVALIDATES THE SCENE ART (2026-08-06, cost a full render)
+
+`SSL` / `scene_start_line` decides which VO lines each shot covers. The scene components are
+authored against a PARTICULAR mapping, and every timing inside them — when a card lands, when
+a whip fires, when a figure enters — is a frame offset from that shot's own start.
+
+So the moment you re-solve SSL, or insert or cut a single VO line, EVERY scene downstream of
+the change is now cutting to different words, and nothing in the toolchain says so. tsc is
+clean. build_scenes runs. The render succeeds. The film is simply about the wrong things.
+
+On 2026-08-06 a re-solve moved S4 from two lines to three and inserted a line above it. S4's
+art whipped to a Fairbanks records room at 0.3s, and the narration stayed on the Anchorage
+police chief for the next ten seconds. S2's tail lost its picture entirely: six seconds of a
+finished crane holding on a price card while the VO described a city ordinance.
+
+After ANY change to SSL or the VO line count, before rendering, print the table and read it:
+
+    for each shot: its line indices, the first words of each line, and what the scene DRAWS
+    at the frame offsets those lines start at.
+
+A shot passes when the picture at each line's offset is about that line. This is the same
+say-it-show-it standard Gate 0C applies to the board, applied to the code, and it is the one
+place where the board passing tells you nothing — the board was right and the wiring moved.
 
 ## PHASE 6: GATES + PANEL (the human is never the QA)
 

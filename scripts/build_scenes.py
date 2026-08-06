@@ -81,7 +81,7 @@ TAIL = 2.6  # hold after the last word
 # S7 L12-13 (the mechanism and the growing line), S8 L14-16 (the curve, one technician,
 # the spool), S9 L17-18 (the quote, the idea, the attorneys), S10 L19-21 (the concession,
 # the denial, the fusion), S11 L22-24 (the date, the wall, the button).
-SCENE_START_LINE = [0, 2, 4, 6, 8, 11, 13, 15, 18, 21, 23]
+SCENE_START_LINE = [0, 2, 4, 6, 9, 11, 13, 15, 17, 20, 22]
 
 
 def _apply_caption_fixups(caps):
