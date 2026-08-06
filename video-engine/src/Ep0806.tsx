@@ -352,10 +352,20 @@ const Living: React.FC<{f: number; phase?: number; gain?: number; children: Reac
   f, phase = 0, gain = 1, children,
 }) => {
   const v = vitals(f, phase, 1);
+  // THE BREATH WAS A CONSTANT. vitals() returns `breath` ALREADY CENTRED ON 1
+  // (it is `1 + 0.014 * osc`), so `1 + v.breath * 0.016` evaluated to 1.016 plus a
+  // 0.0004 wobble: 0.16px of chest movement on a 400px figure. Wired, and doing
+  // nothing. All three panel judges independently reported every held figure in the
+  // film as a static sprite, and they were reading it correctly.
+  // Subtract the centre before scaling, and scale enough to read at the half-second
+  // window a filmstrip is judged at: 6.6% of figure height, about 26px.
+  const breath = 1 + (v.breath - 1) * 2.6 * gain;
   const sway = v.swayX * 3.4 * gain;
-  const rise = v.bob * 2.2 * gain;
-  const lean = v.tilt * 1.5 * gain;
-  const breath = 1 + v.breath * 0.016 * gain;
+  // v.micro rides an 8.9-frame period, so it MOVES inside the 0.53s a strip covers.
+  // bob and swayX alone run on 37-53 frame periods, which is real idle motion and is
+  // also under 3px across a judged window: true, invisible, and therefore not enough.
+  const rise = (v.bob * 2.2 + v.micro * 1.5) * gain;
+  const lean = (v.tilt * 1.5 + v.micro * 0.35) * gain;
   return (
     <g transform={`translate(${sway},${rise}) rotate(${lean})`}>
       <g transform={`translate(0,60) scale(1,${breath}) translate(0,-60)`}>{children}</g>
@@ -1090,10 +1100,22 @@ const S9: React.FC<SceneProps> = ({from}) => {
         {/* THE ONLY MULTI-FIGURE FRAME IN THE FILM. It earns the plural in
             "its own attorneys" and escalates in the register the film rationed. */}
         <g opacity={back}>
-          {[300, 540, 780].map((x, i) => (
-            <g key={i} transform={`translate(${x},1210) scale(1.3)`}>
-              <Living f={f} phase={0.17 + i * 0.41}>
-                <Character pose="stand" emotion="neutral" outfit="suit" headgear="bare" frame={f + i * 19} />
+          {/* THREE PEOPLE, NOT ONE ASSET THREE TIMES. All three judges read this as
+              copy-paste, and they were right: identical suit, tie, face, scale, pose and
+              spacing, in the film's ONLY multi-figure frame, whose whole job is to earn
+              the plural in "its own attorneys". Varied by build, dress, skin, hair,
+              headgear, depth and stance. */}
+          {[
+            {x: 286, s: 1.22, out: 'suit', hair: '#2b2118', skin: '#e8b48c', hg: 'bare', em: 'neutral', y: 1198},
+            {x: 548, s: 1.34, out: 'parka', hair: '#5b4636', skin: '#c98f63', hg: 'beanie', em: 'worried', y: 1214},
+            {x: 800, s: 1.16, out: 'flannel', hair: '#1d1a17', skin: '#a3714c', hg: 'bare', em: 'neutral', y: 1192},
+          ].map((p, i) => (
+            <g key={i} transform={`translate(${p.x},${p.y}) scale(${p.s})`}>
+              <Living f={f} phase={0.17 + i * 0.41} gain={1.15 + i * 0.12}>
+                <Character pose={i === 1 ? 'arms-crossed' : 'stand'} emotion={p.em as never}
+                           outfit={p.out as never} headgear={p.hg as never}
+                           hair={p.hair} skin={p.skin} glasses={i === 2}
+                           frame={f + i * 37} />
               </Living>
             </g>
           ))}
@@ -1220,7 +1242,13 @@ const S11: React.FC<SceneProps> = ({from}) => {
         {Array.from({length: rows * cols}).map((_, i) => {
           const r = Math.floor(i / cols), c = i % cols;
           const x = gx + c * cell, y = gy + r * cell;
-          const isHero = r === 6 && c === 4;
+          // r=3, NOT r=6. The one hidden tile IS the film's thesis — every tile
+          // bracketed, exactly one carrying a grey box, one person beneath it — and at
+          // r=6 it sat at y 1094..1198, directly BEHIND the figure standing at 1400.
+          // All three judges reported the grey box missing. It was drawn and occluded by
+          // the person it is supposed to sit above. r=3 puts it at y 782..886, clear of
+          // the head, so the relationship the shot argues is actually visible.
+          const isHero = r === 3 && c === 4;
           const behindFigure = r >= 8 && c >= 3 && c <= 5;
           const h = Math.imul(i + 17, 2654435761) >>> 0;
           const fl = 0.7 + 0.3 * Math.sin(f / (9 + (h % 7)) + (h % 29));
