@@ -1,6 +1,7 @@
 import React from 'react';
 import {tones, FormGradient, RimLight, ContactShadow, LIGHT} from './lighting';
 import {TalkMouth, ambientMouth} from './voice';
+import {humanIdle} from './motion';
 
 // =============================================================================
 // CHARACTER — the parameterized IGS-style person rig (the cast system).
@@ -115,9 +116,12 @@ export const Character: React.FC<CharacterProps> = ({
   // breathing: a visible chest rise+fall. Bumped round 10 — the panel kept reading standers as
   // "frozen sprites" partly because the old amplitude was too small to register in a ~0.5s review
   // strip; a clearer breath (plus the weight-shift below) means any half-second window shows life.
-  // a real chest rise and a head that follows it, at a rate a 0.27s strip resolves
-  const breath = 1 + 0.055 * Math.sin(f / 11);
-  const bob = 6.4 * Math.sin(f / 11);
+  // a real chest rise and a head that follows it, at a rate a 0.27s strip resolves.
+  // 2026-08-06: these two were `1 + 0.055*sin(f/11)` and `6.4*sin(f/11)`, one 2.3s sine
+  // driving the whole figure up and down forever. That is the literal source of the
+  // "floats around" note: nothing in a standing body rises and falls continuously, and a
+  // sine has no pause at the top of the inhale the way real breathing does. Both now come
+  // from humanIdle, defined after swayPhase below.
   // idle weight-shift: a slow lateral hip sway + matching lean while standing still, so a
   // held beat (fork impasse, tally jam, button) reads as a person shifting their weight, not
   // a frozen sprite (a 2026-07-21 panel note across 5 rounds: "characters go static between
@@ -160,9 +164,26 @@ export const Character: React.FC<CharacterProps> = ({
   // two pixels across the window a panel actually inspects, and at review downsampling that
   // rounds to zero displacement. A slow weight-shift is still right for the body, but it
   // needs a faster term layered on it that a quarter-second can see.
-  const shift = idle ? idleAmp * 9 * Math.sin(f / 88 + swayPhase) : 0;   // weight-shift onto a hip
-  const sway = idle ? shift + idleAmp * 4.6 * Math.sin(f / 13 + swayPhase * 1.7) : 0;
-  const swayTilt = idle ? idleAmp * (2.4 * Math.sin(f / 88 + swayPhase) + 1.5 * Math.sin(f / 13 + swayPhase * 1.7)) : 0;
+  // 2026-08-06, FIFTH pass at this and the first that changes the MODEL rather than the
+  // constants. The four before it (07-24, 07-25, 07-26, 07-29, 08-04) all retuned sine
+  // amplitudes and periods, and a judge or the owner reported the same defect every time,
+  // most recently as figures that "float around and move in a weird cyclical way ... don't
+  // move like normal humans, or have any mannerisms". Sines cannot be tuned into humanity:
+  // they are smooth, symmetric and never at rest, and a standing person is mostly at rest.
+  // humanIdle() holds a posture, then makes a discrete weight shift with a fast departure
+  // and a slow overshooting arrival, then holds again, with the head lagging the torso.
+  // See the block comment on humanIdle in lib/motion.tsx for the full reasoning.
+  const hi = humanIdle(f, swayPhase, idleAmp);
+  const sway = idle ? hi.swayX : 0;
+  const swayTilt = idle ? hi.tilt : 0;
+  // breath scale and torso rise both come from the same held-at-the-top breath curve, and
+  // a weight shift costs a little height as the hip drops (hi.bob folds that in).
+  const breath = idle ? hi.breath : 1;
+  const bob = idle ? hi.bob : 0;
+  // the head's own small look-arounds PLUS a lagged copy of the torso. The lag is the
+  // mannerism: the body leads, the head follows about 0.08s later.
+  const headX = idle ? hi.headX : 0;
+  const headY = idle ? hi.headY : 0;
   // ---- articulated walk cycle (2026-07-21 panel: the human leads "translate as rigid sprites,
   // they don't walk"). When `walking`, the two legs swing fore/aft in opposition around the hips,
   // the body bobs at 2x the step rate (up on mid-stride), and the arms counter-swing. Phase comes
@@ -172,7 +193,12 @@ export const Character: React.FC<CharacterProps> = ({
   const legSwing = walking ? 22 * Math.sin(stridePh) : 0;         // deg, +left/-right leg
   const walkBob = walking ? -7 * Math.abs(Math.sin(stridePh)) : 0; // lift on mid-stride
   const armSwing = walking ? 16 * Math.sin(stridePh) : 0;         // arms counter-swing the legs
-  const blink = ((f + 11) % 92) < 5;
+  // Was ((f + 11) % 92) < 5, which carried NO phase term. Every character in a shot
+  // therefore blinked on the SAME frame, exactly every 3.067 seconds, for the whole film.
+  // Two faces blinking in perfect unison on a metronome is one of the strongest uncanny
+  // signals available, and it shipped in every Dispatch this engine has made. humanIdle
+  // schedules blinks per figure at irregular 1.8..6.7s gaps with an occasional double.
+  const blink = hi.blink;
   const skinShade = '#c99268';
   // per-instance ids so each figure's form-shading gradients stay unique in the doc
   const uid = `ch${Math.round(x)}_${Math.round(y)}_${outfit}_${facing}`;
@@ -688,7 +714,11 @@ export const Character: React.FC<CharacterProps> = ({
           </g>
         </g>
         {/* head — everyday Alaskan headgear (never the Native-coded fur ruff) */}
-        <g transform={`translate(0,${-368 + bob * 1.4 + walkBob})`}>
+        {/* headX/headY are the lagged-torso + glance offsets. Before 2026-08-06 the head
+            carried only `bob * 1.4`, an exact scaled copy of the chest, so it tracked the
+            body with zero delay and never looked anywhere. A head that answers the body a
+            beat late, and occasionally glances off-axis, is most of what reads as alive. */}
+        <g transform={`translate(${headX},${-368 + bob * 1.4 + headY + walkBob})`}>
           {(() => {
             const hg = outfit === 'parka' ? 'trapper' : headgear;
             const beanieCol = c.main;

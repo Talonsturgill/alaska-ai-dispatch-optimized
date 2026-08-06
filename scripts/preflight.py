@@ -47,6 +47,12 @@ CHECKS = [
     # silently declined in one run and judges found all seven.
     ("every claim obligation the fact-checker wrote is honoured",
      [sys.executable, "scripts/claims_contract_check.py"], True),
+    # ADVISORY ON PURPOSE, same reasoning as the block below: it has never gone green.
+    # On the film that prompted it (2026-08-06) it fails 6 of 8 figures, which is the
+    # honest state of the craft rather than a broken checker. Promote it to required once
+    # a run has actually staged its cast instead of parking them.
+    ("every figure on screen is doing something",
+     [sys.executable, "scripts/staging_check.py"], False),
     # ADVISORY ON PURPOSE, FOR NOW. It is new and it has never been observed passing, and
     # arming a hard gate that has never gone green is how a run dies at 3am for a reason
     # nobody has seen (see the beat-delivery note in prompts/dispatch_routine.md). Promote
