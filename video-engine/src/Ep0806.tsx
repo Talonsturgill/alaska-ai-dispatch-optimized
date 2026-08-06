@@ -151,7 +151,14 @@ const Room: React.FC<{f: number}> = ({f}) => (
   // it rewarded exactly the thing that buried the shots.
   // So the wall keeps its detail, because a drawn room is right, and loses the CONTRAST
   // that made it compete. Everything a subject sits in front of is now clearly behind it.
-  <g opacity={0.5}>
+  //
+  // 0.72, MEASURED, not guessed. 0.5 read fine by eye and cost the meter badly, because
+  // dimming the room removes texture it was counting: whole-film dead space went 40.4% to
+  // 48.5%. Tested against 0.5 on three frames — S2 22.2 -> 16.1, S7 56.7 -> 54.0, S3 68.6
+  // -> 51.4 — so 0.72 is strictly better on every one AND the socket grid still reads as a
+  // wall of dark sockets with a lit minority. The grid rebuild is what recovered that
+  // shot, not the dimming, which is why the contrast could come back without losing it.
+  <g opacity={0.72}>
     {/* oversized: the room rides its own slower parallax transform, so its edges must
         cover the drift or the AbsoluteFill background shows through at the margins */}
     <rect data-band="ok" x={-70} y={-70} width={1220} height={2060} fill="#152437" />
