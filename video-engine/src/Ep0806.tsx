@@ -886,7 +886,9 @@ const S5: React.FC<SceneProps> = ({from}) => {
             across the judged 8-frame strip window, which is what "no idle life" meant. */}
         <g transform="translate(870,1190) scale(1.55)">
           <Living f={f} phase={0.41} gain={1.2}>
-            <Character pose="stand" emotion="worried" outfit="vest" headgear="bare" frame={f} />
+            <Character pose="point" emotion="worried" outfit="vest" headgear="bare"
+                       gesture={interpolate(f, [176, 218], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: E_OUT})}
+                       frame={f} />
           </Living>
         </g>
         <Plate x={300} y={640} text="REDACTED" size={26} op={box} />
@@ -1086,11 +1088,21 @@ const S7: React.FC<SceneProps> = ({from}) => {
           <rect x={1042} y={1283} width={12} height={22} fill="#1B2C3E" />
         </g>
         <FrameStack x={930} y={1266} f={f} count={Math.round(build * 9 + late * 2)} s={0.44} />
+        {/* SHE PLAYS A GESTURE, she does not hold one.
+            All three judges, twice, read every held figure in this film as a static sprite.
+            Measured, the rigs DO move: 8.9% residual on head and shoulders once the camera
+            drift is registered out. But Living translates and scales the whole body, so what
+            moves is the figure as a unit — the same pose, shifted. Judges are asking for
+            ARTICULATION, arms and heads, and they were right that there is none.
+            `gesture` drives the arm from tucked to extended with its own anticipation and
+            overshoot, so this reads as a person turning to the stack rather than a decal. */}
         <g opacity={late}>
           <ellipse cx={810} cy={1292} rx={92} ry={16} fill="#04090F" opacity={0.8} />
           <g transform="translate(810,1292) scale(1.15)">
             <Living f={f} phase={0.13} gain={1.3}>
-              <Character pose="stand" emotion="worried" outfit="vest" headgear="bare" frame={f} />
+              <Character pose="raise" emotion="worried" outfit="vest" headgear="bare"
+                         gesture={interpolate(f, [196, 244], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: E_OUT})}
+                         frame={f} />
             </Living>
           </g>
         </g>
@@ -1200,6 +1212,16 @@ const S8: React.FC<SceneProps> = ({from}) => {
                 style={{font: `700 18px ${MONO}`}}>FULL</text>
         </g>
         <Plate x={540} y={496} text="FREE UNDER 5 STAFF HOURS A MONTH" size={24} op={spool} />
+        <Plate x={540} y={548} text="CHIEF RON DUPEE, VIA KUAC" size={16} fill="#A9BCCC" op={spool * 0.95} />
+        {/* c19, THE FAIRBANKS COUNTER-POINT IN THE CITY'S OWN MOUTH, and it had not shipped
+            at all. Two judges named its absence: the film concedes twice that the problem is
+            real ("his case is real too", "he's right about the problem") but never let
+            Fairbanks make its own sourced defence, while Anchorage got c9 and c10 drawn. Its
+            note is explicit that this is a STAFFING claim and not an anti-transparency one,
+            which is exactly why the city deserves to say it in its own words. */}
+        <Plate x={540} y={614} size={22} op={bury}
+               lines={['"WE JUST DON\'T HAVE', 'THE PERSONNEL"']} />
+        <Plate x={540} y={694} text="CHIEF RON DUPEE, VIA KUAC" size={16} fill="#A9BCCC" op={bury * 0.95} />
         {/* the burial IS the frames, so the throughline never leaves the film */}
         <g opacity={bury}>
           {Array.from({length: 7}).map((_, i) => {
@@ -1258,9 +1280,13 @@ const S9: React.FC<SceneProps> = ({from}) => {
           ].map((p, i) => (
             <g key={i} transform={`translate(${p.x},${p.y}) scale(${p.s})`}>
               <Living f={f} phase={0.17 + i * 0.41} gain={1.15 + i * 0.12}>
-                <Character pose={i === 1 ? 'arms-crossed' : 'stand'} emotion={p.em as never}
+                <Character pose={i === 1 ? 'raise' : i === 0 ? 'arms-crossed' : 'stand'}
+                           emotion={p.em as never}
                            outfit={p.out as never} headgear={p.hg as never}
                            hair={p.hair} skin={p.skin} glasses={i === 2}
+                           gesture={i === 1
+                             ? interpolate(f, [186, 236], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: E_OUT})
+                             : 1}
                            frame={f + i * 37} />
               </Living>
             </g>
