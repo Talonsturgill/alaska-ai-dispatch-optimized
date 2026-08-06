@@ -40,6 +40,28 @@ import {ScreenKey} from './screenlight';
 //                        contradicted the film's own argument (Gate 0D caught this).
 // =============================================================================
 
+/**
+ * WHERE THE BRACKET GOES, DERIVED FROM THE PLATE ITSELF.
+ *
+ * The film's hook is an orange bracket locking onto the license plate, and at three call
+ * sites the reticle was placed by hand-tuned offsets — (82,110) size 214 at S1, and so on.
+ * Measured against the frame's real geometry those offsets put the bracket 109px LEFT of
+ * the plate and sized it 214 against a 253px plate, so the hook has never actually framed
+ * the thing it locks onto. Nobody caught it while the plate was a featureless white slab;
+ * drawing the plate properly made it obvious.
+ *
+ * Offsets are now COMPUTED from the same constants the plate is drawn with, so a call site
+ * cannot put the bracket anywhere except on the plate, and moving the plate moves the lock.
+ */
+export const PLATE_BOX = {x: 300, y: 176, w: 156, h: 62};
+const FRAME_W = 520, FRAME_H = 300;
+
+export const plateLock = (x: number, y: number, s: number) => ({
+  cx: x + (-FRAME_W / 2 + PLATE_BOX.x + PLATE_BOX.w / 2) * s,
+  cy: y + (-FRAME_H / 2 + PLATE_BOX.y + PLATE_BOX.h / 2) * s,
+  size: PLATE_BOX.w * s * 1.45,
+});
+
 export const REDACTION = '#6B6560';   // a faintly WARM dead neutral, deliberately OFF the film's blue axis
 const SCREEN_BASE = '#20364A';
 const BEZEL = '#2A3442';
@@ -85,7 +107,7 @@ export const FrameOfEvidence: React.FC<{
   const flick = dead ? 0 : 0.86 + 0.14 * Math.sin(f / 6.3) * Math.sin(f / 11.7);
 
   const face = {x: 96, y: 74, w: 132, h: 150};
-  const plate = {x: 300, y: 176, w: 156, h: 62};
+  const plate = PLATE_BOX;
 
   return (
     <g transform={`translate(${x},${y + bob}) rotate(${tilt}) scale(${s})`}>

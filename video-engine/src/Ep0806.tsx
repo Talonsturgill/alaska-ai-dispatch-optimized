@@ -10,7 +10,7 @@ import {StatCard} from './lib/props';
 import {BrassPlate} from './lib/bench';
 import {Sheet} from './lib/paper';
 import {Unnamed} from './lib/absence';
-import {FrameOfEvidence, FrameStack, REDACTION} from './lib/evidence';
+import {FrameOfEvidence, FrameStack, REDACTION, plateLock} from './lib/evidence';
 import {ScreenLit, ScreenKey, ScreenBounce} from './lib/screenlight';
 
 // =============================================================================
@@ -441,7 +441,7 @@ const S1: React.FC<SceneProps> = ({from}) => {
         <FrameOfEvidence id="hero1" x={540} y={960} f={f} s={1.62}
           faceState="sharp" plateState="sharp" progress={0} accent={0} phase={0} />
         {/* THE PLATE LOCK. ScanReticle is CAST from the shelf, not re-drawn. */}
-        <ScanReticle cx={540 + 82} cy={960 + 110} frame={f} lock={lockRaw} color={ORANGE} size={214} />
+        <ScanReticle {...plateLock(540, 960, 1.62)} frame={f} lock={lockRaw} color={ORANGE} />
         {/* THE REFUSED BRACKET: the ban drawn before anyone speaks it */}
         <g opacity={(1 - faceOff) * (faceTry > 0 ? 1 : 0)} transform={`translate(${-190 * faceOff},0)`}>
           <ScanReticle cx={540 - 182} cy={960 - 56} frame={f} lock={faceTry} color={ORANGE} size={222} />
@@ -748,7 +748,7 @@ const S4: React.FC<SceneProps> = ({from}) => {
             Act-B element below is placed clear of that box. */}
         <FrameOfEvidence id="hero4" x={540} y={866} f={f} s={1.0}
           faceState="sharp" plateState="sharp" progress={0} phase={0.4} />
-        <ScanReticle cx={540 + 51} cy={866 + 68} frame={f} lock={0.92} color={ORANGE} size={132} />
+        <ScanReticle {...plateLock(540, 866, 1.0)} frame={f} lock={0.92} color={ORANGE} />
 
         {/* --- ACT B: THE COUNTER-CASE, DRAWN ----------------------------------- */}
         {/* the responder the better information reaches, screen-keyed and never still */}
@@ -1369,7 +1369,7 @@ const S10: React.FC<SceneProps> = ({from}) => {
               <FrameOfEvidence id="anc" x={340} y={940} f={f} s={1.0}
                 faceState="sharp" plateState="sharp" progress={0} phase={0.1} />
               <g opacity={fire1}>
-                <ScanReticle cx={340 + 52} cy={940 + 72} frame={f} lock={fire1} color={ORANGE} size={150} />
+                <ScanReticle {...plateLock(340, 940, 1.0)} frame={f} lock={fire1} color={ORANGE} />
               </g>
             </g>
             <g transform={`translate(${300 * (1 - conv) - 200 * join},0)`}>
@@ -1383,7 +1383,7 @@ const S10: React.FC<SceneProps> = ({from}) => {
         <g opacity={met ? 1 : 0}>
           <FrameOfEvidence id="fused" x={540} y={940} f={f} s={1.22}
             faceState="hidden" plateState="hidden" progress={0.012} phase={0.3} />
-          <ScanReticle cx={540 + 60} cy={940 + 84} frame={f} lock={1} color={ORANGE} size={172} />
+          <ScanReticle {...plateLock(540, 940, 1.22)} frame={f} lock={1} color={ORANGE} />
           <path d="M180,1180 H900" stroke={RIM} strokeWidth={7} strokeLinecap="round" opacity={0.7 * fuse} />
           {/* "SAME FOOTAGE" asserted a literal identity between Anchorage plate-reader
               video and Fairbanks body-camera video. claims.json's own illustrative_note
