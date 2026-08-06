@@ -47,14 +47,35 @@ MOVES = [
     # PER-RUN DATA and a run that changes the film changes them in the same commit.
     # Offsets are CONTACT times, sampled at the motion's fastest point, not line starts
     # plus a guess. Eight strips, no two inside one shot.
-    ("lock", 0, 0.55),        # the bracket SLAMS onto the plate, 4 frames with an overshoot
-    ("refused", 0, 2.70),     # the second bracket starts toward the face and slides away
-    ("capacity", 3, 1.10),    # the socket grid filling against a static UP TO 750
-    ("bounce", 5, 1.90),      # the plate-lock bracket hits the rule and visibly bounces off
-    ("carry", 7, 0.35),       # the room smears and THE FRAME does not move one pixel
-    ("boxes", 9, 0.55),       # the two grey boxes land flat with NO overshoot
-    ("collapse", 12, 1.70),   # FIND collapses to a sliver and DECIDE does not move
-    ("fusion", 21, 2.20),     # the two frames fuse and carry brackets AND boxes at once
+    # RE-ANCHORED AGAIN, round 2 of 2026-08-06, for two independent reasons.
+    #
+    # First, an inserted VO line shifted every index above its insertion point by one, so
+    # anchors written against the old script pointed one line late from "carry" onward.
+    # A line insert is exactly as invalidating as a re-synth and there was nothing to catch
+    # it; shot_map.py now prints the mapping these are derived from.
+    #
+    # Second, and the reason there are sixteen: the panel's weakest column was MOTION,
+    # judged from these strips, and eight strips could not cover eleven shots. Three shots
+    # were never sampled at all, so "no held figure shows idle life in any sampled strip"
+    # was a true statement about the evidence and an unproven one about the film. Every
+    # shot now gets at least one strip, and every beat added this round gets sampled.
+    # Offsets are CONTACT times at the motion's fastest point, not line starts plus a guess.
+    ("lock", 0, 0.55),        # S1  the bracket SLAMS onto the plate, 4 frames with an overshoot
+    ("refused", 0, 2.70),     # S1  the second bracket starts toward the face and slides away
+    ("capacity", 2, 3.40),    # S2  the socket grid filling against a static UP TO 750
+    ("wallprobe", 3, 4.10),   # S2  the sweep crossing the whole wall and bracketing nothing
+    ("bounce", 4, 2.80),      # S3  the plate-lock bracket hits the rule and visibly bounces off
+    ("codeprobe", 5, 3.00),   # S3  the question sweeping the socket the code never filled
+    ("promise", 6, 0.80),     # S4  the promise descending onto a seat it never reaches
+    ("carry", 8, 0.30),       # S4  the room smears and THE FRAME does not move one pixel
+    ("boxes", 9, 0.40),       # S5  the two grey boxes land flat with NO overshoot
+    ("stuck", 10, 0.50),      # S5  the sixth frame arrives, stops, and its rail crawls
+    ("collapse", 11, 4.30),   # S6  FIND collapses to a sliver and DECIDE does not move
+    ("desk", 14, 0.60),       # S7  the technician arrives at the one desk the stack lands on
+    ("spool", 16, 0.50),      # S8  the five-hour spool runs off its own end
+    ("stamp", 19, 0.40),      # S9  the stamp descends onto the request and never touches it
+    ("fusion", 20, 3.40),     # S10 the two frames fuse and carry brackets AND boxes at once
+    ("pullback", 22, 2.00),   # S11 the signature pull-back, spent exactly once
 ]
 
 
