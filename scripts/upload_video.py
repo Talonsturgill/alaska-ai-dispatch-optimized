@@ -48,6 +48,17 @@ def via_rclone(file, name):
     if ln.returncode != 0: raise RuntimeError("rclone link failed: " + ln.stderr[-400:])
     return to_direct(ln.stdout.strip())
 
+def media_email():
+    """The owner's commit email, from git config. Never an assistant/Anthropic address."""
+    e = sh(["git", "config", "user.email"]).stdout.strip()
+    if not e or "anthropic.com" in e.lower():
+        raise RuntimeError(
+            "upload_video: git config user.email is unset or is an Anthropic address "
+            f"({e!r}). CLAUDE.md forbids authoring this repo's commits as Claude/Anthropic. "
+            "Set it to the owner's address before uploading media.")
+    return e
+
+
 def via_github(file, name):
     """git-push the file to the dispatch-media branch; return its permanent raw URL."""
     if os.path.getsize(file) > 99 * 1024 * 1024:
@@ -71,7 +82,12 @@ def via_github(file, name):
         os.makedirs(os.path.join(wt, "media"), exist_ok=True)
         shutil.copyfile(file, os.path.join(wt, "media", name))
         sh(["git", "-C", wt, "add", "media/" + name])
-        c = sh(["git", "-C", wt, "-c", "user.email=noreply@anthropic.com", "-c", "user.name=Alaska.Ai routine",
+        # THE OWNER'S IDENTITY, NOT THE ASSISTANT'S. CLAUDE.md is explicit and permanent:
+        # never set a commit author or committer to Claude or any Anthropic identity, in any
+        # commit in this repo. This line had noreply@anthropic.com hardcoded, so every media
+        # commit on dispatch-media has been authored by an Anthropic address. Read from git
+        # config rather than hardcoding again, so the identity lives in one place.
+        c = sh(["git", "-C", wt, "-c", f"user.email={media_email()}", "-c", "user.name=Alaska.Ai routine",
                 "commit", "-m", f"dispatch media: {name}"])
         if c.returncode != 0 and "nothing to commit" not in (c.stdout + c.stderr):
             raise RuntimeError("git commit failed: " + (c.stderr or c.stdout)[-300:])

@@ -506,7 +506,27 @@ enforced in code by DEDUPE_WINDOW_DAYS in scripts/dedupe.py, so `list` and `chec
   end-of-run that is not a hard blocker; refuses stops only, never ships).
 - .claude/skills/deep-research-ak/ — research beats + credibility ranks.
 - config/voices.yaml (standing voice recipe + sign-off rules), config/dispatch_rubric.yaml
-  (3-judge panel, ship 9.0), config/brand.yaml (writing rules), config/state.yaml (ledger).
+  (3-judge panel; THE BAR LIVES IN THAT FILE, `rubric.ship_threshold`, and nowhere else —
+  never restate the number here), config/brand.yaml (writing rules), config/state.yaml (ledger).
+
+### THE BAR IS READ, NEVER QUOTED (2026-08-06, and it cost this run five panel rounds)
+
+This line used to say "ship 9.0". The rubric has said 7.5 since 2026-07-31 and had already
+recalibrated OFF 9.0 on 2026-07-21, with the reason written out: 9.0 was implicitly calibrated
+against a painterly fidelity this brand deliberately does not use, so the ceiling on every run
+became the house style itself and the panel's weakest axis was "the flat-vector characters" for
+nine straight rounds while every concrete defect got fixed.
+
+ship_gate.py has always been right: `ship_threshold()` reads the rubric and its docstring says
+never hardcode it here. The stale number lived in this prompt, and a run that reads this prompt
+to brief its judges hands them a bar the repo retired two weeks earlier. On 2026-08-06 that
+happened five times: the panel was told 9.0, scored the film 7.08, and returned ship:false on a
+cut that was already over the real bar. Two judges flagged the divergence unprompted and the run
+kept grading against the wrong number anyway.
+
+So: when briefing the panel, READ `rubric.ship_threshold` out of config/dispatch_rubric.yaml and
+put THAT number in the brief. Do not type a bar into a prompt, a brief, or a verdict file. A
+number restated in a second place is a number that will be wrong in one of them.
 - RETIRED (never for new work): dimensional.py, DIMENSIONAL_CRAFT.md, render_v3.py,
   chrome_tundra.py and the whole per-frame 3D/PIL pipeline; history only.
 
@@ -1040,6 +1060,14 @@ worlds, no flat single-tone fills, no glyphs that read as broken assets.
   flow_check enforces FRONTLOAD / METRONOME / REHOOK / OPEN LOOP.
 - GATE 0A: `python3 scripts/storyboard_check.py` exit 0 (divergence vs recent history, shot
   structure, flow block; 2.5D boards skip the legacy 3D camera/light vocab).
+- GATE 0A': `python3 scripts/caption_band_check.py` exit 0. A SOURCE gate, and it must run
+  BEFORE the render, not after: its whole value is refusing to spend seven minutes rendering
+  a frame that was already wrong. It refuses two things the engine cannot see at runtime —
+  raw `<rect>`/`<text>` authored into the open-caption band (the Plate clamp only guards
+  Plate), and any Plate whose authored y is not the y it renders at, because a silent clamp
+  makes the source lie and on 2026-08-06 it silently stacked two plates in the same pixels.
+  Background that genuinely belongs under the caption card declares `data-band="ok"` on the
+  element. Do not mark an element exempt to make the gate quiet; move the element.
 - GATE 0B: storyboard-critic agent red-teams for genuine divergence + silent-first
   storytelling + retention; iterate to ship:true.
 - GATE 0C: flow-critic agent (MODE=PRE) red-teams the beat map (never-rest cadence,
@@ -1154,6 +1182,189 @@ worlds, no flat single-tone fills, no glyphs that read as broken assets.
    Also pull one 8-consecutive-frame strip at the fastest move and check the motion reads
    (eased, anticipated, settled — not linear, not popping). A scene failing 0 or 5 does not
    ship. Fix forward scene by scene; renders are cheap.
+
+### RE-SOLVING THE SHOT MAP INVALIDATES THE SCENE ART (2026-08-06, cost a full render)
+
+`SSL` / `scene_start_line` decides which VO lines each shot covers. The scene components are
+authored against a PARTICULAR mapping, and every timing inside them — when a card lands, when
+a whip fires, when a figure enters — is a frame offset from that shot's own start.
+
+So the moment you re-solve SSL, or insert or cut a single VO line, EVERY scene downstream of
+the change is now cutting to different words, and nothing in the toolchain says so. tsc is
+clean. build_scenes runs. The render succeeds. The film is simply about the wrong things.
+
+On 2026-08-06 a re-solve moved S4 from two lines to three and inserted a line above it. S4's
+art whipped to a Fairbanks records room at 0.3s, and the narration stayed on the Anchorage
+police chief for the next ten seconds. S2's tail lost its picture entirely: six seconds of a
+finished crane holding on a price card while the VO described a city ordinance.
+
+After ANY change to SSL or the VO line count, before rendering, print the table and read it:
+
+    for each shot: its line indices, the first words of each line, and what the scene DRAWS
+    at the frame offsets those lines start at.
+
+A shot passes when the picture at each line's offset is about that line. This is the same
+say-it-show-it standard Gate 0C applies to the board, applied to the code, and it is the one
+place where the board passing tells you nothing — the board was right and the wiring moved.
+
+## WHAT THE 2026-08-06 RUN COST, AND THE NINE RULES THAT COME OUT OF IT
+
+Six panels, eighteen judge-gradings, six renders. Median went 5.12 -> 6.24 -> 7.08 -> 6.70
+-> 6.48 -> (final). Most of that spend was not craft. It was the same handful of mistakes,
+made in different clothes, and every one of them now has a mechanism. Read these before you
+touch the engine.
+
+1. WHEN A JUDGE SAYS SOMETHING IS MISSING, CHECK THE EVIDENCE BEFORE YOU CHANGE THE FILM.
+   Judges reported: no orange brackets on the closing wall (three rounds), c11 absent, the
+   Anchorage counter-case as one card, no composer credit (five judges), two strips
+   "frozen". Every one of those was TRUE ABOUT THE PACK and FALSE ABOUT THE FILM. The
+   brackets were sampled mid-fade at 50% opacity; c11 was on screen 44.4-46.9s and the strip
+   sat at 42.6s; the contact sheet stopped at the last VO word so the sign-off was never
+   photographed. Changing the film to fix a sampling error makes the film worse and costs a
+   full cycle. `scripts/evidence_coverage_check.py` now proves coverage before a panel.
+
+2. NEVER ADD AN ELEMENT TO A BAND WITHOUT CHECKING WHAT IS ALREADY THERE.
+   Three times in one run this produced something worse than the gap being closed: a tag on
+   the word YOUTUBERS, a card clipping a quotation and leaving the wrong official's name
+   inside it, an attribution rendered underneath another card. Each element was individually
+   fine; the defect lived only in the relationship. `scripts/plate_overlap_check.py`.
+
+3. A CLAIM'S `note` IS AN OBLIGATION, NOT ADVICE. Seven were silently declined this run and
+   judges found all seven. Write them into the claim's `requires` block so a machine reads
+   them: `scripts/claims_contract_check.py`. And check the claim record itself — c7's
+   approved on_screen string was a paraphrase of its own verbatim, so the DATA was wrong,
+   not just the build.
+
+4. DERIVE GEOMETRY, NEVER HAND-TUNE IT. The hook's bracket sat 109px off the plate at four
+   call sites for the whole life of the film, because each site carried its own typed
+   offsets. `plateLock()` computes it from the plate's own constants. Same for the caption
+   band and the square crop: `caption_band_check.py` does the transform arithmetic, because
+   an authored y is not a rendered y once World's push scales it.
+
+5. A NUMBER RESTATED IN A SECOND PLACE WILL BE WRONG IN ONE OF THEM. The panel bar lived in
+   the rubric AND in this prompt; the prompt was two weeks stale, so five panels graded
+   against 9.0 when the bar was 7.5. Two judges flagged the divergence in writing and the
+   run kept going. vo_script.json had `text` and `t` and the patcher updated only one, so a
+   regeneration silently reinstated pre-patch narration. READ the value; never restate it.
+
+6. VERIFY THE QUANTITY THE JUDGE IS ACTUALLY JUDGING. I reported the idle-motion fix as
+   confirmed because figure boxes measured 6-15% frame-to-frame. That included the camera
+   push. Registering the global shift out showed the rigs move as a UNIT: the same pose,
+   translated. Judges were asking for articulation - limbs, heads - and were right. A
+   measurement that would score a rigid sprite highly is not a measurement of animation.
+
+7. DRAW ORDER IS A DEFECT SURFACE. The whip smear was drawn AFTER the carried frame, so it
+   covered the one object the board says must stay crisp and took the screen to near-black:
+   three judges called it a dissolve for three rounds. The attribution in rule 2 was the
+   same bug. If an element must stay visible, draw it last.
+
+8. THE METER AND THE FRAME DISAGREE; TRUST THE FRAME AND MEASURE ANYWAY. Varying the wall
+   dropped dead space 50.3% to 40.4% AND dissolved the shot's subject into the background —
+   the meter measures texture and its own docstring says so. But going the other way by eye
+   cost 8 points. The answer was a measured A/B on three frames, one variable at a time.
+
+9. RENDER-ADJACENT DISCIPLINE. Do not edit the engine while chunks are bundling. Wait on the
+   render's completion marker, never on a filename a stale artifact satisfies. Kill by PID,
+   and kill the ffmpeg children too. All three cost time today.
+
+### KILLING A SCRIPT DOES NOT KILL ITS FFMPEG (2026-08-06)
+
+`kill -9 <encode_deliverables.sh pid>` leaves the ffmpeg it spawned running, and that
+orphan keeps writing its output file. On 2026-08-06 an orphaned square-crop ffmpeg went on
+writing dispatch_square.mp4 against a dispatch_master.mp4 that had already been deleted and
+recreated underneath it, which produced two rounds of failures that looked like data
+corruption in the encoder:
+
+    moov atom not found
+    Unable to re-open dispatch_master_720.mp4 output file for shifting data
+    Error writing trailer: No such file or directory
+
+None of that was ffmpeg misbehaving. It was two writers on one path, one of them a ghost.
+The tell is a deliverable whose size is implausible for its step (a 7MB "square" of a 125s
+film) and a log that reports MUX OK immediately before failing to read the very file it
+just wrote.
+
+After killing an encode, check for survivors before restarting:
+
+    pgrep -fa "out/dispatch/dispatch"     # the ffmpeg children, by their arguments
+    # kill those by PID too, THEN rm the partial outputs, THEN restart
+
+Restarting on top of a live orphan just adds a third writer.
+
+### WAITING ON A FILE THAT ALREADY EXISTS IS NOT WAITING (2026-08-06)
+
+`until [ -s out/dispatch/render_mute.mp4 ]; do sleep 25; done` looks like it waits for a
+render. It does not, because the PREVIOUS render's output is still sitting there when the
+new one starts. render_parallel.sh deletes it early and deliberately, but there is a window
+of a second or two between launching the render and that `rm -f`, and a waiter started in
+that window returns instantly.
+
+What that cost: the waiter fired immediately, chained the encode, and produced a full set
+of deliverables — master, square, 720, all asserts passing, log reading clean — from the
+PREVIOUS cut. Twelve fixes were missing from bytes that looked completely healthy. Nothing
+failed. `preflight.deliverables_are_fresh()` is what would have caught it downstream, which
+is exactly one step too late to be comfortable.
+
+Wait on the render's own COMPLETION MARKER instead, which is written only after the frame
+count assert passes:
+
+    until grep -q "^  OK  .*render_mute.mp4" out/dispatch/render_final.log; do sleep 20; done
+
+That string cannot exist until the render finished AND counted its frames. Same principle
+as the pkill note below: name the thing that can only be true when you are actually done,
+never a condition a stale artifact can satisfy.
+
+### `pkill -f <scriptname>` KILLS YOUR OWN WAITERS TOO (2026-08-06, twice in one run)
+
+A background waiter's command line contains the name of the thing it is waiting for, so
+`pkill -f encode_deliverables` matches `until ! pgrep -f encode_deliverables; do ...` and
+kills the watcher along with the target. Eight background tasks died at once this way, and
+one of them was the step that was going to chain the encode after the render, so the run
+looked like it had silently stalled when in fact nothing was wrong with the render at all.
+
+The same shape bites `pgrep`: `until ! pgrep -f render_parallel.sh` never exits, because
+the waiting shell's own command line matches the pattern it is polling for. That one reads
+as "the render is taking forever" and costs however long you believe it.
+
+  - kill by PID, captured when you launch the thing
+  - or wait on an ARTIFACT (`until [ -s out/dispatch/render_mute.mp4 ]`), never on a
+    process name
+  - if you must pattern-match, exclude the shell wrappers (`| grep -v shell-snapshots`)
+    and read what you are about to kill before killing it
+
+### KNOWN DEAD GATE: ship_gate's beat-delivery check has never run (found 2026-08-06)
+
+`ship_gate.check_beats_delivered()` opens with:
+
+    if not _g.glob(str(OUT / "frames" / "frame_*.png")):
+        return
+
+`out/dispatch/frames` does not exist on a normal run and never has — the pipeline renders
+straight to mp4. So the check returns silently every time, and the guard that is supposed
+to catch "a build that quietly stops drawing what the board promised" has never once looked
+at a frame. It is dead code wearing the costume of a gate.
+
+This is the SAME defect dead_space_check's own docstring describes and fixed for itself in
+August: "A check with a precondition no run satisfies is not a check." It was fixed there
+by sampling the SHIPPED VIDEO with ffmpeg instead of reading a directory nobody produces.
+beat_delivery needs the same treatment and has not had it.
+
+NOT fixed in the 2026-08-06 run, deliberately, and the reason matters. `check_beats_delivered`
+ends in `fail(problems)`, so making it live arms a HARD gate that has never been observed
+passing, on the critical path, mid-delivery. Turning on a dormant blocker right before
+shipping is how a run dies at 3am for a reason nobody has ever seen. The honest increment,
+for whoever picks this up:
+
+  1. sample the delivered square cut into a temp dir (360x640 is enough; beat_delivery
+     downsamples by 3 anyway), the way dead_space_check already does it;
+  2. pass the EPISODE's CAPTION_TOP, not beat_delivery's hardcoded 1420 — this film uses
+     1310, and the 110-row difference means burned captions currently count as beat motion,
+     which makes the check too LENIENT, not too strict;
+  3. run it ADVISORY for at least one full run and read what it says;
+  4. promote it to a hard fail only once it has been seen passing a good film.
+
+Do not skip step 3. The whole reason this gate is worthless today is that nobody ever
+watched it work.
 
 ## PHASE 6: GATES + PANEL (the human is never the QA)
 
@@ -1317,6 +1528,14 @@ config/linkedin_caption_rubric.yaml (ship 8.5, zero hard_fails). Loop until both
    ffprobe-assert 720x1280 on the rendition and check the thumb is < 100 KB.
 2. Upload the two full cuts + poster (frame 0) + the 720p rendition + the poster thumb via
    upload_video.py; verify HTTP 200 permanent links for ALL of them.
+   MEDIA NAMES ARE DETERMINISTIC AND THAT IS LOAD-BEARING: `dispatch-<date>-<basename>`,
+   e.g. `dispatch-2026-08-06-dispatch_master.mp4`. Because the name depends only on the run
+   date, re-uploading overwrites the same path and the raw URL never changes, and because
+   publish_feed is idempotent by --id, a re-publish REPLACES the feed entry rather than
+   adding one. Together those mean a bad entry that reached the site can be repaired IN
+   PLACE by finishing the run — no dead link, no duplicate, no second entry for one day.
+   That is the only reason the 2026-08-06 premature publish was recoverable. Do not
+   "fix" a bad entry by minting a new name or a new id; use the same ones and overwrite.
 2b. PUBLISH TO THE SITE FEED: `python3 scripts/publish_feed.py --id <run-slug> --date <date>
    --title "<display title>" --caption "<1-2 sentence VERIFIED summary, fact-check-safe-set
    language only>" --video-url "<the verified 9:16 URL from step 2>" --poster-url "<the

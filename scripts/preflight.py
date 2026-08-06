@@ -32,6 +32,27 @@ CHECKS = [
      ["npx", "tsc", "--noEmit", "-p", "video-engine/tsconfig.json"], True),
     ("plated strings fit their plates",
      [sys.executable, "scripts/text_fit_check.py"], True),
+    # Belt and braces. Its real home is Gate 0A', BEFORE the render, where catching a
+    # collision costs nothing instead of seven minutes. It is repeated here because the
+    # defect it catches is invisible at every other stage: the source reads fine, tsc is
+    # clean, the render succeeds, and two annotations are stacked in the same pixels.
+    ("nothing informational sits in the caption band",
+     [sys.executable, "scripts/caption_band_check.py"], True),
+    # Two elements in the same pixels cost score in three separate panel rounds on
+    # 2026-08-06 and were invisible to every other check, because each element is
+    # individually fine and the defect lives only in the relationship.
+    ("no two text plates share pixels",
+     [sys.executable, "scripts/plate_overlap_check.py"], True),
+    # The fact-checker's instructions are obligations, not suggestions. Seven were
+    # silently declined in one run and judges found all seven.
+    ("every claim obligation the fact-checker wrote is honoured",
+     [sys.executable, "scripts/claims_contract_check.py"], True),
+    # ADVISORY ON PURPOSE, FOR NOW. It is new and it has never been observed passing, and
+    # arming a hard gate that has never gone green is how a run dies at 3am for a reason
+    # nobody has seen (see the beat-delivery note in prompts/dispatch_routine.md). Promote
+    # it to required once one run has read it and cleared it.
+    ("the evidence pack actually shows the film",
+     [sys.executable, "scripts/evidence_coverage_check.py"], False),
     ("the square crop cuts nothing built",
      [sys.executable, "scripts/crop_safety.py"], False),
     ("dead space within ceilings",

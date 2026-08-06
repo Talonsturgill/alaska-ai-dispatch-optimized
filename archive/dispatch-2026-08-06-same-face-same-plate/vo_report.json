@@ -1,0 +1,62 @@
+{
+  "backend": "gemini-tts",
+  "model": "gemini-3.1-flash-tts-preview",
+  "voice": "Sulafat",
+  "take": 2,
+  "takes": 3,
+  "soundcheck": {
+    "pass": true,
+    "score": 0.984,
+    "heard": "a face, a license plate, one frame. Two Alaska cities argued about those two things this week, same pipe. Anchorage wants $600,000 more for a crime center, taking up to 750 volunteer feeds. 2023, the assembly wrote a rule naming facial recognition. Police don't use it, but the plate readers run object recognition, which isn't what the rule named. The assembly member Keith McCormick says Anchorage code can't answer any of those questions. The chief's answer was a promise. He'd come to a committee first, generally. Go North, Fairbanks bought the other end. It put artificial intelligence on redacting body camera video, so the public could see it. It hasn't named the tool. The chief of staff says it's still too slow. This isn't about a bad tool. Redacting video is two jobs. Find it, then decide. The machine got fast at finding. It never touched deciding. A person still signs the frame it missed. The fast half got faster. The line kept growing. Fairbanks used to see under 20 requests a month. April, more than 35. July, more than 35. That's one evidence technician. Who is the chief of staff says, basically subsidizing YouTubers from the lower 48? Footages free under five staff hours a month. That will predate spotty cameras. He's right about the problem. His idea was, tell them you'll get it when you get it. It's own attorneys disagreed that night. A request nobody funds is a denial nobody has to sign. One city teaches software to recognize a face and a plate. The other pays software to hide them. Same footage. Anchorage takes it up August 18th. The world that held wasn't a promise. Somebody wrote it down. What do you want written down? Before the cameras go up.",
+    "checks": {
+      "word_accuracy": {
+        "wer": 0.033,
+        "pass": true
+      },
+      "no_leak": {
+        "leaked": [],
+        "pass": true
+      },
+      "expressive": {
+        "pitch_std_semitones": 7.17,
+        "voiced_frac": 0.37,
+        "pass": true
+      },
+      "duration": {
+        "seconds": 127.16,
+        "pass": true
+      },
+      "loudness": {
+        "lufs": null,
+        "pass": true
+      }
+    },
+    "diagnosis": "clean",
+    "seconds": 127.16,
+    "in_target_band": true,
+    "selection": "in the 112-130s band, best quality of 1 in-band take(s)"
+  },
+  "prompt_repairs": [
+    "NO 'Transcript:' delimiter on its own line: the whole notes block was missing or the prompt had been split on the bare substring (which also occurs inside the preamble sentence). Rebuilt from the plan."
+  ],
+  "runtime_warning": null,
+  "all_reports": [
+    {
+      "pass": false,
+      "score": 0.987,
+      "diagnosis": "MONOTONE: pitch std 8.96 st below floor 1.6 \u2014 add ENERGY CONTRAST between adjacent lines (VO_DIRECTION step 5), then re-synth."
+    },
+    {
+      "pass": true,
+      "score": 0.984,
+      "diagnosis": "clean"
+    },
+    {
+      "pass": true,
+      "score": 0.984,
+      "diagnosis": "clean"
+    }
+  ],
+  "watermark": "SynthID (Google) embedded in all Gemini TTS audio",
+  "license": "Google Gemini API preset voice (per-use billing)"
+}

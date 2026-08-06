@@ -1,0 +1,1172 @@
+{
+  "date": "2026-08-06",
+  "title": "The Same Face, The Same Plate",
+  "engine": "infographic-2.5d",
+  "derived_from": "scratch",
+  "total_seconds": 129.38,
+  "concept": "Two Alaska cities spent the same week arguing about a face and a license plate, from opposite ends of one pipe. Anchorage is buying more capacity to FIND them. Fairbanks bought artificial intelligence to HIDE them so the footage can be released, and it can't keep up. The film holds ONE frame of body-camera video through both cities and asks what the machine actually did to it.",
+  "angle": {
+    "thesis": "Fairbanks bought AI to make releasing police video affordable. It made the mechanical half of redaction fast and never touched the half where a person has to decide, so the queue grew anyway. Anchorage is twelve days from funding six hundred thousand dollars more of the capture end of that same pipe. The rule Anchorage did write in 2023 names facial recognition, and the object recognition its plate readers actually run is not the thing that rule named. The protection that held was the one somebody wrote down, and it holds only over the category it named.",
+    "supporting_facts": [
+      "C11/C12/C13: in 2023 the Assembly voted 10 to 1 to HEAVILY LIMIT municipal facial recognition. It is not an indefinite ban, the Assembly may still approve a purchase after a public hearing, and there are carve-outs for human remains, missing persons, trafficking and child-abuse cases. APD does not use it. The film draws this as a rule that WORKS, not as an accusation.",
+      "C09: Chief Case said APD does use object recognition FOR ITS LICENSE PLATE READERS. Scope is plate readers only. The film never widens it to the volunteered feeds, the drones or the body cameras.",
+      "C14: 'we have no legislative guardrails' is Assembly Member Keith McCormick's CHARACTERIZATION, not an established fact. Anchorage Municipal Code chapter 3.102, Municipal Use of Surveillance Technologies, exists. The film attributes the line to him and draws a category MISMATCH rather than a void.",
+      "C22/C23/C24: Fairbanks put AI on redacting police audio and video, has not named the tool, and its chief of staff told the council it is still too slow, while requests went from never above 20 a month before October 2025 to more than 35 in April and more than 35 again in July.",
+      "THE MECHANISM, the film's actual AI insight: redaction is two jobs, finding and deciding. AI collapsed finding. Deciding did not move, because a person still signs off on the frame the model missed. So the total barely changed."
+    ],
+    "fair_counter_point": "Drawn at full strength in Act 3, and the fact-check supplied better material for it than the first draft had. ANCHORAGE: Chief Case's strongest argument is de-escalation, in his own words, that better information is 'going to cut down on us coming in too hot'. He volunteers his own limit, 'we are not going to outrun our coverage on this'. Registration is opt-in. City camera footage is discarded after 14 days unless a detective pulls it as evidence. And the Assembly POSTPONED rather than rubber-stamped, which is the check working. FAIRBANKS: Chief Dupee says plainly 'we just don't have the personnel to keep up with the requests. At the end of the day, that's the biggest issue.' The burden lands on ONE evidence technician. State law makes records free under five staff hours a month, a threshold written before body cameras existed. AND THE DECISIVE FAIR BEAT: the chief of staff's 'you'll get it when you get it' was ONE official's idea and the city's own attorneys disagreed with it in the room. The film ends its test there, on the check working, rather than on the official.",
+    "valence": "mixed, constructive urgency. Not doom, not wry, not celebration. Nothing here has failed: the Assembly postponed rather than rubber-stamped, the 2023 rule is being honored, Fairbanks reported honestly to its own council that its tool did not solve the problem, and the city's own lawyers stopped the bad idea in the room. What earns the urgency is the calendar, because the vote is August 18th.",
+    "runners_up": [
+      "THE SURVEILLANCE FRAME (rejected). All three analysts independently said to cut the Flock exchange, and they were right: APD does not run facial recognition, registration is voluntary, and a dragnet frame is factually wrong and off-brand under config/brand.yaml worldview.",
+      "THE FAILED-AI FRAME (rejected). 'Fairbanks bought AI and it didn't work' is the lazy read and it is false. The tool did its job. It was outrun by a demand curve that doubled after it was sized, and it only automated the half of the task that can be automated.",
+      "THE PURE-ANCHORAGE FRAME (rejected). The Anchorage vote alone is a governance argument that is fully stated in forty seconds. It can't carry two minutes, and the Fairbanks half is what turns it from a philosophical question into an arithmetic one.",
+      "THE HB 377 THREAD (cut on the fact-check's evidence). John McKay's 'most harmful since statehood' quote attaches to the BILL, not to the chief of staff's remark, and splicing them would manufacture a judgment nobody made. The bill also CONTAINED a provision releasing body-camera footage to use-of-force victims within 30 days, so describing it as a transparency rollback would be false. Stating it fairly costs about 40 words the 300-word budget does not have, so the whole thread is cut rather than told badly."
+    ]
+  },
+  "treatment": {
+    "winner": "THE EXPLAINER, grafted",
+    "logline": "One frame of police video, a face and a plate inside it, carried through two Alaska cities that spent the same week teaching software to find those two things and paying software to hide them.",
+    "judge_reasoning": "The Explainer wins because the payload is a MECHANISM and the mechanism is drawable: one task, two parts, one part collapses and the other does not move. That is a picture, not a paragraph. Grafted from the Dramatist: Act 3 stages the practitioners' case at full strength rather than as a clause, and the evidence technician's month is drawn as a real person's real month. Grafted from the Citizen's Eye: the throughline object and the film's whole thesis image, the same face and the same plate recognized in one city and hidden in the other. Grafted from the Enthusiast: the 2023 rule is drawn as a WIN that held over the category it named, and the film's last honest beat is a city's own attorneys stopping a bad idea in the room, which is what keeps this from reading as a complaint.",
+    "retention_plan": {
+      "the_test": "Act 3, 60 to 95 seconds. The fair case gets its own scenes, not a clause. Shot 7 draws the request curve as a real load landing on ONE desk. Shot 8 draws the five-hour rule as a physical measure written for paper and now asked to weigh video. The film says out loud that the chief of staff is right about the problem. It survives because his remedy aims at the requester rather than the bottleneck, and the film proves that with the city's own attorneys disagreeing in the room rather than with an outside critic's adjective.",
+      "the_throughline_object": "THE FRAME. One frame of body-camera video with a face and a license plate in it. Introduced at 0.0s and visibly different at every act boundary. Its final state is the film's argument.",
+      "the_two_loops": "PRIMARY plants at 8.5s ('same pipe', stated and refused) and pays at 108.7s when the two cities' frames converge into one. SECONDARY plants at 43.9s (the progress bar appears at zero) and pays at 97.0s (it still has not moved, and that is the answer).",
+      "the_padding_test": "Applied to every Act 3 beat. Shot 7's request curve and Shot 8's five-hour measure would both have made a 90-second cut WORSE by their absence, because without them the film asserts that Fairbanks has a real constraint instead of showing it, and the counter-point collapses into a token. Two beats that only restated the mechanism more slowly were cut from the script, which is why the VO came in at 300 words rather than 440."
+    }
+  },
+  "fingerprint": {
+    "pov": "instrument-screen",
+    "layout": "hud-instrument-frame",
+    "motion_vector": "radial-emanate",
+    "hero_treatment": "instrument-as-subject",
+    "register": "data-brutalist",
+    "camera_strategy": "locked-drift",
+    "light_story": "night-practical",
+    "palette": "municipal slate-blue night, one signal orange, redaction grey",
+    "metaphor": "the same face and the same plate, found in one city and hidden in the other, out of the same footage"
+  },
+  "palette": "slate #16283C, night #0E1B2A, signal orange #FF6B35 (reserved for machine attention), redaction grey #4A5560, hero light #E8EEF3, shadow #070E17",
+  "divergence_note": "The last two dispatches were a high-key bone museum interior in cabinet green and brass under overcast-diffuse daylight with a single organic hero and a rise-reveal camera (08-05), and a warm smoke-haze field (08-03). This film inverts every heavy axis of 08-05: pov goes macro-organic to instrument-screen, layout goes grid-modular to hud-instrument-frame, motion goes vertical-descent to radial-emanate, hero goes single-organic-hero to instrument-as-subject, register goes naturalistic-scene to data-brutalist, camera goes rise-reveal to locked-drift, and light goes overcast-diffuse to night-practical. Seven of seven. It is also the first night-interior, screen-lit film this channel has made, and the first with no animal, no landscape and no weather in it at all. DELIBERATE AVOIDANCE, recorded because the near-miss is real: the 2026-07-26 film's thesis image was a WIDE INTAKE and an UNCHANGED NARROW STEM, an asymmetry of volume. This film's mechanism is adjacent and is drawn deliberately differently, as ONE TASK IN TWO SEGMENTS where the mechanical segment collapses and the judgment segment does not move at all. A two-segment bar, never a funnel, never a cranking mouth.",
+  "hook": {
+    "pattern": "anomaly-question",
+    "frame1": "A single frame of body-camera video, filling the screen, lit only by itself. A face on the left, a license plate on the right, both perfectly sharp. It is the most finished thing this film will draw.",
+    "headline": "A FACE AND A PLATE",
+    "motion_by_s": 0.4,
+    "motion_at_frame_1": "At 0.4s four orange corner brackets SNAP inward and clamp onto the plate with a hard stop and a tick, in 4 frames with a 1-frame overshoot. It is a real interrupt, not an ease-in: a value slamming to its stop. The face gets no bracket, and the empty air where its bracket should be is the film's whole question.",
+    "loopback": "The button returns to this exact frame, now with both targets hidden under grey boxes, and pulls back to reveal it is one lit tile in a wall of them."
+  },
+  "throughline": {
+    "object": "THE FRAME, one frame of body-camera video carrying a face and a license plate",
+    "lands_in_button": true,
+    "states": [
+      {
+        "at_s": 0.4,
+        "state": "RAW. Face and plate both sharp, no brackets, nothing has happened to it yet."
+      },
+      {
+        "at_s": 24.2,
+        "state": "FOUND. The plate is clamped in orange brackets. The face is NOT, and the bracket that starts toward it is refused and slides off, because the 2023 ban holds."
+      },
+      {
+        "at_s": 43.9,
+        "state": "HIDDEN. Two flat grey boxes land on both targets, fast and dead, with no overshoot. A progress bar appears along the bottom edge, at zero."
+      },
+      {
+        "at_s": 74.1,
+        "state": "WAITING. The frame is sitting on a desk in a dark room, boxes on, bar unmoved, one human silhouette behind it and thirty-four more frames stacked beside it."
+      },
+      {
+        "at_s": 108.7,
+        "state": "BOTH AT ONCE. The same frame carries the orange brackets and the grey boxes together, recognized and hidden in one image."
+      },
+      {
+        "at_s": 115.6,
+        "state": "ONE OF MANY. Pulled back until it is a single lit tile in a wall of tiles, with one small person at a desk in front of it."
+      }
+    ]
+  },
+  "open_loop": {
+    "plant_t": 8.5,
+    "pay_t": 108.7,
+    "what": "Line 1 says two Alaska cities argued about the same two things and calls it 'same pipe', then refuses to show the pipe. The film spends both cities apart and does not put them in one frame until 108.7s, when the orange brackets and the grey boxes land on the SAME frame and the pipe is finally visible as one object."
+  },
+  "open_loop_2": {
+    "plant_t": 43.9,
+    "pay_t": 97.0,
+    "what": "A progress bar appears along the bottom of the frame the instant the AI starts blurring, and it is at zero. It is never mentioned in the narration. It is visible in four later shots and it never meaningfully moves, and at 97.0s it gets its answer when the remedy on the table turns out to be 'you'll get it when you get it', which is the bar's behaviour stated as policy."
+  },
+  "reveals": [
+    {
+      "t": 14.9,
+      "type": "build-on",
+      "what": "the camera cranes down the face of the wall and it resolves as CAPACITY, a grid of mostly empty dark sockets with a counter climbing against them to its ceiling",
+      "hold_s": 0.6
+    },
+    {
+      "t": 62.8,
+      "type": "morph-to-chart",
+      "what": "the word REDACT splits into a two-segment bar, FIND and DECIDE. The FIND segment collapses to a sliver in 8 frames. The DECIDE segment does not move at all, and the total length barely changes. This is the film's mechanism as a single drawn event.",
+      "hold_s": 0.7
+    },
+    {
+      "t": 108.7,
+      "type": "build-on",
+      "what": "the Anchorage frame and the Fairbanks frame slide together and FUSE into one frame carrying both the orange brackets and the grey boxes, then the camera begins the pull-back to the wall",
+      "hold_s": 0.8
+    },
+    {
+      "t": 115.6,
+      "type": "scale-pullback",
+      "what": "the fused frame recedes until it is one tile in a wall where every other tile is bracketed and only this one is hidden, with one small figure beneath it",
+      "hold_s": 0.6
+    }
+  ],
+  "audio_arc": {
+    "build_steps": [
+      14.9,
+      37.0,
+      62.8,
+      91.4
+    ],
+    "dip_at": 74.1,
+    "riser_at": 104.0,
+    "silence_at": 113.5,
+    "payoff_at": 108.7,
+    "button_pattern": "question",
+    "second_dip_at": 55.0,
+    "note": "Two real dips. The 74.1 dip is the film's held breath at the technician's desk, where the picture stops moving on purpose. The 113.5 dip is the pre-button silence before the final question, at least 6 dB under the bed."
+  },
+  "shots": [
+    {
+      "id": "S1",
+      "t": "0.0-14.9",
+      "framing": "macro-closeup",
+      "scale": "insert",
+      "height": "eye",
+      "pov": "macro-closeup",
+      "layout": "single-object-void",
+      "motion_vector": "radial-emanate",
+      "hero_treatment": "instrument-as-subject",
+      "transition_in": null,
+      "thread": null,
+      "centered": "the frame itself, face left and plate right, and the orange brackets snapping onto the plate while the face gets nothing",
+      "means": "opens on the two objects the whole film is about, before either city is named",
+      "camera": "static:the push is held sub-perceptual until 0.4s so the bracket snap stays the hardest interrupt then runs to about 1.06 across the shot with the scanline crawl and motes as the always-running ambient",
+      "stage3d": "flat:one lit frame in a void has no world to move through",
+      "hero": {
+        "name": "THE FRAME (FrameOfEvidence)",
+        "parts": 9,
+        "zones": 3,
+        "detail_note": "a video frame is 4 plated edges plus 2 targets plus a bracket set plus a scanline plus a progress rail. Zones: the face field the plate field and the frame furniture. The scanline crawls on an irrational period so no two frames are identical."
+      }
+    },
+    {
+      "id": "S2",
+      "t": "14.9-29.0",
+      "framing": "wide-establish",
+      "scale": "wide",
+      "height": "high",
+      "pov": "instrument-screen",
+      "layout": "grid-modular",
+      "motion_vector": "push-in-only",
+      "hero_treatment": "structure-as-subject",
+      "transition_in": "pull-out",
+      "thread": "carry",
+      "centered": "the Real-Time Crime Center wall drawn as capacity, mostly dark sockets with a counter climbing against them, our frame still lit as one of the few",
+      "means": "the crane down the face of the grid delivers capacity and price WITHOUT performing the pull-back reveal that S11 needs. The signature move is spent exactly once, in the button.",
+      "camera": "cranedown+dollythrough:the camera comes down the face of the wall and the tiles pass in depth which is what makes the capacity physical rather than a number",
+      "stage3d": "planes:the wall, the console lip, and the Anchorage window beyond are three real depth planes",
+      "hero": {
+        "name": "the socket grid (capacity, not a dragnet)",
+        "parts": 14,
+        "zones": 4,
+        "detail_note": "sockets have bezels dark faces and empty mounts, and only a small minority are lit. Zones: the grid the console lip and the window beyond. The lit minority flickers out of phase and the counter climbs. NOTHING on this wall is ever bracketed."
+      }
+    },
+    {
+      "id": "S3",
+      "t": "29.0-37.0",
+      "framing": "push-detail",
+      "scale": "close",
+      "height": "low",
+      "pov": "eye-level-immersive",
+      "layout": "single-object-void",
+      "motion_vector": "vertical-descent",
+      "hero_treatment": "instrument-as-subject",
+      "transition_in": "graphic-match",
+      "thread": "match",
+      "centered": "the code, one rule cut into it reading FACES, and the empty slot beside it drawn as a stated absence labelled NO RULE WRITTEN",
+      "means": "the ban that held and the rule that was never written, side by side, so the gap is a shape rather than an argument",
+      "camera": "static:the code does not move and that stillness is the point of it",
+      "stage3d": "planes:the plate sits proud of its slot with a real shadow in the gap",
+      "hero": {
+        "name": "the ordinance plate (civics.tsx Gate) plus the Unnamed slot",
+        "parts": 8,
+        "zones": 3,
+        "detail_note": "the plate has a cut face a bevel a seated shadow and mounting screws. Zones: the named category the mismatched shape and the code page under both."
+      }
+    },
+    {
+      "id": "S4",
+      "t": "37.0-48.3",
+      "framing": "alt-vantage",
+      "scale": "wide",
+      "height": "eye",
+      "pov": "eye-level-immersive",
+      "layout": "stacked-layers",
+      "motion_vector": "horizontal-traverse",
+      "hero_treatment": "landscape-as-subject",
+      "transition_in": "whip-pan",
+      "thread": "carry",
+      "centered": "a dark Fairbanks records room at night, rows of screens receding, one desk lit",
+      "means": "four hundred miles of travel in one smear, and the world changes from a room that watches to a room that releases",
+      "camera": "dollythrough:the camera travels down the row of dark desks to the one that is lit",
+      "stage3d": "planes:near desk edge, lit desk, far wall of dim screens in haze",
+      "hero": {
+        "name": "the night records room (PaperOfficeBG re-lit)",
+        "parts": 12,
+        "zones": 4,
+        "detail_note": "desks monitors chair backs cable runs and a haze plane. Zones: near desk edge lit desk far wall. One screen flickers out of sync with the rest."
+      }
+    },
+    {
+      "id": "S5",
+      "t": "48.3-55.6",
+      "framing": "subject-portrait",
+      "scale": "medium",
+      "height": "eye",
+      "pov": "eye-level-immersive",
+      "layout": "centered-hero-lowerthird",
+      "motion_vector": "push-in-only",
+      "hero_treatment": "single-organic-hero",
+      "transition_in": "focus-pull",
+      "thread": "carry",
+      "centered": "the evidence technician at the lit desk, screen-keyed from below, watching the frame do its work",
+      "means": "puts a person at the end of the pipe before the mechanism is explained, so the mechanism has somebody to land on",
+      "camera": "static:a slow push and nothing else because this shot's job is to let a viewer look at a face",
+      "stage3d": "planes:the technician sits between the console lip and the far screens",
+      "hero": {
+        "name": "the evidence technician (Character, worker, neutral)",
+        "parts": 11,
+        "zones": 3,
+        "detail_note": "the rig carries parka-class outfit head shoulders arms hands and a screen key from below. Zones: face torso and the desk surface catching bounce. Breath and a weight shift applied ABOVE the feet."
+      }
+    },
+    {
+      "id": "S6",
+      "t": "55.6-66.4",
+      "framing": "data-panel",
+      "scale": "wide",
+      "height": "overhead",
+      "pov": "top-down-map",
+      "layout": "fullbleed-split",
+      "motion_vector": "assemble-build",
+      "hero_treatment": "data-as-subject",
+      "transition_in": "morph",
+      "thread": "match",
+      "centered": "THE TWO-SEGMENT BAR. REDACT splits into FIND and DECIDE. FIND collapses to a sliver. DECIDE does not move.",
+      "means": "the film's mechanism drawn as one event, and the reason this is not a story about a bad tool",
+      "camera": "static:overhead and locked because a diagram that drifts reads as decoration",
+      "stage3d": "flat:this is a diagram and giving it depth would make it a place",
+      "hero": {
+        "name": "the two-segment bar",
+        "parts": 7,
+        "zones": 2,
+        "detail_note": "the bar has 2 segments 2 caps a tick rule a total measure and 2 labels. Zones: the FIND lane the DECIDE lane and the total rule beneath."
+      }
+    },
+    {
+      "id": "S7",
+      "t": "66.4-78.9",
+      "framing": "two-up",
+      "scale": "medium",
+      "height": "eye",
+      "pov": "instrument-screen",
+      "layout": "grid-modular",
+      "motion_vector": "scroll-data",
+      "hero_treatment": "data-as-subject",
+      "transition_in": "assemble",
+      "thread": "build",
+      "centered": "the request curve building month by month, under twenty for two years and then two hard spikes past thirty-five, with the frames stacking physically on ONE desk beneath it",
+      "means": "the counter-point's first half, drawn: the load is real and it lands on one person",
+      "camera": "static:the data scrolls and the camera does not so the growth is the motion",
+      "stage3d": "planes:the chart plane sits in front of the desk plane and the stack grows between them",
+      "hero": {
+        "name": "the request curve and the growing stack",
+        "parts": 13,
+        "zones": 4,
+        "detail_note": "axis ticks month columns a threshold line a growing stack of frames and the desk under it. Zones: the chart plane the stack and the desk. The stack casts a lengthening contact shadow."
+      }
+    },
+    {
+      "id": "S8",
+      "t": "78.9-91.4",
+      "framing": "push-detail",
+      "scale": "close",
+      "height": "low",
+      "pov": "macro-closeup",
+      "layout": "single-object-void",
+      "motion_vector": "vertical-descent",
+      "hero_treatment": "instrument-as-subject",
+      "transition_in": "match-cut",
+      "thread": "match",
+      "centered": "the five-hour rule as a finite spool, and one hour of video running off the end of it",
+      "means": "the counter-point's second half: the law is not wrong, it is calibrated for paper and is now being asked to weigh video",
+      "camera": "static:low and close so the measure looms and the video that buries it arrives from above",
+      "stage3d": "planes:the gauge, the settling video, and the dark beyond",
+      "hero": {
+        "name": "the staff-hours spool (paper.tsx FullTapeMachine)",
+        "parts": 9,
+        "zones": 3,
+        "detail_note": "two visible reels a finite tape loop a FULL tag on a spring and a mount. Zones: the reels the tag and the tape running off the end. The tungsten desk practical rakes across it, which is the film's judgment colour arriving on the law."
+      }
+    },
+    {
+      "id": "S9",
+      "t": "91.4-101.5",
+      "framing": "subject-portrait",
+      "scale": "medium",
+      "height": "eye",
+      "pov": "eye-level-immersive",
+      "layout": "centered-hero-lowerthird",
+      "motion_vector": "push-in-only",
+      "hero_treatment": "single-organic-hero",
+      "transition_in": "hard-cut",
+      "thread": "carry",
+      "centered": "the chief of staff at the council table, and the request slip in front of him that never gets stamped either way",
+      "means": "the remedy on the table, drawn as an absence of a decision rather than as a refusal, because that is precisely what it is",
+      "camera": "static:a slow push onto the unstamped slip",
+      "stage3d": "planes:the table edge, the figure, the chamber beyond",
+      "hero": {
+        "name": "the unstamped request",
+        "parts": 8,
+        "zones": 3,
+        "detail_note": "the slip has a printed field a stamp cradle an unstamped face and a table edge. Zones: the slip the empty stamp and the chamber beyond."
+      }
+    },
+    {
+      "id": "S10",
+      "t": "101.5-115.6",
+      "framing": "two-up",
+      "scale": "close",
+      "height": "eye",
+      "pov": "instrument-screen",
+      "layout": "fullbleed-split",
+      "motion_vector": "horizontal-traverse",
+      "hero_treatment": "instrument-as-subject",
+      "transition_in": "carried-element",
+      "thread": "carry",
+      "centered": "THE FUSION. The Anchorage frame and the Fairbanks frame slide together across a hard center seam and become one frame carrying orange brackets and grey boxes at once.",
+      "means": "the primary loop pays: the pipe promised at 8.5s is finally one object",
+      "camera": "static:the objects travel and the camera holds so the convergence belongs to them",
+      "stage3d": "planes:the two frames travel in front of the wall plane",
+      "hero": {
+        "name": "THE FRAME, fused",
+        "parts": 11,
+        "zones": 3,
+        "detail_note": "two frames each with targets brackets and boxes converging across a hard seam. Zones: the Anchorage side the Fairbanks side and the seam itself."
+      }
+    },
+    {
+      "id": "S11",
+      "t": "115.6-122.6",
+      "framing": "map-territory",
+      "scale": "extreme-wide",
+      "height": "high",
+      "pov": "orbital-aerial",
+      "layout": "grid-modular",
+      "motion_vector": "vertical-rise",
+      "hero_treatment": "multiplicity-swarm",
+      "transition_in": "pull-out",
+      "thread": "carry",
+      "centered": "a wall where every tile is bracketed orange and exactly ONE carries a grey box, with one backlit figure seated beneath that tile",
+      "means": "the film's thesis in one move, the capture side scales and the release side is a person",
+      "camera": "risewith:the film's ONE deliberate exception to its locked grammar spent here because this is the only moment that earns it",
+      "stage3d": "planes:the tile, the wall, the figure and the room, four planes with the figure smallest",
+      "hero": {
+        "name": "the wall and the one person",
+        "parts": 16,
+        "zones": 5,
+        "detail_note": "the wall resolves into hundreds of tiles with a console a chair and one seated figure. Zones: the tile the wall the figure and the room. The figure is the smallest lit thing in frame and it breathes."
+      }
+    }
+  ],
+  "scene_start_line": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    11,
+    13,
+    15,
+    18,
+    21,
+    23
+  ],
+  "beats": [
+    {
+      "i": 1,
+      "t": 0.0,
+      "vo": 0,
+      "sfx": "the low room hum coming up under a faint electrical whine off the scanline",
+      "means": "the two objects exist before anything is claimed about them",
+      "shows": "the raw frame, face and plate both sharp",
+      "draw": {
+        "subject": "one frame of body-camera video, lit only by itself, filling the screen",
+        "action": "holds dead still for four tenths of a second while its own scanline drifts",
+        "emotion": "matter-of-fact",
+        "annotation": "A FACE AND A PLATE"
+      },
+      "choreo": {
+        "primary": "the frame holds",
+        "reaction": "its scanline crawls",
+        "ambient": "dust in the screen light"
+      }
+    },
+    {
+      "i": 2,
+      "t": 0.4,
+      "vo": 0,
+      "sfx": "a hard lock tick with a metal edge",
+      "means": "the machine attends, instantly",
+      "shows": "orange brackets clamp the plate",
+      "draw": {
+        "subject": "four orange corner brackets",
+        "action": "SNAP inward onto the license plate and clamp with a one-frame overshoot",
+        "emotion": "certain",
+        "annotation": "PLATE"
+      },
+      "choreo": {
+        "primary": "the brackets converge and lock",
+        "reaction": "the plate's numerals sharpen a notch",
+        "ambient": "the scanline keeps crawling"
+      }
+    },
+    {
+      "i": 3,
+      "t": 2.6,
+      "vo": 0,
+      "sfx": "a dry aborted scrape, the sound of something starting and not arriving",
+      "means": "the ban is drawn before it is spoken",
+      "shows": "a bracket starts toward the face and slides off",
+      "draw": {
+        "subject": "a second set of brackets",
+        "action": "begins to converge on the face, then REFUSES and slides away off frame",
+        "emotion": "withheld",
+        "annotation": "none"
+      },
+      "choreo": {
+        "primary": "the bracket aborts",
+        "reaction": "the face stays exactly as sharp as it was",
+        "ambient": "screen flicker"
+      }
+    },
+    {
+      "i": 4,
+      "t": 5.2,
+      "vo": 1,
+      "sfx": "a soft double thump, two rooms",
+      "means": "the two cities enter as two lit rectangles",
+      "shows": "two city plates flank the frame",
+      "draw": {
+        "subject": "two small municipal plates, ANCHORAGE and FAIRBANKS",
+        "action": "set down on either side of the frame with weight",
+        "emotion": "neutral",
+        "annotation": "ANCHORAGE / FAIRBANKS"
+      },
+      "choreo": {
+        "primary": "the plates land",
+        "reaction": "the frame between them dims a step",
+        "ambient": "hum"
+      }
+    },
+    {
+      "i": 5,
+      "t": 8.5,
+      "vo": 1,
+      "sfx": "a low pipe resonance, felt not heard",
+      "means": "THE PRIMARY LOOP IS PLANTED",
+      "shows": "a dark conduit runs between the two plates and is immediately hidden",
+      "draw": {
+        "subject": "a conduit connecting the two city plates",
+        "action": "glows for six frames and then goes dark, refusing to show where it runs",
+        "emotion": "withheld",
+        "annotation": "SAME PIPE"
+      },
+      "choreo": {
+        "primary": "the conduit lights and dies",
+        "reaction": "both plates flicker once together",
+        "ambient": "dust"
+      }
+    },
+    {
+      "i": 6,
+      "t": 12.4,
+      "vo": 2,
+      "sfx": "a rising tile whoosh",
+      "means": "the pull-back begins",
+      "shows": "the frame starts receding",
+      "draw": {
+        "subject": "the frame",
+        "action": "begins to shrink as the camera cranes DOWN the face of a mostly dark socket grid, empty positions resolving around it",
+        "emotion": "none",
+        "annotation": "none"
+      },
+      "choreo": {
+        "primary": "the recede",
+        "reaction": "neighbouring tiles fade up",
+        "ambient": "wall glow builds"
+      }
+    },
+    {
+      "i": 7,
+      "t": 14.9,
+      "vo": 2,
+      "sfx": "a cascade of soft tile pops, then a boom",
+      "means": "REVEAL ONE, the HEADROOM the capture side is built for. 750 is a ceiling on volunteered feeds (c2), not a count of cameras watching, so the picture says headroom and never says dragnet. A careful caption cannot undo a composition, so the composition carries it.",
+      "shows": "the wall of 750 tiles lights",
+      "draw": {
+        "subject": "the Real-Time Crime Center wall, drawn as CAPACITY: a grid of mostly EMPTY dark sockets with only a small number of positions lit",
+        "action": "a counter climbs against the grid of empty sockets and stops at the ceiling, and most of the wall stays dark",
+        "emotion": "impassive",
+        "annotation": "$600,000 REQUESTED"
+      },
+      "choreo": {
+        "primary": "the counter climbs against empty sockets",
+        "reaction": "the lit minority flickers out of phase",
+        "ambient": "the Anchorage skyline through the window beyond, non-story"
+      }
+    },
+    {
+      "i": 8,
+      "t": 18.2,
+      "vo": 2,
+      "sfx": "a ratcheting metallic count-up resolving on one bright register click",
+      "means": "the price lands on the room",
+      "shows": "the dollar figure",
+      "draw": {
+        "subject": "a StatCard naming the CAPACITY the grid is built for",
+        "action": "counts up and lands hard",
+        "emotion": "none",
+        "annotation": "UP TO 750 VOLUNTEERED FEEDS"
+      },
+      "choreo": {
+        "primary": "the count-up",
+        "reaction": "the card's shadow deepens as it seats",
+        "ambient": "tiles flickering out of phase"
+      }
+    },
+    {
+      "i": 9,
+      "t": 21.0,
+      "vo": 3,
+      "sfx": "a solid stone set-down",
+      "means": "the rule Anchorage actually wrote, drawn as the one solid object in the room. It heavily limits rather than bans, and what matters for this film is that it NAMES A CATEGORY.",
+      "shows": "the 2023 ban seats into the wall",
+      "draw": {
+        "subject": "the ordinance plate, its face reading FACIAL RECOGNITION",
+        "action": "sets into the console with real weight and does not move again, its one named category cut deep into it",
+        "emotion": "steady",
+        "annotation": "2023: THE RULE NAMES FACIAL RECOGNITION"
+      },
+      "choreo": {
+        "primary": "the plate seats",
+        "reaction": "the socket grid behind it stays exactly as it was, untouched",
+        "ambient": "wall glow"
+      }
+    },
+    {
+      "i": 10,
+      "t": 24.2,
+      "vo": 3,
+      "sfx": "a clean refusal tone",
+      "means": "THROUGHLINE STATE TWO, scoped honestly. Claim c6 limits object recognition to the license plate readers, so the brackets NEVER touch the volunteered feed wall, the drones or the body cameras. The wall brackets nothing in this film.",
+      "shows": "faces stay unbracketed across the whole wall",
+      "draw": {
+        "subject": "A PLATE-READER LANE, away from the wall entirely: a reader head, a road, one vehicle, one plate",
+        "action": "ScanReticle's orange corner brackets snap inward and clamp on the PLATE, once, on the one vehicle in frame",
+        "emotion": "impassive",
+        "annotation": "OBJECT RECOGNITION: PLATE READERS"
+      },
+      "choreo": {
+        "primary": "one bracket set snaps and clamps on one plate",
+        "reaction": "the reader head's own lamp ticks once",
+        "ambient": "the road surface travelling under the lane"
+      }
+    },
+    {
+      "i": 11,
+      "t": 26.8,
+      "vo": 4,
+      "sfx": "a dry electronic index-flip, a screen page swapping",
+      "means": "the code opens, and it is NOT empty. A surveillance-technology chapter exists, which is why the film's claim is about a category and never about a void.",
+      "shows": "the code opens beside the wall",
+      "draw": {
+        "subject": "the municipal code",
+        "action": "opens to the page carrying the face rule",
+        "emotion": "neutral",
+        "annotation": "ANCHORAGE CODE, CH. 3.102"
+      },
+      "choreo": {
+        "primary": "the page settles",
+        "reaction": "the wall dims behind it",
+        "ambient": "paper fiber catching screen light"
+      }
+    },
+    {
+      "i": 12,
+      "t": 29.0,
+      "vo": 4,
+      "sfx": "a rising dry scrape, then a dull dead non-seat knock with no resonance where a solid seat belongs",
+      "means": "REHOOK ONE. Not a hole in the law, a MISMATCH: the code names one category and the capability in use is a different one. This is the honest version and it is sharper than the void the first board drew.",
+      "shows": "the empty slot beside the face rule",
+      "draw": {
+        "subject": "the ORANGE PLATE-LOCK BRACKET from 0.4s, labelled OBJECT RECOGNITION, offered to the socket cut for FACIAL RECOGNITION",
+        "action": "the bracket SLAMS at the socket and visibly bounces off it, and the bounce is held",
+        "emotion": "none",
+        "annotation": "OBJECT RECOGNITION / NOT WHAT THE RULE NAMED"
+      },
+      "choreo": {
+        "primary": "the bracket slams and bounces",
+        "reaction": "the FACIAL RECOGNITION plate stays lit and solid, unchanged, because it is doing its job",
+        "ambient": "the void's slow interior drift"
+      },
+      "rehook": "the machine's own attention, in the colour the film has trained since 0.4s, hits the rule and bounces off it. A muted viewer reads the mismatch between two things they already know."
+    },
+    {
+      "i": 13,
+      "t": 32.0,
+      "vo": 5,
+      "sfx": "a firm speech tick",
+      "means": "the objection gets a name, a district and the APPROVED verbatim string. v1 painted a paraphrase inside quotation marks, which is a fabricated quotation and a hard blocker.",
+      "shows": "McCormick's line on a plate",
+      "draw": {
+        "subject": "a BrassPlate quote plate with an attribution line reading KEITH McCORMICK, ASSEMBLY, DISTRICT 6",
+        "action": "types in over the empty slot and holds",
+        "emotion": "plain",
+        "annotation": "\"ANCHORAGE CODE CAN'T ANSWER ANY OF THOSE QUESTIONS\""
+      },
+      "choreo": {
+        "primary": "the type reveal",
+        "reaction": "the slot dims under it",
+        "ambient": "drift"
+      }
+    },
+    {
+      "i": 14,
+      "t": 33.6,
+      "vo": 6,
+      "sfx": "a soft, unconvincing latch",
+      "means": "ANCHORAGE'S REAL CARDS, and v1 gave them none. c11 is a limit that EXISTS and is drawn rather than captioned. c10 is a de-escalation argument in the chief's own mouth and is the strongest honest thing anyone says for the capture side. The rocking promise card stays as the THIRD object, so the beat reads two real limits and one promise. Without this the film gave one city its weakest card and then sent viewers to that city's meeting.",
+      "shows": "a promise card set beside the stone rule, visibly lighter",
+      "draw": {
+        "subject": "THREE objects together: a tile on the wall running down a 14-day counter, a BrassPlate quote plate, and a paper promise card",
+        "action": "the tile's counter hits zero and the tile GOES DARK and is gone; the quote plate sets down solid; the promise card is laid beside them and rocks, never settling",
+        "emotion": "fair",
+        "annotation": "\"CUT DOWN ON US COMING IN TOO HOT\"  /  14 DAYS, THEN DELETED"
+      },
+      "choreo": {
+        "primary": "the 14-day tile counts to zero and goes dark",
+        "reaction": "the quote plate seats solid beside it while the promise card rocks and never settles",
+        "ambient": "the socket grid dimming behind"
+      }
+    },
+    {
+      "i": 15,
+      "t": 37.0,
+      "vo": 7,
+      "sfx": "a hard directional smear",
+      "means": "THE FILM'S TITLE, PAID. The frame is the still point through the city change, held six frames on the far side before the grey boxes kill both. Without this the primary loop pays a promise the muted viewer never received.",
+      "shows": "whip-pan north",
+      "draw": {
+        "subject": "the whole frame",
+        "action": "the ROOM smears hard left under directional blur while THE FRAME does not move one pixel, and lands on the technician's screen with the face and the plate still sharp and the orange bracket still clamped",
+        "emotion": "none",
+        "annotation": "FAIRBANKS"
+      },
+      "choreo": {
+        "primary": "the smear",
+        "reaction": "the new room's screens fade up in sequence",
+        "ambient": "a different, colder hum"
+      }
+    },
+    {
+      "i": 16,
+      "t": 40.2,
+      "vo": 8,
+      "sfx": "a soft processing chatter",
+      "means": "the corridor, and the primary loop touched once in the middle so a hundred seconds do not pass in silence",
+      "shows": "the records room, one desk lit",
+      "draw": {
+        "subject": "rows of dark desks receding, one lit",
+        "action": "the camera travels down the row toward the lit desk while one segment of the conduit from 8.5s lights and dies again",
+        "emotion": "quiet",
+        "annotation": "none"
+      },
+      "choreo": {
+        "primary": "the dolly",
+        "reaction": "screens brighten as we pass",
+        "ambient": "haze in the far plane"
+      }
+    },
+    {
+      "i": 17,
+      "t": 43.9,
+      "vo": 8,
+      "sfx": "two flat dead thuds, no ring",
+      "means": "THROUGHLINE STATE THREE and THE SECOND LOOP PLANTED. NOTE: the sources say only that AI was put on redacting police audio and video. They never itemise what it blurs, so the film paints a redaction and never labels the categories.",
+      "shows": "grey boxes land on the face and the plate, and a progress bar appears at zero",
+      "draw": {
+        "subject": "the frame on the technician's screen",
+        "action": "two flat grey boxes drop onto the frame with NO overshoot and no life, and a thin hero-white progress bar appears along the bottom edge at zero",
+        "emotion": "none",
+        "annotation": "REDACTED"
+      },
+      "choreo": {
+        "primary": "the boxes land dead",
+        "reaction": "the frame's own light dims where they cover it",
+        "ambient": "the bar's pixel at zero, faintly pulsing"
+      }
+    },
+    {
+      "i": 18,
+      "t": 48.3,
+      "vo": 9,
+      "sfx": "a stalled motor tick",
+      "means": "the honest report",
+      "shows": "the technician, and the bar still at zero",
+      "draw": {
+        "subject": "the evidence technician at the lit desk",
+        "action": "looks at the frame, then at the bar, and does not reach for anything yet",
+        "emotion": "worried",
+        "annotation": "STILL TOO SLOW"
+      },
+      "choreo": {
+        "primary": "the look between frame and bar",
+        "reaction": "a weight shift above the feet",
+        "ambient": "screen key flickering on the face"
+      }
+    },
+    {
+      "i": 19,
+      "t": 51.5,
+      "vo": 10,
+      "sfx": "a crisp measurement snap, one clean alignment tick",
+      "means": "the tool's competence asserted by REPETITION AND SPEED rather than by a caption. v1's only action was 'holds perfectly steady', which is the measured slideshow tell.",
+      "shows": "the grey boxes hold steady and legible, not glitching",
+      "draw": {
+        "subject": "the redacted frame",
+        "action": "FIVE frames pass through in under a second, boxes landing dead accurate on every one, no misses and no glitching, and an alignment tick snaps PASS against each box edge",
+        "emotion": "none",
+        "annotation": null
+      },
+      "choreo": {
+        "primary": "five frames pass through, each box landing dead accurate",
+        "reaction": "a PASS tick snaps against each box edge",
+        "ambient": "the hero-white bar still at zero at the frame edge"
+      }
+    },
+    {
+      "i": 20,
+      "t": 55.6,
+      "vo": 11,
+      "sfx": "a clean split, two tones separating",
+      "means": "the mechanism opens",
+      "shows": "REDACT splits into two words",
+      "draw": {
+        "subject": "the word REDACT",
+        "action": "splits down the middle into FIND and DECIDE, which separate and take their own lanes",
+        "emotion": "none",
+        "annotation": "FIND / DECIDE"
+      },
+      "choreo": {
+        "primary": "the split",
+        "reaction": "each half takes a different colour temperature",
+        "ambient": "the bar still visible at the frame edge"
+      }
+    },
+    {
+      "i": 21,
+      "t": 58.6,
+      "vo": 11,
+      "sfx": "a fast collapsing zip",
+      "means": "the half the machine took",
+      "shows": "FIND begins to shrink",
+      "draw": {
+        "subject": "the FIND segment",
+        "action": "begins collapsing along its length, fast and eased",
+        "emotion": "none",
+        "annotation": "none"
+      },
+      "choreo": {
+        "primary": "the collapse",
+        "reaction": "DECIDE holds its exact width",
+        "ambient": "tick marks passing"
+      }
+    },
+    {
+      "i": 22,
+      "t": 62.8,
+      "vo": 12,
+      "sfx": "a hard stop, then nothing at all",
+      "means": "REVEAL TWO and REHOOK TWO, the film's mechanism",
+      "shows": "FIND is a sliver, DECIDE has not moved, the total barely changed",
+      "draw": {
+        "subject": "the two-segment bar",
+        "action": "FIND lands as a sliver and DECIDE sits at its original full width, and the total length is almost what it was",
+        "emotion": "none",
+        "annotation": "THE TOTAL BARELY MOVED"
+      },
+      "choreo": {
+        "primary": "the sliver lands",
+        "reaction": "a measuring rule slides in under the total and confirms it",
+        "ambient": "the DECIDE segment's surface is the only textured thing in frame"
+      },
+      "rehook": "the viewer came in thinking this was a story about a tool failing and is shown instead that the tool succeeded completely at a job that was never the bottleneck"
+    },
+    {
+      "i": 23,
+      "t": 66.4,
+      "vo": 13,
+      "sfx": "a human pen-scratch, the only organic sound in the film",
+      "means": "who the judgment half actually is",
+      "shows": "a hand signs the frame",
+      "draw": {
+        "subject": "a hand and the redacted frame",
+        "action": "signs the corner of the frame, slowly, once",
+        "emotion": "careful",
+        "annotation": "A PERSON SIGNS"
+      },
+      "choreo": {
+        "primary": "the signature",
+        "reaction": "the bar advances by one pixel",
+        "ambient": "screen key"
+      }
+    },
+    {
+      "i": 24,
+      "t": 69.5,
+      "vo": 14,
+      "sfx": "a stepping data chatter, one tick per month column",
+      "means": "the load arrives",
+      "shows": "the request curve builds",
+      "draw": {
+        "subject": "a month-by-month curve",
+        "action": "builds left to right, flat and low for two years",
+        "emotion": "none",
+        "annotation": "UNDER 20 A MONTH"
+      },
+      "choreo": {
+        "primary": "the curve builds",
+        "reaction": "frames begin stacking on the desk below it",
+        "ambient": "the stack's shadow lengthening"
+      }
+    },
+    {
+      "i": 25,
+      "t": 72.9,
+      "vo": 14,
+      "sfx": "two hard spikes, a beat apart",
+      "means": "the curve breaks",
+      "shows": "April and July spike past 35",
+      "draw": {
+        "subject": "the curve",
+        "action": "spikes twice, hard, past the thirty-five line",
+        "emotion": "none",
+        "annotation": "APRIL: MORE THAN 35 / JULY: MORE THAN 35"
+      },
+      "choreo": {
+        "primary": "the two spikes",
+        "reaction": "the stack of frames doubles in height",
+        "ambient": "the bar, still barely off zero"
+      }
+    },
+    {
+      "i": 26,
+      "t": 74.1,
+      "vo": 15,
+      "sfx": "everything drops out except one hum",
+      "means": "THE DIP and THROUGHLINE STATE FOUR",
+      "shows": "one desk, one person, the whole stack",
+      "draw": {
+        "subject": "the technician, the stack, the unmoved bar",
+        "action": "the picture stops. Nothing advances. The person breathes and the stack sits.",
+        "emotion": "tired",
+        "annotation": "ONE EVIDENCE TECHNICIAN"
+      },
+      "choreo": {
+        "primary": "the held breath, a real weight shift above the feet",
+        "reaction": "the stack settles by two pixels",
+        "ambient": "one screen flickering"
+      }
+    },
+    {
+      "i": 27,
+      "t": 78.9,
+      "vo": 16,
+      "sfx": "a flat card slap, square and dry, no reverb tail",
+      "means": "the other side speaks and it is not a straw man. The person being subsidised in that sentence is the evidence technician, and the film draws him standing under it.",
+      "shows": "the chief of staff's line, plainly set",
+      "draw": {
+        "subject": "a quote plate",
+        "action": "sets down square and stays",
+        "emotion": "plain",
+        "annotation": "\"BASICALLY JUST SUBSIDIZING YOUTUBERS FROM THE LOWER 48\""
+      },
+      "choreo": {
+        "primary": "the plate lands",
+        "reaction": "the stack behind it stays exactly as tall",
+        "ambient": "haze"
+      }
+    },
+    {
+      "i": 28,
+      "t": 83.0,
+      "vo": 17,
+      "sfx": "a brass measure settling",
+      "means": "the law drawn as a KNOWN OBJECT WITH FIXED CAPACITY rather than as a dial. civics.tsx records that a scale-plate-with-a-needle was drawn three times and dropped, because a dial reports that nothing is measured while a finite spool shows what runs off the end.",
+      "shows": "the five-hour measure",
+      "draw": {
+        "subject": "the five-hour rule as a FullTapeMachine, a finite spool with a FULL tag on a spring",
+        "action": "settles into frame and its fixed capacity is shown, the reels holding five marked turns",
+        "emotion": "none",
+        "annotation": "FREE UNDER 5 STAFF HOURS A MONTH"
+      },
+      "choreo": {
+        "primary": "the spool settles and its five turns are counted off",
+        "reaction": "the FULL tag hangs slack on its spring",
+        "ambient": "the tungsten desk practical raking across the reels"
+      }
+    },
+    {
+      "i": 29,
+      "t": 87.9,
+      "vo": 17,
+      "sfx": "a heavy avalanche settle",
+      "means": "the throughline object is BACK, and the thing that buries the law is literally the work. v1 vanished the frame for 12.5 seconds at exactly the 80-second how-much-longer mark.",
+      "shows": "one hour of video buries the scale",
+      "draw": {
+        "subject": "a cascade of the same redacted frames, boxes on and bars at zero",
+        "action": "they pour onto the spool until it seizes, and the needle climbs before it pins",
+        "emotion": "none",
+        "annotation": "WRITTEN BEFORE BODY CAMERAS"
+      },
+      "choreo": {
+        "primary": "the tape runs off the end",
+        "reaction": "the FULL tag snaps taut",
+        "ambient": "tungsten rake"
+      }
+    },
+    {
+      "i": 30,
+      "t": 91.4,
+      "vo": 18,
+      "sfx": "a paper slap as the slip lands, and the stamp does NOT come down",
+      "means": "the idea floated at the table, drawn as a slip that is never stamped either way, because that is precisely what it is",
+      "shows": "the council table, the unstamped slip",
+      "draw": {
+        "subject": "the chief of staff and a request slip",
+        "action": "the slip is set down and NOT stamped, either way",
+        "emotion": "resolved",
+        "annotation": "\"YOU'LL GET IT WHEN YOU GET IT\""
+      },
+      "choreo": {
+        "primary": "the slip lands unstamped",
+        "reaction": "the stamp stays in its cradle",
+        "ambient": "chamber haze"
+      }
+    },
+    {
+      "i": 31,
+      "t": 94.3,
+      "vo": 18,
+      "sfx": "one clean stroke as the tick is drawn, with a small chime under it",
+      "means": "THE CONCESSION, drawn on a THING. The problem is real and gets the tick; the remedy is not and does not. v1's subject was 'the diagnosis lifted out as an object', which is the only beat in forty that cannot be drawn.",
+      "shows": "the diagnosis held up and marked correct",
+      "draw": {
+        "subject": "the stack of frames and the one technician from 74.1, brought back",
+        "action": "a CORRECT tick lands on THEM, while the request slip beside them gets no tick and stays unstamped",
+        "emotion": "fair",
+        "annotation": "HE'S RIGHT ABOUT THE PROBLEM"
+      },
+      "choreo": {
+        "primary": "the tick lands on the stack and the technician",
+        "reaction": "the slip beside them stays unstamped",
+        "ambient": "the tungsten desk practical, the film's judgment colour"
+      }
+    },
+    {
+      "i": 32,
+      "t": 97.0,
+      "vo": 19,
+      "sfx": "a firm document slide and a low settling tone",
+      "means": "THE SECOND LOOP PAYS WITH AN EVENT AND A UNIT. v1 paid it by having a rectangle reappear. The film shows exactly one human at a time everywhere else, so making this the only plural frame earns the plural in 'its own attorneys' and escalates in the register the film has been rationing.",
+      "shows": "the progress bar, still at zero, answered",
+      "draw": {
+        "subject": "SEVERAL attorneys at the table, the film's ONLY multi-figure frame, and the hero-white bar returned full width beneath them",
+        "action": "the slip moves between them and is slid back, and the thirty-five stacked frames lay along the bar to show how little of it one month buys, then it advances exactly ONE pixel",
+        "emotion": "firm",
+        "annotation": "THE CITY'S OWN ATTORNEYS DISAGREED"
+      },
+      "choreo": {
+        "primary": "the slip slides back between several hands",
+        "reaction": "the stacked frames lay along the bar and it advances one pixel",
+        "ambient": "tungsten practical across the table"
+      },
+      "rehook": "the viewer expects the film to land on the official and instead watches his own city's lawyers stop him, which is the system working and is not what a surveillance story usually does"
+    },
+    {
+      "i": 33,
+      "t": 101.5,
+      "vo": 20,
+      "sfx": "a soft, damning click",
+      "means": "the film's sharpest line, drawn",
+      "shows": "an unsigned denial",
+      "draw": {
+        "subject": "a denial form",
+        "action": "fills itself in completely except for the signature line, which stays blank",
+        "emotion": "none",
+        "annotation": "NOBODY HAS TO SIGN"
+      },
+      "choreo": {
+        "primary": "the form fills",
+        "reaction": "the signature line stays conspicuously empty",
+        "ambient": "drift"
+      }
+    },
+    {
+      "i": 34,
+      "t": 105.0,
+      "vo": 21,
+      "sfx": "a riser starting",
+      "means": "the film's argument in one line gets the two operations re-fired on the two travelling frames, synced to the two clauses. The convergence becomes the bed under it rather than the whole event.",
+      "shows": "the two frames slide toward each other",
+      "draw": {
+        "subject": "the Anchorage frame and the Fairbanks frame",
+        "action": "as the first clause lands the orange brackets snap onto the Anchorage frame's plate, and as the second lands the grey boxes drop dead onto the Fairbanks frame, while both travel toward the seam",
+        "emotion": "none",
+        "annotation": "RECOGNIZE  /  HIDE"
+      },
+      "choreo": {
+        "primary": "the convergence",
+        "reaction": "the seam brightens as they close",
+        "ambient": "riser"
+      }
+    },
+    {
+      "i": 35,
+      "t": 108.7,
+      "vo": 21,
+      "sfx": "a deep sub-bass swell with a soft transient",
+      "means": "REVEAL THREE and THE PRIMARY LOOP PAYS",
+      "shows": "one frame carrying brackets and boxes at once",
+      "draw": {
+        "subject": "THE FRAME, fused",
+        "action": "the two become one frame carrying orange brackets AND grey boxes on the same face and the same plate",
+        "emotion": "none",
+        "annotation": "SAME FOOTAGE"
+      },
+      "choreo": {
+        "primary": "the fusion",
+        "reaction": "the conduit from 8.5s finally lights along its whole length",
+        "ambient": "the wall beginning to resolve behind"
+      }
+    },
+    {
+      "i": 36,
+      "t": 111.5,
+      "vo": 22,
+      "sfx": "a mechanical date wheel rolling into place with a final detent",
+      "means": "the one thing a viewer is meant to act on, drawn as a decision that HAS NOT HAPPENED YET rather than as burned text. c3 says postponed, so the film says postponed.",
+      "shows": "August 18th on the console",
+      "draw": {
+        "subject": "a Stamp landing on an EMPTY calendar square, the squares around it already inked",
+        "action": "the date wheel rolls into place and the stamp seats on the one square that is still blank",
+        "emotion": "none",
+        "annotation": "POSTPONED TO AUGUST 18TH"
+      },
+      "choreo": {
+        "primary": "the stamp",
+        "reaction": "the fused frame holds",
+        "ambient": "wall glow"
+      }
+    },
+    {
+      "i": 37,
+      "t": 113.5,
+      "vo": 23,
+      "sfx": "the bed drops at least 6 dB and the only sound left is the card's flat paper slap",
+      "means": "the pre-button dip",
+      "shows": "the stone rule and the paper card, one last time",
+      "draw": {
+        "subject": "the seated stone rule and the rocking paper card",
+        "action": "sit side by side and the card finally falls flat",
+        "emotion": "none",
+        "annotation": "SOMEBODY WROTE IT DOWN"
+      },
+      "choreo": {
+        "primary": "the card falls flat",
+        "reaction": "the stone does not move",
+        "ambient": "near silence"
+      }
+    },
+    {
+      "i": 38,
+      "t": 115.6,
+      "vo": 23,
+      "sfx": "the room's air opens up, tile hums layering and multiplying outward",
+      "means": "THE SIGNATURE SHOT, and it now states the thesis as a picture: hundreds get found, one gets released, by a person. v1 described a big room with a worker in it.",
+      "shows": "the pull-back to the wall",
+      "draw": {
+        "subject": "the fused frame",
+        "action": "recedes slowly, tiles resolving OUTWARD as the light drains toward one figure. EVERY tile is lit and bracketed in orange. EXACTLY ONE carries a grey box, and the one small figure is seated beneath that single tile.",
+        "emotion": "none",
+        "annotation": "none"
+      },
+      "choreo": {
+        "primary": "the slow recede as tiles resolve outward",
+        "reaction": "the tiles immediately behind the figure go dark so the figure stays rim-separated",
+        "ambient": "the figure breathing, backlit against lit tiles"
+      }
+    },
+    {
+      "i": 39,
+      "t": 119.0,
+      "vo": 24,
+      "sfx": "one final tick, then the tail",
+      "means": "the button",
+      "shows": "the question over the wall",
+      "draw": {
+        "subject": "the closing question",
+        "action": "types once across the bottom of the wall and holds",
+        "emotion": "open",
+        "annotation": "WHAT WOULD YOU WANT WRITTEN DOWN?"
+      },
+      "choreo": {
+        "primary": "the type",
+        "reaction": "one tile in the wall flickers",
+        "ambient": "the figure still there, still small"
+      }
+    },
+    {
+      "i": 40,
+      "t": 120.4,
+      "vo": 24,
+      "sfx": "a brass plate seating, then a last low tile hum settling into the tail",
+      "means": "the branded sign-off and the sources, staged on a real object, and the last frame is still moving",
+      "shows": "a brass sign-off plate SEATS onto the console lip carrying the wordmark and the sources",
+      "draw": {
+        "subject": "a BrassPlate sign-off carrying the wordmark and a sources line",
+        "action": "SEATS down onto the console lip with real weight and a contact shadow, off the wall and off the figure, while behind it the wall keeps resolving and tiles keep fading up at the frame edges, then a gentle fade",
+        "emotion": "none",
+        "annotation": "ALASKA.AI  /  ALASKA'S NEWS SOURCE, KUAC, ALASKA PUBLIC MEDIA, MUNICIPALITY OF ANCHORAGE"
+      },
+      "choreo": {
+        "primary": "the plate seats onto the console lip with weight",
+        "reaction": "its contact shadow lands under it",
+        "ambient": "tiles still fading up at the frame edges and the one figure still breathing"
+      }
+    }
+  ]
+}

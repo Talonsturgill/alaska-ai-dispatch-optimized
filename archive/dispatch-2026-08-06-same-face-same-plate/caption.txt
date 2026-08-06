@@ -1,0 +1,19 @@
+Fairbanks bought AI to redact police video. It's still too slow, and the reason isn't the software.
+
+Redacting a video is two jobs. Find what has to be hidden. Then decide.
+
+The machine got fast at the first one. It never touched the second, because a person still signs off on the frame the model missed. So the fast half got faster and the queue kept growing.
+
+The numbers carry it. Fairbanks used to see under 20 records requests a month for police audio and video. In April it passed 35. In July it passed 35 again. That load lands on one evidence technician, under a state law that makes footage free below five staff hours a month. That rule predates body cameras.
+
+The chief of staff is right about the problem. His idea was to tell requesters they'll get it when they get it. The city's own attorneys disagreed in the room that night, which is the check working.
+
+Now look at Anchorage. Police want roughly $600,000 more for a Real-Time Crime Center built for up to 750 volunteered camera feeds. In 2023 the Assembly wrote a rule naming facial recognition and heavily limited it. That rule holds and police don't use it. But the plate readers run object recognition, and that isn't the thing the rule named. The Assembly postponed the vote to August 18th.
+
+One city is teaching software to recognize a face and a plate. The other is paying software to hide them. Same footage.
+
+Here is the argument, and you can push back on it. AI keeps arriving in local government as a budget line rather than as a decision. The capture side has a vendor and a price. The release side has a person. The protection that held in Anchorage wasn't a promise from anyone. Somebody wrote it down.
+
+What would you want written down before the cameras go up?
+
+#Alaska #AIPolicy #PublicRecords #Anchorage #Fairbanks

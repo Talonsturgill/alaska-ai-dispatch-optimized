@@ -480,3 +480,57 @@ needing to draw a thing that is not there had to re-improvise it.
 - LESSON WORTH KEEPING: when a gate says a net-new asset duplicates the shelf, the cheapest real
   fix is usually to move its SHAPE LANGUAGE onto the other side of the film's own grammar, not to
   argue that its behaviour differs.
+
+## EVIDENCE, the library's FIRST PIECE OF MEDIA — lib/evidence.tsx
+NET-NEW 2026-08-06 ("The Same Face, The Same Plate"). REAL GAP, checked against this file in
+full and confirmed independently by the Gate 0D critic. The shelf had an orbital eye, a
+seafloor ear, a ground ear, two aerial machines, an under-ice swimmer, a bench-science family,
+a records/paper family, a civics rules kit, an absence grammar, an arthropod and 13 biomes.
+NOTHING on it was A PIECE OF MEDIA, and nothing was an EMISSIVE SURFACE that could act as a
+light source. records.tsx `RecordsMachine` is a machine that PROCESSES records, not a record
+that gets processed. paper.tsx `Sheet` and bench.tsx `ShortlistCard` are printed stock on the
+numeric shadow contract, which is the right instinct on the wrong substance.
+- `FrameOfEvidence` — THE RUN'S HERO and its THROUGHLINE OBJECT, one frame of police
+  body-camera video as a physical held object — evidence.tsx — SHAPE AND MATERIAL DECISION,
+  and it is what keeps this off the closed flat-HUD-chip defect: it is a PHYSICAL EMISSIVE
+  OBJECT, not a card. Real bezel thickness with a LIT TOP EDGE and a DARK BOTTOM EDGE, a
+  screen surface that spills its own light through screenlight.tsx, a contact shadow whenever
+  it rests, and a slight off-axis tilt when `held`. The redaction box that lands on it is then
+  its exact material opposite: axis-aligned, perfectly matte, no bevel, no rim, casts no light,
+  and it lands FLAT WITH NO OVERSHOOT. A dead plane arriving on a lit dimensional object, which
+  is the film's central visual event and the reason the two are different KINDS of rectangle
+  rather than one inside another. THE ONE-CHANNEL LESSON APPLIED (07-25 horn, 07-26 cone,
+  07-30 glider, 08-05 beetle): three state channels, the TWO TARGETS (`faceState`/`plateState`,
+  sharp | hidden, independently), the SCANLINE (always crawling on an irrational period so the
+  object is never a still photograph of a still photograph), and the PROGRESS RAIL. `dead`
+  drops it to an unlit frame in a stack with a `queueTag`. tones/FormGradient/RimLight/
+  ContactShadow, routed through vitals() — ACTIVE
+- SCOPE, corrected at Gate 0D: this asset does NOT own the brackets. The brackets are FX.tsx
+  `ScanReticle`, which has shipped since 2026-07-20 and which the first art-direction draft
+  re-invented without noticing it existed. LESSON WORTH KEEPING: before speccing a net-new
+  asset's state channels, grep the shelf for the VERB, not just for the noun.
+- THE PROGRESS RAIL IS HERO WHITE, NOT THE ACCENT. It measures the queue, which is the half no
+  machine touched, so painting it in the machine's reserved colour would have contradicted the
+  film's own argument. Gate 0D caught this as a semantic collision, not a taste note.
+- `FrameStack` — the queue as a physical pile — evidence.tsx — deterministic jitter, per-frame
+  settle, never Math.random — ACTIVE
+
+## SCREENLIGHT — lib/screenlight.tsx (CRAFT ADVANCE 2026-08-06)
+NightGrade (07-25) gives a night AMBIENT with registered source BLOOM and DayGrade (07-31)
+gives a daylight ambient. NEITHER CAN MAKE A SOURCE ACTUALLY KEY A SUBJECT, because both emit
+DIVS and sit OUTSIDE the svg, so they can only wash over finished art. Every screen-lit scene
+this engine had attempted faked the key by hand-pinning a fill at the call site.
+- `ScreenLit` / `ScreenKey` / `ScreenBounce` / `keyAt` / `keySourceAt` — screenlight.tsx —
+  THE COMPOSITION CONTRACT, stated before code because Gate 0D required it: SCREENLIGHT emits
+  SVG-SPACE GEOMETRY that composes INTO tones/FormGradient/RimLight rather than sitting over
+  them, so it reaches asset shading. It is ON BY DEFAULT inside a `<ScreenLit>` scope with an
+  explicit `unlit` opt-out, because a default-off fix is a doctrine reminder wearing a code
+  costume (the flat-HUD-chip lesson, 07-30). Three physical behaviours: FALLOFF BY DISTANCE
+  from the emitting plane; an UPWARD-BIASED TERMINATOR, since screen light comes from BELOW the
+  eye line so the lit band sits under a form's midline and the shadow rides on top, which is the
+  one tell that separates a screen key from a studio key and is the opposite of every other
+  light in this engine; and a CONTACT BOUNCE on the surface the screen sits on. `keyAt` is a
+  pure test seam, the accentAllowedAt precedent — ACTIVE
+- KNOWN NEXT ADVANCE: no look-dev harness was built this run. ScreenLook.tsx at three distances
+  plus a 0.28-scale legibility strip was specified at Gate 0D and deferred under time. Build it
+  before the next screen-lit story leans on this.

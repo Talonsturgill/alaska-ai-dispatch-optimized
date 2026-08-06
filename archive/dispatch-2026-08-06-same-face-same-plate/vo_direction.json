@@ -1,0 +1,326 @@
+{
+  "date": "2026-08-06",
+  "revision": 2,
+  "supersedes": "out/dispatch/vo_direction_v1_toolong.json",
+  "narrator": "Nora, an Alaska public-radio host: warm, grounded, quietly witty",
+  "voice": "gemini:Sulafat",
+  "register": "mixed, constructive urgency. Not doom, not wry throughout, not celebration. A fair-minded analyst who credits everyone's real constraint and still names the gap, ending on a question she actually wants answered.",
+  "runtime_diagnosis": {
+    "measured_v1": {
+      "take_0_s": 168.7,
+      "take_1_s": 153.6,
+      "band_s": [
+        112,
+        130
+      ],
+      "target_s": 120
+    },
+    "root_cause": "The required Pace paragraph scales its breath instruction with SENTENCE COUNT ('take a real breath at every period') while the word band scales with WORD COUNT. This script is 299 spoken words in 25 lines but 45 sentence terminators, so 20 of those terminators sit INSIDE a line. The anchored paragraph was calibrated on a 288-word, 23-line probe with only 6 line-internal terminators. Twenty extra full breaths, plus v1's 8 inline [short pause] tags, is the entire overshoot. The house style of short punchy sentences ('A face. A license plate. One frame.') is what breaks the calibration, and the script is locked, so the fix cannot come from the words.",
+    "fix": "The Pace paragraph is untouched and byte-identical to vo_synth_gemini._pace_line(120.0). The STYLE line, which is the director's to write, now SCOPES it: the short sentences inside one line are one thought and run together at speaking tempo, and the full breath belongs at the END of each line. The Emphasis line repeats it after the Pace paragraph so the scoping gets the last word in the notes. Inline [short pause] tags cut from 8 to 2, at the two hinges that carry real meaning.",
+    "not_changed": "The four act arc, the energy curve, the contrast rule, and the 4 to 1 fall onto 'That's one evidence technician.' are all exactly as planned in v1. Nothing here speeds the read up. What comes out is silence, not pace.",
+    "arithmetic": "Articulation for 299 words at a measured public radio rate of about two hundred words per minute is roughly ninety to ninety six seconds. v1 paid pause on 45 terminators plus 8 tags (about 73 seconds of it). v2 pays a full breath on 24 line boundaries (about 29 to 31 seconds), a connected speaking tempo junction on the 20 line-internal terminators (about 6 seconds), and 2 marked beats (about 1.4 seconds). That is roughly 37 seconds of pause against v1's 73, a removal of about 36 seconds.",
+    "predicted_s": [
+      124,
+      132
+    ],
+    "predicted_best_estimate_s": 127,
+    "predicted_wpm": 141,
+    "next_lever_if_still_hot": "Do NOT touch the Pace paragraph. Shorten the line-end breath in the Style line ('a short breath at the end of each line' rather than 'the full breath'), and drop the idx 21 tag, keeping only idx 12. That is worth roughly another 8 to 10 seconds."
+  },
+  "notes": "Style: warm, grounded, even handed; a reporter who read the whole record and is telling you what she found. Constructive urgency, never doom and never a smirk, because nobody in this story is a villain. Pace: the required runtime-anchored paragraph naming a two minute piece of about one hundred and twenty seconds, byte-identical to the measured probe text and NOT reworded. Breath scoping: the Style and Emphasis lines put the full breath at the END of each line and run the short sentences inside a line together as one connected thought, because this script has 45 sentence terminators across only 25 lines and a per-period breath overshot the band by 39 to 49 seconds on the v1 takes. Contrast: energies span 1 to 5 with no two neighbors equal; the four word technician line drops to 1 and is the quietest thing in the film; idx 12 (the mechanism) and idx 21 (the thesis) are the two 5s and they are the only two. Tags: exactly 2 inline [short pause], at idx 12 and idx 21, both mid line, neither line initial, never adjacent. The v1 [curious] cue at idx 24 moved into the notes as prose.",
+  "arc": {
+    "act_1": "idx 0 to 5, 0 to 32s. The question and the mechanism. Open cool and factual; the hook lands flat and confident rather than bright, then lifts once on the plant, settles for the rule, and turns on the category mismatch.",
+    "act_2": "idx 6 to 11, 32 to 58s. The complication. The geographic turn at idx 7 gets air from the line break itself. Energy walks down into the Fairbanks facts so the correction at idx 10 can be firm without being loud.",
+    "act_3": "idx 12 to 18, 58 to 95s. The test. idx 12 is the film's central insight and its first peak, and it carries one of the two marked beats. idx 15 to 18 are the other side's case and are read with real sympathy, at low energy, as testimony rather than as a setup to be knocked down.",
+    "act_4": "idx 19 to 24, 95 to 127s. The turn and the button. idx 21 is the thesis, carries the second marked beat, and is the strongest landing in the piece. idx 23 settles. idx 24 is a genuine question, warm and direct, not rhetorical."
+  },
+  "phonetics_note": "All numbers, dates and figures are already in spoken form in the locked script and are left untouched. McCormick is left in its real spelling on purpose: it is a common surname the model reads correctly, and respelling it would put a non word into the plan's line text that the soundcheck's ASR word-accuracy pass would score as a miss.",
+  "style_prompt": "Style: warm, grounded and even handed, an Alaska public radio host who has read the entire record and is telling you plainly what she found. The register is constructive urgency: not doom, not a smirk, not a celebration. Nobody in this story is a villain, so give the police chiefs and the city staff their real constraint with genuine sympathy, then name the gap without raising your voice. Dry where a line earns it, never snide. This script is written in very short sentences, and the short sentences inside a single line are ONE thought, so run them together at speaking tempo and land them without stopping to breathe between them. THE FULL BREATH GOES AT THE END OF EACH LINE, never inside it. Only two beats in the whole read are marked to be held, and those two are the only places to stop mid line. Let the four word line about the evidence technician be the quietest moment in the piece, almost under your breath. The last line is a real question you want answered, warm and direct.\nPace: MEASURED and unhurried. THIS IS A TWO MINUTE PIECE, about one hundred and twenty seconds, and the read must FILL it, so give every sentence room to land and take a real breath at every period. Do not rush the numbers. Vary the tone line to line so no two sentences sound the same.\nEmphasis: lean on the one load bearing word in each line and let the numbers land. Move the energy up and down from line to line so the read never sits flat: lift into each turn, drop almost to a whisper on the shortest line, and give the closing thesis the strongest landing in the piece. Keep the run of short sentences inside a line connected and moving, and save the breath for the end of the line.",
+  "lines": [
+    {
+      "idx": 0,
+      "text": "A face, a license plate, one frame.",
+      "intent": "hook",
+      "emphasis": "frame",
+      "energy": 3,
+      "tags": [],
+      "pause_before": false,
+      "why": "Three noun fragments that are ONE thought, not three. The angle is an argument, not a tease, so the hook lands flat and confident and the three objects arrive connected, with the breath after 'frame' and nowhere inside."
+    },
+    {
+      "idx": 1,
+      "text": "Two Alaska cities argued about those two things this week, same pipe.",
+      "intent": "hook",
+      "emphasis": "Same",
+      "energy": 4,
+      "tags": [],
+      "pause_before": false,
+      "why": "The primary loop's plant, stated and refused. v1 held a tagged beat before 'Same pipe'; the lift in energy off idx 0 and the sentence's own brevity make the audience notice it was not explained, and the tag was costing silence the band cannot afford."
+    },
+    {
+      "idx": 2,
+      "text": "Anchorage wants six hundred thousand dollars more for a crime center taking up to seven hundred fifty volunteered feeds.",
+      "intent": "stat",
+      "emphasis": "seven hundred fifty",
+      "energy": 3,
+      "tags": [],
+      "pause_before": false,
+      "why": "The scale figure, and one of the few single-sentence lines that get a full unhurried run. Settle back from the hook and slow through both numbers; at speed the ASR probe showed figures are the first thing to blur."
+    },
+    {
+      "idx": 3,
+      "text": "Twenty twenty-three, the Assembly wrote a rule naming facial recognition, police don't use it.",
+      "intent": "setup",
+      "emphasis": "wrote",
+      "energy": 2,
+      "tags": [],
+      "pause_before": false,
+      "why": "The film crediting a rule that WORKS, so it reads as plain good record keeping, low and matter of fact. Emphasis on wrote plants the button seventy seconds early. Both sentences run as one connected observation."
+    },
+    {
+      "idx": 4,
+      "text": "But the plate readers run object recognition, which isn't what the rule named.",
+      "intent": "reveal",
+      "emphasis": "object",
+      "energy": 4,
+      "tags": [],
+      "pause_before": false,
+      "why": "The category mismatch, and the first real turn. Lifting two steps off idx 3 does the work an adjective would otherwise have to do, without accusing anyone."
+    },
+    {
+      "idx": 5,
+      "text": "Assembly member Keith McCormick says Anchorage code can't answer any of those questions.",
+      "intent": "setup",
+      "emphasis": "can't",
+      "energy": 3,
+      "tags": [],
+      "pause_before": false,
+      "why": "Attributed characterization, not established fact, so it is delivered as reported speech: even, unhurried, no editorial heat on it."
+    },
+    {
+      "idx": 6,
+      "text": "The chief's answer was a promise, he'd come to a committee first, generally.",
+      "intent": "wry",
+      "emphasis": "Generally",
+      "energy": 2,
+      "tags": [],
+      "pause_before": false,
+      "why": "The one genuinely dry landing in the film. It works BETTER connected: the qualifier arriving without a held beat in front of it is an afterthought rather than a punchline, which keeps it observational about a man who is not the villain of this piece. Dropping the energy is what carries it now."
+    },
+    {
+      "idx": 7,
+      "text": "Go north, Fairbanks bought the other end.",
+      "intent": "reveal",
+      "emphasis": "other",
+      "energy": 4,
+      "tags": [],
+      "pause_before": false,
+      "why": "The act turn. It still gets air, but from the full breath at the END of idx 6 rather than from a tag inside itself; the two word instruction then hands straight off to the new city."
+    },
+    {
+      "idx": 8,
+      "text": "It put artificial intelligence on redacting body camera video, so the public could see it.",
+      "intent": "setup",
+      "emphasis": "redacting",
+      "energy": 3,
+      "tags": [],
+      "pause_before": false,
+      "why": "The good faith purchase, stated as a good faith purchase. Even and informative; the clause after the comma is the reason it was bought and should not sound like a caveat."
+    },
+    {
+      "idx": 9,
+      "text": "It hasn't named the tool, the chief of staff says it's still too slow.",
+      "intent": "stat",
+      "emphasis": "slow",
+      "energy": 2,
+      "tags": [],
+      "pause_before": false,
+      "why": "A city reporting honestly to its own council. Low and plain, which reads as credit rather than as a gotcha, and sets up the correction on the next line."
+    },
+    {
+      "idx": 10,
+      "text": "This isn't about a bad tool.",
+      "intent": "stakes",
+      "emphasis": "bad",
+      "energy": 4,
+      "tags": [],
+      "pause_before": false,
+      "why": "The film refusing the lazy read out loud. Firm and forward, two steps above idx 9, but not louder: it is a correction, not an announcement."
+    },
+    {
+      "idx": 11,
+      "text": "Redacting video is two jobs, find it, then decide.",
+      "intent": "setup",
+      "emphasis": "two",
+      "energy": 3,
+      "tags": [],
+      "pause_before": false,
+      "why": "The mechanism stated as a list. A list is one thought: 'Find it. Then decide.' should arrive as a connected pair at speaking tempo, which is more legible as the diagram the picture is drawing than two isolated fragments were."
+    },
+    {
+      "idx": 12,
+      "text": "The machine got fast at finding, it never touched deciding, a person still signs the frame it missed.",
+      "intent": "reveal",
+      "emphasis": "deciding",
+      "energy": 5,
+      "tags": [
+        "[short pause]"
+      ],
+      "pause_before": false,
+      "why": "THE central insight of the piece and one of only two beats worth spending silence on. The first two sentences run together as the machine's half of the story; the marked beat is the hinge into the human consequence, so the last sentence lands as a person and not a clause."
+    },
+    {
+      "idx": 13,
+      "text": "The fast half got faster, the line kept growing.",
+      "intent": "reveal",
+      "emphasis": "growing",
+      "energy": 3,
+      "tags": [],
+      "pause_before": false,
+      "why": "The consequence of idx 12, so it must drop off the peak. The parallel structure is audible precisely BECAUSE the two clauses run together; a breath between them would break the symmetry."
+    },
+    {
+      "idx": 14,
+      "text": "Fairbanks used to see under twenty requests a month, April, more than thirty-five, July, more than thirty-five.",
+      "intent": "stat",
+      "emphasis": "thirty-five",
+      "energy": 4,
+      "tags": [],
+      "pause_before": false,
+      "why": "A climbing repetition, and the line where connected delivery matters most: three sentences read as one rising curve, not three separate facts. Lift through the figures and slow on each number without stopping between them."
+    },
+    {
+      "idx": 15,
+      "text": "That's one evidence technician.",
+      "intent": "stakes",
+      "emphasis": "one",
+      "energy": 1,
+      "tags": [],
+      "pause_before": true,
+      "why": "Four words, and the quietest thing in the film. The drop from 4 to 1 is the single biggest contrast in the read and it is what turns the previous line's arithmetic into a person's month. The one place a held beat before the line is earned, and it comes free from the line-end breath on idx 14. No tag: a line this short would be swallowed by one."
+    },
+    {
+      "idx": 16,
+      "text": "Who is, the chief of staff says, basically subsidizing YouTubers from the Lower Forty-Eight.",
+      "intent": "setup",
+      "emphasis": "subsidizing",
+      "energy": 3,
+      "tags": [],
+      "pause_before": false,
+      "why": "The other side's case at full strength. Read as sympathetic testimony, not as a claim being teed up; deliberately no wry cue anywhere near it."
+    },
+    {
+      "idx": 17,
+      "text": "Footage is free under five staff hours a month, that rule predates body cameras.",
+      "intent": "stat",
+      "emphasis": "predates",
+      "energy": 2,
+      "tags": [],
+      "pause_before": false,
+      "why": "Still the other side's case. Low and evenly sympathetic. Connected rather than beat-separated, so the date problem registers as a genuine structural excuse for the city rather than as a reveal being sprung on it."
+    },
+    {
+      "idx": 18,
+      "text": "He's right about the problem, his idea was, tell them you'll get it when you get it.",
+      "intent": "reveal",
+      "emphasis": "right",
+      "energy": 4,
+      "tags": [],
+      "pause_before": false,
+      "why": "The concession is the load bearing half, so the emphasis goes on right and the quoted remedy is reported flatly, straight off the concession. The film is not sneering at the man, it is about to show the room disagreeing with him."
+    },
+    {
+      "idx": 19,
+      "text": "Its own attorneys disagreed that night.",
+      "intent": "reveal",
+      "emphasis": "own",
+      "energy": 2,
+      "tags": [],
+      "pause_before": false,
+      "why": "The check working, and the film's fairest beat. Dropping to 2 makes it sound like a fact rather than a punchline, which is the whole reason this beat exists."
+    },
+    {
+      "idx": 20,
+      "text": "A request nobody funds is a denial nobody has to sign.",
+      "intent": "stakes",
+      "emphasis": "denial",
+      "energy": 4,
+      "tags": [],
+      "pause_before": false,
+      "why": "The aphorism that carries the stakes. It has its own internal rhythm, so no tag; the lift off idx 19 is all it needs."
+    },
+    {
+      "idx": 21,
+      "text": "One city teaches software to recognize a face and a plate. The other pays software to hide them.",
+      "intent": "reveal",
+      "emphasis": "hide",
+      "energy": 5,
+      "tags": [
+        "[short pause]"
+      ],
+      "pause_before": false,
+      "why": "THE THESIS and the strongest landing in the piece, the payoff of the plant at idx 1. The second and last marked beat: it is the hinge between the two cities, and hide is the word the whole film has been walking toward. If any silence in this read is worth its seconds, it is this one."
+    },
+    {
+      "idx": 22,
+      "text": "Same footage, Anchorage takes it up August eighteenth.",
+      "intent": "stakes",
+      "emphasis": "eighteenth",
+      "energy": 3,
+      "tags": [],
+      "pause_before": false,
+      "why": "The calendar is what earns the urgency in this angle. Down off the thesis, the two words running straight into the date, then a slight slow on the date so it lands as a deadline rather than a detail."
+    },
+    {
+      "idx": 23,
+      "text": "The rule that held wasn't a promise. Somebody wrote it down.",
+      "intent": "stakes",
+      "emphasis": "wrote",
+      "energy": 2,
+      "tags": [],
+      "pause_before": false,
+      "why": "The film's constructive claim, and it works quiet. Connected, so the second sentence is the answer to the first rather than a separate pronouncement. Settling here creates the room for the final lift and pays off the emphasis planted back at idx 3."
+    },
+    {
+      "idx": 24,
+      "text": "What would you want written down, before the cameras go up?",
+      "intent": "button",
+      "emphasis": "you",
+      "energy": 3,
+      "tags": [],
+      "pause_before": false,
+      "why": "A real question, not a rhetorical one. Warm and direct, lifting just one step off idx 23 so it stays a question rather than becoming a flourish. The v1 [curious] tag is gone and that direction now lives in the notes, which is where the process says a performance cue belongs when the tag budget is spent on pacing."
+    }
+  ],
+  "energy_curve": [
+    3,
+    4,
+    3,
+    2,
+    4,
+    3,
+    2,
+    4,
+    3,
+    2,
+    4,
+    3,
+    5,
+    3,
+    4,
+    1,
+    3,
+    2,
+    4,
+    2,
+    4,
+    5,
+    3,
+    2,
+    3
+  ],
+  "contrast_check": "Unchanged from v1 and deliberately so. No two adjacent energies are equal across all 25 lines. Span 1 to 5, mean 3.12. Largest single step is idx 14 to 15 (4 to 1), which is the intended floor of the film and the best idea in the plan.",
+  "tag_audit": "2 inline tags total, both [short pause], at idx 12 and idx 21. Down from 9 in v1 (8 [short pause] plus 1 [curious]). Each remaining tag has spoken words in front of it on its own line (the 2026-08-05 line-initial leak). No two tags are adjacent, and they sit 9 lines apart. No banned or multi word cues; all emotion lives in the notes. Dropped from idx 1, 6, 7, 11, 17, 23 ([short pause]) and idx 24 ([curious]).",
+  "word_audit": "299 spoken words, 25 lines, 45 sentence terminators (44 periods plus the closing question mark), of which 20 sit inside a line. Transcript verified verbatim against out/dispatch/vo_script.txt line for line; no word added, dropped, reordered or merged, and no sentence boundary removed.",
+  "assembled_prompt": "Read ONLY the transcript below aloud as speech. The lines above \"Transcript:\nA face, a license plate, one frame.\nTwo Alaska cities argued about those two things this week, same pipe.\nAnchorage wants six hundred thousand dollars more for a crime center taking up to seven hundred fifty volunteered feeds.\nTwenty twenty-three, the Assembly wrote a rule naming facial recognition, police don't use it.\nBut the plate readers run object recognition, which isn't what the rule named.\nAssembly member Keith McCormick says Anchorage code can't answer any of those questions.\nThe chief's answer was a promise, he'd come to a committee first, generally.\nGo north, Fairbanks bought the other end.\nIt put artificial intelligence on redacting body camera video, so the public could see it.\nIt hasn't named the tool, the chief of staff says it's still too slow.\nThis isn't about a bad tool.\nRedacting video is two jobs, find it, then decide.\nThe machine got fast at finding, it never touched deciding, a person still signs the frame it missed.\nThe fast half got faster, the line kept growing.\nFairbanks used to see under twenty requests a month, April, more than thirty-five, July, more than thirty-five.\nThat's one evidence technician.\nWho is, the chief of staff says, basically subsidizing YouTubers from the Lower Forty-Eight.\nFootage is free under five staff hours a month, that rule predates body cameras.\nHe's right about the problem, his idea was, tell them you'll get it when you get it.\nIts own attorneys disagreed that night.\nA request nobody funds is a denial nobody has to sign.\nOne city teaches software to recognize a face and a plate. The other pays software to hide them.\nSame footage, Anchorage takes it up August eighteenth.\nThe rule that held wasn't a promise. Somebody wrote it down.\nWhat would you want written down, before the cameras go up?\n"
+}

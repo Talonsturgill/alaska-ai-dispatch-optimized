@@ -41,26 +41,48 @@ MOVES = [
     # correctly reported that one beat "reuses the identical still" from another. It was
     # the sampler pointing twice at one scene, not the film reusing art. Anchor names are
     # per-run data and a run that changes the film must change them here in the same commit.
-    ("strip", 0, 0.40),      # the beetle's fill and shading are STRIPPED to a contour
-    ("pin", 3, 2.30),        # the specimen descends, seats, and takes its contact tick
-    ("resolve", 9, 1.20),    # eighty dashed forms run the belt and resolve to filled
-    ("reveal", 10, 2.60),    # the author plate turns and SIKES lights on the spoken name
-    ("pullback", 12, 1.60),  # THE SIGNATURE SHOT opening out to the unnamed field
-    # A CHARACTER SHOT. A judge pointed out that none of the strips covered a frame with a
-    # human in it, so idle life on the five held figures could not be confirmed or refuted
-    # from the pack, and said so rather than assuming a freeze. That is an evidence gap, not
-    # a film defect, and it is the pack's job to close it.
-    # RE-ANCHORED AGAIN 2026-08-05. The swing was sped up (0.15s to 1.05s into the line)
-    # to make the title beat the most kinetic shot in the film, and that moved the fastest
-    # part of the arc EARLIER. Sampling at +0.85 then caught the eased settle, and the
-    # measured delta went DOWN from 4.8 to 3.9 percent even though the swing got bigger.
-    # An offset is a CONTACT time and it has to move whenever the motion it samples moves.
-    ("sweep", 15, 0.45),     # the net at maximum angular velocity, not at its settle
-    # ADDED after the re-grade: judge 3 could not verify two claimed fixes because NO STRIP
-    # COVERED THOSE BEATS, and correctly refused to take them on description. A pack that
-    # cannot show a fix has not delivered the fix.
-    ("newsprint", 7, 2.60),  # the sheet's corner lifting and the lamp sweep crossing the column
-    ("iris", 13, 1.40),      # the intake iris cycling on nothing while the room keeps drifting
+    # RE-ANCHORED 2026-08-06 for "The Same Face, The Same Plate". The names above this
+    # line were the 08-05 film's beats (a beetle stripped to a contour, a specimen pin, an
+    # author plate) and NONE of them exist in this film. Anchor names and offsets are
+    # PER-RUN DATA and a run that changes the film changes them in the same commit.
+    # Offsets are CONTACT times, sampled at the motion's fastest point, not line starts
+    # plus a guess. Eight strips, no two inside one shot.
+    # RE-ANCHORED AGAIN, round 2 of 2026-08-06, for two independent reasons.
+    #
+    # First, an inserted VO line shifted every index above its insertion point by one, so
+    # anchors written against the old script pointed one line late from "carry" onward.
+    # A line insert is exactly as invalidating as a re-synth and there was nothing to catch
+    # it; shot_map.py now prints the mapping these are derived from.
+    #
+    # Second, and the reason there are sixteen: the panel's weakest column was MOTION,
+    # judged from these strips, and eight strips could not cover eleven shots. Three shots
+    # were never sampled at all, so "no held figure shows idle life in any sampled strip"
+    # was a true statement about the evidence and an unproven one about the film. Every
+    # shot now gets at least one strip, and every beat added this round gets sampled.
+    # Offsets are CONTACT times at the motion's fastest point, not line starts plus a guess.
+    ("lock", 0, 0.55),        # S1  the bracket SLAMS onto the plate, 4 frames with an overshoot
+    ("refused", 0, 2.70),     # S1  the second bracket starts toward the face and slides away
+    ("capacity", 2, 3.40),    # S2  the socket grid filling against a static UP TO 750
+    ("wallprobe", 3, 4.10),   # S2  the sweep crossing the whole wall and bracketing nothing
+    ("bounce", 4, 2.80),      # S3  the plate-lock bracket hits the rule and visibly bounces off
+    ("codeprobe", 5, 3.00),   # S3  the question sweeping the socket the code never filled
+    ("promise", 6, 0.80),     # S4  the promise descending onto a seat it never reaches
+    # ANCHORAGE'S COUNTER-CASE WAS NEVER SAMPLED. c10, c9 and c11 hold from about 41.9s to
+    # 46.9s and the nearest strip sat at 47.2s, just after they clear, so a judge reported
+    # them as absent from every strip and every contact tile — a true statement about the
+    # evidence and a false one about the film. The fairness beat gets its own strip.
+    # 3.6, not 1.2. c10 lands at +0.5s, c9 at +1.7s and c11 at +3.0s, and the strip at +1.2s
+    # caught only the first — so judges reported Anchorage's ledger as one card. It is three.
+    ("counter", 7, 3.60),     # S4  the three Anchorage concession cards, drawn and attributed
+    ("carry", 8, 0.30),       # S4  the room smears and THE FRAME does not move one pixel
+    ("boxes", 9, 0.40),       # S5  the two grey boxes land flat with NO overshoot
+    ("stuck", 10, 0.50),      # S5  the sixth frame arrives, stops, and its rail crawls
+    ("collapse", 11, 3.40),   # S6  FIND collapses to a sliver and DECIDE does not move
+    ("desk", 14, 0.60),       # S7  the technician arrives at the one desk the stack lands on
+    ("spool", 16, 0.50),      # S8  the five-hour spool runs off its own end
+    ("stamp", 19, 0.40),      # S9  the stamp descends onto the request and never touches it
+    ("fusion", 20, 3.40),     # S10 the two frames fuse and carry brackets AND boxes at once
+    ("pullback", 22, 1.40),   # S11 the signature pull-back, spent exactly once
 ]
 
 
@@ -72,7 +94,14 @@ def main():
 
     lines = json.load(open(os.path.join(OUT, "vo_lines.json")))["lines"]
     start = {L["idx"]: L["start"] for L in lines}
-    end = max(L["end"] for L in lines)
+    # THE FILM, NOT THE NARRATION. `end` was the last VO line's end (122.84s), so the
+    # contact sheet stopped there and never photographed the final 2.6 seconds — which is
+    # exactly where the sign-off plate and the music credit live. Five judges across three
+    # rounds wrote "no composer credit is verifiable / the sign-off falls outside the
+    # sampled stills" and every one of them was right about the pack. Sample the whole film.
+    import json as _j
+    _props = _j.load(open(os.path.join(OUT, "episode_props.json")))
+    end = max(max(L["end"] for L in lines), _props["total"] / 30.0)
 
     os.makedirs(EV, exist_ok=True)
     for f in glob.glob(os.path.join(EV, "*.jpg")):

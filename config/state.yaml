@@ -1361,3 +1361,68 @@ dispatch_history:
     palette: cabinet green, bone specimen paper, brass, one named-species teal
     metaphor: a room that has a place for everything, and a world that has not been
       brought into it
+- date: '2026-08-06'
+  topic: 'THE SAME FACE, THE SAME PLATE: two Alaska cities met the limits of AI in
+    the same week. Anchorage weighs roughly $600,000 more for a Real-Time Crime Center
+    built for UP TO 750 volunteered camera feeds (a capacity ceiling, not a live count);
+    its 2023 ordinance HEAVILY LIMITS facial recognition (10-1, carve-outs, not an
+    indefinite ban) and that rule holds, but the plate readers run object recognition,
+    which is not the category the rule named, and the Assembly POSTPONED the contract
+    to August 18th. Fairbanks put AI on redacting police body-camera video, has not
+    named the tool, and its chief of staff told the council it is still too slow;
+    requests went from never above 20 a month before October 2025 to more than 35
+    in April and again in July, landing on ONE evidence technician under a five-staff-hour
+    free-records rule that predates body cameras. The film''s actual AI insight: redaction
+    is two jobs, finding and deciding, AI collapsed finding and never touched deciding,
+    so the total barely moved. Fair beat: the chief of staff''s remedy was ONE official''s
+    idea and the city''s own attorneys disagreed in the room.'
+  slug: dispatch-2026-08-06-same-face-same-plate
+  key_entities:
+  - anchorage police department
+  - real time crime center
+  - thundercat
+  - license plate reader
+  - object recognition
+  - anchorage municipal code 3.102
+  - keith mccormick
+  - sean case
+  - sydney scout
+  - fairbanks city council
+  - body camera redaction
+  - public records
+  - mike sanders
+  - ron dupee
+  - evidence technician
+  - five hour rule
+  - ai redaction
+  archetype: ''
+  palette: ''
+  voice: ''
+  stance: mixed
+  angle: Fairbanks bought AI to make releasing police video affordable; it made the
+    mechanical half of redaction fast and never touched the half where a person has
+    to decide, so the queue grew anyway. The rule Anchorage did write names facial
+    recognition, and the object recognition its plate readers run is not the thing
+    that rule named.
+  hero: FrameOfEvidence
+  cast:
+  - FrameOfEvidence
+  - ScanReticle
+  - Character
+  - BrassPlate
+  - Sheet
+  - StatCard
+  - Unnamed
+  - SocketGrid
+  composition:
+    pov: instrument-screen
+    layout: hud-instrument-frame
+    motion_vector: radial-emanate
+    hero_treatment: instrument-as-subject
+    register: data-brutalist
+    camera_strategy: locked-drift
+    light_story: night-practical
+    palette: municipal slate-blue night, one signal orange, redaction grey, tungsten
+      judgment
+    metaphor: the same face and the same plate, found in one city and hidden in the
+      other, out of the same footage

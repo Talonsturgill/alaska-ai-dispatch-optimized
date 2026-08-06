@@ -1,0 +1,255 @@
+{
+  "run_date": "2026-08-06",
+  "rule": "THE ONLY SOURCE FOR ANYTHING ON SCREEN OR IN THE VO. If a string is not traceable to a claim id here, it does not ship.",
+  "sources": {
+    "S-ANC-2026": {
+      "outlet": "Alaska's News Source",
+      "author": "Joe Allgood",
+      "date": "2026-08-04",
+      "url": "https://www.alaskasnewssource.com/2026/08/05/anchorage-police-seeking-upgrades-real-time-crime-monitoring/",
+      "note": "URL slug says 08/05, page stamp says Aug. 4, 2026 11:03 PM AKDT. Cite August 4th."
+    },
+    "S-ANC-2025": {
+      "outlet": "Alaska's News Source",
+      "date": "2025-09-24",
+      "url": "https://www.alaskasnewssource.com/2025/09/25/renewed-anchorage-police-contract-includes-live-feed-streaming-up-750-cameras-first-responder-drones-real-time-body-cameras/",
+      "note": "BACKGROUND. The September 2025 contract, not the August 2026 request."
+    },
+    "S-APM-2025": {
+      "outlet": "Alaska Public Media",
+      "date": "2025-09-25",
+      "url": "https://alaskapublic.org/news/public-safety/2025-09-25/anchorage-police-plan-12m-tech-rollout-including-new-drones-tasers-and-camera-network"
+    },
+    "S-APM-2023": {
+      "outlet": "Alaska Public Media",
+      "date": "2023-04-19",
+      "url": "https://alaskapublic.org/news/2023-04-19/anchorage-assembly-heavily-limits-city-use-of-facial-recognition-technology"
+    },
+    "S-KUAC": {
+      "outlet": "KUAC, syndicated by Alaska Public Media",
+      "author": "Patrick Gilchrist",
+      "date": "2026-08-05",
+      "url": "https://fm.kuac.org/2026-08-05/fairbanks-chief-of-staff-thinks-city-should-fight-certain-records-requests-from-content-creators",
+      "note": "KUAC original and the APM syndication are the SAME reporting and do not corroborate each other. Every Fairbanks claim is single-sourced."
+    },
+    "S-MUNI": {
+      "outlet": "Municipality of Anchorage, Assembly member profiles",
+      "date": "2026-08-06",
+      "url": "https://www.muni.org/Departments/Assembly/Pages/About%20Us%20-%20Member%20Profiles.aspx",
+      "note": "the run's only PRIMARY source"
+    }
+  },
+  "claims": [
+    {
+      "id": "c1",
+      "spoken": "six hundred thousand dollars",
+      "on_screen": "$600,000 REQUESTED",
+      "label": "roughly, per Alaska's News Source",
+      "src": "S-ANC-2026",
+      "verbatim": "roughly $600,000 worth of audio visual equipment that requires approval from the Anchorage Assembly",
+      "note": "SAY ROUGHLY. A separate listing put it near $599,000 inside a larger $1.4M appropriation."
+    },
+    {
+      "id": "c2",
+      "spoken": "up to seven hundred fifty volunteered feeds",
+      "on_screen": "UP TO 750 VOLUNTEERED FEEDS",
+      "label": "capacity, per Alaska's News Source, September 2025",
+      "src": "S-ANC-2025",
+      "verbatim": "allow for up to 750 video feeds into APD from residents or businesses who volunteer to register",
+      "note": "HARD BLOCKER. 750 is a CEILING on volunteered private feeds, not a live camera count. No current count is published anywhere. A card reading '750 cameras watching Anchorage' would be FALSE."
+    },
+    {
+      "id": "c3",
+      "spoken": null,
+      "on_screen": "POSTPONED TO AUGUST 18TH",
+      "label": "per Alaska's News Source",
+      "src": "S-ANC-2026",
+      "verbatim": "Any further action on the three-year contract with Thundercat Technology Inc. was postponed to the Anchorage Assembly meeting of August 18",
+      "note": "POSTPONED, not rejected and not blocked."
+    },
+    {
+      "id": "c4",
+      "spoken": "the Assembly wrote a rule naming facial recognition",
+      "on_screen": "THE RULE NAMES FACIAL RECOGNITION",
+      "label": "Anchorage Municipal Code ch. 3.102, adopted April 2023",
+      "src": "S-APM-2023",
+      "verbatim": "The ordinance doesn't ban the use of facial recognition technology indefinitely, however, if the city opts to purchase and use the technology, the Assembly must approve it, and there must be a public hearing",
+      "note": "NOT A BAN. Passed 10 to 1 on April 18th 2023. Heavily limits. Carve-outs for human remains, missing persons, trafficking and child-abuse cases. The film says 'wrote a rule naming facial recognition' and never says banned."
+    },
+    {
+      "id": "c5",
+      "spoken": "Police don't use it",
+      "on_screen": null,
+      "label": "per Alaska's News Source",
+      "src": "S-ANC-2026",
+      "verbatim": "The Assembly voted to bar the use of facial recognition in 2023, but Case said APD does use object recognition for their license plate readers"
+    },
+    {
+      "id": "c6",
+      "spoken": "the plate readers run object recognition",
+      "on_screen": "OBJECT RECOGNITION: PLATE READERS",
+      "label": "Chief Sean Case, via Alaska's News Source",
+      "src": "S-ANC-2026",
+      "verbatim": "Case said APD does use object recognition for their license plate readers.",
+      "note": "SCOPE. Plate readers ONLY. Never widen to the volunteered feeds, the drones or the body cameras."
+    },
+    {
+      "id": "c7",
+      "spoken": "Assembly member Keith McCormick says the code can't say what's collected, or who sees it",
+      "on_screen": "\"THE CODE CAN'T ANSWER ANY OF THOSE QUESTIONS\"",
+      "label": "Assembly Member Keith McCormick, District 6",
+      "src": "S-ANC-2026",
+      "verbatim": "when my constituents ask, 'what are we collecting? Who can see it? How long do we keep it?' Anchorage code can't answer any of those questions. We have no legislative guardrails.",
+      "note": "HIS CHARACTERIZATION, not a finding. Code ch. 3.102 titled Municipal Use of Surveillance Technologies DOES exist. Attribute on screen."
+    },
+    {
+      "id": "c8",
+      "spoken": "He'd come to a committee first. Generally.",
+      "on_screen": "\"WE WILL COME TO THE BODY GENERALLY\"",
+      "label": "Police Chief Sean Case, via Alaska's News Source",
+      "src": "S-ANC-2026",
+      "verbatim": "And prior to using any of those sorts of pieces of technology, we will come to the body generally in the form of the Public Health and Safety Committee, so that the body is aware of what we're doing"
+    },
+    {
+      "id": "c9",
+      "spoken": null,
+      "on_screen": "\"NOT GOING TO OUTRUN OUR COVERAGE\"",
+      "label": "Police Chief Sean Case, via Alaska's News Source",
+      "src": "S-ANC-2026",
+      "verbatim": "It's our response to crime. We think it's going to have a significant impact, but we are not going to outrun our coverage on this, and that's the commitment that we made.",
+      "note": "COUNTER-POINT. Do NOT write 'significant impact on crime'. The words 'on crime' are not on the page."
+    },
+    {
+      "id": "c10",
+      "spoken": null,
+      "on_screen": "\"CUT DOWN ON US COMING IN TOO HOT\"",
+      "label": "Chief Sean Case, Alaska Public Media, September 2025",
+      "src": "S-APM-2025",
+      "verbatim": "It's going to cut down on us coming in too hot, because we just have better information.",
+      "note": "THE STRONGEST HONEST COUNTER-POINT for Anchorage. A de-escalation argument in the chief's own mouth."
+    },
+    {
+      "id": "c11",
+      "spoken": null,
+      "on_screen": "14 DAYS, THEN DELETED",
+      "label": "city camera footage, per Alaska's News Source, September 2025",
+      "src": "S-ANC-2025",
+      "verbatim": "all data will be stored for 14 days unless detectives store it as evidence. Then, it will be held for two years.",
+      "note": "Scoped to CITY cameras by APM. Whether the same clock governs volunteered private feeds is not stated anywhere."
+    },
+    {
+      "id": "c12",
+      "spoken": "It put artificial intelligence on redacting body camera video",
+      "on_screen": "AI ON REDACTION",
+      "label": "Chief of Staff Mike Sanders, via KUAC",
+      "src": "S-KUAC",
+      "verbatim": "Sanders told the council that they'd enlisted artificial intelligence in hopes of speeding up the process, but that it's still too slow.",
+      "note": "THE SOURCE NEVER ITEMISES WHAT IS REDACTED. Do not put a list of redacted categories on screen. The film paints a redaction and labels it only REDACTED."
+    },
+    {
+      "id": "c13",
+      "spoken": "It hasn't named the tool",
+      "on_screen": "NO VENDOR NAMED",
+      "label": "neither KUAC nor Alaska Public Media names a vendor or product",
+      "src": "S-KUAC",
+      "verbatim": "(verified ABSENCE of any vendor or product name on either page)",
+      "note": "Stated on screen because it is load-bearing for the procurement question."
+    },
+    {
+      "id": "c14",
+      "spoken": "more than thirty-five",
+      "on_screen": "APRIL: MORE THAN 35 / JULY: MORE THAN 35",
+      "label": "Fairbanks city clerk data, via KUAC",
+      "src": "S-KUAC",
+      "verbatim": "Monthly data provided by the city clerk's office spanning May 2023 to July 2026 show requests for Fairbanks police audio and video peaked this year, surpassing 35 in both April and July.",
+      "note": "SURPASSING 35 means MORE THAN 35. A flat '35' understates it."
+    },
+    {
+      "id": "c15",
+      "spoken": "under twenty requests a month",
+      "on_screen": "NEVER ABOVE 20 BEFORE OCTOBER 2025",
+      "label": "Fairbanks city clerk data, via KUAC",
+      "src": "S-KUAC",
+      "verbatim": "Prior to October 2025, those kinds of requests hadn't exceeded 20 in any single month"
+    },
+    {
+      "id": "c16",
+      "spoken": "one evidence technician",
+      "on_screen": "ONE EVIDENCE TECHNICIAN",
+      "label": "per KUAC",
+      "src": "S-KUAC",
+      "verbatim": "the time-consuming process of redacting the audio and video gets in the way of the police department's evidence technician performing other essential job duties"
+    },
+    {
+      "id": "c17",
+      "spoken": "basically subsidizing YouTubers from the Lower Forty-Eight",
+      "on_screen": "\"BASICALLY JUST SUBSIDIZING YOUTUBERS FROM THE LOWER 48\"",
+      "label": "Chief of Staff Mike Sanders, via KUAC",
+      "src": "S-KUAC",
+      "verbatim": "Instead, he's basically just subsidizing YouTubers from the Lower 48,",
+      "note": "The 'he' is THE EVIDENCE TECHNICIAN, singular. Misreading the pronoun would invert the sentence."
+    },
+    {
+      "id": "c18",
+      "spoken": "free under five staff hours a month",
+      "on_screen": "FREE UNDER 5 STAFF HOURS A MONTH",
+      "label": "state law as described by Chief Ron Dupee, via KUAC",
+      "src": "S-KUAC",
+      "verbatim": "state law that makes receiving public records free as long as providing them doesn't require more than five hours of staff time in a calendar month",
+      "note": "akleg.gov returned 403 so the statute text was NOT independently confirmed. Attribute to the chief."
+    },
+    {
+      "id": "c19",
+      "spoken": null,
+      "on_screen": "\"WE JUST DON'T HAVE THE PERSONNEL\"",
+      "label": "Police Chief Ron Dupee, via KUAC",
+      "src": "S-KUAC",
+      "verbatim": "And number two, we just don't have the personnel to keep up with the requests. At the end of the day, that's the biggest issue,",
+      "note": "THE FAIRBANKS COUNTER-POINT in the city's own mouth. A staffing claim, not an anti-transparency claim."
+    },
+    {
+      "id": "c20",
+      "spoken": "tell them you'll get it when you get it",
+      "on_screen": "\"YOU'LL GET IT WHEN YOU GET IT\"",
+      "label": "Chief of Staff Mike Sanders, via KUAC",
+      "src": "S-KUAC",
+      "verbatim": "By telling these YouTubers, like, \"You'll get it when you get it,\"",
+      "note": "MUST SHIP WITH c21. Without it the film implies this is city policy. It is not."
+    },
+    {
+      "id": "c21",
+      "spoken": "Its own attorneys disagreed that night",
+      "on_screen": "THE CITY'S OWN ATTORNEYS DISAGREED",
+      "label": "per KUAC",
+      "src": "S-KUAC",
+      "verbatim": "Sanders acknowledged that the city attorney's office doesn't agree with that method.",
+      "note": "MANDATORY companion to c20. The fact-check named omitting this as the single most unfair cut available in this story."
+    },
+    {
+      "id": "c22",
+      "spoken": null,
+      "on_screen": null,
+      "label": "Municipality of Anchorage",
+      "src": "S-MUNI",
+      "verbatim": "District 1 - North Anchorage: Sydney Scout, Daniel Volland. District 6 - South Anchorage, Girdwood, Turnagain Arm: Zac Johnson, Keith McCormick.",
+      "note": "Attribution check for c7. McCormick is District 6."
+    }
+  ],
+  "cut_list": [
+    "'The Assembly BANNED facial recognition' \u2014 it heavily limits, is not indefinite, and has carve-outs.",
+    "'750 cameras' as a live count \u2014 750 is a ceiling on volunteered feeds.",
+    "'15-camera current footprint' \u2014 not published anywhere. DEAD.",
+    "'significant impact on crime' \u2014 the words 'on crime' are not on the page.",
+    "The Flock 'completely different' + 'come with the equipment' splice \u2014 two answers to two different questions.",
+    "Drones, body cameras and plate readers as part of the AUGUST 2026 request \u2014 they belong to the September 2025 contract.",
+    "A list of what the Fairbanks AI redacts \u2014 the source never itemises it.",
+    "Any Fairbanks AI vendor or product name \u2014 none published.",
+    "'exactly 35 requests' \u2014 the source says surpassing 35.",
+    "Any figure for hours Fairbanks staff actually spend \u2014 not published.",
+    "Rep. Ashley Carrick speaking \u2014 she is named as HB 377's sponsor and is not quoted.",
+    "Assembly Member Erin Baldwin-Day speaking \u2014 she asks a question and is not quoted.",
+    "John McKay's 'most harmful since statehood' \u2014 it attaches to HB 377, a bill this film does not cover. Splicing it onto the chief of staff's remark would manufacture a judgment nobody made. The whole HB 377 thread is cut.",
+    "'out of state' \u2014 the sources say Lower 48 and Outside."
+  ],
+  "illustrative_note": "Every on-screen number is illustrative of the cited claim and is not a live feed. The pairing of the two cities is THIS FILM'S ARGUMENT and no source links them."
+}

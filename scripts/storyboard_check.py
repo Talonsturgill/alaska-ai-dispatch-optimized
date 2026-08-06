@@ -526,6 +526,29 @@ def main():
             print(f"FAIL [storyboard_check] {p}")
         sys.exit(1)
 
+    # ---- 2b. THE RUN IS NOT ITS OWN PRIOR ART ----
+    # A run records itself into config/state.yaml's dispatch_history partway through. Every
+    # gate re-run after that point was then comparing this board against ITSELF and reporting
+    # a perfect match on all nine axes as "too close — redesign the composition."
+    #
+    # That is not a cosmetic annoyance. On 2026-08-06 a re-cut mid-run produced four FAILs
+    # naming the palette as a rubric hard_blocker, and every one of them was the run's own
+    # fingerprint reflected back. A gate that says STOP when it means "nothing is wrong" is
+    # the same defect class as an invented constraint: it manufactures a reason to quit that
+    # no measurement supports, and it does it in the authoritative voice of a check.
+    #
+    # Drop any history entry that IS this run before comparing. Matching on the board's own
+    # date and slug, so a genuine repeat of an older dispatch still fails exactly as before.
+    me_date = str(sb.get("run_date") or sb.get("date") or "").strip()
+    me_slug = str(sb.get("slug") or "").strip()
+    dropped = [h for h in history
+               if (me_date and str(h.get("date", "")).strip() == me_date)
+               or (me_slug and str(h.get("slug", "")).strip() == me_slug)]
+    if dropped:
+        history = [h for h in history if h not in dropped]
+        print(f"  [self] ignoring {len(dropped)} history entry/entries for this run "
+              f"({me_date or me_slug}) — a board is not its own prior art")
+
     # ---- 3. divergence vs recent history (only if we have prior dispatches) ----
     recent = history[-rule["compare_last_n"]:] if history else []
     for old in recent:

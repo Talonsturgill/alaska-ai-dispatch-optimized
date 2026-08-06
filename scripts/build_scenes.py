@@ -70,7 +70,18 @@ TAIL = 2.6  # hold after the last word
 # S6 L13-L14 (the machine still, the cutaway iris opening on nothing, the chain running backwards),
 # S7 L15-L16 (the net sweep in tussock, the ghost of a newer model),
 # S8 L17-L18 (the drawer wall rolling closed, the caught beetle named, the question).
-SCENE_START_LINE = [0, 3, 5, 7, 9, 11, 13, 15, 17]
+# 2026-08-06 "The Same Face, The Same Plate": ELEVEN shots (S1..S11 in
+# video-engine/src/Ep0806.tsx) onto 25 VO lines. Boundaries are anchored to VO LINE
+# STARTS so the picture can never drift from the words. Rebalanced at Gate 0C, which
+# measured the first map demanding 196 to 210 wpm in three shots and under 120 in three
+# others: the total was fine and the DISTRIBUTION desynchronised say-it-show-it across
+# roughly 40 seconds. S1 L0-1 (the frame, the refused bracket, the two cities, the pipe),
+# S2 L2-3 (capacity and price), S3 L4-5 (the rule and the mismatch), S4 L6-7 (the promise,
+# then north), S5 L8-9 (the redaction lands, the tool is unnamed), S6 L10-11 (two jobs),
+# S7 L12-13 (the mechanism and the growing line), S8 L14-16 (the curve, one technician,
+# the spool), S9 L17-18 (the quote, the idea, the attorneys), S10 L19-21 (the concession,
+# the denial, the fusion), S11 L22-24 (the date, the wall, the button).
+SCENE_START_LINE = [0, 2, 4, 6, 9, 11, 13, 15, 17, 20, 22]
 
 
 def _apply_caption_fixups(caps):

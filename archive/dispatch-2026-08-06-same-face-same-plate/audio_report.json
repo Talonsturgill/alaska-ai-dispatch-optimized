@@ -1,0 +1,59 @@
+{
+ "measured_on": "dispatch_square.mp4",
+ "tool": "ffmpeg loudnorm + forced-alignment word timings",
+ "delivered_i": -13.97,
+ "delivered_tp": -1.51,
+ "delivered_lra": 5.3,
+ "targets": {
+  "i": -14.0,
+  "tp_max": -1.0,
+  "lra": [
+   6.0,
+   9.0
+  ]
+ },
+ "pass": {
+  "loudness": true,
+  "true_peak": true,
+  "lra": false
+ },
+ "vo_gaps_ge_0_35s": 50,
+ "vo_gaps_ge_0_50s": 44,
+ "vo_silence_in_gaps_s": 38.9,
+ "last_word_ends_s": 126.78,
+ "longest_gaps": [
+  {
+   "at": 17.06,
+   "len": 1.24
+  },
+  {
+   "at": 9.5,
+   "len": 1.22
+  },
+  {
+   "at": 4.0,
+   "len": 1.12
+  },
+  {
+   "at": 61.68,
+   "len": 1.08
+  },
+  {
+   "at": 73.44,
+   "len": 1.06
+  },
+  {
+   "at": 29.58,
+   "len": 1.04
+  },
+  {
+   "at": 40.68,
+   "len": 1.02
+  },
+  {
+   "at": 108.14,
+   "len": 1.02
+  }
+ ],
+ "diagnosis": "LRA is 5.3 against the 6 to 9 LU target. MEASURED CAUSE, not asserted: the VO track leaves 50 gaps of 0.35s or longer (44 of them 0.50s or longer), totalling 38.9s of silence, and the last word ends at 126.78s. The room for the bed to open therefore EXISTS. If the loudness range is still flat, the bed is not rising into that room, which is a mix problem to be fixed at the faders and the duck release, not a script problem to be fixed by cutting lines. An earlier hand-written version of this field claimed there was only one gap over 0.35s and sent the fix in the wrong direction; these figures are computed from words.json every run."
+}
