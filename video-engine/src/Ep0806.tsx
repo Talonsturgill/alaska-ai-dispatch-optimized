@@ -873,14 +873,19 @@ const S7: React.FC<SceneProps> = ({from}) => {
           {/* the axis furniture: gridlines, ticks and their labels are real structure */}
           {[0, 1, 2, 3, 4, 5, 6].map((i) => (
             <g key={`gl${i}`}>
-              <path d={`M150,${1140 - i * 68} H800`} stroke="#26384A" strokeWidth={1.5} opacity={0.85} />
-              <text x={118} y={1146 - i * 68} textAnchor="end" fill="#5B7085"
-                    style={{font: `700 15px ${MONO}`}}>{i * 10}</text>
+              <path d={`M150,${1140 - i * 68} H690`} stroke="#26384A" strokeWidth={1.5} opacity={0.85} />
+              {i % 2 === 0 ? (
+                <text x={118} y={1146 - i * 68} textAnchor="end" fill="#5B7085"
+                      style={{font: `700 15px ${MONO}`}}>{i * 10}</text>
+              ) : null}
             </g>
           ))}
-          <path d="M150,1140 H800" stroke="#3A4E62" strokeWidth={2} />
-          <path d="M150,900 H800" stroke="#8CA3B6" strokeWidth={1.5} strokeDasharray="8 8" opacity={0.9} />
-          <text x={812} y={906} fill="#9FB2C2" style={{font: `700 20px ${MONO}`}}>35</text>
+          <path d="M150,1140 H690" stroke="#3A4E62" strokeWidth={2} />
+          <path d="M150,900 H690" stroke="#8CA3B6" strokeWidth={1.5} strokeDasharray="8 8" opacity={0.9} />
+          {/* the 35 line reads off the LEFT axis with the other ticks. It used to sit at
+              x=812, which is where the technician now stands. */}
+          <text x={118} y={906} textAnchor="end" fill="#9FB2C2"
+                style={{font: `700 19px ${MONO}`}}>35</text>
           {Array.from({length: months}).map((_, i) => {
             const shown = build * months;
             if (shown < i) return null;
@@ -888,7 +893,7 @@ const S7: React.FC<SceneProps> = ({from}) => {
             const base = 34 + ((Math.imul(i + 3, 2654435761) >>> 0) % 46);
             const hRaw = isSpike ? 300 * spike : base;
             const h = Math.min(hRaw, isSpike ? 300 : base);
-            const x = 156 + i * 24;
+            const x = 156 + i * 20;
             return (
               <g key={i}>
                 <rect x={x} y={1140 - h} width={17} height={h} rx={2}
@@ -916,8 +921,8 @@ const S7: React.FC<SceneProps> = ({from}) => {
         </g>
         <FrameStack x={930} y={1266} f={f} count={Math.round(build * 9 + late * 2)} s={0.44} />
         <g opacity={late}>
-          <ellipse cx={790} cy={1292} rx={98} ry={16} fill="#04090F" opacity={0.8} />
-          <g transform="translate(790,1292) scale(1.22)">
+          <ellipse cx={810} cy={1292} rx={92} ry={16} fill="#04090F" opacity={0.8} />
+          <g transform="translate(810,1292) scale(1.15)">
             <Living f={f} phase={0.13} gain={1.3}>
               <Character pose="stand" emotion="worried" outfit="vest" headgear="bare" frame={f} />
             </Living>

@@ -70,6 +70,48 @@ def run(cmd, cwd=None, ok_fail=False):
     return r
 
 
+def require_ship_gate():
+    """Refuse to publish a cut the 3-judge panel has not passed.
+
+    WHY THIS EXISTS (2026-08-06, and it was live on the public site when it was found).
+
+    The routine's Phase 7 has always had the right ORDER on paper: ship_gate.py check, and
+    only then encode, upload, publish. On 2026-08-06 the run pushed the media at 07:42,
+    added the feed entry at 07:45, and convened the panel at 08:13, which scored the cut
+    5.12 against a 9.0 bar and returned "BELOW BAR. THIS CUT DOES NOT SHIP." For the half
+    hour in between, and for every hour after it, alaskaaihq.com/videos served a film with
+    a raw \\u2019 escape painted on screen inside a quote attributed to a named official.
+
+    Nothing malfunctioned. The run simply did Phase 7 before Phase 6 finished, and every
+    guard in the repo was somewhere else: ship_gate refuses SHIPS but only when something
+    calls it, and no_exit refuses STOPS. The publish step is the single most outward-facing
+    action this machine takes — it is the one that reaches strangers — and it was the one
+    step that would run on anything you handed it.
+
+    Prose in the routine cannot fix this, because prose is what failed. The guard goes in
+    the publish path, where a run that skips ahead hits it whether or not it remembered to.
+
+    Asymmetric, like the others: this refuses PUBLISHES and can never cause one. If the
+    gate is missing or unreadable, that is a refusal too — an unverifiable pass is not one.
+    """
+    gate = Path(__file__).resolve().parent / "ship_gate.py"
+    if not gate.exists():
+        sys.exit("publish_feed: scripts/ship_gate.py is missing. Refusing to publish a cut "
+                 "whose quality gate cannot be run.")
+    p = subprocess.run([sys.executable, str(gate), "check"], capture_output=True, text=True)
+    if p.returncode != 0:
+        sys.stderr.write(p.stdout)
+        sys.stderr.write(p.stderr)
+        sys.exit(
+            "\npublish_feed: REFUSING TO PUBLISH — ship_gate.py check did not pass.\n"
+            "  The feed is the public site. A cut the panel has not passed does not go on it,\n"
+            "  and reaching Phase 7 is not evidence that Phase 6 finished. Go back to the\n"
+            "  editing loop, fix the panel's named defects, re-render, re-grade, and publish\n"
+            "  when the median clears the bar.\n"
+            "  There is no override flag and one must not be added.")
+    print("  ship_gate passed; publishing is permitted")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--id", required=True, help="unique slug, e.g. 2026-07-22-checkpoint-lever")
@@ -88,6 +130,9 @@ def main():
     ap.add_argument("--repo", default=REPO)
     ap.add_argument("--branch", default="main")
     a = ap.parse_args()
+
+    # BEFORE anything is written or pushed anywhere. See require_ship_gate.
+    require_ship_gate()
 
     # Validate every value that reaches the feed manifest before it is written,
     # so videos.json cannot carry an XSS payload into the /videos player.

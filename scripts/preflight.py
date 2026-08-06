@@ -32,6 +32,12 @@ CHECKS = [
      ["npx", "tsc", "--noEmit", "-p", "video-engine/tsconfig.json"], True),
     ("plated strings fit their plates",
      [sys.executable, "scripts/text_fit_check.py"], True),
+    # Belt and braces. Its real home is Gate 0A', BEFORE the render, where catching a
+    # collision costs nothing instead of seven minutes. It is repeated here because the
+    # defect it catches is invisible at every other stage: the source reads fine, tsc is
+    # clean, the render succeeds, and two annotations are stacked in the same pixels.
+    ("nothing informational sits in the caption band",
+     [sys.executable, "scripts/caption_band_check.py"], True),
     ("the square crop cuts nothing built",
      [sys.executable, "scripts/crop_safety.py"], False),
     ("dead space within ceilings",
