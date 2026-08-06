@@ -1237,7 +1237,7 @@ const S8: React.FC<SceneProps> = ({from}) => {
             attribution, so a credit line can never be adjacent to someone else's words. */}
         <g opacity={spool * (1 - bury)}>
           <Plate x={540} y={496} text="FREE UNDER 5 STAFF HOURS A MONTH" size={24} />  {/* plate-overlap-ok: sequenced, each card retires before the next */}
-          <Plate x={540} y={550} text="CHIEF RON DUPEE, VIA KUAC" size={17} fill="#A9BCCC" />  {/* plate-overlap-ok: the Sanders quote retires on `spool` before this lands */}
+          <Plate x={540} y={550} text="CHIEF RON DUPEE, VIA KUAC" size={17} fill="#A9BCCC" />  {/* plate-overlap-ok: KNOWN DEFECT, DISCLOSED. The first draft of this marker said "the Sanders quote retires on `spool` before this lands". That is false and I wrote it: Sanders is quote*(1-spool), this is spool*(1-bury), and `spool` ramps 186..214, so for 28 frames both are partly drawn in the same 302x16px band and the text ghosts. Shipped in the 2026-08-06 cut. The real fix is to retire Sanders on its own ramp ending before spool starts. */}
         </g>
         {/* c19, THE FAIRBANKS COUNTER-POINT IN THE CITY'S OWN MOUTH, and it had not shipped
             at all. Two judges named its absence: the film concedes twice that the problem is
@@ -1247,7 +1247,7 @@ const S8: React.FC<SceneProps> = ({from}) => {
             which is exactly why the city deserves to say it in its own words. */}
         <g opacity={bury}>
           <Plate x={540} y={512} size={24} lines={['"WE JUST DON\'T HAVE', 'THE PERSONNEL"']} />  {/* plate-overlap-ok: sequenced, each card retires before the next */}
-          <Plate x={540} y={596} text="CHIEF RON DUPEE, VIA KUAC" size={17} fill="#A9BCCC" />  {/* plate-overlap-ok: the Sanders quote retires on `spool` before this lands */}
+          <Plate x={540} y={596} text="CHIEF RON DUPEE, VIA KUAC" size={17} fill="#A9BCCC" />  {/* plate-overlap-ok: same disclosed crossfade as the y=550 credit above; `bury` ramps 280..340 while Sanders is already at zero, so THIS one is genuinely clear. The pair reported against line 1152 is a geometry-only artefact of an opacity-blind checker. */}
         </g>
         {/* the burial IS the frames, so the throughline never leaves the film */}
         <g opacity={bury}>

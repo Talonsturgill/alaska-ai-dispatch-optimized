@@ -1,10 +1,9 @@
 {
-  "run_date": "2026-08-03",
-  "floor": 7.0,
-  "instruction": "also ship it as is",
-  "granted_by": "owner, 2026-08-05, in their own words, unprompted",
-  "rubric_bar_at_time_of_release": 7.5,
-  "context": "Said after being shown the round-13 median of 7.21 against the 7.5 bar, the per-axis breakdown of what was still holding it under, and the fact that a round-14 panel was already grading the bytes that would ship. The owner was not asked whether to release the bar and was not told the loop was slow. It is their own call on their own threshold, which they set (8.6 -> 7.8 -> 7.5, all three their calls on 2026-07-31).",
-  "note": "Floor 7.0 rather than whatever this cut happens to score, so the release is still a floor and not a blank cheque: a cut under 7.0 stays blocked and the owner would have to say so again. THIS IS THE SECOND TIME THIS OWNER HAS HAD TO SAY SHIP. The 2026-07-31 release records the run grinding eleven further rounds after being told to ship a cut that had already cleared the bar. The correct behaviour is to record the verdict for the bytes that exist and ship those bytes. Waiting for one more panel that is already running on exactly those bytes is not grinding; starting another fix round would be.",
-  "disclosure_required": "The Gmail draft MUST carry this release verbatim, the recorded panel scores, and the named defects that were NOT fixed. The owner accepted a known-imperfect cut. They did not accept being told it was fine."
+ "run_date": "2026-08-06",
+ "instruction": "ship it as-is once this next render finishes, then focus on fixing the root causes that are causing the regressions, and the repeat offenders that the judges found, you must create mechanisms to be more proactive about so we don't waste judge time because the agents creating the videos are just better, teach them from everything you learned this run",
+ "floor": 6.8,
+ "recorded_by": "owner, in-session, 2026-08-06",
+ "panel_median_at_release": 6.81,
+ "bar_at_release": 7.5,
+ "note": "The owner also corrected the bar itself this session: it is 7.5 from config/dispatch_rubric.yaml, not the 9.0 that five earlier panels were briefed with. This release accepts 6.8 for THIS run only. No hard blocker fired on any of the three judges; the gap is craft, concentrated in motion (no directional blur, uneven held-figure idle life) and in the legibility of the attribution tier."
 }

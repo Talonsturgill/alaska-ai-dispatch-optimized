@@ -1207,6 +1207,66 @@ A shot passes when the picture at each line's offset is about that line. This is
 say-it-show-it standard Gate 0C applies to the board, applied to the code, and it is the one
 place where the board passing tells you nothing — the board was right and the wiring moved.
 
+## WHAT THE 2026-08-06 RUN COST, AND THE NINE RULES THAT COME OUT OF IT
+
+Six panels, eighteen judge-gradings, six renders. Median went 5.12 -> 6.24 -> 7.08 -> 6.70
+-> 6.48 -> (final). Most of that spend was not craft. It was the same handful of mistakes,
+made in different clothes, and every one of them now has a mechanism. Read these before you
+touch the engine.
+
+1. WHEN A JUDGE SAYS SOMETHING IS MISSING, CHECK THE EVIDENCE BEFORE YOU CHANGE THE FILM.
+   Judges reported: no orange brackets on the closing wall (three rounds), c11 absent, the
+   Anchorage counter-case as one card, no composer credit (five judges), two strips
+   "frozen". Every one of those was TRUE ABOUT THE PACK and FALSE ABOUT THE FILM. The
+   brackets were sampled mid-fade at 50% opacity; c11 was on screen 44.4-46.9s and the strip
+   sat at 42.6s; the contact sheet stopped at the last VO word so the sign-off was never
+   photographed. Changing the film to fix a sampling error makes the film worse and costs a
+   full cycle. `scripts/evidence_coverage_check.py` now proves coverage before a panel.
+
+2. NEVER ADD AN ELEMENT TO A BAND WITHOUT CHECKING WHAT IS ALREADY THERE.
+   Three times in one run this produced something worse than the gap being closed: a tag on
+   the word YOUTUBERS, a card clipping a quotation and leaving the wrong official's name
+   inside it, an attribution rendered underneath another card. Each element was individually
+   fine; the defect lived only in the relationship. `scripts/plate_overlap_check.py`.
+
+3. A CLAIM'S `note` IS AN OBLIGATION, NOT ADVICE. Seven were silently declined this run and
+   judges found all seven. Write them into the claim's `requires` block so a machine reads
+   them: `scripts/claims_contract_check.py`. And check the claim record itself — c7's
+   approved on_screen string was a paraphrase of its own verbatim, so the DATA was wrong,
+   not just the build.
+
+4. DERIVE GEOMETRY, NEVER HAND-TUNE IT. The hook's bracket sat 109px off the plate at four
+   call sites for the whole life of the film, because each site carried its own typed
+   offsets. `plateLock()` computes it from the plate's own constants. Same for the caption
+   band and the square crop: `caption_band_check.py` does the transform arithmetic, because
+   an authored y is not a rendered y once World's push scales it.
+
+5. A NUMBER RESTATED IN A SECOND PLACE WILL BE WRONG IN ONE OF THEM. The panel bar lived in
+   the rubric AND in this prompt; the prompt was two weeks stale, so five panels graded
+   against 9.0 when the bar was 7.5. Two judges flagged the divergence in writing and the
+   run kept going. vo_script.json had `text` and `t` and the patcher updated only one, so a
+   regeneration silently reinstated pre-patch narration. READ the value; never restate it.
+
+6. VERIFY THE QUANTITY THE JUDGE IS ACTUALLY JUDGING. I reported the idle-motion fix as
+   confirmed because figure boxes measured 6-15% frame-to-frame. That included the camera
+   push. Registering the global shift out showed the rigs move as a UNIT: the same pose,
+   translated. Judges were asking for articulation - limbs, heads - and were right. A
+   measurement that would score a rigid sprite highly is not a measurement of animation.
+
+7. DRAW ORDER IS A DEFECT SURFACE. The whip smear was drawn AFTER the carried frame, so it
+   covered the one object the board says must stay crisp and took the screen to near-black:
+   three judges called it a dissolve for three rounds. The attribution in rule 2 was the
+   same bug. If an element must stay visible, draw it last.
+
+8. THE METER AND THE FRAME DISAGREE; TRUST THE FRAME AND MEASURE ANYWAY. Varying the wall
+   dropped dead space 50.3% to 40.4% AND dissolved the shot's subject into the background —
+   the meter measures texture and its own docstring says so. But going the other way by eye
+   cost 8 points. The answer was a measured A/B on three frames, one variable at a time.
+
+9. RENDER-ADJACENT DISCIPLINE. Do not edit the engine while chunks are bundling. Wait on the
+   render's completion marker, never on a filename a stale artifact satisfies. Kill by PID,
+   and kill the ffmpeg children too. All three cost time today.
+
 ### KILLING A SCRIPT DOES NOT KILL ITS FFMPEG (2026-08-06)
 
 `kill -9 <encode_deliverables.sh pid>` leaves the ffmpeg it spawned running, and that
