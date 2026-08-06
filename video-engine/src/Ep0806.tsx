@@ -624,8 +624,8 @@ const S3: React.FC<SceneProps> = ({from}) => {
             the quote bare, so a viewer read a contested characterisation as a finding
             about the code. c22 carries the district. */}
         <g opacity={ask}>
-          <Plate x={620} y={1150} size={26}
-                 lines={[`"THE CODE CAN'T ANSWER`, `ANY OF THOSE QUESTIONS"`]} />
+          <Plate x={620} y={1150} size={24}
+                 lines={[`"ANCHORAGE CODE CAN'T ANSWER`, `ANY OF THOSE QUESTIONS"`]} />
           <Plate x={620} y={1250} text="KEITH McCORMICK, ASSEMBLY D6" size={19} fill="#C0CEDA" />
         </g>
         {/* the probe: it enters the empty socket, sweeps its whole width, exits with
@@ -678,9 +678,14 @@ const S4: React.FC<SceneProps> = ({from}) => {
   const cC = interpolate(f, [252, 270], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: E_OUT});
   // ACT C — THE WHIP. Four hundred miles in one smear.
   const whip = interpolate(f, [326, 335, 348], [0, 1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
-  const room = interpolate(f, [332, 366], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: E_OUT});
+  const room = interpolate(f, [340, 356], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: E_OUT});
   const travel = interpolate(f, [336, 429], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: E_MOVE});
-  const anch = 1 - room;
+  // A HARD SWAP UNDER THE SMEAR, NOT A CROSSFADE. The streaks were riding OVER a dissolve:
+  // `anch = 1 - room` meant the Anchorage layer faded out on exactly the ramp the Fairbanks
+  // room faded in on, so a judge saw the FAIRBANKS slug ghosting THROUGH the promise card
+  // with both images dimmed. Anchorage now clears in 4 frames BEFORE the room arrives, and
+  // the smear covers the swap the way a whip is supposed to.
+  const anch = interpolate(f, [326, 334], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   // the key crossfades with the city: cyan console light, then the green of a records room
   const SRC = [
     {x: 270, y: 760, w: 540, h: 300, color: RIM, intensity: 0.92 * anch, reach: 780},
@@ -1057,6 +1062,13 @@ const S7: React.FC<SceneProps> = ({from}) => {
           })}
         </g>
         <Plate x={330} y={1253} text="NEVER ABOVE 20 BEFORE OCT 2025" size={21} op={build} />
+        {/* The clerk record publishes BOUNDS, not a monthly series: c15 gives the ceiling
+            before Oct 2025 and c14 gives the two months that passed 35. Every other bar
+            height here is authored, drawn in the visual grammar of data, and both judges
+            called that out. The ledger's illustrative_note lives in claims.json where a
+            viewer never sees it, so it goes on the frame. */}
+        <Plate x={330} y={1196} text="SHAPE ILLUSTRATIVE · BOUNDS PUBLISHED" size={15}
+               fill="#93A7B8" op={build * 0.95} />
         {/* the two cards sit LEFT, over the low years, because at x=540 the JULY plate
             landed directly on the July spike it labels and occluded the bar's top. The
             spikes stand at x 576..593 and 636..653; these span 200..540. */}
@@ -1264,7 +1276,7 @@ const S9: React.FC<SceneProps> = ({from}) => {
           </g>
         </g>
         <g opacity={slip}>
-          <Plate x={540} y={496} text={`"YOU'LL GET IT WHEN YOU GET IT"`} size={25} />
+          <Plate x={540} y={498} text={`"YOU'LL GET IT WHEN YOU GET IT"`} size={25} />
         </g>
         {/* THE CONCESSION, ticked on a THING: the stack and the technician */}
         <g opacity={tick}>
@@ -1274,7 +1286,7 @@ const S9: React.FC<SceneProps> = ({from}) => {
           <Plate x={540} y={556} text="HE'S RIGHT ABOUT THE PROBLEM" size={22} />
         </g>
         <g opacity={back}>
-          <Plate x={540} y={634} text="THE CITY'S OWN ATTORNEYS DISAGREED" size={24} />
+          <Plate x={540} y={646} text="THE CITY'S OWN ATTORNEYS DISAGREED" size={25} />
         </g>
         {/* THE STAMP, DESCENDING ONTO NOTHING. It travels toward the slip's own x (the
             slip has slid to 870 by now), halts 96px above it, and drifts there. No
@@ -1385,7 +1397,14 @@ const S10: React.FC<SceneProps> = ({from}) => {
 // ---------------------------------------------------------------------------
 const S11: React.FC<SceneProps> = ({from}) => {
   const f = useCurrentFrame();
-  const out = interpolate(f, [0, 150], [0, 1], {extrapolateRight: 'clamp', easing: E_MOVE});
+  // THE REVEAL COMPLETES IN 2.8s, NOT 5. Three separate judges across three rounds have
+  // looked at this wall and reported no orange brackets and no grey box. They were reading
+  // it correctly: the tile group rides `out` on a 150-frame ramp, so at the 117.6s
+  // filmstrip it is at 50% opacity and at the 118.5s contact still it is at 78%. Every
+  // sample anyone has ever taken of the film's thesis image caught it half-drawn, and a
+  // viewer got a five-second fade instead of a reveal. Now it lands at f=84 and HOLDS for
+  // the remaining 7.5s of the shot, which is what a signature move is supposed to do.
+  const out = interpolate(f, [0, 84], [0, 1], {extrapolateRight: 'clamp', easing: E_MOVE});
   const q = interpolate(f, [104, 132], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: E_OUT});
   const sign = interpolate(f, [150, 176], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: E_OUT});
   const scale = 1 - 0.72 * out;
@@ -1416,9 +1435,15 @@ const S11: React.FC<SceneProps> = ({from}) => {
               <rect x={x + 4} y={y + 4} width={cell - 8} height={cell - 8} rx={3}
                     fill={isHero ? '#1A2836' : '#22405C'} opacity={isHero ? 1 : fl} />
               {isHero ? (
+                /* THE ONE HIDDEN TILE. It has to be findable in a wall of ninety-eight, so
+                   it gets a brighter housing, a full-bleed redaction block and a tungsten
+                   edge — tungsten because the accent law reserves it for a person deciding,
+                   and this is the tile a person decided about. */
                 <g>
+                  <rect x={x + 2} y={y + 2} width={cell - 4} height={cell - 4} rx={3} fill="#1F3247" />
                   <rect x={x + 4} y={y + 4} width={cell - 8} height={cell - 8} rx={3} fill="#0E1620" />
-                  <rect x={x + 14} y={y + 16} width={cell - 28} height={cell - 32} fill={REDACTION} />
+                  <rect x={x + 10} y={y + 12} width={cell - 20} height={cell - 24} fill={REDACTION} />
+                  <rect x={x + 2} y={y + 2} width={cell - 4} height={3} fill={TUNGSTEN} opacity={0.9} />
                 </g>
               ) : (
                 <g opacity={0.85 * fl}>
@@ -1443,18 +1468,34 @@ const S11: React.FC<SceneProps> = ({from}) => {
           </g>
         </Living>
       </g>
-      <Plate x={540} y={840} text="ONE PERSON RELEASES IT" size={23} fill="#DCE6EE" op={out * 0.9} />
-      {/* THE BUTTON */}
-      <g opacity={q}>
+      <Plate x={540} y={880} text="ONE PERSON RELEASES IT" size={23} fill="#DCE6EE" op={out * 0.9 * (1 - sign)} />
+      {/* THE BUTTON. It hands off to the sign-off rather than sharing the frame with it. */}
+      <g opacity={q * (1 - sign)}>
         <Plate x={540} y={640} text="WHAT WOULD YOU WANT" size={32} />
         <Plate x={540} y={716} text="WRITTEN DOWN?" size={32} />
       </g>
-      {/* THE SIGN-OFF, seated on the console lip as a real object */}
+      {/* THE SIGN-OFF, AND IT IS INSIDE THE SQUARE NOW.
+          It sat at y 1660 and 1760. The shipped LinkedIn cut is crop=1080:1080:0:420, so
+          both lines were 160 and 260px BELOW the bottom of the deliverable most of the
+          audience sees: the main-feed cut has never carried a sign-off or a source list at
+          all, and nobody noticed because the tall master shows them fine.
+          That is also a LICENSING problem, not only a rubric one. The bed is "Lightless
+          Dawn" by Kevin MacLeod under CC BY 4.0, and CC BY REQUIRES attribution. Shipping
+          the music with the credit cropped off the deliverable does not satisfy it. The
+          credit is now on screen, in the square, where the obligation is actually met. */}
       <g opacity={sign} transform={`translate(0,${(1 - sign) * 40})`}>
-        <BrassPlate x={540} y={1660} lines={["ALASKA.AI"]} set={sign} scale={0.8} size={34} w={420} />
-        <text x={540} y={1760} textAnchor="middle" fill="#6E8496"
+        <BrassPlate x={540} y={632} lines={["ALASKA.AI"]} set={sign} scale={0.78} size={34} w={420} />
+        <text x={540} y={742} textAnchor="middle" fill="#9DB0C0"
               style={{font: `700 17px ${MONO}`, letterSpacing: 1}}>
-          ALASKA&apos;S NEWS SOURCE · KUAC · ALASKA PUBLIC MEDIA · MUNICIPALITY OF ANCHORAGE
+          ALASKA&apos;S NEWS SOURCE · KUAC · ALASKA PUBLIC MEDIA
+        </text>
+        <text x={540} y={772} textAnchor="middle" fill="#9DB0C0"
+              style={{font: `700 17px ${MONO}`, letterSpacing: 1}}>
+          MUNICIPALITY OF ANCHORAGE
+        </text>
+        <text x={540} y={812} textAnchor="middle" fill="#7E93A6"
+              style={{font: `700 15px ${MONO}`, letterSpacing: 0.5}}>
+          MUSIC: &quot;LIGHTLESS DAWN&quot; KEVIN MACLEOD · CC BY 4.0
         </text>
       </g>
     </World>

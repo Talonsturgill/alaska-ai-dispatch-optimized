@@ -75,7 +75,7 @@ MOVES = [
     ("spool", 16, 0.50),      # S8  the five-hour spool runs off its own end
     ("stamp", 19, 0.40),      # S9  the stamp descends onto the request and never touches it
     ("fusion", 20, 3.40),     # S10 the two frames fuse and carry brackets AND boxes at once
-    ("pullback", 22, 2.50),   # S11 the signature pull-back, spent exactly once
+    ("pullback", 22, 1.40),   # S11 the signature pull-back, spent exactly once
 ]
 
 
