@@ -518,7 +518,12 @@ const S2: React.FC<SceneProps> = ({from}) => {
         <rect x={0} y={1520} width={1080} height={3} fill="#2B3D4F" />
         <ScreenBounce id="s2b" s={SRC[0]} surfaceY={1560} spread={1.2} />
         <g opacity={money * moneyOut}>
-          <StatCard x={540} y={560} big="$600,000" sub="REQUESTED" scale={1.5} color={HERO} />
+          {/* SLATE, NOT HERO WHITE. StatCard draws `big` in white with an ink stroke, which
+              reads on anything, and `sub` in white with NO stroke at 0.9 opacity. On a
+              near-white HERO card that made "REQUESTED" white-on-white — a judge read it
+              as light grey on light silver and they were being generous. The attribution
+              on the film's single most important figure has to be readable. */}
+          <StatCard x={540} y={560} big="$600,000" sub="REQUESTED" scale={1.5} color="#2B4257" />
         </g>
         {/* c4 — THE RULE, AND IT LANDS. Same descent S4 gives the promise, and unlike
             the promise it arrives on its seat with a shadow under it and stops moving. */}
@@ -894,7 +899,7 @@ const S6: React.FC<SceneProps> = ({from}) => {
   // the two lanes measure EQUAL first (proper telegraph), THEN find collapses
   const measure = interpolate(f, [34, 58], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const collapse = interpolate(f, [96, 196], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: E_OUT});
-  const rule = interpolate(f, [150, 240], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const rule = interpolate(f, [150, 186], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: E_OUT});
   const X0 = 120, FULL = 400;
   const findW = FULL * (1 - 0.93 * collapse);
   const SRC = [{x: 120, y: 1180, w: 840, h: 90, color: '#7FB6D8', intensity: 0.5, reach: 600}];
@@ -1107,7 +1112,7 @@ const S8: React.FC<SceneProps> = ({from}) => {
         <FrameStack x={250} y={1290} f={f} count={11} s={0.46} />
         <Plate x={300} y={1253} text="ONE EVIDENCE TECHNICIAN" size={22} op={hold} />
         <g opacity={quote}>
-          <Plate x={540} y={654} size={26}
+          <Plate x={436} y={578} size={25}
                  lines={['"BASICALLY JUST SUBSIDIZING', 'YOUTUBERS FROM THE LOWER 48"']} />
         </g>
         {/* THE FIVE-HOUR RULE as a finite spool, never a dial with a needle */}
