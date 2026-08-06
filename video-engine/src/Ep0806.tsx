@@ -1039,7 +1039,7 @@ const S8: React.FC<SceneProps> = ({from}) => {
           <text x={0} y={-118} textAnchor="middle" fill={HERO}
                 style={{font: `700 18px ${MONO}`}}>FULL</text>
         </g>
-        <Plate x={540} y={452} text="FREE UNDER 5 STAFF HOURS A MONTH" size={24} op={spool} />
+        <Plate x={540} y={496} text="FREE UNDER 5 STAFF HOURS A MONTH" size={24} op={spool} />
         {/* the burial IS the frames, so the throughline never leaves the film */}
         <g opacity={bury}>
           {Array.from({length: 7}).map((_, i) => {
@@ -1105,17 +1105,17 @@ const S9: React.FC<SceneProps> = ({from}) => {
           </g>
         </g>
         <g opacity={slip}>
-          <Plate x={540} y={392} text={`"YOU'LL GET IT WHEN YOU GET IT"`} size={25} />
+          <Plate x={540} y={496} text={`"YOU'LL GET IT WHEN YOU GET IT"`} size={25} />
         </g>
         {/* THE CONCESSION, ticked on a THING: the stack and the technician */}
         <g opacity={tick}>
           <FrameStack x={215} y={1230} f={f} count={7} s={0.4} />
           <path d="M300,1080 l30,32 l62,-78" stroke={TUNGSTEN} strokeWidth={11} fill="none"
                 strokeLinecap="round" strokeLinejoin="round" />
-          <Plate x={540} y={548} text="HE'S RIGHT ABOUT THE PROBLEM" size={22} />
+          <Plate x={540} y={556} text="HE'S RIGHT ABOUT THE PROBLEM" size={22} />
         </g>
         <g opacity={back}>
-          <Plate x={540} y={470} text="THE CITY'S OWN ATTORNEYS DISAGREED" size={24} />
+          <Plate x={540} y={634} text="THE CITY'S OWN ATTORNEYS DISAGREED" size={24} />
         </g>
         {/* THE STAMP, DESCENDING ONTO NOTHING. It travels toward the slip's own x (the
             slip has slid to 870 by now), halts 96px above it, and drifts there. No

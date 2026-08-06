@@ -49,6 +49,36 @@ REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 CAPTION_H = 132
 OK = "caption-band-ok"
 
+# The shipped LinkedIn cut is crop=1080:1080:0:420 off the 1080x1920 master, so scene rows
+# above 420 are not in the deliverable most of the audience sees.
+SQUARE_TOP = 420
+
+# ...BUT AN AUTHORED y IS NOT A RENDERED y, and this is the part that fooled the first
+# version of this check. Every scene sits inside World, which applies a continuous push:
+#
+#     translate(540+dx, 960+dy) scale(k) translate(-540,-960),  k = 1 + 0.062*push
+#
+# so a point at scene y maps to 960 + (y - 960)*k + dy. Above the centre line that scale
+# drives things UP, and by the end of a shot it is worth about 32px at y=450. That is
+# exactly how c18 "FREE UNDER 5 STAFF HOURS A MONTH", authored at y=452 with a span of
+# 428..476 that looks safely clear of 420 on paper, ended up sliced in half by the crop
+# line on the delivered square. Naive arithmetic said it was fine and the render disagreed.
+#
+# Worst case is the largest push (1.0) at the end of a shot, with the drift at its most
+# negative. Modelled conservatively for every scene rather than parsing each World's push,
+# so the bound is never too loose.
+K_MAX = 1.062
+DY_MAX = 14.0
+
+
+def world_top(scene_y):
+    """Where a scene-space y can render at worst, once World's push is applied."""
+    return 960.0 + (scene_y - 960.0) * K_MAX - DY_MAX
+
+
+# the lowest authored TOP edge that still clears the crop line at full push
+SAFE_Y_MIN = 960.0 - (960.0 - SQUARE_TOP - DY_MAX) / K_MAX
+
 NUM = r"\{(-?\d+(?:\.\d+)?)\}"
 
 
@@ -117,6 +147,27 @@ def check(path):
                 out.append((path, i + 1, "CLAMPED",
                             f"<Plate y={y:g} size={size:g}> renders at y={eff:g}, "
                             f"{y - eff:g}px above where the call site puts it"))
+
+            # --- and the OTHER edge, which cost this run two claim cards -----
+            # The shipped LinkedIn deliverable is the 1:1 square, crop=1080:1080:0:420, so
+            # scene y < 420 does not exist for most of the audience. On 2026-08-06 two cards
+            # were authored above it: c18 "FREE UNDER 5 STAFF HOURS A MONTH" at y=452 was
+            # sliced exactly in half, and c20 "YOU'LL GET IT WHEN YOU GET IT" at y=392 was
+            # cut ENTIRELY — the square viewer never saw that claim at all.
+            #
+            # crop_safety.py does catch this, but only by sampling a finished render, which
+            # means the cost of the mistake is a full render plus an encode plus somebody
+            # reading an advisory carefully enough not to wave it through as decorative.
+            # It is arithmetic on a literal, so it belongs here, before the render.
+            top = world_top(y - half)
+            if top < SQUARE_TOP:
+                how = ("wholly above it, invisible in the shipped 1:1 cut"
+                       if world_top(y + half) <= SQUARE_TOP else "cut by it")
+                out.append((path, i + 1, "CROPPED",
+                            f"<Plate y={y:g} size={size:g}> authored top {y - half:g} "
+                            f"RENDERS at {top:.0f} under the World push, crossing the square "
+                            f"crop line at y={SQUARE_TOP} - {how}. Lowest safe y is "
+                            f"{SAFE_Y_MIN + half:.0f}."))
     return out
 
 
