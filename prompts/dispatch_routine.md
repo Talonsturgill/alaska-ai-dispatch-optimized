@@ -1068,8 +1068,47 @@ worlds, no flat single-tone fills, no glyphs that read as broken assets.
   makes the source lie and on 2026-08-06 it silently stacked two plates in the same pixels.
   Background that genuinely belongs under the caption card declares `data-band="ok"` on the
   element. Do not mark an element exempt to make the gate quiet; move the element.
+- GATE 0A'': `python3 scripts/staging_check.py` exit 0. ALSO a source gate, run before the
+  render, and it compares the STORYBOARD to the ENGINE for every human figure.
+
+  It exists because of the owner's note on 2026-08-06, that characters "don't really do
+  anything or contribute much to illustrating the story", and because of what the code
+  showed when that was checked. The 08-06 board had ALREADY WRITTEN the acting, beat by
+  beat: "looks at the frame, then at the bar, and does not reach for anything yet",
+  "signs the corner of the frame, slowly, once", "the slip is set down and NOT stamped,
+  either way". The engine then drew `pose="stand"` for five of its eight figures, held for
+  10.3 to 14.3 seconds each. The performance was designed and silently not built, and
+  nothing in the pipeline compared the two.
+
+  So this is NOT a reminder to give the cast something to do. The run already does that, in
+  the board, and then loses it between the board and the engine. The gate quotes the board's
+  own words back at the build, which makes most fixes transcription rather than invention.
+
+  Three failures, two different remedies:
+    - a gesture pose (point/raise/panic/carry) with no DRIVEN `gesture` prop. It defaults
+      to 1, fully extended on frame 1, so the figure holds the RESULT of an action and
+      never performs it. Drive it with an interpolate across the beat.
+    - the board stages a person ACTING in this shot and the engine draws a static pose.
+      Build what the board says. This is the common one.
+    - a figure held past 4s in a shot whose beats never stage a person at all. That is
+      unmotivated set dressing, and the remedy is in the BOARD first: either give them a
+      beat, or take the human out of the frame. A person is the most attention-grabbing
+      thing in any composition, so one with no reason to be there spends that attention
+      on nothing.
+
+  DELIBERATE STILLNESS IS ACTING AND THE GATE KNOWS IT. The 08-06 board's "the picture
+  stops. Nothing advances. The person breathes and the stack sits" is a choice and the
+  strongest beat in its shot. The gate fires only on verbs that denote an act, so do not
+  add fidgeting to satisfy it.
+
+  ADVISORY in preflight for now, because it has never gone green (it fails 5 of 8 on the
+  film that prompted it, which is the honest state of the craft rather than a broken
+  checker). Promote it to required once a run has staged its cast.
 - GATE 0B: storyboard-critic agent red-teams for genuine divergence + silent-first
-  storytelling + retention; iterate to ship:true.
+  storytelling + retention; iterate to ship:true. It also owns the OTHER half of staging:
+  every figure the board puts on screen needs a reason to be there and something to do that
+  illustrates the line it appears under. A figure with no beat is a note to the board, not
+  to the engine.
 - GATE 0C: flow-critic agent (MODE=PRE) red-teams the beat map (never-rest cadence,
   say-it-show-it coverage, a motivated sound on every beat); iterate to ship:true.
 - GATE 0D (ART DIRECTION): confirm `out/dispatch/art_direction.json` exists and is COMPLETE

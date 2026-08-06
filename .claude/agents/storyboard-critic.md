@@ -145,3 +145,24 @@ film they describe actually holds two minutes, which the schema cannot see:
   time, even when you ship the board. It is the single question the two-minute format exists to
   answer, and a critic who never names a weakest stretch has not looked for one.
 
+- WHY IS EACH PERSON IN THE FRAME? Owner note, 2026-08-06, on the shipped films: characters
+  "don't really do anything or contribute much to illustrating the story" and it is
+  "impossible for anyone to wanna have eyes on them for too long cause they're a bit boring".
+  Half of that is an engine problem and it has been fixed. The other half is yours.
+
+  On the board that prompted it, three of the film's shots put a person on screen for 10.3s,
+  12.2s and 10.3s while NO BEAT in those shots staged a person at all. Nobody had decided
+  what they were for. The engine then did the only thing it could with a figure nobody wrote
+  a purpose for, which is stand them there.
+
+  So for EVERY figure the board puts in a shot, the board must answer two things in the beat
+  itself: why is this person in this frame, and what do they DO that illustrates the line
+  they appear under. "A technician at a desk" is set dressing. "The technician looks at the
+  frame, then at the bar, and does not reach for anything yet" is a performance, and it is
+  the shot's whole argument about a queue nobody can clear. Return revise on any figure that
+  cannot survive that question, and say plainly whether the fix is to give them a beat or to
+  take the human out of the frame. Both are legitimate; leaving them standing is not.
+
+  Deliberate stillness IS an answer, when it is chosen. "The picture stops. Nothing advances.
+  The person breathes and the stack sits" is acting. The test is whether a beat decided it,
+  not whether the figure moves.
