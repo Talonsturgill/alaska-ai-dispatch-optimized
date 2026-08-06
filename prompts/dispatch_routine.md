@@ -1349,6 +1349,14 @@ config/linkedin_caption_rubric.yaml (ship 8.5, zero hard_fails). Loop until both
    ffprobe-assert 720x1280 on the rendition and check the thumb is < 100 KB.
 2. Upload the two full cuts + poster (frame 0) + the 720p rendition + the poster thumb via
    upload_video.py; verify HTTP 200 permanent links for ALL of them.
+   MEDIA NAMES ARE DETERMINISTIC AND THAT IS LOAD-BEARING: `dispatch-<date>-<basename>`,
+   e.g. `dispatch-2026-08-06-dispatch_master.mp4`. Because the name depends only on the run
+   date, re-uploading overwrites the same path and the raw URL never changes, and because
+   publish_feed is idempotent by --id, a re-publish REPLACES the feed entry rather than
+   adding one. Together those mean a bad entry that reached the site can be repaired IN
+   PLACE by finishing the run — no dead link, no duplicate, no second entry for one day.
+   That is the only reason the 2026-08-06 premature publish was recoverable. Do not
+   "fix" a bad entry by minting a new name or a new id; use the same ones and overwrite.
 2b. PUBLISH TO THE SITE FEED: `python3 scripts/publish_feed.py --id <run-slug> --date <date>
    --title "<display title>" --caption "<1-2 sentence VERIFIED summary, fact-check-safe-set
    language only>" --video-url "<the verified 9:16 URL from step 2>" --poster-url "<the
