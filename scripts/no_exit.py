@@ -238,6 +238,51 @@ present, real VO, zero polish -- so the film's absence stops being invisible.
 """.rstrip()
 
 
+
+# ---------------------------------------------------------------------------
+# THE SECOND HOLE, closed 2026-08-06 after a run walked straight through it.
+#
+# This gate was written to refuse a stop when NO BYTES EXIST. It did that job: the
+# 08-06 run could not stop before the rough cut. Then the bytes appeared, the gate
+# printed "A VIDEO EXISTS. This run may end.", went quiet, and the run abandoned a
+# cut its own panel had graded 5.12 against a 9.0 bar, with the sentence:
+#
+#     "the rest needs more rounds than the run had"
+#
+# That is verbatim the class THE ONE OUTCOME LAW forecloses ("out of runway, out of
+# budget, out of time"), it cited no measurement, and the gate had nothing to say
+# about it because it only ever counted files.
+#
+# A BELOW-BAR CUT THAT GETS ABANDONED IS AN EMPTY RUN WITH BYTES IN IT. The audience
+# gets the same nothing. So the gate now also refuses a stop when a panel verdict
+# exists and is under the bar.
+#
+# THIS IS STILL ASYMMETRIC AND STILL ONLY REFUSES A STOP. It has no opinion about
+# whether anything may SHIP -- ship_gate.py owns that and this file must never be
+# added to the delivery path. All this does is make "I graded it, it failed, and I
+# stopped" cost exactly as much as "I never built it".
+BAR_DEFAULT = 9.0
+PANEL_VERDICT = OUT / "panel_verdict.json"
+
+
+def panel_state():
+    """(has_verdict, passing, median, bar, note). Never raises."""
+    if not PANEL_VERDICT.exists():
+        return False, None, None, None, "no panel verdict recorded yet"
+    try:
+        v = json.loads(PANEL_VERDICT.read_text())
+    except Exception as e:
+        return True, False, None, None, f"panel_verdict.json exists but does not parse ({e})"
+    med = v.get("median")
+    bar = v.get("bar", BAR_DEFAULT)
+    if not isinstance(med, (int, float)):
+        js = [j.get("overall") for j in (v.get("judges") or [])
+              if isinstance(j.get("overall"), (int, float))]
+        med = sorted(js)[len(js) // 2] if js else None
+    if med is None:
+        return True, False, None, bar, "a panel verdict exists but records no median"
+    return True, med >= bar, med, bar, f"median {med} against a {bar} bar"
+
 def cmd_status() -> int:
     delivered, lines = video_state()
     print(f"ONE OUTCOME GATE -- {elapsed_note()}")
@@ -245,14 +290,39 @@ def cmd_status() -> int:
     print("deliverables:")
     for ln in lines:
         print(ln)
-    print(f"verdict: {'A VIDEO EXISTS. This run may end.' if delivered else 'NO VIDEO. This run may not end.'}")
+    has_v, passing, med, bar, note = panel_state()
+    print(f"panel: {note}")
+    if delivered and has_v and not passing:
+        print("verdict: BYTES EXIST BUT THE PANEL FAILED THEM. This run may not end.")
+    else:
+        print(f"verdict: {'A VIDEO EXISTS. This run may end.' if delivered else 'NO VIDEO. This run may not end.'}")
     return 0
 
 
 def cmd_check(blocker: str) -> int:
     delivered, lines = video_state()
+    has_v, passing, med, bar, note = panel_state()
+    if delivered and has_v and not passing:
+        print("ONE OUTCOME GATE: BYTES EXIST AND THE PANEL FAILED THEM.", file=sys.stderr)
+        print("", file=sys.stderr)
+        print(f"  {note}", file=sys.stderr)
+        print("  A below-bar cut that gets abandoned is an empty run with bytes in it.", file=sys.stderr)
+        print("  The audience gets the same nothing either way.", file=sys.stderr)
+        print("", file=sys.stderr)
+        print("  A failing panel is an INSTRUCTION TO RE-ENTER THE LOOP, not an outcome.", file=sys.stderr)
+        print("  Take the panel's named defects, fix them, re-render, REBUILD THE EVIDENCE", file=sys.stderr)
+        print("  FROM THE NEW RENDER, re-grade, re-record, and run ship_gate again.", file=sys.stderr)
+        print("", file=sys.stderr)
+        print("  Renders are minutes. Measure one before you reason about how many are left,", file=sys.stderr)
+        print("  and never assert a number you did not measure. 'More rounds than the run", file=sys.stderr)
+        print("  had' is not a measurement, it is the out-of-runway hatch in new clothes.", file=sys.stderr)
+        if blocker:
+            print(f"\n  you claimed a hard blocker: {blocker}", file=sys.stderr)
+            print("  quality is never a blocker and time is never a blocker.", file=sys.stderr)
+        return 1
     if delivered:
         print("ONE OUTCOME GATE: a delivered video exists. This run may end.")
+        print(f"  panel: {note}")
         for ln in lines:
             print(ln)
         return 0
