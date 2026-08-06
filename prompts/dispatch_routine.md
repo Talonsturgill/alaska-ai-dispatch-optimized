@@ -1187,6 +1187,24 @@ A shot passes when the picture at each line's offset is about that line. This is
 say-it-show-it standard Gate 0C applies to the board, applied to the code, and it is the one
 place where the board passing tells you nothing — the board was right and the wiring moved.
 
+### `pkill -f <scriptname>` KILLS YOUR OWN WAITERS TOO (2026-08-06, twice in one run)
+
+A background waiter's command line contains the name of the thing it is waiting for, so
+`pkill -f encode_deliverables` matches `until ! pgrep -f encode_deliverables; do ...` and
+kills the watcher along with the target. Eight background tasks died at once this way, and
+one of them was the step that was going to chain the encode after the render, so the run
+looked like it had silently stalled when in fact nothing was wrong with the render at all.
+
+The same shape bites `pgrep`: `until ! pgrep -f render_parallel.sh` never exits, because
+the waiting shell's own command line matches the pattern it is polling for. That one reads
+as "the render is taking forever" and costs however long you believe it.
+
+  - kill by PID, captured when you launch the thing
+  - or wait on an ARTIFACT (`until [ -s out/dispatch/render_mute.mp4 ]`), never on a
+    process name
+  - if you must pattern-match, exclude the shell wrappers (`| grep -v shell-snapshots`)
+    and read what you are about to kill before killing it
+
 ### KNOWN DEAD GATE: ship_gate's beat-delivery check has never run (found 2026-08-06)
 
 `ship_gate.check_beats_delivered()` opens with:
