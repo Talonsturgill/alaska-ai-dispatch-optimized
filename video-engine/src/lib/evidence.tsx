@@ -151,11 +151,35 @@ export const FrameOfEvidence: React.FC<{
         </g>
 
         {/* THE PLATE FIELD — rectilinear, the grid's own kind of object */}
+        {/* THE PLATE IS A REAL OBJECT. The storyboard calls this frame "the most finished
+            thing this film will draw" and it shipped as a white slab reading AK: no
+            numerals, no embossed border, no bolt heads, no state band. Beat 2 even asks for
+            "the plate's numerals sharpen a notch" and there were no numerals to sharpen. It
+            is the object the whole film is about and it was the least finished asset in it.
+            The characters are invented, so the plate is too — deliberately not a real
+            Alaska registration, and not any format a lookup could resolve. */}
         <g transform={`translate(${-W / 2 + plate.x},${-H / 2 + plate.y})`} opacity={dead ? 0.5 : 1}>
-          <rect x={0} y={0} width={plate.w} height={plate.h} rx={6} fill="#C9D4DE" />
-          <rect x={5} y={5} width={plate.w - 10} height={plate.h - 10} rx={3} fill="none" stroke="#57646F" strokeWidth={2} />
-          <text x={plate.w / 2} y={plate.h / 2 + 12} textAnchor="middle" fill="#26303A"
-                style={{font: '700 32px "JetBrains Mono", ui-monospace, monospace', letterSpacing: 2}}>AK</text>
+          <rect x={-2} y={-2} width={plate.w + 4} height={plate.h + 4} rx={7} fill="#8A96A2" />
+          <rect x={0} y={0} width={plate.w} height={plate.h} rx={6} fill="#D6DFE7" />
+          <rect x={0} y={0} width={plate.w} height={plate.h * 0.22} rx={6} fill="#C2CDD8" />
+          <rect x={4} y={4} width={plate.w - 8} height={plate.h - 8} rx={4} fill="none"
+                stroke="#8A96A2" strokeWidth={3} />
+          <rect x={7} y={7} width={plate.w - 14} height={plate.h - 14} rx={3} fill="none"
+                stroke="#EDF2F6" strokeWidth={1.5} opacity={0.9} />
+          {/* the state band, then the stamped registration under it */}
+          <text x={plate.w / 2} y={plate.h * 0.30} textAnchor="middle" fill="#4A5A6A"
+                style={{font: '700 13px "JetBrains Mono", ui-monospace, monospace', letterSpacing: 3}}>ALASKA</text>
+          <text x={plate.w / 2} y={plate.h * 0.78} textAnchor="middle" fill="#232D37"
+                style={{font: '700 30px "JetBrains Mono", ui-monospace, monospace', letterSpacing: 1.5}}>AK 4417</text>
+          <text x={plate.w / 2 + 1} y={plate.h * 0.78 + 1.5} textAnchor="middle" fill="#9AA6B2"
+                style={{font: '700 30px "JetBrains Mono", ui-monospace, monospace', letterSpacing: 1.5}}
+                opacity={0.5}>AK 4417</text>
+          {[[9, 9], [plate.w - 9, 9], [9, plate.h - 9], [plate.w - 9, plate.h - 9]].map(([bx, by], k) => (
+            <g key={k}>
+              <circle cx={bx} cy={by} r={3.2} fill="#8A96A2" />
+              <circle cx={bx} cy={by - 0.7} r={1.9} fill="#5E6B77" />
+            </g>
+          ))}
         </g>
 
         {/* THE SCANLINE, always crawling */}
