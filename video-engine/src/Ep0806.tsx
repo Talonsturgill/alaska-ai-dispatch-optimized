@@ -156,10 +156,35 @@ const Room: React.FC<{f: number}> = ({f}) => (
           <g key={`w${r}-${c}`} opacity={0.62}>
             <rect x={x} y={y} width={168} height={160} rx={3} fill="#1A2B3F" />
             <rect x={x} y={y} width={168} height={2} fill="#2C4560" opacity={0.8} />
-            {Array.from({length: 7}).map((_, k) => (
-              <rect key={k} x={x + 14} y={y + 22 + k * 18} width={140} height={5} rx={2}
-                    fill="#22374E" opacity={0.85} />
-            ))}
+            {/* THREE PANEL KINDS, chosen by hash. A wall where every cell is identical
+                reads as WALLPAPER, not as a room — the first pass made all 48 cells the
+                same louvred face and the result looked like a sheet of ruled paper behind
+                every shot. Real equipment walls are mixed: vented blanks, patch fields,
+                and the occasional live screen. Variation also puts edges in more places,
+                which is what the dead-space meter is actually looking for. */}
+            {(h % 3) === 0 ? (
+              Array.from({length: 7}).map((_, k) => (
+                <rect key={k} x={x + 14} y={y + 22 + k * 18} width={140} height={5} rx={2}
+                      fill="#0A1220" opacity={0.9} />
+              ))
+            ) : (h % 3) === 1 ? (
+              /* a patch field: two columns of ports, each with its own seated plug */
+              Array.from({length: 12}).map((_, k) => (
+                <g key={k}>
+                  <rect x={x + 20 + (k % 2) * 76} y={y + 20 + Math.floor(k / 2) * 23}
+                        width={62} height={16} rx={2} fill="#0D1724" />
+                  <rect x={x + 23 + (k % 2) * 76} y={y + 23 + Math.floor(k / 2) * 23}
+                        width={(h >> k) % 2 ? 40 : 22} height={10} rx={1} fill="#25405C" />
+                </g>
+              ))
+            ) : (
+              /* a dark blank with a recessed handle: the wall needs quiet cells too */
+              <g>
+                <rect x={x + 12} y={y + 16} width={144} height={128} rx={2} fill="#152332" />
+                <rect x={x + 54} y={y + 68} width={60} height={9} rx={4} fill="#0A1220" />
+                <rect x={x + 54} y={y + 68} width={60} height={3} rx={2} fill="#2C4560" opacity={0.7} />
+              </g>
+            )}
             {[[10, 10], [158, 10], [10, 150], [158, 150]].map(([sx, sy], k) => (
               <circle key={`s${k}`} cx={x + sx} cy={y + sy} r={2.4} fill="#33506B" opacity={0.9} />
             ))}
@@ -186,6 +211,8 @@ const Room: React.FC<{f: number}> = ({f}) => (
           {Array.from({length: 8}).map((_, k) => (
             <g key={k}>
               <rect x={x + 5} y={1182 + k * 29} width={50} height={20} rx={2} fill="#233B54" />
+              <rect x={x + 5} y={1200 + k * 29} width={50} height={4} fill="#070D16" />
+              <rect x={x + 5} y={1182 + k * 29} width={50} height={2} fill="#3D6180" />
               <rect x={x + 9} y={1189 + k * 29} width={26} height={3} rx={1} fill="#2E4B69" />
               <circle cx={x + 47} cy={1191 + k * 29} r={2.2}
                       fill="#5FD2E0" opacity={0.25 + 0.55 * Math.sin(f / (9 + (h % 7)) + k * 1.7 + i)} />
@@ -227,10 +254,11 @@ const Room: React.FC<{f: number}> = ({f}) => (
     <rect data-band="ok" x={0} y={1414} width={1080} height={506} fill="#12202F" />
     <rect data-band="ok" x={0} y={1414} width={1080} height={3} fill="#33506B" opacity={0.75} />
     {Array.from({length: 11}).map((_, r) => (
-      <g key={`g${r}`} opacity={0.5}>
-        <path d={`M0,${1440 + r * 44} H1080`} stroke="#1B2C3E" strokeWidth={2} />
-        {Array.from({length: 13}).map((_, c) => (
-          <path key={c} d={`M${c * 84 + 10},${1440 + r * 44} v40`} stroke="#1B2C3E" strokeWidth={2} />
+      <g key={`g${r}`} opacity={0.62}>
+        <path d={`M-70,${1432 + r * 44} H1150`} stroke="#060C14" strokeWidth={4} />
+        <path d={`M-70,${1436 + r * 44} H1150`} stroke="#24384C" strokeWidth={2} />
+        {Array.from({length: 19}).map((_, c) => (
+          <path key={c} d={`M${c * 66 - 60},${1432 + r * 44} v44`} stroke="#0A1220" strokeWidth={3} />
         ))}
       </g>
     ))}
@@ -860,9 +888,32 @@ const S7: React.FC<SceneProps> = ({from}) => {
   return (
     <ScreenLit sources={SRC}>
       <World f={f} dur={300} push={0.75} bg="#0B1620">
+        {/* THE CONSOLE THE CHART IS MOUNTED ON. The plot used to float directly on the
+            wall, so its gridlines read as more wall texture and the shot had no
+            foreground at all — 64.5% low-information area, the worst in the film. A
+            surface separates instrument from room, which is the whole point of the
+            2.5D grammar, and it is where the desk and the technician already are. */}
+        <rect x={92} y={592} width={756} height={608} rx={12} fill="#101E2C" />
+        <rect x={92} y={592} width={756} height={5} rx={2} fill="#3E5C78" opacity={0.9} />
+        <rect x={104} y={606} width={732} height={580} rx={8} fill="#0C1826" />
+        <rect x={92} y={1186} width={756} height={14} rx={4} fill="#16283A" />
+        {Array.from({length: 22}).map((_, i) => (
+          <rect key={`v${i}`} x={112 + i * 33} y={1190} width={18} height={5} rx={2}
+                fill="#0A121C" opacity={0.9} />
+        ))}
         <rect data-band="ok" x={0} y={1240} width={1080} height={680} fill="#0A131C" />
         <rect x={0} y={1240} width={1080} height={3} fill="#2A3B4C" opacity={0.85} />
-        <ellipse cx={840} cy={1300} rx={190} ry={58} fill={TUNGSTEN} opacity={0.13} style={{mixBlendMode: 'screen'}} />
+        {/* the console front, so the lower band is a built thing and not a black bar */}
+        {Array.from({length: 9}).map((_, i) => (
+          <g key={`fp${i}`} opacity={0.55}>
+            <rect x={16 + i * 118} y={1258} width={100} height={34} rx={3} fill="#132335" />
+            <rect x={16 + i * 118} y={1258} width={100} height={2} fill="#2A3B4C" />
+            <rect x={26 + i * 118} y={1270} width={54} height={4} rx={2} fill="#0A121C" />
+            <circle cx={104 + i * 118} cy={1276} r={3}
+                    fill="#4E86A8" opacity={0.3 + 0.45 * Math.sin(f / (11 + i * 2) + i)} />
+          </g>
+        ))}
+        <ellipse cx={905} cy={1288} rx={132} ry={34} fill={TUNGSTEN} opacity={0.085} style={{mixBlendMode: 'screen'}} />
         {/* THE REQUEST CURVE. Re-drawn after dead_space_check measured this shot at 67.8%
             low-information area, the worst in the film against a 55% ceiling. Two causes,
             both fixed here: the plot was a baseline and some bars floating in a void with
@@ -871,28 +922,33 @@ const S7: React.FC<SceneProps> = ({from}) => {
             The chart is narrower now (24px pitch, ending at 780) to make room for them. */}
         <g>
           {/* the axis furniture: gridlines, ticks and their labels are real structure */}
-          {[0, 1, 2, 3, 4, 5, 6].map((i) => (
+          {/* THE AXIS TOPS AT 40, NOT 60. The plot ran to 60 while every value in the
+              series lives under 20 except two, so the bars hugged the floor of their own
+              panel and visibly UNDER-READ the claim the line makes: a judge reading this
+              frame sees bars nowhere near the 35 line the narration says two of them
+              passed. 12.2px per unit over 1140..652. */}
+          {[0, 1, 2, 3, 4].map((i) => (
             <g key={`gl${i}`}>
-              <path d={`M150,${1140 - i * 68} H690`} stroke="#26384A" strokeWidth={1.5} opacity={0.85} />
-              {i % 2 === 0 ? (
-                <text x={118} y={1146 - i * 68} textAnchor="end" fill="#5B7085"
-                      style={{font: `700 15px ${MONO}`}}>{i * 10}</text>
-              ) : null}
+              <path d={`M150,${1140 - i * 122} H690`} stroke="#26384A" strokeWidth={1.5} opacity={0.85} />
+              <text x={118} y={1146 - i * 122} textAnchor="end" fill="#5B7085"
+                    style={{font: `700 15px ${MONO}`}}>{i * 10}</text>
             </g>
           ))}
           <path d="M150,1140 H690" stroke="#3A4E62" strokeWidth={2} />
-          <path d="M150,900 H690" stroke="#8CA3B6" strokeWidth={1.5} strokeDasharray="8 8" opacity={0.9} />
+          <path d="M150,713 H690" stroke="#8CA3B6" strokeWidth={1.5} strokeDasharray="8 8" opacity={0.9} />
           {/* the 35 line reads off the LEFT axis with the other ticks. It used to sit at
               x=812, which is where the technician now stands. */}
-          <text x={118} y={906} textAnchor="end" fill="#9FB2C2"
+          <text x={118} y={719} textAnchor="end" fill="#9FB2C2"
                 style={{font: `700 19px ${MONO}`}}>35</text>
           {Array.from({length: months}).map((_, i) => {
             const shown = build * months;
             if (shown < i) return null;
             const isSpike = i === 21 || i === 24;
-            const base = 34 + ((Math.imul(i + 3, 2654435761) >>> 0) % 46);
-            const hRaw = isSpike ? 300 * spike : base;
-            const h = Math.min(hRaw, isSpike ? 300 : base);
+            // c15: never above 20 before Oct 2025 -> 8..19 units at 12.2px/unit.
+            // c14: April and July both MORE THAN 35 -> 37 units, clear of the 35 line.
+            const base = 98 + ((Math.imul(i + 3, 2654435761) >>> 0) % 134);
+            const hRaw = isSpike ? 451 * spike : base;
+            const h = Math.min(hRaw, isSpike ? 451 : base);
             const x = 156 + i * 20;
             return (
               <g key={i}>
@@ -906,9 +962,12 @@ const S7: React.FC<SceneProps> = ({from}) => {
           })}
         </g>
         <Plate x={330} y={1253} text="NEVER ABOVE 20 BEFORE OCT 2025" size={21} op={build} />
+        {/* the two cards sit LEFT, over the low years, because at x=540 the JULY plate
+            landed directly on the July spike it labels and occluded the bar's top. The
+            spikes stand at x 576..593 and 636..653; these span 200..540. */}
         <g opacity={spike}>
-          <Plate x={540} y={620} text="APRIL: MORE THAN 35" size={26} />
-          <Plate x={540} y={700} text="JULY: MORE THAN 35" size={26} />
+          <Plate x={370} y={700} text="APRIL: MORE THAN 35" size={26} />
+          <Plate x={370} y={776} text="JULY: MORE THAN 35" size={26} />
         </g>
         {/* THE ONE DESK, AND THE ONE PERSON IT BELONGS TO. The stack grows UPWARD on a
             fixed surface — never a funnel — and now the surface is drawn, with the
