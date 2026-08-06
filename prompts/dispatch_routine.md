@@ -1187,6 +1187,30 @@ A shot passes when the picture at each line's offset is about that line. This is
 say-it-show-it standard Gate 0C applies to the board, applied to the code, and it is the one
 place where the board passing tells you nothing — the board was right and the wiring moved.
 
+### KILLING A SCRIPT DOES NOT KILL ITS FFMPEG (2026-08-06)
+
+`kill -9 <encode_deliverables.sh pid>` leaves the ffmpeg it spawned running, and that
+orphan keeps writing its output file. On 2026-08-06 an orphaned square-crop ffmpeg went on
+writing dispatch_square.mp4 against a dispatch_master.mp4 that had already been deleted and
+recreated underneath it, which produced two rounds of failures that looked like data
+corruption in the encoder:
+
+    moov atom not found
+    Unable to re-open dispatch_master_720.mp4 output file for shifting data
+    Error writing trailer: No such file or directory
+
+None of that was ffmpeg misbehaving. It was two writers on one path, one of them a ghost.
+The tell is a deliverable whose size is implausible for its step (a 7MB "square" of a 125s
+film) and a log that reports MUX OK immediately before failing to read the very file it
+just wrote.
+
+After killing an encode, check for survivors before restarting:
+
+    pgrep -fa "out/dispatch/dispatch"     # the ffmpeg children, by their arguments
+    # kill those by PID too, THEN rm the partial outputs, THEN restart
+
+Restarting on top of a live orphan just adds a third writer.
+
 ### WAITING ON A FILE THAT ALREADY EXISTS IS NOT WAITING (2026-08-06)
 
 `until [ -s out/dispatch/render_mute.mp4 ]; do sleep 25; done` looks like it waits for a
