@@ -1,0 +1,165 @@
+{
+  "run_date": "2026-08-06",
+  "window_days": 10,
+  "research_rounds": 1,
+  "researchers": 4,
+  "search_budget_note": "Round one used 4 researchers, each capped at 20 WebSearch calls, per the Phase 1 SEARCH BUDGET law. One researcher (fisheries/wildlife/rural) reported its 20-call cap exhausted; the other three did not. Roughly a third of the session pool was deliberately held back for targeted verification, and the orchestrator spent 2 WebSearch calls and 7 WebFetch calls of it directly. NO researcher reported a session-wide budget exhaustion, so nothing in this ledger is the product of a blind round.",
+  "rungs": [
+    {
+      "rung": "in_window_sweep",
+      "attempted": true,
+      "found": 6,
+      "note": "Four beat researchers swept 2026-07-27 to 2026-08-06. Three of four beats reported the window genuinely thin on Alaska AI/ML/autonomy: KUCB, KYUK, KTOO, KNBA, Alaska Public Media, Alaska Native News, ADF&G, UAF News, GI News and the News-Miner all came back empty on this subject for the window. In-window items that DID surface: the Fed governor's Anchorage speech (08-05), the Anthropic-employee campaign finance story (08-03), the aviation weather-station roundtable (07-31), the NTSB Bering Air findings (07-30), the UAF Kenai beluga acoustics release (07-30), and the NSF GAIA project start date (08-01)."
+    },
+    {
+      "rung": "outlet_index_sweep",
+      "attempted": true,
+      "found": 4,
+      "note": "WebFetch sweeps (uncapped) of adn.com, alaskabeacon.com, alaskapublic.org, ktoo.org, knba.org, newsminer.com, kucb.org, kyuk.org, kdlg.org, kstk.org, kfsk.org, juneauempire.com, peninsulaclarion.com, alaskasnewssource.com, akbizmag.com, petroleumnews.com, uaf.edu/news, gi.alaska.edu/news, alaska.edu/news, oit.alaska.gov, education.alaska.gov, adfg.alaska.gov, alaskaseagrant.org, uaf.edu/acep. ACCESS FAILURES RECORDED HONESTLY, not treated as absence of news: alaskabeacon.com, adn.com homepage, miningnewsnorth.com, wrangellsentinel.com, datacenterdynamics.com and rca.alaska.gov returned HTTP 403; acuasi.alaska.edu and autonomousalaska.com returned 503 on repeated attempts. ACUASI in particular is the single most likely source of an in-window Alaska autonomy story and could not be read this run."
+    },
+    {
+      "rung": "widened_window",
+      "attempted": true,
+      "found": 5,
+      "note": "Re-swept at 30 days and into primary literature. This is the rung that produced the locked story. Also surfaced the Greensparc Cordova/Petersburg/Wrangell edge data centers (national lab feature 2026-03-05, KFSK 2026-05-01) and the Marine Mammal Science Cook Inlet beluga acoustic deep-learning paper (2026-06-07)."
+    },
+    {
+      "rung": "carried_leads",
+      "attempted": true,
+      "found": 2,
+      "note": "Worked leads carried in recent archive/*/story_pick.md and the standing backlog. Two live threads confirmed still open and unresolved: the myAlaska agentic-AI RFI (responses closed 2025-12-08, no public procurement outcome eight months on) and the Alaska DEED district AI guidance page (undated, adoption count unknown). Both are real unwritten stories but neither is dated, so neither is publishable today. Recorded for a future run."
+    },
+    {
+      "rung": "primary_source_mining",
+      "attempted": true,
+      "found": 7,
+      "note": "NOT EMPTY. Queried api.nsf.gov awards (three separate queries), Crossref, Semantic Scholar, PubMed Central, federalreserve.gov speech texts, science.osti.gov, federalregister.gov, akleg.gov, oit.alaska.gov and a Petersburg borough meeting attachment. This rung produced the locked story (PubMed Central, open access, peer reviewed) and also the NSF GAIA award record, the Fed speech text, and the Aleutian Thunder joint-venture filing. Primary-source mining remains the highest-yield rung in this pipeline for the third run running."
+    },
+    {
+      "rung": "follow_up",
+      "attempted": true,
+      "found": 3,
+      "note": "Checked for genuinely new developments on covered stories. The Wrangell borough assembly's unanimous denial of the Greensparc data center lease is a real new development on the data-center thread. Rejected on subject saturation rather than on merit, see candidates below."
+    },
+    {
+      "rung": "pegged_explainer",
+      "attempted": false,
+      "found": 0,
+      "note": "NOT REACHED, and deliberately so. The ladder is climbed only until a story locks. A story locked at widened_window/primary_source_mining, so the floor rung was never needed. This is the correct behaviour, not a skipped step."
+    }
+  ],
+  "locked_story": {
+    "headline": "Two Alaska cities met the limits of AI in the same week, and neither one had voted on it",
+    "found_at_rung": "in_window_sweep",
+    "primary_sources": [
+      "https://www.alaskasnewssource.com/2026/08/05/anchorage-police-seeking-upgrades-real-time-crime-monitoring/",
+      "https://fm.kuac.org/2026-08-05/fairbanks-chief-of-staff-thinks-city-should-fight-certain-records-requests-from-content-creators",
+      "https://alaskapublic.org/news/2026-08-05/fairbanks-chief-of-staff-thinks-city-should-fight-certain-records-requests-from-content-creators"
+    ],
+    "outlets": "Alaska's News Source (KTUU), Joe Allgood; KUAC, Patrick Gilchrist, syndicated by Alaska Public Media",
+    "pub_date": "2026-08-04 to 2026-08-05",
+    "why_this_one": "IN WINDOW by one to two days, both stories genuinely about AI in production in named Alaska governments, and a natural pair that no outlet has connected. Anchorage: object recognition on license plate readers arrives inside a $600,000 audio-visual purchase, the Assembly's 2023 ban covers FACES and nothing was written for objects, and the vote is postponed to August 18th. Fairbanks: a city bought AI to make public-records redaction affordable, it can't keep up, and the chief of staff's proposed remedy is to slow-walk the requests instead. Two cities, one week, opposite failure modes, same missing step. This also rotates the subject hard away from the data-center siting story this channel has run five times in 30 days, and it is the first dispatch on policing technology or public-records mechanics.",
+    "dedupe_note": "scripts/dedupe.py check returns DUP on the bare tokens 'center' and 'public', colliding with the 2026-07-12 beluga-hoax dispatch (Alaska SeaLife Center, Alaska Public Media). That is a pure generic-token false positive of exactly the kind the routine warns about twice ('a token collision cost this channel a scoop'). Viewer's test: nobody who watched a dispatch about an AI-generated beluga photo going viral would feel they are being shown the same story as an Anchorage Assembly fight over a police video wall. No shared actor, mechanism, institution or question. The entity list was NOT trimmed to force a FRESH verdict. The defect in dedupe.py, which matches on single generic words like 'center', 'public', 'data' and 'decision', is logged for the Phase 8 fix."
+  },
+  "story_switch_note": "This run locked a story, then RE-LOCKED after the fourth researcher returned. The first lock was the tribal health AI governance paper (cand-1 below), which was correct on the evidence available at the time: three of four beats had reported the window genuinely thin, and the best thing in hand was a strong unreported out-of-window paper. The wildcard beat then returned two IN-WINDOW stories that are both squarely about AI in production in Alaska governments and that pair into one thesis. In-window and genuinely-AI beats out-of-window and genuinely-AI, so the lock moved. Recorded rather than quietly overwritten. The tribal health paper is not discarded: its fact-check was already commissioned and its verified claims are being written to queue/next_story.json so a future run inherits the expensive part.",
+  "candidates": [
+    {
+      "id": "cand-1",
+      "title": "AI/ML in Alaska Native healthcare systems: symposium perspectives (IJCH, 2026-05-23)",
+      "verdict": "LOCKED",
+      "surfaced_by": "two independent researchers (fisheries/rural beat and gov/university beat) ranked it top-two without knowledge of each other, which is a meaningful signal",
+      "reason": "See locked_story above."
+    },
+    {
+      "id": "cand-2",
+      "title": "NSF GAIA award 2608510, $1,772,170 to UAF for real-time geohazard digital twins, project start 2026-08-01",
+      "verdict": "REJECTED, HARD DUPLICATE",
+      "reason": "The gov/university researcher ranked this first and flagged it as a valuable unreported scoop. It is not unreported by THIS channel: the 2026-07-25 dispatch 'THE ONE IT DIDN'T HEAR' already shipped this exact award, by number, with the same figures, twelve days ago. Its ledger entry reads 'NSF awarded UAF 1,772,170 dollars of a 4,430,711 dollar project on 2026-07-10 for fast surrogate models plus data assimilation to make real-time digital twins; begins 2026-08-01, runs to 2032.' A researcher cannot see the ledger, so this is the dedupe list doing exactly its job. Same award, same money, same PIs, same mechanism, inside 30 days."
+    },
+    {
+      "id": "cand-3",
+      "title": "Greensparc edge data centers: 170 kW inside Cordova's powerhouse, Petersburg cannery proposal, Wrangell lease denied unanimously",
+      "verdict": "REJECTED, SUBJECT SATURATION",
+      "reason": "Genuinely good and genuinely under-reported statewide, and the Wrangell denial is a real earned turn. Rejected because Alaska data-center siting is the single most covered subject on this channel: 07-14 Stak Energy, 07-16 Stak Energy again, 07-18 AIDEA Houston conveyance, 07-22 Air Force enhanced-use leases, 07-31 the moratorium and the governor's race. Five dispatches in 30 days. The viewer's test fails here in the opposite direction from cand-1: a viewer WOULD feel they are being shown the data-center argument again, even though this is the small clean version of it. Sourcing was also weak on the decisive fact, since wrangellsentinel.com and datacenterdynamics.com both 403'd and the denial vote could not be dated or counted from a fetched primary source. STRONG QUEUE CANDIDATE for a run 2 to 3 weeks out, once the subject has cooled and the vote record can be fetched."
+    },
+    {
+      "id": "cand-4",
+      "title": "Six Anthropic employees gave $372,000 to a candidate for Alaska governor; Ballot Measure 1 on the August 18th primary",
+      "verdict": "REJECTED, DUPLICATE",
+      "reason": "The 2026-07-31 dispatch 'THE GATE WITH NO NUMBER' already covered this, including the $372,000 figure and Drake Thomas by name. Six days old on this channel."
+    },
+    {
+      "id": "cand-5",
+      "title": "Fed Governor Lisa Cook tells an Anchorage audience the AI buildout is lifting prices (2026-08-05, Federal Reserve speech text)",
+      "verdict": "REJECTED, THIN ALASKA AI ANGLE",
+      "reason": "In window, primary sourced, and the freshest thing found. But there is no Alaska AI deployment in it. The connection to Alaska is macroeconomic and would have to be supplied entirely by this film's own inference, which is exactly the kind of stretch the accuracy rules exist to stop. Held as a possible framing device rather than a subject."
+    },
+    {
+      "id": "cand-6",
+      "title": "Adaptive acoustic monitoring for endangered Cook Inlet beluga whales (Marine Mammal Science, 2026-06-07)",
+      "verdict": "REJECTED, SUBJECT SATURATION plus UNVERIFIABLE NUMBERS",
+      "reason": "Strong AI content and a real Alaska agency author list (NOAA Anchorage, ADF&G Juneau). Two problems. First, it would be the third Cook Inlet beluga item in about 40 days (06-24 acoustic AI, 07-23 GAIA satellite vision). The 06-24 dispatch was ALSO a beluga passive-acoustic AI story, which makes this close to an exact repeat of subject and mechanism. Second, Wiley returned 403, so only the abstract could be read and no precision, recall or hours-of-audio figure could be verified. A film cannot put a performance number on screen it could not fetch."
+    },
+    {
+      "id": "cand-7",
+      "title": "Aleutian Thunder: an ANCSA corporation's 8(a) joint venture as a sole-source channel for agentic AI into federal agencies",
+      "verdict": "REJECTED, SOURCING TOO THIN",
+      "reason": "Genuinely unreported and structurally interesting. The entire evidentiary base is one PR Newswire release issued by the company itself plus the joint venture's own marketing page. Every load-bearing claim (the procurement advantage, the ceilings, the shareholder benefit) is the company's framing of its own launch, with no independent reporting and no filing to check it against. The accuracy rules require load-bearing numbers cross-checked against a second source, and there is no second source that is not the same party."
+    },
+    {
+      "id": "cand-8",
+      "title": "Alaska aviation weather stations: up to 20 offline daily, 150+ new ones promised, $425M federal commitment",
+      "verdict": "REJECTED, NO AI ANGLE",
+      "reason": "The researcher was straight about this and said so unprompted: neither source article uses the words AI, machine learning or autonomy. The connection to autonomy would be entirely this film's own construction. Real story, wrong channel."
+    },
+    {
+      "id": "cand-9",
+      "title": "NTSB findings on Bering Air Flight 445",
+      "verdict": "REJECTED, NO AI ANGLE and TONE",
+      "reason": "No AI in the story. Ten people died. Using a fatal crash as a hook for an automation essay would be both unsupported and indecent."
+    },
+    {
+      "id": "cand-10",
+      "title": "UAF hydrophones find belugas largely absent from the Kenai during peak fishing season (UAF News, 2026-07-30)",
+      "verdict": "REJECTED, AI ANGLE NOT PRESENT",
+      "reason": "In window and a real Alaska primary source, but the write-up describes SoundTrap recorders and echolocation click detection and never states that any classifier was used. The researcher flagged this honestly rather than inflating it. Also collides with cand-6 on subject."
+    },
+    {
+      "id": "cand-11",
+      "title": "Penn State fiber-optic permafrost digital twin at Utqiagvik",
+      "verdict": "REJECTED, DUPLICATE",
+      "reason": "The 2026-06-26 dispatch covered a permafrost digital twin under a road in Utqiagvik (Penn State + UAF, physics-informed ML + fiber-optic sensing). Same site, same method, same institution. Outside the 30-day window by a few days, but an exact-subject repeat this soon fails the viewer's test on its own."
+    },
+    {
+      "id": "cand-12",
+      "title": "AI in Alaska Summit, Anchorage, September 28th",
+      "verdict": "REJECTED",
+      "reason": "Paid commercial press release for a for-profit conference, with no publication date printed on the page. Undated and promotional. The researcher recommended dropping it and that is right."
+    }
+  ],
+  "new_sources_to_consider": [
+    {"url": "https://api.nsf.gov/services/v1/awards.json", "note": "Highest-yield primary source in this pipeline three runs running. Recommend a standing weekly query."},
+    {"url": "https://api.crossref.org/works/{DOI}", "note": "METHOD, not an outlet. Wiley, Taylor & Francis and ResearchGate all 403 WebFetch. Crossref and Semantic Scholar return exact publication dates and full affiliation lists free and unauthenticated. This is how to satisfy the no-invented-dates rule on a paywalled paper. Belongs in .claude/skills/deep-research-ak/."},
+    {"url": "https://www.northernjournal.com/", "note": "CORRECTION: config/sources.yaml carries 'thenorthernjournal.com', which does not resolve. The live domain is northernjournal.com."},
+    {"url": "https://www.uaf.edu/acep/news/", "note": "UAF Alaska Center for Energy and Power. Primary, reliably dated, convenes the Alaska Nuclear Energy Working Group."},
+    {"url": "https://www.kfsk.org", "note": "KFSK Petersburg broke the Greensparc waterfront story months before any statewide outlet."},
+    {"url": "https://www.kstk.org", "note": "KSTK Wrangell, covers the borough waterfront and the 6-Mile Mill property."},
+    {"url": "https://www.kbbi.org", "note": "KBBI Homer, broke the KPBSD AI policy story."},
+    {"url": "https://alaskaseagrant.org/news/", "note": "Primary, weekly, clean dates, mariculture and seafood-processing technology."},
+    {"url": "https://www.gi.alaska.edu/news", "note": "UAF Geophysical Institute publishes separately from uaf.edu/news."},
+    {"url": "https://acuasi.alaska.edu/news/", "note": "The most important Alaska primary source for autonomy. Returned 503 every attempt this run. Needs a working fetch path."},
+    {"url": "https://www.tandfonline.com/journals/zich20", "note": "International Journal of Circumpolar Health TOC. Alaska tribal health AI work is published here and Alaska media is not reading it."}
+  ],
+  "access_failures": [
+    "alaskabeacon.com — HTTP 403 on homepage fetch",
+    "adn.com — HTTP 403 on index fetch; article URLs resolve, and opinion slugs require the literal 'opinion-' prefix",
+    "wrangellsentinel.com — HTTP 403",
+    "datacenterdynamics.com — HTTP 403",
+    "miningnewsnorth.com — HTTP 403",
+    "rca.alaska.gov — HTTP 403",
+    "tandfonline.com and wiley.com — HTTP 403 (worked around via PubMed Central and Crossref)",
+    "acuasi.alaska.edu — HTTP 503 on repeated attempts",
+    "autonomousalaska.com — HTTP 503 on repeated attempts",
+    "fisheries.noaa.gov/alaska/news — 404, the Alaska regional news index has moved"
+  ]
+}

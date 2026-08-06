@@ -41,26 +41,20 @@ MOVES = [
     # correctly reported that one beat "reuses the identical still" from another. It was
     # the sampler pointing twice at one scene, not the film reusing art. Anchor names are
     # per-run data and a run that changes the film must change them here in the same commit.
-    ("strip", 0, 0.40),      # the beetle's fill and shading are STRIPPED to a contour
-    ("pin", 3, 2.30),        # the specimen descends, seats, and takes its contact tick
-    ("resolve", 9, 1.20),    # eighty dashed forms run the belt and resolve to filled
-    ("reveal", 10, 2.60),    # the author plate turns and SIKES lights on the spoken name
-    ("pullback", 12, 1.60),  # THE SIGNATURE SHOT opening out to the unnamed field
-    # A CHARACTER SHOT. A judge pointed out that none of the strips covered a frame with a
-    # human in it, so idle life on the five held figures could not be confirmed or refuted
-    # from the pack, and said so rather than assuming a freeze. That is an evidence gap, not
-    # a film defect, and it is the pack's job to close it.
-    # RE-ANCHORED AGAIN 2026-08-05. The swing was sped up (0.15s to 1.05s into the line)
-    # to make the title beat the most kinetic shot in the film, and that moved the fastest
-    # part of the arc EARLIER. Sampling at +0.85 then caught the eased settle, and the
-    # measured delta went DOWN from 4.8 to 3.9 percent even though the swing got bigger.
-    # An offset is a CONTACT time and it has to move whenever the motion it samples moves.
-    ("sweep", 15, 0.45),     # the net at maximum angular velocity, not at its settle
-    # ADDED after the re-grade: judge 3 could not verify two claimed fixes because NO STRIP
-    # COVERED THOSE BEATS, and correctly refused to take them on description. A pack that
-    # cannot show a fix has not delivered the fix.
-    ("newsprint", 7, 2.60),  # the sheet's corner lifting and the lamp sweep crossing the column
-    ("iris", 13, 1.40),      # the intake iris cycling on nothing while the room keeps drifting
+    # RE-ANCHORED 2026-08-06 for "The Same Face, The Same Plate". The names above this
+    # line were the 08-05 film's beats (a beetle stripped to a contour, a specimen pin, an
+    # author plate) and NONE of them exist in this film. Anchor names and offsets are
+    # PER-RUN DATA and a run that changes the film changes them in the same commit.
+    # Offsets are CONTACT times, sampled at the motion's fastest point, not line starts
+    # plus a guess. Eight strips, no two inside one shot.
+    ("lock", 0, 0.55),        # the bracket SLAMS onto the plate, 4 frames with an overshoot
+    ("refused", 0, 2.70),     # the second bracket starts toward the face and slides away
+    ("capacity", 3, 1.10),    # the socket grid filling against a static UP TO 750
+    ("bounce", 5, 1.90),      # the plate-lock bracket hits the rule and visibly bounces off
+    ("carry", 7, 0.35),       # the room smears and THE FRAME does not move one pixel
+    ("boxes", 9, 0.55),       # the two grey boxes land flat with NO overshoot
+    ("collapse", 12, 1.70),   # FIND collapses to a sliver and DECIDE does not move
+    ("fusion", 21, 2.20),     # the two frames fuse and carry brackets AND boxes at once
 ]
 
 

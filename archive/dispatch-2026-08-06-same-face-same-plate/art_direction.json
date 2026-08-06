@@ -1,0 +1,208 @@
+{
+  "date": "2026-08-06",
+  "title": "The Same Face, The Same Plate",
+  "one_line": "One Alaska city is teaching software to recognize a face and a license plate. The other is paying software to hide them. It is the same footage, and the only protection that has held for three years is the one somebody wrote down.",
+  "palette": {
+    "roles": {
+      "sky": "#0E1B2A",
+      "ground": "#16283C",
+      "far_plane": "#2E4560",
+      "hero": "#E8EEF3",
+      "accent": "#FF6B35",
+      "shadow": "#070E17",
+      "secondary": "#7E93A6",
+      "redaction": "#6B6560",
+      "judgment": "#F0A24B",
+      "rim": "#5FD2E0"
+    },
+    "mood": "A municipal night. Cold institutional blue-slate for the systems and the rooms, one hot signal orange reserved for MACHINE ATTENTION, and a dead neutral grey that means A THING HAS BEEN HIDDEN. The film is lit like a room where screens are the only light source, because that is literally where both halves of this story happened: a work session and a video wall.",
+    "why_this_story": "The two cities are one pipeline, so they must share one world rather than look like two films stapled together. The blue-slate is the shared substrate. What CHANGES between the cities is what the orange is doing: in Anchorage it LOCKS onto things, in Fairbanks it is the thing that runs out. The grey redaction box is the only colour that belongs to neither city, because it is the thing being argued over.",
+    "divergence_from_last_two": "08-05 The Net Comes First was a HIGH-KEY BONE INTERIOR, cabinet green and brass, overcast-diffuse, daylight, warm. 08-03 was a warm smoke-haze field. This film is the opposite end of every one of those axes: LOW-KEY, COLD, screen-lit, night-interior, with a single saturated orange against desaturated slate. No bone, no brass, no green, no warm ambient. NightGrade drives it, which also breaks the DayGrade run those two films shared.",
+    "accent_law": "#FF6B35 MEANS A MACHINE IS ATTENDING. LICENSED RECTS ARE DECLARED HERE, BEFORE ANY SCENE, because an unlicensed reserved hue THROWS under AccentRegistry and a throw fails the render. Licensed: (1) the plate lock in the plate-reader lane, (2) the two detection boxes on the frame, (3) the FIND segment of the S6 bar. THE PROGRESS BAR IS OFF ORANGE, corrected from v1: it measures the queue, which is the half NO machine touched, so painting it in the machine's colour contradicted the film's own argument. It is hero white. DECIDE gets no accent at all, which is the point. Orange is ABSENT from Act 4, and that absence is the argument.",
+    "fix_redaction_grey": "MOVED OFF THE BLUE AXIS. Was #4A5560, a cool blue-cast grey in the same hue family as the ground, so the film's central visual event would have read as slightly lighter slate. Now #6B6560, a faintly warm dead neutral that cannot be mistaken for lit slate. The grid landing on a person must read as a FOREIGN MATERIAL.",
+    "fix_second_licensed_practical": "NEW ROLE, #F0A24B warm tungsten, MEANS A PERSON IS DECIDING HERE. The film's whole thesis is that a human sits at the end of the pipe and v1 gave the machine a reserved hue and the human nothing. A desk lamp at the technician's station and at the council table, registered in NightGrade sources[] and licensed in AccentRegistry. PRESENT in every judgment beat, ABSENT from every machine beat. This makes the film two warms with opposite meanings rather than the category-default cold-plus-one-hot.",
+    "fix_value_ladder": "v1 declared a 10 to 12 percent L ladder and supplied hexes about 5 L apart, so its own anti-flattening rule was unbuildable. far_plane #2E4560 added at roughly L 30. The three planes are now shadow #070E17, ground #16283C and far_plane #2E4560, and the rim role #5FD2E0 is named because it appears on every hero in the film and was unlisted.",
+    "fix_city_separation": "The two cities share one substrate and are separated by DISPLAY TEMPERATURE: a colder blue-white wall in Anchorage against a warmer, older, greener single monitor in Fairbanks. The whip-pan at 37.0s has to land somewhere that looks different."
+  },
+  "light": {
+    "time_of_day": "night, interior, both cities",
+    "direction": "The key is always A SCREEN, so it comes from IN FRONT OF and BELOW the subject, which is the uplit look of a person at a monitor and is deliberately the opposite of the overhead diffuse key the last two films used.",
+    "key_fill_rim": "Screen key, cold and hard, from the display plane. Fill is near zero, so the darks are genuinely dark. A cold cyan rim separates every hero form from the background, because at this value range a silhouette will merge without one.",
+    "depth_approach": "NightGrade with a real BLACK FLOOR, plus registered practical sources at every screen. Three depth planes minimum in every wide: the near desk edge or console lip in shadow, the lit subject plane, and a far wall of dimmer screens falling into haze. The value ladder between planes is enforced at 10 to 12 percent L so the cold blues never flatten into one field, which is the exact trap an all-blue night interior falls into.",
+    "engine": "lib/lighting.tsx NightGrade for the grade, registered sources[] at each screen, AccentRegistry to enforce the accent law above."
+  },
+  "shape_language": {
+    "grammar_a_rectilinear_grid": "THE SYSTEM. The video wall, the tiles, the console, the ordinance plate, the request rows. Every edge parallel, every corner square, everything on a grid. This is what institutions build.",
+    "grammar_b_organic_irregular": "THE PEOPLE AND THE FOOTAGE. The face in the frame, the hand, the technician. Nothing here is parallel to anything, and no two contours are the same weight.",
+    "grammar_c_the_grey_box": "THE REDACTION. A hard-edged neutral rectangle that lands ON grammar B and belongs to grammar A. It is the film's central visual event: the grid arriving on top of a person. It is used for NOTHING ELSE, so it never comes to mean generally obscured.",
+    "the_deliberate_contrast": "The whole film is grammar A landing on grammar B, and it happens twice with opposite intent. In Anchorage the grid arrives to FIND the irregular thing. In Fairbanks the grid arrives to HIDE it. Identical geometry, opposite purpose, and the film draws them as the same move so a viewer feels the rhyme before the narration names it.",
+    "why_this_story": "A film about whether a rule got written down should be built out of the difference between a ruled grid and a thing that does not fit one."
+  },
+  "casting": {
+    "hero_net_new": {
+      "name": "FrameOfEvidence",
+      "kind": "the THROUGHLINE OBJECT and the film's hero, a single frame of police body-camera video as a physical, held object",
+      "why_net_new": "REAL GAP, checked against ASSET_MANIFEST.md in full. The shelf has an orbital eye, a seafloor ear, a ground ear, two aerial machines, an under-ice swimmer, a bench-science family, a records/paper family, a civics rules kit and an absence grammar. NOTHING on the shelf is a PIECE OF MEDIA, and nothing can carry a face and a plate that get found and then hidden. records.tsx RecordsMachine is the nearest prior art and it is a machine that processes records, not a record that gets processed. paper.tsx Sheet is a piece of paper with body, which is the right instinct and the wrong substance: this is a lit video frame, not printed stock.",
+      "shape_language_decision": "It belongs to NEITHER grammar, on purpose, and that is what makes it the throughline. Its outer edge is a hard rectilinear video frame (grammar A) and its CONTENTS are irregular (grammar B). It is the one object in the film where the two grammars are already touching, which is why the argument is about it.",
+      "state_channels_three": "Per the thrice-learned one-channel lesson (07-25 horn, 07-26 cone, 07-30 glider, 08-05 beetle): state is carried by THREE things at once. (1) THE TWO TARGETS, a face and a plate, each independently sharp / bracketed / boxed. (2) THE BRACKET, orange corner marks that snap in on a lock and are ABSENT when nothing is attending. (3) THE PROGRESS BAR along the bottom edge, which is the only thing in the film that measures the queue and which barely moves in the back half.",
+      "params": "faceState sharp|bracketed|hidden, plateState sharp|bracketed|hidden, progress 0..1, attend 0..1 (drives the orange), accent (VO reactivity), phase, groundY, held (a hand holds it vs it sits on a console)",
+      "built_to_the_bar": "tones/FormGradient/RimLight/ContactShadow, routed through vitals(), plus a real screen-flicker on an irrational period so it never reads as a still image of a still image.",
+      "scope_corrected": "It owns the EMISSIVE FRAME, the two target fields, the scanline and the progress rail. It does NOT own the brackets, which are ScanReticle.",
+      "shape_and_material_fix": "MADE A PHYSICAL EMISSIVE OBJECT, not a card. v1's spec was one careless pass from the flat-HUD-chip defect this shelf closed on 2026-07-30. Real bezel thickness with a lit top edge and a dark bottom edge, a screen surface REGISTERED AS A NIGHTGRADE SOURCE so it actually spills coloured light onto the desk and up onto the hand holding it, a contact shadow whenever it rests, and a slight off-axis hold when held. Then the redaction box is axis-aligned, perfectly matte, casts no light, has no bevel and receives no rim, so a DEAD FLAT PLANE lands on a LIT DIMENSIONAL OBJECT and the event reads as material contrast rather than as a UI toggle. This also solves the rectangle-inside-a-rectangle problem: the two are different KINDS of rectangle."
+    },
+    "from_the_manifest": [
+      {
+        "asset": "Character",
+        "role": "the evidence technician in Fairbanks and an Assembly member in Anchorage. outfit worker and suit, emotions neutral and worried. NEVER a caricature and never a villain: both angle analysts and the fact base agree these are people doing a real job under a real constraint.",
+        "why": "the film needs a HUMAN at the end of the pipe or its whole argument is abstract"
+      },
+      {
+        "asset": "Gate",
+        "file": "civics.tsx",
+        "role": "the 2023 facial recognition ban, as the one written rule in the film. It carries a printed condition and a verdict, which is exactly this asset's contract, and it is the ONLY thing in the film that says no and makes it stick.",
+        "why": "purpose-built for a conditional rule, and using it for a rule that WORKS is a fresh use: 07-31 used ThresholdGate for a rule with no number in it. This is the inverse, a rule that has a number and holds."
+      },
+      {
+        "asset": "Unnamed",
+        "file": "absence.tsx",
+        "role": "THE RULE THAT WAS NEVER WRITTEN. The slot next to the face-recognition ban where an object-recognition rule would go, drawn as a stated absence with a required label.",
+        "why": "this is precisely what the absence grammar exists for, a thing that is not there, named so it can't be mistaken for an oversight"
+      },
+      {
+        "asset": "StatCard",
+        "file": "props.tsx",
+        "role": "the request counts, form-shaded by default",
+        "why": "the numbers are the hinge of the film"
+      },
+      {
+        "asset": "PaperOfficeBG",
+        "file": "paper.tsx",
+        "role": "re-lit as a NIGHT records room for the Fairbanks half",
+        "why": "the shelf's only interior, and this story is entirely indoors. Re-lighting it cold at night against its designed high-key fluorescent look is a genuine new use of the asset, not a repeat of 07-26's staging."
+      },
+      {
+        "asset": "AnchorageSkylineBG",
+        "file": "biomes.tsx",
+        "role": "ONE lowkey establishing cameo only, per its usage rules in ANCHORAGE_LANDMARKS.md, seen THROUGH a window behind the video wall",
+        "why": "this is a genuinely Anchorage-set story, which is the asset's stated precondition. Held to one brief appearance and one or two landmarks."
+      }
+    ],
+    "explicitly_not_cast": "ServerMachine, MachineShadow, Sourdough, Cell, SatelliteEye, Petrel, Vale, IceGlider, AshReader, NameEngine, GroundBeetle. The AI-presence in this story is NOT a box with a face. It is a BRACKET that snaps onto things, and giving it a character would make it the protagonist of a story whose actual subject is a missing sentence in a municipal code. GroundBeetle (08-05) and BurnWindowEngine (08-03) are additionally barred as the last two heroes.",
+    "from_the_shelf_MANDATORY": [
+      {
+        "asset": "ScanReticle",
+        "file": "FX.tsx",
+        "role": "THE BRACKETS. Rotating corner brackets that SNAP inward and clamp on a target, lock 0..1.",
+        "note": "CAST, NOT RE-DRAWN. v1 re-invented this as the net-new hero's second state channel without noticing it has shipped since 2026-07-20. The library mandate says compose from the shelf first. If the refusal behaviour is needed (a bracket that starts, aborts and slides off, beat 3) that is a PARAM UPGRADE to ScanReticle registered in the same commit, which is a stronger craft claim than a re-draw."
+      },
+      {
+        "asset": "BrassPlate",
+        "file": "bench.tsx",
+        "role": "the city plates, the quote plates and the ordinance face",
+        "note": "exists specifically to name an actor as a PHYSICAL OBJECT rather than a HUD chip"
+      },
+      {
+        "asset": "Sheet",
+        "file": "paper.tsx",
+        "role": "the promise card, the request slip, the denial form",
+        "note": "carries the numeric shadow contract so paper reads as a solid under flat light"
+      },
+      {
+        "asset": "Stamp",
+        "file": "kit.tsx",
+        "role": "the August 18th date stamp and the unstamped cradle",
+        "note": "onPaper=true"
+      },
+      {
+        "asset": "PenAndDocument",
+        "file": "props.tsx",
+        "role": "beat 34, the denial form that fills in and never gets signed",
+        "note": "its documented behaviour is a pen that hovers trembling and NEVER signs. That is beat 34's exact image and v1 was about to improvise it."
+      },
+      {
+        "asset": "FullTapeMachine",
+        "file": "paper.tsx",
+        "role": "THE FIVE-HOUR RULE, replacing v1's brass gauge",
+        "note": "REPLACES A TWICE-REJECTED IMAGE. v1 drew the rule as a gauge with a scale and a needle that pins. civics.tsx records that ThresholdGate passes 1 to 3 drew exactly that and it was DROPPED, because 07-30 already used a gauge with no scale as its thesis image, and the recorded lesson is that a dial reports that nothing is measured while an aperture shows which load gets through. FullTapeMachine exists so a COUNT can be felt against a KNOWN OBJECT WITH FIXED CAPACITY. Five staff hours is a finite spool that one hour of video runs off the end of."
+      },
+      {
+        "asset": "Character",
+        "file": "Character.tsx",
+        "role": "the evidence technician (worker, neutral to worried) and a generic figure at a council table (suit, plain)",
+        "note": "NO LIKENESS. S9's figure has no identifying features and a plain emotion. The film draws roles, never caricatures of identifiable real people."
+      },
+      {
+        "asset": "Unnamed",
+        "file": "absence.tsx",
+        "role": "THE SOCKET ONLY",
+        "note": "REALIGNED TO BEAT 12. v1 cast this as a void labelled NO RULE WRITTEN, which is factually wrong: Anchorage Municipal Code ch. 3.102 exists. It now renders the dashed SOCKET carrying the category the code names, and the capability actually in use is a SOLID form that visibly fails to seat in it. The painted label must NEVER say NO RULE WRITTEN. Per the 08-05 BEETLE_SIL lesson, look at the dashed form before building a shot on it."
+      },
+      {
+        "asset": "PaperOfficeBG",
+        "file": "paper.tsx",
+        "role": "the Fairbanks records room, re-lit cold at night"
+      },
+      {
+        "asset": "StatCard",
+        "file": "props.tsx",
+        "role": "the request counts, form-shaded by default"
+      },
+      {
+        "asset": "AnchorageSkylineBG",
+        "file": "biomes.tsx",
+        "role": "ONE lowkey non-story cameo through a window, per ANCHORAGE_LANDMARKS.md usage rules",
+        "note": "the film's only geographic anchor, stated explicitly as non-story so the square crop may lose it safely"
+      }
+    ]
+  },
+  "motion_language": {
+    "the_signature_move": "THE SNAP. Orange corner brackets converge on a target and LOCK with a hard stop and a tick, in about 4 frames with a 1-frame overshoot. It is the fastest motion in the film and it is the only thing that happens instantly, because instant is what the machine actually is.",
+    "the_counter_move": "THE SIT. When the frame reaches the human, NOTHING snaps. The progress bar creeps on a slow linear ramp that visibly fails to arrive, the technician breathes, the room hums. The film's entire argument is the difference in TEMPO between these two moves, and it is designed so a muted viewer feels it without a word.",
+    "earns_180_blur": "the whip-pan between cities, and the bracket snap",
+    "anticipation_overshoot": "every entrance via entrance() from lib/motion.tsx. The redaction box does NOT overshoot, deliberately: it lands flat and dead, because it is the one event in the film with no life in it.",
+    "hero_moves_named": [
+      "the plate lock in Anchorage",
+      "the face bracket that appears and is REFUSED, sliding off, because the ban holds",
+      "the two grey boxes landing in Fairbanks",
+      "the progress bar that does not arrive",
+      "the pull-back to the wall of tiles in the button"
+    ],
+    "continuous_layer_law": "Per DISPATCH_STANDARD \u00a78, EVERY scene wrapper carries a continuous slow push (1.00 to about 1.10 across the shot) plus a lateral drift on an irrational period, plus one always-running ambient layer (screen flicker, dust in the projector light, a scrolling row of request rows), authored BEFORE any event. A scene built only out of finished interpolate() events is a slideshow and that is a measured, named defect on this film's own record.",
+    "fix_s1_contradiction": "v1 gave S1 a static camera for 14.9 seconds on one object in a flat void, contradicting this plan's own continuous-layer law and matching the measured 08-05 slideshow defect (76.6 percent of frames at 99 percent identical). S1 NOW CARRIES THE PUSH, held sub-perceptual until 0.4s so the bracket snap is still the hardest interrupt, then running to about 1.06 across the rest of the shot, with the scanline crawl and dust in the screen light as the always-running ambient layer.",
+    "void_shots_modulation": "S1, S6 and S8 are all single-object-void in a crushed-black grade, which is a dead_space_check risk. What modulates each: S1 screenlight falloff from the emitting plane plus drifting motes; S6 a slow spill gradient across the bar plus travelling tick marks; S8 the tungsten desk practical raking across the spool. MEASURE IT with the tblend difference sweep and read the pblack values rather than eyeballing."
+  },
+  "composition": {
+    "focal_hierarchy": "The FrameOfEvidence is the best-finished object in every shot it appears in, per DISPATCH_STANDARD \u00a70 question 2. The recurring failure note on this channel is never bad drawing, it is the hero reading plainer than the props around it.",
+    "negative_space_beats": "Act 4 opens on the largest empty field in the film, because the argument at that moment is about something that is not there.",
+    "safe_areas": "The 9:16 master is the graded cut and is composed FOR. Content above y=420 and below y=1500 is free canvas: the video wall's upper tiles and the ceiling haze live up there, the console lip and near foreground live down there. Neither carries story, so the 1:1 crop at 1080x1080:0:420 never amputates anything. Captions sit at y=1310 inside the square band.",
+    "signature_shot": "THE PULL-BACK IN THE BUTTON, AND IT IS SPENT EXACTLY ONCE. v1 performed a scale-pullback at S2 (14.9s) and then reprised it as the climax at S11, so the film showed its signature move at second fifteen. S2 IS REBUILT as a CRANE DOWN the face of a mostly dark socket grid, which delivers its stated payload (capacity and price) without performing the reveal S11 needs. The bookend that actually works is S1 to S11: the raw frame becomes the hidden frame becomes one of many.",
+    "brand_mark": "one anchor, upper left, off the hero, off the wall, never crossing a tile edge",
+    "protect_the_thesis_element": "S11's one small human is the film's entire thesis and v1 specced it to be the smallest and darkest thing in a crushed-black frame, in a film graded on a 0.28 legibility strip. FIX: the figure is BACKLIT and rim-separated against lit tiles, the tiles immediately behind it go dark to give it separation, it has a minimum on-screen height that survives the 0.28 strip, and it is VERIFIED ON A STILL before the scene is called finished.",
+    "safe_areas_pinned": {
+      "S11": "the figure occupies head-to-desk inside y 900 to 1450. Only the console lip sits below 1500.",
+      "S7": "the chart AND the stack both sit inside y 420 to 1500. Only the desk front edge is below. A square crop showing a curve with no stack is the shot without its argument.",
+      "S8": "the spool and its fixed capacity sit inside the band. Only the arrival of the hour of video travels through the free canvas above 420.",
+      "beat 40": "the closing question sits inside the band and ABOVE the y=1310 caption line, not at the bottom of the wall.",
+      "S2": "the Anchorage skyline cameo is explicitly NON-STORY, so the square crop may lose it safely."
+    }
+  },
+  "craft_advance": {
+    "system": "lib/lighting.tsx \u2014 SCREENLIGHT, the practical-source key",
+    "what": "NightGrade (07-25) gives a night AMBIENT with registered source BLOOM, and DayGrade (07-31) gives a daylight ambient. Neither can make a source actually KEY a subject. Every screen-lit scene this engine has attempted has faked it by hand-pinning a light fill at the call site, which is the same default-off failure the flat-HUD-chip repeat offender turned out to be. SCREENLIGHT takes a registered rect source and emits a real directional key from it: a cold gradient falling off by distance from the emitting plane, an upward-biased terminator on forms in front of it (screen light comes from below eye line), and a contact bounce on the surface the screen sits on. It composes with NightGrade rather than replacing it.",
+    "why_this_story": "This film is lit entirely by displays in two dark rooms. If the engine can't key a face off a monitor, the whole look is hand-pinned and the next screen-lit story pays for it again.",
+    "verification": "ScreenLook.tsx rendering a Character and the FrameOfEvidence at three distances from one screen source, plus a 0.28-scale legibility strip, run BEFORE any scene is authored, per the GateLook and BenchLook precedent.",
+    "composition_contract": "STATED BEFORE CODE, because NightGrade and DayGrade both emit divs OUTSIDE the svg and a post div cannot put an upward-biased terminator on a form. SCREENLIGHT emits SVG-SPACE GEOMETRY that composes into tones/FormGradient/RimLight, so it reaches asset shading rather than sitting over it. It is ON BY DEFAULT for any asset drawn inside a scene that registers a screen source, with an explicit opt-out, because a default-off fix is a doctrine reminder wearing a code costume (the flat-HUD-chip lesson). For the Character rig, which carries its own internal form shading and stage3d's fixed screen-left key assumption, SCREENLIGHT overrides the key direction and leaves the internal form model intact."
+  },
+  "hard_constraints_from_the_record": {
+    "do_not_repeat_the_0726_image": "The 2026-07-26 film's thesis image was a WIDE INTAKE and an UNCHANGED NARROW STEM, an asymmetry of volume, and its ledger line is literally 'widening a query costs almost nothing while adjudicating each result costs what it always did'. This film's mechanism is adjacent and MUST NOT be drawn as a funnel, a cranking mouth, or a wide pipe feeding a narrow one. The mechanism here is different and the drawing must say so: ONE TASK IN TWO PARTS, where the mechanical part collapses to almost nothing and the judgment part does not move at all, so the total barely changes. Draw it as a two-segment bar, not a funnel.",
+    "no_surveillance_panic": "config/brand.yaml worldview binds. APD does not use facial recognition, the 2023 ban is real and held, registration is voluntary, and the object recognition in use is on plate readers. A frame that implies a dragnet is factually wrong and off-brand. All three angle analysts independently said to cut the Flock exchange for exactly this reason.",
+    "nobody_is_a_villain": "The chief, the chief of staff, the technician and the requesters are all doing something defensible. No character in this film gets a scheming or greedy emotion. The 08-05 rule against characterized-object humor on sensitive subjects extends here to the named real people: draw roles, not caricatures of identifiable individuals.",
+    "text_fit": "every plated mono string sized by arithmetic (len * size * 0.602 + track * (len-1)), minimum 14px clear both sides, and scripts/text_fit_check.py run BEFORE the render, with its coverage line read rather than just its exit code",
+    "FACTUAL_FIX_1_scope": "BEAT 10 AND BEAT 9 WERE FACTUALLY WRONG AND ARE REBUILT. v1 snapped orange brackets onto plates across dozens of tiles of the feed wall, and made every face on every tile go soft-focus. Claim c6 limits object recognition to LICENSE PLATE READERS, and the board's own supporting fact says the film never widens it to the volunteered feeds, the drones or the body cameras. THE WALL NEVER BRACKETS ANYTHING and no face on it is ever processed or spared. Every bracket snap moves to a PLATE-READER LANE: a reader head, a road, a plate console, one vehicle, one plate.",
+    "FACTUAL_FIX_2_capacity_not_dragnet": "S2 AND BEAT 7 ARE REBUILT. v1 lit a wall of 750 tiles tile by tile, which is the dragnet image, and a careful caption does not undo a composition. 750 is a CAPACITY CEILING on volunteered feeds (c2), so it is DRAWN AS CAPACITY: mostly DARK tile positions with a small number lit, and a counter climbing against a grid of EMPTY SOCKETS. The picture says headroom, not watching.",
+    "no_caricature_pinned": "S9's figure is a generic Character in a suit at a table, no likeness, no identifying features, plain emotion. Beat 34 is drawn on the FORM alone with no person in frame. Beat 32's concession, which lifts the diagnosis out and ticks it CORRECT while the remedy gets no tick, is the LOUDER of the two.",
+    "outflow_staging_rule": "The funnel ban is honored at S6, but beat 18's lit outbound slot plus beats 25 to 27's growing stack on one desk is the 07-26 wide-inbound-narrow-outlet image in different clothes. STAGING RULE: the outbound slot is NEVER drawn narrower than the inbound, and the stack grows UPWARD against a fixed desk rather than backing up behind a constriction. The bottleneck in this film is a PERSON'S TIME, not an aperture.",
+    "typography_pin": "The longest plated string is the 54-character subsidizing quote. It is BROKEN TO TWO LINES and its size is pinned HERE at 26px rather than at the call site. text_fit_check.py runs before the render and this specific string must appear in the COVERAGE line, not the not-measured list, per the ShortlistCard precedent where the film's own thesis object overflowed. Straight apostrophes in every painted string."
+  },
+  "revision": "v2, after Gate 0D returned ship:false. The critic found two FACTUAL drawing errors, one build-stopping accent contradiction, a re-invention of a shelf asset, a double-spent signature move, and an arithmetically unbuildable value ladder. Every fix below is its concrete recommendation. v1 is archived at art_direction_v1.json."
+}

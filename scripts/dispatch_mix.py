@@ -35,7 +35,7 @@ OUT = os.path.join(REPO, "out", "dispatch")
 AUD = os.path.join(OUT, "audio")
 FF = os.environ.get("FFMPEG_BIN", "ffmpeg")
 SR = 44100
-DATE = "2026-08-03"   # episode seed for the shuffle-bag + jitter
+DATE = "2026-08-06"   # episode seed for the shuffle-bag + jitter
 
 
 def run(cmd):
@@ -80,40 +80,51 @@ _TAIL = 2.6   # matches scripts/build_scenes.py TAIL (hold after the last word)
 VIDEO_SECS = max(x["end"] for x in _lines) + _TAIL   # derive from VO; never hardcode
 
 EVENTS = [
-    # ---- 2026-08-03 "The Days You Are Allowed To Burn". 10 shots, 17 VO lines, 30 beats.
-    # Times are DERIVED from the shipped take's vo_lines.json, not typed, so a re-synth moves
-    # the sound with the picture. Every event is motivated by a visible mechanical action in its
-    # own beat. The single riser is spent on the drain, where the prohibition map tears loose.
-    (0.00, "tick", "standard", -0.11),   # THE WASH FLOODS OUT
-    (2.73, "clank", "texture", -0.28),   # THE COUNTER RUNS AWAY
-    (5.00, "pop", "standard", 0.28),   # THE SECOND COUNTER IS DEAD
-    (8.58, "thud", "hero", 0.00),   # NSF SETS DOWN
-    (11.50, "clank", "standard", -0.17),   # UAF SLIDES IN AND LOCKS
-    (14.74, "stamp", "hero", 0.00),   # THE FIGURE STAMPS
-    (17.95, "pop", "standard", 0.00),   # THE TORCH TILTS
-    (20.65, "creak", "texture", 0.08),   # THE LINE CRAWLS
-    (24.21, "tick", "standard", -0.24),   # ONE TREATED PATCH
-    (27.64, "snap", "hero", 0.00),   # THE CRADLE IS EMPTY
-    (31.37, "clank", "standard", 0.11),   # THE ENGINE ASSEMBLES
-    (33.51, "tick", "standard", -0.08),   # THE INTAKE IS RE-CUT
-    (36.06, "thud", "standard", -0.16),   # THE REJECT CHUTE
-    (38.12, "clank", "hero", 0.00),   # THE PUNCH
-    (39.89, "tick", "standard", 0.18),   # PULL BACK ALONG THE RIBBON
-    (42.45, "paper", "standard", 0.01),   # THE SHEET IS PUSHED ACROSS
-    (44.11, "tick", "texture", 0.16),   # THE PLANNER STAYS BEHIND
-    (45.83, "clank", "hero", 0.00),   # FOUR FIELDS COLLIDE
-    (48.35, "thud", "texture", -0.07),   # THE GROUND UNDER ALL FOUR
-    (50.85, "paper", "texture", 0.17),   # FOUR HANDS ARRIVE
-    (54.21, "clank", "standard", -0.21),   # THE PLATES TURN TO FACE
-    (58.30, "tick", "hero", 0.00),   # THE RULE SNAPS IN
-    (60.39, "boom", "standard", 0.07),   # FOUR SEASONS BURN PAST
-    (63.17, "snap", "hero", 0.00),   # THREE ARROWS STRIKE
-    (65.14, "creak", "texture", -0.14),   # THE ARROW DISASSEMBLES
-    (67.96, "clank", "standard", -0.18),   # THE TORCH SWINGS DOWN
-    (70.96, "paper", "texture", 0.19),   # THE BLANK SHEET LOWERS
-    (74.01, "riser", "hero", 0.00),   # THE WASH DRAINS OFF
-    (77.77, "chime", "hero", 0.00),   # THE WINDOWS OPEN
-    (80.75, "tick", "standard", -0.11),   # THE PULASKI FLIPS
+    # ---- 2026-08-06 "The Same Face, The Same Plate". 11 shots, 25 VO lines, 40 beats.
+    # Times are DERIVED from the shipped take's vo_lines.json, never typed, so a re-synth
+    # moves the sound with the picture. Families deliberately alternate: Gate 0C found the
+    # first sheet had three consecutive ticks at 0.0/0.4/2.6 and three consecutive heavy
+    # lands at 14.9/18.2/21.0, which check_schedule hard-asserts against. The SINGLE riser
+    # is spent on the convergence into the fusion, and nothing else in the film rises.
+    (0.00, "tick", "standard", -0.35),   # the two objects exist before anything is claimed abo
+    (0.42, "clank", "standard", 0.02),   # the machine attends, instantly
+    (2.74, "thud", "hero", 0.0),   # the ban is drawn before it is spoken
+    (5.48, "paper", "texture", 0.06),   # the two cities enter as two lit rectangles
+    (8.95, "snap", "hero", 0.0),   # THE PRIMARY LOOP IS PLANTED
+    (13.06, "pop", "standard", 0.1),   # the pull-back begins
+    (15.69, "creak", "texture", -0.23),   # REVEAL ONE, the HEADROOM the capture side is built f
+    (19.16, "stamp", "hero", 0.0),   # the price lands on the room
+    (22.11, "chime", "standard", -0.19),   # the rule Anchorage actually wrote, drawn as the one 
+    (25.48, "clank", "standard", 0.18),   # THROUGHLINE STATE TWO, scoped honestly. Claim c6 lim
+    (28.22, "tick", "standard", -0.15),   # the code opens, and it is NOT empty. A surveillance-
+    (30.54, "thud", "standard", 0.22),   # REHOOK ONE. Not a hole in the law, a MISMATCH: the c
+    (33.70, "tick", "standard", -0.11),   # the objection gets a name, a district and the APPROV
+    (35.38, "clank", "standard", 0.26),   # ANCHORAGE'S REAL CARDS, and v1 gave them none. c11 i
+    (38.96, "thud", "hero", 0.0),   # THE FILM'S TITLE, PAID. The frame is the still point
+    (42.33, "paper", "texture", 0.3),   # the corridor, and the primary loop touched once in t
+    (46.23, "snap", "hero", 0.0),   # THROUGHLINE STATE THREE and THE SECOND LOOP PLANTED.
+    (50.86, "pop", "standard", 0.34),   # the honest report
+    (54.23, "creak", "texture", 0.01),   # the tool's competence asserted by REPETITION AND SPE
+    (58.55, "stamp", "hero", 0.0),   # the mechanism opens
+    (61.71, "chime", "standard", 0.05),   # the half the machine took
+    (66.13, "clank", "standard", -0.28),   # REVEAL TWO and REHOOK TWO, the film's mechanism
+    (69.92, "tick", "standard", 0.09),   # who the judgment half actually is
+    (73.18, "thud", "standard", -0.24),   # the load arrives
+    (76.76, "tick", "standard", 0.13),   # the curve breaks
+    (78.03, "clank", "standard", -0.2),   # THE DIP and THROUGHLINE STATE FOUR
+    (83.08, "thud", "hero", 0.0),   # the other side speaks and it is not a straw man. The
+    (87.40, "paper", "texture", -0.16),   # the law drawn as a KNOWN OBJECT WITH FIXED CAPACITY 
+    (92.56, "snap", "hero", 0.0),   # the throughline object is BACK, and the thing that b
+    (96.24, "pop", "standard", -0.12),   # the idea floated at the table, drawn as a slip that 
+    (99.30, "creak", "texture", 0.25),   # THE CONCESSION, drawn on a THING. The problem is rea
+    (102.14, "stamp", "hero", 0.0),   # THE SECOND LOOP PAYS WITH AN EVENT AND A UNIT. v1 pa
+    (106.88, "chime", "standard", 0.29),   # the film's sharpest line, drawn
+    (110.56, "riser", "hero", 0.0),   # the film's argument in one line gets the two operati
+    (114.46, "tick", "standard", 0.33),   # REVEAL THREE and THE PRIMARY LOOP PAYS
+    (117.41, "thud", "standard", 0.0),   # the one thing a viewer is meant to act on, drawn as 
+    (119.51, "tick", "standard", -0.33),   # the pre-button dip
+    (121.73, "clank", "standard", 0.04),   # THE SIGNATURE SHOT, and it now states the thesis as 
+    (125.31, "thud", "hero", 0.0),   # the button
 ]
 
 
@@ -140,34 +151,24 @@ EVENTS = [
 # Multipliers are relative to the bed's base level, so the shape lives here and the level
 # lives in one place in the graph.
 BED_ARC = [
-    # REWRITTEN 2026-08-04. The arc that was here belonged to a different episode: its
-    # breakpoints were labelled "go north", "the wellhead lease" and "New York comparison",
-    # and its last two nodes sat at 82.5s and 87.9s on a film that ends at 83.76s. So the
-    # bed was following someone else's story and the last move never played. Two judges
-    # measured the consequence from opposite directions, LRA 3.0 across the whole piece and
-    # "the arc is not in the dynamics, so the punch cannot punch". These nodes are this
-    # film's beats, taken from vo_lines.json, and the range is deliberately wider.
-    (0.0,  0.96),   # cold open: decades of days you must not burn
-    (5.0,  1.18),   # "Nobody has mapped the days you can" -- the inversion, lift
-    (8.1,  1.30),   # the award lands
-    (17.8, 1.02),   # what a prescribed burn is, explanatory, step back
-    (23.9, 0.90),   # "It works, and Alaska barely uses it"
-    (27.2, 0.82),   # NSF says the state lacks the tools -- the problem, quietest so far
-    (31.1, 1.10),   # the machine reads decades of weather -- build
-    (38.1, 1.34),   # "That isn't a forecast. It's a count of safe days." -- the turn
-    (45.7, 1.06),   # four entities over one piece of ground
-    (54.5, 0.92),   # the grant pays to get them talking
-    (58.0, 0.62),   # THE HONEST TURN: "But it isn't finished."
-    (63.1, 0.56),   # who pays when a burn escapes -- the floor of the film
-    (67.3, 0.98),   # "But nothing moves without that count" -- rebuild
-    (73.9, 1.26),   # the wash drains
-    (77.7, 1.55),   # the windows open. The payoff, and the loudest the bed gets.
-    (81.2, 1.20),   # tail under the credit
-    # RESOLVE, DON'T CUT. A judge measured the bed still at about -25 dBFS a tenth of a
-    # second from the last frame, ramping off in roughly 60ms, so the film's final audible
-    # moment was a splice rather than an ending. Fade it under the credit card instead.
-    (82.9, 0.94),
-    (83.7, 0.00),
+    # 2026-08-06. Nodes are THIS film's VO line starts, so the bed follows this story and
+    # the last move actually plays. The floor at the technician's desk and again before the
+    # button are the two real drops; the two peaks are the mechanism and the thesis.
+    (0.00, 0.94),
+    (10.72, 1.1),
+    (24.10, 1.18),
+    (35.70, 1.02),
+    (45.34, 1.22),
+    (55.58, 0.86),
+    (62.76, 1.3),
+    (74.50, 1.16),
+    (85.36, 0.8),
+    (96.54, 1.12),
+    (103.74, 1.26),
+    (115.14, 0.72),
+    (123.60, 1.34),
+    (127.98, 1.05),
+    (129.78, 0.9),
 ]
 
 # A WIND BED FOR THE COUNTRY THE FILM DRIVES INTO. The same panel note asked for ambience,
