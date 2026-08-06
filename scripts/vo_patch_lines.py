@@ -357,8 +357,20 @@ def main():
         changed = 0
         for line in doc.get("lines", []):
             new_t = by_idx.get(line.get("i"))
-            if new_t is not None and line.get("t") != new_t:
+            if new_t is None:
+                continue
+            # BOTH FIELDS, not just `t` (2026-08-06). The entry carries `text` (as written)
+            # and `t` (as spoken), and this loop updated only `t`. A stale `text` sitting
+            # beside a patched `t` is a copy of the OLD narration that still looks
+            # authoritative, and it is the field a reader reaches for first: this run
+            # regenerated vo_script.txt from it minutes after patching and silently put the
+            # pre-patch wording back, undoing a fix the panel had demanded. The same
+            # reasoning as the note above applies to a field as much as to a file — every
+            # artifact that states the narration moves together, or the one left behind
+            # becomes the one somebody believes.
+            if line.get("t") != new_t or line.get("text") != new_t:
                 line["t"] = new_t
+                line["text"] = new_t
                 changed += 1
         json.dump(doc, open(sp, "w"), indent=1)
         print(f"  vo_script.json: {changed} line(s) brought into line with the audio")

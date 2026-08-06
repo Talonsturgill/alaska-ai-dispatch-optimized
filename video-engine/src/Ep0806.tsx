@@ -143,7 +143,15 @@ const World: React.FC<{f: number; children: React.ReactNode; bg?: string; dur?: 
  * Every element is dim and low-contrast so none of it competes with a subject.
  */
 const Room: React.FC<{f: number}> = ({f}) => (
-  <g>
+  // THE ROOM IS BACKGROUND AND MUST LOOK LIKE IT. Round 2 raised this wall's detail and
+  // contrast to move dead_space_check, which worked as a number (50.3% to 40.4%) and cost
+  // the film its subjects: all three judges reported "eleven shots, one background", and
+  // S2's socket grid — unlit sockets at #16283C against a wall at #152437 — stopped
+  // reading as a grid at all. The meter measures TEXTURE and its own docstring says so;
+  // it rewarded exactly the thing that buried the shots.
+  // So the wall keeps its detail, because a drawn room is right, and loses the CONTRAST
+  // that made it compete. Everything a subject sits in front of is now clearly behind it.
+  <g opacity={0.5}>
     {/* oversized: the room rides its own slower parallax transform, so its edges must
         cover the drift or the AbsoluteFill background shows through at the margins */}
     <rect data-band="ok" x={-70} y={-70} width={1220} height={2060} fill="#152437" />
@@ -284,10 +292,17 @@ const Motes: React.FC<{f: number; n?: number; cx?: number; cy?: number; r?: numb
 
 /** a plated mono string, sized to its plate by ARITHMETIC (never the reverse) */
 const Plate: React.FC<{
-  x: number; y: number; text: string; size?: number; op?: number; fill?: string; align?: 'mid' | 'start';
-}> = ({x, y, text, size = 26, op = 1, fill = HERO, align = 'mid'}) => {
-  const w = monoW(text, size) + 34;
-  const h = size + 24;
+  x: number; y: number; text?: string; lines?: string[]; size?: number; op?: number;
+  fill?: string; align?: 'mid' | 'start';
+}> = ({x, y, text, lines, size = 26, op = 1, fill = HERO, align = 'mid'}) => {
+  // ONE QUOTE, ONE PLATE. Quotations longer than about 24 characters were being split
+  // across two SEPARATE plates, so the opening quote mark sat on one box and the closing
+  // mark on another and a single sentence read as two statements. A judge called it
+  // systemic and it was: c7 and c17 both shipped that way. `lines` renders multiple rows
+  // inside ONE background, so the quote marks bracket one object.
+  const rows = lines && lines.length ? lines : [text ?? ''];
+  const w = Math.max(...rows.map((r) => monoW(r, size))) + 34;
+  const h = size + 24 + (rows.length - 1) * (size + 10);
   // HARD CLAMP. The open-caption card sits at y 1310..1442 and all three panel judges
   // found plated strings bisected by it, buried under it, or pushed below frame. A
   // plate can never enter that band, whatever a call site asks for.
@@ -298,9 +313,12 @@ const Plate: React.FC<{
     <g opacity={op}>
       <rect x={x0} y={yy - h / 2} width={w} height={h} rx={5} fill="#0B141F" opacity={0.94} />
       <rect x={x0} y={yy - h / 2} width={w} height={2} fill="#3E5468" opacity={0.9} />
-      <text x={align === 'mid' ? x : x + 17} y={yy + size * 0.36}
-            textAnchor={align === 'mid' ? 'middle' : 'start'} fill={fill}
-            style={{font: `700 ${size}px ${MONO}`, letterSpacing: 0.5}}>{text}</text>
+      {rows.map((r, i) => (
+        <text key={i} x={align === 'mid' ? x : x + 17}
+              y={yy - h / 2 + 12 + size * 0.86 + i * (size + 10)}
+              textAnchor={align === 'mid' ? 'middle' : 'start'} fill={fill}
+              style={{font: `700 ${size}px ${MONO}`, letterSpacing: 0.5}}>{r}</text>
+      ))}
     </g>
   );
 };
@@ -310,8 +328,18 @@ const SocketGrid: React.FC<{f: number; lit: number; y0?: number; rows?: number; 
   f, lit, y0 = 300, rows = 12, cols = 8, cell = 118,
 }) => {
   const w = cols * cell, x0 = 540 - w / 2;
+  const h0 = rows * cell;
   return (
+    // THE WALL IS AN OBJECT, NOT A PATTERN. Its unlit socket was #16283C against a room
+    // wall of #152437 — a 4-level difference — so all three judges looked at this shot and
+    // reported no socket grid at all. The shot's entire argument is a wall built for up to
+    // 750 feeds that is mostly DARK with a lit minority, and a grid that blends into the
+    // background cannot make it. Now it sits in a lit chassis with a bezel, empty mounts
+    // are near-black against that chassis, and the lit few are bright enough to count.
     <g>
+      <rect x={x0 - 26} y={y0 - 26} width={w + 52} height={h0 + 52} rx={10} fill="#0E1C2A" />
+      <rect x={x0 - 26} y={y0 - 26} width={w + 52} height={5} rx={2} fill="#43648A" opacity={0.95} />
+      <rect x={x0 - 14} y={y0 - 14} width={w + 28} height={h0 + 28} rx={6} fill="#091420" />
       {Array.from({length: rows * cols}).map((_, i) => {
         const r = Math.floor(i / cols), c = i % cols;
         const h = Math.imul(i + 11, 2246822519) >>> 0;
@@ -320,16 +348,20 @@ const SocketGrid: React.FC<{f: number; lit: number; y0?: number; rows?: number; 
         const x = x0 + c * cell, y = y0 + r * cell;
         return (
           <g key={i}>
-            <rect x={x + 5} y={y + 5} width={cell - 10} height={cell - 10} rx={3}
-                  fill={isLit ? '#2E5175' : '#16283C'} opacity={isLit ? fl : 1} />
-            <rect x={x + 5} y={y + 5} width={cell - 10} height={2} fill={isLit ? '#3E6280' : '#1E3247'} />
-            {/* every socket carries its own mount detail so an empty one is still drawn */}
-            <circle cx={x + 14} cy={y + cell - 16} r={2.6} fill="#24405C" opacity={0.9} />
-            <circle cx={x + cell - 14} cy={y + cell - 16} r={2.6} fill="#24405C" opacity={0.9} />
-            <rect x={x + 18} y={y + cell - 26} width={cell - 36} height={4} rx={2} fill="#1E3247" opacity={0.85} />
+            {/* the empty socket: a dark recess with a visible mount, not a tinted square */}
+            <rect x={x + 5} y={y + 5} width={cell - 10} height={cell - 10} rx={3} fill="#050B12" />
+            <rect x={x + 5} y={y + 5} width={cell - 10} height={3} fill="#31506E" opacity={0.75} />
+            <rect x={x + 8} y={y + cell - 11} width={cell - 16} height={3} fill="#16283C" opacity={0.9} />
+            <circle cx={x + 15} cy={y + cell - 20} r={2.8} fill="#2B4864" />
+            <circle cx={x + cell - 15} cy={y + cell - 20} r={2.8} fill="#2B4864" />
+            <rect x={x + 20} y={y + cell - 30} width={cell - 40} height={5} rx={2} fill="#12222F" />
             {isLit && (
-              <rect x={x + 12} y={y + 12} width={cell - 24} height={cell - 24} rx={2}
-                    fill={RIM} opacity={0.075 * fl} />
+              <g opacity={fl}>
+                <rect x={x + 9} y={y + 9} width={cell - 18} height={cell - 18} rx={2} fill="#3E7BA8" />
+                <rect x={x + 9} y={y + 9} width={cell - 18} height={3} fill="#8FD2E8" />
+                <rect x={x + 16} y={y + 18} width={cell - 32} height={cell - 44} rx={1} fill="#5AA6C8" opacity={0.55} />
+                <circle cx={x + cell - 17} cy={y + 17} r={3.2} fill="#B8ECF6" />
+              </g>
             )}
           </g>
         );
@@ -496,7 +528,7 @@ const S2: React.FC<SceneProps> = ({from}) => {
         <g opacity={capCard}>
           <Plate x={540} y={1180} text="UP TO 750 VOLUNTEERED FEEDS" size={30} />
         </g>
-        <Plate x={540} y={1253} text="CAPACITY, NOT A COUNT" size={22} fill="#7E93A6"
+        <Plate x={540} y={1253} text="CAPACITY, NOT A COUNT" size={22} fill="#C4D2DE"
                op={capCard * 0.9} />
       </World>
     </ScreenLit>
@@ -559,7 +591,7 @@ const S3: React.FC<SceneProps> = ({from}) => {
         <g opacity={(slamT > 0 ? 1 : 0) * (1 - ask)}
            transform={`translate(0,${-150 * (1 - Math.min(1, slamT * 1.6))})`}>
           <ScanReticle cx={540} cy={1010 - 96 * (1 - slamT)} frame={f} lock={0.9} color={ORANGE} size={244} />
-          <Plate x={540} y={1168} text="OBJECT RECOGNITION" size={30} fill={ORANGE} op={slamT} />
+          <Plate x={540} y={1160} text="OBJECT RECOGNITION: PLATE READERS" size={23} fill={ORANGE} op={slamT} />
           <Plate x={540} y={1250} text="NOT WHAT THE RULE NAMED" size={28} op={slamT} />
         </g>
         {/* --- L5: THE QUESTION, AND THE SOCKET THAT CANNOT ANSWER IT --------- */}
@@ -580,9 +612,9 @@ const S3: React.FC<SceneProps> = ({from}) => {
             the quote bare, so a viewer read a contested characterisation as a finding
             about the code. c22 carries the district. */}
         <g opacity={ask}>
-          <Plate x={640} y={1118} text={`"THE CODE CAN'T ANSWER`} size={26} />
-          <Plate x={640} y={1186} text={`ANY OF THOSE QUESTIONS"`} size={26} />
-          <Plate x={640} y={1248} text="KEITH McCORMICK, ASSEMBLY D6" size={19} fill="#8FA2B4" />
+          <Plate x={620} y={1150} size={26}
+                 lines={[`"THE CODE CAN'T ANSWER`, `ANY OF THOSE QUESTIONS"`]} />
+          <Plate x={620} y={1250} text="KEITH McCORMICK, ASSEMBLY D6" size={19} fill="#C0CEDA" />
         </g>
         {/* the probe: it enters the empty socket, sweeps its whole width, exits with
             nothing. 4.1 seconds of continuous travel across what used to be dead tail. */}
@@ -630,10 +662,8 @@ const S4: React.FC<SceneProps> = ({from}) => {
   // ACT B — THE CONCESSIONS, AND THESE DO LAND (c10, c11).
   const resp = interpolate(f, [166, 200], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: E_OUT});
   const cA = interpolate(f, [178, 198], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: E_OUT});
-  // c11, the 14-day deletion, is NOT drawn here and that is deliberate. It is a real
-  // Anchorage concession, but the line under this beat is about officers arriving with
-  // better information, and hanging a deletion policy on it would be exactly the
-  // say-it-show-it mismatch this whole re-cut exists to remove.
+  const cB = interpolate(f, [214, 232], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: E_OUT});
+  const cC = interpolate(f, [252, 270], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: E_OUT});
   // ACT C — THE WHIP. Four hundred miles in one smear.
   const whip = interpolate(f, [326, 335, 348], [0, 1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const room = interpolate(f, [332, 366], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: E_OUT});
@@ -699,9 +729,9 @@ const S4: React.FC<SceneProps> = ({from}) => {
             same arithmetic S1 uses, so the brackets sit on the plate at any scale:
             offset (50.7s, 68s), size 132s. Occupies x 267..813, y 772..1088 and every
             Act-B element below is placed clear of that box. */}
-        <FrameOfEvidence id="hero4" x={540} y={930} f={f} s={1.05}
+        <FrameOfEvidence id="hero4" x={540} y={866} f={f} s={1.0}
           faceState="sharp" plateState="sharp" progress={0} phase={0.4} />
-        <ScanReticle cx={540 + 53} cy={930 + 71} frame={f} lock={0.92} color={ORANGE} size={139} />
+        <ScanReticle cx={540 + 51} cy={866 + 68} frame={f} lock={0.92} color={ORANGE} size={132} />
 
         {/* --- ACT B: THE COUNTER-CASE, DRAWN ----------------------------------- */}
         {/* the responder the better information reaches, screen-keyed and never still */}
@@ -711,21 +741,60 @@ const S4: React.FC<SceneProps> = ({from}) => {
             <Character pose="stand" emotion="neutral" outfit="nomex" headgear="cap" frame={f} />
           </Living>
         </g>
-        {/* c10 — the chief's own reason, and THIS one seats: shadow, contact, no drift.
-            Tungsten, because the accent law reserves #F0A24B for a person deciding and
-            this card is the human argument for the system. */}
+        {/* ANCHORAGE'S LEDGER, AND IT CLOSES. Three cards, not one.
+            The panel's sharpest editorial note was that Anchorage's real concessions never
+            land before the button sends viewers to its August 18th meeting. Round 2 drew
+            c10 only, and I had dropped c9 and c11 on the argument that a deletion policy
+            does not belong under a line about officers arriving calmer. That reasoning was
+            too narrow: the LINE is "his case is real too", and his case IS the safeguards.
+            c11 carries its scope on its own face, because its note is explicit that the
+            14 days are CITY cameras and that nobody has said whether volunteered private
+            feeds run the same clock. Stating the number without the scope would overclaim
+            in Anchorage's favour, which is the mirror of the sin being fixed. */}
         <g opacity={cA * anch} transform={`translate(0,${(1 - cA) * -34})`}>
-          <ContactShadow cx={660} cy={1252} rx={252} ry={15} opacity={0.5} blur={11} />
-          <rect x={400} y={1150} width={520} height={94} rx={6} fill="#1A2B3C" />
-          <rect x={400} y={1150} width={520} height={3} fill="#F0A24B" opacity={0.75} />
-          <text x={660} y={1192} textAnchor="middle" fill={TUNGSTEN}
-                style={{font: `700 24px ${MONO}`, letterSpacing: 0.5}}>&quot;CUT DOWN ON US</text>
-          <text x={660} y={1226} textAnchor="middle" fill={TUNGSTEN}
-                style={{font: `700 24px ${MONO}`, letterSpacing: 0.5}}>COMING IN TOO HOT&quot;</text>
+          <ContactShadow cx={640} cy={1264} rx={244} ry={14} opacity={0.5} blur={11} />
+          <rect x={410} y={1046} width={460} height={82} rx={6} fill="#1A2B3C" />
+          <rect x={410} y={1046} width={460} height={3} fill="#F0A24B" opacity={0.75} />
+          <text x={640} y={1082} textAnchor="middle" fill={TUNGSTEN}
+                style={{font: `700 21px ${MONO}`}}>&quot;CUT DOWN ON US</text>
+          <text x={640} y={1112} textAnchor="middle" fill={TUNGSTEN}
+                style={{font: `700 21px ${MONO}`}}>COMING IN TOO HOT&quot;</text>
+        </g>
+        <g opacity={cB * anch} transform={`translate(0,${(1 - cB) * -26})`}>
+          <rect x={410} y={1140} width={460} height={50} rx={6} fill="#1A2B3C" />
+          <rect x={410} y={1140} width={460} height={3} fill="#F0A24B" opacity={0.6} />
+          <text x={640} y={1174} textAnchor="middle" fill={TUNGSTEN}
+                style={{font: `700 20px ${MONO}`}}>&quot;NOT GOING TO OUTRUN OUR COVERAGE&quot;</text>
+        </g>
+        <g opacity={cC * anch} transform={`translate(0,${(1 - cC) * -26})`}>
+          <rect x={410} y={1202} width={460} height={62} rx={6} fill="#16283C" />
+          <rect x={410} y={1202} width={460} height={3} fill="#46607A" />
+          <text x={640} y={1232} textAnchor="middle" fill={HERO}
+                style={{font: `700 21px ${MONO}`}}>14 DAYS, THEN DELETED</text>
+          <text x={640} y={1256} textAnchor="middle" fill="#93A7B8"
+                style={{font: `700 15px ${MONO}`}}>CITY CAMERAS</text>
         </g>
 
-        {/* the whip smear rides OVER the room, never over the frame */}
-        <rect data-band="ok" x={0} y={0} width={1080} height={1920} fill="#0B1620" opacity={whip * 0.86} />
+        {/* THE WHIP IS DIRECTIONAL, NOT A FLASH.
+            It was a full-frame fill on an opacity ramp, which is a dissolve however fast
+            you run it, and all three judges read it as one: "the softest available
+            transition on the film's biggest pivot". Four hundred miles is a LATERAL move,
+            so the smear travels — horizontal streaks raked across at speed over a
+            darkening that never fully closes. The carried frame still does not move. */}
+        <rect data-band="ok" x={0} y={0} width={1080} height={1920} fill="#0B1620" opacity={whip * 0.72} />
+        <g opacity={whip}>
+          {Array.from({length: 26}).map((_, i) => {
+            const hh = Math.imul(i + 41, 2654435761) >>> 0;
+            const yy = hh % 1900;
+            const th = 3 + ((hh >> 7) % 26);
+            const sp = 900 + ((hh >> 13) % 900);
+            const xx = -1200 + sp * whip * 2.2 + ((hh >> 19) % 300);
+            return (
+              <rect data-band="ok" key={i} x={xx} y={yy} width={640 + ((hh >> 5) % 520)} height={th}
+                    fill={i % 4 === 0 ? RIM : '#3E5C78'} opacity={0.26 + ((hh >> 11) % 40) / 130} />
+            );
+          })}
+        </g>
         <Plate x={540} y={560} text="FAIRBANKS" size={30} op={room} />
       </World>
     </ScreenLit>
@@ -794,7 +863,7 @@ const S5: React.FC<SceneProps> = ({from}) => {
         <g opacity={vend}>
           <rect x={330} y={1212} width={420} height={54} rx={4} fill="#0B141F" opacity={0.94} />
           <rect x={342} y={1222} width={252} height={34} fill={REDACTION} />
-          <text x={610} y={1248} fill="#7E93A6" style={{font: `700 20px ${MONO}`}}>NO VENDOR NAMED</text>
+          <text x={610} y={1248} fill="#C4D2DE" style={{font: `700 20px ${MONO}`}}>NO VENDOR NAMED</text>
         </g>
         {/* the technician, and she is never still: this figure measured pixel-identical
             across the judged 8-frame strip window, which is what "no idle life" meant. */}
@@ -882,7 +951,7 @@ const S6: React.FC<SceneProps> = ({from}) => {
           <Plate x={370} y={1251} text="THE TOTAL BARELY MOVED" size={26} />
         </g>
         <Plate x={300} y={620} text="A PERSON STILL SIGNS THE ONE IT MISSED" size={22}
-               fill="#B9C6D2" op={rule * 0.95} />
+               fill="#DCE6EE" op={rule * 0.95} />
       </World>
     </ScreenLit>
   );
@@ -1031,8 +1100,8 @@ const S8: React.FC<SceneProps> = ({from}) => {
         <FrameStack x={250} y={1290} f={f} count={11} s={0.46} />
         <Plate x={300} y={1253} text="ONE EVIDENCE TECHNICIAN" size={22} op={hold} />
         <g opacity={quote}>
-          <Plate x={540} y={624} text='"BASICALLY JUST SUBSIDIZING' size={26} />
-          <Plate x={540} y={694} text='YOUTUBERS FROM THE LOWER 48"' size={26} />
+          <Plate x={540} y={654} size={26}
+                 lines={['"BASICALLY JUST SUBSIDIZING', 'YOUTUBERS FROM THE LOWER 48"']} />
         </g>
         {/* THE FIVE-HOUR RULE as a finite spool, never a dial with a needle */}
         <g opacity={spool} transform="translate(430,900) scale(1.2)">
@@ -1171,6 +1240,9 @@ const S10: React.FC<SceneProps> = ({from}) => {
   const fire1 = interpolate(f, [30, 46], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const fire2 = interpolate(f, [62, 76], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const fuse = interpolate(f, [96, 116], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: E_OUT});
+  // the last 200px of travel, then a hard swap. No frame is ever semi-transparent.
+  const join = interpolate(f, [96, 116], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: E_MOVE});
+  const met = f >= 116;
   const stamp = interpolate(f, [160, 182], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: E_OUT});
   const SRC = [{x: 200, y: 800, w: 680, h: 340, color: RIM, intensity: 0.8, reach: 820}];
   return (
@@ -1179,28 +1251,47 @@ const S10: React.FC<SceneProps> = ({from}) => {
         <Motes f={f} cy={930} r={520} />
         {/* the seam */}
         <path d="M540,520 V1360" stroke="#3E5468" strokeWidth={2} opacity={0.5 * (1 - fuse)} />
-        <g transform={`translate(${-300 * (1 - conv)},0)`} opacity={1 - fuse * 0.0}>
-          <FrameOfEvidence id="anc" x={fuse > 0.5 ? 540 : 340} y={940} f={f} s={1.0}
-            faceState="sharp" plateState={fire1 > 0.5 ? 'sharp' : 'sharp'} progress={0} phase={0.1} />
-          <g opacity={fire1}>
-            <ScanReticle cx={(fuse > 0.5 ? 540 : 340) + 52} cy={940 + 72} frame={f} lock={fire1} color={ORANGE} size={150} />
-          </g>
-        </g>
-        <g transform={`translate(${300 * (1 - conv)},0)`} opacity={1 - fuse}>
-          <FrameOfEvidence id="fbx" x={740} y={940} f={f} s={1.0}
-            faceState={fire2 > 0.5 ? 'hidden' : 'sharp'} plateState={fire2 > 0.5 ? 'hidden' : 'sharp'}
-            progress={0.012} phase={0.6} />
-        </g>
+        {/* THE FUSION IS A TRAVEL, NOT A CROSSFADE.
+            It used to draw three frames at once — anchorage, fairbanks and the fused one —
+            with the last two on opacity ramps, so through the whole join everything was
+            semi-transparent, the wall showed through both frames, and for the first ~0.4s
+            the face was plainly visible THROUGH the grey box that exists to hide it. Two
+            judges called it a dissolve and one caught the see-through redaction, which is
+            the worst possible frame for this film to publish.
+            Now both frames stay fully opaque and TRAVEL to the centre, and the swap to the
+            fused frame happens on one frame boundary with no alpha overlap at all. */}
+        {!met && (
+          <>
+            <g transform={`translate(${-300 * (1 - conv) + 200 * join},0)`}>
+              <FrameOfEvidence id="anc" x={340} y={940} f={f} s={1.0}
+                faceState="sharp" plateState="sharp" progress={0} phase={0.1} />
+              <g opacity={fire1}>
+                <ScanReticle cx={340 + 52} cy={940 + 72} frame={f} lock={fire1} color={ORANGE} size={150} />
+              </g>
+            </g>
+            <g transform={`translate(${300 * (1 - conv) - 200 * join},0)`}>
+              <FrameOfEvidence id="fbx" x={740} y={940} f={f} s={1.0}
+                faceState={fire2 > 0.5 ? 'hidden' : 'sharp'} plateState={fire2 > 0.5 ? 'hidden' : 'sharp'}
+                progress={0.012} phase={0.6} />
+            </g>
+          </>
+        )}
         {/* THE FUSED FRAME: brackets AND boxes, on the same face and the same plate */}
-        <g opacity={fuse}>
+        <g opacity={met ? 1 : 0}>
           <FrameOfEvidence id="fused" x={540} y={940} f={f} s={1.22}
             faceState="hidden" plateState="hidden" progress={0.012} phase={0.3} />
           <ScanReticle cx={540 + 60} cy={940 + 84} frame={f} lock={1} color={ORANGE} size={172} />
           <path d="M180,1180 H900" stroke={RIM} strokeWidth={7} strokeLinecap="round" opacity={0.7 * fuse} />
-          <Plate x={540} y={1249} text="SAME FOOTAGE" size={30} op={fuse} />
+          {/* "SAME FOOTAGE" asserted a literal identity between Anchorage plate-reader
+              video and Fairbanks body-camera video. claims.json's own illustrative_note
+              says the pairing of the two cities is THIS FILM'S ARGUMENT and that no source
+              links them, so the card was claiming as fact the one thing the film is
+              arguing. The pipe is the declared metaphor, planted at 8.5s in S1; paying
+              that plant here says the same thing without asserting it. */}
+          <Plate x={540} y={1249} text="SAME PIPE, BOTH ENDS" size={30} op={fuse} />
         </g>
         <Plate x={300} y={600} text="RECOGNIZE" size={26} fill={ORANGE} op={fire1 * (1 - fuse)} />
-        <Plate x={780} y={600} text="HIDE" size={26} fill="#9AA6AE" op={fire2 * (1 - fuse)} />
+        <Plate x={780} y={600} text="HIDE" size={26} fill="#C8D2DA" op={fire2 * (1 - fuse)} />
         {/* THE DATE, on an EMPTY calendar square. c3 says POSTPONED, not a vote.
             MOVED ABOVE THE FRAME (round 2). It was at y 1330..1458, wholly inside the
             caption card, and its label was authored at y=1520 — below the card, but the
@@ -1287,7 +1378,7 @@ const S11: React.FC<SceneProps> = ({from}) => {
           </g>
         </Living>
       </g>
-      <Plate x={540} y={840} text="ONE PERSON RELEASES IT" size={23} fill="#B9C6D2" op={out * 0.9} />
+      <Plate x={540} y={840} text="ONE PERSON RELEASES IT" size={23} fill="#DCE6EE" op={out * 0.9} />
       {/* THE BUTTON */}
       <g opacity={q}>
         <Plate x={540} y={640} text="WHAT WOULD YOU WANT" size={32} />
