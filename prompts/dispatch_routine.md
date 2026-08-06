@@ -1187,6 +1187,29 @@ A shot passes when the picture at each line's offset is about that line. This is
 say-it-show-it standard Gate 0C applies to the board, applied to the code, and it is the one
 place where the board passing tells you nothing — the board was right and the wiring moved.
 
+### WAITING ON A FILE THAT ALREADY EXISTS IS NOT WAITING (2026-08-06)
+
+`until [ -s out/dispatch/render_mute.mp4 ]; do sleep 25; done` looks like it waits for a
+render. It does not, because the PREVIOUS render's output is still sitting there when the
+new one starts. render_parallel.sh deletes it early and deliberately, but there is a window
+of a second or two between launching the render and that `rm -f`, and a waiter started in
+that window returns instantly.
+
+What that cost: the waiter fired immediately, chained the encode, and produced a full set
+of deliverables — master, square, 720, all asserts passing, log reading clean — from the
+PREVIOUS cut. Twelve fixes were missing from bytes that looked completely healthy. Nothing
+failed. `preflight.deliverables_are_fresh()` is what would have caught it downstream, which
+is exactly one step too late to be comfortable.
+
+Wait on the render's own COMPLETION MARKER instead, which is written only after the frame
+count assert passes:
+
+    until grep -q "^  OK  .*render_mute.mp4" out/dispatch/render_final.log; do sleep 20; done
+
+That string cannot exist until the render finished AND counted its frames. Same principle
+as the pkill note below: name the thing that can only be true when you are actually done,
+never a condition a stale artifact can satisfy.
+
 ### `pkill -f <scriptname>` KILLS YOUR OWN WAITERS TOO (2026-08-06, twice in one run)
 
 A background waiter's command line contains the name of the thing it is waiting for, so
