@@ -219,12 +219,17 @@ const Plate: React.FC<{
 }> = ({x, y, text, size = 26, op = 1, fill = HERO, align = 'mid'}) => {
   const w = monoW(text, size) + 34;
   const h = size + 24;
+  // HARD CLAMP. The open-caption card sits at y 1310..1442 and all three panel judges
+  // found plated strings bisected by it, buried under it, or pushed below frame. A
+  // plate can never enter that band, whatever a call site asks for.
+  const CAP_GUARD = CAPTION_TOP - 34;
+  const yy = Math.min(y, CAP_GUARD - h / 2);
   const x0 = align === 'mid' ? x - w / 2 : x;
   return (
     <g opacity={op}>
-      <rect x={x0} y={y - h / 2} width={w} height={h} rx={5} fill="#0B141F" opacity={0.94} />
-      <rect x={x0} y={y - h / 2} width={w} height={2} fill="#3E5468" opacity={0.9} />
-      <text x={align === 'mid' ? x : x + 17} y={y + size * 0.36}
+      <rect x={x0} y={yy - h / 2} width={w} height={h} rx={5} fill="#0B141F" opacity={0.94} />
+      <rect x={x0} y={yy - h / 2} width={w} height={2} fill="#3E5468" opacity={0.9} />
+      <text x={align === 'mid' ? x : x + 17} y={yy + size * 0.36}
             textAnchor={align === 'mid' ? 'middle' : 'start'} fill={fill}
             style={{font: `700 ${size}px ${MONO}`, letterSpacing: 0.5}}>{text}</text>
     </g>
@@ -500,7 +505,7 @@ const S5: React.FC<SceneProps> = ({from}) => {
         <g transform="translate(870,1190) scale(1.55)">
           <Character pose="stand" emotion="worried" outfit="vest" headgear="bare" frame={f} />
         </g>
-        <Plate x={540} y={1420} text="REDACTED" size={26} op={box} />
+        <Plate x={300} y={640} text="REDACTED" size={26} op={box} />
       </World>
     </ScreenLit>
   );
@@ -550,9 +555,9 @@ const S6: React.FC<SceneProps> = ({from}) => {
         <g opacity={rule}>
           <path d={`M${X0},1210 H${X0 + FULL * 2 + 20}`} stroke={HERO} strokeWidth={3} />
           <path d={`M${X0},1196 v28 M${X0 + FULL * 2 + 20},1196 v28`} stroke={HERO} strokeWidth={3} />
-          <Plate x={540} y={1300} text="THE TOTAL BARELY MOVED" size={28} />
+          <Plate x={540} y={1215} text="THE TOTAL BARELY MOVED" size={28} />
         </g>
-        <Plate x={540} y={1400} text="A PERSON STILL SIGNS THE ONE IT MISSED" size={22}
+        <Plate x={300} y={620} text="A PERSON STILL SIGNS THE ONE IT MISSED" size={22}
                fill="#B9C6D2" op={rule * 0.95} />
       </World>
     </ScreenLit>
@@ -595,7 +600,7 @@ const S7: React.FC<SceneProps> = ({from}) => {
             );
           })}
         </g>
-        <Plate x={330} y={1300} text="NEVER ABOVE 20 BEFORE OCT 2025" size={21} op={build} />
+        <Plate x={330} y={1258} text="NEVER ABOVE 20 BEFORE OCT 2025" size={21} op={build} />
         <g opacity={spike}>
           <Plate x={540} y={620} text="APRIL: MORE THAN 35" size={26} />
           <Plate x={540} y={700} text="JULY: MORE THAN 35" size={26} />
@@ -628,7 +633,7 @@ const S8: React.FC<SceneProps> = ({from}) => {
           <Character pose="stand" emotion="worried" outfit="vest" headgear="bare" frame={f} />
         </g>
         <FrameStack x={250} y={1290} f={f} count={11} s={0.46} />
-        <Plate x={300} y={1340} text="ONE EVIDENCE TECHNICIAN" size={24} op={hold} />
+        <Plate x={300} y={1252} text="ONE EVIDENCE TECHNICIAN" size={24} op={hold} />
         <g opacity={quote}>
           <Plate x={540} y={520} text='"BASICALLY JUST SUBSIDIZING' size={26} />
           <Plate x={540} y={588} text='YOUTUBERS FROM THE LOWER 48"' size={26} />
@@ -666,7 +671,7 @@ const S8: React.FC<SceneProps> = ({from}) => {
               </g>
             );
           })}
-          <Plate x={540} y={1210} text="WRITTEN BEFORE BODY CAMERAS" size={23} op={bury} />
+          <Plate x={540} y={1258} text="WRITTEN BEFORE BODY CAMERAS" size={23} op={bury} />
         </g>
       </World>
     </ScreenLit>
@@ -709,7 +714,7 @@ const S9: React.FC<SceneProps> = ({from}) => {
           </g>
         </g>
         <g opacity={slip}>
-          <Plate x={540} y={512} text='"YOU\u2019LL GET IT WHEN YOU GET IT"' size={25} />
+          <Plate x={540} y={512} text={`"YOU'LL GET IT WHEN YOU GET IT"`} size={25} />
         </g>
         {/* THE CONCESSION, ticked on a THING: the stack and the technician */}
         <g opacity={tick}>
@@ -731,11 +736,11 @@ const S9: React.FC<SceneProps> = ({from}) => {
 // ---------------------------------------------------------------------------
 const S10: React.FC<SceneProps> = ({from}) => {
   const f = useCurrentFrame();
-  const conv = interpolate(f, [20, 130], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: E_MOVE});
-  const fire1 = interpolate(f, [46, 62], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
-  const fire2 = interpolate(f, [86, 96], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
-  const fuse = interpolate(f, [128, 146], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: E_OUT});
-  const stamp = interpolate(f, [196, 216], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: E_OUT});
+  const conv = interpolate(f, [14, 96], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: E_MOVE});
+  const fire1 = interpolate(f, [30, 46], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const fire2 = interpolate(f, [62, 76], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const fuse = interpolate(f, [96, 116], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: E_OUT});
+  const stamp = interpolate(f, [160, 182], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: E_OUT});
   const SRC = [{x: 200, y: 800, w: 680, h: 340, color: RIM, intensity: 0.8, reach: 820}];
   return (
     <ScreenLit sources={SRC}>
@@ -809,7 +814,10 @@ const S11: React.FC<SceneProps> = ({from}) => {
               <rect x={x + 4} y={y + 4} width={cell - 8} height={cell - 8} rx={3}
                     fill={isHero ? '#1A2836' : '#22405C'} opacity={isHero ? 1 : fl} />
               {isHero ? (
-                <rect x={x + 22} y={y + 26} width={cell - 44} height={cell - 52} fill={REDACTION} />
+                <g>
+                  <rect x={x + 4} y={y + 4} width={cell - 8} height={cell - 8} rx={3} fill="#0E1620" />
+                  <rect x={x + 14} y={y + 16} width={cell - 28} height={cell - 32} fill={REDACTION} />
+                </g>
               ) : (
                 <g opacity={0.85 * fl}>
                   {[[8, 8, 1, 1], [cell - 8, 8, -1, 1], [8, cell - 8, 1, -1], [cell - 8, cell - 8, -1, -1]]
@@ -831,7 +839,7 @@ const S11: React.FC<SceneProps> = ({from}) => {
           <Character pose="stand" emotion="neutral" outfit="vest" headgear="bare" frame={f} />
         </g>
       </g>
-      <Plate x={540} y={1180} text="ONE PERSON RELEASES IT" size={23} fill="#B9C6D2" op={out * 0.9} />
+      <Plate x={540} y={840} text="ONE PERSON RELEASES IT" size={23} fill="#B9C6D2" op={out * 0.9} />
       {/* THE BUTTON */}
       <g opacity={q}>
         <Plate x={540} y={640} text="WHAT WOULD YOU WANT" size={32} />

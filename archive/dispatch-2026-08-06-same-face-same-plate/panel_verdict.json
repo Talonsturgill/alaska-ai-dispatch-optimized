@@ -1,0 +1,28 @@
+{
+  "run_date": "2026-08-06",
+  "film": "The Same Face, The Same Plate",
+  "graded_cut": "dispatch_master.mp4 (9:16), evidence pack rendered from the square",
+  "judges": [
+    {"judge": 1, "overall": 5.12, "strongest": "accuracy and sourcing", "weakest": "motion and animation craft"},
+    {"judge": 2, "overall": 5.12, "strongest": "accuracy discipline against its own worst temptations", "weakest": "typography and captions, plus a fairness asymmetry between the two cities"},
+    {"judge": 3, "overall": 4.84, "strongest": "accuracy and sourcing", "weakest": "typography and captions"}
+  ],
+  "median": 5.12,
+  "bar": 9.0,
+  "verdict": "BELOW BAR. THIS CUT DOES NOT SHIP.",
+  "fixed_after_the_panel": [
+    "HARD BLOCKER, all three judges: a raw \\u2019 escape sequence was painted literally inside a quoted card attributed to a named official. Verified fixed on the delivered cut at t=104s, now a straight apostrophe.",
+    "HARD BLOCKER, judge 3: plated annotations bisected by, buried under, or pushed below the open-caption card in four shots. Fixed systematically rather than per call site: the Plate component now HARD-CLAMPS its own y out of the caption band, so a call site cannot reintroduce it.",
+    "The signature shot's single hidden tile, which carries half the film's thesis, was too dark to read against its own housing.",
+    "The primary loop's fusion started at frame 128 of a 297-frame shot and judge 1 correctly sampled two separate panels; brought forward so the fused state actually holds.",
+    "Bed arc deepened for LRA. Premix moved 6.10 to 6.60, inside the 6.0-9.0 target, but the DELIVERED figure is still 5.3 because the loudnorm pass compresses the range back. Not solved."
+  ],
+  "still_open_and_why_this_does_not_ship": [
+    "MOTION. Six of eight filmstrips measure 1.4 to 3.2 percent frame-to-frame. Two of them, at the film's own mechanism reveal and at its city-change dolly, are effectively frozen. No held figure shows idle life in any sampled strip, against a storyboard that promises breath and a weight shift at three separate beats.",
+    "COMPOSITION. dead_space_check measures 52.0 percent whole-film low-information area against a 42 percent ceiling, with several shots over the 55 percent per-shot ceiling. All three judges independently confirmed the number matches what is on screen.",
+    "AUDIO. Delivered LRA 5.3 against a 6.0-9.0 target. audio_report's own measurement says the headroom exists and is unused: 50 VO gaps of 0.35s or longer, 38.9s of silence in a 126.8s track.",
+    "OVERLAYS still occlude character silhouettes in at least one shot (the concession card across an attorney's head).",
+    "FAIRNESS ASYMMETRY, judge 2, and it is the most important editorial note. Fairbanks gets roughly thirty seconds of DRAWN counter-case. Anchorage gets its two real cards (the 14-day deletion and the chief's own de-escalation line) as silent supers in a 3.4 second window and zero spoken counter-argument in 300 words, and Anchorage is the city the button sends viewers to act on."
+  ],
+  "note": "The run did NOT invoke ship_gate record/check, because a below-bar median is not something a run may record its way past. No Gmail draft was built and the run branch was NOT merged to main. The film, all three encodes and every artifact exist and are committed, so the next run resumes from a real cut rather than from a plan."
+}
