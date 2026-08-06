@@ -734,9 +734,16 @@ const S4: React.FC<SceneProps> = ({from}) => {
           <rect x={128} y={520} width={824} height={116} rx={7} fill="#1D2E40" />
           <rect x={128} y={520} width={824} height={4} fill="#46607A" />
           <rect x={128} y={632} width={824} height={4} fill="#0A121C" opacity={0.9} />
-          <text x={540} y={594} textAnchor="middle" fill={HERO}
-                style={{font: `700 30px ${MONO}`, letterSpacing: 1}}>
+          <text x={540} y={588} textAnchor="middle" fill={HERO}
+                style={{font: `700 29px ${MONO}`, letterSpacing: 1}}>
             &quot;WE WILL COME TO THE BODY GENERALLY&quot;
+          </text>
+          {/* The accused party's ONLY defence quote shipped with no speaker while the
+              accusation against him carried its attribution. That asymmetry is the whole
+              thing this film is supposed to be careful about. */}
+          <text x={540} y={622} textAnchor="middle" fill="#A9BCCC"
+                style={{font: `700 17px ${MONO}`, letterSpacing: 0.5}}>
+            POLICE CHIEF SEAN CASE, VIA ALASKA&apos;S NEWS SOURCE
           </text>
         </g>
 
@@ -776,6 +783,8 @@ const S4: React.FC<SceneProps> = ({from}) => {
                 style={{font: `700 21px ${MONO}`}}>&quot;CUT DOWN ON US</text>
           <text x={640} y={1112} textAnchor="middle" fill={TUNGSTEN}
                 style={{font: `700 21px ${MONO}`}}>COMING IN TOO HOT&quot;</text>
+          <text x={640} y={1140} textAnchor="middle" fill="#A9BCCC"
+                style={{font: `700 15px ${MONO}`}}>CHIEF SEAN CASE, ALASKA PUBLIC MEDIA</text>
         </g>
         <g opacity={cB * anch} transform={`translate(0,${(1 - cB) * -26})`}>
           <rect x={410} y={1140} width={460} height={50} rx={6} fill="#1A2B3C" />
@@ -1135,9 +1144,11 @@ const S8: React.FC<SceneProps> = ({from}) => {
         </g>
         <FrameStack x={250} y={1290} f={f} count={11} s={0.46} />
         <Plate x={300} y={1253} text="ONE EVIDENCE TECHNICIAN" size={22} op={hold} />
-        <g opacity={quote}>
-          <Plate x={436} y={578} size={25}
+        <g opacity={quote * (1 - spool)}>
+          <Plate x={470} y={596} size={25}
                  lines={['"BASICALLY JUST SUBSIDIZING', 'YOUTUBERS FROM THE LOWER 48"']} />
+          <Plate x={470} y={686} text="MIKE SANDERS, CHIEF OF STAFF, VIA KUAC" size={17}
+                 fill="#A9BCCC" />
         </g>
         {/* THE FIVE-HOUR RULE as a finite spool, never a dial with a needle */}
         {/* THE FIVE-HOUR RULE AS A FINITE SPOOL, and this time it is a machine.
@@ -1211,17 +1222,29 @@ const S8: React.FC<SceneProps> = ({from}) => {
           <text x={0} y={-162} textAnchor="middle" fill={HERO}
                 style={{font: `700 18px ${MONO}`}}>FULL</text>
         </g>
-        <Plate x={540} y={496} text="FREE UNDER 5 STAFF HOURS A MONTH" size={24} op={spool} />
-        <Plate x={540} y={548} text="CHIEF RON DUPEE, VIA KUAC" size={16} fill="#A9BCCC" op={spool * 0.95} />
+        {/* ONE CARD AT A TIME, EACH WITH ITS OWN SPEAKER.
+            Adding c19 last round stacked three text blocks into one band: it landed on top
+            of the Sanders quote, clipped it to '"BASICALLY / YOUTUBERS F', and left a
+            'CHIEF RON DUPEE' credit sitting inside a quotation that belongs to Chief of
+            Staff Mike Sanders. Two judges hard-failed it, correctly — the film's most
+            inflammatory quote read as credited to a different named living police chief.
+            That is worse than the fairness gap adding c19 was meant to close.
+            Each card now RETIRES before the next lands, and every quote carries its own
+            attribution, so a credit line can never be adjacent to someone else's words. */}
+        <g opacity={spool * (1 - bury)}>
+          <Plate x={540} y={496} text="FREE UNDER 5 STAFF HOURS A MONTH" size={24} />
+          <Plate x={540} y={550} text="CHIEF RON DUPEE, VIA KUAC" size={17} fill="#A9BCCC" />
+        </g>
         {/* c19, THE FAIRBANKS COUNTER-POINT IN THE CITY'S OWN MOUTH, and it had not shipped
             at all. Two judges named its absence: the film concedes twice that the problem is
             real ("his case is real too", "he's right about the problem") but never let
             Fairbanks make its own sourced defence, while Anchorage got c9 and c10 drawn. Its
             note is explicit that this is a STAFFING claim and not an anti-transparency one,
             which is exactly why the city deserves to say it in its own words. */}
-        <Plate x={540} y={614} size={22} op={bury}
-               lines={['"WE JUST DON\'T HAVE', 'THE PERSONNEL"']} />
-        <Plate x={540} y={694} text="CHIEF RON DUPEE, VIA KUAC" size={16} fill="#A9BCCC" op={bury * 0.95} />
+        <g opacity={bury}>
+          <Plate x={540} y={512} size={24} lines={['"WE JUST DON\'T HAVE', 'THE PERSONNEL"']} />
+          <Plate x={540} y={596} text="CHIEF RON DUPEE, VIA KUAC" size={17} fill="#A9BCCC" />
+        </g>
         {/* the burial IS the frames, so the throughline never leaves the film */}
         <g opacity={bury}>
           {Array.from({length: 7}).map((_, i) => {
@@ -1302,7 +1325,9 @@ const S9: React.FC<SceneProps> = ({from}) => {
           </g>
         </g>
         <g opacity={slip}>
-          <Plate x={540} y={498} text={`"YOU'LL GET IT WHEN YOU GET IT"`} size={25} />
+          <Plate x={540} y={490} text={`"YOU'LL GET IT WHEN YOU GET IT"`} size={25} />
+          <Plate x={540} y={542} text="MIKE SANDERS, CHIEF OF STAFF, VIA KUAC" size={16}
+                 fill="#A9BCCC" />
         </g>
         {/* THE CONCESSION, ticked on a THING: the stack and the technician */}
         <g opacity={tick}>

@@ -67,6 +67,11 @@ MOVES = [
     ("bounce", 4, 2.80),      # S3  the plate-lock bracket hits the rule and visibly bounces off
     ("codeprobe", 5, 3.00),   # S3  the question sweeping the socket the code never filled
     ("promise", 6, 0.80),     # S4  the promise descending onto a seat it never reaches
+    # ANCHORAGE'S COUNTER-CASE WAS NEVER SAMPLED. c10, c9 and c11 hold from about 41.9s to
+    # 46.9s and the nearest strip sat at 47.2s, just after they clear, so a judge reported
+    # them as absent from every strip and every contact tile — a true statement about the
+    # evidence and a false one about the film. The fairness beat gets its own strip.
+    ("counter", 7, 1.20),     # S4  the three Anchorage concession cards, drawn and attributed
     ("carry", 8, 0.30),       # S4  the room smears and THE FRAME does not move one pixel
     ("boxes", 9, 0.40),       # S5  the two grey boxes land flat with NO overshoot
     ("stuck", 10, 0.50),      # S5  the sixth frame arrives, stops, and its rail crawls
