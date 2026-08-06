@@ -33,7 +33,7 @@ to change; only:
   2. Consumers route their reads through fresh(), which refuses (loudly, with
      both timestamps) anything older than the stamp:
          from run_guard import fresh
-         post = open(fresh("out/dispatch/caption.txt")).read()
+         post = open(fresh("out/dispatch/post.txt")).read()
 
 A missing stamp is also a hard failure: if the run was never stamped we cannot
 PROVE a file is fresh, so we refuse rather than guess. The escape hatch for
@@ -115,7 +115,7 @@ def check_path(path: str, root: str | None = None) -> tuple[bool, str]:
 
 def fresh(path: str, *, check: bool = True, root: str | None = None) -> str:
     """Assert `path` belongs to the current run and return it unchanged, so it
-    drops into existing code:  open(fresh("out/dispatch/caption.txt")).
+    drops into existing code:  open(fresh("out/dispatch/post.txt")).
     Set check=False to bypass (deliberate manual use only)."""
     if not check:
         return path

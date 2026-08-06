@@ -1422,15 +1422,43 @@ credit NEVER go in the post body (the 2026-07-21 owner catch: they were pasted i
 AND duplicated, and the music credit sat above the hashtags blocking the copy of the post).
 They are delivered SEPARATELY in the Gmail draft's copy-paste comment block (dispatch_email.py
 renders it) as plain "Title / URL" lines the owner drops into the LinkedIn FIRST COMMENT, not
-the post. So caption.txt ends at the hashtags: no "Sources:" list, no URLs, no "Music" line.
+the post. So post.txt ends at the hashtags, with no sources list, no URLs and no "Music" line.
 
 DATES TAKE THE ORDINAL ("August 10th", never "10 August") and COMMAS ARE CAPPED at 4.9 per
 100 words of body. Both are guardrail 5a and 5b, both are owner directives from 2026-08-05, and
 both are hard fails in the linter below. Write to them the first time rather than being sent back.
 
-GATE A: `python3 scripts/caption_check.py out/dispatch/caption.txt` exit 0 (it hard-fails a
-colon, any URL, or a sources/credit line in the body). GATE B: editor then scorer vs
+**THE CAPTION FILE AND THE EMAILED FILE ARE ONE FILE, AND IT IS `out/dispatch/post.txt`.**
+Write the caption there. Do not write `caption.txt` as well, do not keep a second copy
+anywhere, and if a `caption.txt` exists from an earlier phase of the run, DELETE it.
+
+That instruction is here because the alternative cost four owner catches in a single
+afternoon on 2026-08-06. The run wrote both files. Phase 6B gated `caption.txt`, which
+passed clean with all five hashtags (`caption_report.json` still says PASS). Phase 7
+emailed `post.txt`, which had zero hashtags, a colon, a semicolon and a sentence opening
+with "But". Every one of those was already a hard fail in the linter. The linter was not
+weak, it was pointed at the other file.
+
+The reason the two diverged is worth knowing, because it will happen again. The film's
+facts changed LATE: a thesis line was corrected after the panel, so the copy written that
+morning had become factually wrong. New copy was written to match the corrected film, and
+it was written into `post.txt`, which is downstream of the only gate. Late correctness
+work is exactly when fresh prose gets authored, and exactly when nobody re-runs a check
+that already went green hours earlier.
+
+ANY rewrite of the caption, at ANY point in the run, re-runs GATE A. A caption edited
+after the gate is an ungated caption.
+
+GATE A: `python3 scripts/caption_check.py out/dispatch/post.txt` exit 0. It hard-fails a
+colon, a semicolon, an em/en dash, a sentence starting with "But", a hashtag count outside
+3-5, commas over 4.9 per 100 words, "cannot", a non-ordinal date, any URL, and any
+sources/credit line in the body. GATE B: editor then scorer vs
 config/linkedin_caption_rubric.yaml (ship 8.5, zero hard_fails). Loop until both pass.
+
+You cannot forget GATE A any more: `dispatch_email.py` now lints the exact string it is
+about to embed and exits 2 rather than build a draft that breaks a house rule. There is no
+override flag. Running GATE A yourself is still how you find out early instead of at the
+delivery step.
 
 ## PHASE 7: DELIVER, FULLY DONE (no pending states)
 

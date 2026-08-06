@@ -10,9 +10,13 @@ Rules are grounded in 2026 LinkedIn data:
   - 1,300-1,900 chars is the engagement sweet spot; 3,000 is LinkedIn's hard cap
   - 3-5 hashtags, at the END (>5 = ~68% reach cut; hashtags in the middle read as spam)
   - clean whitespace + restraint; over-formatting (emoji/■ per line, Unicode-bold) reads as AI
-  - brand voice bans em/en dashes, semicolons, curly quotes; ranges written "X to Y"
+  - brand voice bans em/en dashes, COLONS, SEMICOLONS, curly quotes; ranges written "X to Y"
+  - no sentence may start with "But" (owner, 2026-08-06)
+  - this docstring is not the spec. BANNED_PUNCT and the lint() body are. It is listed here
+    because on 2026-08-06 four rules that WERE all implemented and all hard fails still
+    shipped, and the post-mortem turned on people reading a summary instead of the code.
 
-  python scripts/caption_check.py path/to/caption.txt      # or: cat caption.txt | python scripts/caption_check.py
+  python scripts/caption_check.py out/dispatch/post.txt    # the ONE copy file; also reads stdin
 Writes caption_report.json next to the input (or cwd). Exit 0 = PASS, 1 = FAIL.
 """
 import sys, os, re, json
@@ -74,6 +78,24 @@ EMOJI=re.compile("[\U0001F000-\U0001FAFF\U00002600-\U000027BF\U0001F1E6-\U0001F1
 UNICODE_BOLD=re.compile("[\U0001D400-\U0001D7FF]")     # math alphanumerics = fake bold/italic
 BULLETY=re.compile(r"^\s*([•▪✓✅➤→\-\*])\s")
 
+# SENTENCE-INITIAL "BUT" (owner rule 2026-08-06, on the shipped 08-06 caption: "the caption
+# started a sentence with the word 'But' which should be banned").
+#
+# It is a hard fail rather than a style note because of what it does to an argument. This
+# channel's whole job is to put two things next to each other and let the reader feel the
+# tension. "But" at the front of a sentence spends that tension for the reader: it announces
+# the turn before the turn arrives, so the sentence that follows can only confirm what the
+# conjunction already promised. The 08-06 caption did it on the load-bearing beat, right
+# where the reader should have hit the contradiction themselves.
+#
+# The fix is never to delete the word and leave the sentence. Either fuse the two sentences
+# so the contrast lands inside one thought, or state the second fact flat and let it collide
+# on its own. A flat statement after a flat statement IS the contrast.
+#
+# Only the sentence-initial position is banned; "but" mid-sentence is ordinary English and
+# the pattern deliberately does not touch it.
+SENTENCE_BUT = re.compile(r"(?:(?<=^)|(?<=[.!?]\s)|(?<=[.!?]\s\s)|(?<=\n))\s*But\b", re.M)
+
 def lint(text):
     fails=[]; warns=[]; m={}
     t=text.rstrip("\n"); lines=t.split("\n")
@@ -117,6 +139,17 @@ def lint(text):
     # brand voice: banned punctuation (colon included — rewrite the sentence, never a colon)
     hits={name for ch,name in BANNED_PUNCT.items() if ch in t}
     if hits: fails.append("PUNCT: brand voice bans "+", ".join(sorted(hits))+" (use periods, commas, parentheses, 'X to Y' ranges — a colon means rewrite the sentence)")
+    # SENTENCE-INITIAL "BUT" (owner rule 2026-08-06). Hard fail, and the message names the
+    # rewrite rather than the deletion, because dropping the word and keeping the sentence is
+    # the wrong fix: it leaves the same two thoughts with the seam still showing.
+    but_hits = [mm for mm in SENTENCE_BUT.finditer(t)]
+    m["sentence_initial_but"] = len(but_hits)
+    for mm in but_hits[:3]:
+        ctx = t[mm.start():mm.start() + 74].strip().replace("\n", " ")
+        fails.append(f"REGISTER: a sentence starts with \"But\" ({ctx!r}). Banned. It announces "
+                     f"the turn before the turn lands, so the reader is told about the "
+                     f"contradiction instead of hitting it. Fuse the two sentences, or state "
+                     f"the second fact flat and let it collide on its own.")
     # CONTRACTION LAW (owner directive 2026-07-30): "ban the word 'cannot', always use
     # 'can't' instead, especially in the captions". "cannot" is the formal register and it
     # reads as institutional writing, which is exactly the voice this brand is not. Enforced

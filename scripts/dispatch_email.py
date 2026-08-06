@@ -30,6 +30,51 @@ DRAFT_TO = "docket@alaskaaihq.com"
 # sibling scripts/ dir regardless of the caller's cwd.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from run_guard import fresh, StaleArtifactError  # noqa: E402
+from caption_check import lint as caption_lint  # noqa: E402
+
+
+def refuse_unless_copy_is_clean(post_text, source_path):
+    """Lint the EXACT string about to be embedded, and refuse the draft if it fails.
+
+    WHY THIS EXISTS (2026-08-06, and it is the root cause of four separate owner catches
+    in one afternoon: no hashtags, a colon, a semicolon, and a sentence starting "But").
+
+    Every one of those rules was ALREADY written and ALREADY a hard fail in
+    caption_check.py. The linter was not weak, it was not consulted. The run wrote two
+    files -- out/dispatch/caption.txt and out/dispatch/post.txt -- linted the first
+    (which had all five hashtags and passed clean, caption_report.json says PASS) and
+    emailed the second. Nothing in the pipeline knew those were supposed to be the same
+    copy, so a green report sat next to a draft that violated four house rules.
+
+    That is this repo's most expensive recurring shape: a gate that grades an artifact BY
+    PATH while a different artifact ships. It has now cost a stale filmstrip anchor set, a
+    stale deliverable at the ship gate, an evidence pack that photographed the wrong
+    seconds, and this.
+
+    The only fix that holds is to make the check inseparable from the delivery, so the
+    linted bytes and the emailed bytes are the same bytes by construction. This function
+    takes the string, not a path, precisely so no caller can point it somewhere else.
+
+    THERE IS DELIBERATELY NO OVERRIDE FLAG. A --no-copy-check would be used at 3am by the
+    same reasoning that produced the defect, and the whole value here is that the rule is
+    not negotiable at delivery time. If a rule is wrong, change the rule in
+    caption_check.py where the reasoning is written down and reviewable.
+    """
+    report = caption_lint(post_text)
+    fails = report[0] if isinstance(report, tuple) else report.get("fails", [])
+    if not fails:
+        return
+    print(f"REFUSING TO BUILD DRAFT: the post copy in {source_path} breaks "
+          f"{len(fails)} house rule(s).", file=sys.stderr)
+    for f in fails:
+        print(f"  x {f}", file=sys.stderr)
+    print("", file=sys.stderr)
+    print("These are the SAME rules scripts/caption_check.py has always enforced. If a "
+          "green caption_report.json is sitting next to this, it graded a different file "
+          "than the one being emailed, which is the exact defect this guard exists to "
+          "stop. Fix the copy and re-run. There is no override flag on purpose.",
+          file=sys.stderr)
+    sys.exit(2)
 
 CSS = """
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:#13202b;background:#eef1f3;margin:0;padding:24px;}
@@ -207,6 +252,9 @@ def main():
         post = Path(fresh(a.post, check=chk)).read_text().strip()
     except StaleArtifactError as e:
         sys.exit(f"REFUSING TO BUILD DRAFT: --post is not from this run.\n  {e}")
+    # Lint the string, not a path. See refuse_unless_copy_is_clean for why that distinction
+    # is the whole point: on 2026-08-06 the run linted caption.txt and emailed post.txt.
+    refuse_unless_copy_is_clean(post, a.post)
     if a.poster_url:
         poster_html = f'<div class="poster"><img src="{a.poster_url}" alt="poster"/></div>'
     elif a.poster and Path(a.poster).exists():
