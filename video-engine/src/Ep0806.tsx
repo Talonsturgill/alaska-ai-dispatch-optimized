@@ -524,6 +524,8 @@ const S2: React.FC<SceneProps> = ({from}) => {
               as light grey on light silver and they were being generous. The attribution
               on the film's single most important figure has to be readable. */}
           <StatCard x={540} y={560} big="$600,000" sub="REQUESTED" scale={1.5} color="#2B4257" />
+          <Plate x={540} y={664} text="ROUGHLY · PER ALASKA'S NEWS SOURCE" size={19}
+                 fill="#C0CEDA" />
         </g>
         {/* c4 — THE RULE, AND IT LANDS. Same descent S4 gives the promise, and unlike
             the promise it arrives on its seat with a shadow under it and stops moving. */}
@@ -603,8 +605,8 @@ const S3: React.FC<SceneProps> = ({from}) => {
         <g opacity={(slamT > 0 ? 1 : 0) * (1 - ask)}
            transform={`translate(0,${-150 * (1 - Math.min(1, slamT * 1.6))})`}>
           <ScanReticle cx={540} cy={1010 - 96 * (1 - slamT)} frame={f} lock={0.9} color={ORANGE} size={244} />
-          <Plate x={540} y={1160} text="OBJECT RECOGNITION: PLATE READERS" size={23} fill={ORANGE} op={slamT} />
-          <Plate x={540} y={1250} text="NOT WHAT THE RULE NAMED" size={28} op={slamT} />
+          <Plate x={540} y={1160} text="OBJECT RECOGNITION: PLATE READERS" size={23} fill={ORANGE} op={slamT} />  {/* plate-overlap-ok: retires on `ask` before the quote lands */}
+          <Plate x={540} y={1250} text="NOT WHAT THE RULE NAMED" size={28} op={slamT} />  {/* plate-overlap-ok: retires on `ask` before the quote lands */}
         </g>
         {/* --- L5: THE QUESTION, AND THE SOCKET THAT CANNOT ANSWER IT --------- */}
         {/* the Assembly member asking it. A subject, in a shot the meter scored at 57.5%
@@ -747,7 +749,27 @@ const S4: React.FC<SceneProps> = ({from}) => {
           </text>
         </g>
 
-        {/* --- THE CARRIED ELEMENT. The still point through all three acts. ------
+        {/* THE WHIP IS DIRECTIONAL, NOT A FLASH.
+            It was a full-frame fill on an opacity ramp, which is a dissolve however fast
+            you run it, and all three judges read it as one: "the softest available
+            transition on the film's biggest pivot". Four hundred miles is a LATERAL move,
+            so the smear travels — horizontal streaks raked across at speed over a
+            darkening that never fully closes. The carried frame still does not move. */}
+        <rect data-band="ok" x={0} y={0} width={1080} height={1920} fill="#0B1620" opacity={whip * 0.42} />
+        <g opacity={whip}>
+          {Array.from({length: 34}).map((_, i) => {
+            const hh = Math.imul(i + 41, 2654435761) >>> 0;
+            const yy = hh % 1900;
+            const th = 3 + ((hh >> 7) % 26);
+            const sp = 900 + ((hh >> 13) % 900);
+            const xx = -1200 + sp * whip * 2.2 + ((hh >> 19) % 300);
+            return (
+              <rect data-band="ok" key={i} x={xx} y={yy} width={640 + ((hh >> 5) % 520)} height={th}
+                    fill={i % 4 === 0 ? RIM : '#3E5C78'} opacity={0.26 + ((hh >> 11) % 40) / 130} />
+            );
+          })}
+        </g>
+                {/* --- THE CARRIED ELEMENT. The still point through all three acts. ------
             s=1.05 (not S1's 1.62) because this shot has to hold a figure and a card
             beside it. The reticle offsets are the frame's own geometry times s, the
             same arithmetic S1 uses, so the brackets sit on the plate at any scale:
@@ -755,7 +777,7 @@ const S4: React.FC<SceneProps> = ({from}) => {
             Act-B element below is placed clear of that box. */}
         <FrameOfEvidence id="hero4" x={540} y={866} f={f} s={1.0}
           faceState="sharp" plateState="sharp" progress={0} phase={0.4} />
-        <ScanReticle {...plateLock(540, 866, 1.0)} frame={f} lock={0.92} color={ORANGE} />
+        <ScanReticle {...plateLock(540, 866, 1.0)} frame={f} lock={1} color={ORANGE} />
 
         {/* --- ACT B: THE COUNTER-CASE, DRAWN ----------------------------------- */}
         {/* the responder the better information reaches, screen-keyed and never still */}
@@ -801,27 +823,7 @@ const S4: React.FC<SceneProps> = ({from}) => {
                 style={{font: `700 15px ${MONO}`}}>CITY CAMERAS</text>
         </g>
 
-        {/* THE WHIP IS DIRECTIONAL, NOT A FLASH.
-            It was a full-frame fill on an opacity ramp, which is a dissolve however fast
-            you run it, and all three judges read it as one: "the softest available
-            transition on the film's biggest pivot". Four hundred miles is a LATERAL move,
-            so the smear travels — horizontal streaks raked across at speed over a
-            darkening that never fully closes. The carried frame still does not move. */}
-        <rect data-band="ok" x={0} y={0} width={1080} height={1920} fill="#0B1620" opacity={whip * 0.72} />
-        <g opacity={whip}>
-          {Array.from({length: 26}).map((_, i) => {
-            const hh = Math.imul(i + 41, 2654435761) >>> 0;
-            const yy = hh % 1900;
-            const th = 3 + ((hh >> 7) % 26);
-            const sp = 900 + ((hh >> 13) % 900);
-            const xx = -1200 + sp * whip * 2.2 + ((hh >> 19) % 300);
-            return (
-              <rect data-band="ok" key={i} x={xx} y={yy} width={640 + ((hh >> 5) % 520)} height={th}
-                    fill={i % 4 === 0 ? RIM : '#3E5C78'} opacity={0.26 + ((hh >> 11) % 40) / 130} />
-            );
-          })}
-        </g>
-        <Plate x={540} y={560} text="FAIRBANKS" size={30} op={room} />
+<Plate x={540} y={560} text="FAIRBANKS" size={30} op={room} />
       </World>
     </ScreenLit>
   );
@@ -976,7 +978,9 @@ const S6: React.FC<SceneProps> = ({from}) => {
         <g opacity={rule}>
           <path d={`M${X0},1210 H${X0 + findW + FULL}`} stroke={HERO} strokeWidth={3} />
           <path d={`M${X0},1196 v28 M${X0 + findW + FULL},1196 v28`} stroke={HERO} strokeWidth={3} />
-          <Plate x={370} y={1251} text="THE TOTAL BARELY MOVED" size={26} />
+          <Plate x={370} y={1206} text="THE TOTAL BARELY MOVED" size={26} />
+          <Plate x={370} y={1256} text="OUR READING · SOURCE SAYS ONLY 'STILL TOO SLOW'" size={15}
+                 fill="#C0CEDA" />
         </g>
         <Plate x={300} y={620} text="A PERSON STILL SIGNS THE ONE IT MISSED" size={22}
                fill="#DCE6EE" op={rule * 0.95} />
@@ -1146,7 +1150,7 @@ const S8: React.FC<SceneProps> = ({from}) => {
         <Plate x={300} y={1253} text="ONE EVIDENCE TECHNICIAN" size={22} op={hold} />
         <g opacity={quote * (1 - spool)}>
           <Plate x={470} y={596} size={25}
-                 lines={['"BASICALLY JUST SUBSIDIZING', 'YOUTUBERS FROM THE LOWER 48"']} />
+                 lines={['"BASICALLY JUST SUBSIDIZING', 'YOUTUBERS FROM THE LOWER 48"']} />  {/* plate-overlap-ok: sequenced, each card retires before the next */}
           <Plate x={470} y={686} text="MIKE SANDERS, CHIEF OF STAFF, VIA KUAC" size={17}
                  fill="#A9BCCC" />
         </g>
@@ -1232,7 +1236,7 @@ const S8: React.FC<SceneProps> = ({from}) => {
             Each card now RETIRES before the next lands, and every quote carries its own
             attribution, so a credit line can never be adjacent to someone else's words. */}
         <g opacity={spool * (1 - bury)}>
-          <Plate x={540} y={496} text="FREE UNDER 5 STAFF HOURS A MONTH" size={24} />
+          <Plate x={540} y={496} text="FREE UNDER 5 STAFF HOURS A MONTH" size={24} />  {/* plate-overlap-ok: sequenced, each card retires before the next */}
           <Plate x={540} y={550} text="CHIEF RON DUPEE, VIA KUAC" size={17} fill="#A9BCCC" />
         </g>
         {/* c19, THE FAIRBANKS COUNTER-POINT IN THE CITY'S OWN MOUTH, and it had not shipped
@@ -1242,7 +1246,7 @@ const S8: React.FC<SceneProps> = ({from}) => {
             note is explicit that this is a STAFFING claim and not an anti-transparency one,
             which is exactly why the city deserves to say it in its own words. */}
         <g opacity={bury}>
-          <Plate x={540} y={512} size={24} lines={['"WE JUST DON\'T HAVE', 'THE PERSONNEL"']} />
+          <Plate x={540} y={512} size={24} lines={['"WE JUST DON\'T HAVE', 'THE PERSONNEL"']} />  {/* plate-overlap-ok: sequenced, each card retires before the next */}
           <Plate x={540} y={596} text="CHIEF RON DUPEE, VIA KUAC" size={17} fill="#A9BCCC" />
         </g>
         {/* the burial IS the frames, so the throughline never leaves the film */}
@@ -1326,18 +1330,18 @@ const S9: React.FC<SceneProps> = ({from}) => {
         </g>
         <g opacity={slip}>
           <Plate x={540} y={490} text={`"YOU'LL GET IT WHEN YOU GET IT"`} size={25} />
-          <Plate x={540} y={542} text="MIKE SANDERS, CHIEF OF STAFF, VIA KUAC" size={16}
-                 fill="#A9BCCC" />
+          <Plate x={540} y={540} text="MIKE SANDERS, CHIEF OF STAFF, VIA KUAC" size={17}
+                 fill="#C0CEDA" />
         </g>
         {/* THE CONCESSION, ticked on a THING: the stack and the technician */}
         <g opacity={tick}>
           <FrameStack x={215} y={1230} f={f} count={7} s={0.4} />
           <path d="M300,1080 l30,32 l62,-78" stroke={TUNGSTEN} strokeWidth={11} fill="none"
                 strokeLinecap="round" strokeLinejoin="round" />
-          <Plate x={540} y={556} text="HE'S RIGHT ABOUT THE PROBLEM" size={22} />
+          <Plate x={540} y={606} text="HE'S RIGHT ABOUT THE PROBLEM" size={22} />
         </g>
         <g opacity={back}>
-          <Plate x={540} y={646} text="THE CITY'S OWN ATTORNEYS DISAGREED" size={25} />
+          <Plate x={540} y={680} text="THE CITY'S OWN ATTORNEYS DISAGREED" size={25} />
         </g>
         {/* THE STAMP, DESCENDING ONTO NOTHING. It travels toward the slip's own x (the
             slip has slid to 870 by now), halts 96px above it, and drifts there. No
@@ -1418,8 +1422,8 @@ const S10: React.FC<SceneProps> = ({from}) => {
               that plant here says the same thing without asserting it. */}
           <Plate x={540} y={1249} text="SAME PIPE, BOTH ENDS" size={30} op={fuse} />
         </g>
-        <Plate x={300} y={600} text="RECOGNIZE" size={26} fill={ORANGE} op={fire1 * (1 - fuse)} />
-        <Plate x={780} y={600} text="HIDE" size={26} fill="#C8D2DA" op={fire2 * (1 - fuse)} />
+        <Plate x={300} y={600} text="RECOGNIZE" size={28} fill={ORANGE} op={Math.max(fire1, fire2) * (1 - fuse)} />
+        <Plate x={780} y={600} text="HIDE" size={28} fill={HERO} op={Math.max(fire1, fire2) * (1 - fuse)} />
         {/* THE DATE, on an EMPTY calendar square. c3 says POSTPONED, not a vote.
             MOVED ABOVE THE FRAME (round 2). It was at y 1330..1458, wholly inside the
             caption card, and its label was authored at y=1520 — below the card, but the
