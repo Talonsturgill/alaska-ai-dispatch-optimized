@@ -1,0 +1,1389 @@
+{
+ "date": "2026-08-07",
+ "title": "The Boat, Not The Brain",
+ "engine": "infographic-2.5d",
+ "derived_from": "scratch",
+ "total_seconds": 135.54,
+ "concept": "A robot that finds the brain of each individual salmon is real and independently reported. Its arrival in Alaska is one trade write-up. The film separates the two on screen.",
+ "angle": {
+  "thesis": "The hard part of putting a robot on a fishing boat is already solved, and it is not the part anyone expects. The unsolved part is the boat.",
+  "long_form": "A machine learning model finds the brain of each individual salmon, because the brain sits in a different place in every fish, which is why a jig cannot do this and a model must. That is real and was independently reported twice. What is not established is that any of it has reached Alaska. One trade write-up carries the entire Cook Inlet story, against more than thirteen hundred permits in that inlet alone.",
+  "valence": "curious",
+  "valence_defense": "Celebratory would overclaim an Alaska deployment nobody has confirmed. Cautionary would undersell engineering that two independent outlets verified two years apart. Curiosity is the only register that can hold a solved mechanism and an unconfirmed rollout at the same time, and it rotates off a wry run and a mixed one.",
+  "supporting_facts": [
+   "c9 + c18: computer vision and machine learning locate the brain of each individual fish. Khawaja, verbatim: the brain can be in a different location. That sentence is the whole reason a model is needed.",
+   "c15 + c14: the company's own 2024 goal was ten machines in use company-wide, across all fisheries. Upper Cook Inlet alone holds more than 1,300 permits, about a tenth of every salmon permit in Alaska.",
+   "c19: exactly one trade write-up carries the Alaska story. No Alaska outlet and no fisheries trade outlet has covered it."
+  ],
+  "fair_counterpoint_that_gets_a_scene": "This is exactly what a real pilot looks like on day one. One boat, one write-up, proof before scale. Demanding fleet-wide numbers from a seed-stage company's first Alaska mention is an unfair bar, and every genuine rollout in this fishery's history started smaller than its press release.",
+  "how_it_narrows_honestly": "The film does not call the Alaska claim false. It says the record is one write-up, names what would settle it, and leaves the question open on screen.",
+  "the_lazy_angle_we_refuse": "Robot comes for Alaska's fishermen. It is wrong on the facts: ike jime needs a trained hand and most small boats do not do it at all, so no job is being displaced. A skill that mostly was not there is being made reachable.",
+  "who_it_serves": "A Cook Inlet permit holder who heard this secondhand now knows which half is engineering and which half is a press release, and what question to ask before believing it applies to their boat.",
+  "runners_up": [
+   "SKEPTIC lens, pure sourcing story: rejected as the spine because a film whose subject is the thinness of a press release has no second movement and no mechanism to draw.",
+   "ENTHUSIAST lens, quality-at-capture as a small-boat lever: kept and grafted into Act 2, because it is the honest reason an Alaskan should care at all.",
+   "MECHANISM lens, automating access to a scarce hand skill: kept and grafted, and it supplies the refusal of the job-loss frame."
+  ],
+  "throughline_object": "THE TARGET DOT, the point the machine picks behind a salmon's eye"
+ },
+ "treatment": {
+  "winner": "THE ENTHUSIAST, 'The Boat, Not the Brain'",
+  "judge_reasoning": "It had the only cold open that is a held breath rather than an explainer, the strongest turn (the reticle pulls back to a dozen visibly different hulls and fits none of them, which is the thesis as a picture), and a throughline that starts as a human grease-pencil X and ends as a machine mark, so the object carries the argument instead of decorating it. Its button returns to the exact opening frame with the spike now carrying the mark, which is a real bookend and not a restatement.",
+  "grafts": [
+   "From THE EXPLAINER: the JIG versus MODEL cutaway, with a fixed guide coming down dead straight and landing beside the mark. It is the single best explanatory beat the room produced and it earns the machine-learning claim visually instead of asserting it.",
+   "From THE EXPLAINER: the blank price tag for 'no dollar figure exists anywhere', which turns a sourcing limit into a picture.",
+   "From THE DRAMATIST: holding the 'one trade write-up, no Alaska outlet' beat long enough to read twice, rather than passing over it.",
+   "From THE DRAMATIST: the empty-masthead rack as the visual form of that absence."
+  ],
+  "lenses_run": "Dramatist, Explainer, Enthusiast. The Comedian lens was deliberately not convened: the subject is the killing of animals for food quality, and a lens briefed to pitch for laughs would have produced material this film could not use without being disrespectful of both the fish and the fishermen. Logged for Phase 8.",
+  "retention_plan": {
+   "the_test": "Act 3, 68.4 to 96.8s. The fair case for patience gets the widest, warmest, emptiest shot in the film (S9), a single boat at a single dock in a big dawn inlet, and the CTO's verbatim line is allowed to sit with the bed dipped and nothing competing. It is staged as the film's most beautiful shot on purpose, because a counter-argument that is staged uglier than the thesis is a strawman.",
+   "throughline_object": "THE MARK. A human grease-pencil X, then a machine reticle, then ten lit marks, then a dotted mark that has not landed, then a mark that fits none of a dozen hulls, then finally settling on the spike from the opening frame.",
+   "the_two_loops": "Primary: the spike hovers over the X at 7.6s and never descends, and the film does not resolve what lands on the fish until the mark settles onto the spike itself at 116.8s. Secondary: the dotted unlit machine outline settles on Cook Inlet at 56.4s and stays dotted until the NO BOAT COUNT stamp at 93.2s.",
+   "padding_test": "Every Act 3 beat was tested against a 90-second cut. The wide inlet establish earns its seconds because without a scale to land against, the ten-machines figure reads as a gotcha rather than an honest limit. The held CTO quote earns its seconds because cutting it short turns the fairest line in the fact set into a throwaway and makes the act a strawman. The empty masthead rack earns its seconds because 'no Alaska outlet has covered this' is the film's most important epistemic claim and a viewer who races past it remembers only the robot. The tipped FLEET NUMBERS bar earns its seconds because it is the film conceding a point, and a concession delivered in a clause is not a concession. Nothing in Act 3 restates Act 2."
+  }
+ },
+ "fingerprint": {
+  "pov": "macro-closeup",
+  "layout": "single-object-void",
+  "motion_vector": "horizontal-traverse",
+  "hero_treatment": "multiplicity-swarm",
+  "register": "instrument-readout",
+  "camera_strategy": "rise-reveal",
+  "light_story": "dawn-backlight",
+  "palette": "dawn Cook Inlet jade water, low gold sun, wet aluminium, sockeye chrome with one carmine flank, single cyan reticle",
+  "metaphor": "a mark that finds its target perfectly and then finds no boat to sit on"
+ },
+ "palette": "dawn Cook Inlet jade water, low gold sun, wet aluminium, sockeye chrome with one carmine flank, single cyan reticle",
+ "light": {
+  "sun": "low dawn sun about fifteen degrees above a flat sea horizon, shot into from frame right",
+  "mood": "cold working water under warm early light, so the one cyan mark is the only thing in frame that emits instead of reflecting"
+ },
+ "divergence_note": "This board is authored from scratch for this story and diverges hard from the last two dispatches, both of which were interiors lit by practical sources. 2026-08-05 was an eye-level naturalistic scene in a specimen room on a grid-modular layout with vertical descent, a single organic hero and a rise-reveal camera under overcast diffuse light, in cabinet green and bone with one teal. 2026-08-06 was an instrument-screen data-brutalist HUD frame with radial emanation, an instrument hero and a locked-drift camera under night practicals, in municipal slate-blue with signal orange. This film is an EXTERIOR at dawn on open water. Its point of view is macro-closeup on organic form rather than a screen or a room, its layout is a single object in deep negative space rather than a grid or a bezel, its motion is horizontal traverse across water rather than descent or emanation, its hero treatment is a multiplicity, a fleet and a permit field rather than one creature or one device, and its register is instrument-readout, a perception overlay laid over a real lit world, which is neither of the previous two. The palette shares no token with either. The spatial signature, macro-closeup on a single-object void moving horizontally, has not been used in the ledger window. The one axis it shares with 2026-08-05 is the rise-reveal camera, and it is earned here by a genuinely different move: that film rose from a specimen to a room, this one rises from one deck to a fleet of visibly mismatched hulls, which is the film's entire argument rather than a context shot.",
+ "hook": {
+  "pattern": "anomaly-question",
+  "frame1": "A chrome sockeye on a wet board at dawn, gold rim light on every scale, and a worn wooden spike held an inch above the spot behind its eye. Nothing has happened to the fish yet. It is the most finished thing this film will draw.",
+  "headline": "WHERE DOES A FISH KEEP ITS BRAIN",
+  "motion_by_s": 0.5,
+  "loopback": "The final beat returns to this exact frame, the same spike on the same board, with the small gold mark now resting on the spike's tip instead of the machine's screen."
+ },
+ "throughline": {
+  "object": "THE MARK, the point chosen behind a salmon's eye",
+  "lands_in_button": true,
+  "states": [
+   {
+    "at_s": 2.22,
+    "state": "HUMAN. A wobbly grease-pencil X drawn by a gloved hand, irregular and made by eye."
+   },
+   {
+    "at_s": 33.23,
+    "state": "MACHINE. A perfect cyan reticle inside the machine's view, snapping to a different true point on each of three fish."
+   },
+   {
+    "at_s": 62.48,
+    "state": "DOTTED. An unlit outline settled over Cook Inlet that never fills in, because nothing has been confirmed."
+   },
+   {
+    "at_s": 84.4,
+    "state": "WAITING. Through the whole fair-case act the mark is nowhere on screen, because the crate on the dock is still shut. Its absence is the state."
+   },
+   {
+    "at_s": 106.57,
+    "state": "COUNTED. Ten small lit marks in a row, the company's own stated ambition, made countable."
+   },
+   {
+    "at_s": 121.64,
+    "state": "HOMELESS. One lit mark hovering over a dozen visibly different hulls, fitting none of them."
+   },
+   {
+    "at_s": 129.39,
+    "state": "RESTING. The mark settles onto the tip of the wooden spike from the opening frame, back where a human put it."
+   }
+  ]
+ },
+ "open_loop": {
+  "plant_t": 8.42,
+  "pay_t": 129.39,
+  "what": "The spike hovers an inch above the drawn X and does not descend. The film never shows a strike land on a fish. What finally lands, at the button, is the mark itself, settling onto the spike's tip."
+ },
+ "open_loop_2": {
+  "plant_t": 59.6,
+  "pay_t": 106.6,
+  "what": "The announcement lands on Cook Inlet and the mark that arrives with it is DOTTED and unlit, a promise the film refuses to fill in. It is still dotted when the NO BOAT COUNT stamp lands at 106.6s, which is the answer to what it was waiting for."
+ },
+ "reveals": [
+  {
+   "t": 33.23,
+   "type": "build-on",
+   "what": "three sockeye from directly above, the true point lighting in a visibly different place on each, with the wrong guesses ghosting out around them",
+   "hold_s": 0.7
+  },
+  {
+   "t": 55.61,
+   "type": "morph-to-chart",
+   "what": "the machine's view resolves as the four corner ticks converge onto the true point and the confidence bloom pulses once",
+   "hold_s": 0.5
+  },
+  {
+   "t": 109.68,
+   "type": "build-on",
+   "what": "a field of more than thirteen hundred permit tiles builds outward around the ten lit marks until the ten are a speck",
+   "hold_s": 0.6
+  },
+  {
+   "t": 121.64,
+   "type": "scale-pullback",
+   "what": "THE SIGNATURE SHOT. The camera rises off one deck and keeps rising until a dozen visibly different hulls sit around it, and the mark fits none of them",
+   "hold_s": 0.8
+  }
+ ],
+ "audio_arc": {
+  "build_steps": [
+   29.69,
+   58.94,
+   75.78,
+   107.24
+  ],
+  "dip_at": 84.42,
+  "riser_at": 115.21,
+  "silence_at": 124.96,
+  "payoff_at": 121.64,
+  "button_pattern": "callback",
+  "note": "The 76.2 dip is the film's held breath under the CTO quote, where the bed drops more than six dB and the water is the only thing left moving. The riser at 104 carries the permit field building. The real pre-button silence sits at 112.8 as the camera finishes its rise."
+ },
+ "shots": [
+  {
+   "id": "S1",
+   "t": "0.0-11.52",
+   "framing": "macro-closeup",
+   "scale": "insert",
+   "height": "eye",
+   "pov": "macro-closeup",
+   "layout": "single-object-void",
+   "motion_vector": "push-in-only",
+   "hero_treatment": "single-organic-hero",
+   "transition_in": null,
+   "thread": null,
+   "camera": "static:the hook is a held breath and any camera move would release the tension it is built on",
+   "stage3d": "planes",
+   "centered": "the salmon's eye, and a worn wooden spike held an inch above the spot behind it",
+   "means": "opens on the exact spot the entire film is about, before naming it",
+   "hero": {
+    "name": "the sockeye and the spike",
+    "parts": 4,
+    "zones": 2,
+    "part_list": [
+     "chrome flank with shingle scales",
+     "the black eye with a gold rim light",
+     "the worn wooden ike jime spike",
+     "the gloved hand"
+    ],
+    "zone_list": [
+     "the wet cutting board in full key",
+     "the near gunwale falling into shadow"
+    ],
+    "detail_note": "The fish is the best-finished object in the frame and must stay so: shingle scale rows, a wet spec band, a gold rim on every edge, and a hand-worn spike whose grain and dents read at insert scale."
+   }
+  },
+  {
+   "id": "S2",
+   "t": "11.52-24.82",
+   "framing": "data-panel",
+   "scale": "medium",
+   "height": "high",
+   "pov": "exploded-diagram",
+   "layout": "stacked-layers",
+   "motion_vector": "assemble-build",
+   "hero_treatment": "data-as-subject",
+   "transition_in": "assemble",
+   "thread": "build",
+   "camera": "cranedown",
+   "stage3d": "planes",
+   "centered": "a three-step cutaway of ike jime assembling itself, spike then bleed then spinal cord",
+   "means": "carries the mark from the hand into a diagram, so the technique is understood before the machine appears",
+   "hero": {
+    "name": "the ike jime cutaway",
+    "parts": 4,
+    "zones": 2,
+    "part_list": [
+     "the labeled spike step",
+     "the bleed step with a draining channel",
+     "the spinal cord step",
+     "a hand-lettered TRAINED HAND, YEARS card"
+    ],
+    "zone_list": [
+     "the diagram band in clean light",
+     "the dark water plane behind it"
+    ],
+    "detail_note": "Every diagram element is inked and form-shaded rather than flat, with the hand-lettered card carrying real paper fibre and a crooked drop shadow so it reads as an object on the plane and not a caption."
+   }
+  },
+  {
+   "id": "S3",
+   "t": "24.82-33.68",
+   "framing": "subject-portrait",
+   "scale": "wide",
+   "height": "low",
+   "pov": "eye-level-immersive",
+   "layout": "centered-hero-lowerthird",
+   "motion_vector": "vertical-descent",
+   "hero_treatment": "instrument-as-subject",
+   "transition_in": "whip-pan",
+   "thread": "match",
+   "camera": "cranedown+dollythrough",
+   "stage3d": "planes",
+   "centered": "the ReticleArm lowering onto the working surface for the first time, lens head first",
+   "means": "the machine arrives, and the line that lands under it is the one that says the spot moves",
+   "hero": {
+    "name": "ReticleArm",
+    "parts": 4,
+    "zones": 2,
+    "part_list": [
+     "the rectilinear gantry rail",
+     "the lens head with one glass eye",
+     "the spike carriage",
+     "the cable loom with secondary sway"
+    ],
+    "zone_list": [
+     "the lit machine body",
+     "the shadowed deck it stands on"
+    ],
+    "detail_note": "The machine is precise and unlovable on purpose: milled rail edges, visible fasteners, one glass lens with a real specular, and a cable loom that swings after the arm rather than with it."
+   }
+  },
+  {
+   "id": "S4",
+   "t": "33.68-43.87",
+   "framing": "two-up",
+   "scale": "medium",
+   "height": "overhead",
+   "pov": "top-down-map",
+   "layout": "grid-modular",
+   "motion_vector": "horizontal-traverse",
+   "hero_treatment": "multiplicity-swarm",
+   "transition_in": "graphic-match",
+   "thread": "match",
+   "camera": "truckacross",
+   "stage3d": "planes",
+   "centered": "three sockeye laid side by side from directly above, the true point landing in a visibly different place on each",
+   "means": "draws the founder's sentence instead of merely quoting it",
+   "hero": {
+    "name": "the candidate field",
+    "parts": 4,
+    "zones": 2,
+    "part_list": [
+     "three full sockeye bodies",
+     "three true points at different offsets",
+     "the ghosted rejected candidates",
+     "the measuring rule that fails to predict any of them"
+    ],
+    "zone_list": [
+     "the lit board surface",
+     "the cool shadow gutter between fish"
+    ],
+    "detail_note": "Three distinct fish, not one asset repeated: different lengths, different kype, different flank mottle, so a viewer believes the true points genuinely differ rather than seeing one sprite moved."
+   }
+  },
+  {
+   "id": "S5",
+   "t": "43.87-50.52",
+   "framing": "push-detail",
+   "scale": "close",
+   "height": "eye",
+   "pov": "cross-section-cutaway",
+   "layout": "fullbleed-split",
+   "motion_vector": "vertical-descent",
+   "hero_treatment": "structure-as-subject",
+   "transition_in": "mask-wipe",
+   "thread": "build",
+   "camera": "dollythrough",
+   "stage3d": "planes",
+   "centered": "a fixed steel jig coming down its rails, perfectly straight, landing beside the mark",
+   "means": "the counterexample that earns the machine learning claim, drawn as a failure you can see",
+   "hero": {
+    "name": "the jig",
+    "parts": 4,
+    "zones": 2,
+    "part_list": [
+     "the rigid guide plate",
+     "the two parallel rails",
+     "the fixed stop collar",
+     "the miss, drawn as a clean strike into board and not fish"
+    ],
+    "zone_list": [
+     "the jig in hard key",
+     "the fish in cool fill below it"
+    ],
+    "detail_note": "The jig is heavier and cruder than the arm, with chamfered plate edges and rail wear, and its strike leaves a real dent and splinter in the board so the miss is physical and not a graphic."
+   }
+  },
+  {
+   "id": "S6",
+   "t": "50.52-58.94",
+   "framing": "alt-vantage",
+   "scale": "close",
+   "height": "low",
+   "pov": "instrument-screen",
+   "layout": "hud-instrument-frame",
+   "motion_vector": "radial-emanate",
+   "hero_treatment": "instrument-as-subject",
+   "transition_in": "fui-boot",
+   "thread": "build",
+   "camera": "orbitreveal",
+   "stage3d": "planes",
+   "centered": "the machine's own view, the reticle sampling candidate points and then locking with four converging ticks",
+   "means": "the film's central claim, that the achievement is the looking and not the spike",
+   "hero": {
+    "name": "the vision overlay",
+    "parts": 4,
+    "zones": 2,
+    "part_list": [
+     "the searching reticle with micro-jitter",
+     "the ghosted candidate points",
+     "the four converging lock ticks",
+     "the confidence bloom"
+    ],
+    "zone_list": [
+     "the bright perception layer",
+     "the darkened fish beneath it"
+    ],
+    "detail_note": "The overlay is the only emissive layer in the film: hairline strokes, a bloom that does not wash the fish, ghosted rejects at low alpha, and lock ticks with hard corners."
+   }
+  },
+  {
+   "id": "S7",
+   "t": "58.94-68.69",
+   "framing": "map-territory",
+   "scale": "wide",
+   "height": "overhead",
+   "pov": "top-down-map",
+   "layout": "map-territory",
+   "motion_vector": "assemble-build",
+   "hero_treatment": "structure-as-subject",
+   "transition_in": "map-travel",
+   "thread": "travel",
+   "camera": "risewith",
+   "stage3d": "planes",
+   "centered": "Cook Inlet drawn true, with a dotted unlit machine outline settling onto it and a dated stamp landing beside it",
+   "means": "the announcement lands on a real place, and it lands DOTTED because nothing has been confirmed",
+   "hero": {
+    "name": "the inlet and the dotted machine",
+    "parts": 4,
+    "zones": 2,
+    "part_list": [
+     "the true-geometry Cook Inlet coastline",
+     "the dotted unlit machine outline",
+     "the JULY 30TH date stamp",
+     "the COMPANY SAYS band"
+    ],
+    "zone_list": [
+     "the lit water body",
+     "the darker land mass framing it"
+    ],
+    "detail_note": "Cook Inlet is drawn from the committed true lon-lat geodata rather than sketched, and the dotted outline uses a real dash cadence that never resolves."
+   }
+  },
+  {
+   "id": "S8",
+   "t": "68.69-75.78",
+   "framing": "data-panel",
+   "scale": "medium",
+   "height": "eye",
+   "pov": "exploded-diagram",
+   "layout": "grid-modular",
+   "motion_vector": "scroll-data",
+   "hero_treatment": "data-as-subject",
+   "transition_in": "hard-cut",
+   "thread": "carry",
+   "camera": "truckacross",
+   "stage3d": "flat:this beat is a claim ledger and depth would only decorate a document the viewer is meant to READ",
+   "centered": "the claim ledger typing on, every line stamped COMPANY SAYS, and a price tag whose number never prints",
+   "means": "the film shows its own sourcing discipline instead of asserting it",
+   "hero": {
+    "name": "the claim ledger",
+    "parts": 4,
+    "zones": 2,
+    "part_list": [
+     "the NEARLY 60% SMALLER row",
+     "the ROBOT FREE row",
+     "the BOUGHT AT A PREMIUM row",
+     "the blank price tag swinging on its string"
+    ],
+    "zone_list": [
+     "the ledger card in key light",
+     "the blank tag hanging into shadow"
+    ],
+    "detail_note": "The ledger is a physical card with fibre, a lifted edge and a cast shadow, and the blank tag has a printed rule where the number should sit so the emptiness is legible as an absence."
+   }
+  },
+  {
+   "id": "S9",
+   "t": "75.78-91.29",
+   "framing": "wide-establish",
+   "scale": "extreme-wide",
+   "height": "ground",
+   "pov": "eye-level-immersive",
+   "layout": "single-object-void",
+   "motion_vector": "push-in-only",
+   "hero_treatment": "landscape-as-subject",
+   "transition_in": "crossfade",
+   "thread": "match",
+   "camera": "dollythrough",
+   "stage3d": "planes",
+   "centered": "one small boat at one dock in a very wide dawn inlet, warm and quiet, the fair case given the whole frame",
+   "means": "THE TEST. The strongest case for patience gets the biggest, warmest, emptiest shot in the film",
+   "hero": {
+    "name": "one boat, one bay",
+    "parts": 4,
+    "zones": 2,
+    "part_list": [
+     "the single small hull at the dock",
+     "the piling and its reflection",
+     "the low sun disc on the water",
+     "the ReticleArm crated and waiting on the dock"
+    ],
+    "zone_list": [
+     "the wide lit water",
+     "the dark headland closing the far side"
+    ],
+    "detail_note": "The widest and most beautiful shot in the film: layered haze bands, a real sun disc with water glare, piling reflections that wobble, and a crate with stencilled type on the dock."
+   }
+  },
+  {
+   "id": "S10",
+   "t": "91.29-107.24",
+   "framing": "push-detail",
+   "scale": "close",
+   "height": "eye",
+   "pov": "macro-closeup",
+   "layout": "fullbleed-split",
+   "motion_vector": "horizontal-traverse",
+   "hero_treatment": "data-as-subject",
+   "transition_in": "focus-pull",
+   "thread": "carry",
+   "camera": "truckacross",
+   "stage3d": "planes",
+   "centered": "a single printed trade write-up on one side of a hard seam, and an empty rack of Alaska mastheads on the other",
+   "means": "the honest limit, drawn as an asymmetry rather than said as an accusation",
+   "hero": {
+    "name": "the record",
+    "parts": 4,
+    "zones": 2,
+    "part_list": [
+     "the one printed write-up",
+     "the empty masthead slots",
+     "the NO BOAT COUNT stamp",
+     "the dotted mark that still has not landed"
+    ],
+    "zone_list": [
+     "the lit paper side",
+     "the empty shadowed rack side"
+    ],
+    "detail_note": "The write-up is a real printed page with a fold and a curl; the masthead rack is a built object with empty slots and visible dividers so the absence has structure."
+   }
+  },
+  {
+   "id": "S11",
+   "t": "107.24-120.53",
+   "framing": "data-panel",
+   "scale": "medium",
+   "height": "high",
+   "pov": "top-down-map",
+   "layout": "grid-modular",
+   "motion_vector": "assemble-build",
+   "hero_treatment": "multiplicity-swarm",
+   "transition_in": "graphic-match",
+   "thread": "build",
+   "camera": "cranedown",
+   "stage3d": "planes",
+   "centered": "ten lit marks in a row, then a field of more than thirteen hundred permit tiles building around them until the ten are a speck",
+   "means": "the scale comparison, drawn to true scale so the number is felt and not merely stated",
+   "hero": {
+    "name": "ten against thirteen hundred",
+    "parts": 4,
+    "zones": 2,
+    "part_list": [
+     "the ten lit machine marks",
+     "the building field of permit tiles",
+     "the odometer counting to 1,300",
+     "the 10% OF ALASKA caption"
+    ],
+    "zone_list": [
+     "the lit ten in the center",
+     "the vast unlit field spreading out from them"
+    ],
+    "detail_note": "The permit tiles are individually inked with slight rotation variance so the field reads as thirteen hundred separate things rather than a texture."
+   }
+  },
+  {
+   "id": "S12",
+   "t": "120.53-132.94",
+   "framing": "map-territory",
+   "scale": "extreme-wide",
+   "height": "low",
+   "pov": "orbital-aerial",
+   "layout": "centered-hero-lowerthird",
+   "motion_vector": "vertical-rise",
+   "hero_treatment": "multiplicity-swarm",
+   "transition_in": "pull-out",
+   "thread": "travel",
+   "camera": "risewith+orbitreveal",
+   "stage3d": "planes",
+   "centered": "the reticle locked on one deck, and the camera rising until a dozen visibly different hulls sit around it and the mark fits none of them",
+   "means": "THE TURN and the button in one continuous rise, ending on the opening frame's spike now carrying the mark",
+   "hero": {
+    "name": "the fleet of different boats",
+    "parts": 4,
+    "zones": 2,
+    "part_list": [
+     "a dozen hulls at different beams, rail heights and deck plans",
+     "the single lit reticle",
+     "the widening dawn water",
+     "the returning wooden spike in the last beat"
+    ],
+    "zone_list": [
+     "the lit near hull",
+     "the receding unlit fleet in haze"
+    ],
+    "detail_note": "A dozen genuinely different hulls: varying beam, freeboard, house position and rail height, each with its own contact shadow on the water, so the mismatch is visible and not asserted."
+   }
+  }
+ ],
+ "scene_start_line": [
+  0,
+  2,
+  4,
+  6,
+  8,
+  10,
+  12,
+  13,
+  15,
+  19,
+  23,
+  26
+ ],
+ "beats": [
+  {
+   "i": 1,
+   "t": 0.0,
+   "vo": 0,
+   "sfx": "a low room-tone of water against aluminium, one gull far off",
+   "means": "opens on the object the whole film returns to",
+   "shows": "the raw frame, one fish and one worn spike, nothing claimed yet",
+   "draw": {
+    "subject": "a chrome sockeye on a wet board, gold rim on every scale",
+    "action": "lies still while its flank breathes and water beads run off it",
+    "emotion": "matter-of-fact",
+    "annotation": "A SPOT THE SIZE OF A PEA"
+   },
+   "choreo": {
+    "primary": "the flank breathes",
+    "reaction": "water beads track down",
+    "ambient": "hull rolls, sun glints crawl"
+   }
+  },
+  {
+   "i": 2,
+   "t": 2.22,
+   "vo": 0,
+   "sfx": "a soft grease-pencil scratch",
+   "means": "the mark is HUMAN before it is machine",
+   "shows": "the trained hand marks the spot by eye",
+   "draw": {
+    "subject": "a gloved hand holding a grease pencil",
+    "action": "draws a small wobbly X behind the salmon's eye and stops",
+    "emotion": "careful",
+    "annotation": "THE MARK"
+   },
+   "choreo": {
+    "primary": "the X is drawn",
+    "reaction": "the pencil lifts and hovers",
+    "ambient": "hull rolls, steam off the fish"
+   }
+  },
+  {
+   "i": 3,
+   "t": 5.98,
+   "vo": 1,
+   "sfx": "a single low bell",
+   "means": "the quality claim, stated as physical fact",
+   "shows": "what an exact hit buys you",
+   "draw": {
+    "subject": "the fish under the drawn X",
+    "action": "holds firm as a faint timer chip counts days beside it",
+    "emotion": "matter-of-fact",
+    "annotation": "DIES INSTANTLY"
+   },
+   "choreo": {
+    "primary": "the timer chip ticks up",
+    "reaction": "the flank stays taut",
+    "ambient": "gull shadow crosses"
+   }
+  },
+  {
+   "i": 4,
+   "t": 8.42,
+   "vo": 1,
+   "sfx": "a held breath of room tone, no impact",
+   "means": "the film refuses the strike, which is the promise it will keep",
+   "shows": "the spike still has not landed",
+   "draw": {
+    "subject": "the worn wooden spike",
+    "action": "hovers an inch above the X and does not descend",
+    "emotion": "patient",
+    "annotation": "NOT YET"
+   },
+   "choreo": {
+    "primary": "the spike hovers",
+    "reaction": "the hand steadies",
+    "ambient": "light climbs one stop"
+   }
+  },
+  {
+   "i": 5,
+   "t": 13.07,
+   "vo": 2,
+   "sfx": "a wooden tick as each step latches",
+   "means": "names the skill before the machine that copies it",
+   "shows": "the technique gets its name and its three steps",
+   "draw": {
+    "subject": "a three-step cutaway diagram",
+    "action": "assembles itself step by step, spike then bleed then cord",
+    "emotion": "matter-of-fact",
+    "annotation": "IKE JIME"
+   },
+   "choreo": {
+    "primary": "steps latch in sequence",
+    "reaction": "labels settle",
+    "ambient": "diagram grain drifts"
+   }
+  },
+  {
+   "i": 6,
+   "t": 15.95,
+   "vo": 2,
+   "sfx": "a soft draining hiss",
+   "means": "the method is a real procedure, not a gimmick",
+   "shows": "the second step, drawn honestly",
+   "draw": {
+    "subject": "the bleed channel in the cutaway",
+    "action": "opens and runs clear while the label sets",
+    "emotion": "matter-of-fact",
+    "annotation": "BLEED"
+   },
+   "choreo": {
+    "primary": "the channel runs",
+    "reaction": "the label sets",
+    "ambient": "the sea plane behind shifts"
+   }
+  },
+  {
+   "i": 7,
+   "t": 20.16,
+   "vo": 3,
+   "sfx": "a paper-rustle and a stamp",
+   "means": "the human cost is the reason a machine was built",
+   "shows": "what the skill actually costs",
+   "draw": {
+    "subject": "a hand-lettered card reading TRAINED HAND, YEARS",
+    "action": "drops in and settles crooked beside the diagram",
+    "emotion": "wry",
+    "annotation": "YEARS"
+   },
+   "choreo": {
+    "primary": "the card drops",
+    "reaction": "it settles crooked",
+    "ambient": "diagram grain drifts"
+   }
+  },
+  {
+   "i": 8,
+   "t": 22.6,
+   "vo": 3,
+   "sfx": "a dry click",
+   "means": "establishes the gap the machine is aimed at",
+   "shows": "almost nobody on a small boat has it",
+   "draw": {
+    "subject": "a small skiff silhouette on the diagram plane",
+    "action": "slides in tiny beneath the card and sits alone",
+    "emotion": "matter-of-fact",
+    "annotation": "ALMOST NOBODY"
+   },
+   "choreo": {
+    "primary": "the skiff slides in",
+    "reaction": "the card shadows it",
+    "ambient": "water band scrolls"
+   }
+  },
+  {
+   "i": 9,
+   "t": 25.1,
+   "vo": 4,
+   "sfx": "a dry hull knock",
+   "means": "the gap the machine is aimed at, held one beat longer",
+   "shows": "the skiff sits alone under the card",
+   "draw": {
+    "subject": "the small skiff silhouette beneath the TRAINED HAND card",
+    "action": "rocks on its own swell while the card's shadow crosses it",
+    "emotion": "matter-of-fact",
+    "annotation": "NOBODY ABOARD"
+   },
+   "choreo": {
+    "primary": "the skiff rocks",
+    "reaction": "the card shadow crosses it",
+    "ambient": "the diagram plane drifts"
+   }
+  },
+  {
+   "i": 10,
+   "t": 26.95,
+   "vo": 4,
+   "sfx": "a servo whine rising then settling",
+   "means": "the antagonist of the hand, introduced without menace",
+   "shows": "the machine arrives",
+   "draw": {
+    "subject": "the ReticleArm gantry",
+    "action": "lowers its lens head onto the working surface and settles",
+    "emotion": "neutral",
+    "annotation": "SHINKEI SYSTEMS"
+   },
+   "choreo": {
+    "primary": "the arm descends",
+    "reaction": "the cable loom swings after it",
+    "ambient": "hull rolls, deck water shivers"
+   }
+  },
+  {
+   "i": 11,
+   "t": 31.02,
+   "vo": 5,
+   "sfx": "a hard lock tick",
+   "means": "THE REHOOK. The film turns on this line",
+   "shows": "the actual hard part, named",
+   "draw": {
+    "subject": "the lens head",
+    "action": "snaps its glass eye down toward the fish and holds",
+    "emotion": "focused",
+    "annotation": "THE SPOT MOVES"
+   },
+   "choreo": {
+    "primary": "the eye snaps down",
+    "reaction": "the iris irises smaller",
+    "ambient": "sun glint crawls the rail"
+   },
+   "rehook": "rehook: the film's premise inverts here, the hard part is not the strike"
+  },
+  {
+   "i": 12,
+   "t": 33.23,
+   "vo": 5,
+   "sfx": "one beat of near silence",
+   "means": "a real person is speaking, so the picture makes room",
+   "shows": "the founder is about to be quoted",
+   "draw": {
+    "subject": "a plain attribution plate",
+    "action": "slides up under the frame and holds clean",
+    "emotion": "matter-of-fact",
+    "annotation": "SAIF KHAWAJA, FOUNDER"
+   },
+   "choreo": {
+    "primary": "the plate rises",
+    "reaction": "the machine holds still",
+    "ambient": "water band scrolls"
+   }
+  },
+  {
+   "i": 13,
+   "t": 38.11,
+   "vo": 7,
+   "sfx": "three separate soft chimes",
+   "means": "THE REVEAL. The sentence becomes a picture",
+   "shows": "three fish, three different true points",
+   "draw": {
+    "subject": "three sockeye seen from directly above",
+    "action": "lie side by side while a true point lights in a different place on each",
+    "emotion": "matter-of-fact",
+    "annotation": "THE BRAIN CAN BE IN A DIFFERENT LOCATION"
+   },
+   "choreo": {
+    "primary": "points light one by one",
+    "reaction": "ghosted wrong guesses fade",
+    "ambient": "overhead haze drifts"
+   }
+  },
+  {
+   "i": 14,
+   "t": 40.99,
+   "vo": 7,
+   "sfx": "a flat buzz",
+   "means": "proves the point mechanically before the VO says jig",
+   "shows": "a ruler tries to predict the third and fails",
+   "draw": {
+    "subject": "a measuring rule laid across the fish",
+    "action": "slides to where the point should be and lands off it",
+    "emotion": "wry",
+    "annotation": "OFF BY A LOT"
+   },
+   "choreo": {
+    "primary": "the rule slides",
+    "reaction": "it stops short",
+    "ambient": "board grain shifts"
+   }
+  },
+  {
+   "i": 15,
+   "t": 45.2,
+   "vo": 8,
+   "sfx": "a metal clack",
+   "means": "the negative case, stated",
+   "shows": "so a jig is ruled out",
+   "draw": {
+    "subject": "the words A FIXED GUIDE",
+    "action": "stamp down and get a hard rule struck through them",
+    "emotion": "matter-of-fact",
+    "annotation": "YOU CAN'T BUILD A JIG"
+   },
+   "choreo": {
+    "primary": "the stamp lands",
+    "reaction": "the strike-through draws",
+    "ambient": "light flickers on steel"
+   }
+  },
+  {
+   "i": 16,
+   "t": 47.64,
+   "vo": 9,
+   "sfx": "two rail clacks then a dull wooden thunk",
+   "means": "the failure is CONFIDENCE, and that is the joke",
+   "shows": "the jig comes down anyway, perfectly straight",
+   "draw": {
+    "subject": "the steel jig on its rails",
+    "action": "descends dead straight and strikes the board an inch from the mark",
+    "emotion": "matter-of-fact",
+    "annotation": "IT NEVER MISSES ITS OWN TARGET"
+   },
+   "choreo": {
+    "primary": "the jig descends",
+    "reaction": "the board takes the hit",
+    "ambient": "rails ring faintly"
+   }
+  },
+  {
+   "i": 17,
+   "t": 50.3,
+   "vo": 9,
+   "sfx": "a dull wooden settle",
+   "means": "the miss REGISTERS, and the true mark is untouched beside it",
+   "shows": "the board takes the hit and the mark is still there",
+   "draw": {
+    "subject": "the fresh dent in the board and the cyan mark an inch away",
+    "action": "the splinter settles while the mark holds perfectly still",
+    "emotion": "matter-of-fact",
+    "annotation": "IT MISSED"
+   },
+   "choreo": {
+    "primary": "the splinter settles",
+    "reaction": "the mark holds",
+    "ambient": "the rails ring down"
+   }
+  },
+  {
+   "i": 18,
+   "t": 52.2,
+   "vo": 10,
+   "sfx": "a soft sampling patter",
+   "means": "the mechanism restated as a verb",
+   "shows": "what the machine has to do instead",
+   "draw": {
+    "subject": "the reticle",
+    "action": "drifts and samples candidate points across the flank",
+    "emotion": "searching",
+    "annotation": "LOOK AT EACH FISH"
+   },
+   "choreo": {
+    "primary": "the reticle drifts",
+    "reaction": "candidates ghost and fade",
+    "ambient": "overlay grid breathes"
+   }
+  },
+  {
+   "i": 19,
+   "t": 55.61,
+   "vo": 11,
+   "sfx": "four converging ticks and one clean chime",
+   "means": "THE CENTRAL CLAIM, drawn",
+   "shows": "the lock",
+   "draw": {
+    "subject": "the four corner ticks",
+    "action": "converge hard onto the true point and settle with overshoot",
+    "emotion": "focused",
+    "annotation": "THE LOOKING"
+   },
+   "choreo": {
+    "primary": "the ticks converge",
+    "reaction": "the bloom pulses once",
+    "ambient": "the fish beneath shifts with the hull"
+   },
+   "rehook": "rehook: the machine's four corner ticks converge and the film's central claim lands, which is the strongest re-grab available in this window"
+  },
+  {
+   "i": 20,
+   "t": 59.6,
+   "vo": 12,
+   "sfx": "a low map whoosh",
+   "means": "moves the film from a lab to Alaska",
+   "shows": "the announcement lands on a real place",
+   "draw": {
+    "subject": "Cook Inlet drawn in true geometry",
+    "action": "fills the frame as a dated stamp settles onto it",
+    "emotion": "matter-of-fact",
+    "annotation": "JULY 30TH"
+   },
+   "choreo": {
+    "primary": "the coast draws in",
+    "reaction": "the stamp settles",
+    "ambient": "haze bands drift"
+   }
+  },
+  {
+   "i": 21,
+   "t": 61.82,
+   "vo": 12,
+   "sfx": "a hollow tick, deliberately unresolved",
+   "means": "the second loop plants, an outline that has not landed",
+   "shows": "the machine outline arrives DOTTED",
+   "draw": {
+    "subject": "a dotted unlit machine outline",
+    "action": "settles over the inlet without filling in",
+    "emotion": "neutral",
+    "annotation": "COMPANY SAYS"
+   },
+   "choreo": {
+    "primary": "the outline settles",
+    "reaction": "it stays dotted",
+    "ambient": "water shimmer crawls"
+   }
+  },
+  {
+   "i": 22,
+   "t": 64.4,
+   "vo": 12,
+   "sfx": "a hollow tick with no resolve",
+   "means": "the second loop, kept open on purpose",
+   "shows": "the dotted mark refuses to fill in",
+   "draw": {
+    "subject": "the dotted unlit outline over the inlet",
+    "action": "turns slowly on its own dashes and never closes",
+    "emotion": "neutral",
+    "annotation": "STILL DOTTED"
+   },
+   "choreo": {
+    "primary": "the dashes crawl",
+    "reaction": "the fleet below keeps working",
+    "ambient": "haze drifts over the water"
+   }
+  },
+  {
+   "i": 23,
+   "t": 66.16,
+   "vo": 13,
+   "sfx": "a typewriter run",
+   "means": "the film shows its sourcing rather than claiming it",
+   "shows": "the claims type on, each labeled",
+   "draw": {
+    "subject": "the claim ledger card",
+    "action": "types its rows on, each stamped COMPANY SAYS",
+    "emotion": "matter-of-fact",
+    "annotation": "NEARLY 60% SMALLER"
+   },
+   "choreo": {
+    "primary": "rows type on",
+    "reaction": "stamps land",
+    "ambient": "card edge lifts in the wind"
+   }
+  },
+  {
+   "i": 24,
+   "t": 70.02,
+   "vo": 13,
+   "sfx": "a paper flap",
+   "means": "the deal, stated in the company's own terms",
+   "shows": "the free robot and the premium",
+   "draw": {
+    "subject": "the ROBOT FREE and PREMIUM rows",
+    "action": "slide in under the first and lock",
+    "emotion": "matter-of-fact",
+    "annotation": "THE ROBOT'S FREE"
+   },
+   "choreo": {
+    "primary": "rows lock in",
+    "reaction": "the tag string tightens",
+    "ambient": "card edge lifts"
+   }
+  },
+  {
+   "i": 25,
+   "t": 73.78,
+   "vo": 14,
+   "sfx": "a swinging creak, no chime",
+   "means": "THE REHOOK. The absence is the picture",
+   "shows": "the number that does not exist",
+   "draw": {
+    "subject": "a blank price tag",
+    "action": "swings on its string with nothing printed on it",
+    "emotion": "dry",
+    "annotation": "NO NUMBER ANYWHERE"
+   },
+   "choreo": {
+    "primary": "the tag swings",
+    "reaction": "the empty field stays empty",
+    "ambient": "wind moves the card"
+   }
+  },
+  {
+   "i": 26,
+   "t": 76.22,
+   "vo": 15,
+   "sfx": "a warm swell coming up",
+   "means": "THE TEST begins, and it gets the warmest light in the piece",
+   "shows": "the film turns to the other side",
+   "draw": {
+    "subject": "a very wide dawn inlet",
+    "action": "opens out with one small boat at one dock in it",
+    "emotion": "patient",
+    "annotation": "THE FAIR CASE"
+   },
+   "choreo": {
+    "primary": "the water breathes",
+    "reaction": "the hull rocks at the dock",
+    "ambient": "sun climbs, gulls cross"
+   }
+  },
+  {
+   "i": 27,
+   "t": 78.9,
+   "vo": 15,
+   "sfx": "a warm swell rising under it",
+   "means": "the fair case is given the most beautiful frame, on purpose",
+   "shows": "the light comes up on the widest shot in the film",
+   "draw": {
+    "subject": "the wide dawn inlet with one hull at one dock",
+    "action": "opens out as the sun climbs and the water takes the light",
+    "emotion": "patient",
+    "annotation": "THE FAIR CASE"
+   },
+   "choreo": {
+    "primary": "the light climbs",
+    "reaction": "the hull lifts on the swell",
+    "ambient": "gulls cross the far headland"
+   }
+  },
+  {
+   "i": 28,
+   "t": 80.79,
+   "vo": 16,
+   "sfx": "a single mast bell",
+   "means": "the counter-argument at full strength",
+   "shows": "this is what a real pilot looks like",
+   "draw": {
+    "subject": "the setnetter on the dock beside the single small hull",
+    "action": "lifts on a swell as the setnetter sets the crate down hard on the dock boards and looks out at the water",
+    "emotion": "patient",
+    "annotation": "ONE BOAT, ONE WRITE UP"
+   },
+   "choreo": {
+    "primary": "the setnetter sets the crate down and turns to look at the water",
+    "reaction": "the hull lifts and settles",
+    "ambient": "reflections break and reform"
+   }
+  },
+  {
+   "i": 29,
+   "t": 84.42,
+   "vo": 17,
+   "sfx": "a beat of open air",
+   "means": "the fairest line in the set is given real room",
+   "shows": "their CTO is quoted straight",
+   "draw": {
+    "subject": "a plain attribution plate",
+    "action": "rises under the wide shot and holds",
+    "emotion": "matter-of-fact",
+    "annotation": "REED GINSBERG, CTO"
+   },
+   "choreo": {
+    "primary": "the plate rises",
+    "reaction": "the boat keeps rocking",
+    "ambient": "water sparkle drifts"
+   }
+  },
+  {
+   "i": 30,
+   "t": 88.63,
+   "vo": 18,
+   "sfx": "held quiet, bed dipped",
+   "means": "this is the film arguing against itself and meaning it",
+   "shows": "the quote lands and is allowed to sit",
+   "draw": {
+    "subject": "the quote set clean across the water",
+    "action": "holds for a full beat with nothing competing",
+    "emotion": "patient",
+    "annotation": "WHERE PEOPLE ACTUALLY FISH"
+   },
+   "choreo": {
+    "primary": "the words hold",
+    "reaction": "the light climbs",
+    "ambient": "haze thins"
+   }
+  },
+  {
+   "i": 31,
+   "t": 90.84,
+   "vo": 18,
+   "sfx": "a soft wooden knock",
+   "means": "the film concedes the point it must concede",
+   "shows": "so the unfair bar is named and refused",
+   "draw": {
+    "subject": "a bar graphic labeled FLEET NUMBERS, DAY ONE",
+    "action": "tips over and lies flat",
+    "emotion": "matter-of-fact",
+    "annotation": "NOT A FAIR BAR"
+   },
+   "choreo": {
+    "primary": "the bar tips",
+    "reaction": "it settles flat",
+    "ambient": "water keeps moving"
+   }
+  },
+  {
+   "i": 32,
+   "t": 95.72,
+   "vo": 20,
+   "sfx": "a hard seam snap",
+   "means": "the pivot into the honest half",
+   "shows": "but the fair question is asked",
+   "draw": {
+    "subject": "a hard vertical seam",
+    "action": "slams down the middle of the frame",
+    "emotion": "matter-of-fact",
+    "annotation": "WHAT'S ON THE WATER"
+   },
+   "choreo": {
+    "primary": "the seam snaps in",
+    "reaction": "both sides settle",
+    "ambient": "light splits at the seam"
+   }
+  },
+  {
+   "i": 33,
+   "t": 99.04,
+   "vo": 21,
+   "sfx": "a single paper slap",
+   "means": "the record, drawn as an asymmetry",
+   "shows": "one write-up on one side",
+   "draw": {
+    "subject": "one printed trade write-up",
+    "action": "drops onto the lit side of the seam alone",
+    "emotion": "matter-of-fact",
+    "annotation": "ONE TRADE WRITE UP"
+   },
+   "choreo": {
+    "primary": "the page drops",
+    "reaction": "its edge curls",
+    "ambient": "the seam glows"
+   }
+  },
+  {
+   "i": 34,
+   "t": 101.48,
+   "vo": 21,
+   "sfx": "a hollow rattle",
+   "means": "REHOOK. The emptiness is the evidence",
+   "shows": "an empty rack on the other",
+   "draw": {
+    "subject": "a rack of empty Alaska masthead slots",
+    "action": "sits dark with every slot unfilled",
+    "emotion": "matter-of-fact",
+    "annotation": "NO ALASKA OUTLET"
+   },
+   "choreo": {
+    "primary": "the slots stay empty",
+    "reaction": "one slot swings",
+    "ambient": "dust drifts in the dark side"
+   },
+   "rehook": "rehook: the empty rack answers the question the seam just asked"
+  },
+  {
+   "i": 35,
+   "t": 104.1,
+   "vo": 22,
+   "sfx": "a hollow rack rattle",
+   "means": "the absence held long enough to read twice",
+   "shows": "the empty slots sit there and nothing fills them",
+   "draw": {
+    "subject": "the rack of empty Alaska masthead slots",
+    "action": "sits dark while one empty slot swings on its hinge",
+    "emotion": "matter-of-fact",
+    "annotation": "NOBODY ELSE RAN IT"
+   },
+   "choreo": {
+    "primary": "one slot swings",
+    "reaction": "the write-up curls opposite it",
+    "ambient": "dust drifts in the dark half"
+   }
+  },
+  {
+   "i": 36,
+   "t": 105.82,
+   "vo": 22,
+   "sfx": "a rubber stamp thud",
+   "means": "the specific missing fact, named",
+   "shows": "no boat count, stamped",
+   "draw": {
+    "subject": "a NO BOAT COUNT stamp",
+    "action": "slams across the empty rack and stays",
+    "emotion": "matter-of-fact",
+    "annotation": "NO BOAT COUNT"
+   },
+   "choreo": {
+    "primary": "the stamp lands",
+    "reaction": "the rack shivers",
+    "ambient": "dust settles"
+   }
+  },
+  {
+   "i": 37,
+   "t": 109.68,
+   "vo": 23,
+   "sfx": "an odometer roll",
+   "means": "the scale comparison begins with THEIR figure, fairly",
+   "shows": "the company's own number",
+   "draw": {
+    "subject": "ten small lit marks in a row",
+    "action": "roll up on an odometer and stop at ten",
+    "emotion": "matter-of-fact",
+    "annotation": "10 MACHINES, COMPANY WIDE"
+   },
+   "choreo": {
+    "primary": "the odometer rolls",
+    "reaction": "the ten marks light",
+    "ambient": "the panel breathes"
+   }
+  },
+  {
+   "i": 38,
+   "t": 113.66,
+   "vo": 24,
+   "sfx": "a rising tile patter",
+   "means": "THE SCALE REVEAL. The ten become a speck",
+   "shows": "the permits build around them",
+   "draw": {
+    "subject": "a field of permit tiles",
+    "action": "builds outward around the ten until it fills the frame",
+    "emotion": "matter-of-fact",
+    "annotation": "1,300+ PERMITS"
+   },
+   "choreo": {
+    "primary": "tiles build outward",
+    "reaction": "the ten stay lit and shrink",
+    "ambient": "the field keeps spreading"
+   }
+  },
+  {
+   "i": 39,
+   "t": 116.32,
+   "vo": 24,
+   "sfx": "one clean chime",
+   "means": "the number made proportional, not just large",
+   "shows": "about a tenth of the whole state",
+   "draw": {
+    "subject": "a small slice marker",
+    "action": "swings out to a tenth of a full ring and locks",
+    "emotion": "matter-of-fact",
+    "annotation": "ABOUT 10% OF ALASKA"
+   },
+   "choreo": {
+    "primary": "the marker swings",
+    "reaction": "it locks",
+    "ambient": "tiles settle"
+   }
+  },
+  {
+   "i": 40,
+   "t": 119.0,
+   "vo": 25,
+   "sfx": "a low tile hiss running out",
+   "means": "the scale comparison held so the number lands",
+   "shows": "the ten stay lit and the field keeps going",
+   "draw": {
+    "subject": "the ten lit marks inside the permit field",
+    "action": "hold their light while the tiles keep spreading past the frame",
+    "emotion": "matter-of-fact",
+    "annotation": "TEN, AND THIRTEEN HUNDRED"
+   },
+   "choreo": {
+    "primary": "the field spreads",
+    "reaction": "the ten stay lit",
+    "ambient": "the panel breathes"
+   }
+  },
+  {
+   "i": 41,
+   "t": 120.89,
+   "vo": 26,
+   "sfx": "a long airy rise",
+   "means": "the thesis drawn: the mark fits none of them",
+   "shows": "THE TURN, the pullback to a dozen different hulls",
+   "draw": {
+    "subject": "a dozen visibly different hulls",
+    "action": "spread out below as the camera rises and the mark hovers over all of them",
+    "emotion": "matter-of-fact",
+    "annotation": "DIFFERENT DECK, DIFFERENT RAIL"
+   },
+   "choreo": {
+    "primary": "the camera rises",
+    "reaction": "the mark drifts and finds no seat",
+    "ambient": "haze deepens, water widens"
+   }
+  },
+  {
+   "i": 42,
+   "t": 124.96,
+   "vo": 26,
+   "sfx": "a long low sustain",
+   "means": "the turn holds so the viewer feels the mismatch",
+   "shows": "the hulls settle and the mark has nowhere to sit",
+   "draw": {
+    "subject": "the dozen mismatched hulls",
+    "action": "sit at their different heights while the mark drifts above them without landing",
+    "emotion": "matter-of-fact",
+    "annotation": "IT FITS NONE OF THEM"
+   },
+   "choreo": {
+    "primary": "the mark drifts",
+    "reaction": "hulls rock out of phase",
+    "ambient": "haze deepens"
+   }
+  },
+  {
+   "i": 43,
+   "t": 129.39,
+   "vo": 28,
+   "sfx": "one soft bell, then only water",
+   "means": "the loop closes on the opening frame, changed",
+   "shows": "the last image, the mark at rest on the spike",
+   "draw": {
+    "subject": "the worn wooden spike from the first shot",
+    "action": "rests on the board with the small gold mark now sitting on its tip",
+    "emotion": "patient",
+    "annotation": "THE BOAT IS STILL OUT THERE"
+   },
+   "choreo": {
+    "primary": "the mark settles",
+    "reaction": "the spike rests",
+    "ambient": "water goes quiet, the sun holds"
+   }
+  }
+ ],
+ "timing_note": "Beat, reveal, loop, throughline and shot times were PLANNED on a 120s timeline and are rescaled here by 1.1078 onto the DELIVERED take (speech ends 132.94s, film 135.54s). The board now describes the film that exists rather than the one that was planned, which is what the evidence coverage check and the panel both read."
+}

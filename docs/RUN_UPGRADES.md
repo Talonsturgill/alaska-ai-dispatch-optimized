@@ -1998,3 +1998,71 @@ sequence, a sequence needs a specimen, and a specimen needs somebody in a field 
   "decorative element crossing the line is fine" case the tool's own docstring names. PLAN: give
   `TrayWall` a `bandTop`/`bandBottom` prop so a scene can align its rows to the crop lines
   instead of tiling through them.
+
+## 2026-08-07 — "The Boat, Not The Brain" (dispatch-2026-08-07)
+
+SHIPPED: a 135.5s vertical Dispatch on Shinkei Systems' fish-harvesting robot. The thesis: the
+hard part of putting a robot on a fishing boat is already solved, and it is not the part anyone
+expects. A machine learning model finds the brain of each individual salmon, because that spot
+sits in a different place in every fish. The unsolved part is the boat. Twelve shots, 37 beats,
+stance CURIOUS (rotating off a wry 08-05 and a mixed 08-06).
+
+### What the run found, and what it FIXED (all committed here)
+
+1. **PRONUNCIATION GUIDANCE HAD NEVER ONCE WORKED, AND COULD NOT HAVE.**
+   `docs/craft/VO_DIRECTION.md` tells the director to respell tricky proper nouns phonetically
+   "in the transcript only". The vo-director did exactly that (ike jime -> EE-kay JEE-may,
+   Shinkei -> SHIN-kay). `_reconcile_plan_with_script` then compared the plan against the locked
+   `vo_script.txt`, correctly saw a divergence, declared the plan STALE and reverted both lines.
+   That is visible twice in this run's own synth log.
+   The reconciler was RIGHT to revert it. The transcript must stay byte-identical to the locked
+   script or `vo_soundcheck` compares the ASR against the wrong words and inflates WER on a clean
+   take, and the burned captions come from that script, so a respelled transcript would burn text
+   the voice never said. So the doctrine was asking for something the pipeline must refuse.
+   FIX: a respelling is now DATA. `vo_direction.json` carries a top-level `pronunciations` map and
+   `vo_synth_gemini.py` injects it as a `Pronunciation:` direction line ABOVE the `Transcript:`
+   delimiter, where the model reads it as instruction and never speaks it, leaving the transcript
+   exactly the locked copy. VO_DIRECTION.md rewritten to match, with the reason.
+   VERIFIED: the injection places the line above the delimiter and leaves the transcript
+   byte-identical (asserted directly, no synth spent).
+
+2. **THE VO WORD BAND WAS DERIVED FROM A PROBE THAT DOES NOT REPRODUCE ON A REAL RUN.**
+   `.claude/WORKLOG.md` section 7 item 1 predicted exactly this and it happened on the first
+   real two-minute film. `vo_length_probe.py` measured 142-144 wpm on a synthetic 288-word script
+   and the band was set to 280-300. This run wrote 300 words with the anchored pace paragraph and
+   notes a vo-director wrote fresh, and the delivered take came back at **134.9 wpm, 133.4s**,
+   outside the 112-130s band. Three re-rolls landed WORSE (143.4s, 144.1s, 151.7s), so this is the
+   rate under real notes, not one slow take.
+   FIX: `config/state.yaml dispatch_vo_words_band` narrowed to **262-282** with the measurement
+   written into the file, and `prompts/dispatch_routine.md` section 4.2 updated to match and to say
+   READ the band from state.yaml rather than from the prose. Runtime band and target unchanged.
+   `scripts/format_gate_selftest.py` re-run and PASSING, so the generated pace paragraph is still
+   byte-identical to the one that was actually measured.
+   DISCLOSED: this run's own film shipped at 133.4s, over the band. The miss is recorded in
+   `vo_report.json` and stated in the dated email. The repair path behaved exactly as designed
+   (re-roll once, then ship the best take with the miss recorded) rather than hard-failing.
+
+3. **`scripts/build_scenes.py` CARRIED THE PREVIOUS FILM'S SHOT MAP.**
+   `SCENE_START_LINE` is per-run data living in code. It still held the 08-06 film's 11-entry map,
+   so the first build emitted 11 scenes for a 12-scene episode and handed S11 a 31.9-second oner,
+   which is twice the 16s `max_shot_seconds` ceiling. Nothing objected. Caught by reading the
+   printed scene table, which is the check `prompts/dispatch_routine.md` already prescribes after
+   any SSL change.
+   FIX for this run: rewritten to this film's 12-scene map with the line mapping documented inline.
+   NOT yet structurally fixed, and named here so it is not deferred silently a second time: the map
+   belongs in `storyboard.json` (this board already declares `scene_start_line`) and `build_scenes.py`
+   should READ it rather than keep its own copy. That is the same "a number restated in a second
+   place will be wrong in one of them" defect the 08-06 run wrote up about the panel bar. Deferred
+   only because changing the source of truth mid-delivery is the wrong time to do it.
+
+### New in the library
+- `video-engine/src/lib/vision.tsx` — CRAFT ADVANCE. The machine-vision overlay as a reusable
+  layer (SearchReticle, PendingMark, CandidateField, ConfidenceBloom, VisionGrid, ClaimChip).
+  Four previous runs each hand-rolled a reticle inside their own episode file; this compounds.
+- `ReticleArm` — net-new hero, episode-local in Ep0807.tsx, registered in ASSET_MANIFEST.md.
+
+### Gates
+story_gate PASS; storyboard_check PASS (diverges 8/9 vs 08-05 and 9/9 vs 08-06); flow_check PASS
+(37 beats, median gap 3.0s, max 4.8s, 3 rehooks, both open loops, throughline); caption_band_check
+clean; staging_check 1 figure, performing what the board staged; text_fit_check 0 failing;
+caption_check PASS; format_gate_selftest PASS.

@@ -1,0 +1,24 @@
+{
+  "pass": true,
+  "fails": [],
+  "warns": [],
+  "metrics": {
+    "chars": 2168,
+    "hook": "A robot that kills a salmon well has to solve a problem I did not expect.",
+    "hook_len": 73,
+    "hashtags": [
+      "#Alaska",
+      "#ArtificialIntelligence",
+      "#Robotics",
+      "#CommercialFishing",
+      "#CookInlet"
+    ],
+    "n_hashtags": 5,
+    "emoji": 0,
+    "unicode_bold": 0,
+    "bullet_lines": 0,
+    "sentence_initial_but": 0,
+    "commas_per_100w": 4.07,
+    "passes": true
+  }
+}

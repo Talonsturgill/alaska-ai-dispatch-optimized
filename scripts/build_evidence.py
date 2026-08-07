@@ -18,7 +18,7 @@ picture exactly as it moves the scenes.
 
 Usage: python3 scripts/build_evidence.py [--video out/dispatch/dispatch_square.mp4]
 """
-import argparse, glob, json, os, subprocess, sys
+import argparse, glob, json, os, subprocess, sys, time
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 OUT = os.path.join(REPO, "out", "dispatch")
@@ -26,63 +26,33 @@ EV = os.path.join(REPO, "out", "evidence")
 
 # (name, vo_line, seconds INTO that line where the move actually peaks)
 MOVES = [
-    # CONTACT is 20 frames (0.67s) after the line start: 10 rear-back + 6 hold + 4 drive.
-    # The strip is 8 frames (0.27s) centred on the offset, so 0.35 sampled 38.34-38.60 and
-    # the impact at 38.79 fell OUTSIDE it. Second time this class of bug has cost a panel
-    # round; the offset must be the CONTACT time, not the line start plus a guess.
-    # THE MONEY. The contact sheet samples every ~5.8s and the stamp beat lands at 15.1s,
-    # between two samples, so a judge reported that the exact figure "does not appear on
-    # screen at any sampled second" and marked claims c1's stated safeguard unmet. It was
-    # on screen the whole time. The film's single most important frame gets its own strip.
-    # RE-ANCHORED 2026-08-05 for "The Net Comes First", and the previous values were a
-    # live evidence bug rather than a stale comment: these five names and offsets were the
-    # 08-03 film's beats (a stamp, a punch head, an ember wash, apertures on a map), and
-    # NONE of those exist in this film. Two strips landed inside the SAME shot, so a judge
-    # correctly reported that one beat "reuses the identical still" from another. It was
-    # the sampler pointing twice at one scene, not the film reusing art. Anchor names are
-    # per-run data and a run that changes the film must change them here in the same commit.
-    # RE-ANCHORED 2026-08-06 for "The Same Face, The Same Plate". The names above this
-    # line were the 08-05 film's beats (a beetle stripped to a contour, a specimen pin, an
-    # author plate) and NONE of them exist in this film. Anchor names and offsets are
-    # PER-RUN DATA and a run that changes the film changes them in the same commit.
-    # Offsets are CONTACT times, sampled at the motion's fastest point, not line starts
-    # plus a guess. Eight strips, no two inside one shot.
-    # RE-ANCHORED AGAIN, round 2 of 2026-08-06, for two independent reasons.
-    #
-    # First, an inserted VO line shifted every index above its insertion point by one, so
-    # anchors written against the old script pointed one line late from "carry" onward.
-    # A line insert is exactly as invalidating as a re-synth and there was nothing to catch
-    # it; shot_map.py now prints the mapping these are derived from.
-    #
-    # Second, and the reason there are sixteen: the panel's weakest column was MOTION,
-    # judged from these strips, and eight strips could not cover eleven shots. Three shots
-    # were never sampled at all, so "no held figure shows idle life in any sampled strip"
-    # was a true statement about the evidence and an unproven one about the film. Every
-    # shot now gets at least one strip, and every beat added this round gets sampled.
+    # RE-ANCHORED 2026-08-07 for "The Boat, Not The Brain". Every name above this line
+    # belonged to a previous film and NONE of those beats exist here. Anchor names and
+    # offsets are PER-RUN DATA and a run that changes the film changes them in the same
+    # commit, because a strip pointed at the wrong moment produces a judge finding that is
+    # true about the EVIDENCE and false about the FILM, which is the most expensive kind.
     # Offsets are CONTACT times at the motion's fastest point, not line starts plus a guess.
-    ("lock", 0, 0.55),        # S1  the bracket SLAMS onto the plate, 4 frames with an overshoot
-    ("refused", 0, 2.70),     # S1  the second bracket starts toward the face and slides away
-    ("capacity", 2, 3.40),    # S2  the socket grid filling against a static UP TO 750
-    ("wallprobe", 3, 4.10),   # S2  the sweep crossing the whole wall and bracketing nothing
-    ("bounce", 4, 2.80),      # S3  the plate-lock bracket hits the rule and visibly bounces off
-    ("codeprobe", 5, 3.00),   # S3  the question sweeping the socket the code never filled
-    ("promise", 6, 0.80),     # S4  the promise descending onto a seat it never reaches
-    # ANCHORAGE'S COUNTER-CASE WAS NEVER SAMPLED. c10, c9 and c11 hold from about 41.9s to
-    # 46.9s and the nearest strip sat at 47.2s, just after they clear, so a judge reported
-    # them as absent from every strip and every contact tile — a true statement about the
-    # evidence and a false one about the film. The fairness beat gets its own strip.
-    # 3.6, not 1.2. c10 lands at +0.5s, c9 at +1.7s and c11 at +3.0s, and the strip at +1.2s
-    # caught only the first — so judges reported Anchorage's ledger as one card. It is three.
-    ("counter", 7, 3.60),     # S4  the three Anchorage concession cards, drawn and attributed
-    ("carry", 8, 0.30),       # S4  the room smears and THE FRAME does not move one pixel
-    ("boxes", 9, 0.40),       # S5  the two grey boxes land flat with NO overshoot
-    ("stuck", 10, 0.50),      # S5  the sixth frame arrives, stops, and its rail crawls
-    ("collapse", 11, 3.40),   # S6  FIND collapses to a sliver and DECIDE does not move
-    ("desk", 14, 0.60),       # S7  the technician arrives at the one desk the stack lands on
-    ("spool", 16, 0.50),      # S8  the five-hour spool runs off its own end
-    ("stamp", 19, 0.40),      # S9  the stamp descends onto the request and never touches it
-    ("fusion", 20, 3.40),     # S10 the two frames fuse and carry brackets AND boxes at once
-    ("pullback", 22, 1.40),   # S11 the signature pull-back, spent exactly once
+    # Nineteen strips across twelve shots, so no shot goes unsampled and no two strips land
+    # inside one shot.
+    ("mark",     0,  1.35),   # S1  the grease-pencil X being drawn by hand, the human mark
+    ("hover",    1,  0.80),   # S1  the spike holding an inch above it and refusing to fall
+    ("steps",    2,  1.70),   # S2  the ike jime cutaway latching its second step
+    ("card",     3,  0.60),   # S2  TRAINED HAND, YEARS dropping in and settling crooked
+    ("armdrop",  4,  1.10),   # S3  the ReticleArm lowering its lens head onto the surface
+    ("look",     5,  0.90),   # S3  the head turning down as the line says THE SPOT MOVES
+    ("points",   6,  2.50),   # S4  three true points lighting in three different places
+    ("rule",     7,  1.60),   # S4  the measuring rule sliding in and stopping off the mark
+    ("jigmiss",  8,  1.55),   # S5  the jig driving dead straight and striking the board
+    ("lock",    10,  3.20),   # S6  the four corner ticks converging with the overshoot
+    ("pending", 12,  4.50),   # S7  the dotted unlit mark settling over Cook Inlet
+    ("tag",     13,  3.30),   # S8  the blank price tag swinging on its string
+    ("crate",   15,  1.50),   # S9  the crate landing on the dock boards
+    ("quote",   18,  0.50),   # S9  the CTO quote holding with the bed dipped
+    ("seam",    19,  0.60),   # S10 the hard seam slamming down the middle of the frame
+    ("stamp",   21,  1.00),   # S10 NO BOAT COUNT landing across the empty masthead rack
+    ("field",   23,  4.80),   # S11 the permit field building outward around the ten marks
+    ("rise",    26,  3.30),   # S12 THE TURN, the camera rising off one deck onto the fleet
+    ("button",  28,  1.20),   # S12 the mark coming to rest on the spike from frame one
 ]
 
 
@@ -106,6 +76,37 @@ def main():
     os.makedirs(EV, exist_ok=True)
     for f in glob.glob(os.path.join(EV, "*.jpg")):
         os.remove(f)
+
+    # ---- FRESHNESS GATE (added 2026-08-07, after it cost a whole panel round) ----
+    # The 2026-08-07 run rendered a fix pass, built the pack while the encode was still
+    # running, and graded the PREVIOUS cut. motion.json came back byte-identical to the
+    # prior round, three judges wrote "the claimed fix did not land", and the run nearly
+    # spent a fourth render chasing a defect that was already fixed. Nothing objected,
+    # because every artifact existed and only their ORDER was wrong.
+    # A pack is evidence about a FILM. If the file it samples is older than the engine that
+    # drew it, it is evidence about a different film, so refuse rather than mislead a panel.
+    _eng = os.path.join(REPO, "video-engine", "src")
+    _newest_src, _newest_p = 0.0, ""
+    for _root, _dirs, _files in os.walk(_eng):
+        for _f in _files:
+            if _f.endswith((".tsx", ".ts")):
+                _fp = os.path.join(_root, _f)
+                _m = os.path.getmtime(_fp)
+                if _m > _newest_src:
+                    _newest_src, _newest_p = _m, _fp
+    if not os.path.exists(a.video):
+        sys.exit(f"build_evidence: {a.video} does not exist. Encode before building a pack.")
+    _vid_m = os.path.getmtime(a.video)
+    if _newest_src and _vid_m < _newest_src:
+        sys.exit(
+            "build_evidence: REFUSING TO BUILD A STALE PACK.\n"
+            f"  video : {a.video}\n          modified {time.strftime('%H:%M:%S', time.localtime(_vid_m))}\n"
+            f"  engine: {os.path.relpath(_newest_p, REPO)}\n          modified "
+            f"{time.strftime('%H:%M:%S', time.localtime(_newest_src))}\n"
+            "  The cut is OLDER than the engine that draws it, so this pack would describe a\n"
+            "  film that no longer exists. Judges would report fixes as not landing and the\n"
+            "  run would re-fix things that are already fixed. Re-render and re-encode first.\n"
+            "  (Waiting on encode_deliverables.sh to FINISH is usually the missing step.)")
 
     from PIL import Image, ImageChops, ImageDraw
 

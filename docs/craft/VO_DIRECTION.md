@@ -159,3 +159,25 @@ and scripts/vo_soundcheck.py scores each and keeps the best. The check enforces 
 
 If the best take still fails a check, the FIX IS IN THE PLAN (more contrast, move an emphasis, drop a
 leaking tag), then re-synth. That feedback loop is what makes this a process and not a one-shot guess.
+
+## PRONUNCIATION IS DATA, NOT TRANSCRIPT (added 2026-08-07, after it never once worked)
+
+Respell a tricky proper noun in `vo_direction.json` under a top-level `pronunciations`
+map, like `{"ike jime": "EE-kay JEE-may", "Shinkei": "SHIN-kay"}`. Do NOT write the
+respelling into a transcript line.
+
+This rule exists because the earlier instruction, "respell tricky proper nouns
+phonetically in the transcript only", was impossible to obey. `_reconcile_plan_with_script`
+compares every plan line against the locked `vo_script.txt` and rebuilds the plan from the
+script wherever they differ, so a respelled line was read as a STALE PLAN and reverted on
+every run. The 2026-08-07 run watched it happen twice in its own log.
+
+And the reconciler was right to revert it. The transcript has to stay byte-identical to the
+locked script for two downstream reasons: `vo_soundcheck` measures word accuracy by
+comparing the ASR transcript against that script, so a respelled word reads as an error and
+inflates WER on a clean take, and the burned captions come from the script, so a respelled
+transcript would burn text the voice never said.
+
+`vo_synth_gemini.py` now injects the map as a `Pronunciation:` direction line ABOVE the
+`Transcript:` delimiter, where the model reads it as instruction and never speaks it, and
+the transcript below stays exactly the locked copy.

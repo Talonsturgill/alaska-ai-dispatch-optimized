@@ -1,0 +1,35 @@
+{
+  "run_date": "2026-08-07",
+  "story": "shinkei-cook-inlet-harvest-robot",
+  "rule": "Only these strings may appear on screen or in the VO. Every 'labeled' claim carries its label out loud.",
+  "claims": [
+    {"id":"c1","status":"verified","on_screen":"SHINKEI SYSTEMS · EL SEGUNDO, CA · FOUNDED 2021","spoken":"a robotics company called Shinkei Systems, founded in twenty twenty one","source":"shinkei.systems/about","note":"company's own about page"},
+    {"id":"c2","status":"verified","on_screen":"SAIF KHAWAJA, CO-FOUNDER","spoken":"co-founder Saif Khawaja","source":"techcrunch.com 2024-04-30"},
+    {"id":"c3","status":"labeled","on_screen":"REED GINSBERG, CO-FOUNDER AND CTO","spoken":"co-founder and C T O Reed Ginsberg","source":"Robotics and Automation News 2026-07-30","requires":"single-sourced; attribute to the outlet if named on screen"},
+    {"id":"c4","status":"verified","on_screen":"POSEIDON (PSDN)","spoken":"a robot called Poseidon","source":"shinkei.systems/technology"},
+    {"id":"c9","status":"verified","on_screen":"MACHINE LEARNING FINDS THE BRAIN","spoken":"a machine learning model finds the brain of each individual fish","source":"techcrunch.com 2022-07-28 and 2024-04-30","note":"THE LOAD-BEARING VERIFIED AI CLAIM. Independently reported twice, not company copy. Applies to the flagship Poseidon."},
+    {"id":"c18","status":"verified","quote":true,"on_screen":"\"THE BRAIN CAN BE IN A DIFFERENT LOCATION\"","spoken":"even in the same species, even with the same contour, the brain can be in a different location","source":"Saif Khawaja, TechCrunch, 2022-07-28","note":"verbatim; this is WHY the problem needs a model at all"},
+    {"id":"c10","status":"verified","on_screen":"IKE JIME · SPIKE, BLEED, SPINAL CORD","spoken":"the technique is called ike jime, a spike to the brain, then bleeding, then the spinal cord","source":"techcrunch.com 2022-07-28 + shinkei.systems/technology"},
+    {"id":"c5","status":"labeled","on_screen":"PSDN-S (COMPANY SAYS)","spoken":"a smaller model the company calls P S D N dash S","source":"Robotics and Automation News 2026-07-30","requires":"must carry 'the company says'"},
+    {"id":"c6","status":"labeled","on_screen":"NEARLY 60% SMALLER (COMPANY SAYS)","spoken":"nearly sixty percent smaller than the flagship, the company says","source":"Robotics and Automation News 2026-07-30","requires":"must carry 'the company says'"},
+    {"id":"c7","status":"labeled","on_screen":"COOK INLET · ANNOUNCED, NOT CONFIRMED","spoken":"the company says it is partnering with fishermen in Cook Inlet","source":"Robotics and Automation News 2026-07-30","requires":"NEVER present tense operational. No boat count exists. No start date exists."},
+    {"id":"c8","status":"labeled","on_screen":"ROBOT FREE · CATCH BOUGHT AT A PREMIUM","spoken":"the company says it gives fishermen the robot for free and buys their catch at a premium","source":"Robotics and Automation News 2026-07-30","requires":"no dollar figure exists anywhere; do not invent one"},
+    {"id":"c11","status":"labeled","on_screen":"3x SHELF LIFE (COMPANY CLAIM)","spoken":"the company claims about three times the shelf life","source":"shinkei.systems/technology","requires":"no independent lab figure exists"},
+    {"id":"c14","status":"verified","on_screen":"1,300+ UPPER COOK INLET PERMITS","spoken":"Upper Cook Inlet alone holds more than thirteen hundred salmon permits","source":"Alaska Department of Fish and Game","note":"THE FAIR COUNTER-POINT ANCHOR. About ten percent of every commercial salmon permit in Alaska."},
+    {"id":"c15","status":"verified","on_screen":"2024 GOAL: 10 MACHINES, COMPANY-WIDE","spoken":"as recently as twenty twenty four the company's own goal was ten machines in use, company wide","source":"techcrunch.com 2024-04-30","requires":"must say 2024 and company-wide, not Alaska"},
+    {"id":"c16","status":"verified","on_screen":"$6M RAISED, LED BY CANTOS (2024)","spoken":"six million dollars, led by the firm Cantos","source":"techcrunch.com 2024-04-30"},
+    {"id":"c17","status":"labeled","on_screen":"$22M SERIES A (COMPANY SAYS, 2025)","spoken":"the company says it raised twenty two million more in twenty twenty five","source":"shinkei.systems/about"},
+    {"id":"c13","status":"verified","quote":true,"on_screen":"\"IF IT WORKS WHERE PEOPLE ACTUALLY FISH\"","spoken":"our technology only matters if it works in the environments where people actually fish","source":"Reed Ginsberg, Robotics and Automation News, 2026-07-30","note":"verbatim, exact string confirmed"},
+    {"id":"c19","status":"verified","on_screen":"ONE TRADE WRITE-UP · NO ALASKA OUTLET","spoken":"one trade write up carries the whole Alaska story, and no Alaska outlet has covered it","source":"this run's search of ADN, Alaska Beacon, KDLG, Alaska Public Media, National Fisherman, IntraFish, Undercurrent News, SeafoodSource","requires":"say 'as of this week' — it is a statement about the record on 2026-08-07"}
+  ],
+  "killed": [
+    "PSDN-S units are operating on Cook Inlet boats this season (no boat count, no start date, no operational confirmation anywhere)",
+    "any dollar premium paid to fishermen (no figure published anywhere)",
+    "any count of PSDN-S units in the field or fish processed in Alaska",
+    "current-season Upper Cook Inlet sockeye harvest tonnage or ex-vessel value (ADFG season PDF unreadable this run; no number is safe)",
+    "named restaurants serving Shinkei-processed Alaska sockeye (no restaurant confirms; the company's own consumer site lists a different, only partly overlapping roster tied to black cod)",
+    "that PSDN-S carries the identical AI stack as Poseidon (company assertion only; the independent reporting covers the flagship)"
+  ],
+  "cultural_flags": [],
+  "on_screen_numbers_are_illustrative_note": "Every figure on screen comes from this file. The 1,300+ permit count is ADFG. The 60 percent, the 3x shelf life, the free-robot deal and the Cook Inlet partnership are the company's own claims and are labeled as such on screen."
+}

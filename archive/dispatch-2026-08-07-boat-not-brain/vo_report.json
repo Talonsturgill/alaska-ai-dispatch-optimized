@@ -1,0 +1,81 @@
+{
+  "backend": "gemini-tts",
+  "model": "gemini-3.1-flash-tts-preview",
+  "voice": "Sulafat",
+  "take": 2,
+  "takes": 3,
+  "soundcheck": {
+    "pass": true,
+    "score": 0.983,
+    "heard": "There's a spot behind a salmon's eye, the size of a pea. Hit it exactly, and the fish dies instantly. The flesh stays firm days longer. The Japanese call it EKG-MA, spike the brain, bleed it, take the spinal cord. It's a hand skill that takes years, almost nobody on a small boat has it. So a company, Shinkai Systems, built a robot to do it. Here's the part that's actually hard. The spot moves. Their founder put it plainly. Even in the same species, even with the same contour, the brain can be in a different location. So you can't build a jig. A jig only works when the target never moves. This one has to look at each fish and decide. That's the machine learning, not the spike, the looking. On July 30th, the company said it's bringing a smaller one to Alaska's cook inlet. Nearly 60% smaller, they say. The robot's free and they buy your fish at a premium. How much? There's no number anywhere. The fair case for patients. Every real pilot starts here. One boat, one right up. Their CTO said it. Our technology only matters if it works in the environments where people actually fish. So fleet numbers on day one isn't fair. But you can't ask what's on the water. This week, one trade right up carries the whole Alaska story. No Alaska outlet has touched it, no boat count. From 2024, their own goal was 10 machines, company wide. Upper cook inlet holds more than 1300 salmon permits, about a tenth of every permit in Alaska, and everyone is a different boat, different deck, different rail. The brain was the hard problem, and it's solved. The boat is the one still out there.",
+    "checks": {
+      "word_accuracy": {
+        "wer": 0.034,
+        "pass": true
+      },
+      "no_leak": {
+        "leaked": [],
+        "pass": true
+      },
+      "expressive": {
+        "pitch_std_semitones": 5.31,
+        "voiced_frac": 0.42,
+        "pass": true
+      },
+      "duration": {
+        "seconds": 133.4,
+        "pass": true
+      },
+      "loudness": {
+        "lufs": null,
+        "pass": true
+      }
+    },
+    "diagnosis": "clean",
+    "seconds": 133.4,
+    "in_target_band": false,
+    "selection": "NO take landed in 112-130s; chose the one closest to 120s"
+  },
+  "prompt_repairs": [
+    "VO PLAN IS STALE. vo_direction.json does not match vo_script.txt.",
+    "  script lines: 29    plan lines: 29",
+    "  line 2:\n    script: The Japanese call it ike jime. Spike the brain, bleed it, take the spinal cord.\n    plan:   The Japanese call it EE-kay JEE-may. Spike the brain, bleed it, take the spinal cord.",
+    "  line 4:\n    script: So a company, Shinkei Systems, built a robot to do it.\n    plan:   So a company, SHIN-kay Systems, built a robot to do it.",
+    "REPAIRING: the SCRIPT is the source of truth (it is the locked copy the fact-check and the caption both key off), so the plan is rebuilt from it. Per-line direction is preserved for every line whose spoken text is unchanged; changed or new lines carry no inline tags, which is the safe default because an unvetted tag risks being read aloud."
+  ],
+  "runtime_warning": "RUNTIME 133.4s is outside the 112-130s band (target 120s) after a re-roll. Delivered 134.9 wpm over 300 words; at that rate 120s wants about 270 words (cut roughly 30). The pace paragraph was already repaired to name the runtime, so the remaining gap is script length. SHIPPING THE BEST TAKE ANYWAY: a delivered film with a stated miss beats a stopped run.",
+  "all_reports": [
+    {
+      "pass": true,
+      "score": 0.973,
+      "diagnosis": "clean"
+    },
+    {
+      "pass": true,
+      "score": 0.977,
+      "diagnosis": "clean"
+    },
+    {
+      "pass": true,
+      "score": 0.983,
+      "diagnosis": "clean"
+    },
+    {
+      "pass": true,
+      "score": 0.983,
+      "diagnosis": "clean"
+    },
+    {
+      "pass": true,
+      "score": 0.982,
+      "diagnosis": "clean"
+    },
+    {
+      "pass": true,
+      "score": 0.983,
+      "diagnosis": "clean"
+    }
+  ],
+  "watermark": "SynthID (Google) embedded in all Gemini TTS audio",
+  "license": "Google Gemini API preset voice (per-use billing)"
+}

@@ -1,0 +1,109 @@
+{
+  "run_date": "2026-08-07",
+  "window_days": 10,
+  "rungs": [
+    {
+      "rung": "in_window_sweep",
+      "attempted": true,
+      "note": "4 researchers, beats: gov/.edu science + primary-source award mining, fisheries/wildlife/Native-led/health/workforce, energy/aviation/defense, breaking-news wildcard. Search budget respected (20 max each, ~71 of 200 used)."
+    },
+    {
+      "rung": "outlet_index_sweep",
+      "attempted": true,
+      "note": "WebFetch sweep of 26 Alaska outlet indexes (adn, alaskabeacon, alaskapublic, ktoo, kuac, kucb, kyuk, kdlg, kfsk, kstk, newsminer, juneauempire, peninsulaclarion, homernews, cordovatimes, alaskasnewssource, akbizmag, northernjournal, mustreadalaska, alaskalandmine, gov.alaska.gov, alaska.edu, uaf.edu, alaska-native-news). Thin AI week on the front pages."
+    },
+    {
+      "rung": "widened_window",
+      "attempted": true,
+      "note": "Re-swept to 30+ days; surfaced the May 23rd IJCH Alaska Native health AI symposium paper, never covered by any Alaska outlet."
+    },
+    {
+      "rung": "primary_source_mining",
+      "attempted": true,
+      "note": "NSF award API (api.nsf.gov + research.gov), DOE/OSTI, PMC. Surfaced NSF #2608510 (GAIA/Tape) and NSF #2614749 (UAA bio-refinery)."
+    }
+  ],
+  "candidates": [
+    {
+      "slug": "shinkei-cook-inlet-harvest-robot",
+      "headline": "Shinkei Systems ships a smaller onboard harvesting robot to Cook Inlet sockeye fishermen",
+      "date": "2026-07-30",
+      "dedupe": "FRESH",
+      "valence": "positive",
+      "status": "LOCKED",
+      "why": "In window, genuine robotics on real Alaska boats, strong visual story, rotates register off two cautionary/mixed runs."
+    },
+    {
+      "slug": "aths-ai-sovereignty",
+      "headline": "Alaska Tribal Health System publishes a sovereignty-first framework for AI in Alaska Native health care",
+      "date": "2026-05-23",
+      "dedupe": "FRESH",
+      "valence": "positive-cautionary",
+      "status": "fact-checked, thinned",
+      "why": "Real and unreported, but adversarial check downgraded the medevac and sepsis tools to hypothetical discussion scenarios, leaving one unnamed AI-scribe deployment as the only concrete fact."
+    },
+    {
+      "slug": "nsf-gaia-tape",
+      "headline": "NSF award #2608510 to UAF for AI surrogate models and geohazard digital twins",
+      "date": "2026-08-01",
+      "dedupe": "DUP",
+      "valence": "positive",
+      "status": "rejected",
+      "why": "Already covered in the 2026-07-25 dispatch, which names award 2608510, the $1,772,170 figure, the 2026-08-01 start and the 2032 end. The researcher's claim that it is a distinct award is wrong."
+    },
+    {
+      "slug": "uaa-bio-refinery",
+      "headline": "UAA-led NSF award #2614749, AI-run bio-refinery recovering rare earths from coal waste",
+      "date": "2026-09-01",
+      "dedupe": "token-collision only",
+      "valence": "positive",
+      "status": "held as backup",
+      "why": "Real and unreported, but the award has not started yet and there is nothing built to show."
+    },
+    {
+      "slug": "adak-internet-subsidy",
+      "headline": "ADN/ProPublica: $340,000 a year to wire empty buildings on Adak",
+      "date": "2026-07-30",
+      "dedupe": "fresh",
+      "valence": "cautionary",
+      "status": "rejected",
+      "why": "Strong reporting but explicitly not an AI story, and a third consecutive cautionary register."
+    },
+    {
+      "slug": "alaska-internet-desert",
+      "headline": "Alaska scores 0 of 100 in a 2026 state internet index",
+      "date": "2026-07-30",
+      "dedupe": "fresh",
+      "valence": "cautionary",
+      "status": "rejected",
+      "why": "A vendor ranking, not primary data, and cautionary register again."
+    },
+    {
+      "slug": "coast-guard-vbat-kodiak",
+      "headline": "Coast Guard flies a V-BAT autonomy drone off a cutter out of Kodiak",
+      "date": "2026-05-27",
+      "dedupe": "fresh",
+      "valence": "positive",
+      "status": "rejected",
+      "why": "The AI claim rests on the vendor's general spec sheet, not on anything tied to this patrol. The researcher flagged it as unconfirmed."
+    },
+    {
+      "slug": "seward-avalanche-amad",
+      "headline": "Alaska DOT avalanche infrasound network, with the ML layer still unbuilt",
+      "date": "2026-03-25",
+      "dedupe": "fresh",
+      "valence": "mixed",
+      "status": "rejected",
+      "why": "The developer describes the machine-learning classifier as a wish, not a shipped feature. No AI to report yet."
+    }
+  ],
+  "locked_story": {
+    "slug": "shinkei-cook-inlet-harvest-robot",
+    "title": "THE MACHINE IS READY. THE FLEET IS NOT.",
+    "one_line": "A robot that uses machine learning to find an individual salmon's brain is real and independently documented. Its arrival in Cook Inlet is one trade write-up with no boat count, against a fishery of more than 1,300 permits.",
+    "why": "In window (July 30th), genuine and independently reported AI mechanism, superb library fit, and a fair counter-point anchored to a hard ADFG number. Rotates the register off two cautionary and mixed runs without becoming a booster.",
+    "headline": "THE MACHINE IS READY. THE FLEET IS NOT.",
+    "found_at_rung": "in_window_sweep"
+  },
+  "found_at_rung": "in_window_sweep"
+}

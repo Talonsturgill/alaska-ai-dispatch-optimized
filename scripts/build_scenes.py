@@ -81,7 +81,17 @@ TAIL = 2.6  # hold after the last word
 # S7 L12-13 (the mechanism and the growing line), S8 L14-16 (the curve, one technician,
 # the spool), S9 L17-18 (the quote, the idea, the attorneys), S10 L19-21 (the concession,
 # the denial, the fusion), S11 L22-24 (the date, the wall, the button).
-SCENE_START_LINE = [0, 2, 4, 6, 9, 11, 13, 15, 17, 20, 22]
+# 2026-08-07 "The Boat, Not The Brain": TWELVE scenes (S1..S12 in video-engine/src/Ep0807.tsx)
+# onto 29 VO lines. Boundaries are anchored to VO LINE STARTS so the picture can never drift
+# from the words. S1 L0-L1 (the held breath, the spike that does not descend), S2 L2-L3 (ike
+# jime's three steps + the trained hand), S3 L4-L5 (the machine arrives + THE SPOT MOVES),
+# S4 L6-L7 (the founder quote drawn as three fish with three different true points),
+# S5 L8-L9 (the jig comes down straight and misses), S6 L10-L11 (the machine's own view +
+# the lock, THE LOOKING), S7 L12 (Cook Inlet + the dotted mark), S8 L13-L14 (the claim ledger
+# + the blank price tag), S9 L15-L18 (THE TEST, one boat one bay + the CTO quote),
+# S10 L19-L22 (the seam, one write-up, the empty rack, NO BOAT COUNT), S11 L23-L25 (ten
+# machines against 1,300+ permits), S12 L26-L28 (THE TURN to a dozen hulls + the button).
+SCENE_START_LINE = [0, 2, 4, 6, 8, 10, 12, 13, 15, 19, 23, 26]
 
 
 def _apply_caption_fixups(caps):

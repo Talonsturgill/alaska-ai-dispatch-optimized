@@ -1,0 +1,21 @@
+{
+  "thesis": "The hard part of putting a robot on a fishing boat is already solved, and it is not the part anyone expects. The unsolved part is the boat.",
+  "long_form": "A machine learning model finds the brain of each individual salmon, because the brain sits in a different place in every fish, which is why a jig cannot do this and a model must. That is real and was independently reported twice. What is not established is that any of it has reached Alaska. One trade write-up carries the entire Cook Inlet story, against more than thirteen hundred permits in that inlet alone.",
+  "valence": "curious",
+  "valence_defense": "Celebratory would overclaim an Alaska deployment nobody has confirmed. Cautionary would undersell engineering that two independent outlets verified two years apart. Curiosity is the only register that can hold a solved mechanism and an unconfirmed rollout at the same time, and it rotates off a wry run and a mixed one.",
+  "supporting_facts": [
+    "c9 + c18: computer vision and machine learning locate the brain of each individual fish. Khawaja, verbatim: the brain can be in a different location. That sentence is the whole reason a model is needed.",
+    "c15 + c14: the company's own 2024 goal was ten machines in use company-wide, across all fisheries. Upper Cook Inlet alone holds more than 1,300 permits, about a tenth of every salmon permit in Alaska.",
+    "c19: exactly one trade write-up carries the Alaska story. No Alaska outlet and no fisheries trade outlet has covered it."
+  ],
+  "fair_counterpoint_that_gets_a_scene": "This is exactly what a real pilot looks like on day one. One boat, one write-up, proof before scale. Demanding fleet-wide numbers from a seed-stage company's first Alaska mention is an unfair bar, and every genuine rollout in this fishery's history started smaller than its press release.",
+  "how_it_narrows_honestly": "The film does not call the Alaska claim false. It says the record is one write-up, names what would settle it, and leaves the question open on screen.",
+  "the_lazy_angle_we_refuse": "Robot comes for Alaska's fishermen. It is wrong on the facts: ike jime needs a trained hand and most small boats do not do it at all, so no job is being displaced. A skill that mostly was not there is being made reachable.",
+  "who_it_serves": "A Cook Inlet permit holder who heard this secondhand now knows which half is engineering and which half is a press release, and what question to ask before believing it applies to their boat.",
+  "runners_up": [
+    "SKEPTIC lens, pure sourcing story: rejected as the spine because a film whose subject is the thinness of a press release has no second movement and no mechanism to draw.",
+    "ENTHUSIAST lens, quality-at-capture as a small-boat lever: kept and grafted into Act 2, because it is the honest reason an Alaskan should care at all.",
+    "MECHANISM lens, automating access to a scarce hand skill: kept and grafted, and it supplies the refusal of the job-loss frame."
+  ],
+  "throughline_object": "THE TARGET DOT, the point the machine picks behind a salmon's eye"
+}

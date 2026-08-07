@@ -1,0 +1,123 @@
+{
+ "date": "2026-08-07",
+ "title": "The Boat, Not The Brain",
+ "lines": [
+  {
+   "i": 0,
+   "text": "There's a spot behind a salmon's eye the size of a pea."
+  },
+  {
+   "i": 1,
+   "text": "Hit it exactly and the fish dies instantly. The flesh stays firm days longer."
+  },
+  {
+   "i": 2,
+   "text": "The Japanese call it ike jime. Spike the brain, bleed it, take the spinal cord."
+  },
+  {
+   "i": 3,
+   "text": "It's a hand skill that takes years. Almost nobody on a small boat has it."
+  },
+  {
+   "i": 4,
+   "text": "So a company, Shinkei Systems, built a robot to do it."
+  },
+  {
+   "i": 5,
+   "text": "Here's the part that's actually hard. The spot moves."
+  },
+  {
+   "i": 6,
+   "text": "Their founder put it plainly."
+  },
+  {
+   "i": 7,
+   "text": "Even in the same species, even with the same contour, the brain can be in a different location."
+  },
+  {
+   "i": 8,
+   "text": "So you can't build a jig."
+  },
+  {
+   "i": 9,
+   "text": "A jig only works when the target never moves."
+  },
+  {
+   "i": 10,
+   "text": "This one has to look at each fish and decide."
+  },
+  {
+   "i": 11,
+   "text": "That's the machine learning. Not the spike. The looking."
+  },
+  {
+   "i": 12,
+   "text": "On July thirtieth, the company said it's bringing a smaller one to Alaska's Cook Inlet."
+  },
+  {
+   "i": 13,
+   "text": "Nearly sixty percent smaller, they say. The robot's free, and they buy your fish at a premium."
+  },
+  {
+   "i": 14,
+   "text": "How much? There's no number anywhere."
+  },
+  {
+   "i": 15,
+   "text": "The fair case for patience."
+  },
+  {
+   "i": 16,
+   "text": "Every real pilot starts here. One boat, one write up."
+  },
+  {
+   "i": 17,
+   "text": "Their C T O said it."
+  },
+  {
+   "i": 18,
+   "text": "Our technology only matters if it works in the environments where people actually fish."
+  },
+  {
+   "i": 19,
+   "text": "So fleet numbers on day one isn't fair."
+  },
+  {
+   "i": 20,
+   "text": "But you can ask what's on the water."
+  },
+  {
+   "i": 21,
+   "text": "This week, one trade write up carries the whole Alaska story."
+  },
+  {
+   "i": 22,
+   "text": "No Alaska outlet has touched it. No boat count."
+  },
+  {
+   "i": 23,
+   "text": "In twenty twenty four, their own goal was ten machines, company wide."
+  },
+  {
+   "i": 24,
+   "text": "Upper Cook Inlet holds more than thirteen hundred salmon permits."
+  },
+  {
+   "i": 25,
+   "text": "About a tenth of every permit in Alaska."
+  },
+  {
+   "i": 26,
+   "text": "And every one is a different boat. Different deck, different rail."
+  },
+  {
+   "i": 27,
+   "text": "The brain was the hard problem, and it's solved."
+  },
+  {
+   "i": 28,
+   "text": "The boat is the one still out there."
+  }
+ ],
+ "caption_fixups": {}
+}

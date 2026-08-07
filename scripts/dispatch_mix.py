@@ -80,48 +80,47 @@ _TAIL = 2.6   # matches scripts/build_scenes.py TAIL (hold after the last word)
 VIDEO_SECS = max(x["end"] for x in _lines) + _TAIL   # derive from VO; never hardcode
 
 EVENTS = [
-    # 2026-08-06, RE-DERIVED against the shipped take after the VO was re-cut. Times come
-    # from vo_lines.json, never typed. Families alternate so no two consecutive events
-    # share one (check_schedule hard-asserts). ONE riser, on the convergence.
-    (0.00, "tick", "standard", -0.35),   # the two objects exist before anything is claimed a
-    (0.41, "clank", "standard", 0.02),   # the machine attends, instantly
-    (2.65, "thud", "hero", 0.0),   # the ban is drawn before it is spoken
-    (5.31, "paper", "texture", 0.06),   # the two cities enter as two lit rectangles
-    (8.67, "snap", "hero", 0.0),   # THE PRIMARY LOOP IS PLANTED
-    (12.65, "pop", "standard", 0.1),   # the pull-back begins
-    (15.20, "creak", "texture", -0.23),   # REVEAL ONE, the HEADROOM the capture side is built
-    (18.57, "stamp", "hero", 0.0),   # the price lands on the room
-    (21.43, "chime", "standard", -0.19),   # the rule Anchorage actually wrote, drawn as the on
-    (24.69, "clank", "standard", 0.18),   # THROUGHLINE STATE TWO, scoped honestly. Claim c6 l
-    (27.34, "tick", "standard", -0.15),   # the code opens, and it is NOT empty. A surveillanc
-    (29.59, "thud", "standard", 0.22),   # REHOOK ONE. Not a hole in the law, a MISMATCH: the
-    (32.65, "tick", "standard", -0.11),   # the objection gets a name, a district and the APPR
-    (34.28, "clank", "standard", 0.26),   # ANCHORAGE'S REAL CARDS, and v1 gave them none. c11
-    (37.75, "thud", "hero", 0.0),   # THE FILM'S TITLE, PAID. The frame is the still poi
-    (41.01, "paper", "texture", 0.3),   # the corridor, and the primary loop touched once in
-    (44.79, "snap", "hero", 0.0),   # THROUGHLINE STATE THREE and THE SECOND LOOP PLANTE
-    (49.28, "pop", "standard", 0.34),   # the honest report
-    (52.54, "creak", "texture", 0.01),   # the tool's competence asserted by REPETITION AND S
-    (56.73, "stamp", "hero", 0.0),   # the mechanism opens
-    (59.79, "chime", "standard", 0.05),   # the half the machine took
-    (64.07, "clank", "standard", -0.28),   # REVEAL TWO and REHOOK TWO, the film's mechanism
-    (67.75, "tick", "standard", 0.09),   # who the judgment half actually is
-    (70.91, "thud", "standard", -0.24),   # the load arrives
-    (74.38, "tick", "standard", 0.13),   # the curve breaks
-    (75.60, "clank", "standard", -0.2),   # THE DIP and THROUGHLINE STATE FOUR
-    (80.50, "thud", "hero", 0.0),   # the other side speaks and it is not a straw man. T
-    (84.68, "paper", "texture", -0.16),   # the law drawn as a KNOWN OBJECT WITH FIXED CAPACIT
-    (89.68, "snap", "hero", 0.0),   # the throughline object is BACK, and the thing that
-    (93.25, "pop", "standard", -0.12),   # the idea floated at the table, drawn as a slip tha
-    (96.21, "creak", "texture", 0.25),   # THE CONCESSION, drawn on a THING. The problem is r
-    (98.97, "stamp", "hero", 0.0),   # THE SECOND LOOP PAYS WITH AN EVENT AND A UNIT. v1 
-    (103.56, "chime", "standard", 0.29),   # the film's sharpest line, drawn
-    (107.13, "riser", "hero", 0.0),   # the film's argument in one line gets the two opera
-    (110.90, "tick", "standard", 0.33),   # REVEAL THREE and THE PRIMARY LOOP PAYS
-    (113.76, "thud", "standard", 0.0),   # the one thing a viewer is meant to act on, drawn a
-    (115.80, "tick", "standard", -0.33),   # the pre-button dip
-    (117.94, "clank", "standard", 0.04),   # THE SIGNATURE SHOT, and it now states the thesis a
-    (121.41, "thud", "hero", 0.0),   # the button
+    # 2026-08-07 "The Boat, Not The Brain". PER-RUN DATA, generated from this board's own
+    # 37 beats scaled onto the delivered take (vo_lines.json), never typed by hand and never
+    # carried over. Families cycle so no two consecutive events share one. ONE riser, on the
+    # rise into the fleet pullback.
+    (0.00, "tick", "standard", -0.35),   # the raw frame, one fish and one worn spike, nothing claimed yet
+    (2.22, "clank", "standard", -0.09),   # the trained hand marks the spot by eye
+    (5.98, "thud", "standard", 0.17),   # what an exact hit buys you
+    (8.42, "paper", "hero", 0.0),   # the spike still has not landed
+    (13.07, "snap", "standard", -0.01),   # the technique gets its name and its three steps
+    (15.95, "pop", "standard", 0.24),   # the second step, drawn honestly
+    (20.16, "creak", "standard", -0.2),   # what the skill actually costs
+    (22.60, "stamp", "texture", 0.06),   # almost nobody on a small boat has it
+    (27.70, "chime", "standard", 0.32),   # the machine arrives
+    (31.02, "tick", "standard", -0.12),   # the actual hard part, named
+    (33.23, "clank", "standard", 0.14),   # the founder is about to be quoted
+    (38.11, "thud", "texture", -0.3),   # three fish, three different true points
+    (40.99, "paper", "standard", -0.04),   # a ruler tries to predict the third and fails
+    (45.20, "snap", "standard", 0.22),   # so a jig is ruled out
+    (47.64, "pop", "standard", -0.22),   # the jig comes down anyway, perfectly straight
+    (52.95, "creak", "texture", 0.04),   # what the machine has to do instead
+    (55.61, "stamp", "hero", 0.0),   # the lock
+    (59.60, "chime", "standard", -0.15),   # the announcement lands on a real place
+    (61.82, "tick", "standard", 0.11),   # the machine outline arrives DOTTED
+    (66.91, "clank", "texture", -0.33),   # the claims type on, each labeled
+    (70.02, "thud", "standard", -0.07),   # the free robot and the premium
+    (73.78, "paper", "hero", 0.0),   # the number that does not exist
+    (76.22, "snap", "standard", -0.25),   # the film turns to the other side
+    (81.54, "pop", "hero", 0.0),   # this is what a real pilot looks like
+    (84.42, "creak", "standard", 0.27),   # their CTO is quoted straight
+    (88.63, "stamp", "standard", -0.17),   # the quote lands and is allowed to sit
+    (90.84, "chime", "standard", 0.08),   # so the unfair bar is named and refused
+    (95.72, "tick", "texture", 0.34),   # but the fair question is asked
+    (99.04, "clank", "standard", -0.1),   # one write-up on one side
+    (101.48, "thud", "hero", 0.0),   # an empty rack on the other
+    (106.57, "paper", "standard", -0.28),   # no boat count, stamped
+    (109.68, "snap", "hero", 0.0),   # the company's own number
+    (113.66, "pop", "standard", 0.24),   # the permits build around them
+    (116.32, "creak", "standard", -0.2),   # about a tenth of the whole state
+    (121.64, "stamp", "hero", 0.0),   # THE TURN, the pullback to a dozen different hulls
+    (124.96, "riser", "hero", 0.0),   # the hulls settle and the mark has nowhere to sit
+    (129.39, "tick", "hero", 0.0),   # the last image, the mark at rest on the spike
 ]
 
 
@@ -148,22 +147,24 @@ EVENTS = [
 # Multipliers are relative to the bed's base level, so the shape lives here and the level
 # lives in one place in the graph.
 BED_ARC = [
-    # 2026-08-06, re-derived on the shipped take. Two real floors (the desk, the pre-button),
-    # two peaks (the mechanism, the thesis). Depth set so LRA clears its 6.0-9.0 target.
-    (0.00, 0.874),
-    (10.36, 1.21),
-    (24.76, 1.378),
-    (36.04, 1.042),
-    (46.90, 1.462),
-    (56.26, 0.706),
-    (65.32, 1.63),
-    (78.90, 1.336),
-    (93.20, 0.58),
-    (104.66, 1.252),
-    (115.14, 1.546),
-    (118.84, 0.42),
-    (124.04, 1.05),
-    (125.84, 0.9),
+    # 2026-08-07, derived on the delivered take and CLAMPED to the film's own length.
+    # Two real floors (the CTO quote at the heart of Act 3, and the pre-button hold) and
+    # two peaks (the lock, and the permit-field reveal). Regenerated per run.
+    (0.00, 0.86),
+    (9.97, 1.16),
+    (29.69, 1.34),
+    (42.10, 1.02),
+    (55.61, 1.46),
+    (66.47, 0.9),
+    (73.78, 1.3),
+    (84.42, 0.56),
+    (95.27, 1.1),
+    (109.68, 1.4),
+    (121.64, 1.52),
+    (124.96, 0.44),
+    (132.94, 1.02),
+    (135.34, 0.72),
+    (135.39, 0.72),
 ]
 
 # A WIND BED FOR THE COUNTRY THE FILM DRIVES INTO. The same panel note asked for ambience,

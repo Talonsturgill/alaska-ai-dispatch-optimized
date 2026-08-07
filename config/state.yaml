@@ -9,8 +9,8 @@ dispatch_seconds_band:
 - 112
 - 130
 dispatch_vo_words_band:
-- 280
-- 300
+- 262
+- 282
 dispatch_history:
 - date: 2026-06-24
   topic: Cook Inlet beluga acoustic AI (NOAA + Microsoft AI for Good)
@@ -1426,3 +1426,59 @@ dispatch_history:
       judgment
     metaphor: the same face and the same plate, found in one city and hidden in the
       other, out of the same footage
+- date: '2026-08-07'
+  topic: 'THE BOAT, NOT THE BRAIN: Shinkei Systems'' harvesting robot uses computer
+    vision and machine learning to find the brain of each INDIVIDUAL salmon, because
+    that spot sits in a different place in every fish, which is why a fixed jig fails
+    and a model is required (independently reported by TechCrunch in 2022 and again
+    in 2024; founder Khawaja verbatim). The technique is ike jime, a hand skill taking
+    years that almost nobody on a small Alaska boat has. On July 30th one PR-style
+    trade write-up said a smaller PSDN-S is coming to Cook Inlet, nearly 60 percent
+    smaller, robot free and catch bought at a premium, with NO dollar figure, NO boat
+    count and NO start date anywhere, and no Alaska outlet or fisheries trade outlet
+    has covered it. Set against that: the company''s own 2024 goal was ten machines
+    COMPANY WIDE, while Upper Cook Inlet alone holds more than 1,300 salmon permits,
+    about a tenth of Alaska''s total (ADFG). Earned angle: the hard part, perception,
+    is solved and the unsolved part is the boat. Act 3 gives the fair case for patience
+    its own scene.'
+  slug: dispatch-2026-08-07-boat-not-brain
+  key_entities:
+  - shinkei systems
+  - harvesting robot
+  - ike jime
+  - psdn-s
+  - poseidon
+  - saif khawaja
+  - reed ginsberg
+  - sockeye
+  - upper cook inlet permits
+  - computer vision brain location
+  - seremoni grade
+  - setnet
+  archetype: 'instrument-and-fleet: a perception overlay on an organic subject, pulled
+    back to a mismatched fleet'
+  palette: dawn Cook Inlet jade water, low gold sun, wet aluminium, sockeye chrome
+    with one carmine flank, single cyan reticle
+  voice: gemini-3.1-flash-tts-preview:Sulafat
+  stance: curious
+  angle: The hard part of putting a robot on a fishing boat is already solved, and
+    it is not the part anyone expects. The unsolved part is the boat.
+  hero: ReticleArm
+  cast:
+  - ReticleArm
+  - Salmon (chrome sockeye)
+  - FishingBoat x12
+  - Character (setnetter)
+  - SearchReticle/PendingMark/CandidateField/ClaimChip from the new lib/vision.tsx
+  composition:
+    pov: macro-closeup
+    layout: single-object-void
+    motion_vector: horizontal-traverse
+    hero_treatment: multiplicity-swarm
+    register: instrument-readout
+    camera_strategy: rise-reveal
+    light_story: dawn-backlight
+    palette: dawn Cook Inlet jade water, low gold sun, wet aluminium, sockeye chrome
+      with one carmine flank, single cyan reticle
+    metaphor: a mark that finds its target perfectly and then finds no boat to sit
+      on

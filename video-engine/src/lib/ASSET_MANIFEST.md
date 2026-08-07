@@ -534,3 +534,43 @@ this engine had attempted faked the key by hand-pinning a fill at the call site.
 - KNOWN NEXT ADVANCE: no look-dev harness was built this run. ScreenLook.tsx at three distances
   plus a 0.28-scale legibility strip was specified at Gate 0D and deferred under time. Build it
   before the next screen-lit story leans on this.
+
+## MACHINE VISION — lib/vision.tsx (CRAFT ADVANCE 2026-08-07)
+
+This channel keeps telling stories about machines that PERCEIVE (the orbital eye 07-23, the
+ground ear 07-25, the plate reader 08-06, and now a robot that finds a fish's brain), and every
+one of those runs hand-rolled its own reticle inside its own episode file, so nothing compounded.
+This makes perception a first-class library layer.
+
+Design rule it encodes: a perception overlay is the ONLY EMISSIVE thing in a frame. It does not
+reflect the scene's light, it emits its own, so it is drawn with hairline strokes and a bloom that
+never washes the subject, and its color should appear nowhere else in the film.
+
+- `SearchReticle` — the hunting-to-locked mark. `lock` 0..1 drives width, dash, bloom and four
+  converging corner ticks with a real overshoot at ~0.8 before settling. While hunting it samples
+  ghosted candidate rejects. It NEVER stops moving (`searchDrift` runs on irrational periods), so a
+  hold of any length still breathes, which is the DISPATCH_STANDARD section 8 finding applied at the
+  component level rather than left to each scene. `label` prints a mono tag under it — ACTIVE
+- `PendingMark` — a mark that has NOT landed: dotted, unlit, slowly rotating dash offset. This is how
+  an announced-but-unconfirmed thing gets drawn without either asserting or sneering at it — ACTIVE
+- `CandidateField` — N targets, each with its TRUE point passed in independently. The whole thesis of
+  the 2026-08-07 dispatch as a component: the target is NOT where a template says it is, so the
+  offsets are data per target and a ghosted "where a fixed guide would have guessed" ring is drawn
+  beside each one — ACTIVE
+- `ConfidenceBloom` — a single expanding ring on a lock. Use sparingly — ACTIVE
+- `VisionGrid` — hairline scan grid plus a travelling scanline, for a shot that is explicitly the
+  machine's own view — ACTIVE
+- `ClaimChip` — an ink-outlined chip that LABELS a claim as somebody's assertion rather than as fact,
+  with a mono sub-line (used this run as COMPANY SAYS). The sourcing discipline as a drawable object — ACTIVE
+- `CYAN` / `searchDrift()` — the palette token and the drift function, exported so a scene can park
+  something else on the same irrational motion.
+
+## Characterized objects, added 2026-08-07
+- `ReticleArm` — NET-NEW 2026-08-07, hero of "The Boat, Not The Brain". A gantry arm with a rail,
+  a cross beam, a lens head and a spike carriage. Deliberate shape language: PURE MACHINED
+  ORTHOGONAL against a film whose every other form is an organic taper (a salmon, a gloved hand, a
+  worn wooden spike). It has ONE glass eye with a real specular and NO FACE, on purpose: the film
+  must not make it sympathetic or sinister, only exact. `drop` 0..1 lowers the carriage, `spike`
+  0..1 drives the striker, `look` steers the head. Cable loom carries secondary motion that swings
+  AFTER the arm. Form-shaded + rim + contact shadow — Ep0807.tsx — ACTIVE
+  (Episode-local for now. Promote to kit.tsx when a second story needs a gantry.)

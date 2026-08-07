@@ -1,0 +1,100 @@
+{
+  "note": "frame 1 vs frame 8 of each filmstrip window, measured on the delivered cut. changed_pct is the share of pixels differing by more than 12/255. A judge who cannot SEE motion in a strip should read this before recording that the beat is frozen.",
+  "strips": {
+    "mark": {
+      "centre_s": 1.35,
+      "changed_pct": 11.1,
+      "peak_delta": 229
+    },
+    "hover": {
+      "centre_s": 5.58,
+      "changed_pct": 11.7,
+      "peak_delta": 254
+    },
+    "steps": {
+      "centre_s": 13.4,
+      "changed_pct": 8.6,
+      "peak_delta": 165
+    },
+    "card": {
+      "centre_s": 19.82,
+      "changed_pct": 4.9,
+      "peak_delta": 253
+    },
+    "armdrop": {
+      "centre_s": 25.9,
+      "changed_pct": 6.3,
+      "peak_delta": 226
+    },
+    "look": {
+      "centre_s": 30.46,
+      "changed_pct": 3.8,
+      "peak_delta": 236
+    },
+    "points": {
+      "centre_s": 37.74,
+      "changed_pct": 6.4,
+      "peak_delta": 214
+    },
+    "rule": {
+      "centre_s": 39.62,
+      "changed_pct": 6.2,
+      "peak_delta": 228
+    },
+    "jigmiss": {
+      "centre_s": 47.11,
+      "changed_pct": 9.9,
+      "peak_delta": 215
+    },
+    "lock": {
+      "centre_s": 54.12,
+      "changed_pct": 12.8,
+      "peak_delta": 235
+    },
+    "pending": {
+      "centre_s": 64.08,
+      "changed_pct": 3.1,
+      "peak_delta": 255
+    },
+    "tag": {
+      "centre_s": 68.88,
+      "changed_pct": 14.4,
+      "peak_delta": 220
+    },
+    "crate": {
+      "centre_s": 78.32,
+      "changed_pct": 4.1,
+      "peak_delta": 226
+    },
+    "quote": {
+      "centre_s": 86.52,
+      "changed_pct": 9.9,
+      "peak_delta": 254
+    },
+    "seam": {
+      "centre_s": 93.04,
+      "changed_pct": 5.9,
+      "peak_delta": 253
+    },
+    "stamp": {
+      "centre_s": 99.98,
+      "changed_pct": 2.3,
+      "peak_delta": 175
+    },
+    "field": {
+      "centre_s": 112.5,
+      "changed_pct": 2.3,
+      "peak_delta": 249
+    },
+    "rise": {
+      "centre_s": 124.26,
+      "changed_pct": 8.8,
+      "peak_delta": 255
+    },
+    "button": {
+      "centre_s": 131.46,
+      "changed_pct": 6.3,
+      "peak_delta": 214
+    }
+  }
+}

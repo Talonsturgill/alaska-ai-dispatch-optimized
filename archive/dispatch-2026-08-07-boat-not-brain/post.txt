@@ -1,0 +1,21 @@
+A robot that kills a salmon well has to solve a problem I did not expect.
+
+The spot you have to hit sits behind the eye, about the size of a pea. Hit it exactly and the fish dies instantly, with no thrashing and no stress response, and the flesh stays firm for days longer. The Japanese call it ike jime. It is a hand skill that takes years. Almost nobody on a small Alaska boat has it.
+
+So Shinkei Systems built a machine to do it. Here is the part that is actually interesting. The spot moves. Their founder put it plainly in 2022. Even in the same species, even with the same contour, the brain can be in a different location.
+
+That one sentence rules out a jig. A fixed guide only works when the target never moves. So the machine has to look at each individual fish and decide, which is the only reason there is a model in it. The achievement is not the spike. It is the looking. Reporters watched that system work in 2022 and again two years later.
+
+On July 30th the company said it is bringing a smaller version to Alaska's Cook Inlet. Nearly sixty percent smaller, they say. The robot is free and they buy your fish at a premium. No dollar figure exists anywhere.
+
+Now the fair case for patience, and it is a good one. Every real pilot starts exactly here. One boat, one dock, one write up. Their CTO said their technology only matters if it works in the environments where people actually fish. That is the correct problem to name.
+
+You are still allowed to ask what is on the water. This week one trade write up carries the whole Alaska story. No Alaska outlet has touched it. There is no boat count and no start date. In 2024 the company's own goal was ten machines, company wide, across every fishery. Upper Cook Inlet alone holds more than 1,300 salmon permits, about a tenth of every permit in the state.
+
+And every one of those is a different boat. Different deck, different rail, different everything.
+
+The brain was the hard problem and it is solved. The boat is the one still out there.
+
+What would you need to see before you believed a machine like this belonged on your deck?
+
+#Alaska #ArtificialIntelligence #Robotics #CommercialFishing #CookInlet

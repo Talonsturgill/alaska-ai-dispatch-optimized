@@ -835,7 +835,10 @@ or consciously revise the plan (and say why in the retrospective).
 ### 4.2 The VO (write it to be performed)
 
 THE FORMAT IS 120 SECONDS as of 2026-08-05 (owner directive, up from 90).
-~280 to 300 words in the owner's voice. Accepted runtime band is 112 to 130 seconds, because
+~262 to 282 words in the owner's voice. NARROWED 2026-08-07: the old 280-300 came from a
+probe that measured 142-144 wpm on a synthetic script. A real run at 300 words came back at
+134.9 wpm and 133.4 seconds, over the band, and three re-rolls landed worse. Read the words
+band out of config/state.yaml rather than from this sentence. Accepted runtime band is 112 to 130 seconds, because
 VO length comes from an actual synth and forcing an exact number costs a re-synth for no
 viewer-visible gain. Exceeding the band costs a re-synth after trimming.
 

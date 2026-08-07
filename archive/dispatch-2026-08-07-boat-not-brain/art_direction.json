@@ -1,0 +1,56 @@
+{
+  "run": "2026-08-07",
+  "title": "The Boat, Not The Brain",
+  "palette": {
+    "roles": {"sky": "#E8B braced", "note": "see hex block"},
+    "hex": {"sky": "#F2C77A", "water": "#2E5D57", "ground": "#8FA9A2", "hero": "#C9D3D6", "accent": "#39D7E6", "carmine": "#B4372F", "shadow": "#16211F", "brass": "#A9793C"},
+    "named": "dawn Cook Inlet: glacial jade water under a low gold sky, wet aluminum, sockeye chrome with one carmine flank, and a single cyan machine-vision reticle",
+    "mood": "cold water, warm light, one impossibly precise cyan mark that does not belong to nature",
+    "why_this_story": "The film argues that a machine's certainty is real and its arrival is not. So the world is painted as a real, cold, working morning and the ONLY synthetic color in it is the reticle. Cyan appears nowhere else, so every time the machine perceives something the frame tells you before the narration does.",
+    "divergence": "2026-08-05 was cabinet green, bone paper, brass and one teal. 2026-08-06 was municipal slate-blue night, signal orange, redaction grey and tungsten. Both were interiors lit by practicals. This is an exterior at dawn on water, and its accent is a cyan that neither film used."
+  },
+  "light": {
+    "time_of_day": "low dawn sun, about 15 degrees above a flat sea horizon, camera shooting INTO it",
+    "direction": "hard backlight from frame right, rim on every wet edge, long cool fill from the sky dome",
+    "key_fill_rim": "key is the sun disc itself (warm, low, small), fill is open sky bounced off water (cool jade), rim is the film's signature: every wet surface, fish, glove, gunwale and machine, carries a hot gold edge",
+    "depth_approach": "backlight plus water haze separates planes for free. Foreground gunwale in near silhouette, mid-plane the working surface fully lit, far plane the inlet flattened into bands by aerial perspective",
+    "why_this_story": "Backlight makes a wet fish read as chrome, which is what a sockeye actually looks like, and it makes the cyan reticle the only thing in frame that emits rather than reflects."
+  },
+  "shape_language": {
+    "grammar": "ORGANIC TAPER versus MACHINED ORTHOGONAL. The salmon, the gloved hand and the worn wooden spike are all tapers and soft closed curves with no straight edge anywhere. The machine is nothing but right angles, parallel rails and one perfect circle.",
+    "the_contrast": "The reticle is a PERFECT CIRCLE. There is not one other perfect circle in the film. When it lands on the fish it is visibly a foreign geometry sitting on an organic form, which is the thesis in one shape.",
+    "why_this_story": "The argument is that the machine solved perception and not placement. So the machine reads as exact and the world reads as irregular, and the last shot lets the irregularity win."
+  },
+  "casting": {
+    "hero_net_new": "ReticleArm, the machine: a rectilinear gantry arm with a lens head and a spike, built to the depth bar. NET-NEW this run and registered in ASSET_MANIFEST.md in the same commit. It differs from the last two heroes (GroundBeetle 08-05, FrameOfEvidence 08-06) and from every characterized object on the shelf, which are all soft or faceless. This one is a precise instrument with a single glass eye and no face, because the film must not make it sympathetic OR sinister.",
+    "from_shelf": [
+      "Salmon (chrome sockeye rig, fishcraft engine) as the subject of every perception beat",
+      "FishingBoat (hull tint + heave) for the fleet turn",
+      "Character rig, gloved setnetter, poses stand/point/carry, outfit vest, headgear cap",
+      "TallyCounter (odometer variant) for the ten-machines and permit counts",
+      "props.tsx StatCard and Nameplate for the labeled company claims"
+    ],
+    "why": "The shelf already carries a taste-looped photoreal sockeye and a working boat, which is exactly the cast this story needs. The only real gap is the machine itself, so that is the one thing built new."
+  },
+  "motion_language": {
+    "always_running": "THE BOAT ROLLS. Every shot on the water carries a continuous slow hull roll on an irrational period plus a water-sparkle layer. No shot can go quiet because the sea never does.",
+    "hero_moves": [
+      "THE SEARCH: the reticle drifts with nervous micro-jitter, sampling candidate points that ghost in and fade",
+      "THE LOCK: a hard snap to the target with overshoot and settle, plus four corner ticks converging. This is the film's only fast motion and it earns the 180 degree blur",
+      "THE MISS: in the jig beat, the fixed guide comes down on rails, perfectly straight, and lands beside the mark. It does not wobble. Its failure is that it is confident."
+    ],
+    "earns_blur": "only the LOCK snap and the spike descent get motion blur; everything else is eased and slow, so the two fast things read as machine-fast"
+  },
+  "composition": {
+    "master": "9:16 1080x1920 is the graded cut and is composed for. Hero action lives in y 420 to 1500 so the derived 1:1 square never amputates it. Above 420 carries sky, sun and haze; below 1500 carries the near gunwale in shadow.",
+    "focal_hierarchy": "the reticle is always the brightest and smallest thing in frame, so the eye finds it first and the fish second",
+    "negative_space_beats": "the button holds a wide empty inlet with one small mark in it",
+    "signature_shot": "THE PULLBACK: the reticle sits locked and perfect on one fish on one deck, then the camera rises and keeps rising, and the single lit boat becomes one hull among a dozen visibly DIFFERENT hulls, each a different height, beam and deck, the reticle now a dot that fits none of them."
+  },
+  "craft_advance": {
+    "system": "lib/vision.tsx, a NEW reusable MACHINE-VISION OVERLAY layer for the engine",
+    "what_it_does": "a composable perception layer any future sensor or AI story can cast: SearchReticle (drifting candidate sampling with ghosted rejects), LockTicks (four converging corner marks with overshoot), ConfidenceBloom, and CandidateField (N targets each with an independently placed true point). It is parameterised, not episode-local.",
+    "why_it_matters": "This channel keeps telling stories about machines that perceive, and every run has hand-rolled its own reticle. This makes the perception itself a first-class, reusable, taste-looped asset, and it is also this film's throughline object."
+  },
+  "binding_note": "This plan is an INPUT the build executes against and Phase 6 checks the render against it. If a build decision contradicts it, fix the build or consciously revise this file and say why in the retrospective."
+}

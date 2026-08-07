@@ -411,6 +411,23 @@ def main():
             for i, w in enumerate(_want)
         ]
         lines = [_strip_tags(l["text"]) for l in plan["lines"]]
+    # PRONUNCIATION BELONGS IN THE NOTES, NEVER IN THE TRANSCRIPT (added 2026-08-07).
+    # docs/craft/VO_DIRECTION.md asks the director to respell tricky proper nouns
+    # phonetically. Until today that respelling was written INTO the transcript, where
+    # _reconcile_plan_with_script correctly saw it as a divergence from the locked script
+    # and reverted it, so the instruction could never once take effect. It also could not
+    # be allowed to take effect there: the transcript must stay byte-identical to
+    # vo_script.txt or the WER gate compares the ASR against the wrong words and the
+    # captions burn text the voice did not say. So a respelling is now DATA in
+    # plan["pronunciations"], injected as a direction line ABOVE the Transcript: delimiter,
+    # where the model reads it as instruction and never speaks it.
+    _pron = plan.get("pronunciations") or {}
+    if _pron:
+        _pl = "Pronunciation: " + "; ".join(f'say "{k}" as {v}' for k, v in _pron.items())
+        _d = "\nTranscript:\n"
+        if _d in prompt:
+            prompt = prompt.replace(_d, "\n" + _pl + _d, 1)
+            _fixes = list(_fixes) + [f"pronunciation guide injected into the notes ({len(_pron)} entries)"]
     prompt, _pfixes = repair_prompt(prompt, plan)
     _fixes = list(_fixes) + list(_pfixes)
     for _f in _fixes:
