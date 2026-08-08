@@ -83,6 +83,13 @@ CHECKS = [
      [sys.executable, "scripts/evidence_coverage_check.py"], False),
     ("the square crop cuts nothing built",
      [sys.executable, "scripts/crop_safety.py"], False),
+    # THE STORY REGION, WITH THE FURNITURE TAKEN OUT. The whole-frame dead-window gate went
+    # blind the moment a near-field foreground was added to fix the previous round's dead
+    # lower third: the foreground bobs continuously, so every frame contains motion whatever
+    # the story is doing. A judge then measured two windows over the gate's own 5s rule that
+    # it could not see. Advisory: the timecodes are the point, not the exit code.
+    ("the story region never stops moving",
+     [sys.executable, "scripts/content_sag_check.py"], False),
     ("dead space within ceilings",
      [sys.executable, "scripts/dead_space_check.py", "--every", "30"], False),
 ]
