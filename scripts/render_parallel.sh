@@ -66,6 +66,26 @@ if ! flock -n 200; then
   exit 3
 fi
 
+# A SOURCE EDIT DURING A RENDER PRODUCES A MIXED FILM, AND NOTHING DOWNSTREAM CAN SEE IT
+# (2026-08-08). Each chunk runs its own `remotion render`, which bundles from source when
+# THAT CHUNK starts. So an edit landing mid-render is picked up by the chunks that have not
+# started yet and missed by the ones already running, and the concatenated result is part
+# old film and part new with no seam anyone can detect.
+#
+# The freshness check downstream cannot catch this: it compares the finished mp4's mtime
+# against the newest source, and a mixed render is NEWER than every source. It looks fresh
+# precisely because it is.
+#
+# So the fingerprint is taken before the first chunk and checked after the last one. It is
+# a warning rather than a hard failure because a comment-only edit changes the hash without
+# changing a pixel - which is exactly what happened the day this was written, when a render
+# was killed on an mtime alone and the edit turned out to be a comment.
+_src_fingerprint() {
+  find video-engine/src -name '*.tsx' -o -name '*.ts' 2>/dev/null \
+    | sort | xargs stat -c '%n %Y %s' 2>/dev/null | sha256sum | cut -c1-16
+}
+SRC_BEFORE="$(_src_fingerprint)"
+
 COMP="$1"
 OUT="${2:-out/dispatch/render_mute.mp4}"
 PROPS="${PROPS:-out/dispatch/episode_props.json}"
@@ -179,5 +199,13 @@ if [ "$GOT" != "$TOTAL" ]; then
   echo "FRAME COUNT ASSERT FAILED: concat produced $GOT frames, expected $TOTAL ($ABS_OUT)" >&2
   echo "  A short concat means a chunk boundary is wrong; do NOT ship this file." >&2
   exit 1
+fi
+SRC_AFTER="$(_src_fingerprint)"
+if [ "$SRC_BEFORE" != "$SRC_AFTER" ]; then
+  echo "  WARNING  engine source changed DURING this render ($SRC_BEFORE -> $SRC_AFTER)." >&2
+  echo "  Chunks bundle when they start, so this file may be part old film and part new," >&2
+  echo "  and the downstream freshness check CANNOT see it: a mixed render is newer than" >&2
+  echo "  every source. Diff the change before trusting this cut - if it touched only" >&2
+  echo "  comments the render is fine, and if it touched a rendered value, re-render." >&2
 fi
 echo "  OK  $ABS_OUT  $GOT frames  $(du -h "$ABS_OUT" | cut -f1)"
