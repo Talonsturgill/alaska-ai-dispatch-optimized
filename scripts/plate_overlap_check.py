@@ -116,12 +116,43 @@ def main():
         from caption_band_check import default_targets
         targets = default_targets()
 
-    found = []
+    # A CHECKER THAT PARSED NOTHING MUST NOT REPORT CLEAN (2026-08-08).
+    #
+    # `scenes()` matches `^const (S\d+): React.FC<SceneProps>`. Ep0808 declared its scenes
+    # as bare `React.FC`, so the pattern matched zero scenes, `check()` returned no
+    # findings, and this printed "clean across 1 file(s)" every time it ran for an entire
+    # run — while a plate sat over a cycling hatch and two more overlapped at 22.8s.
+    #
+    # That is the FOURTH time this run that a gate has announced clean while grading
+    # nothing: caption_band_check resolved a shipped July episode through a stamp field
+    # nobody writes, then passed again by returning early on a missing constant, and
+    # claims_contract_check printed "0 obligation(s) met" in the same breath as "none
+    # outstanding". Every one was found by a human noticing a number looked wrong. That is
+    # not a control, it is luck.
+    #
+    # So: emptiness is now a finding in its own right. If a file contains plates but the
+    # parser yielded no scenes to put them in, the gate FAILS and says why, rather than
+    # congratulating the run on a file it could not read. The fix for a real refactor is
+    # one line here; the cost of the silent version is a whole run's worth of false green.
+    found, blind = [], []
     for t in targets:
+        src = open(t).read()
+        if "<Plate" in src and not list(scenes(src)):
+            blind.append(t)
         found += check(t)
 
+    if blind:
+        for t in blind:
+            print(f"FAIL {os.path.relpath(t, REPO)}: contains <Plate> elements but the scene "
+                  f"parser matched ZERO scenes, so nothing in this file was checked.")
+        print("\nplate_overlap_check: parsed no scenes, so 'clean' would be a lie.")
+        print("scenes() expects `const S<n>: React.FC<SceneProps>`. If the episode renamed")
+        print("or retyped its scene components, update the pattern — do not ignore this.")
+        return 1
+
     if not found:
-        print(f"plate_overlap_check: clean across {len(targets)} file(s)")
+        print(f"plate_overlap_check: clean across {len(targets)} file(s), "
+              f"{sum(len(list(scenes(open(t).read()))) for t in targets)} scene(s) parsed")
         return 0
     for path, li, lj, scene, ti, tj, ox, oy in found:
         rel = os.path.relpath(path, REPO)

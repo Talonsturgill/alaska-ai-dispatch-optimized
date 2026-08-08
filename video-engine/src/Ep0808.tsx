@@ -205,6 +205,22 @@ const RoomBG: React.FC<{f: number; deskY?: number; parallax?: number; warmth?: n
  *
  *  It carries NO information: no text, no glyph, no number. It is furniture. */
 const FG_TOP = 1480;
+const FG_TONES = ['#b3a68a', '#9aa39a', '#a89a7e', '#8d968f', '#c0b498', '#95886f'];
+/** VARIED BY CONSTRUCTION, not by taste. The first cut of this drew 13 identical 132px
+ *  folders on a fixed 96px pitch at one height, and it read as wallpaper. Width, pitch,
+ *  height, lean and tone are all driven off the same deterministic hash, and the run of
+ *  x positions is CUMULATIVE, so no two gaps are the same and the row has no beat. */
+const FG_FOLDERS = (() => {
+  const out: {x: number; w: number; top: number; lean: number; tone: number}[] = [];
+  let x = -110;
+  for (let i = 0; out.length < 14 && x < W + 90; i++) {
+    const h1 = hash(i * 7 + 2), h2 = hash(i * 7 + 23), h3 = hash(i * 7 + 47);
+    const w = 92 + h1 * 88;
+    out.push({x, w, top: FG_TOP + 10 + h3 * 132, lean: h2 * 9 - 4.5, tone: i % FG_TONES.length});
+    x += w * (0.58 + h2 * 0.46);
+  }
+  return out;
+})();
 const Foreground: React.FC<{f: number; warmth?: number}> = ({f, warmth = 0}) => (
   <g>
     <defs>
@@ -212,37 +228,37 @@ const Foreground: React.FC<{f: number; warmth?: number}> = ({f, warmth = 0}) => 
         <stop offset="0%" stopColor="#3a3226" stopOpacity={0} />
         <stop offset="100%" stopColor="#3a3226" stopOpacity={0.34} />
       </linearGradient>
-      <linearGradient id="fgFold" x1="0" y1="0" x2="0.4" y2="1">
-        <stop offset="0%" stopColor="#b9ad93" />
-        <stop offset="100%" stopColor="#8b8069" />
-      </linearGradient>
+      {FG_TONES.map((c, i) => (
+        <FormGradient key={i} id={`fgf${i}`} t={tones(c)} softness={1.15} />
+      ))}
     </defs>
     {/* the shadow the near edge throws back up the desk, so the layer reads as CLOSER
         to camera than the subject rather than as a band pasted on the bottom */}
     <rect x={-40} y={FG_TOP - 96} width={W + 80} height={150} fill="url(#fgShade)" data-band="ok" />
     {/* the case folders. Overlapping, so the gaps between them are edges rather than
         pickets, and each one breathes on its own period. */}
-    {Array.from({length: 13}).map((_, i) => {
+    {FG_FOLDERS.map((fo, i) => {
       const w = wob(f, i + 41);
-      const h1 = hash(i + 3), h2 = hash(i + 71);
-      const x = -66 + i * 96 + w.x;
-      const top = FG_TOP + 16 + h1 * 46 + w.y;
+      const T = tones(FG_TONES[fo.tone]);
+      const x = fo.x + w.x, top = fo.top + w.y;
       return (
-        <g key={i} transform={`rotate(${w.r * 1.4 + (h2 * 5 - 2.5)},${x + 66},${H})`}>
-          <rect x={x} y={top} width={132} height={H - top + 60} rx={4}
-                fill={i % 3 === 0 ? '#a89c82' : i % 3 === 1 ? '#96907c' : 'url(#fgFold)'}
-                stroke={INK} strokeWidth={6} />
-          {/* the folder's index tab: a second edge per folder, and the thing the eye
-              reads as "these are the applications" without a word being printed */}
-          <rect x={x + 22} y={top + 30} width={88} height={16} rx={2}
-                fill="#6d6553" opacity={0.5} />
+        <g key={i} transform={`rotate(${w.r * 1.2 + fo.lean},${x + fo.w / 2},${H})`}>
+          <rect x={x} y={top} width={fo.w} height={H - top + 90} rx={4}
+                fill={`url(#fgf${fo.tone})`} stroke={INK} strokeWidth={6} />
+          {/* the folder's index tab and its inner fold: two more edges per folder, and
+              what the eye reads as "these are the applications" with no word printed */}
+          <rect x={x + 16} y={top + 26} width={fo.w - 32} height={15} rx={2}
+                fill={T.shade} opacity={0.55} />
+          <rect x={x + fo.w - 15} y={top + 8} width={9} height={H - top} fill={T.shade}
+                opacity={0.42} />
+          <RimLight d={`M${x + 3},${top + 4} l${fo.w - 6},0`} w={4} opacity={0.45} />
         </g>
       );
     })}
     {/* the near lip of the desk itself, in front of everything */}
-    <rect x={-40} y={H - 118} width={W + 80} height={190} fill={warmth > 0.5 ? '#8d7f63' : '#7e7359'}
+    <rect x={-40} y={H - 104} width={W + 80} height={190} fill={warmth > 0.5 ? '#8d7f63' : '#7e7359'}
           stroke={INK} strokeWidth={8} />
-    <RimLight d={`M-40,${H - 114} L${W + 40},${H - 114}`} w={5} opacity={0.4} />
+    <RimLight d={`M-40,${H - 100} L${W + 40},${H - 100}`} w={5} opacity={0.4} />
   </g>
 );
 
@@ -797,7 +813,7 @@ const S7: React.FC<SceneProps> = () => {
   const set = ramp(f, 6, 40);
   const lid = ramp(f, 48, 104);
   const expose = ramp(f, 150, 186);
-  const five = ramp(f, 180, 268);   // L13 lands at frame 180 of this shot
+  const five = ramp(f, 178, 252);   // L13 lands at frame 178 of this shot
   return (
     <Stage f={f} push={ramp(f, 0, 320) * 0.05} drift={0.8} deskY={1420} warmth={1}>
       {/* the clinic: a window, a curtain, an exam table */}
@@ -811,12 +827,15 @@ const S7: React.FC<SceneProps> = () => {
         <line x1={94} y1={545} x2={424} y2={545} stroke={INK} strokeWidth={4} opacity={0.5} />
         <path d={`M424,330 q${28 + 12 * Math.sin(f / 43)},220 -6,430`} fill="none"
               stroke={INK} strokeWidth={5} opacity={0.55} />
-        <rect x={620} y={1180} width={392} height={34} rx={6} fill="#c8d2cc"
+        {/* THE EXAM TABLE CAME UP 100px. The case stood on 1420, which renders at 1475 —
+            behind the open-caption card and, since this run, behind the near field as well,
+            so the one object the whole shot is about was the least legible thing in it. */}
+        <rect x={600} y={1080} width={392} height={34} rx={6} fill="#c8d2cc"
               stroke={INK} strokeWidth={5} />
-        <rect x={648} y={1214} width={30} height={206} fill="#9aa8a2" stroke={INK} strokeWidth={5} data-band="ok" />
-        <rect x={954} y={1214} width={30} height={206} fill="#9aa8a2" stroke={INK} strokeWidth={5} data-band="ok" />
+        <rect x={628} y={1114} width={30} height={306} fill="#9aa8a2" stroke={INK} strokeWidth={5} data-band="ok" />
+        <rect x={934} y={1114} width={30} height={306} fill="#9aa8a2" stroke={INK} strokeWidth={5} data-band="ok" />
       </g>
-      <Character x={300 + Math.sin(f / 63.1) * 3.5} y={1420} scale={1.28} frame={f}
+      <Character x={246 + Math.sin(f / 63.1) * 3.5} y={1420} scale={1.28} frame={f}
                  pose={f < 46 ? "carry" : "point"}
                  // NO UPPER CLAMP (2026-08-08). Character.tsx used to clamp gesture
                  // internally as well, so this Math.min(1, ...) held the drive at exactly
@@ -830,34 +849,52 @@ const S7: React.FC<SceneProps> = () => {
                                [0, 1], [-0.2, 1]) + Math.sin(f / 37.7) * 0.045)}
                  emotion="neutral" outfit="worker" headgear="bare" facing={1} />
       <g transform={`translate(0,${interpolate(set, [0, 1], [-180, 0])})`}>
-        <FieldRadiograph x={690} y={1330} f={f} scale={0.86} lid={lid} expose={expose}
-                         carried={1 - set} groundY={1420} stencil="CLINIC 01" phase={4} />
+        <FieldRadiograph x={694} y={1076} f={f} scale={0.86} lid={lid} expose={expose}
+                         carried={1 - set} groundY={1080} stencil="CLINIC 01" phase={4} />
       </g>
       {/* L13 starts at +5.99s (frame 180): the five clinics arrive INSIDE this shot,
           because that is the line being spoken. The 2026-08-06 rule: the picture at a
           line's offset must be about that line. */}
-      {five > 0.01 && (
-        <g opacity={five}>
-          {Array.from({length: 5}).map((_, i) => {
-            const on = Math.max(0, Math.min(1, (five - i * 0.15) * 3.4));
-            const x = 156 + i * 194;
-            return (
-              <g key={i} opacity={on} transform={`translate(0,${interpolate(on, [0, 1], [40, 0])})`}>
-                <rect x={x - 62} y={706} width={124} height={188} rx={4} fill="#e4ebe7"
-                      stroke={INK} strokeWidth={5} />
-                <rect x={x - 40} y={766} width={80} height={128} rx={3} fill="#c2cec8"
-                      stroke={INK} strokeWidth={4} />
-                <FieldRadiograph x={x} y={880} f={f + i * 29} scale={0.19} lid={0}
-                                 carried={0} groundY={894} phase={i * 2 + 1} />
-              </g>
-            );
-          })}
-        </g>
-      )}
-      <Plate x={540} y={588} text="CHUGACHMIUT  $627,200" size={38} delay={14} />
-      <Plate x={540} y={694} text="AN ALASKA NATIVE NONPROFIT" size={28} delay={44} />
+      {/* FIVE BAYS, AND ALL FIVE INSIDE THE FRAME. The pitch was a hand-picked 194px from
+          x=156, so the fifth bay's centre landed at 932 and the content zoom (1.12) with
+          this shot's largest World push (0.05) maps that to 1001 with a 76px half-width —
+          off the right edge of a 1080 frame. A plate that says FIVE over a picture of four
+          is not a craft note, it is the film contradicting its own claim record. The pitch
+          is now DERIVED from the frame width, the bay's own half-width, the combined zoom
+          and the worst-case drift, so it cannot be wrong by eye again. */}
+      {five > 0.01 && (() => {
+        const K = 1.12 * 1.05;                        // content zoom x largest push here
+        const HALF = (62 + 3) * K + 7;                // half a bay on screen, worst drift
+        const SPAN = (540 - (HALF + 24)) / K;         // usable half-span in scene units
+        return (
+          <g opacity={five}>
+            {Array.from({length: 5}).map((_, i) => {
+              // and the stagger tightened: at 0.15/3.4 the fifth bay only began to arrive
+              // at five=0.60 and finished at 0.89, i.e. 70.4s, AFTER the narration had
+              // already said "five rural clinics" at ~69.5s. All five are now standing by
+              // five=0.60 (local 222, 69.1s), before the words that count them.
+              const on = Math.max(0, Math.min(1, (five - i * 0.10) * 5));
+              const x = 540 - SPAN + i * (SPAN / 2);
+              return (
+                <g key={i} opacity={on} transform={`translate(0,${interpolate(on, [0, 1], [40, 0])})`}>
+                  <rect x={x - 62} y={716} width={124} height={188} rx={4} fill="#e4ebe7"
+                        stroke={INK} strokeWidth={5} />
+                  <rect x={x - 40} y={776} width={80} height={128} rx={3} fill="#c2cec8"
+                        stroke={INK} strokeWidth={4} />
+                  <FieldRadiograph x={x} y={890} f={f + i * 29} scale={0.19} lid={0}
+                                   carried={0} groundY={904} phase={i * 2 + 1} />
+                </g>
+              );
+            })}
+          </g>
+        );
+      })()}
+      <Plate x={540} y={560} text="CHUGACHMIUT  $627,200" size={38} delay={14} />
+      <Plate x={540} y={644} text="AN ALASKA NATIVE NONPROFIT" size={28} delay={44} />
+      {/* and its own caption sits UNDER the five bays it counts, not across the pointing
+          hand and the boom arm at y=1035, which is the shot's entire action */}
       {five > 0.35 && (
-        <Plate x={540} y={1035} text="FIVE RURAL CLINICS" size={34} delay={196} />
+        <Plate x={540} y={956} text="FIVE RURAL CLINICS" size={34} delay={206} />
       )}
     </Stage>
   );
@@ -971,10 +1008,12 @@ const S9: React.FC<SceneProps> = () => {
           in a frame where every other card carries a vertical form gradient, a lit top edge
           and a cast shadow. Same devices, dimmer values, because these are the awards
           nobody could read — unlit, not unfinished. */}
-      <defs><FormGradient id="ghostc" t={tones('#b0bab6')} softness={1.2} /></defs>
+      {/* the two columns were 94 apart on a 92-wide card, i.e. a 2px gutter, so each PAIR
+          read as one card folded open down the middle. 116 gives a real 24px gutter. */}
+      <defs><FormGradient id="ghostc" t={tones('#b0bab6')} softness={1.3} /></defs>
       {Array.from({length: 8}).map((_, i) => {
         const w = wob(f, i + 60);
-        const gx = 764 + (i % 2) * 96, gy = 836 + Math.floor(i / 2) * 118;
+        const gx = 700 + (i % 2) * 116, gy = 836 + Math.floor(i / 2) * 118;
         return (
           <g key={`dark${i}`} opacity={0.62}
              transform={`translate(${w.x * 0.7},${w.y * 0.7}) rotate(${hash(i + 5) * 8 - 4 + w.r},${gx + 46},${gy + 50})`}>
@@ -984,8 +1023,8 @@ const S9: React.FC<SceneProps> = () => {
             {/* the ruled body of an award nobody read, and the lit top edge every other
                 card in this film has */}
             {[0, 1, 2].map((k) => (
-              <line key={k} x1={gx + 14} y1={gy + 30 + k * 22} x2={gx + 78 - (k % 2) * 16}
-                    y2={gy + 30 + k * 22} stroke="#8b9793" strokeWidth={5} opacity={0.5} />
+              <line key={k} x1={gx + 15} y1={gy + 32 + k * 22} x2={gx + 77}
+                    y2={gy + 32 + k * 22} stroke="#8b9793" strokeWidth={5} opacity={0.5} />
             ))}
             <RimLight d={`M${gx + 2},${gy + 3} l88,0`} w={3} opacity={0.45} />
           </g>
@@ -1032,7 +1071,10 @@ const S9: React.FC<SceneProps> = () => {
                 seated={0} held={0.22} phase={idx * 3}
                 recess={{w: (72 * 2 * CARDS) / SLUGS, fits: false}} />
       <Plate x={540} y={588} text="FITS NONE OF THEM" size={42} delay={40} tint={P.scarlet} />
-      <Plate x={540} y={1256} text="DESCRIBED  ·  UNDESCRIBED" size={24} delay={70} />
+      {/* the legend moved off the floor of the frame. At y=1256 it rendered 1259..1324 and
+          a TWO-LINE caption (this shot has one) grows upward from 1468 to about 1325, so
+          the legend's lower border was sitting under the caption card's top edge. */}
+      <Plate x={540} y={676} text="DESCRIBED  ·  UNDESCRIBED" size={24} delay={70} />
     </Stage>
   );
 };
@@ -1198,7 +1240,7 @@ const S13: React.FC<SceneProps> = () => {
   return (
     <Stage f={f} push={ramp(f, 0, 340) * 0.045} drift={0.6} deskY={1400}>
       <g opacity={open} transform={`translate(0,${-scan * ROWTRAVEL})`}>
-        <rect x={96} y={604} width={888} height={706 + ROWTRAVEL} rx={3} fill="#efeade"
+        <rect x={96} y={604} width={888} height={566 + ROWTRAVEL} rx={3} fill="#efeade"
               stroke={INK} strokeWidth={9} />
         <rect x={120} y={628} width={840} height={702} rx={2} fill="none"
               stroke={P.ink} strokeWidth={2} opacity={0.3} />
@@ -1280,9 +1322,11 @@ const S15: React.FC<SceneProps> = () => {
   const cross = smooth(ramp(f, 88, 122));
   const drop = smooth(ramp(f, 128, 168));
   const last = ramp(f, 150, 186);
-  // EQUIPMENT (310,802) -> PURCHASES (770,802) -> TRAINING (540,1102)
-  const sx = drop > 0 ? interpolate(drop, [0, 1], [interpolate(cross, [0, 1], [310, 770]), 540])
-                      : interpolate(cross, [0, 1], [310, 770]);
+  // EQUIPMENT (350,802) -> PURCHASES (730,802) -> TRAINING (540,1102). The two buying
+  // slots pulled inboard from 310/770: the slug is 464 wide, so centred on 770 its right
+  // end rendered at 1065 on a 1080 frame and read as clipped at the beat.
+  const sx = drop > 0 ? interpolate(drop, [0, 1], [interpolate(cross, [0, 1], [350, 730]), 540])
+                      : interpolate(cross, [0, 1], [350, 730]);
   const arc = Math.sin(cross * Math.PI) * 96 * (1 - drop);
   const sy = interpolate(drop, [0, 1], [802, 1102]) - arc
            - Math.sin(Math.min(1, drop) * Math.PI) * 40;
@@ -1296,19 +1340,19 @@ const S15: React.FC<SceneProps> = () => {
         <rect x={94} y={620} width={892} height={700} rx={2} fill="none"
               stroke={P.ink} strokeWidth={3} opacity={0.4} />
         {/* the two clauses that did NOT take it, named, so the empties are legible */}
-        <text x={310} y={676} textAnchor="middle" fontFamily={MONO} fontSize={21}
+        <text x={350} y={676} textAnchor="middle" fontFamily={MONO} fontSize={21}
               fontWeight={700} fill={P.ink} opacity={0.75} letterSpacing={1}>APPROVED USE</text>
-        <text x={770} y={676} textAnchor="middle" fontFamily={MONO} fontSize={21}
+        <text x={730} y={676} textAnchor="middle" fontFamily={MONO} fontSize={21}
               fontWeight={700} fill={P.ink} opacity={0.75} letterSpacing={1}>APPROVED USE</text>
-        <Recess x={310} y={840} w={244} label="EQUIPMENT" f={f} />
-        <Recess x={770} y={840} w={244} label="PURCHASES" f={f} />
+        <Recess x={350} y={840} w={244} label="EQUIPMENT" f={f} />
+        <Recess x={730} y={840} w={244} label="PURCHASES" f={f} />
         <Recess x={540} y={1140} w={476} label="TRAINING" f={f} />
         {/* ONE slot is called at a time, the one the slug is actually over: a 464px slug
             held against a 244px cut. The first cut of this drew both marks at once with
             110px dashed tails either side, and at 310 and 770 those tails met in the middle
             and read as a single stray dotted rule across the page. */}
-        {[{x: 310, on: tryA * (1 - Math.min(1, cross * 2.4))},
-          {x: 770, on: Math.max(0, cross * 2.4 - 1.4) * (1 - Math.min(1, drop * 2.4))}].map((r, i) => (
+        {[{x: 350, on: tryA * (1 - Math.min(1, cross * 2.4))},
+          {x: 730, on: Math.max(0, cross * 2.4 - 1.4) * (1 - Math.min(1, drop * 2.4))}].map((r, i) => (
           <g key={i} opacity={Math.max(0, Math.min(1, r.on))}>
             <rect x={r.x - 122} y={798} width={244} height={84} rx={2} fill="none"
                   stroke={P.scarlet} strokeWidth={7} />
