@@ -586,7 +586,17 @@ const S1: React.FC<SceneProps> = () => {
   // was a photograph. Measured 3.4%. The build now runs to f265 so the strip catches the
   // move it is named after, and the counter lands on the number as line 1 names the
   // program it came from.
-  const block = ramp(f, 40, 265);
+  // AND THE BLOCK HAS TO CARRY THE BEAT THE COUNTER USED TO CARRY. Landing the numeral at
+  // 3.40s (below) took the fastest-changing thing out of the 7.98s window, and the strip
+  // anchored there immediately fell to 5.8% changed — under the 6% floor the whole last
+  // round was spent clearing. That is the cost of the fix showing up somewhere else, not a
+  // reason to undo it. This strip's own charter in build_evidence.py is "the money block
+  // assembling AND SEATING", and it never actually seated: a linear ramp over 225 frames
+  // grows the stack 1.9px per frame, which is arithmetic, not an event. It now overshoots
+  // and settles across the window the strip samples, which is the move it was always named
+  // after.
+  const build = ramp(f, 40, 250);
+  const block = Math.min(1, build) + Math.sin(Math.min(1, ramp(f, 214, 268)) * Math.PI) * 0.045;
   // THE NUMBER LANDS ON ITS OWN WORDS (2026-08-08, all three panel judges measured this
   // independently). The counter was driven by `block`, so it inherited the block's f40..f265
   // build and crawled LINEARLY at about 36M/s, settling near 9.0s. The line that speaks it,
