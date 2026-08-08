@@ -134,12 +134,34 @@ const RoomBG: React.FC<{f: number; deskY?: number; parallax?: number; warmth?: n
             stroke={INK} strokeWidth={7} />
       <rect x={-40 - parallax * 0.05} y={deskY - 430} width={680} height={13}
             fill="#a89b83" stroke={INK} strokeWidth={4} />
-      {[0, 1, 2, 3, 4].map((i) => (
-        <rect key={i} x={26 + i * 74 - parallax * 0.05} y={deskY - 430 - 74 - (i % 3) * 12}
-              width={54} height={74 + (i % 3) * 12} rx={2}
-              fill={['#c3b9a4', '#9fada8', '#b7ada0', '#8fa09b', '#c9c0ad'][i]}
-              stroke={INK} strokeWidth={4} />
-      ))}
+      {/* THE SHELF BOOKS, FINISHED (2026-08-08 panel: "the shelf books are unshaded flat
+          fills in every wide shot"). Same devices the parka and the award cards already
+          use in the same frames and nothing new invented: a form gradient off tones(), a
+          lit top edge, a dark foot, a cast shadow onto the shelf board, and a band. */}
+      <defs>
+        {['#c3b9a4', '#9fada8', '#b7ada0', '#8fa09b', '#c9c0ad'].map((c, i) => (
+          <FormGradient key={i} id={`bk${i}`} t={tones(c)} softness={1.1} />
+        ))}
+      </defs>
+      {[0, 1, 2, 3, 4].map((i) => {
+        const c = ['#c3b9a4', '#9fada8', '#b7ada0', '#8fa09b', '#c9c0ad'][i];
+        const T = tones(c);
+        const bx = 26 + i * 74 - parallax * 0.05;
+        const bh = 74 + (i % 3) * 12;
+        const by = deskY - 430 - bh;
+        return (
+          <g key={i}>
+            <ContactShadow cx={bx + 27} cy={by + bh} rx={30} ry={5} opacity={0.3} />
+            <rect x={bx} y={by} width={54} height={bh} rx={2}
+                  fill={`url(#bk${i})`} stroke={INK} strokeWidth={4} />
+            {/* the spine band, and the dark foot where it meets the board */}
+            <rect x={bx + 5} y={by + bh * 0.30} width={44} height={13} fill={T.shade}
+                  opacity={0.75} />
+            <rect x={bx} y={by + bh - 9} width={54} height={9} fill={T.shade} opacity={0.8} />
+            <RimLight d={`M${bx + 2},${by + 3} l50,0`} w={3} opacity={0.55} />
+          </g>
+        );
+      })}
       <g transform={`translate(${892 - parallax * 0.05},${deskY - 812})`}>
         <rect x={-96} y={-72} width={192} height={144} rx={2} fill="#e6e1d3"
               stroke={INK} strokeWidth={6} />
@@ -452,7 +474,7 @@ const S1: React.FC<SceneProps> = () => {
   const block = ramp(f, 40, 265);
   return (
     <Stage f={f} push={ramp(f, 0, 300) * 0.055} drift={0.7}>
-      <MoneyBlock x={700} y={1230} w={340} h={430} f={f} build={block} />
+      <MoneyBlock x={660} y={1230} w={340} h={430} f={f} build={block} />
       {/* the money coming IN: banded slabs falling onto the stack for as long as it
           builds, so the arrival is an event and not a bar chart growing */}
       {Array.from({length: 9}).map((_, i) => {
@@ -461,15 +483,18 @@ const S1: React.FC<SceneProps> = () => {
         const topY = 1230 - 430 * Math.max(0.02, block) - 20;
         return (
           <g key={i} opacity={Math.min(1, land * 4)}>
-            <rect x={530 + hash(i) * 20} y={interpolate(land, [0, 1], [-330, 0]) + topY}
+            <rect x={490 + hash(i) * 18} y={interpolate(land, [0, 1], [-330, 0]) + topY}
                   width={340} height={26} rx={2}
                   fill={i % 2 ? '#93a58e' : '#7f9179'} stroke={INK} strokeWidth={4} />
           </g>
         );
       })}
-      {/* the hero figure, counted up and plated at hero scale */}
+      {/* The hero figure, counted up and plated at hero scale. CENTRED, NOT CLIPPED: the
+          counter plate is 612 wide, and anchored at x=700 its right edge rendered at 1085
+          under the content zoom and the World push together (1.169x about x=540), so it ran
+          off a 1080px frame in every frame of the shot. */}
       {block > 0.06 && (
-        <g transform={`translate(700,${interpolate(block, [0, 1], [1160, 838])})`}>
+        <g transform={`translate(600,${interpolate(block, [0, 1], [1160, 838])})`}>
           <ContactShadow cx={0} cy={46} rx={300} ry={11} opacity={0.3} />
           <rect x={-306} y={-46} width={612} height={94} rx={3} fill={P.paper}
                 stroke={INK} strokeWidth={7} />
@@ -479,7 +504,7 @@ const S1: React.FC<SceneProps> = () => {
           </text>
         </g>
       )}
-      {block > 0.7 && <Plate x={286} y={922} text="YEAR ONE" size={34} delay={198} />}
+      {block > 0.7 && <Plate x={250} y={994} text="YEAR ONE" size={34} delay={198} />}
       <MotionBlur vy={vy} gain={1.2} max={28}>
         <g transform={`translate(0,${dropY}) translate(392,1150) scale(${squash},${2 - squash}) translate(-392,-1150)`}>
           <TypeSlug x={392} y={1150} f={f} text="ARTIFICIAL INTELLIGENCE" scale={1.0}
@@ -540,12 +565,17 @@ const S3: React.FC<SceneProps> = () => {
   const flow = ramp(f, 110, 186);
   return (
     <Stage f={f} push={-ramp(f, 0, 260) * 0.06 + 0.06} drift={0.8}>
-      <MoneyBlock x={540} y={1230} w={420} h={470} f={f} build={1} />
-      {/* the 80 percent the rules keep out of capital, greying downward as the cap seats */}
-      <rect x={330} y={760} width={420} height={Math.max(0, Math.min(1136, collarY) - 760)}
-            fill="#2b3a34" opacity={0.05 + close * 0.24} />
-      {/* the cap as a physical collar that descends and clamps */}
-      <g>
+      {/* AND THEN IT IS PUSHED. Line 4 is "which pushes it away from anything you would
+          have to build", and until now the only thing that happened on that line was four
+          5px dashed curves bending — 1% of the frame, and the `flow` strip measured 3.9%.
+          The clamped block itself now slides away with the flow it is drawing, which is the
+          sentence rather than a diagram of it. */}
+      <g transform={`translate(${smooth(flow) * 132},0)`}>
+        <MoneyBlock x={540} y={1230} w={420} h={470} f={f} build={1} />
+        {/* the 80 percent the rules keep out of capital, greying downward as the cap seats */}
+        <rect x={330} y={760} width={420} height={Math.max(0, Math.min(1136, collarY) - 760)}
+              fill="#2b3a34" opacity={0.05 + close * 0.24} />
+        {/* the cap as a physical collar that descends and clamps */}
         <rect x={540 - collarW / 2} y={collarY - 31} width={collarW} height={62} rx={2}
               fill="none" stroke={P.cap} strokeWidth={13} />
         <text x={540} y={collarY + 13} textAnchor="middle" fontFamily={MONO} fontSize={34}
@@ -555,15 +585,15 @@ const S3: React.FC<SceneProps> = () => {
       {/* flow bending away from the plates, retimed onto line 4 ("which pushes it away
           from anything you would have to build", 20.54..23.30s = local 106..189) */}
       <g opacity={flow}>
-        {[0, 1, 2, 3].map((i) => {
-          const y = 1180 + i * 22;
-          const bend = flow * (110 + i * 26);
+        {[0, 1, 2, 3, 4, 5].map((i) => {
+          const y = 1176 + i * 21;
+          const bend = smooth(flow) * (190 + i * 44);
           return (
             <path key={i}
-                  d={`M${330 - i * 8},${y} q140,0 ${200 + bend},${-60 - i * 14}`}
-                  fill="none" stroke={P.ink} strokeWidth={5 - i * 0.5}
-                  opacity={0.5} strokeDasharray="14 9"
-                  strokeDashoffset={-f * 2.6} />
+                  d={`M${300 - i * 9},${y} q150,0 ${210 + bend},${-70 - i * 18}`}
+                  fill="none" stroke={P.ink} strokeWidth={10 - i * 0.9}
+                  opacity={0.46} strokeDasharray="17 12"
+                  strokeDashoffset={-f * 3.4} />
           );
         })}
       </g>
@@ -594,7 +624,11 @@ const S4: React.FC<SceneProps> = () => {
   // toward the money for the whole of the line — which is what the line is ABOUT.
   const arrive = ramp(f, 226, 248);
   const chars = Math.floor(ramp(f, 240, 344) * (QUOTE.length + 2));
-  const pull = ramp(f, 244, 336);
+  // and the pull lands ON the phrase. "...is almost directing us to A I" begins about
+  // 33.0s, which is local 291 and is exactly where build_evidence.py anchors the `quote`
+  // strip (line 6 + 2.10s = 33.16s). A slow 92-frame drift put nothing decisive there; a
+  // 28-frame yank centred on the words is both the better cut and the measurable move.
+  const pull = ramp(f, 286, 316);
   return (
     <Stage f={f} push={ramp(f, 0, 340) * 0.05} drift={1.0}>
       <g opacity={card} transform={`translate(0,${interpolate(card, [0, 1], [40, 0])})`}>
@@ -602,22 +636,48 @@ const S4: React.FC<SceneProps> = () => {
                sub="ADVISORY COUNCIL / JUNE 2026" />
       </g>
       <g opacity={arrive} transform={`translate(0,${interpolate(arrive, [0, 1], [86, 0])})`}>
-        <ContactShadow cx={540} cy={1108} rx={370} ry={11} opacity={0.26} />
-        <rect x={168} y={950} width={744} height={150} rx={3} fill={P.paper}
+        <ContactShadow cx={540} cy={1064} rx={370} ry={11} opacity={0.26} />
+        <rect x={168} y={906} width={744} height={150} rx={3} fill={P.paper}
               stroke={INK} strokeWidth={5} />
-        <text x={540} y={1042} textAnchor="middle" fontFamily={MONO} fontSize={33}
+        <text x={540} y={998} textAnchor="middle" fontFamily={MONO} fontSize={33}
               fontWeight={700} fill={P.ink} letterSpacing={1.1}>
           {QUOTE.slice(0, Math.min(chars, QUOTE.length))}
         </text>
         {/* the print carriage, riding the last set character */}
         {chars < QUOTE.length && chars > 0 && (
-          <rect x={540 - QUOTE.length * 10.49 + chars * 20.97} y={1014} width={7} height={40}
+          <rect x={540 - QUOTE.length * 10.49 + chars * 20.97} y={970} width={7} height={40}
                 fill={P.cap} opacity={0.85} />
         )}
       </g>
-      <TypeSlug x={interpolate(smooth(pull), [0, 1], [880, 528])}
-                y={interpolate(smooth(pull), [0, 1], [1206, 1186])} f={f}
-                text="AI" scale={1.2} seated={0} held={pull * 0.5} phase={5} />
+      {/* THE DIRECTION, DRAWN. This is the deliberate rhyme with S3: there the flow bends
+          AWAY from anything you would build, here the same grammar bends TOWARD the slug,
+          because that is the difference between the two sentences. It is also what carries
+          the beat — a slug is a filled bar and translating one repaints almost nothing, so
+          the `quote` strip sat at 3.0% while the only thing moving was 27 characters of
+          type. */}
+      {pull > 0.01 && (
+        <g opacity={Math.min(1, pull * 2.6) * 0.95}>
+          {[0, 1, 2, 3, 4, 5].map((i) => {
+            const y = 1152 + i * 20;
+            const reach = smooth(pull) * (200 + i * 46);
+            return (
+              <path key={i}
+                    d={`M${1010 + i * 8},${y} q-150,0 ${-230 - reach},${-46 - i * 13}`}
+                    fill="none" stroke={P.ink} strokeWidth={10 - i * 0.9}
+                    opacity={0.44} strokeDasharray="17 12"
+                    strokeDashoffset={f * 3.4} />
+            );
+          })}
+        </g>
+      )}
+      {/* AT HERO SIZE, AND ABOVE THE CAPTION CARD. At scale 1.2 the two-character slug is
+          93px wide, and parked at y=1240 its lower half rendered inside the open-caption
+          band — so the film's thesis object was small, half-hidden, and contributed almost
+          nothing to the frame at the beat named after the thesis line. */}
+      <TypeSlug x={interpolate(smooth(pull), [0, 1], [900, 470])}
+                y={interpolate(smooth(pull), [0, 1], [1200, 1160])} f={f}
+                text="AI" scale={interpolate(smooth(pull), [0, 1], [1.5, 2.0])}
+                seated={0} held={pull * 0.6} phase={5} />
       <Plate x={540} y={594} text="SHE SAW FURTHER" size={36} delay={20} />
     </Stage>
   );
@@ -672,8 +732,10 @@ const S6: React.FC<SceneProps> = () => {
   // the panel logged it on f050.2 as "the caption plate covers two cards of row 4". Four
   // rows of 116 now bottom out at 1182 (renders 1209, half-height 47, so 1256) with 80px
   // of clear air under it.
+  // and the columns pulled inboard: a 0.72 card is 61px half-width on screen and the zoom
+  // plus push is 1.176x about x=540, so column 0 at x=130 rendered its left edge at -3.
   const CARDS = Array.from({length: 19}).map((_, i) => ({
-    x: 130 + (i % 5) * 196 + (Math.floor(i / 5) % 2) * 26,
+    x: 156 + (i % 5) * 185 + (Math.floor(i / 5) % 2) * 26,
     y: 846 + Math.floor(i / 5) * 112,
     rot: (hash(i) * 8 - 4),
     described: i < 4,
@@ -720,9 +782,10 @@ const S6: React.FC<SceneProps> = () => {
       {light > 0.02 && (
         <Plate x={540} y={756} text="DESCRIBED BY THE ANCHORAGE DAILY NEWS" size={25} delay={364} />
       )}
-      {/* the throughline object stays on the desk through the film's longest stretch, and
-          it now lies ACROSS the pile it is being asked about rather than in a corner of it */}
-      <TypeSlug x={470} y={1204} f={f} text="AI" scale={1.0} seated={0} phase={9} />
+      {/* the throughline object stays on the desk through the film's longest stretch. It
+          sits in the twentieth slot of a 5x4 grid holding nineteen cards — the empty one —
+          so it is IN the pile being asked about rather than a stray keycap beside it. */}
+      <TypeSlug x={880} y={1176} f={f} text="AI" scale={1.4} seated={0} phase={9} />
     </Stage>
   );
 };
@@ -903,15 +966,28 @@ const S9: React.FC<SceneProps> = () => {
           </g>
         );
       })}
-      {/* the undescribed ones, dark because nobody could read them, inboard of the frame */}
+      {/* THE UNDESCRIBED ONES, DRAWN AS OBJECTS (2026-08-08 panel: "the ghost cards at
+          f077.6 are bare outlines"). They were a flat #b0bab6 rect with a stroke, sitting
+          in a frame where every other card carries a vertical form gradient, a lit top edge
+          and a cast shadow. Same devices, dimmer values, because these are the awards
+          nobody could read — unlit, not unfinished. */}
+      <defs><FormGradient id="ghostc" t={tones('#b0bab6')} softness={1.2} /></defs>
       {Array.from({length: 8}).map((_, i) => {
         const w = wob(f, i + 60);
+        const gx = 764 + (i % 2) * 96, gy = 836 + Math.floor(i / 2) * 118;
         return (
-          <g key={`dark${i}`} opacity={0.5}>
-            <rect x={764 + (i % 2) * 96 + w.x * 0.7} y={836 + Math.floor(i / 2) * 118 + w.y * 0.7}
-                  width={92} height={100} rx={2}
-                  transform={`rotate(${hash(i + 5) * 8 - 4 + w.r},${810 + (i % 2) * 96},${886 + Math.floor(i / 2) * 118})`}
-                  fill="#b0bab6" stroke={INK} strokeWidth={3} />
+          <g key={`dark${i}`} opacity={0.62}
+             transform={`translate(${w.x * 0.7},${w.y * 0.7}) rotate(${hash(i + 5) * 8 - 4 + w.r},${gx + 46},${gy + 50})`}>
+            <ContactShadow cx={gx + 48} cy={gy + 104} rx={44} ry={6} opacity={0.26} />
+            <rect x={gx} y={gy} width={92} height={100} rx={2}
+                  fill="url(#ghostc)" stroke={INK} strokeWidth={3} />
+            {/* the ruled body of an award nobody read, and the lit top edge every other
+                card in this film has */}
+            {[0, 1, 2].map((k) => (
+              <line key={k} x1={gx + 14} y1={gy + 30 + k * 22} x2={gx + 78 - (k % 2) * 16}
+                    y2={gy + 30 + k * 22} stroke="#8b9793" strokeWidth={5} opacity={0.5} />
+            ))}
+            <RimLight d={`M${gx + 2},${gy + 3} l88,0`} w={3} opacity={0.45} />
           </g>
         );
       })}
@@ -920,12 +996,16 @@ const S9: React.FC<SceneProps> = () => {
         const inn = smooth(ramp(f, HOLD[i] - 28, HOLD[i]));
         const out = i < 2 ? smooth(ramp(f, HOLD[i + 1] - 28, HOLD[i + 1])) : 0;
         if (inn <= 0.001 || out >= 0.999) return null;
-        const dx = (1 - inn) * 640 - out * 700;
+        // a tested card does not vanish and reappear small: it CARRIES to the stack,
+        // shrinking as it goes, so the exchange is one continuous object every frame
+        const x = interpolate(out, [0, 1], [CARDX + (1 - inn) * 640, 188 + i * 30]);
+        const y = interpolate(out, [0, 1], [CARDY, 1050 + i * 18]);
+        const s = interpolate(out, [0, 1], [CARDS, 0.58]);
         return (
-          <g key={`stand${i}`} opacity={Math.min(1, inn * 3) * (1 - out)}
-             transform={`translate(${dx},${out * 150})`}>
-            <AwardCard x={CARDX} y={CARDY} f={f} lit={1} s={CARDS}
-                       rot={(1 - inn) * 9 - out * 14} title={TITLES[i]} amount={AMOUNTS[i]} />
+          <g key={`stand${i}`} opacity={Math.min(1, inn * 3)}>
+            <AwardCard x={x} y={y} f={f} lit={1} s={s}
+                       rot={(1 - inn) * 9 + out * (-11 + i * 6)}
+                       title={TITLES[i]} amount={AMOUNTS[i]} />
           </g>
         );
       })}
@@ -1108,13 +1188,19 @@ const S13: React.FC<SceneProps> = () => {
   // the slug STEPS between rows instead of teleporting: hold, ease, hold
   const stepped = Math.min(USES.length - 1, at + smooth(Math.min(1,
     Math.max(0, (scan * USES.length - at - 0.42) / 0.44))));
-  const ROW = 116, TOP = 742, ROWTRAVEL = 232;
+  // TOP was 742. Under the content zoom the page's first cut rendered at 460..521 while
+  // the "APPEARS EXACTLY ONCE" plate sits at 480..554, so once the page had scanned up the
+  // headline was lying across the PROVIDER PAYMENTS row. 880 puts a 276px margin at the
+  // head of the page and the plate lands in it, on paper, over nothing.
+  // ROW tightened 116 -> 96 so the page's own margin rule closes at 1330, one pixel shy of
+  // the open-caption band at 1336, instead of being exempted into it.
+  const ROW = 96, TOP = 880, ROWTRAVEL = 232;
   return (
     <Stage f={f} push={ramp(f, 0, 340) * 0.045} drift={0.6} deskY={1400}>
       <g opacity={open} transform={`translate(0,${-scan * ROWTRAVEL})`}>
         <rect x={96} y={604} width={888} height={706 + ROWTRAVEL} rx={3} fill="#efeade"
               stroke={INK} strokeWidth={9} />
-        <rect x={120} y={628} width={840} height={658} rx={2} fill="none"
+        <rect x={120} y={628} width={840} height={702} rx={2} fill="none"
               stroke={P.ink} strokeWidth={2} opacity={0.3} />
         {USES.map((u, i) => {
           const live = i === at;
@@ -1217,16 +1303,15 @@ const S15: React.FC<SceneProps> = () => {
         <Recess x={310} y={840} w={244} label="EQUIPMENT" f={f} />
         <Recess x={770} y={840} w={244} label="PURCHASES" f={f} />
         <Recess x={540} y={1140} w={476} label="TRAINING" f={f} />
-        {/* the two it was tried in and did not fit, called in the one colour this film
-            uses for a gap: the slug is 464 wide and each of those slots is 244 */}
-        {[{x: 310, on: tryA * (1 - cross)}, {x: 770, on: cross * (1 - drop)}].map((r, i) => (
-          <g key={i} opacity={r.on}>
-            <rect x={r.x - 122} y={800} width={244} height={80} rx={2} fill="none"
-                  stroke={P.scarlet} strokeWidth={6} />
-            {[-1, 1].map((s) => (
-              <line key={s} x1={r.x + s * 122} y1={886} x2={r.x + s * 232} y2={886}
-                    stroke={P.scarlet} strokeWidth={7} strokeDasharray="9 7" />
-            ))}
+        {/* ONE slot is called at a time, the one the slug is actually over: a 464px slug
+            held against a 244px cut. The first cut of this drew both marks at once with
+            110px dashed tails either side, and at 310 and 770 those tails met in the middle
+            and read as a single stray dotted rule across the page. */}
+        {[{x: 310, on: tryA * (1 - Math.min(1, cross * 2.4))},
+          {x: 770, on: Math.max(0, cross * 2.4 - 1.4) * (1 - Math.min(1, drop * 2.4))}].map((r, i) => (
+          <g key={i} opacity={Math.max(0, Math.min(1, r.on))}>
+            <rect x={r.x - 122} y={798} width={244} height={84} rx={2} fill="none"
+                  stroke={P.scarlet} strokeWidth={7} />
           </g>
         ))}
         <TypeSlug x={sx} y={sy} f={f} text="ARTIFICIAL INTELLIGENCE" scale={0.9}
