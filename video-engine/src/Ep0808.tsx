@@ -612,11 +612,14 @@ const CutFace: React.FC<{x: number; y: number; w: number; h: number; deep?: numb
 
 const Recess: React.FC<{
   x: number; y: number; w: number; label: string; f: number; dim?: number;
-}> = ({x, y, w, label, f, dim = 0}) => (
+  /** 0..1 on the LABEL alone. The cut always stays: an empty approved use is the argument. */
+  labelOn?: number;
+}> = ({x, y, w, label, f, dim = 0, labelOn = 1}) => (
   <g transform={`translate(${x},${y})`} opacity={1 - dim * 0.6}>
     <CutFace x={0} y={0} w={w} h={80} />
     <text x={0} y={REC_LABEL_DY} textAnchor="middle" fontFamily={MONO} fontSize={REC_LABEL_SIZE}
-          fontWeight={700} fill={P.ink} letterSpacing={1.2} opacity={0.85}>{label}</text>
+          fontWeight={700} fill={P.ink} letterSpacing={1.2}
+          opacity={0.85 * labelOn}>{label}</text>
   </g>
 );
 
@@ -924,6 +927,12 @@ const CapBoard: React.FC<{f: number; on: number; rows: number[]; bye: number}> =
       </defs>
       <ContactShadow cx={542} cy={CAP_H + 8} rx={402} ry={11} opacity={0.3} />
       <g transform="translate(540,0)">
+        {/* the empty rack the rules are pushed into, so the board is a thing with slots in
+            it before any of them arrives rather than a blank panel */}
+        {CAP_ROWS.map((_, i) => (
+          <rect key={`slot${i}`} x={-402} y={CAP_HEAD + i * CAP_ROWH + 4} width={804}
+                height={CAP_ROWH - 8} rx={2} fill="#16212a" opacity={0.3} />
+        ))}
         <rect x={-410} y={0} width={820} height={CAP_H} rx={3} fill="url(#capbd)"
               stroke={INK} strokeWidth={8} />
         {[-1, 1].map((s) => (
@@ -933,18 +942,22 @@ const CapBoard: React.FC<{f: number; on: number; rows: number[]; bye: number}> =
               fill="#f0f4f2" letterSpacing={1.6}>CAPPED BY CATEGORY</text>
         <path d={`M-380,${CAP_HEAD - 4} L380,${CAP_HEAD - 4}`} stroke="#8fa3ad"
               strokeWidth={3} opacity={0.5} />
-        {/* Each rule SLIDES DOWN INTO ITS SLOT, past the ones already racked, and its collar
-            clamps with it. A stroke-only collar travelling on its own repaints almost nothing
-            between two sampled instants (the film learned that the hard way in S3's first
-            cut); a full-width slab carrying the collar repaints the board. */}
+        {/* EACH RULE IS PUSHED IN FROM THE LEFT, which is S2's move exactly (RulePlate drives
+            in from -420 with an overshoot) because these are more of the same thing: rules on
+            the money. It is also the only version of this that stays legible. The first cut had
+            them DESCEND into the rack, and rendering it showed why that was wrong twice over —
+            a rule in transit covered the board's own CAPPED BY CATEGORY header, and clipping it
+            to the rack only moved the problem, because a descending rule then crushed itself
+            against the one already seated above it (measured on the frame at t=26.5s, both
+            times). Sliding in laterally, each rule crosses nothing but wall. */}
         {CAP_ROWS.map((r, i) => {
           const a = rows[i];
           if (a <= 0.005) return null;
-          const rest = CAP_HEAD + i * CAP_ROWH;
-          const y = interpolate(smooth(a), [0, 1], [-CAP_ROWH - 8, rest]);
-          const bite = Math.sin(Math.min(1, a) * Math.PI) * 4;   // it seats, it does not stop dead
+          const y = CAP_HEAD + i * CAP_ROWH;
+          const dx = interpolate(smooth(a), [0, 1], [-1020, 0]);
+          const over = Math.sin(Math.min(1, a) * Math.PI) * 9;   // it seats, it does not stop dead
           return (
-            <g key={i} transform={`translate(0,${y + bite})`} opacity={Math.min(1, a * 5)}>
+            <g key={i} transform={`translate(${dx + over},${y})`} opacity={Math.min(1, a * 5)}>
               <rect x={-410} y={0} width={820} height={CAP_ROWH} rx={2} fill="url(#caprow)"
                     stroke={INK} strokeWidth={4} />
               <rect x={-406} y={CAP_ROWH - 9} width={812} height={9} fill={T.shade} opacity={0.6} />
@@ -1140,12 +1153,24 @@ const S5: React.FC<SceneProps> = () => {
   // lower edge, so the words arrive as the light reaches them. That is a boundary sweeping
   // 890px of board at 75px a second, which is a real event in every one-second window the
   // gate samples, and it is also just what reading a list down a page looks like.
+  //
+  // AND THE WORDS COME OUT FROM UNDER THE RULE, which is not a flourish — it is the only
+  // way this staging is legible. The first render of it kept the old independent reveal
+  // ramps, and at t=38.0s the straightedge was lying across WEARABLES while WEARABLES was
+  // still fading up: a 34px bar bisecting an on-screen string, the same overprint defect
+  // this file has now fixed five times. So the reveals are DERIVED from the rule instead.
+  // A row appears once the rule's top edge has passed below its baseline and descender, so
+  // no label can ever be under the bar. The schedule is unchanged where it matters: the five
+  // reveals still complete at local 34/67/100/133/166 against the old 40/74/106/138/172, i.e.
+  // still inside line 7's own words.
   const READ0 = 4, READ1 = 190;
   const read = ramp(f, READ0, READ1);
-  // board space: title rule at 686, row i occupies 702+82i .. 784+82i
+  // board space: title rule at 686, row i occupies 702+82i .. 784+82i, and AllowanceBoard
+  // sets its label baseline 33 into the band, i.e. 735+82i.
   const ruleY = interpolate(read, [0, 1], [694, 1157]);
-  const rowAt = [ramp(f, 10, 40), ramp(f, 44, 74), ramp(f, 76, 106),
-                 ramp(f, 108, 138), ramp(f, 140, 172)];
+  const RULE_H = 34, RULE_TOP = ruleY - 19;
+  const rowAt = [0, 1, 2, 3, 4].map((i) =>
+    Math.max(0, Math.min(1, (RULE_TOP - (743 + 82 * i)) / 16)));
   // AND THE SLUG STOPS SHORT OF THE BOARD. At its old rest (y=1092, scale 1.3) its body
   // topped out at master 1040 against a board bottoming at master 1100, so from 44.7s to
   // the cut it covered the fifth row and REMOTE DISPENSING was unreadable — an on-screen
@@ -1173,16 +1198,18 @@ const S5: React.FC<SceneProps> = () => {
           </g>
         )))}
         {/* everything the rule has not reached yet is still in shadow */}
+        {/* 0.42 rendered the board's whole lower half as a black void that read as broken
+            rather than as unread. 0.22 is a shadow. */}
         <rect x={104} y={ruleY} width={872} height={Math.max(0, 1108 - ruleY)}
-              fill="#0b1216" opacity={0.42} />
+              fill="#0b1216" opacity={0.22} />
         {/* The rule itself, lying across the page with its own shadow under it — and it is
             TAKEN OFF once the list is read. Left on, it parked across the bottom of the board
             with its ends sticking out either side of the risen slug, which reads as a stray
             bar rather than a straightedge. */}
         <g transform={`translate(540,${ruleY})`} opacity={1 - ramp(f, 176, 198)}>
-          <rect x={-462} y={4} width={924} height={34} fill="#0b1216" opacity={0.34} />
+          <rect x={-462} y={4} width={924} height={RULE_H} fill="#0b1216" opacity={0.34} />
           <defs><FormGradient id="readrule" t={tones('#9aa8a2')} softness={1.1} /></defs>
-          <rect x={-462} y={-19} width={924} height={34} rx={2} fill="url(#readrule)"
+          <rect x={-462} y={-19} width={924} height={RULE_H} rx={2} fill="url(#readrule)"
                 stroke={INK} strokeWidth={5} />
           <rect x={-462} y={6} width={924} height={9} fill="#4d5b58" opacity={0.7} />
           <RimLight d="M-458,-15 l916,0" w={4} opacity={0.6} />
@@ -2006,6 +2033,16 @@ const S15: React.FC<SceneProps> = () => {
   const sy = interpolate(drop, [0, 1], [802, TRAIN_Y - 38]) - arc
            - Math.sin(Math.min(1, drop) * Math.PI) * 40;
   const seated = ramp(f, 156, 172);
+  // the slug's REAL body this frame, in the same arithmetic TypeSlug uses internally
+  const held = (1 - seated) * 0.4;
+  const bodyTop = sy - (1 - seated) * (18 + held * 46);
+  const bodyBot = bodyTop + 74 * 0.9;
+  // the buying labels' ink band: baseline 840 + REC_LABEL_DY, caps up, descender down
+  const LBL_TOP = 840 + REC_LABEL_DY - REC_LABEL_SIZE * 0.72;
+  const LBL_BOT = 840 + REC_LABEL_DY + REC_LABEL_SIZE * 0.26;
+  const buyingLabel = Math.min(1,
+    Math.max(0, Math.min(1, (LBL_TOP - 10 - bodyBot) / 18)) +
+    Math.max(0, Math.min(1, (bodyTop - (LBL_BOT + 10)) / 18)));
   return (
     <Stage f={f} push={ramp(f, 0, 340) * 0.04} drift={0.5} deskY={1720} act={3}>
       <g opacity={show}>
@@ -2031,8 +2068,18 @@ const S15: React.FC<SceneProps> = () => {
                   fontWeight={700} fill={P.ink} opacity={0.75} letterSpacing={1}>APPROVED USE</text>
           ));
         })()}
-        <Recess x={350} y={840} w={244} label="EQUIPMENT" f={f} />
-        <Recess x={730} y={840} w={244} label="PURCHASES" f={f} />
+        {/* SIXTH INSTANCE OF THE OVERPRINT CLASS, and the one the round-4 note predicted:
+            "extend the invariant to the travel path". At t=124.0s the slug is mid-drop from
+            PURCHASES to TRAINING and its 463x67 body lies straight across both of these
+            labels — EQUIPMENT reads as "EQUIPM" and PURCHASES is gone entirely. Neither
+            label can move: the slug occupies 670..832 at the buying row (arc apex to rest),
+            and there is no 22px lane between that and its 894..916 landing.
+            So the LABELS retire while the object is over them, and the rule is DERIVED from
+            the slug's own body rather than from a frame number: opacity is 1 whenever the
+            body clears the label band by 10px in either direction, 0 when it does not. The
+            cuts never retire — an approved use that stayed empty is the whole argument. */}
+        <Recess x={350} y={840} w={244} label="EQUIPMENT" f={f} labelOn={buyingLabel} />
+        <Recess x={730} y={840} w={244} label="PURCHASES" f={f} labelOn={buyingLabel} />
         <Recess x={540} y={TRAIN_Y} w={476} label="TRAINING" f={f} />
         {/* ONE slot is called at a time, the one the slug is actually over: a 464px slug
             held against a 244px cut. The first cut of this drew both marks at once with
