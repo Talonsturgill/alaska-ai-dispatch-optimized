@@ -180,7 +180,23 @@ export const Character: React.FC<CharacterProps> = ({
   // "thin" motion (verification-panel catch: scenes position characters via wrapper transforms, so
   // the x/y PROPS are often 0 for every figure and the old x/y-only hash never actually engaged —
   // hash in outfit + facing so any two distinct cast members desync deterministically).
-  const swayPhase = x * 0.02 + y * 0.003 + outfit.length * 1.7 + (facing === 1 ? 0 : 2.1);
+  // THE SEED MUST BE A CONSTANT PER FIGURE, AND UNTIL 2026-08-08 IT WAS NOT. This value is
+  // not only a phase: humanIdle() feeds it to h01(), a chaotic hash, to draw the BREATH
+  // PERIOD and the whole weight-shift event schedule. A hash has no continuity, so a seed
+  // that moves at all re-rolls both every frame. Scenes animate `x` — Ep0808 S7 passes
+  // `x={246 + 3.5*sin(f/63.1)}` as a parallax nudge — which walked the seed by 0.14 across
+  // the shot and made the breath cycle jump randomly between 3.40s and 4.30s ON EVERY
+  // FRAME. Measured on the shipped take at 61.0-64.0s, the breath curve read
+  // 0.74, 0.87, 1.00, 1.13, 1.13, 1.13, 1.10 ... then -0.05, 0.39, 0.50, -0.11: white
+  // noise where a 3.4s cycle should be, which is exactly the panel's "the torso silhouette
+  // drifts monotonically with zero oscillation, no breath, no weight shift". The rig was
+  // not under-amplified, it was being re-seeded 30 times a second. The weight-shift
+  // schedule was destroyed the same way, which is why no shift ever landed.
+  // Quantising to 64px buckets pins the seed for any figure a scene nudges (parallax
+  // sines are a few px) while keeping two figures in a two-shot decorrelated: one bucket
+  // apart is 1.28 of phase, i.e. ~49 radians inside h01, which is a different draw.
+  const swayPhase = Math.round(x / 64) * 1.28 + Math.round(y / 64) * 0.19
+                    + outfit.length * 1.7 + (facing === 1 ? 0 : 2.1);
   // a walking figure gets the stride cycle, not idle sway. 'arms-crossed' is a HELD standing pose
   // (a person waiting/watching) — it earns the same weight-shift/breath idle so it never reads as a
   // frozen sprite (panel catch on the arms-crossed neighbor figure); the sway is a whole-figure
@@ -223,9 +239,31 @@ export const Character: React.FC<CharacterProps> = ({
   const hi = humanIdle(f, swayPhase, idleAmp);
   const sway = idle ? hi.swayX : 0;
   const swayTilt = idle ? hi.tilt : 0;
-  // breath scale and torso rise both come from the same held-at-the-top breath curve, and
-  // a weight shift costs a little height as the hip drops (hi.bob folds that in).
-  const breath = idle ? hi.breath : 1;
+  // the breath as a TRUE 0..1 curve. `hi.breath` is already multiplied by idleAmp, so the
+  // `br` defined further down (hi.breath-1)/0.011 is the GAIN-SCALED version the arm
+  // channels were measured against; this one is the shape itself.
+  const breath01 = idleAmp > 0 ? (hi.breath - 1) / (0.011 * idleAmp) : 0;
+  // BREATH THAT CHANGES THE FIGURE'S HEIGHT (2026-08-08).
+  //
+  // hi.breath is a 0.6% scale on a 222px chest, pivoting on the hip: it moved the
+  // shoulders 1.3px and the coat hem 0.2px. The head is a SIBLING of the torso group
+  // (see the transform near the bottom of this file), so it never received the scale at
+  // all and rode only bob*1.4, another 1.2px. The top of the figure's silhouette
+  // therefore travelled about 1.7px per breath against a camera push that grows the same
+  // silhouette 6px every three seconds, and the panel measured exactly what that
+  // predicts: 391->399px of monotonic climb with no oscillation in it.
+  //
+  // A real inhale lifts the ribcage AND the head sitting on it. So the chest scale goes
+  // to 3.0% and the head is given the chest top's own displacement, which is what keeps
+  // the head ON the shoulders instead of floating above a stretching coat. The pivot
+  // stays the hip line, so the published `carry` fist anchor 30px above it moves 0.9px
+  // and every scene that mounts a prop there is unaffected.
+  //
+  // Breath is NOT reduced by poseIdleScale. That factor exists to keep a deliberate
+  // gesture from wobbling; a person who is pointing at something still breathes.
+  const breath = idle ? 1 + idleGain * 0.030 * breath01 : 1;
+  /** how far the chest top (and so the head, and so the silhouette) rises on the inhale */
+  const breathRise = -208 * (breath - 1);
   const bob = idle ? hi.bob : 0;
   // the head's own small look-arounds PLUS a lagged copy of the torso. The lag is the
   // mannerism: the body leads, the head follows about 0.08s later.
@@ -305,7 +343,12 @@ export const Character: React.FC<CharacterProps> = ({
   // WEIGHT SHIFT. The hips scissor a little between the feet and the chest COUNTER-tilts
   // over them. The pivot is the hip line, never the root, so the boots stay planted (the
   // 18px boot skate this file already fixed once by moving sway off the root).
-  const hipRot = live * (0.55 * Math.sin(T * RATE(6.2) + ph * 1.1) + 0.25 * hi.weight);
+  // The weight term goes 0.25 -> 0.70 deg. Not because 0.25 was mistuned, but because
+  // until the seed above was pinned no weight shift ever LANDED (the schedule was being
+  // re-rolled every frame), so the term had never actually been seen. Now that a shift is
+  // a real discrete event, the pelvis has to tilt enough for the chest counter-rotation
+  // (-2x, below) to read as the body settling onto one hip.
+  const hipRot = live * (0.55 * Math.sin(T * RATE(6.2) + ph * 1.1) + 0.70 * hi.weight);
   const chestRot = -hipRot * 2.0;
   // the head settles LATE: its own slow drift, minus a partial delayed copy of the chest
   const headRot =
@@ -762,6 +805,114 @@ export const Character: React.FC<CharacterProps> = ({
     }
   };
 
+  // ---- LEGS: the same finish the rest of this rig already has (2026-08-08) --------------
+  //
+  // WHAT SHIPPED. Two straight rounded rectangles, one flat lit strip, one flat shade
+  // strip, a boot glued to the bottom edge and no joint anywhere. Two judges sampled the
+  // leg band independently at 62.2s and reported the same thing: no knee, no ankle, no
+  // foot, no contact shadow, and an outline visibly lighter than the torso 40px above it,
+  // which carries a 7px ink silhouette, a form gradient, a rim light, a hi-vis stripe and
+  // a pocket seam. One figure at two finish levels, which the style charter puts
+  // explicitly in scope.
+  //
+  // WHAT IT IS NOW. A leg built exactly the way sleeve() builds an arm: from a solved
+  // JOINT CHAIN, with the silhouette DERIVED from the chain instead of drawn as a box.
+  //
+  //   THE ANKLE IS THE FIXED END. The chain is solved from a planted ankle upward, so a
+  //   weight shift changes the KNEE and the boot does not move at all. The 18px boot-skate
+  //   this file fixed once by hand is now prevented by construction, not by remembering.
+  //
+  //   A STANDING LEG IS NEVER LOCKED, AND IT IS ALSO NOT A NOODLE. The first cut of this
+  //   solved the knee from a two-bone IK with THIGH+SHIN 7px longer than the hip-to-ankle
+  //   span, which put the knee 15px forward of that line and rendered two S-curved rubber
+  //   hoses. Looking at the frame is what caught it; the geometry was "correct" and the
+  //   picture was worse than the rectangles it replaced. A standing leg's knee sits a few
+  //   px proud of the hip-ankle line and the JOINT is read from the crease, the kneecap
+  //   line and the calf, not from a bent silhouette. So the break is 4.5px at rest.
+  //
+  //   THE FREE LEG BENDS MORE THAN THE LOADED ONE. That is what shifting your weight
+  //   between your feet actually looks like, and it is the lower half of the same event
+  //   the pelvis tilt and the chest counter-rotation carry above.
+  const HIP_Y = -160, KNEE_Y = -77, ANK_Y = -17;
+  /** the closed leg silhouette: down the forward contour hip->knee->ankle, across the
+   *  ankle, back up the rear contour past the calf. Derived from the chain, never a box. */
+  const legOutline = (
+    H: {x: number; y: number}, K: {x: number; y: number}, A: {x: number; y: number},
+    wH: number, wK: number, wA: number,
+  ) => {
+    const t1 = (K.y - H.y), t2 = (A.y - K.y);
+    // THE CALF. A leg is not a taper: it is wide at the thigh, NARROW at the knee, wide
+    // again over the calf and narrow at the ankle. That width rhythm is most of what makes
+    // a silhouette read as a leg rather than a pipe, and it is what tells a viewer where
+    // the knee is even when the bend itself is only a few px.
+    const cy = K.y + t2 * 0.42, cw = wK + 2.5;
+    return `M${H.x + wH},${H.y}`
+      + ` C${H.x + wH},${H.y + t1 * 0.6} ${K.x + wK},${K.y - t1 * 0.4} ${K.x + wK},${K.y}`
+      + ` C${K.x + wK},${K.y + t2 * 0.4} ${A.x + wA},${A.y - t2 * 0.5} ${A.x + wA},${A.y}`
+      + ` L${A.x - wA},${A.y}`
+      + ` C${A.x - wA - 1},${A.y - t2 * 0.42} ${K.x - cw},${cy + t2 * 0.3} ${K.x - cw},${cy}`
+      + ` C${K.x - cw},${cy - t2 * 0.3} ${K.x - wK},${K.y + t2 * 0.24} ${K.x - wK},${K.y}`
+      + ` C${K.x - wK},${K.y - t1 * 0.4} ${H.x - wH},${H.y + t1 * 0.6} ${H.x - wH},${H.y} Z`;
+  };
+  /** one leg. `side` is -1 for the off leg and +1 for the near leg. */
+  const legUnit = (side: 1 | -1) => {
+    const hx = side < 0 ? -23 : 25;
+    // 0 = this foot is unweighted, 1 = the body is standing on it
+    const load = (1 + side * (idle ? hi.weight : 0)) / 2;
+    // the free knee softens forward and its hip drops a little; the ankle never moves
+    const kf = 4.5 + live * 5.0 * (1 - load);
+    const drop = live * 2.2 * (1 - load);
+    const H = {x: hx, y: HIP_Y + drop};
+    const K = {x: hx + kf, y: KNEE_Y + drop * 0.4};
+    const A = {x: hx, y: ANK_Y};
+    const wH = 19, wK = 15, wA = 12.5;
+    const m1 = (H.y + K.y) / 2, m2 = (K.y + A.y) / 2;
+    // shade and lit strips FOLLOW THE CHAIN, so they bend at the knee with everything else
+    const inner = (off: number) =>
+      `M${H.x + off},${H.y + 12} C${H.x + off},${m1} ${K.x + off},${m1} ${K.x + off},${K.y}`
+      + ` C${K.x + off},${m2} ${A.x + off},${m2} ${A.x + off},${A.y - 6}`;
+    return (
+      <g transform={`translate(${sway * 0.34},0) rotate(${-side * (legSwing + hipRot)} ${hx} ${HIP_Y})`}>
+        {/* the foot's own floor contact, under everything it belongs to */}
+        <ContactShadow cx={A.x + 8} cy={20} rx={30} ry={7} opacity={0.34} blur={5} />
+        <path d={legOutline(H, K, A, wH, wK, wA)} fill={`url(#${uid}_pants)`}
+              stroke={INK} strokeWidth={7} strokeLinejoin="round" />
+        <path d={inner(wH - 24)} fill="none" stroke="#fff" strokeWidth={8} opacity={0.13} strokeLinecap="round" />
+        <path d={inner(wH - 8)} fill="none" stroke={INK} strokeWidth={10} opacity={0.24} strokeLinecap="round" />
+        {/* rim on the sun-facing (screen-left) contour, same cue the coat carries */}
+        <RimLight d={`M${H.x - wH},${H.y + 14} C${H.x - wH},${m1} ${K.x - wK},${m1} ${K.x - wK},${K.y}`}
+                  w={4} opacity={0.5} />
+        {/* THE KNEE BREAK, read the way a trouser actually shows one: a lit kneecap over
+            the joint and the fabric bunching in two creases just under it. On a dark
+            trouser a bent SILHOUETTE alone is invisible; these lines are what a viewer
+            actually sees the knee with. */}
+        <path d={`M${K.x - 8},${K.y - 2} q9,-7 17,-2 q-8,3 -17,4 Z`} fill="#fff" opacity={0.17} />
+        <path d={`M${K.x - wK + 2},${K.y + 7} q11,7 ${2 * wK - 6},0`} fill="none" stroke={INK}
+              strokeWidth={2.8} opacity={0.34} strokeLinecap="round" />
+        <path d={`M${K.x - wK + 5},${K.y + 16} q8,5 ${2 * wK - 12},-1`} fill="none" stroke={INK}
+              strokeWidth={2.4} opacity={0.24} strokeLinecap="round" />
+        {/* thigh cloth fold running into the knee */}
+        <path d={`M${H.x - 7},${H.y + 34} q8,18 ${K.x - H.x + 3},${K.y - H.y - 46}`}
+              fill="none" stroke={INK} strokeWidth={2.5} opacity={0.22} strokeLinecap="round" />
+        {/* THE ANKLE AND THE FOOT, at the solved ankle. The toe points +x, the way the
+            figure faces: the old boot's toe pointed backwards on every character in
+            every episode, which nobody caught because it was drawn as a bracket rather
+            than as a foot. */}
+        <g transform={`translate(${A.x},${A.y})`}>
+          {/* trouser cuff breaking over the boot */}
+          <path d={`M${-wA - 1},-3 q${wA + 1},7 ${2 * wA + 2},0`} fill="none" stroke={INK}
+                strokeWidth={2.6} opacity={0.4} strokeLinecap="round" />
+          <rect x={-13} y={-9} width={26} height={20} rx={7} fill="#5b4632" stroke={INK} strokeWidth={5} />
+          <path d="M-15,-1 h29 q25,3 31,12 q3,6 -3,8 h-57 q-6,-1 -6,-8 q0,-9 6,-12 Z"
+                fill="#5b4632" stroke={INK} strokeWidth={5} strokeLinejoin="round" />
+          {/* lit top of the toe box + the sole seam: a built boot, not a painted blob */}
+          <path d="M-13,1 q22,-1 34,5 q-16,-1 -34,2 Z" fill="#fff" opacity={0.16} />
+          <path d="M-19,13 h60" stroke={INK} strokeWidth={2.6} opacity={0.45} strokeLinecap="round" />
+        </g>
+      </g>
+    );
+  };
+
   // THE FEET SKATED. The idle weight-shift was applied at the ROOT, so the boots and
   // their contact shadows slid along the ground with the torso: a judge measured the boot
   // band travelling 18px while the sign post planted beside it moved 1px and the
@@ -789,28 +940,8 @@ export const Character: React.FC<CharacterProps> = ({
             their OWN hip joints, so the pelvis reads as tilting under a weight shift.
             Pivoting at the hip rather than the root keeps the boots within ~1.5px of
             planted, which is the constraint the 18px boot-skate fix established. */}
-        <g transform={`translate(${sway * 0.34},0) rotate(${legSwing + hipRot} -23 -160)`}>
-          <rect x={-40} y={-160} width={34} height={150} rx={16} fill={`url(#${uid}_pants)`} stroke={INK} strokeWidth={6} />
-          {/* leg volume: lit highlight down the sun-facing edge + shade down the shadow edge, so
-              the pipe reads as a cylinder, not a flat fill (2026-07-21 round-9 rig pass: legs were
-              the last plain-fill surface Judge 1 flagged after the coats got volume). */}
-          <rect x={-38} y={-156} width={9} height={142} rx={4.5} fill="#fff" opacity={0.12} />
-          <rect x={-16} y={-158} width={10} height={146} rx={5} fill={INK} opacity={0.26} />
-          <path d="M-30,-120 q6,20 -2,50" stroke={INK} strokeWidth={2.5} opacity={0.22} fill="none" strokeLinecap="round" />
-          <path d="M-44,-14 h44 v10 a6,6 0 0 1 -6,6 h-50 a8,8 0 0 1 -8,-8 q0,-8 20,-8 Z" fill="#5b4632" stroke={INK} strokeWidth={5} />
-          <path d="M-44,-14 h20 v16 h-26 a8,8 0 0 1 -8,-8 q0,-8 14,-8 Z" fill="#fff" opacity={0.14} />
-          {/* sole seam — the boot has a built sole, not a painted blob */}
-          <path d="M-54,-3 h52" stroke={INK} strokeWidth={2.4} opacity={0.45} strokeLinecap="round" />
-        </g>
-        <g transform={`translate(${sway * 0.34},0) rotate(${-legSwing - hipRot} 25 -160)`}>
-          <rect x={8} y={-160} width={34} height={150} rx={16} fill={`url(#${uid}_pants)`} stroke={INK} strokeWidth={6} />
-          <rect x={10} y={-156} width={9} height={142} rx={4.5} fill="#fff" opacity={0.12} />
-          <rect x={32} y={-158} width={10} height={146} rx={5} fill={INK} opacity={0.26} />
-          <path d="M18,-100 q6,24 -3,60" stroke={INK} strokeWidth={2.5} opacity={0.22} fill="none" strokeLinecap="round" />
-          <path d="M4,-14 h44 v10 a6,6 0 0 1 -6,6 h-50 a8,8 0 0 1 -8,-8 q0,-8 20,-8 Z" fill="#5b4632" stroke={INK} strokeWidth={5} />
-          <path d="M4,-14 h20 v16 h-26 a8,8 0 0 1 -8,-8 q0,-8 14,-8 Z" fill="#fff" opacity={0.14} />
-          <path d="M-6,-3 h52" stroke={INK} strokeWidth={2.4} opacity={0.45} strokeLinecap="round" />
-        </g>
+        {legUnit(-1)}
+        {legUnit(1)}
         {/* torso (breath + walk bob), carrying the full lateral weight-shift */}
         <g transform={`translate(${sway},${-160 + bob + walkBob}) scale(1,${breath}) translate(0,160)`}>
           {/* CHEST COUNTER-TILT, pivoting on the hip line (which is q-space (0,0) here,
@@ -990,7 +1121,11 @@ export const Character: React.FC<CharacterProps> = ({
             head tips and turns on the spine instead of sliding. It carries its own slow
             drift minus a partial, delayed copy of the chest tilt: the body leads and the
             head answers late, which is most of what reads as a person rather than a rig. */}
-        <g transform={`translate(${headX},${-368 + bob * 1.4 + headY + walkBob}) rotate(${headRot} 0 56)`}>
+        {/* breathRise is the chest top's OWN displacement under the breath scale. The head
+            is a sibling of the torso group, so without it the ribcage rises and the head
+            stays put, which is a stretching coat rather than a breath — and it is why the
+            silhouette height the panel measured never moved. */}
+        <g transform={`translate(${headX},${-368 + bob * 1.4 + breathRise + headY + walkBob}) rotate(${headRot} 0 56)`}>
           {(() => {
             const hg = outfit === 'parka' ? 'trapper' : headgear;
             const beanieCol = c.main;
