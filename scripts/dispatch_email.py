@@ -233,7 +233,23 @@ def main():
                          "routes to the Video tab instead of the main feed.")
     ap.add_argument("--poster-url", default="", help="hosted poster (preferred, keeps payload small)")
     ap.add_argument("--poster", default="", help="poster file to inline as base64 (heavier)")
-    ap.add_argument("--voice", default=""); ap.add_argument("--music", default="")
+    # THE LICENCE ATTRIBUTION MUST NOT DEPEND ON SOMEBODY REMEMBERING (2026-08-08).
+    # `--music` defaulted to "" and nothing in this file ever read music_credit.json, which
+    # the mix step writes with the composer, title, source and licence already assembled. So
+    # a run that forgot the flag produced a draft whose credits block simply said "(unset)",
+    # and the music is CC BY 4.0 — attribution is a licence CONDITION, not a courtesy. A
+    # panel judge found the gap by reading the script rather than the output, which means it
+    # would have shipped silently. The file on disk is now the default; an explicit flag
+    # still wins.
+    def _music_default():
+        p = Path(__file__).resolve().parent.parent / "out" / "dispatch" / "music_credit.json"
+        try:
+            return json.loads(p.read_text()).get("credit", "")
+        except Exception:
+            return ""
+
+    ap.add_argument("--voice", default="")
+    ap.add_argument("--music", default=_music_default())
     ap.add_argument("--sources", default=""); ap.add_argument("--score", default="")
     ap.add_argument("--note", default="On-screen counters/charts are illustrative unless drawn from a live data feed.")
     ap.add_argument("--upgrades", default="",
