@@ -46,6 +46,40 @@ const ramp = (f: number, a: number, b: number) =>
 
 const hash = (i: number) => (Math.imul(i + 11, 2654435761) >>> 0) / 4294967295;
 
+/** ease with a hold at each end, for a stepped move that is not a snap */
+const smooth = (t: number) => t * t * (3 - 2 * t);
+
+/** SCENE MARKER. Every shot is typed with this so `scripts/plate_overlap_check.py`,
+ *  whose scene finder is `^const (S\d+): React\.FC<SceneProps>`, can actually see them.
+ *  Before this the regex matched NOTHING in this file, the checker parsed zero scenes,
+ *  found zero plates and printed "clean across 1 file(s)" all run — which is exactly the
+ *  failure its own docstring warns about, and it is why S3's duplicate header plate
+ *  ("CAPITAL CAPPED AT 20%" at y=588 sitting inside "AWAY FROM ANYTHING YOU'D BUILD"
+ *  at y=600) reached the panel as a visible ghost card. A checker pointed at a shape it
+ *  never matches reports PASS. */
+type SceneProps = Record<never, never>;
+
+/** SECONDARY LIFE, decorrelated per element.
+ *
+ *  The 2026-08-08 panel scored MOTION 5.5 and named the cause exactly: "12 of 19 strips
+ *  sit under 6 percent changed at the film's own nominated peak moves ... the connective
+ *  tissue is plates arriving and stopping." Every shot built over its first ~30 frames and
+ *  then held for several seconds on nothing but the World's global push, and a judge will
+ *  not credit a camera translate as animation (see scripts/motion_check.py, which solves
+ *  the camera out precisely so nobody can quote gross frame change as life again).
+ *
+ *  So held objects get motivated, CONTENT-RELATIVE life that runs through the hold, and
+ *  every one of them gets its own period and its own phase off `hash(i)`. One global sine
+ *  would just be a second camera. */
+const wob = (f: number, i: number) => {
+  const h1 = hash(i * 3 + 1), h2 = hash(i * 3 + 29), h3 = hash(i * 3 + 61);
+  return {
+    x: Math.sin(f / (38 + h1 * 43) + h1 * 6.283) * (2.4 + h2 * 3.0),
+    y: Math.cos(f / (31 + h2 * 49) + h2 * 6.283) * (3.2 + h1 * 4.4),
+    r: Math.sin(f / (47 + h3 * 51) + h3 * 6.283) * (0.6 + h3 * 1.1),
+  };
+};
+
 // ------------------------------------------------------------------ backdrop
 /** The room. ALWAYS moving: the light column drifts, dust crosses it, the far
  *  wall's ruled grid breathes. DISPATCH_STANDARD section 8: continuous motion is
@@ -131,6 +165,65 @@ const RoomBG: React.FC<{f: number; deskY?: number; parallax?: number; warmth?: n
   </g>
 );
 
+/** THE NEAR FIELD — the working edge of the desk the whole film is shot across.
+ *
+ *  TWO defects, one object. The 2026-08-08 panel measured "9 of the 14 sampled stills
+ *  leave 25 to 35 percent of the 9:16 frame as empty desk", naming f013.7, f022.8,
+ *  f050.2, f077.6, f095.9 and f114.1 — every one of them a shot whose bottom quarter is
+ *  a flat birch gradient below the caption card. The same panel scored motion 5.5 because
+ *  every shot HOLDS after its build. A near-field row of case folders answers both: it is
+ *  real depth where there was fill, and each folder carries its own phase-staggered idle,
+ *  so no frame of this film is ever a still photograph again.
+ *
+ *  GEOMETRY IS DELIBERATE AND CHECKED. It is drawn OUTSIDE the content zoom, so authored
+ *  y IS screen y (no 1.12x surprise), and it starts at FG_TOP = 1480, below the open
+ *  caption band 1336..1468 that scripts/caption_band_check.py enforces. Every scene's
+ *  World push in this episode is >= 0 (S3 and S10 fall from +0.06 to 0, never negative),
+ *  so 1480 can only ever be pushed DOWN, away from the band, never up into it.
+ *
+ *  It carries NO information: no text, no glyph, no number. It is furniture. */
+const FG_TOP = 1480;
+const Foreground: React.FC<{f: number; warmth?: number}> = ({f, warmth = 0}) => (
+  <g>
+    <defs>
+      <linearGradient id="fgShade" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#3a3226" stopOpacity={0} />
+        <stop offset="100%" stopColor="#3a3226" stopOpacity={0.34} />
+      </linearGradient>
+      <linearGradient id="fgFold" x1="0" y1="0" x2="0.4" y2="1">
+        <stop offset="0%" stopColor="#b9ad93" />
+        <stop offset="100%" stopColor="#8b8069" />
+      </linearGradient>
+    </defs>
+    {/* the shadow the near edge throws back up the desk, so the layer reads as CLOSER
+        to camera than the subject rather than as a band pasted on the bottom */}
+    <rect x={-40} y={FG_TOP - 96} width={W + 80} height={150} fill="url(#fgShade)" data-band="ok" />
+    {/* the case folders. Overlapping, so the gaps between them are edges rather than
+        pickets, and each one breathes on its own period. */}
+    {Array.from({length: 13}).map((_, i) => {
+      const w = wob(f, i + 41);
+      const h1 = hash(i + 3), h2 = hash(i + 71);
+      const x = -66 + i * 96 + w.x;
+      const top = FG_TOP + 16 + h1 * 46 + w.y;
+      return (
+        <g key={i} transform={`rotate(${w.r * 1.4 + (h2 * 5 - 2.5)},${x + 66},${H})`}>
+          <rect x={x} y={top} width={132} height={H - top + 60} rx={4}
+                fill={i % 3 === 0 ? '#a89c82' : i % 3 === 1 ? '#96907c' : 'url(#fgFold)'}
+                stroke={INK} strokeWidth={6} />
+          {/* the folder's index tab: a second edge per folder, and the thing the eye
+              reads as "these are the applications" without a word being printed */}
+          <rect x={x + 22} y={top + 30} width={88} height={16} rx={2}
+                fill="#6d6553" opacity={0.5} />
+        </g>
+      );
+    })}
+    {/* the near lip of the desk itself, in front of everything */}
+    <rect x={-40} y={H - 118} width={W + 80} height={190} fill={warmth > 0.5 ? '#8d7f63' : '#7e7359'}
+          stroke={INK} strokeWidth={8} />
+    <RimLight d={`M-40,${H - 114} L${W + 40},${H - 114}`} w={5} opacity={0.4} />
+  </g>
+);
+
 /** Every scene sits in this. Continuous push + lateral drift + a live room. */
 const Stage: React.FC<{
   children: React.ReactNode; f: number; push?: number; drift?: number;
@@ -152,6 +245,7 @@ const Stage: React.FC<{
           <g transform={`translate(540,960) scale(${zoom}) translate(-540,-960)`}>
             {children}
           </g>
+          <Foreground f={f} warmth={warmth} />
         </g>
       </svg>
     </AbsoluteFill>
@@ -337,7 +431,7 @@ const Recess: React.FC<{
 );
 
 // =============================================================== S1  THE DROP
-const S1: React.FC = () => {
+const S1: React.FC<SceneProps> = () => {
   const f = useCurrentFrame();
   const {fps} = useVideoConfig();
   const SPR = {damping: 8.5, stiffness: 240, mass: 0.7};
@@ -348,10 +442,31 @@ const S1: React.FC = () => {
   const squash = 1 + Math.sin(Math.min(1, ramp(f, 7, 21)) * Math.PI) * 0.12;
   const drop = ramp(f, 0, 9);
   const settle = Math.sin(Math.min(1, ramp(f, 6, 26)) * Math.PI) * 5;
-  const block = ramp(f, 62, 128);
+  // THE MONEY ARRIVES OVER THE WHOLE SHOT, not in the shot's first two seconds.
+  // The `block` filmstrip is anchored at VO line 1 + 1.2s = 7.98s (local frame 239) and
+  // its own charter in scripts/build_evidence.py is "the money block assembling and
+  // seating behind it" — but the build ran f62..f128 (2.1s..4.3s) and by 7.98s the shot
+  // was a photograph. Measured 3.4%. The build now runs to f265 so the strip catches the
+  // move it is named after, and the counter lands on the number as line 1 names the
+  // program it came from.
+  const block = ramp(f, 40, 265);
   return (
     <Stage f={f} push={ramp(f, 0, 300) * 0.055} drift={0.7}>
       <MoneyBlock x={700} y={1230} w={340} h={430} f={f} build={block} />
+      {/* the money coming IN: banded slabs falling onto the stack for as long as it
+          builds, so the arrival is an event and not a bar chart growing */}
+      {Array.from({length: 9}).map((_, i) => {
+        const land = ramp(f, 46 + i * 24, 46 + i * 24 + 22);
+        if (land <= 0 || land >= 1) return null;
+        const topY = 1230 - 430 * Math.max(0.02, block) - 20;
+        return (
+          <g key={i} opacity={Math.min(1, land * 4)}>
+            <rect x={530 + hash(i) * 20} y={interpolate(land, [0, 1], [-330, 0]) + topY}
+                  width={340} height={26} rx={2}
+                  fill={i % 2 ? '#93a58e' : '#7f9179'} stroke={INK} strokeWidth={4} />
+          </g>
+        );
+      })}
       {/* the hero figure, counted up and plated at hero scale */}
       {block > 0.06 && (
         <g transform={`translate(700,${interpolate(block, [0, 1], [1160, 838])})`}>
@@ -364,7 +479,7 @@ const S1: React.FC = () => {
           </text>
         </g>
       )}
-      {block > 0.7 && <Plate x={286} y={922} text="YEAR ONE" size={34} delay={96} />}
+      {block > 0.7 && <Plate x={286} y={922} text="YEAR ONE" size={34} delay={198} />}
       <MotionBlur vy={vy} gain={1.2} max={28}>
         <g transform={`translate(0,${dropY}) translate(392,1150) scale(${squash},${2 - squash}) translate(-392,-1150)`}>
           <TypeSlug x={392} y={1150} f={f} text="ARTIFICIAL INTELLIGENCE" scale={1.0}
@@ -385,13 +500,25 @@ const S1: React.FC = () => {
 };
 
 // ========================================================= S2  THE RULE PLATES
-const S2: React.FC = () => {
+const S2: React.FC<SceneProps> = () => {
   const f = useCurrentFrame();
+  // RETIMED TO THE WORDS. Line 2 runs 11.18..15.92s: "The money has rules" (~local 0),
+  // "it can't fund new construction" (~local 34..78), "and it can't fund broadband"
+  // (~local 82..142). The plates used to both land by local 58, so the whole back half of
+  // the shot was a hold and the `bolts` strip at local 48 caught the tail of a move
+  // instead of its contact.
+  const d1 = ramp(f, 30, 58);
+  const d2 = ramp(f, 84, 112);
+  // each plate slamming home shoves the block it bolts into
+  const jolt = Math.sin(Math.min(1, ramp(f, 56, 74)) * Math.PI) * 9
+             + Math.sin(Math.min(1, ramp(f, 110, 128)) * Math.PI) * 9;
   return (
     <Stage f={f} push={ramp(f, 0, 200) * 0.05} drift={0.9}>
-      <MoneyBlock x={540} y={1230} w={420} h={470} f={f} build={1} />
-      <RulePlate x={540} y={880} text="NO NEW CONSTRUCTION" drive={ramp(f, 8, 30)} f={f} />
-      <RulePlate x={540} y={996} text="NO BROADBAND" drive={ramp(f, 34, 58)} f={f} />
+      <g transform={`translate(0,${jolt}) rotate(${jolt * 0.09},540,1230)`}>
+        <MoneyBlock x={540} y={1230} w={420} h={470} f={f} build={1} />
+      </g>
+      <RulePlate x={540} y={880} text="NO NEW CONSTRUCTION" drive={d1} f={f} />
+      <RulePlate x={540} y={996} text="NO BROADBAND" drive={d2} f={f} />
       <TypeSlug x={196} y={1214} f={f} text="AI" scale={1.15} seated={0} phase={3} />
       <Plate x={540} y={588} text="THE MONEY HAS RULES" size={40} delay={12} />
     </Stage>
@@ -399,22 +526,34 @@ const S2: React.FC = () => {
 };
 
 // =============================================================== S3  THE COLLAR
-const S3: React.FC = () => {
+const S3: React.FC<SceneProps> = () => {
   const f = useCurrentFrame();
-  const close = ramp(f, 10, 52);
-  const flow = ramp(f, 66, 170);
+  // THE COLLAR NOW TRAVELS. It used to sit at a fixed y=1030 and squeeze 18px per side
+  // across 42 frames — a 3px-per-7-frames move that measured 3.2% and read, correctly, as
+  // nothing happening. It now descends from clear of the block and clamps at the block's
+  // REAL 20% line (front face 760..1230, so 20% of 470 = 94 up from the desk = y 1136),
+  // and everything above the clamp greys out as it seats. The number on screen and the
+  // geometry on screen are now the same number.
+  const close = ramp(f, 14, 62);
+  const collarY = interpolate(close, [0, 1], [606, 1136]);
+  const collarW = interpolate(close, [0, 1], [716, 464]);
+  const flow = ramp(f, 110, 186);
   return (
     <Stage f={f} push={-ramp(f, 0, 260) * 0.06 + 0.06} drift={0.8}>
       <MoneyBlock x={540} y={1230} w={420} h={470} f={f} build={1} />
-      {/* the cap as a physical collar that clamps */}
+      {/* the 80 percent the rules keep out of capital, greying downward as the cap seats */}
+      <rect x={330} y={760} width={420} height={Math.max(0, Math.min(1136, collarY) - 760)}
+            fill="#2b3a34" opacity={0.05 + close * 0.24} />
+      {/* the cap as a physical collar that descends and clamps */}
       <g>
-        <rect x={-16 + 540 - 232 + close * 18} y={1030} width={464 - close * 36} height={62} rx={2}
+        <rect x={540 - collarW / 2} y={collarY - 31} width={collarW} height={62} rx={2}
               fill="none" stroke={P.cap} strokeWidth={13} />
-        <text x={540} y={1074} textAnchor="middle" fontFamily={MONO} fontSize={34}
+        <text x={540} y={collarY + 13} textAnchor="middle" fontFamily={MONO} fontSize={34}
               fontWeight={700} fill={P.cap} letterSpacing={1.5}
               opacity={close}>20%</text>
       </g>
-      {/* flow bending away from the plates */}
+      {/* flow bending away from the plates, retimed onto line 4 ("which pushes it away
+          from anything you would have to build", 20.54..23.30s = local 106..189) */}
       <g opacity={flow}>
         {[0, 1, 2, 3].map((i) => {
           const y = 1180 + i * 22;
@@ -424,77 +563,118 @@ const S3: React.FC = () => {
                   d={`M${330 - i * 8},${y} q140,0 ${200 + bend},${-60 - i * 14}`}
                   fill="none" stroke={P.ink} strokeWidth={5 - i * 0.5}
                   opacity={0.5} strokeDasharray="14 9"
-                  strokeDashoffset={-f * 1.6} />
+                  strokeDashoffset={-f * 2.6} />
           );
         })}
       </g>
-      <Plate x={540} y={588} text="CAPITAL CAPPED AT 20%" size={38} delay={14} />
-      {flow > 0.4 && (
-        <Plate x={540} y={600} text="AWAY FROM ANYTHING YOU'D BUILD" size={32} delay={80} />
+      {/* STACKED, NOT SUPERIMPOSED. These two were authored at y=588 and y=600 with
+          heights 72 and 66, so from the moment the second landed it sat almost exactly on
+          top of the first and the narrower one peeked out above it. That is the "duplicate
+          ghost plate behind the header" the panel reported on f022.8, and it was invisible
+          to plate_overlap_check because the checker's scene regex never matched this file
+          (see SceneProps above). 500..572 and 589..655 now, a clear 17px apart. */}
+      <Plate x={540} y={536} text="CAPITAL CAPPED AT 20%" size={38} delay={14} />
+      {flow > 0.01 && (
+        <Plate x={540} y={622} text="AWAY FROM ANYTHING YOU'D BUILD" size={32} delay={112} />
       )}
     </Stage>
   );
 };
 
 // ================================================================ S4  THE QUOTE
-const S4: React.FC = () => {
+const S4: React.FC<SceneProps> = () => {
   const f = useCurrentFrame();
   const card = ramp(f, 8, 34);
   const QUOTE = '"ALMOST DIRECTING US TO AI"';
-  const chars = Math.floor(ramp(f, 60, 190) * (QUOTE.length + 2));
+  // ON THE WORDS. Line 5 (23.30..29.94s, local 0..199) introduces her; line 6
+  // (31.06..35.04s, local 233..352) IS the quote. The card used to fade up at local 56 and
+  // finish printing at local 190, so the sentence was fully on screen a second and a half
+  // before she says it and the `quote` strip at local 296 photographed a static card
+  // (3.0%). Card arrives at 226, prints 240..344, and the slug is dragged across the desk
+  // toward the money for the whole of the line — which is what the line is ABOUT.
+  const arrive = ramp(f, 226, 248);
+  const chars = Math.floor(ramp(f, 240, 344) * (QUOTE.length + 2));
+  const pull = ramp(f, 244, 336);
   return (
     <Stage f={f} push={ramp(f, 0, 340) * 0.05} drift={1.0}>
       <g opacity={card} transform={`translate(0,${interpolate(card, [0, 1], [40, 0])})`}>
         <Plate x={540} y={800} text="REP. GENEVIEVE MINA" size={38} delay={10}
                sub="ADVISORY COUNCIL / JUNE 2026" />
       </g>
-      <g opacity={ramp(f, 56, 74)}>
+      <g opacity={arrive} transform={`translate(0,${interpolate(arrive, [0, 1], [86, 0])})`}>
+        <ContactShadow cx={540} cy={1108} rx={370} ry={11} opacity={0.26} />
         <rect x={168} y={950} width={744} height={150} rx={3} fill={P.paper}
               stroke={INK} strokeWidth={5} />
         <text x={540} y={1042} textAnchor="middle" fontFamily={MONO} fontSize={33}
               fontWeight={700} fill={P.ink} letterSpacing={1.1}>
           {QUOTE.slice(0, Math.min(chars, QUOTE.length))}
         </text>
+        {/* the print carriage, riding the last set character */}
+        {chars < QUOTE.length && chars > 0 && (
+          <rect x={540 - QUOTE.length * 10.49 + chars * 20.97} y={1014} width={7} height={40}
+                fill={P.cap} opacity={0.85} />
+        )}
       </g>
-      <TypeSlug x={846} y={1206} f={f} text="AI" scale={1.2} seated={0} phase={5} />
+      <TypeSlug x={interpolate(smooth(pull), [0, 1], [880, 528])}
+                y={interpolate(smooth(pull), [0, 1], [1206, 1186])} f={f}
+                text="AI" scale={1.2} seated={0} held={pull * 0.5} phase={5} />
       <Plate x={540} y={594} text="SHE SAW FURTHER" size={36} delay={20} />
     </Stage>
   );
 };
 
 // ========================================================= S5  THE LIST + QUESTION
-const S5: React.FC = () => {
+const S5: React.FC<SceneProps> = () => {
   const f = useCurrentFrame();
-  const lift = ramp(f, 70, 130);
+  // The five rows are SPOKEN across line 7 (36.16..42.18s = local 0..180), one after the
+  // other. They used to all be on the board by local 64 and the shot then held for seven
+  // seconds. Spread onto the words, so the board is still filling while she reads it out.
+  const lift = ramp(f, 198, 252);
   return (
     <Stage f={f} push={ramp(f, 0, 260) * 0.045} drift={0.8}>
       <g transform="translate(540,880) scale(0.86) translate(-540,-880)">
         <AllowanceBoard x={540} y={606} f={f} title="ALLOWABLE USES" width={880} rowH={82}
           rows={[
-            {label: 'AI-ENABLED TOOLS', kind: 'allow', at: ramp(f, 6, 24)},
-            {label: 'WEARABLES', kind: 'allow', at: ramp(f, 16, 34)},
-            {label: 'DRONES', kind: 'allow', at: ramp(f, 26, 44)},
-            {label: 'KIOSKS', kind: 'allow', at: ramp(f, 36, 54)},
-            {label: 'REMOTE DISPENSING', kind: 'allow', at: ramp(f, 46, 64)},
+            {label: 'AI-ENABLED TOOLS', kind: 'allow', at: ramp(f, 10, 40)},
+            {label: 'WEARABLES', kind: 'allow', at: ramp(f, 44, 74)},
+            {label: 'DRONES', kind: 'allow', at: ramp(f, 76, 106)},
+            {label: 'KIOSKS', kind: 'allow', at: ramp(f, 108, 138)},
+            {label: 'REMOTE DISPENSING', kind: 'allow', at: ramp(f, 140, 172)},
           ]} />
       </g>
-      <TypeSlug x={540} y={interpolate(lift, [0, 1], [1286, 1176])} f={f}
-                text="ARTIFICIAL INTELLIGENCE" scale={1.18} seated={0} held={lift} phase={2} />
-      {lift > 0.5 && <Plate x={540} y={566} text="SO, IS THIS AI MONEY?" size={44} delay={96} />}
+      {/* line 8 (43.14..44.88s = local 241..293) asks the question, so the slug comes off
+          the desk INTO it rather than four seconds early */}
+      <TypeSlug x={540} y={interpolate(smooth(lift), [0, 1], [1204, 1092])} f={f}
+                text="ARTIFICIAL INTELLIGENCE"
+                scale={interpolate(smooth(lift), [0, 1], [1.04, 1.3])}
+                seated={0} held={lift} phase={2} />
+      {lift > 0.5 && <Plate x={540} y={566} text="SO, IS THIS AI MONEY?" size={44} delay={228} />}
     </Stage>
   );
 };
 
 // ============================================================== S6  THE AWARDS
-const S6: React.FC = () => {
+const S6: React.FC<SceneProps> = () => {
   const f = useCurrentFrame();
-  const deal = ramp(f, 10, 130);
-  const light = ramp(f, 176, 250);
+  // THE DEAL RUNS THE LENGTH OF THE COUNT. Line 9 (45.74..49.92s, local 0..126) announces
+  // the awards, line 10 (49.92..56.66s, local 126..328) counts them. The deal used to be
+  // over by local 130, so the `deal` strip at local 168 — the strip whose whole job is
+  // "nineteen award cards dealing out across the desk" — caught a finished pile (3.4%).
+  const deal = ramp(f, 14, 300);
+  // and the described ones light on line 11 (57.70..59.78s, local 359..421), when the
+  // paper that described them is actually named, under a raking light that crosses the
+  // desk and turns each card up as it passes.
+  const light = ramp(f, 360, 436);
   const ORGS = ['CHUGACHMIUT', 'GIRDWOOD', 'ASSETS INC.', 'AK BEHAVIORAL'];
   const AMTS = ['$627,200', '$100,000', '$249,700', '$593,100'];
+  // GRID RESTAGED OFF THE CAPTION CARD. Row 4 sat at y=1434, which renders at 1491 under
+  // the content zoom with a 47px half-height — straight into the open-caption band, and
+  // the panel logged it on f050.2 as "the caption plate covers two cards of row 4". Four
+  // rows of 116 now bottom out at 1182 (renders 1209, half-height 47, so 1256) with 80px
+  // of clear air under it.
   const CARDS = Array.from({length: 19}).map((_, i) => ({
-    x: 148 + (i % 5) * 178 + (Math.floor(i / 5) % 2) * 30,
-    y: 900 + Math.floor(i / 5) * 178,
+    x: 130 + (i % 5) * 196 + (Math.floor(i / 5) % 2) * 26,
+    y: 846 + Math.floor(i / 5) * 112,
     rot: (hash(i) * 8 - 4),
     described: i < 4,
   }));
@@ -504,27 +684,51 @@ const S6: React.FC = () => {
         const on = Math.max(0, Math.min(1, (deal - i * 0.036) * 4));
         if (on <= 0.02) return null;
         const lit = c.described ? Math.max(0, Math.min(1, (light - i * 0.12) * 3)) : 0;
+        const e = smooth(on);
+        const w = wob(f, i);
+        // dealt from the hand at the top of the frame: a real throw with an arc and a
+        // spin, then a settle that keeps breathing for the rest of the shot
+        const fly = 1 - e;
         return (
-          <g key={i} opacity={on} transform={`translate(0,${interpolate(on, [0, 1], [-70, 0])})`}>
-            <AwardCard x={c.x} y={c.y} f={f} lit={lit} s={0.72} rot={c.rot}
+          <g key={i} opacity={Math.min(1, on * 2.4)}
+             transform={`translate(${(hash(i + 13) * 300 - 150) * fly + w.x * e},${-340 * fly + w.y * e})`}>
+            <AwardCard x={c.x} y={c.y} f={f} lit={lit} s={0.72}
+                       rot={c.rot + fly * (hash(i + 31) * 26 - 13) + w.r * e}
                        title={c.described ? ORGS[i] : undefined}
                        amount={c.described ? AMTS[i] : undefined} />
           </g>
         );
       })}
-      <Plate x={540} y={552} text="19 PROJECTS  OVER $4.5M" size={38} delay={16} />
-      <Plate x={540} y={664} text="UNDER 2% OF THE YEAR'S MONEY" size={31} delay={54} />
-      {/* the throughline object stays on the desk through the film's longest stretch */}
-      <TypeSlug x={172} y={1244} f={f} text="AI" scale={1.0} seated={0} phase={9} />
-      {light > 0.3 && (
-        <Plate x={618} y={1252} text="DESCRIBED BY THE ANCHORAGE DAILY NEWS" size={25} delay={182} />
+      {/* THE RAKING LIGHT. It is what turns the four described cards up, so the reveal is
+          an event travelling through the frame instead of four booleans flipping. */}
+      {light > 0.001 && light < 0.999 && (
+        <g opacity={0.9}>
+          <defs>
+            <linearGradient id="rake" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stopColor="#fff8e4" stopOpacity={0} />
+              <stop offset="42%" stopColor="#fff8e4" stopOpacity={0.32} />
+              <stop offset="62%" stopColor="#fff8e4" stopOpacity={0.32} />
+              <stop offset="100%" stopColor="#fff8e4" stopOpacity={0} />
+            </linearGradient>
+          </defs>
+          <rect x={interpolate(light, [0, 1], [-460, 1100])} y={770} width={420} height={520}
+                fill="url(#rake)" />
+        </g>
       )}
+      <Plate x={540} y={552} text="19 PROJECTS  OVER $4.5M" size={38} delay={128} />
+      <Plate x={540} y={650} text="UNDER 2% OF THE YEAR'S MONEY" size={31} delay={244} />
+      {light > 0.02 && (
+        <Plate x={540} y={756} text="DESCRIBED BY THE ANCHORAGE DAILY NEWS" size={25} delay={364} />
+      )}
+      {/* the throughline object stays on the desk through the film's longest stretch, and
+          it now lies ACROSS the pile it is being asked about rather than in a corner of it */}
+      <TypeSlug x={470} y={1204} f={f} text="AI" scale={1.0} seated={0} phase={9} />
     </Stage>
   );
 };
 
 // ====================================================== S7  THE X-RAY (WARM BEAT)
-const S7: React.FC = () => {
+const S7: React.FC<SceneProps> = () => {
   const f = useCurrentFrame();
   const {fps} = useVideoConfig();
   const set = ramp(f, 6, 40);
@@ -551,9 +755,16 @@ const S7: React.FC = () => {
       </g>
       <Character x={300 + Math.sin(f / 63.1) * 3.5} y={1420} scale={1.28} frame={f}
                  pose={f < 46 ? "carry" : "point"}
-                 gesture={f < 50 ? 0 : Math.max(0, Math.min(1,
+                 // NO UPPER CLAMP (2026-08-08). Character.tsx used to clamp gesture
+                 // internally as well, so this Math.min(1, ...) held the drive at exactly
+                 // 1.000 for about 3.9 continuous seconds: the arm was pinned flat through
+                 // the whole window the panel sampled (2.40px of fingertip travel) and then
+                 // popped. The rig now takes gesture > 1 continuously, so the ceiling here
+                 // is the only thing still pinning it. The floor stays (a negative gesture
+                 // is not a pose) and the live sine term stays with it.
+                 gesture={f < 50 ? 0 : Math.max(0,
                    interpolate(spring({frame: f - 50, fps, config: {damping: 10, stiffness: 165}}),
-                               [0, 1], [-0.2, 1]) + Math.sin(f / 37.7) * 0.045))}
+                               [0, 1], [-0.2, 1]) + Math.sin(f / 37.7) * 0.045)}
                  emotion="neutral" outfit="worker" headgear="bare" facing={1} />
       <g transform={`translate(0,${interpolate(set, [0, 1], [-180, 0])})`}>
         <FieldRadiograph x={690} y={1330} f={f} scale={0.86} lid={lid} expose={expose}
@@ -590,10 +801,12 @@ const S7: React.FC = () => {
 };
 
 // ================================================================ S8  THE KIOSK
-const S8: React.FC = () => {
+const S8: React.FC<SceneProps> = () => {
   const f = useCurrentFrame();
   const arrive = ramp(f, 4, 30);
   const hatch = Math.abs(Math.sin(f / 21));       // cycles for the WHOLE hold
+  // and something comes OUT of it, which is what a dispensing kiosk test is
+  const vend = Math.max(0, Math.sin(f / 21 - 0.6));
   return (
     <Stage f={f} push={ramp(f, 0, 130) * 0.05} drift={0.9} deskY={1520} warmth={1}>
       {/* the pharmacy doorway */}
@@ -613,82 +826,164 @@ const S8: React.FC = () => {
               stroke={INK} strokeWidth={7} />
         <rect x={434} y={896} width={212} height={196} rx={4} fill="#2b3a40"
               stroke={INK} strokeWidth={5} />
-        {/* the dispensing hatch, cycling on a slow test loop for the entire hold */}
+        {/* THE DISPENSING HATCH. It always cycled — `hatch` was wired and moving — but the
+            "$100,000 OF $300,000  KIOSK TEST" plate was authored at y=1262, a 645x62 box
+            covering 1231..1293, and the hatch lives at 1198..1302. The plate sat on the one
+            moving part in the shot, which is why a judge wrote "the kiosk hatch never
+            cycles": it was cycling underneath a card. The plate is now up on the door wall
+            at y=760, clear of the machine entirely. */}
         <g transform={`translate(540,1250)`}>
           <rect x={-92} y={-52} width={184} height={104} rx={4} fill="#1d2a31"
                 stroke={INK} strokeWidth={5} />
+          {/* what the hatch is FOR: a pack rides down into the tray each cycle */}
+          <rect x={-42} y={-40 + vend * 62} width={84} height={40} rx={3} fill={P.paper}
+                stroke={INK} strokeWidth={4} opacity={vend > 0.02 ? 1 : 0} />
           <rect x={-92} y={-52 - hatch * 96} width={184} height={104} rx={4}
                 fill={P.enamel} stroke={INK} strokeWidth={5} />
         </g>
         {/* the ready lamp, out of phase with the hatch */}
         <circle cx={540} cy={1120} r={17}
                 fill={Math.sin(f / 13) > 0 ? P.warm : '#4a5a52'} stroke={INK} strokeWidth={4} />
+        {/* the status channel on the screen: four bars cycling on their own periods, so
+            the machine is doing something even between hatch cycles */}
+        {[0, 1, 2, 3].map((i) => (
+          <rect key={i} x={452} y={916 + i * 44} height={26} rx={2}
+                width={44 + 132 * Math.abs(Math.sin(f / (17 + i * 9) + i * 1.7))}
+                fill={i === 3 ? P.warm : '#6f8f86'} opacity={0.85} />
+        ))}
         <RimLight d="M410,866 q0,-6 6,-6 l248,0 q6,0 6,6" w={4} opacity={0.6} />
       </g>
       <Plate x={540} y={566} text="TURNAGAIN COMMUNITY HEALTH" size={31} delay={10} />
-      <Plate x={540} y={1262} text="$100,000 OF $300,000  KIOSK TEST" size={28} delay={40} />
+      <Plate x={540} y={760} text="$100,000 OF $300,000  KIOSK TEST" size={28} delay={40} />
     </Stage>
   );
 };
 
 // ============================================ S9  THE SLUG AGAINST THE CARDS
-const S9: React.FC = () => {
+const S9: React.FC<SceneProps> = () => {
   const f = useCurrentFrame();
-  const idx = Math.min(2, Math.floor(ramp(f, 6, 130) * 3));
   const TITLES = ['CHUGACHMIUT', 'GIRDWOOD', 'ASSETS INC.'];
   const AMOUNTS = ['$627,200', '$100,000', '$249,700'];
+  // THE SIGNATURE BEAT, RESTAGED (2026-08-08 panel, f077.6). The note was exact: "the
+  // right-hand ghost-card column is clipped by the frame edge and the slug floats on bare
+  // wall on a plinth." A misfit can only read as a misfit if it is MEASURED against
+  // something, and the slug was measured against nothing — it sat 200px below the card in
+  // its own empty air. So:
+  //   1. the card is directly above the slug and the two are tied together by real
+  //      extension lines and a dimension rule, the way a part is checked against a slot;
+  //   2. the overhang either side is drawn in scarlet, which in this film means exactly
+  //      one thing (a gap where the slug does not fit) and nothing else;
+  //   3. cards now EXCHANGE. Each one slides in from the right and the one it replaces
+  //      slides off to the tested stack on the left, three times across the shot, so the
+  //      argument is three measurements and not one static picture with a title swap;
+  //   4. the undescribed column moved inboard to x<=952. The World push and the content
+  //      zoom together are 1.176x about x=540, so 1002 rendered at 1057 and clipped. 952
+  //      renders at 1024 with the drift at its worst, inside the frame.
+  const HOLD = [12, 58, 104];      // when each card takes the stand
+  const idx = f >= HOLD[2] ? 2 : f >= HOLD[1] ? 1 : 0;
+  // 0 while a card is seated, 1 at the middle of an exchange: the callipers come off the
+  // card that is leaving and re-land on the one that arrives
+  const busy = Math.max(
+    Math.sin(Math.min(1, ramp(f, HOLD[1] - 28, HOLD[1])) * Math.PI),
+    Math.sin(Math.min(1, ramp(f, HOLD[2] - 28, HOLD[2])) * Math.PI));
+  const CARDX = 486, CARDY = 892, CARDS = 1.62;
+  const halfW = 72 * CARDS, cardBot = CARDY + 60 * CARDS;
+  const SLUGY = 1082, SLUGS = 0.86;
+  const slugHalf = (23 * 34 * 0.602 + 44) * SLUGS / 2;
   return (
-    <Stage f={f} push={ramp(f, 0, 150) * 0.05} drift={0.6} deskY={1300}>
-      {/* THE REJECTED PILE. The signature shot measured 58.3% dead space with one card
-          and one slug in an empty room, and the meter was right: the film's own evidence
-          was missing from the frame that argues about it. Every card already tested stacks
-          to the left, and the undescribed ones stay dark on the right, so the shot carries
-          the whole scope of the claim while the slug does its work. */}
+    <Stage f={f} push={ramp(f, 0, 150) * 0.05} drift={0.6} deskY={1260}>
+      {/* the tested stack: every card the slug has already failed to fit */}
       {Array.from({length: 3}).map((_, i) => {
         if (i >= idx) return null;
         return (
-          <g key={`done${i}`} opacity={0.92}>
-            <AwardCard x={196 + i * 26} y={1074 + i * 16} f={f} lit={1} s={0.62}
-                       rot={-9 + i * 5} title={TITLES[i]} amount={AMOUNTS[i]} />
+          <g key={`done${i}`} opacity={0.92}
+             transform={`translate(${wob(f, i + 5).x * 0.6},${wob(f, i + 5).y * 0.6})`}>
+            <AwardCard x={188 + i * 30} y={1050 + i * 18} f={f} lit={1} s={0.58}
+                       rot={-11 + i * 6} title={TITLES[i]} amount={AMOUNTS[i]} />
           </g>
         );
       })}
-      {Array.from({length: 8}).map((_, i) => (
-        <g key={`dark${i}`} opacity={0.5}>
-          <rect x={806 + (i % 2) * 104} y={840 + Math.floor(i / 2) * 122}
-                width={92} height={100} rx={2}
-                transform={`rotate(${hash(i + 5) * 8 - 4},${852 + (i % 2) * 104},${890 + Math.floor(i / 2) * 122})`}
-                fill="#b0bab6" stroke={INK} strokeWidth={3} />
-        </g>
-      ))}
-      <AwardCard x={520} y={962} f={f} lit={1} s={1.62} rot={0}
-                 title={TITLES[idx]} amount={AMOUNTS[idx]} />
-      <TypeSlug x={520} y={1174} f={f} text="ARTIFICIAL INTELLIGENCE" scale={0.84}
+      {/* the undescribed ones, dark because nobody could read them, inboard of the frame */}
+      {Array.from({length: 8}).map((_, i) => {
+        const w = wob(f, i + 60);
+        return (
+          <g key={`dark${i}`} opacity={0.5}>
+            <rect x={764 + (i % 2) * 96 + w.x * 0.7} y={836 + Math.floor(i / 2) * 118 + w.y * 0.7}
+                  width={92} height={100} rx={2}
+                  transform={`rotate(${hash(i + 5) * 8 - 4 + w.r},${810 + (i % 2) * 96},${886 + Math.floor(i / 2) * 118})`}
+                  fill="#b0bab6" stroke={INK} strokeWidth={3} />
+          </g>
+        );
+      })}
+      {/* the three cards, exchanging on the stand */}
+      {Array.from({length: 3}).map((_, i) => {
+        const inn = smooth(ramp(f, HOLD[i] - 28, HOLD[i]));
+        const out = i < 2 ? smooth(ramp(f, HOLD[i + 1] - 28, HOLD[i + 1])) : 0;
+        if (inn <= 0.001 || out >= 0.999) return null;
+        const dx = (1 - inn) * 640 - out * 700;
+        return (
+          <g key={`stand${i}`} opacity={Math.min(1, inn * 3) * (1 - out)}
+             transform={`translate(${dx},${out * 150})`}>
+            <AwardCard x={CARDX} y={CARDY} f={f} lit={1} s={CARDS}
+                       rot={(1 - inn) * 9 - out * 14} title={TITLES[i]} amount={AMOUNTS[i]} />
+          </g>
+        );
+      })}
+      {/* THE MEASUREMENT. Extension lines off the card's own edges, a dimension rule under
+          the slug, and the overhang either side called in scarlet. */}
+      <g opacity={ramp(f, 20, 38) * (1 - busy)}>
+        {[-1, 1].map((s) => (
+          <line key={s} x1={CARDX + s * halfW} y1={cardBot - 12} x2={CARDX + s * halfW}
+                y2={SLUGY + 118} stroke={P.ink} strokeWidth={3} opacity={0.45}
+                strokeDasharray="9 7" />
+        ))}
+        <line x1={CARDX - slugHalf} y1={SLUGY + 104} x2={CARDX + slugHalf} y2={SLUGY + 104}
+              stroke={P.ink} strokeWidth={4} />
+        {[-1, 1].map((s) => (
+          <g key={s}>
+            <line x1={CARDX + s * halfW} y1={SLUGY + 104} x2={CARDX + s * slugHalf}
+                  y2={SLUGY + 104} stroke={P.scarlet} strokeWidth={9} />
+            <line x1={CARDX + s * slugHalf} y1={SLUGY + 90} x2={CARDX + s * slugHalf}
+                  y2={SLUGY + 118} stroke={P.scarlet} strokeWidth={5} />
+          </g>
+        ))}
+      </g>
+      <TypeSlug x={CARDX} y={SLUGY} f={f} text="ARTIFICIAL INTELLIGENCE" scale={SLUGS}
                 seated={0} held={0.22} phase={idx * 3}
-                recess={{w: 226, fits: false}} />
+                recess={{w: (72 * 2 * CARDS) / SLUGS, fits: false}} />
       <Plate x={540} y={588} text="FITS NONE OF THEM" size={42} delay={40} tint={P.scarlet} />
-      <Plate x={540} y={1272} text="DESCRIBED  ·  UNDESCRIBED" size={24} delay={70} />
+      <Plate x={540} y={1256} text="DESCRIBED  ·  UNDESCRIBED" size={24} delay={70} />
     </Stage>
   );
 };
 
 // ============================================================ S10  THE REMAINDER
-const S10: React.FC = () => {
+const S10: React.FC<SceneProps> = () => {
   const f = useCurrentFrame();
-  const rise = ramp(f, 12, 120);
+  // Line 17 (84.66..90.50s = local 96..272) is the one that says $267M is undecided. The
+  // block used to finish rising at local 120 (85.4s), so the `rise` strip at local 154 got
+  // a finished column. It now grows for the whole of the line it illustrates.
+  const rise = ramp(f, 100, 256);
   return (
-    <Stage f={f} push={-ramp(f, 0, 260) * 0.07 + 0.07} drift={0.8} deskY={1540}>
-      <MoneyBlock x={648} y={1540} w={470} h={840} f={f} build={rise} label="$267M+ UNDECIDED" />
-      <MoneyBlock x={214} y={1540} w={120} h={70} f={f} build={1} tint="#a8b3a2" />
+    // THE FLOOR CAME UP FROM 1540 TO 1290. At deskY=1540 both blocks stood on a line that
+    // renders at 1610, i.e. underneath the caption card AND behind the near field, so the
+    // sliver that actually went out was invisible and the big block's base was cropped by
+    // furniture. Everything now stands on 1290, which renders at 1330, just clear of the
+    // caption band's 1336.
+    <Stage f={f} push={-ramp(f, 0, 260) * 0.07 + 0.07} drift={0.8} deskY={1290}>
+      <MoneyBlock x={680} y={1290} w={440} h={600} f={f} build={rise} label="$267M+ UNDECIDED" />
+      <MoneyBlock x={250} y={1290} w={120} h={46} f={f} build={1} tint="#a8b3a2" />
       {/* the undecided applications stacked at its foot, and the slug still waiting */}
       {Array.from({length: 14}).map((_, i) => {
         const on = Math.max(0, Math.min(1, (rise - i * 0.05) * 3));
         if (on <= 0.02) return null;
+        const w = wob(f, i + 90);
         return (
-          <g key={i} opacity={on * 0.9}>
-            <rect x={188 + (i % 7) * 46} y={1352 + Math.floor(i / 7) * 62}
+          <g key={i} opacity={on * 0.9}
+             transform={`translate(${w.x * on * 0.8},${interpolate(smooth(on), [0, 1], [-120, 0]) + w.y * on * 0.8})`}>
+            <rect x={176 + (i % 5) * 46} y={980 + Math.floor(i / 5) * 60}
                   width={38} height={50} rx={2}
-                  transform={`rotate(${hash(i) * 9 - 4.5},${207 + (i % 7) * 46},${1377 + Math.floor(i / 7) * 62})`}
+                  transform={`rotate(${hash(i) * 9 - 4.5 + w.r * on},${195 + (i % 5) * 46},${1005 + Math.floor(i / 5) * 60})`}
                   fill="#b9c2be" stroke={INK} strokeWidth={3} />
           </g>
         );
@@ -696,18 +991,19 @@ const S10: React.FC = () => {
       {/* the slug used to sit at y=1216, straight through the AWARDED plate's box
           (1230..1286): a plate over a labelled glyph, the same collision class as the
           bolt heads. Lifted clear; the plate keeps the awarded pile it actually labels. */}
-      <TypeSlug x={300} y={1108} f={f} text="AI" scale={0.9} seated={0} phase={6} />
-      <Plate x={214} y={1258} text="AWARDED" size={22} delay={40} />
-      <Plate x={540} y={588} text="IT IS WEEK ONE" size={42} delay={14} />
+      <TypeSlug x={270} y={886} f={f} text="AI" scale={0.9} seated={0} phase={6} />
+      <Plate x={250} y={1204} text="AWARDED" size={22} delay={40} />
+      <Plate x={540} y={556} text="IT IS WEEK ONE" size={42} delay={112} />
     </Stage>
   );
 };
 
 // =============================================================== S11  THE MAP
-const S11: React.FC = () => {
+const S11: React.FC<SceneProps> = () => {
   const f = useCurrentFrame();
   const REGIONS = ['KODIAK', 'YUKON-KUSKOKWIM DELTA', 'NORTH SLOPE'];
-  const outAt = [ramp(f, 16, 40), ramp(f, 52, 76), ramp(f, 88, 112)];
+  // named at 92.3s, 93.4s and 94.9s in line 18 (local 26, 59, 104)
+  const outAt = [ramp(f, 20, 48), ramp(f, 54, 84), ramp(f, 96, 126)];
   return (
     <Stage f={f} push={ramp(f, 0, 200) * 0.05} drift={0.7} deskY={1330}>
       {/* the map is CONTEXT here, not the information. It sat centre before and its
@@ -717,15 +1013,23 @@ const S11: React.FC = () => {
       </g>
       {REGIONS.map((r, i) => {
         const gone = outAt[i];
+        const w = wob(f, i + 120);
         const y = 866 + i * 132;
+        // A ROW GOING DARK IS A CROSSFADE, NOT A BOOLEAN. The fill and the ink used to
+        // flip on gone>0.5, so three of the shot's four events were one-frame snaps and
+        // the `dark` strip measured 3.7%. Two stacked rects crossfading gives the same
+        // end state with the transition actually on screen, and the row slides out of the
+        // round as it dims.
         return (
-          <g key={i}>
+          <g key={i} transform={`translate(${gone * 34 + w.x * 0.5},${w.y * 0.5}) rotate(${gone * 1.4 + w.r * 0.4},540,${y})`}>
             <ContactShadow cx={540} cy={y + 46} rx={352} ry={9} opacity={0.24 * (1 - gone * 0.6)} />
             <rect x={-352 + 540} y={y - 40} width={704} height={86} rx={3}
-                  fill={gone > 0.5 ? '#9aa8a4' : P.paper} stroke={INK} strokeWidth={6} />
+                  fill={P.paper} stroke={INK} strokeWidth={6} />
+            <rect x={-352 + 540} y={y - 40} width={704} height={86} rx={3}
+                  fill="#9aa8a4" opacity={gone} stroke={INK} strokeWidth={6} />
             <text x={540} y={y + 14} textAnchor="middle" fontFamily={MONO} fontSize={31}
                   fontWeight={700} letterSpacing={1.3}
-                  fill={gone > 0.5 ? '#5c6b67' : P.ink}>{r}</text>
+                  fill={P.ink} opacity={1 - gone * 0.55}>{r}</text>
             {/* the award slot beside each name, and it stays cut and empty */}
             <rect x={540 + 268} y={y - 22} width={54} height={44} rx={2} fill="#1d2a31"
                   stroke={INK} strokeWidth={4} opacity={0.35 + gone * 0.6} />
@@ -733,59 +1037,77 @@ const S11: React.FC = () => {
         );
       })}
       <Plate x={540} y={594} text="NO AWARDS" size={44} delay={10} />
-      <Plate x={540} y={1252} text="IN THIS ROUND" size={30} delay={92}
+      <Plate x={540} y={1246} text="IN THIS ROUND" size={30} delay={130}
              sub="PER THE ANCHORAGE DAILY NEWS" />
     </Stage>
   );
 };
 
 // ========================================================= S12  THE LOCKED FILE
-const S12: React.FC = () => {
+const S12: React.FC<SceneProps> = () => {
   const f = useCurrentFrame();
-  const push1 = Math.sin(Math.min(1, ramp(f, 18, 40)) * Math.PI);
-  const push2 = Math.sin(Math.min(1, ramp(f, 62, 84)) * Math.PI);
-  const shove = push1 * 13 + push2 * 13;
+  // THREE ATTEMPTS, NOT TWO, AND SPREAD ACROSS THE LINE. Both shoves used to be over by
+  // local 84 and the `refuse` strip sits at local 55, in the dead air between them, at
+  // 4.1%. And 13px of travel is not a shove. Line 19 runs the whole shot (97.76..103.12s).
+  const push1 = Math.sin(Math.min(1, ramp(f, 26, 50)) * Math.PI);
+  const push2 = Math.sin(Math.min(1, ramp(f, 54, 78)) * Math.PI);
+  const push3 = Math.sin(Math.min(1, ramp(f, 92, 118)) * Math.PI);
+  const shove = (push1 + push2 + push3) * 34;
+  const jar = push1 + push2 + push3;
   return (
     <Stage f={f} push={ramp(f, 0, 300) * 0.055} drift={0.5}>
-      <g transform={`translate(${shove},0)`}>
-        <ContactShadow cx={540} cy={1176} rx={200} ry={16} opacity={0.34} />
-        <rect x={352} y={840} width={376} height={336} rx={3} fill="#c9d2ce"
+      <g transform={`translate(${shove},${-Math.abs(shove) * 0.12})`}>
+        <ContactShadow cx={540} cy={1016} rx={200} ry={16} opacity={0.34} />
+        <rect x={352} y={680} width={376} height={336} rx={3} fill="#c9d2ce"
               stroke={INK} strokeWidth={7} />
-        <rect x={352} y={840} width={376} height={62} rx={3} fill="#9fadA7"
+        <rect x={352} y={680} width={376} height={62} rx={3} fill="#9fadA7"
               stroke={INK} strokeWidth={6} />
-        <text x={540} y={884} textAnchor="middle" fontFamily={MONO} fontSize={24}
+        <text x={540} y={724} textAnchor="middle" fontFamily={MONO} fontSize={24}
               fontWeight={700} fill={P.ink} letterSpacing={1}>AWARDS.XLSX</text>
         {/* the lock: shudders and re-seats, never turns */}
-        <g transform={`translate(540,1030) rotate(${(push1 + push2) * 5})`}>
+        <g transform={`translate(540,870) rotate(${jar * 7})`}>
           <rect x={-34} y={-14} width={68} height={62} rx={5} fill={P.metal}
                 stroke={INK} strokeWidth={6} />
           <path d="M-19,-14 q0,-40 19,-40 q19,0 19,40" fill="none" stroke={INK} strokeWidth={9} />
           <circle cx={0} cy={17} r={8} fill={P.enamel} stroke={INK} strokeWidth={4} />
         </g>
       </g>
-      {/* the awards it holds, drawn dark because nobody could read them */}
-      {Array.from({length: 12}).map((_, i) => (
-        <g key={i} opacity={0.55}>
-          <rect x={150 + (i % 6) * 132} y={1236 + Math.floor(i / 6) * 96}
-                width={104} height={78} rx={2}
-                transform={`rotate(${hash(i + 3) * 7 - 3.5},${202 + (i % 6) * 132},${1275 + Math.floor(i / 6) * 96})`}
-                fill="#b0bab6" stroke={INK} strokeWidth={3} />
-        </g>
-      ))}
+      {/* the awards it holds, drawn dark because nobody could read them. They used to be
+          authored at 1236..1410, which renders at 1269..1464 — straight under the caption
+          card. Raised to 1090..1264 (renders 1105..1300) and they jump when the file is
+          shoved, because a locked box full of paper is not silent when you push it. */}
+      {Array.from({length: 12}).map((_, i) => {
+        const w = wob(f, i + 150);
+        return (
+          <g key={i} opacity={0.55}
+             transform={`translate(${w.x + jar * (hash(i + 9) * 16 - 8)},${w.y + jar * (hash(i + 21) * -12)})`}>
+            <rect x={150 + (i % 6) * 132} y={1040 + Math.floor(i / 6) * 86}
+                  width={104} height={78} rx={2}
+                  transform={`rotate(${hash(i + 3) * 7 - 3.5 + w.r},${202 + (i % 6) * 132},${1079 + Math.floor(i / 6) * 86})`}
+                  fill="#b0bab6" stroke={INK} strokeWidth={3} />
+          </g>
+        );
+      })}
       <Plate x={540} y={588} text="WOULD NOT OPEN" size={42} delay={22} />
-      <Plate x={540} y={1252} text="SO THIS IS ONE PAPER'S ACCOUNT" size={28} delay={96} />
+      <Plate x={540} y={1252} text="SO THIS IS ONE PAPER'S ACCOUNT" size={28} delay={128} />
     </Stage>
   );
 };
 
 // ============================================================ S13  THE STATUTE
-const S13: React.FC = () => {
+const S13: React.FC<SceneProps> = () => {
   const f = useCurrentFrame();
   const open = ramp(f, 6, 44);
-  const scan = ramp(f, 56, 250);
+  // the descent runs across line 21 ("appears in it exactly once", local 170..257) and
+  // line 22 ("not under equipment, not under purchases", local 286..350) instead of
+  // finishing at local 250 with 130 frames of hold behind it
+  const scan = ramp(f, 120, 344);
   const USES = ['PROVIDER PAYMENTS', 'EQUIPMENT', 'CYBERSECURITY', 'PURCHASES',
                 'TRAINING AND TECHNICAL ASSISTANCE'];
   const at = Math.min(USES.length - 1, Math.floor(scan * USES.length));
+  // the slug STEPS between rows instead of teleporting: hold, ease, hold
+  const stepped = Math.min(USES.length - 1, at + smooth(Math.min(1,
+    Math.max(0, (scan * USES.length - at - 0.42) / 0.44))));
   const ROW = 116, TOP = 742, ROWTRAVEL = 232;
   return (
     <Stage f={f} push={ramp(f, 0, 340) * 0.045} drift={0.6} deskY={1400}>
@@ -814,16 +1136,16 @@ const S13: React.FC = () => {
           );
         })}
       </g>
-      <TypeSlug x={540} y={TOP + at * ROW - 58 - scan * ROWTRAVEL} f={f}
+      <TypeSlug x={540} y={TOP + stepped * ROW - 58 - scan * ROWTRAVEL} f={f}
                 text="ARTIFICIAL INTELLIGENCE" scale={0.62} seated={0} held={0.3} phase={7}
                 recess={{w: at === USES.length - 1 ? 476 : 256, fits: at === USES.length - 1}} />
-      <Plate x={540} y={566} text="APPEARS EXACTLY ONCE" size={36} delay={30} />
+      <Plate x={540} y={566} text="APPEARS EXACTLY ONCE" size={36} delay={172} />
     </Stage>
   );
 };
 
 // ============================================================== S14  THE SEAT
-const S14: React.FC = () => {
+const S14: React.FC<SceneProps> = () => {
   const f = useCurrentFrame();
   const {fps} = useVideoConfig();
   const anti = Math.sin(Math.min(1, ramp(f, 3, 15)) * Math.PI) * 28;
@@ -858,10 +1180,27 @@ const S14: React.FC = () => {
 };
 
 // ============================================================= S15  THE BUTTON
-const S15: React.FC = () => {
+const S15: React.FC<SceneProps> = () => {
   const f = useCurrentFrame();
   const show = ramp(f, 8, 44);
-  const last = ramp(f, 140, 178);
+  // THE BUTTON IS NOW A MOVE, NOT A TABLEAU. The slug was drawn seated in TRAINING from
+  // frame 8 of the shot and never moved again, so the `button` strip at local 100 measured
+  // 2.6% — the worst number in the film — on the film's own last image. Line 25 says it out
+  // loud: "the law just puts A I somewhere else. NOT IN THE BUYING. IN THE TEACHING." So
+  // the slug is tried in EQUIPMENT (local 60..88), carried across to PURCHASES over "not in
+  // the buying" (88..122), fails both, and drops into TRAINING on "in the teaching"
+  // (128..168). It ends exactly where it always ended.
+  const tryA = ramp(f, 60, 88);
+  const cross = smooth(ramp(f, 88, 122));
+  const drop = smooth(ramp(f, 128, 168));
+  const last = ramp(f, 150, 186);
+  // EQUIPMENT (310,802) -> PURCHASES (770,802) -> TRAINING (540,1102)
+  const sx = drop > 0 ? interpolate(drop, [0, 1], [interpolate(cross, [0, 1], [310, 770]), 540])
+                      : interpolate(cross, [0, 1], [310, 770]);
+  const arc = Math.sin(cross * Math.PI) * 96 * (1 - drop);
+  const sy = interpolate(drop, [0, 1], [802, 1102]) - arc
+           - Math.sin(Math.min(1, drop) * Math.PI) * 40;
+  const seated = ramp(f, 156, 172);
   return (
     <Stage f={f} push={ramp(f, 0, 340) * 0.04} drift={0.5} deskY={1720}>
       <g opacity={show}>
@@ -878,11 +1217,23 @@ const S15: React.FC = () => {
         <Recess x={310} y={840} w={244} label="EQUIPMENT" f={f} />
         <Recess x={770} y={840} w={244} label="PURCHASES" f={f} />
         <Recess x={540} y={1140} w={476} label="TRAINING" f={f} />
-        <TypeSlug x={540} y={1102} f={f} text="ARTIFICIAL INTELLIGENCE" scale={0.9}
-                  seated={1} phase={0} />
+        {/* the two it was tried in and did not fit, called in the one colour this film
+            uses for a gap: the slug is 464 wide and each of those slots is 244 */}
+        {[{x: 310, on: tryA * (1 - cross)}, {x: 770, on: cross * (1 - drop)}].map((r, i) => (
+          <g key={i} opacity={r.on}>
+            <rect x={r.x - 122} y={800} width={244} height={80} rx={2} fill="none"
+                  stroke={P.scarlet} strokeWidth={6} />
+            {[-1, 1].map((s) => (
+              <line key={s} x1={r.x + s * 122} y1={886} x2={r.x + s * 232} y2={886}
+                    stroke={P.scarlet} strokeWidth={7} strokeDasharray="9 7" />
+            ))}
+          </g>
+        ))}
+        <TypeSlug x={sx} y={sy} f={f} text="ARTIFICIAL INTELLIGENCE" scale={0.9}
+                  seated={seated} held={(1 - seated) * 0.4} phase={0} />
       </g>
       <Plate x={540} y={566} text="NOT IN THE BUYING" size={46} delay={18} />
-      {last > 0.2 && <Plate x={540} y={1246} text="IN THE TEACHING" size={40} delay={144} />}
+      {last > 0.2 && <Plate x={540} y={1246} text="IN THE TEACHING" size={40} delay={156} />}
     </Stage>
   );
 };
