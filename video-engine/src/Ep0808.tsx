@@ -35,6 +35,47 @@ const CAPTION_TOP = 1336;
 const CAPTION_H = 132;
 const CAP_GUARD = CAPTION_TOP - 34;
 
+/** THE OTHER EDGE, AND IT IS NOT THE ONE THE GATE MODELS.
+ *
+ *  The shipped LinkedIn cut is crop=1080:1080:0:420, so master rows above 420 do not
+ *  exist for most of the audience. scripts/caption_band_check.py derives its SAFE_Y_MIN
+ *  from the World push alone:
+ *
+ *      SAFE_Y_MIN = 960 - (960 - 420 - 14) / 1.062  =  464.7
+ *
+ *  ...but every scene's content also sits inside Stage's CONTENT ZOOM, a further 1.12
+ *  about y=960, which the gate cannot see because it is applied in a different group.
+ *  A plate authored at the gate's "safe" 465 actually renders at
+ *  960 + (465-960)*1.12*1.045 = 381, i.e. 39px ABOVE the crop line, and the gate says
+ *  clean. That is how S3's "CAPITAL CAPPED AT 20%" (authored top 500, gate-clean by
+ *  35px) shipped with its top border cut off: measured at t=22.55s it rendered at 430,
+ *  ~10px of margin, and the 2026-08-08 panel called it. Same class as S13's page, whose
+ *  top border crosses the crop line at t=110.5s and is gone entirely by t=113s.
+ *
+ *  So this is the gate's own arithmetic with the zoom put back in. Same 420, same 14px
+ *  drift allowance; a call site passes the largest push its Stage ever reaches. Anything
+ *  informational must author its TOP edge at or below the returned y.
+ */
+const SQUARE_TOP = 420, CROP_DY = 14, CONTENT_ZOOM = 1.12;
+const SAFE_TOP = (push: number) =>
+  960 - (960 - SQUARE_TOP - CROP_DY) / (CONTENT_ZOOM * (1 + push));
+
+/** CHECKED, NOT COMMENTED. Every call site keeps a numeric literal — plate_overlap_check
+ *  and caption_band_check both need one, and deriving a y is how an element quietly leaves
+ *  the gates that watch it — so the arithmetic is asserted here instead, at build time. Two
+ *  constants either clear the crop line or the render dies. */
+const assertAboveCrop = (what: string, topY: number, push: number) => {
+  const lim = SAFE_TOP(push);
+  if (topY < lim) {
+    const rendered = 960 + (topY - 960) * CONTENT_ZOOM * (1 + push) - CROP_DY;
+    throw new Error(
+      `${what}: authored top ${topY.toFixed(1)} RENDERS at ${rendered.toFixed(0)} under the ` +
+      `content zoom (${CONTENT_ZOOM}) and this Stage's largest push (${push}), which is above ` +
+      `the square crop line at y=${SQUARE_TOP}. Lowest safe authored top here is ` +
+      `${lim.toFixed(1)}.`);
+  }
+};
+
 const P = {
   wall: '#dfe7ea', wallDeep: '#b3c2c6', desk: '#cbc0ac', deskDeep: '#9c8f74',
   metal: '#7d8b93', enamel: '#3d4f4a', paper: '#f4f1e8', ink: '#22303a',
@@ -523,13 +564,57 @@ const AwardCard: React.FC<{
 const REC_LABEL_DY = 70, REC_LABEL_SIZE = 22;
 /** The lowest ink of a Recess label, given the recess's own y. Baseline + descender. */
 const RECESS_LABEL_BOTTOM = (y: number) => y + REC_LABEL_DY + REC_LABEL_SIZE * 0.26;
+/** A CUT IS AN OBJECT, NOT A FILL (2026-08-08 panel, all three judges).
+ *
+ *  The charge was exact: the act-3 page holds from 103s to the end, roughly 17 percent of
+ *  the runtime, with "flat unshaded grey/black placeholder bars under readable labels,
+ *  beside plates that carry bevel, inner shading and drop shadow". It was true. A recess
+ *  was ONE #1d2a31 rect with a 12px black strip, and the S13 row cuts were one #1b262c
+ *  rect with an 11px strip, in a film where every plate, block, folder and award card runs
+ *  a form gradient, a rim light and a contact shadow. The largest object on screen was the
+ *  only unfinished one, and it is the object carrying the film's central legal claim.
+ *
+ *  So a cut now runs the SAME devices as everything else, read as a hole rather than a
+ *  block: a shadow the page casts into the opening, a floor that is darkest where the lip
+ *  overhangs it and opens up toward the light, bevelled side walls, and a lit lower-inner
+ *  lip where the beam catches the near edge of the cut. Nothing new is invented; it is the
+ *  vocabulary the plates already use, applied to the negative space instead of the solid. */
+const CutFace: React.FC<{x: number; y: number; w: number; h: number; deep?: number}> = ({
+  x, y, w, h, deep = 1,
+}) => {
+  const id = `cut${Math.round(x)}_${Math.round(y)}_${Math.round(w)}`;
+  return (
+    <g transform={`translate(${x},${y})`}>
+      {/* the page's own thickness, thrown down onto the desk under the opening */}
+      <ContactShadow cx={2} cy={h / 2 + 7} rx={w / 2 - 4} ry={7} opacity={0.22 * deep} />
+      <defs>
+        <linearGradient id={id} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#0d1418" />
+          <stop offset="46%" stopColor="#1b262c" />
+          <stop offset="100%" stopColor="#2b3b44" />
+        </linearGradient>
+      </defs>
+      <rect x={-w / 2} y={-h / 2} width={w} height={h} rx={2} fill={`url(#${id})`}
+            stroke={INK} strokeWidth={5} />
+      {/* the shadow the top lip casts into the opening: deepest at the head, falling off */}
+      <rect x={-w / 2 + 4} y={-h / 2 + 4} width={w - 8} height={h * 0.34} fill="#000"
+            opacity={0.42 * deep} />
+      {/* the two side walls, catching a little of the same light the plates do */}
+      <path d={`M${-w / 2 + 4},${-h / 2 + 4} l9,9 l0,${h - 26} l-9,9 Z`} fill="#33454e"
+            opacity={0.5} />
+      <path d={`M${w / 2 - 4},${-h / 2 + 4} l-9,9 l0,${h - 26} l9,9 Z`} fill="#0f171b"
+            opacity={0.55} />
+      {/* the lit near lip, which is what makes it read as an edge you could catch a nail on */}
+      <RimLight d={`M${-w / 2 + 6},${h / 2 - 5} l${w - 12},0`} w={3} opacity={0.5} />
+    </g>
+  );
+};
+
 const Recess: React.FC<{
   x: number; y: number; w: number; label: string; f: number; dim?: number;
 }> = ({x, y, w, label, f, dim = 0}) => (
   <g transform={`translate(${x},${y})`} opacity={1 - dim * 0.6}>
-    <rect x={-w / 2} y={-40} width={w} height={80} rx={2} fill="#1d2a31"
-          stroke={INK} strokeWidth={4} />
-    <rect x={-w / 2 + 5} y={-35} width={w - 10} height={12} fill="#000" opacity={0.35} />
+    <CutFace x={0} y={0} w={w} h={80} />
     <text x={0} y={REC_LABEL_DY} textAnchor="middle" fontFamily={MONO} fontSize={REC_LABEL_SIZE}
           fontWeight={700} fill={P.ink} letterSpacing={1.2} opacity={0.85}>{label}</text>
   </g>
@@ -688,6 +773,14 @@ const S2: React.FC<SceneProps> = () => {
   );
 };
 
+// S3_TOP_CHECK. Stage push starts at its largest here (-ramp*0.06 + 0.06), so frame 0 is
+// the worst case, and the header pair is the film's tightest against the crop line.
+assertAboveCrop('S3 "CAPITAL CAPPED AT 20%"', 566 - (38 + 34) / 2, 0.06);
+assertAboveCrop('S3 "AWAY FROM ANYTHING YOU\'D BUILD"', 653 - (32 + 34) / 2, 0.06);
+if (653 - (32 + 34) / 2 < 566 + (38 + 34) / 2 + 12) {
+  throw new Error('S3: the two header plates are closer than 12px; they stacked once already.');
+}
+
 // =============================================================== S3  THE COLLAR
 const S3: React.FC<SceneProps> = () => {
   const f = useCurrentFrame();
@@ -762,14 +855,120 @@ const S3: React.FC<SceneProps> = () => {
           top of the first and the narrower one peeked out above it. That is the "duplicate
           ghost plate behind the header" the panel reported on f022.8, and it was invisible
           to plate_overlap_check because the checker's scene regex never matched this file
-          (see SceneProps above). 500..572 and 589..655 now, a clear 17px apart. */}
-      <Plate x={540} y={536} text="CAPITAL CAPPED AT 20%" size={38} delay={14} />
+          (see SceneProps above). 500..572 and 589..655 then, a clear 17px apart.
+          AND THEN BOTH CAME DOWN 30px (2026-08-08 panel, two judges). At y=536 the first
+          plate's authored top was 500, which caption_band_check passes with 35px to spare
+          — and which the CONTENT ZOOM the gate cannot model carries to a rendered 430 at
+          t=22.55s, ten pixels off the square's crop line, with the top border clipped
+          outright for the shot's first second and a half.
+          The literals stay LITERAL on purpose: plate_overlap_check and caption_band_check
+          both need a numeric y, and deriving these would quietly buy the pair out of the two
+          gates that exist to watch them. The arithmetic — SAFE_TOP, which is the gate's own
+          with the 1.12 zoom put back in — is enforced at build time beside the scene instead
+          (see S3_TOP_CHECK above). */}
+      <Plate x={540} y={566} text="CAPITAL CAPPED AT 20%" size={38} delay={14} />
       {flow > 0.01 && (
-        <Plate x={540} y={622} text="AWAY FROM ANYTHING YOU'D BUILD" size={32} delay={112} />
+        <Plate x={540} y={653} text="AWAY FROM ANYTHING YOU'D BUILD" size={32} delay={112} />
       )}
     </Stage>
   );
 };
+
+/** THE CAP TABLE — c17, drawn at last, and it is the fact the record asked for.
+ *
+ *  TWO findings, one object.
+ *
+ *  1. c17's own note in out/dispatch/claims.json reads: "This substantiates Rep. Mina's June
+ *     complaint without needing to take her word for it." Three of its four figures had never
+ *     been on screen anywhere in the film — provider payments at 15 percent, administrative at
+ *     10, and a Technology Innovation Catalyst Fund at 10 percent capped at $20M. Only the 20
+ *     percent capital cap shipped, in S3. A fact-checked figure sitting unused while the shot
+ *     it was written for holds on a name plate is the note being declined, which is the exact
+ *     failure scripts/claims_contract_check.py exists to stop.
+ *
+ *  2. scripts/content_sag_check.py measured 24.50s..30.00s as a 5.5-second window where the
+ *     story region does not change — 5.5 seconds of narration introducing her over a frame
+ *     holding one plate. That is longer than the gate's own 5-second rule.
+ *
+ *  So the record she read arrives while she is being introduced, and the quote lands on top of
+ *  it. The move is S3's, deliberately: a collar that descends and clamps is what a cap looks
+ *  like in this film, and here it happens four times with four real numbers instead of once.
+ *  The strings are c17's, verbatim from its `text`; nothing is abbreviated into a figure the
+ *  record does not carry, and nothing here is attributed to the federal statute (that is c12b,
+ *  a different claim and a different register — see c12's `requires`).
+ *
+ *  GEOMETRY. The board is 130..950 x 876..1170 in scene space. Above it the REP. GENEVIEVE MINA
+ *  plate bottoms at 859 (17px clear); below it the AI slug's body tops at 1182 (12px clear);
+ *  and it is wholly retired by local 230, four frames before the quote card arrives at 906..1056
+ *  on 226 — they never share a frame, which is why this is not the stacked-card mistake of
+ *  2026-08-06. */
+const CAP_ROWS: {label: string; cap: string; size: number; capSize: number}[] = [
+  {label: 'CAPITAL + INFRASTRUCTURE', cap: '20%', size: 26, capSize: 27},
+  {label: 'PROVIDER PAYMENTS', cap: '15%', size: 26, capSize: 27},
+  {label: 'ADMINISTRATIVE COSTS', cap: '10%', size: 26, capSize: 27},
+  {label: 'TECHNOLOGY INNOVATION CATALYST FUND', cap: '10%  $20M', size: 21, capSize: 21},
+];
+const CAP_TOP = 876, CAP_HEAD = 58, CAP_ROWH = 59;
+const CAP_H = CAP_HEAD + CAP_ROWS.length * CAP_ROWH;    // 294 -> board 876..1170
+
+const CapBoard: React.FC<{f: number; on: number; rows: number[]; bye: number}> = ({
+  f, on, rows, bye,
+}) => {
+  const T = tones(P.enamel);
+  return (
+    <g opacity={Math.min(1, on * 1.6) * (1 - bye)}
+       transform={`translate(0,${CAP_TOP + interpolate(on, [0, 1], [-34, 0]) + bye * 320})`}>
+      <defs>
+        <FormGradient id="capbd" t={T} softness={1.3} />
+        <FormGradient id="caprow" t={tones('#4a5f59')} softness={1.15} />
+      </defs>
+      <ContactShadow cx={542} cy={CAP_H + 8} rx={402} ry={11} opacity={0.3} />
+      <g transform="translate(540,0)">
+        <rect x={-410} y={0} width={820} height={CAP_H} rx={3} fill="url(#capbd)"
+              stroke={INK} strokeWidth={8} />
+        {[-1, 1].map((s) => (
+          <circle key={s} cx={s * 380} cy={29} r={9} fill="#8fa3ad" stroke={INK} strokeWidth={4} />
+        ))}
+        <text x={-352} y={41} fontFamily={MONO} fontSize={30} fontWeight={700}
+              fill="#f0f4f2" letterSpacing={1.6}>CAPPED BY CATEGORY</text>
+        <path d={`M-380,${CAP_HEAD - 4} L380,${CAP_HEAD - 4}`} stroke="#8fa3ad"
+              strokeWidth={3} opacity={0.5} />
+        {/* Each rule SLIDES DOWN INTO ITS SLOT, past the ones already racked, and its collar
+            clamps with it. A stroke-only collar travelling on its own repaints almost nothing
+            between two sampled instants (the film learned that the hard way in S3's first
+            cut); a full-width slab carrying the collar repaints the board. */}
+        {CAP_ROWS.map((r, i) => {
+          const a = rows[i];
+          if (a <= 0.005) return null;
+          const rest = CAP_HEAD + i * CAP_ROWH;
+          const y = interpolate(smooth(a), [0, 1], [-CAP_ROWH - 8, rest]);
+          const bite = Math.sin(Math.min(1, a) * Math.PI) * 4;   // it seats, it does not stop dead
+          return (
+            <g key={i} transform={`translate(0,${y + bite})`} opacity={Math.min(1, a * 5)}>
+              <rect x={-410} y={0} width={820} height={CAP_ROWH} rx={2} fill="url(#caprow)"
+                    stroke={INK} strokeWidth={4} />
+              <rect x={-406} y={CAP_ROWH - 9} width={812} height={9} fill={T.shade} opacity={0.6} />
+              <text x={-380} y={39} fontFamily={MONO} fontSize={r.size} fontWeight={700}
+                    fill="#f0f4f2" letterSpacing={0.8}>{r.label}</text>
+              {/* the cap itself: the dark plaque inside an amber collar, the same figure/ground
+                  S3 bolts inside the 20% collar, so the two shots are visibly one idea */}
+              <rect x={216} y={6} width={170} height={47} rx={2} fill="#16212a"
+                    stroke={P.cap} strokeWidth={5} />
+              <text x={301} y={39} textAnchor="middle" fontFamily={MONO} fontSize={r.capSize}
+                    fontWeight={700} fill={P.cap} letterSpacing={1.2}>{r.cap}</text>
+              <RimLight d={`M-406,3 l812,0`} w={3} opacity={0.4} />
+            </g>
+          );
+        })}
+      </g>
+    </g>
+  );
+};
+if (CAP_TOP + CAP_H > 1182) {
+  throw new Error(`S4: the cap board bottoms at ${CAP_TOP + CAP_H}, into the AI slug's body ` +
+                  `(top 1182). Shorten CAP_ROWH or raise nothing — the slug is the throughline.`);
+}
+assertAboveCrop('S4 cap board', CAP_TOP, 0.05);
 
 // ================================================================ S4  THE QUOTE
 const S4: React.FC<SceneProps> = () => {
@@ -789,12 +988,23 @@ const S4: React.FC<SceneProps> = () => {
   // strip (line 6 + 2.10s = 33.16s). A slow 92-frame drift put nothing decisive there; a
   // 28-frame yank centred on the words is both the better cut and the measurable move.
   const pull = ramp(f, 286, 316);
+  // THE RECORD SHE READ, RACKED WHILE SHE IS BEING INTRODUCED. Line 5 runs the whole of
+  // local 0..232 and the frame held one plate for all of it: content_sag_check measured
+  // 24.50..30.00s (local 36..201) as dead. Four caps land on the words, each on its own
+  // 34-frame slide, and the board is wholly gone before the quote card arrives at 226 —
+  // no two cards ever share this band.
+  const capOn = ramp(f, 34, 62);
+  const capRows = [ramp(f, 46, 80), ramp(f, 84, 118), ramp(f, 122, 156), ramp(f, 160, 194)];
+  const capBye = smooth(ramp(f, 198, 230));
   return (
     <Stage f={f} push={ramp(f, 0, 340) * 0.05} drift={1.0} act={0}>
       <g opacity={card} transform={`translate(0,${interpolate(card, [0, 1], [40, 0])})`}>
         <Plate x={540} y={800} text="REP. GENEVIEVE MINA" size={38} delay={10}
                sub="ADVISORY COUNCIL / JUNE 2026" />
       </g>
+      {capOn > 0.005 && capBye < 0.999 && (
+        <CapBoard f={f} on={capOn} rows={capRows} bye={capBye} />
+      )}
       <g opacity={arrive} transform={`translate(0,${interpolate(arrive, [0, 1], [86, 0])})`}>
         <ContactShadow cx={540} cy={1064} rx={370} ry={11} opacity={0.26} />
         <rect x={168} y={906} width={744} height={150} rx={3} fill={P.paper}
@@ -843,28 +1053,144 @@ const S4: React.FC<SceneProps> = () => {
   );
 };
 
+/** The thing each allowable row NAMES, in the board's empty right column.
+ *
+ *  The board carried five words on a 512px-tall dark panel that was two thirds empty at
+ *  every moment the panel sampled it. These are the objects the list is a list OF, drawn in
+ *  the film's own vocabulary (INK outline, a shade face, a lit edge) and nothing more: no
+ *  label, no number, nothing that could be read as a claim. The drone's rotors turn for the
+ *  whole shot, so the board is never a still panel again. */
+const UseIcon: React.FC<{kind: number; f: number}> = ({kind, f}) => {
+  const S = '#8fa3ad', D = '#1d2a31';
+  if (kind === 0) {                                   // a slug of set type
+    return (
+      <g>
+        <rect x={-58} y={-24} width={116} height={48} rx={2} fill={S} stroke={INK} strokeWidth={4} />
+        <path d="M-58,-20 L-46,14 L46,14 L58,-20 Z" fill="#b9c9d1" opacity={0.55} />
+        <rect x={-58} y={16} width={116} height={8} fill={D} opacity={0.7} />
+      </g>
+    );
+  }
+  if (kind === 1) {                                   // a wrist monitor
+    return (
+      <g>
+        <path d="M-16,-34 q0,-10 16,-10 q16,0 16,10 l0,10 l-32,0 Z" fill={S}
+              stroke={INK} strokeWidth={4} />
+        <path d="M-16,24 q0,10 16,10 q16,0 16,-10 l0,-10 l-32,0 Z" fill={S}
+              stroke={INK} strokeWidth={4} />
+        <rect x={-32} y={-26} width={64} height={52} rx={6} fill={S} stroke={INK} strokeWidth={4} />
+        <rect x={-21} y={-15} width={42} height={30} rx={2} fill={D} />
+        <rect x={-15} y={-6} width={8 + 16 * Math.abs(Math.sin(f / 19))} height={8} fill={P.warm} />
+      </g>
+    );
+  }
+  if (kind === 2) {                                   // a quadrotor, turning
+    return (
+      <g>
+        {[-1, 1].map((sx) => [-1, 1].map((sy) => (
+          <g key={`${sx}${sy}`}>
+            <line x1={0} y1={0} x2={sx * 42} y2={sy * 24} stroke={INK} strokeWidth={6} />
+            <ellipse cx={sx * 42} cy={sy * 24} rx={26 * Math.abs(Math.cos(f / 3 + sx * sy))}
+                     ry={5} fill="none" stroke={S} strokeWidth={4} opacity={0.85} />
+            <circle cx={sx * 42} cy={sy * 24} r={5} fill={S} stroke={INK} strokeWidth={3} />
+          </g>
+        )))}
+        <rect x={-22} y={-14} width={44} height={28} rx={4} fill={S} stroke={INK} strokeWidth={4} />
+        <rect x={-14} y={-7} width={28} height={9} fill={D} opacity={0.7} />
+      </g>
+    );
+  }
+  if (kind === 3) {                                   // a kiosk cabinet
+    return (
+      <g>
+        <rect x={-34} y={-38} width={68} height={76} rx={4} fill={S} stroke={INK} strokeWidth={4} />
+        <rect x={-24} y={-28} width={48} height={30} rx={2} fill={D} />
+        <rect x={-20} y={12} width={40} height={18} rx={2} fill={D} />
+        <circle cx={22} cy={7} r={5} fill={Math.sin(f / 17) > 0 ? P.warm : '#4a5a52'} />
+      </g>
+    );
+  }
+  return (                                            // a dispensing chute and its pack
+    <g>
+      <path d="M-38,-34 L38,-34 L24,10 L-24,10 Z" fill={S} stroke={INK} strokeWidth={4} />
+      <rect x={-20} y={10} width={40} height={12} fill={D} opacity={0.75} />
+      <rect x={-15} y={18 + 12 * Math.abs(Math.sin(f / 23))} width={30} height={18} rx={2}
+            fill="#e7e2d4" stroke={INK} strokeWidth={3} />
+    </g>
+  );
+};
+
 // ========================================================= S5  THE LIST + QUESTION
 const S5: React.FC<SceneProps> = () => {
   const f = useCurrentFrame();
   // The five rows are SPOKEN across line 7 (36.16..42.18s = local 0..180), one after the
   // other. They used to all be on the board by local 64 and the shot then held for seven
   // seconds. Spread onto the words, so the board is still filling while she reads it out.
-  const lift = ramp(f, 198, 252);
+  //
+  // ...WHICH WAS STILL NOT AN EVENT (2026-08-08, content_sag_check). Spreading the reveals
+  // did not fix the window: 36.00..42.00s measured a 6.00s continuous sag with a 7.1% floor,
+  // the longest dead stretch in the film. The reason is that an AllowanceBoard row IS only a
+  // 22px bullet and a word — about 1.3% of the story region — so five of them arriving over
+  // six seconds repaints almost nothing, whatever the timing. The panel's charge and the
+  // gate's number are the same fact: the picture was one dark panel filling in very slowly.
+  //
+  // So the list is READ, physically. A machined straightedge lies across the board and
+  // descends it, and everything below the rule is still in shadow. Its schedule is derived
+  // from the ROWS, not picked: at the frame row i lands, the rule is exactly at that row's
+  // lower edge, so the words arrive as the light reaches them. That is a boundary sweeping
+  // 890px of board at 75px a second, which is a real event in every one-second window the
+  // gate samples, and it is also just what reading a list down a page looks like.
+  const READ0 = 4, READ1 = 190;
+  const read = ramp(f, READ0, READ1);
+  // board space: title rule at 686, row i occupies 702+82i .. 784+82i
+  const ruleY = interpolate(read, [0, 1], [694, 1157]);
+  const rowAt = [ramp(f, 10, 40), ramp(f, 44, 74), ramp(f, 76, 106),
+                 ramp(f, 108, 138), ramp(f, 140, 172)];
+  // AND THE SLUG STOPS SHORT OF THE BOARD. At its old rest (y=1092, scale 1.3) its body
+  // topped out at master 1040 against a board bottoming at master 1100, so from 44.7s to
+  // the cut it covered the fifth row and REMOTE DISPENSING was unreadable — an on-screen
+  // string obscured by the film's own hero object, the same overprint class as the S15
+  // labels and the S8 hatch. 1158 clears the board by ~22px and is still wholly inside the
+  // square's story region. It also rises EARLIER (176 not 198), because the 176..238 climb
+  // is what carries the window between the rule finishing and the question landing.
+  const lift = ramp(f, 176, 238);
   return (
     <Stage f={f} push={ramp(f, 0, 260) * 0.045} drift={0.8} act={0}>
       <g transform="translate(540,880) scale(0.86) translate(-540,-880)">
         <AllowanceBoard x={540} y={606} f={f} title="ALLOWABLE USES" width={880} rowH={82}
           rows={[
-            {label: 'AI-ENABLED TOOLS', kind: 'allow', at: ramp(f, 10, 40)},
-            {label: 'WEARABLES', kind: 'allow', at: ramp(f, 44, 74)},
-            {label: 'DRONES', kind: 'allow', at: ramp(f, 76, 106)},
-            {label: 'KIOSKS', kind: 'allow', at: ramp(f, 108, 138)},
-            {label: 'REMOTE DISPENSING', kind: 'allow', at: ramp(f, 140, 172)},
+            {label: 'AI-ENABLED TOOLS', kind: 'allow', at: rowAt[0]},
+            {label: 'WEARABLES', kind: 'allow', at: rowAt[1]},
+            {label: 'DRONES', kind: 'allow', at: rowAt[2]},
+            {label: 'KIOSKS', kind: 'allow', at: rowAt[3]},
+            {label: 'REMOTE DISPENSING', kind: 'allow', at: rowAt[4]},
           ]} />
+        {/* the thing each row names, in the column the board never used */}
+        {rowAt.map((a, i) => (a <= 0.02 ? null : (
+          <g key={i} opacity={Math.min(1, a * 2)}
+             transform={`translate(${790 + (1 - a) * 40},${739 + i * 82}) scale(${0.8 + a * 0.2})`}>
+            <UseIcon kind={i} f={f} />
+          </g>
+        )))}
+        {/* everything the rule has not reached yet is still in shadow */}
+        <rect x={104} y={ruleY} width={872} height={Math.max(0, 1108 - ruleY)}
+              fill="#0b1216" opacity={0.42} />
+        {/* The rule itself, lying across the page with its own shadow under it — and it is
+            TAKEN OFF once the list is read. Left on, it parked across the bottom of the board
+            with its ends sticking out either side of the risen slug, which reads as a stray
+            bar rather than a straightedge. */}
+        <g transform={`translate(540,${ruleY})`} opacity={1 - ramp(f, 176, 198)}>
+          <rect x={-462} y={4} width={924} height={34} fill="#0b1216" opacity={0.34} />
+          <defs><FormGradient id="readrule" t={tones('#9aa8a2')} softness={1.1} /></defs>
+          <rect x={-462} y={-19} width={924} height={34} rx={2} fill="url(#readrule)"
+                stroke={INK} strokeWidth={5} />
+          <rect x={-462} y={6} width={924} height={9} fill="#4d5b58" opacity={0.7} />
+          <RimLight d="M-458,-15 l916,0" w={4} opacity={0.6} />
+        </g>
       </g>
       {/* line 8 (43.14..44.88s = local 241..293) asks the question, so the slug comes off
           the desk INTO it rather than four seconds early */}
-      <TypeSlug x={540} y={interpolate(smooth(lift), [0, 1], [1204, 1092])} f={f}
+      <TypeSlug x={540} y={interpolate(smooth(lift), [0, 1], [1204, 1158])} f={f}
                 text="ARTIFICIAL INTELLIGENCE"
                 scale={interpolate(smooth(lift), [0, 1], [1.04, 1.3])}
                 seated={0} held={lift} phase={2} />
@@ -1438,6 +1764,59 @@ const S12: React.FC<SceneProps> = () => {
 };
 
 // ============================================================ S13  THE STATUTE
+//
+// THE PAGE, REBUILT (2026-08-08 panel, all three judges, ranked first).
+//
+// The charge: this page holds from 103s to the end, about 17 percent of the runtime, it is
+// the largest object on screen and it carries the film's central legal claim, and it was
+// "flat unshaded grey/black placeholder bars under readable labels, beside plates that carry
+// bevel, inner shading and drop shadow". Three things are fixed here and none of them is a
+// threshold.
+//
+//   FORM. The cuts run the film's own devices now — see CutFace: a shadow into the opening,
+//   a floor that opens toward the light, bevelled walls, a lit near lip, a contact shadow.
+//
+//   VALUE. A row is no longer a label over a bar. Each row carries the datum this whole
+//   sequence is about, from c12b: how many times artificial intelligence appears in that
+//   approved use. Four zeros and a one, and the one is amber and is the last row. The card
+//   now ADDS UP to the plate above it ("APPEARS EXACTLY ONCE") instead of illustrating it.
+//
+//   DENOMINATOR. A judge's second point, and it is an accuracy point: c12b's claim is that
+//   AI appears in one of TEN approved uses, and this page drew five rows with no denominator,
+//   so the picture argued weaker than the record supports. The ten cannot be DRAWN — six of
+//   them appear nowhere in out/dispatch/claims.json, and inventing six statutory categories
+//   to fill a column would be exactly the failure this film is about. So the page is LABELLED
+//   for what it is: TEN IN THE STATUTE / PARTIAL LIST, per c12b's own wording. The list no
+//   longer reads as complete, and no string on it is one the record cannot carry.
+//
+// AND THE PAGE STOPS BELOW THE CROP LINE. It scanned up to an authored top of 372, which the
+// content zoom carries to a rendered 272: at t=110.5s crop_safety measured the top border
+// crossing y=420 at 0.953 structured, and by t=113s the border was off the square entirely.
+// CARD_TOP - ROWTRAVEL is now checked against SAFE_TOP at build time.
+//
+// ...AND THE SCAN STOPS WHERE THE HEADLINE IS, WHICH IS WHAT PINS IT. The first pass of this
+// fix put the page's travel at 170 and rendered it: at t=113s the "APPEARS EXACTLY ONCE"
+// plate was lying across the top of APPROVED USES OF FUNDS. The plate cannot go higher (its
+// own top is already within 11px of SAFE_TOP), so the page's fully-scanned top is pinned
+// below it, and 136 is what that comes to with the header's own 66px to the title baseline
+// and 17px of clearance. Both halves are asserted rather than described.
+const S13_CARD_TOP = 700, S13_ROWTRAVEL = 136;
+const S13_TITLE_DY = 66, S13_TITLE_SIZE = 30;
+const S13_PLATE_Y = 556, S13_PLATE_SIZE = 36;
+assertAboveCrop('S13 statute page (at full scan)', S13_CARD_TOP - S13_ROWTRAVEL, 0.045);
+assertAboveCrop('S13 "APPEARS EXACTLY ONCE"',
+                S13_PLATE_Y - (S13_PLATE_SIZE + 34) / 2, 0.045);
+{
+  const titleCapTop = S13_CARD_TOP - S13_ROWTRAVEL + S13_TITLE_DY - S13_TITLE_SIZE * 0.72;
+  const plateBottom = S13_PLATE_Y + (S13_PLATE_SIZE + 34) / 2;
+  if (titleCapTop < plateBottom + 12) {
+    throw new Error(
+      `S13: at full scan the page title's caps top at ${titleCapTop.toFixed(0)} and the ` +
+      `"APPEARS EXACTLY ONCE" plate bottoms at ${plateBottom}. The plate cannot move up ` +
+      `(SAFE_TOP), so shorten S13_ROWTRAVEL instead of printing one over the other.`);
+  }
+}
+
 const S13: React.FC<SceneProps> = () => {
   const f = useCurrentFrame();
   const open = ramp(f, 6, 44);
@@ -1445,26 +1824,49 @@ const S13: React.FC<SceneProps> = () => {
   // line 22 ("not under equipment, not under purchases", local 286..350) instead of
   // finishing at local 250 with 130 frames of hold behind it
   const scan = ramp(f, 120, 344);
-  const USES = ['PROVIDER PAYMENTS', 'EQUIPMENT', 'CYBERSECURITY', 'PURCHASES',
-                'TRAINING AND TECHNICAL ASSISTANCE'];
+  // `ai` is c12b, and it is the only figure on this page: the statute names artificial
+  // intelligence exactly once, in the training clause. Nothing here is c17 — those caps are
+  // Alaska's allowable-uses framing (see c12's `requires`, which forbids attributing that
+  // framing to the feds), and they are drawn in S4 where they belong.
+  const USES: {label: string; ai: number; wide: boolean}[] = [
+    {label: 'PROVIDER PAYMENTS', ai: 0, wide: false},
+    {label: 'EQUIPMENT', ai: 0, wide: false},
+    {label: 'CYBERSECURITY', ai: 0, wide: false},
+    {label: 'PURCHASES', ai: 0, wide: false},
+    {label: 'TRAINING AND TECHNICAL ASSISTANCE', ai: 1, wide: true},
+  ];
   const at = Math.min(USES.length - 1, Math.floor(scan * USES.length));
   // the slug STEPS between rows instead of teleporting: hold, ease, hold
   const stepped = Math.min(USES.length - 1, at + smooth(Math.min(1,
     Math.max(0, (scan * USES.length - at - 0.42) / 0.44))));
-  // TOP was 742. Under the content zoom the page's first cut rendered at 460..521 while
-  // the "APPEARS EXACTLY ONCE" plate sits at 480..554, so once the page had scanned up the
-  // headline was lying across the PROVIDER PAYMENTS row. 880 puts a 276px margin at the
-  // head of the page and the plate lands in it, on paper, over nothing.
-  // ROW tightened 116 -> 96 so the page's own margin rule closes at 1330, one pixel shy of
-  // the open-caption band at 1336, instead of being exempted into it.
-  const ROW = 96, TOP = 880, ROWTRAVEL = 232;
+  // ROW 88 keeps the last cut's foot at an authored 1272, which renders at 1315 — 21px shy
+  // of the open-caption band at 1336 — even at scan 0, when the page sits at its lowest.
+  const ROW = 88, TOP = 872;
+  const slugY = TOP + stepped * ROW - 58 - scan * S13_ROWTRAVEL;
+  // the slug on screen: TypeSlug's own width arithmetic, at this shot's scale. A narrow cut
+  // is 256 wide, so the phrase stands 32px proud of it on each side and that gap IS the shot.
+  const SLUG_HALF = ('ARTIFICIAL INTELLIGENCE'.length * 34 * 0.602 + 44) * 0.62 / 2;
   return (
     <Stage f={f} push={ramp(f, 0, 340) * 0.045} drift={0.6} deskY={1400} act={3}>
-      <g opacity={open} transform={`translate(0,${-scan * ROWTRAVEL})`}>
-        <rect x={96} y={604} width={888} height={566 + ROWTRAVEL} rx={3} fill="#efeade"
+      <g opacity={open} transform={`translate(0,${-scan * S13_ROWTRAVEL})`}>
+        {/* The page and its own margin rule both CLOSE above the open-caption band rather
+            than being exempted into it — 1328 and 1304 against a band that opens at 1336,
+            which is the same call the previous cut made at 1330 and it still holds. The last
+            row's cut foots at 1272, so every informational thing on this page clears the
+            band by 32px of paper before the gate is even consulted. */}
+        <rect x={96} y={700} width={888} height={628} rx={3} fill="#efeade"
               stroke={INK} strokeWidth={9} />
-        <rect x={120} y={628} width={840} height={702} rx={2} fill="none"
+        <rect x={124} y={724} width={832} height={580} rx={2} fill="none"
               stroke={P.ink} strokeWidth={2} opacity={0.3} />
+        {/* the page's own head: what the list IS, how much of it this is, and the column
+            the rows are counted in */}
+        <text x={150} y={766} fontFamily={MONO} fontSize={S13_TITLE_SIZE} fontWeight={700}
+              letterSpacing={1.2} fill={P.ink}>APPROVED USES OF FUNDS</text>
+        <text x={150} y={806} fontFamily={MONO} fontSize={19} fontWeight={700}
+              letterSpacing={1} fill={P.ink} opacity={0.55}>TEN IN THE STATUTE  ·  PARTIAL LIST</text>
+        <text x={862} y={806} textAnchor="middle" fontFamily={MONO} fontSize={19}
+              fontWeight={700} letterSpacing={1.2} fill={P.ink} opacity={0.7}>AI MENTIONS</text>
+        <path d="M150,826 L930,826" stroke={P.ink} strokeWidth={3} opacity={0.45} />
         {USES.map((u, i) => {
           const live = i === at;
           const y = TOP + i * ROW;
@@ -1472,44 +1874,96 @@ const S13: React.FC<SceneProps> = () => {
             <g key={i}>
               <text x={150} y={y - 22} fontFamily={MONO} fontSize={live ? 22 : 20}
                     fontWeight={700} letterSpacing={0.6}
-                    fill={P.ink} opacity={live ? 1 : 0.42}>{u}</text>
-              {/* a real cut, dark at full value, so a slug standing proud of it reads */}
-              <rect x={540 - (i === USES.length - 1 ? 238 : 128)} y={y - 6}
-                    width={i === USES.length - 1 ? 476 : 256} height={54} rx={2}
-                    fill="#1b262c" stroke={INK} strokeWidth={5}
-                    opacity={live ? 1 : 0.5} />
-              <rect x={540 - (i === USES.length - 1 ? 234 : 124)} y={y - 2}
-                    width={i === USES.length - 1 ? 468 : 248} height={11}
-                    fill="#000" opacity={live ? 0.4 : 0.2} />
+                    fill={P.ink} opacity={live ? 1 : 0.42}>{u.label}</text>
+              <g opacity={live ? 1 : 0.55}>
+                <CutFace x={540} y={y + 21} w={u.wide ? 476 : 256} h={54} deep={live ? 1 : 0.6} />
+              </g>
+              {/* THE ROW'S VALUE. The tally is the argument: four rows read 0 and the one
+                  the slug finally fits reads 1, in the amber this film uses for a cap or a
+                  count and for nothing else. */}
+              <g transform={`translate(862,${y + 21})`} opacity={live ? 1 : 0.6}>
+                <ContactShadow cx={0} cy={26} rx={48} ry={5} opacity={0.2} />
+                <rect x={-52} y={-23} width={104} height={46} rx={2} fill="#16212a"
+                      stroke={u.ai ? P.cap : '#7f8d93'} strokeWidth={4} />
+                <text x={0} y={12} textAnchor="middle" fontFamily={MONO} fontSize={28}
+                      fontWeight={700} letterSpacing={1}
+                      fill={u.ai ? P.cap : '#9fb0b8'}>{String(u.ai)}</text>
+              </g>
             </g>
           );
         })}
       </g>
-      <TypeSlug x={540} y={TOP + stepped * ROW - 58 - scan * ROWTRAVEL} f={f}
-                text="ARTIFICIAL INTELLIGENCE" scale={0.62} seated={0} held={0.3} phase={7}
-                recess={{w: at === USES.length - 1 ? 476 : 256, fits: at === USES.length - 1}} />
-      <Plate x={540} y={566} text="APPEARS EXACTLY ONCE" size={36} delay={172} />
+      {/* NO SECOND SLOT. TypeSlug can draw its own recess, and passing one here drew a
+          295px-wide dark bar hanging 41px BELOW the slug — a second, differently-sized cut
+          on a page that now draws real ones, and at t=113s it was sitting across TRAINING
+          AND TECHNICAL ASSISTANCE. The page's own cut is the slot; the overhang is measured
+          against THAT, in the scarlet this film reserves for exactly one meaning. */}
+      <TypeSlug x={540} y={slugY} f={f}
+                text="ARTIFICIAL INTELLIGENCE" scale={0.62} seated={0} held={0.3} phase={7} />
+      {at !== USES.length - 1 && (
+        <g opacity={0.92}>
+          {[-1, 1].map((s) => (
+            <g key={s}>
+              {/* ON the slug's own lower face, not under it: at +24 these bars landed on the
+                  next row's label, which is 50px below the live cut. +8 keeps them inside the
+                  slug's body, which is where the overhang actually is. */}
+              <line x1={540 + s * 128} y1={slugY + 8} x2={540 + s * SLUG_HALF} y2={slugY + 8}
+                    stroke={P.scarlet} strokeWidth={6} />
+              <line x1={540 + s * SLUG_HALF} y1={slugY + 1} x2={540 + s * SLUG_HALF}
+                    y2={slugY + 15} stroke={P.scarlet} strokeWidth={4} />
+            </g>
+          ))}
+        </g>
+      )}
+      <Plate x={540} y={556} text="APPEARS EXACTLY ONCE" size={36} delay={172} />
     </Stage>
   );
 };
+
+// ================================== S14's clause lines, derived from the SLUG'S PATH
+/** THE INVARIANT HAS TO COVER THE TRAVEL, NOT THE REST (2026-08-08 panel, item 4).
+ *
+ *  Same defect class as the round-3 blocker and the fifth instance of it this run, but IN
+ *  TRANSIT: at t=116.0..116.3 the slug sat on the baseline of TRAINING AND and covered
+ *  TECHNICAL ASSISTANCE entirely, clearing by 116.6. Every guard written for this class so
+ *  far — S15's APPROVED USE labels, the TEACH_Y throw — evaluates a RESTING y, and a resting
+ *  y says nothing about the 12 frames an object spends somewhere else. The slug's drop starts
+ *  at 790, is anticipated 28px UP before it goes, and TypeSlug holds its body a further 18px
+ *  above its anchor while unseated, so the highest ink the slug ever reaches is 744, not 790.
+ *
+ *  So the two clause lines are derived from the PATH APEX rather than authored near it, and
+ *  the descender is in the arithmetic. Anyone who retimes the anticipation moves the labels
+ *  with it, and cannot fail to. */
+const S14_DROP_FROM = 790, S14_ANTI = 28, S14_SLUG_LIFT = 18;
+const S14_PATH_TOP = S14_DROP_FROM - S14_ANTI - S14_SLUG_LIFT;   // 744, the highest ink
+const S14_CLAUSE_SIZE = 27, S14_CLAUSE_LEAD = 46, S14_CLAUSE_CLEAR = 14;
+const S14_L2 = S14_PATH_TOP - S14_CLAUSE_CLEAR - S14_CLAUSE_SIZE * 0.26;   // lower baseline
+const S14_L1 = S14_L2 - S14_CLAUSE_LEAD;
+const S14_PAGE_TOP = 616;
+if (S14_L1 - S14_CLAUSE_SIZE * 0.72 < S14_PAGE_TOP + 24) {
+  throw new Error(
+    `S14: "TRAINING AND" caps top at ${(S14_L1 - S14_CLAUSE_SIZE * 0.72).toFixed(0)}, inside the ` +
+    `page's own top margin (${S14_PAGE_TOP + 24}). Raise the page, do not clip the clause.`);
+}
+assertAboveCrop('S14 clause page', S14_PAGE_TOP, 0.06);
 
 // ============================================================== S14  THE SEAT
 const S14: React.FC<SceneProps> = () => {
   const f = useCurrentFrame();
   const {fps} = useVideoConfig();
-  const anti = Math.sin(Math.min(1, ramp(f, 3, 15)) * Math.PI) * 28;
+  const anti = Math.sin(Math.min(1, ramp(f, 3, 15)) * Math.PI) * S14_ANTI;
   const sp = spring({frame: f - 15, fps, config: {damping: 9, stiffness: 215, mass: 0.8}});
   const seat = ramp(f, 10, 46);
   return (
     <Stage f={f} push={ramp(f, 0, 110) * 0.06} drift={0.5} deskY={1720} act={3}>
-      <rect x={120} y={640} width={840} height={620} rx={3} fill={P.paper}
+      <rect x={120} y={616} width={840} height={644} rx={3} fill={P.paper}
             stroke={INK} strokeWidth={7} />
-      <text x={540} y={760} textAnchor="middle" fontFamily={MONO} fontSize={27}
+      <text x={540} y={S14_L1} textAnchor="middle" fontFamily={MONO} fontSize={S14_CLAUSE_SIZE}
             fontWeight={700} fill={P.ink} letterSpacing={1.1}>TRAINING AND</text>
-      <text x={540} y={806} textAnchor="middle" fontFamily={MONO} fontSize={27}
+      <text x={540} y={S14_L2} textAnchor="middle" fontFamily={MONO} fontSize={S14_CLAUSE_SIZE}
             fontWeight={700} fill={P.ink} letterSpacing={1.1}>TECHNICAL ASSISTANCE</text>
       <Recess x={540} y={1010} w={476} label="" f={f} />
-      <TypeSlug x={540} y={interpolate(sp, [0, 1], [790, 972]) - anti} f={f}
+      <TypeSlug x={540} y={interpolate(sp, [0, 1], [S14_DROP_FROM, 972]) - anti} f={f}
                 text="ARTIFICIAL INTELLIGENCE" scale={0.9} seated={sp} phase={0} />
       {f >= 24 && f < 48 && Array.from({length: 12}).map((_, i) => {
         const a2 = (i / 12) * Math.PI * 2, pr = ramp(f, 24, 48);
