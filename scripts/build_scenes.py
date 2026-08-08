@@ -91,7 +91,18 @@ TAIL = 2.6  # hold after the last word
 # + the blank price tag), S9 L15-L18 (THE TEST, one boat one bay + the CTO quote),
 # S10 L19-L22 (the seam, one write-up, the empty rack, NO BOAT COUNT), S11 L23-L25 (ten
 # machines against 1,300+ permits), S12 L26-L28 (THE TURN to a dozen hulls + the button).
-SCENE_START_LINE = [0, 2, 4, 6, 8, 10, 12, 13, 15, 19, 23, 26]
+# 2026-08-08 "Not In The Buying": FIFTEEN scenes (S1..S15 in video-engine/src/Ep0808.tsx)
+# onto 26 VO lines. Boundaries anchored to VO LINE STARTS so the picture cannot drift
+# from the words. S1 L0-L1 (the slug drops, the money block builds), S2 L2 (the two rule
+# plates bolt on), S3 L3-L4 (the 20% collar clamps, the flow bends away), S4 L5-L6 (Mina,
+# dated June, and the quote), S5 L7-L8 (the state list posts, the slug lifts, the question),
+# S6 L9-L11 (Aug 7th, 19 cards deal, only the described ones light), S7 L12-L13 (Chugachmiut,
+# the case opens, the arm rises, the plate answers), S8 L14 (five doors swing, the kiosk),
+# S9 L15 (THE SIGNATURE: the slug against card after card, fitting none), S10 L16-L17 (Act 3,
+# the undecided block), S11 L18 (three regions go dark), S12 L19 (the spreadsheet refuses),
+# S13 L20-L22 (the statute opens, the slug descends the column), S14 L23 (it seats flush in
+# the training clause), S15 L24-L25 (the button, two empty recesses and one filled).
+SCENE_START_LINE = [0, 2, 3, 5, 7, 9, 12, 14, 15, 16, 18, 19, 20, 23, 24]
 
 
 def _apply_caption_fixups(caps):

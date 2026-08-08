@@ -202,6 +202,18 @@ def main():
     src=None
     if len(sys.argv)>1 and os.path.exists(sys.argv[1]): src=sys.argv[1]; text=open(src,encoding="utf-8").read()
     else: text=sys.stdin.read()
+    # AN EMPTY READ IS AN INVOCATION ERROR, NOT A FAILING POST (2026-08-08). Called with no
+    # path and nothing on stdin, this linted "" and printed a confident RESULT: FAIL with
+    # four rule violations against a post that was in fact fine — and, worse, wrote that
+    # verdict to caption_report.json in the CURRENT DIRECTORY, so a run could overwrite a
+    # real report with the lint of nothing. Same family as the gates this run found passing
+    # on the wrong file, in the opposite direction: a confident answer about a subject that
+    # was never supplied.
+    if not text.strip():
+        print("caption_check: no text. Pass a path (scripts/caption_check.py out/dispatch/post.txt)")
+        print("  or pipe the post on stdin. Refusing to lint an empty string and report it as")
+        print("  a failing post, and refusing to write caption_report.json.")
+        sys.exit(2)
     fails,warns,m=lint(text)
     out=os.path.join(os.path.dirname(os.path.abspath(src)) if src else os.getcwd(),"caption_report.json")
     json.dump({"pass":m["passes"],"fails":fails,"warns":warns,"metrics":m},open(out,"w"),indent=2)

@@ -38,6 +38,12 @@ CHECKS = [
     # clean, the render succeeds, and two annotations are stacked in the same pixels.
     ("nothing informational sits in the caption band",
      [sys.executable, "scripts/caption_band_check.py"], True),
+    # A phonetic respelling reaching the screen is a hard blocker every time a panel has
+    # seen one, and the fix for it is a build-time TRANSFORM with no audit trail. This
+    # asks the built artifact the question afterwards, which is the only way an ordering
+    # change gets caught. 2026-08-08: "A I" on screen under a plate reading "AI".
+    ("no phonetic respelling survived into the built props",
+     [sys.executable, "scripts/caption_spelling_check.py"], True),
     # Two elements in the same pixels cost score in three separate panel rounds on
     # 2026-08-06 and were invisible to every other check, because each element is
     # individually fine and the defect lives only in the relationship.
@@ -47,6 +53,22 @@ CHECKS = [
     # silently declined in one run and judges found all seven.
     ("every claim obligation the fact-checker wrote is honoured",
      [sys.executable, "scripts/claims_contract_check.py"], True),
+    # THE NARRATION obeys the claim set too. Added 2026-08-08, after a false line
+    # ("five rural clinics that didn't have one") passed Gate 0E and the soundcheck
+    # and reached a synth, because Gate 0E asks whether a stranger can FOLLOW the
+    # script and the soundcheck asks whether the ASR heard it, and nothing asked
+    # whether it was TRUE. Verified in both directions on the real defect.
+    ("the narration obeys the fact-check-safe set",
+     [sys.executable, "scripts/vo_claims_check.py"], True),
+    # ...AND SO DOES THE AUDIO WE ACTUALLY SHIP. The check above gates the SCRIPT before TTS
+    # is spent, which is the cheap place to catch a false line. It is not the LAST place one
+    # can exist. On 2026-08-08 a surgical re-cut left a corrected script beside audio that
+    # had not all been re-cut, and a words.json written 17 minutes before the patched vo.wav
+    # then misrepresented the mix to a panel judge in the OTHER direction. Both failures are
+    # the same gap: nothing had listened to the delivered file. Now something does.
+    # Advisory, because a missing ASR backend must never be the thing that halts a run.
+    ("the delivered mix obeys the fact-check-safe set",
+     [sys.executable, "scripts/vo_audio_check.py"], False),
     # ADVISORY ON PURPOSE, same reasoning as the block below: it has never gone green.
     # On the film that prompted it (2026-08-06) it fails 6 of 8 figures, which is the
     # honest state of the craft rather than a broken checker. Promote it to required once
@@ -61,6 +83,13 @@ CHECKS = [
      [sys.executable, "scripts/evidence_coverage_check.py"], False),
     ("the square crop cuts nothing built",
      [sys.executable, "scripts/crop_safety.py"], False),
+    # THE STORY REGION, WITH THE FURNITURE TAKEN OUT. The whole-frame dead-window gate went
+    # blind the moment a near-field foreground was added to fix the previous round's dead
+    # lower third: the foreground bobs continuously, so every frame contains motion whatever
+    # the story is doing. A judge then measured two windows over the gate's own 5s rule that
+    # it could not see. Advisory: the timecodes are the point, not the exit code.
+    ("the story region never stops moving",
+     [sys.executable, "scripts/content_sag_check.py"], False),
     ("dead space within ceilings",
      [sys.executable, "scripts/dead_space_check.py", "--every", "30"], False),
 ]

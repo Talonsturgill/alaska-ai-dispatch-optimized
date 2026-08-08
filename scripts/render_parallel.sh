@@ -30,7 +30,63 @@
 # ============================================================================
 set -euo pipefail
 cd "$(dirname "$0")/.."
-COMP="${1:-Dispatch0803}"
+# NO DEFAULT COMPOSITION (2026-08-08). This read `${1:-Dispatch0803}`, so invoking the
+# script with no arguments silently rendered a film that shipped on August 3rd. It cost
+# 2.5 hours: the render succeeded, printed OK, produced a valid 3835-frame file with a
+# plausible size, and every downstream step would have graded the wrong movie.
+#
+# A default target is only ever right for the run it was written in. Nothing about a
+# per-run composition id belongs in a fallback, because the failure mode is not an error
+# but a confident success on the wrong subject. Same family as the three gates this run
+# that reported clean while reading a shipped July episode.
+if [ $# -lt 1 ]; then
+  echo "render_parallel.sh: refusing to guess which film to render." >&2
+  echo "Usage: scripts/render_parallel.sh <Comp> <out.mp4> [total_frames] [chunks]" >&2
+  echo "Compositions are declared in video-engine/src/Root.tsx." >&2
+  exit 2
+fi
+# ONE RENDER AT A TIME (2026-08-08). Two instances were started minutes apart because the
+# first launch LOOKED like it had failed - the command that started it errored on an
+# unrelated `head` of its log, so it read as dead, while nohup had in fact started it and
+# the script's own `cd` had already corrected its working directory.
+#
+# They then fought over CPU and over identically-named chunk files, and the run reported
+# "a chunk failed" while every chunk log showed 320/320 encoded. That is an expensive way
+# to lose half an hour: the failure message pointed at rendering, and the cause was that
+# there were two of everything.
+#
+# A render is exclusive by nature, so say so rather than trusting the caller to have
+# checked. flock releases automatically if the holder is killed, so a crashed run does not
+# leave a lock nobody can clear.
+exec 200>"${TMPDIR:-/tmp}/alaska-dispatch-render.lock"
+if ! flock -n 200; then
+  echo "render_parallel.sh: another render is already running (lock held)." >&2
+  echo "Wait for it, or kill it, before starting a second one. Two concurrent renders" >&2
+  echo "contend for CPU and clobber each other's chunk files." >&2
+  exit 3
+fi
+
+# A SOURCE EDIT DURING A RENDER PRODUCES A MIXED FILM, AND NOTHING DOWNSTREAM CAN SEE IT
+# (2026-08-08). Each chunk runs its own `remotion render`, which bundles from source when
+# THAT CHUNK starts. So an edit landing mid-render is picked up by the chunks that have not
+# started yet and missed by the ones already running, and the concatenated result is part
+# old film and part new with no seam anyone can detect.
+#
+# The freshness check downstream cannot catch this: it compares the finished mp4's mtime
+# against the newest source, and a mixed render is NEWER than every source. It looks fresh
+# precisely because it is.
+#
+# So the fingerprint is taken before the first chunk and checked after the last one. It is
+# a warning rather than a hard failure because a comment-only edit changes the hash without
+# changing a pixel - which is exactly what happened the day this was written, when a render
+# was killed on an mtime alone and the edit turned out to be a comment.
+_src_fingerprint() {
+  find video-engine/src -name '*.tsx' -o -name '*.ts' 2>/dev/null \
+    | sort | xargs stat -c '%n %Y %s' 2>/dev/null | sha256sum | cut -c1-16
+}
+SRC_BEFORE="$(_src_fingerprint)"
+
+COMP="$1"
 OUT="${2:-out/dispatch/render_mute.mp4}"
 PROPS="${PROPS:-out/dispatch/episode_props.json}"
 # MORE CHUNKS THAN SLOTS, ON PURPOSE (2026-08-04). The first version cut the film into
@@ -143,5 +199,13 @@ if [ "$GOT" != "$TOTAL" ]; then
   echo "FRAME COUNT ASSERT FAILED: concat produced $GOT frames, expected $TOTAL ($ABS_OUT)" >&2
   echo "  A short concat means a chunk boundary is wrong; do NOT ship this file." >&2
   exit 1
+fi
+SRC_AFTER="$(_src_fingerprint)"
+if [ "$SRC_BEFORE" != "$SRC_AFTER" ]; then
+  echo "  WARNING  engine source changed DURING this render ($SRC_BEFORE -> $SRC_AFTER)." >&2
+  echo "  Chunks bundle when they start, so this file may be part old film and part new," >&2
+  echo "  and the downstream freshness check CANNOT see it: a mixed render is newer than" >&2
+  echo "  every source. Diff the change before trusting this cut - if it touched only" >&2
+  echo "  comments the render is fine, and if it touched a rendered value, re-render." >&2
 fi
 echo "  OK  $ABS_OUT  $GOT frames  $(du -h "$ABS_OUT" | cut -f1)"

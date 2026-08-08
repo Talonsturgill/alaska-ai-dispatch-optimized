@@ -1,9 +1,11 @@
 {
- "run_date": "2026-08-06",
- "instruction": "ship it as-is once this next render finishes, then focus on fixing the root causes that are causing the regressions, and the repeat offenders that the judges found, you must create mechanisms to be more proactive about so we don't waste judge time because the agents creating the videos are just better, teach them from everything you learned this run",
- "floor": 6.8,
- "recorded_by": "owner, in-session, 2026-08-06",
- "panel_median_at_release": 6.81,
- "bar_at_release": 7.5,
- "note": "The owner also corrected the bar itself this session: it is 7.5 from config/dispatch_rubric.yaml, not the 9.0 that five earlier panels were briefed with. This release accepts 6.8 for THIS run only. No hard blocker fired on any of the three judges; the gap is craft, concentrated in motion (no directional blur, uneven held-figure idle life) and in the legibility of the attribution tier."
+  "run_date": "2026-08-08",
+  "instruction": "ship as is, this is good enough",
+  "floor": 7.4,
+  "panel_median": 7.47,
+  "standing_threshold": 7.5,
+  "judges": [7.52, 7.47, 7.13],
+  "granted_by": "owner, in session, 2026-08-08",
+  "note": "The owner accepted the bar for this run only, after five panel rounds moved the median 6.56 -> 7.21 -> 7.38 -> 7.47 with zero hard blockers outstanding at the time of release. This file records their decision; it does not disable any other check. The bytes still have to be the graded bytes, the evidence still has to come from those bytes, and there still have to be three judges. It is bound to 2026-08-08 and applies to no other day.",
+  "what_the_owner_was_told": "That the median was 7.47 against a 7.5 standing bar, that one judge scored it 7.52 and voted to ship, and that a factual defect on the statute card (row labels asserted as federal statutory categories that the claim record does not carry) was still being repaired when the release was given."
 }

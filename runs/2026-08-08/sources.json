@@ -1,0 +1,65 @@
+{
+  "run_date": "2026-08-08",
+  "title": "NOT IN THE BUYING",
+  "note": "Per-figure attribution. Every per-project award figure in this film rests on Anchorage Daily News reporting, because the state's own itemized award notice is a spreadsheet neither validator could parse. That limitation is stated on screen and in the narration, not only here.",
+  "sources": [
+    {
+      "title": "Alaska officials award less than 2% of rural healthcare funding, postponing decision on remainder",
+      "outlet": "Anchorage Daily News",
+      "author": "Iris Samuels",
+      "date": "2026-08-07",
+      "url": "https://www.adn.com/alaska-news/rural-alaska/2026/08/07/alaska-officials-award-less-than-2-of-rural-healthcare-funding-postponing-decision-on-remainder/",
+      "carries": ["c1 over $4.5M across 19 projects", "c3 under 2 percent", "c4 Chugachmiut $627,200 for portable X-ray machines at five rural clinics", "c7 Turnagain / Girdwood pharmacy $100,000 to test medication kiosks", "c14 more than $267M still awaiting final approval", "c19 Kodiak, Yukon-Kuskokwim Delta and North Slope received no awards in this round", "c20 largest award $650,200, average $241,000"]
+    },
+    {
+      "title": "Rural Health Transformation Program",
+      "outlet": "Alaska Department of Health",
+      "date": "accessed 2026-08-08",
+      "url": "https://health.alaska.gov/en/education/rural-health-transformation-program/",
+      "credibility": "primary",
+      "carries": ["c2 $272,174,855.72 year one federal award", "c9 awards released each Friday", "c12 allowable uses name AI-enabled tools or wearables, drones, kiosks, remote dispensing", "c16 ineligible uses including broadband infrastructure, new construction, land purchase and demolition", "c17 category caps including capital and infrastructure at 20 percent and a Technology Innovation Catalyst Fund at 10 percent capped at $20M", "c18 nearly 1,800 letters of interest from 864 organizations", "c21 budget period and September 30th 2027 spend-by date"]
+    },
+    {
+      "title": "Rural Health Transformation (RHT) Program",
+      "outlet": "Centers for Medicare & Medicaid Services",
+      "date": "accessed 2026-08-08",
+      "url": "https://www.cms.gov/priorities/rural-health-transformation-rht-program",
+      "credibility": "primary",
+      "carries": ["c12b THE FILM'S PAYOFF: artificial intelligence appears in the statutory approved-uses language exactly once, inside 'training and technical assistance for the development and adoption of technology-enabled solutions', not in an equipment or purchasing use", "c13 Section 71401 of Public Law 119-21, $50 billion over five fiscal years 2026 to 2030, administered by CMS"]
+    },
+    {
+      "title": "CMS Announces $50 Billion in Awards to Strengthen Rural Health in All 50 States",
+      "outlet": "Centers for Medicare & Medicaid Services",
+      "date": "2025-12-29",
+      "url": "https://www.cms.gov/newsroom/press-releases/cms-announces-50-billion-awards-strengthen-rural-health-all-50-states",
+      "credibility": "primary",
+      "carries": ["c24 awards made to all 50 states in a single announcement dated December 29th, 2025"]
+    },
+    {
+      "title": "Do Alaska Rural Health Transformation Funds Point to AI?",
+      "outlet": "Anchorage Daily News, by Iris Samuels, syndicated to GovTech via Tribune Content Agency",
+      "author": "Iris Samuels",
+      "date": "2026-06-09",
+      "url": "https://www.govtech.com/health/do-alaska-rural-health-transformation-funds-point-to-ai",
+      "carries": ["c10 Rep. Genevieve Mina, Anchorage Democrat and one of two state lawmakers on the advisory council, 'the way that the feds designed it is almost directing us to AI', JUNE 2026", "c22 just over 400 proposals advanced from nearly 1,800, more than 200 entities competing", "c23 proposals reported in June and NOT funded, including Tanana Chiefs Conference drone delivery and wearable monitors"],
+      "attribution_note": "On-screen and in-draft credit belongs to the Anchorage Daily News. GovTech is the syndication host, not the reporting outlet."
+    },
+    {
+      "title": "State announces rural health funding",
+      "outlet": "Copper River Country Journal",
+      "date": "2026-08-07",
+      "url": "https://www.countryjournal2020.com/2026/08/state-announces-rural-health-funding.html",
+      "carries": ["c1 second source for 'over $4.5 million to 19 projects', republishing the state's own announcement"]
+    }
+  ],
+  "could_not_read": [
+    {
+      "what": "https://health.alaska.gov/media/tcvker5a/ak_rhtp_awardsnotice_2026.xlsx",
+      "why": "The authoritative itemized list of all 19 awards. It downloads but is a binary xlsx neither validator could parse. This is why the film says 'the awards the paper described' rather than 'the 19 awards', and why the limitation is stated on screen."
+    },
+    {
+      "what": "The August 7th Department of Health press release PDF and the state project-narrative PDF",
+      "why": "Both unparseable in this environment. The state's announcement was read via the Country Journal republication."
+    }
+  ]
+}

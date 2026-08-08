@@ -574,3 +574,48 @@ never washes the subject, and its color should appear nowhere else in the film.
   0..1 drives the striker, `look` steers the head. Cable loom carries secondary motion that swings
   AFTER the arm. Form-shaded + rim + contact shadow — Ep0807.tsx — ACTIVE
   (Episode-local for now. Promote to kit.tsx when a second story needs a gantry.)
+
+## CLINIC — the library's FIRST CLINICAL FAMILY — lib/clinic.tsx
+NET-NEW 2026-08-08 ("Not In The Buying", Alaska's first Rural Health Transformation awards).
+REAL GAP, checked against this file in full first: the shelf carried an orbital eye, a seafloor
+ear, a ground ear, two aerial machines, an under-ice swimmer, a bench-science family, a
+records/paper family, a civics rules kit, an absence grammar, an arthropod, a piece of media and
+13 biomes, and NOTHING on it was a piece of CLINICAL equipment, although this channel covers
+Alaska health regularly. bench.tsx `AshReader` is the nearest prior art and it is the wrong verb:
+that machine reads a SAMPLE brought indoors under a lamp, this one is CARRIED TO A PERSON.
+- `TypeSlug` — THE RUN'S HERO and its throughline — clinic.tsx — a phrase cast as a physical slug
+  of set type. The film's whole argument is about WHERE THE WORDS SIT in a statute, and an
+  abstraction cannot be somewhere while a cast slug can. THE STATE CHANNEL IS THE FIT: `seated` 0
+  is held proud of a surface with a lit gap under it (unmatched), 1 is dropped flush into a recess
+  with no light left under it (located). `recess {w, fits}` DRAWS the mismatch as two scarlet
+  dashed marks opening on either side, so a semantic claim becomes a measurable gap rather than a
+  caption. Bevelled machined body with a lit top face and a dark bottom lip, mono type sized by
+  the exact 0.602em advance so the body is derived from the string. `held` lifts and presents it,
+  `accent` VO reactivity, routed through vitals() — ACTIVE
+- `FieldRadiograph` — the portable X-ray unit, and the film's one plainly warm object —
+  clinic.tsx — SHAPE-LANGUAGE DECISION: everything on it is a radius, against a film whose every
+  other form is orthogonal, and the single most important line on the drawing is THE HANDLE,
+  because the point is that a person picks it up and walks into a village clinic with it. NO FACE,
+  deliberately, and that is the AshReader discipline rather than an omission: this equipment
+  serves real communities and giving it eyes would make it a character with feelings about a story
+  that is not its own. THREE STATE CHANNELS per the one-channel lesson (07-25 horn, 07-26 cone,
+  07-30 glider, 08-05 beetle, 08-06 frame): THE ARM (folded in the case or raised over a patient,
+  arriving with anticipation and overshoot), THE PAIR (the emitter cone lights and the detector
+  plate ANSWERS it, always both, because a source with no receiver is a lamp), and THE HANDLE
+  (straightens and bears weight as `carried` rises, slack when set down). AND IT HAS NO UPLINK:
+  the back panel is deliberately bare, no antenna and no cable, which is the IceGlider
+  missing-propeller trick applied to a different argument, since this machine needs a person and a
+  battery and nothing else. `lid`, `expose`, `carried`, `stencil`, `tint`, `groundY`, `gain`.
+  tones/FormGradient/RimLight/ContactShadow, routed through vitals() — ACTIVE
+- `AllowanceBoard` — a posted list of allowable uses as a physical enamel notice board —
+  clinic.tsx — civics.tsx models a rule that DECIDES about a thing arriving at it; this one is a
+  posted LIST. Rows are 'allow', 'deny' (struck, and the strike falls on the excluded row only) or
+  'cap', where a percentage CAP is drawn as a physical collar clamping the row instead of a
+  footnote. Deliberate opposite of FieldRadiograph: no radius above 3, machine-set type, bolted —
+  ACTIVE
+- LESSON WORTH KEEPING, and it cost this run four rewrites: a gate can kill a FRAME, not just a
+  string. Gate 0E rejected four VO drafts, and the fourth rejection was not a wording note, it was
+  that a list of ALLOWABLE uses is a menu and a menu cannot be falsified, so "which lines got
+  bought" smuggled in a premise the evidence never supplied. `AllowanceBoard` was built to carry
+  that dead thesis and survives here in a smaller role. Build the asset the ARGUMENT needs, and
+  make sure the argument survives a cold reader first.

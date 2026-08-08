@@ -54,7 +54,18 @@ ffmpeg -y -i "$OUT/dispatch_master.mp4" -vf scale=720:1280 \
   -pix_fmt yuv420p -movflags +faststart -c:a aac -b:a 96k -ar 48000 \
   "$OUT/dispatch_master_720.mp4" -v error
 
-ffmpeg -y -ss 0 -i "$OUT/dispatch_square.mp4" -frames:v 1 "$OUT/poster.png" -v error
+# THE POSTER IS THE SCROLL-STOP, SO DO NOT GRAB FRAME 0 (2026-08-08). Two panel judges
+# independently called this out: `-ss 0` yields whatever the film opens on, and this film
+# opens on an empty records room with the hero slug still mid-flight, no headline and no
+# number. That frame is the pre-roll thumbnail a feed actually shows, so the single image
+# doing the most work to earn a view was the one image nobody had chosen.
+#
+# POSTER_AT is overridable per run and defaults to the moment the hero figure has landed
+# under its headline. A run that restructures its opening should set it deliberately:
+#     POSTER_AT=59.4 scripts/encode_deliverables.sh ...
+POSTER_AT="${POSTER_AT:-9.2}"
+ffmpeg -y -ss "$POSTER_AT" -i "$OUT/dispatch_square.mp4" -frames:v 1 "$OUT/poster.png" -v error
+echo "  poster grabbed at t=${POSTER_AT}s (override with POSTER_AT=<seconds>)"
 ffmpeg -y -i "$OUT/poster.png" -vf scale=540:540 -q:v 5 "$OUT/poster_thumb.jpg" -v error
 
 # ffprobe csv=p=0 emits "1080,1920," so split on the comma and drop the trailing empty

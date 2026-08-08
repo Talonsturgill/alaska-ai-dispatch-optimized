@@ -1,0 +1,53 @@
+{
+  "recorded_at": "2026-08-08T18:42:14Z",
+  "median": 7.47,
+  "judges": [
+    7.52,
+    7.47,
+    7.13
+  ],
+  "threshold": 7.5,
+  "notes": "",
+  "artifacts": {
+    "dispatch_master.mp4": "f6d0ad7b325fbb0abf43108a3ae8e6dcb0e35036ae41b6e0ce7461d5cc5e9acd",
+    "dispatch_square.mp4": "80a7dfbf0a467cfdb8cbd0c4785de00f5c768e250fa0b0184a24d7489e69c29a",
+    "dispatch_master_720.mp4": "5e3496c6b5a080fde228c4186f0703d64147331ad977cf70b98c2558aee1827d"
+  },
+  "evidence": {
+    "contact_square.jpg": "a3bca77c457abb2726d13bc36befdb2a1fac7aaf90fa484f4fa7be90d7258dc2",
+    "f004.6.jpg": "57b2e7fc8409ad0cf25f27d40d6d6f6201cae63667cd4aa273b29bdc76f52673",
+    "f013.7.jpg": "4a629bb7096bcd78f23fcbfe7dc146b2b23de546abd3c5f59787c23f4d966713",
+    "f022.8.jpg": "fd10a337fe35fb8afd25ea96e34d919491166dbddb65f8b171a8110f35f544ec",
+    "f032.0.jpg": "5d8277b1937f8ecbe8076bcdc02e613067c5e39f0ab079d25fe0333e9aba4515",
+    "f041.1.jpg": "b2ba3cc7d63aa49a8a3d895c53cf3173b66f416d89c580709c51453014b7a662",
+    "f050.2.jpg": "16b3dec7ec9cde6dbdd03f7d589f358b6a389f9e05ec6e882202aee2e9424b94",
+    "f059.4.jpg": "d48cb320525c3955f095c6d0b7a10329354c5e6735fc9dcb0871a9605169e0f7",
+    "f068.5.jpg": "707c8b4cb9b528cbb1f74760ded9d77cd5c4e5214fa896255a93bc99dd5ce265",
+    "f077.6.jpg": "1fa552cc3ba34e3cbee9808d9194e1fcc29f5e8bc9442663caccdff2a716dddb",
+    "f086.7.jpg": "25da1e24e87fa4bf6691426320ea0a2950fe6bac5d0d9275999c2b370114d953",
+    "f095.9.jpg": "d854354214790250753c2a218bf6bb6618580a4dcccda7b2e53ee737a70d7a18",
+    "f105.0.jpg": "768cf680ef79b0ad27b19efeea2cfb232137122cd2fb1a7aecc736f1f5eccc23",
+    "f114.1.jpg": "ee9e574175d697374dbaef4d3497518017634fda9a2862a823ca70be553a8cfc",
+    "f123.3.jpg": "72358a50d6d5a8ee6024525c9f774c87b85a36529e419e7846e56a70064504a8",
+    "filmstrip_arm.jpg": "19dbf5e0cd945d8712a8a72a46bce6ce8b27b3e34532d01ec67a9e202acbb758",
+    "filmstrip_block.jpg": "8b540c356d5d2247a4f51f7b0316c8dba88d93acf846ff2326124c78ef38ce4f",
+    "filmstrip_bolts.jpg": "d4c90139c66a60cfb2dd17f2a4ff084a5b3a98fbbcae0ef513fefdb76ad8616a",
+    "filmstrip_button.jpg": "747d7ff33d00a584daa81502fd8b672ad0132c7ab1da408832a306187bda3231",
+    "filmstrip_collar.jpg": "8be44c19b87f429994cf4fe6c33a92a132f0b42badade0de882d62b3ef9ea559",
+    "filmstrip_dark.jpg": "661608cbed990dd3df6d79aa32835ac17c566c0b368258cd9be1322b89f34d1a",
+    "filmstrip_deal.jpg": "0bdca0d8944d8b1dc58995f846596ba7a6eff1e04eeba363fbd123e72703e7e5",
+    "filmstrip_drop.jpg": "74656862cb53ef9827cd51911a2cc674e48d87a24ceec4d452a35ac70a025a66",
+    "filmstrip_figure.jpg": "e71f4dba272b2b0edc06b2bec1c68c53b211fc9898d6e9b4e93b86145f530164",
+    "filmstrip_flow.jpg": "957316da46cc734ab5c68afad0b2cf80089cbad7d8cfee3c4beda798c4aedaf3",
+    "filmstrip_gap.jpg": "e480a5431d837a4f6ab2512f90a61ad300e4783cdf2a5a429f877bea8b7f175e",
+    "filmstrip_hatch.jpg": "9b3c09d51cc0ec9da7db6610c1128222764a184e75b1ee896743d56bb027ba45",
+    "filmstrip_lid.jpg": "5e7913b4eee9013491e60a8842d8294cd6323fa8f560924f4cb515b8c1b9cc1e",
+    "filmstrip_lift.jpg": "6d71fbfa25abd66a6cc2daa0518e349bdf8c2fc08efc48ce13b75b2d7fd46577",
+    "filmstrip_lit.jpg": "b645f218e0c71ba73e24af88c181ad78848478ec66b998f41bedd5c24ab7c156",
+    "filmstrip_quote.jpg": "c2aa5fa31aeaf6180cdfdd74801d88e349d8f2c2ee94cc77f40fa69d605f4320",
+    "filmstrip_refuse.jpg": "a11d34a010daac5d3bc0fb3ed8bd8c8be36f52e30fcaf884825a7a5647d09a32",
+    "filmstrip_rise.jpg": "d179fd75dc911c6ef7196197ae4b092c8a058abcefe10580de106475782f9ed6",
+    "filmstrip_scan.jpg": "edccf8921f8677e058158bcbd9b332a707cb4b2fb85d96dc7c1eed829eabbfd1",
+    "filmstrip_seat.jpg": "ab0213cd25785b85c5e25932f7b8415829f95ac7c3f3b50fb273ef2e8473ef6d"
+  }
+}

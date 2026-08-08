@@ -112,17 +112,33 @@ def main():
 
     problems, checked = [], 0
     for c in claims:
-        req = c.get("requires") or {}
+        # `requires` may be PROSE (a list written by the fact-checker for humans and for
+        # vo_claims_check.py) or a machine contract (a dict). A list used to crash this
+        # gate outright with AttributeError, which BLOCKED the panel on a shape mismatch
+        # rather than on a defect. Machine assertions now live in `contract`; a prose-only
+        # claim is skipped here and still checked by vo_claims_check.py.  (2026-08-08)
+        req = c.get("contract") or c.get("requires") or {}
+        if isinstance(req, list):
+            req = {}
         if not req:
             continue
         cid = c["id"]
         on = c.get("on_screen") or ""
         is_drawn = drawn(engine, on)
 
-        if req.get("must_ship") and not is_drawn and not drawn(engine, (c.get("spoken") or "")):
-            problems.append(f"{cid}: requires must_ship, but its approved string "
-                            f"{on!r} appears nowhere in {os.path.basename(eng_path)}.")
+        # COUNT THE EVALUATION, NOT THE FAILURE (2026-08-08). This increment sat inside the
+        # failure branch, so a run where every must_ship obligation was SATISFIED reported
+        # "0 obligation(s) met, none outstanding" — a passing gate and a gate that graded
+        # nothing print the identical line. That distinction is the whole value of the
+        # report. Twice already this run a checker announced clean while reading the wrong
+        # file or returning early, and the only reason either was caught is that a number
+        # somewhere looked wrong. A counter that cannot tell 8-and-all-fine from 0 takes
+        # that last signal away.
+        if req.get("must_ship"):
             checked += 1
+            if not is_drawn and not drawn(engine, (c.get("spoken") or "")):
+                problems.append(f"{cid}: requires must_ship, but its approved string "
+                                f"{on!r} appears nowhere in {os.path.basename(eng_path)}.")
 
         if req.get("on_screen_verbatim") and on:
             checked += 1

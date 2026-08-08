@@ -722,7 +722,20 @@ the sources behind it) plus config/brand.yaml `worldview`, and returns a distinc
   - VALENCE: wherever the facts land (celebration, caution, curiosity, an open question). No
     house default. The analyst must be ready to defend why THIS valence is the honest one.
 
-Each analyst also answers ONE MORE QUESTION, because the format is two minutes and retention is
+Each analyst also answers THE FALSIFIABILITY QUESTION, and it is first because it is the one that
+kills a thesis outright: NAME THE OBSERVATION THAT WOULD MAKE THIS THESIS FALSE. If no observation
+could, the thesis is a DESCRIPTION and not a claim, and it will collapse the moment a cold reader
+asks what is being tested.
+
+This was added 2026-08-08 at real cost. That run's angle room, three analysts and a red team,
+committed to "the state's allowable-uses list names five things and only the concrete ones got
+bought", and Gate 0E killed it twice before the run understood why: a list of ALLOWABLE uses is a
+MENU, a menu cannot be falsified, so "the list got its first test" smuggled in an unstated premise
+that the list had been a prediction. The room had argued hard about EVIDENCE and never once asked
+whether the claim could be wrong. Those are different questions and only the second one catches
+this failure. Four VO drafts died on it.
+
+Each analyst then answers ONE MORE QUESTION, because the format is two minutes and retention is
 decided here rather than at Gate 0: DOES THIS THESIS HAVE A SECOND MOVEMENT? A take that is
 fully stated in forty seconds cannot carry a two-minute film, however true it is. Name the fact
 that recontextualises the first one, and name the strongest fair case against the thesis that

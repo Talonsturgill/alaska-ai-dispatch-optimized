@@ -1,0 +1,207 @@
+{
+  "run_date": "2026-08-08",
+  "title": "NOT IN THE BUYING",
+  "target_seconds": 120,
+  "caption_fixups": {
+    "A I": "AI",
+    "X ray": "X-ray"
+  },
+  "trim_note": "Draft 1 ran 404 words against a 262-282 band and was cut by WHOLE FACTS, never connective tissue. Draft 2 passed the band and FAILED Gate 0E: the naive cold reader could not say what the money was, could not bridge 'the state's list' to 'the federal text', and could not support the Friday callback from anything in the script. Draft 3 names the program and its source in the first two lines, plants the Friday cadence at 20s so the button pays it, replaces 'three things cut the other way' with an explicit instruction about what the three caveats are FOR, and makes the closing tally countable instead of asserting 'half connected'.",
+  "gate_0e_fixes": [
+    "DRAFT 6. Gate 0E failed draft 5 at exactly one hinge, and the diagnosis was narrow enough to fix without another frame change: the closing line 'She wasn't wrong about the squeeze, building and broadband are out, and capital is capped at twenty percent' stacked three undefined referents at the moment the argument had to close. 'The squeeze' had no antecedent, 'out' never said out of what, and 'twenty percent' never said of what. The listener had to invent the load-bearing inference themselves.",
+    "THE CONSTRAINT MOVED TO THE FRONT. Lines 2 to 4 now state the rules plainly (no new construction, no broadband, capital capped at twenty percent of an award) and then state the inference out loud (which pushes it toward software and services). That is the REASON Mina's forecast was reasonable, so it belongs before her, not after.",
+    "FAIRNESS, and this was a real defect rather than a tone note. Mina said the design is 'almost directing us to AI', which is a forecast about where money would FLOW. Draft 5 closed on 'the law never asked them to', which rebuts a MANDATE claim she never made. The film now affirms her read in its own voice ('Mina read the pressure right, the money does push toward tech') and locates the nuance instead of scoring a point.",
+    "The program is named BEFORE the quote, so 'the way the feds designed it' has an antecedent.",
+    "'the state's advisory council' became 'the program's advisory council', which is what gives her standing.",
+    "'under two percent of the year' became 'of the year's money', fixing a unit mismatch heard as two percent of a year.",
+    "The first person plural is gone. Caveat three is impersonal and states its own scope: this is one paper's account.",
+    "'The Anchorage Daily News described some of them' now scopes the AI finding honestly before the finding is made, rather than hedging it two lines later.",
+    "POST-PASS POLISH, answering the gate's own non-blocking notes rather than adding anything: 'the statute' became 'the federal law behind it' so the payoff document has an antecedent and is clearly distinct from the state's list; 'which pushes it toward software and services' became 'away from anything you would have to build', because the first version was asserted and the film's own examples are hardware; 'Alaska's own list spells it out' sets up the ending as a state reading further than the law does, which is what the evidence actually shows; 'state Representative' resolves chamber ambiguity; 'more than' restores the c14 wording; 'that finding' fixes a pronoun at the Act 3 hinge."
+  ],
+  "lines": [
+    {
+      "idx": 0,
+      "text": "Alaska is getting two hundred seventy two million dollars for rural health, year one.",
+      "claims": [
+        "c2"
+      ]
+    },
+    {
+      "idx": 1,
+      "text": "It comes from a federal program, Rural Health Transformation.",
+      "claims": [
+        "c13"
+      ]
+    },
+    {
+      "idx": 2,
+      "text": "The money has rules. It can't fund new construction, and it can't fund broadband.",
+      "claims": [
+        "c16"
+      ]
+    },
+    {
+      "idx": 3,
+      "text": "Capital is capped at twenty percent of the award.",
+      "claims": [
+        "c17"
+      ]
+    },
+    {
+      "idx": 4,
+      "text": "Which pushes it away from anything you would have to build.",
+      "claims": [
+        "c17"
+      ]
+    },
+    {
+      "idx": 5,
+      "text": "In June, state Representative Genevieve Mina, on the program's advisory council, saw further.",
+      "claims": [
+        "c10"
+      ]
+    },
+    {
+      "idx": 6,
+      "text": "The way the feds designed it, she said, is almost directing us to A I.",
+      "claims": [
+        "c10"
+      ]
+    },
+    {
+      "idx": 7,
+      "text": "Alaska's own list of allowable uses spells it out. A I enabled tools. Wearables.",
+      "claims": [
+        "c12"
+      ]
+    },
+    {
+      "idx": 8,
+      "text": "So, is this A I money?",
+      "claims": []
+    },
+    {
+      "idx": 9,
+      "text": "On Friday, August 7th, Alaska announced its first awards.",
+      "claims": [
+        "c1",
+        "c9"
+      ]
+    },
+    {
+      "idx": 10,
+      "text": "Nineteen projects. Over four and a half million. Under two percent of the year's money.",
+      "claims": [
+        "c1",
+        "c3"
+      ]
+    },
+    {
+      "idx": 11,
+      "text": "The Anchorage Daily News described some of them.",
+      "claims": [
+        "unresolved"
+      ]
+    },
+    {
+      "idx": 12,
+      "text": "Chugachmiut, an Alaska Native nonprofit, got six hundred twenty seven thousand dollars.",
+      "claims": [
+        "c4"
+      ]
+    },
+    {
+      "idx": 13,
+      "text": "Portable X ray machines, for five rural clinics.",
+      "claims": [
+        "c4"
+      ]
+    },
+    {
+      "idx": 14,
+      "text": "A Girdwood pharmacy got a hundred thousand to test medication kiosks.",
+      "claims": [
+        "c7"
+      ]
+    },
+    {
+      "idx": 15,
+      "text": "Not one of the awards the paper described uses artificial intelligence.",
+      "claims": [
+        "c15"
+      ]
+    },
+    {
+      "idx": 16,
+      "text": "Hold three things against that finding.",
+      "claims": []
+    },
+    {
+      "idx": 17,
+      "text": "One. It is week one. More than two hundred sixty seven million is undecided.",
+      "claims": [
+        "c14",
+        "c22"
+      ]
+    },
+    {
+      "idx": 18,
+      "text": "Two. Kodiak, the Yukon Kuskokwim Delta and the North Slope got nothing this round.",
+      "claims": [
+        "c19"
+      ]
+    },
+    {
+      "idx": 19,
+      "text": "Three. The state's award spreadsheet wouldn't open, so this is one paper's account.",
+      "claims": [
+        "unresolved"
+      ]
+    },
+    {
+      "idx": 20,
+      "text": "But the federal law behind it is public. Read it.",
+      "claims": [
+        "c12b"
+      ]
+    },
+    {
+      "idx": 21,
+      "text": "Artificial intelligence appears in it exactly once.",
+      "claims": [
+        "c12b"
+      ]
+    },
+    {
+      "idx": 22,
+      "text": "Not under equipment. Not under purchases.",
+      "claims": [
+        "c12b"
+      ]
+    },
+    {
+      "idx": 23,
+      "text": "It is in a clause about training people.",
+      "claims": [
+        "c12b"
+      ]
+    },
+    {
+      "idx": 24,
+      "text": "Mina read the pressure right.",
+      "claims": [
+        "c10",
+        "c17"
+      ]
+    },
+    {
+      "idx": 25,
+      "text": "The law just puts A I somewhere else. Not in the buying. In the teaching.",
+      "claims": [
+        "c12b"
+      ]
+    }
+  ],
+  "gate_0e_verdict": "SHIP TRUE on draft 6. The cold reader completed the retelling, the actor list and the single question without guessing, and rated the fairness handling of Rep. Mina fair on four separate counts.",
+  "post_synth_patch": "Lines 3 and 13 were re-cut with scripts/vo_patch_lines.py after the caption scorer found a HARD FAIL that was in the film as well as the post. Line 13 said 'five rural clinics that didn't have one', which is an inference: c4 supports only 'portable X-ray machines for five rural clinics', and claims.json explicitly bans any imaging-absence claim as three-year-old single-sourced anecdote. Line 3 said 'twenty percent of each award', rescoping c17's cap on the state allocation into a per-award cap. Both were spliced inside their existing slots so no downstream boundary moved. Line 14's replacement could not be fitted to its 4.00s slot after two attempts and the tool refused rather than ship it, so the original audio stands and the ON-SCREEN plate carries the exact record instead. Disclosed in the Gmail draft."
+}

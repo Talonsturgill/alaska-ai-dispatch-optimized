@@ -2066,3 +2066,103 @@ story_gate PASS; storyboard_check PASS (diverges 8/9 vs 08-05 and 9/9 vs 08-06);
 (37 beats, median gap 3.0s, max 4.8s, 3 rehooks, both open loops, throughline); caption_band_check
 clean; staging_check 1 figure, performing what the board staged; text_fit_check 0 failing;
 caption_check PASS; format_gate_selftest PASS.
+
+## 2026-08-08 — "NOT IN THE BUYING" (Alaska's first Rural Health Transformation awards)
+
+**Shipped:** a ~127s Dispatch on Alaska's first RHTP awards. A federal rural health program
+sends Alaska $272,174,856 in year one. Its rules bar new construction and broadband and cap
+capital at 20 percent, which pushes the money away from anything you have to build. In June a
+state legislator on the program's advisory council said the design was "almost directing us to
+AI". The first awards landed August 7th and bought portable X-ray machines for five rural
+clinics and a medication kiosk test. The federal statute names artificial intelligence exactly
+once, inside a training-and-technical-assistance use rather than an equipment use.
+
+### NET-NEW ASSETS
+- `video-engine/src/lib/clinic.tsx` — the library's FIRST clinical family. `TypeSlug` (the run's
+  hero and throughline, a phrase cast as set type whose `seated` state carries the whole argument
+  as a physical fit), `FieldRadiograph` (a portable X-ray unit with three state channels and a
+  deliberately bare back panel), `AllowanceBoard` (a posted allowable-uses list where a
+  percentage cap is a physical collar). Registered in ASSET_MANIFEST.md in the same commit.
+
+### WHAT THIS RUN COST, AND WHAT COMES OUT OF IT
+
+**1. GATE 0E REJECTED FOUR VO DRAFTS, AND THE FOURTH REJECTION KILLED A THESIS, NOT A SENTENCE.**
+The run's angle room committed to "the state's allowable-uses list names five things and only the
+concrete ones got bought". The cold reader's verdict on draft 4 was that a list of ALLOWABLE uses
+is a MENU, a menu cannot be falsified, and so "the list got its first test" smuggled in an
+unstated premise that the list was a prediction. It also found that a medication kiosk IS remote
+dispensing equipment, so the closing tally counted one award against two lines and could not be
+reconstructed. Both were correct and neither was a wording problem.
+WHAT COMES OUT OF IT: the angle room currently reasons about EVIDENCE and never about whether the
+thesis is FALSIFIABLE. Three analysts and a red team all missed that the film's central operation
+was scoring a document that scores nothing. The red team was briefed to attack the evidence and
+did that well. It was not asked whether the claim could be wrong, which is a different question.
+FIX MADE THIS RUN: `out/dispatch/angle.json` now carries a `why_the_previous_thesis_died` field,
+and the Phase 3.5 brief in prompts/dispatch_routine.md gains a required question for every
+analyst: "state the observation that would falsify this thesis. If none exists, the thesis is a
+description and not a claim."
+
+**2. THE CAPTION SCORER CAUGHT A HARD FAIL THAT WAS IN THE FILM, NOT ONLY IN THE POST.**
+The caption said the X-ray machines went to "five rural clinics that didn't have one". That is an
+inference. c4 supports only "portable X-ray machines for five rural clinics", and claims.json
+explicitly bans any imaging-absence claim (the only source is a 2023 single-sourced first-person
+essay). The same sentence was in the NARRATION and had already been synthesized. It was also the
+one invented detail attached to an Alaska Native nonprofit, which is where the claim set is
+strictest.
+WHAT COMES OUT OF IT: the caption is gated by a scorer that reads claims.json; the VO SCRIPT is
+not. Gate 0E tests whether a stranger can FOLLOW the script and never whether the script is TRUE
+against the claim set. A false line reached synthesis because nothing between the writers room
+and the TTS compares the script to the evidence.
+FIX MADE THIS RUN: `scripts/vo_claims_check.py`, which reads vo_script.json's per-line `claims`
+and fails any line carrying a claim id whose `requires` block it violates, plus any line making a
+quantified assertion with no claim id at all. Wired into preflight as REQUIRED.
+
+**3. PLATES OUTSIDE THE SQUARE CROP ARE INVISIBLE IN THE DELIVERABLE.**
+Six plates were authored at y between 1660 and 1780. `caption_band_check` passed them because
+they are BELOW the caption band, and nothing else looked. The square crop is
+`crop=1080:1080:0:420`, so everything past y=1500 is discarded, and two of the six were REQUIRED
+scoping strings ("IN THIS ROUND", "DESCRIBED BY THE ANCHORAGE DAILY NEWS"). The film would have
+shipped its two honesty qualifiers only in the TikTok cut.
+FIX MADE THIS RUN: `scripts/crop_safety.py` gains a SOURCE mode that reads plate y values out of
+the episode file and fails any informational plate outside y 420..1500, before a frame is rendered
+rather than after.
+
+### DEFERRED, WITH A PLAN
+- `vo_patch_lines.py` refused line 14 twice because no take fit its 4.00s slot. The tool is right
+  to refuse, but the failure mode is a line that stays wrong. The plan is a `--borrow` flag that
+  may take up to 300ms from an adjacent line's inter-line room tone when that line has slack,
+  which is a bounded change to the existing fitter rather than a new cascade.
+
+### 4. THREE SOURCE GATES SPENT THIS ENTIRE RUN CHECKING A FILM NOBODY IS SHIPPING
+
+Found at the pre-panel sweep, after six renders. `caption_band_check.default_targets()`
+resolves this run's episode through `.run_stamp.json`'s `composition` field and falls back to
+`video-engine/src/Episode.tsx` when it is absent. `run_guard.py init` does not write that field,
+and this run did not set it, so the fallback fired. `caption_band_check`, `plate_overlap_check`
+and `claims_contract_check` all reported clean, six times, while reading a shipped 2026-07 film.
+
+Then a SECOND layer of the same defect: once the resolver was pointed at `Ep0808.tsx`, the gate
+still passed, because `band_of()` returns None when the episode declares no `CAPTION_TOP`
+constant, and a None band means zero checks and a "clean" verdict. This episode had authored its
+caption card as a literal `bottom: 452` instead.
+
+With both layers fixed the gate immediately found five real findings, four of them background
+that legitimately sits under the caption card and one a live state indicator (the kiosk's ready
+lamp) that the caption would have hidden outright.
+
+A checker pointed at the wrong file, or at no file, is worse than no checker, because it reports
+PASS and buys false confidence. This is the same class as the beat-delivery gate already recorded
+in the routine as dead code wearing the costume of a gate.
+
+FIXES MADE THIS RUN:
+- the run stamp now carries `composition`, and the resolver's fallback is the NEWEST `Ep*.tsx`
+  rather than a hardcoded `Episode.tsx`, so the worst case is this run's own file;
+- `claims_contract_check` no longer crashes with AttributeError when `requires` is prose rather
+  than a machine contract; machine assertions moved to a `contract` key;
+- `Ep0808.tsx` declares `CAPTION_TOP` / `CAPTION_H` / `CAP_GUARD` as constants, the caption card's
+  own `bottom` is DERIVED from them so the two cannot drift, and `Plate` clamps against the guard.
+
+STILL OPEN, and it is the honest residue: `band_of()` returning None should be a LOUD skip, not a
+silent pass. It should print "no CAPTION_TOP in <file>, checked nothing" and exit nonzero under a
+`--strict` flag that preflight sets. That is a small change and it is deferred only because it
+wants to be made when no render is in flight.
