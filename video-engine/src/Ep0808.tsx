@@ -1339,11 +1339,23 @@ const S15: React.FC<SceneProps> = () => {
               stroke={INK} strokeWidth={10} />
         <rect x={94} y={620} width={892} height={700} rx={2} fill="none"
               stroke={P.ink} strokeWidth={3} opacity={0.4} />
-        {/* the two clauses that did NOT take it, named, so the empties are legible */}
-        <text x={350} y={676} textAnchor="middle" fontFamily={MONO} fontSize={21}
-              fontWeight={700} fill={P.ink} opacity={0.75} letterSpacing={1}>APPROVED USE</text>
-        <text x={730} y={676} textAnchor="middle" fontFamily={MONO} fontSize={21}
-              fontWeight={700} fill={P.ink} opacity={0.75} letterSpacing={1}>APPROVED USE</text>
+        {/* The two clauses that did NOT take it, named, so the empties are legible.
+            THE BASELINE IS DERIVED FROM THE SLUG'S TRAVEL, NOT PICKED (2026-08-08). These
+            sat at y=676 and the slug's arc peaks at sy=802-96=706, so with a ~40px half
+            height its top reaches 666 and it bisected both labels on the film's closing
+            shot. Any label authored inside a moving element's path is a collision waiting
+            for the right frame, and plate_overlap_check cannot see this one: it compares
+            <Plate> to <Plate>, and this is a raw <text> under a TypeSlug. Fifth instance
+            of the overprint class this run, so it is derived like the rest of them. */}
+        {(() => {
+          const SLUG_PEAK_Y = 802 - 96;   // travel apex: drop=0 at the arc's maximum
+          const SLUG_HALF_H = 40;         // TypeSlug body at scale 0.9
+          const base = SLUG_PEAK_Y - SLUG_HALF_H - 14;   // 14px clear of the slug's top edge
+          return [350, 730].map((lx) => (
+            <text key={lx} x={lx} y={base} textAnchor="middle" fontFamily={MONO} fontSize={21}
+                  fontWeight={700} fill={P.ink} opacity={0.75} letterSpacing={1}>APPROVED USE</text>
+          ));
+        })()}
         <Recess x={350} y={840} w={244} label="EQUIPMENT" f={f} />
         <Recess x={730} y={840} w={244} label="PURCHASES" f={f} />
         <Recess x={540} y={1140} w={476} label="TRAINING" f={f} />
