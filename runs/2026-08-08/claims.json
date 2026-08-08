@@ -1,0 +1,394 @@
+{
+  "run_date": "2026-08-08",
+  "story": "Alaska's first Rural Health Transformation Program awards, announced August 7th, 2026",
+  "rule": "This file is the FACT-CHECK-SAFE SET. Only these numbers, names and quotes may appear on screen, in the VO, or in the post. Every `requires` clause is an OBLIGATION, not advice.",
+  "claims": [
+    {
+      "id": "c1",
+      "text": "The first release of Alaska Rural Health Transformation Program awards covered over 4.5 million dollars across 19 projects.",
+      "on_screen": "19 PROJECTS  OVER $4.5M",
+      "spoken": "over four and a half million dollars, across nineteen projects",
+      "status": "VERIFIED",
+      "verbatim_source": "\"This initial release includes intent to award over $4.5 million to 19 projects across Alaska communities.\"",
+      "source_url": "https://www.countryjournal2020.com/2026/08/state-announces-rural-health-funding.html",
+      "second_source": "https://www.adn.com/alaska-news/rural-alaska/2026/08/07/alaska-officials-award-less-than-2-of-rural-healthcare-funding-postponing-decision-on-remainder/",
+      "requires": [
+        "Never render as an exact $4,500,000. Use OVER or ABOUT."
+      ],
+      "on_screen_planned": "OVER $4.5 MILLION  \u00b7  19 PROJECTS"
+    },
+    {
+      "id": "c2",
+      "text": "Alaska's year one federal award under the program totals 272,174,855.72 dollars, fully funded by CMS and HHS.",
+      "on_screen": "YEAR ONE",
+      "spoken": "two hundred seventy two million dollars, in year one alone",
+      "status": "VERIFIED",
+      "verbatim_source": "\"This project is supported by the Centers for Medicare & Medicaid Services (CMS) of the U.S. Department of Health and Human Services (HHS) as part of a financial assistance award totaling $272,174,855.72 with 100 percent funded by CMS/HHS.\"",
+      "source_url": "https://health.alaska.gov/en/education/rural-health-transformation-program/",
+      "credibility": "primary",
+      "requires": [
+        "Label it YEAR ONE on screen. It is not the five-year total and must never be implied to be."
+      ],
+      "on_screen_planned": "$272,174,856  \u00b7  YEAR ONE",
+      "contract": {
+        "must_ship": true
+      }
+    },
+    {
+      "id": "c3",
+      "text": "The first release was less than 2 percent of the year one allocation.",
+      "on_screen": "UNDER 2% OF THE YEAR'S MONEY",
+      "spoken": "under two percent",
+      "status": "VERIFIED",
+      "verbatim_source": "\"Alaska officials award less than 2% of rural healthcare funding, postponing decision on remainder\" and in text \"representing less than 2% of available funds.\"",
+      "source_url": "https://www.adn.com/alaska-news/rural-alaska/2026/08/07/alaska-officials-award-less-than-2-of-rural-healthcare-funding-postponing-decision-on-remainder/",
+      "label": "per the Anchorage Daily News",
+      "requires": [
+        "Do NOT sharpen to 1.65 percent. The numerator is 'over $4.5 million', not exactly 4.5."
+      ],
+      "on_screen_planned": "UNDER 2%"
+    },
+    {
+      "id": "c4",
+      "text": "Chugachmiut, an Alaska Native nonprofit, was awarded 627,200 dollars to buy portable X-ray machines for five rural clinics.",
+      "on_screen": "CHUGACHMIUT  $627,200",
+      "spoken": "six hundred twenty seven thousand dollars, for portable X ray machines in five rural clinics",
+      "status": "VERIFIED",
+      "verbatim_source": "\"Chugachmiut, an Alaska Native nonprofit, was awarded $627,200 to buy portable X-ray machines for five rural clinics.\"",
+      "source_url": "https://www.adn.com/alaska-news/rural-alaska/2026/08/07/alaska-officials-award-less-than-2-of-rural-healthcare-funding-postponing-decision-on-remainder/",
+      "label": "per the Anchorage Daily News",
+      "requires": [
+        "On screen the organization is 'AN ALASKA NATIVE NONPROFIT'. NEVER 'tribal consortium', never a member-village list, never a population figure. None of that could be verified from the organization's own site.",
+        "This award is a genuine good outcome and the film must treat it as one. No irony is permitted at the expense of the clinics or the communities they serve."
+      ],
+      "on_screen_planned": "CHUGACHMIUT  \u00b7  $627,200  \u00b7  5 CLINICS",
+      "contract": {
+        "must_ship": true
+      }
+    },
+    {
+      "id": "c5",
+      "text": "The Norton Sound Health Corporation, an Alaska Native nonprofit serving Northwest Alaska, received 292,100 dollars to implement a new scheduling system.",
+      "on_screen": "NORTON SOUND HEALTH CORP.  \u00b7  $292,100  \u00b7  SCHEDULING",
+      "spoken": "two hundred ninety two thousand for a new scheduling system",
+      "status": "VERIFIED",
+      "verbatim_source": "\"The Norton Sound Health Corp., an Alaska Native nonprofit serving Northwest Alaska, received $292,100 to implement a new scheduling system.\"",
+      "source_url": "https://www.adn.com/alaska-news/rural-alaska/2026/08/07/alaska-officials-award-less-than-2-of-rural-healthcare-funding-postponing-decision-on-remainder/",
+      "label": "per the Anchorage Daily News",
+      "requires": [
+        "Use exactly 'AN ALASKA NATIVE NONPROFIT SERVING NORTHWEST ALASKA'. No village count, no population, no headquarters claim.",
+        "The source gives NO technology descriptor. It is 'a new scheduling system'. It must never be drawn or described as AI scheduling."
+      ]
+    },
+    {
+      "id": "c6",
+      "text": "Assets Inc. was awarded 249,700 dollars to study the possibility of remote monitoring of disabled Alaskans as an alternative to urban institutional care.",
+      "on_screen": "ASSETS INC.  \u00b7  $249,700  \u00b7  STUDY REMOTE MONITORING",
+      "spoken": "two hundred forty nine thousand to study whether remote monitoring could work",
+      "status": "VERIFIED",
+      "verbatim_source": "\"Assets Inc., which works to improve employment opportunities for disabled Alaskans, was awarded $249,700 to study the possibility of remote monitoring of disabled Alaskans as an alternative to urban institutional care.\"",
+      "source_url": "https://www.adn.com/alaska-news/rural-alaska/2026/08/07/alaska-officials-award-less-than-2-of-rural-healthcare-funding-postponing-decision-on-remainder/",
+      "label": "per the Anchorage Daily News",
+      "requires": [
+        "It is money TO STUDY THE POSSIBILITY OF remote monitoring, not to deploy it. The word STUDY must be on screen and in the VO.",
+        "The alternative named is URBAN INSTITUTIONAL CARE, not institutional care."
+      ]
+    },
+    {
+      "id": "c7",
+      "text": "Turnagain Community Health, a Girdwood health clinic, received 300,000 dollars for three projects. One third of it, 100,000 dollars, goes to a Girdwood pharmacy, including to test automated medication kiosks.",
+      "on_screen": "TURNAGAIN COMMUNITY HEALTH",
+      "spoken": "and a hundred thousand to test a medication kiosk",
+      "status": "VERIFIED",
+      "verbatim_source": "\"$100,000 will go toward a Girdwood pharmacy, including to test automated medication kiosks.\"",
+      "source_url": "https://www.adn.com/alaska-news/rural-alaska/2026/08/07/alaska-officials-award-less-than-2-of-rural-healthcare-funding-postponing-decision-on-remainder/",
+      "label": "per the Anchorage Daily News",
+      "requires": [
+        "HARD: the kiosk figure is $100,000, NOT $300,000. Showing $300,000 beside a kiosk overstates the award threefold. If $300,000 appears, all three uses must appear with it.",
+        "The source says TO TEST. Not 'pilot', not 'deploy'."
+      ],
+      "on_screen_planned": "$100,000  \u00b7  TEST MEDICATION KIOSKS"
+    },
+    {
+      "id": "c8",
+      "text": "Alaska Behavioral Health was awarded 593,100 dollars to expand a program that allows young Anchorage residents suffering from mental health challenges to grow produce in a hydroponic farm.",
+      "on_screen": "$593,100  \u00b7  HYDROPONIC FARM  \u00b7  ANCHORAGE",
+      "spoken": "five hundred ninety three thousand for a hydroponic farm, in Anchorage",
+      "status": "VERIFIED",
+      "verbatim_source": "\"Alaska Behavioral Health was awarded $593,100 to expand a program that allows young Anchorage residents suffering from mental health challenges to grow produce in a hydroponic farm.\"",
+      "source_url": "https://www.adn.com/alaska-news/rural-alaska/2026/08/07/alaska-officials-award-less-than-2-of-rural-healthcare-funding-postponing-decision-on-remainder/",
+      "label": "per the Anchorage Daily News",
+      "requires": [
+        "ANCHORAGE must be on screen. The observation that a rural allocation funded an Anchorage program is fair, sourced and load-bearing.",
+        "This is not a mockery of the program. Do not draw the young people. Draw the farm."
+      ]
+    },
+    {
+      "id": "c9",
+      "text": "Further awards will be announced each Friday as they are finalized.",
+      "on_screen": "EACH FRIDAY",
+      "spoken": "the rest comes out on Fridays",
+      "status": "VERIFIED",
+      "verbatim_source": "\"This announcement was the first in a series of funding decisions that will be released publicly each Friday.\"",
+      "source_url": "https://health.alaska.gov/en/education/rural-health-transformation-program/",
+      "credibility": "primary",
+      "requires": []
+    },
+    {
+      "id": "c10",
+      "text": "State Representative Genevieve Mina said in June 2026 that the way the feds designed the program is almost directing Alaska to AI.",
+      "on_screen": "REP. GENEVIEVE MINA",
+      "spoken": "one lawmaker on the advisory council put it plainly in June. The way the feds designed it, she said, is almost directing us to A I",
+      "status": "VERIFIED_WITH_MANDATORY_DATE_LABEL",
+      "verbatim_source": "\"You name a program 'transformation,' but the way that the feds designed it is almost directing us to AI,\" said Anchorage Democratic Rep. Genevieve Mina, one of two state lawmakers on the advisory council for Alaska's program.",
+      "source_url": "https://www.govtech.com/health/do-alaska-rural-health-transformation-funds-point-to-ai",
+      "label": "Rep. Genevieve Mina, Anchorage Democrat, one of two state lawmakers on Alaska's RHTP advisory council, speaking in June 2026",
+      "requires": [
+        "HARD BLOCKER IF VIOLATED: this quote is from June 9th, 2026, TWO MONTHS BEFORE the August 7th awards. She was not reacting to them. The date JUNE 2026 must appear on screen with the quote, and the VO must place her in June.",
+        "Keep the subject of her sentence. The clause is 'the way that the feds designed it', not a complaint about the state.",
+        "Her title on screen is Representative. No committee chairmanship."
+      ],
+      "on_screen_planned": "\"THE WAY THAT THE FEDS DESIGNED IT IS ALMOST DIRECTING US TO AI\"  \u00b7  REP. GENEVIEVE MINA  \u00b7  JUNE 2026",
+      "contract": {
+        "must_ship": true
+      }
+    },
+    {
+      "id": "c11",
+      "text": "Jared Kosin, president of the Alaska Hospital and Healthcare Association, said the fundamental flaw continues to come from the design of the program.",
+      "on_screen": "\"THE FUNDAMENTAL FLAW CONTINUES TO COME FROM THE DESIGN OF THE PROGRAM\"  \u00b7  JARED KOSIN",
+      "spoken": "The fundamental flaw, he said, continues to come from the design of the program",
+      "status": "VERIFIED",
+      "verbatim_source": "\"The fundamental flaw continues to come from the design of the program.\"",
+      "source_url": "https://www.adn.com/alaska-news/rural-alaska/2026/08/07/alaska-officials-award-less-than-2-of-rural-healthcare-funding-postponing-decision-on-remainder/",
+      "label": "per the Anchorage Daily News, August 7th, 2026",
+      "requires": [
+        "Title is exactly 'president of the Alaska Hospital and Healthcare Association'. Do NOT add 'and CEO'.",
+        "His criticism is about program design and timeline, NOT about AI. Do not stage it as an anti-AI line."
+      ]
+    },
+    {
+      "id": "c12",
+      "text": "Alaska's own allowable-uses list names pilots or demonstrations of emerging technologies, giving AI-enabled tools and wearables as the examples, and separately names drones, kiosks and remote dispensing equipment. This is the STATE's framing.",
+      "on_screen": "SO, IS THIS AI MONEY?",
+      "spoken": "The state's own list of allowable uses names A I enabled tools. Drones. Kiosks.",
+      "status": "VERIFIED",
+      "verbatim_source": "\"pilots or demonstrations of emerging technologies (e.g., AI-enabled tools or wearables)\"",
+      "source_url": "https://health.alaska.gov/en/education/rural-health-transformation-program/",
+      "credibility": "primary",
+      "requires": [
+        "The register is ELIGIBLE, not required and not prioritized. On screen the word is ALLOWABLE or ELIGIBLE. Never 'earmarked for AI'.",
+        "This is ALASKA's allowable-uses framing. It is NOT the federal statutory text. Do not attribute it to the feds. c12b is the federal text and they are different claims."
+      ],
+      "on_screen_planned": "ALLOWABLE: \"AI-ENABLED TOOLS OR WEARABLES\""
+    },
+    {
+      "id": "c12b",
+      "text": "The federal statute names artificial intelligence exactly once, inside one of ten approved uses of funds, and that use is TRAINING AND TECHNICAL ASSISTANCE for the development and adoption of technology-enabled solutions. It is not a clause about buying AI.",
+      "on_screen": "APPEARS EXACTLY ONCE",
+      "spoken": "In the federal text, artificial intelligence shows up exactly once. Not under equipment. Under training people to adopt it.",
+      "status": "VERIFIED",
+      "verbatim_source": "\"Providing training and technical assistance for the development and adoption of technology-enabled solutions that improve care delivery in rural hospitals, including remote monitoring, robotics, artificial intelligence, and other advanced technologies.\"",
+      "source_url": "https://www.cms.gov/priorities/rural-health-transformation-rht-program",
+      "credibility": "primary",
+      "requires": [
+        "CORRECTION OF RECORD, and it is the sharpest fact in the film. There is NO federal AI mandate, NO AI set-aside, NO minimum AI spend, and no requirement that any state fund AI at all. A state can satisfy the law with three approved uses containing no technology whatsoever.",
+        "A film claiming the feds never mentioned AI would be WRONG. A film claiming the feds mandated AI would also be wrong. The true sentence is 'the statute names AI as one eligible category among ten, in a clause about adoption and training'.",
+        "'The program's design pushes states toward AI' is a legislator's characterization (c10), not the statutory text. Keep the two clearly separated on screen."
+      ],
+      "on_screen_planned": "FEDERAL TEXT: AI APPEARS ONCE  \u00b7  UNDER \"TRAINING AND TECHNICAL ASSISTANCE\"",
+      "contract": {
+        "must_ship": true
+      }
+    },
+    {
+      "id": "c13",
+      "text": "The Rural Health Transformation Program was created by Section 71401 of Public Law 119-21 and puts 50 billion dollars to approved states over five fiscal years, 2026 through 2030, administered by CMS.",
+      "on_screen": "$50 BILLION  \u00b7  5 YEARS  \u00b7  SEC. 71401, P.L. 119-21",
+      "spoken": "It is a fifty billion dollar federal program, running five years",
+      "status": "VERIFIED",
+      "verbatim_source": "\"$50 billion to be allocated to approved States over five fiscal years\"",
+      "source_url": "https://www.cms.gov/priorities/rural-health-transformation-rht-program",
+      "credibility": "primary",
+      "requires": []
+    },
+    {
+      "id": "c14",
+      "text": "More than 267 million dollars of Alaska's year one funding is still awaiting final approval.",
+      "on_screen": "IT IS WEEK ONE",
+      "spoken": "More than two hundred sixty seven million dollars is still undecided",
+      "status": "VERIFIED",
+      "verbatim_source": "\"More than $267 million of the funding is still awaiting final approval.\"",
+      "source_url": "https://www.adn.com/alaska-news/rural-alaska/2026/08/07/alaska-officials-award-less-than-2-of-rural-healthcare-funding-postponing-decision-on-remainder/",
+      "label": "per the Anchorage Daily News",
+      "requires": [
+        "NO decision date exists for the remainder. The film must not invent one. The only real dates are the rolling Friday releases, an October federal obligation deadline, and a September 30th, 2027 spend-by date.",
+        "The reason for the delay is attributed to department spokesperson Mirna Estrada and to CMS issuing guidance mid-review. Attribute it. Do not state it as fact."
+      ],
+      "on_screen_planned": "$267M+ STILL UNDECIDED"
+    },
+    {
+      "id": "c15",
+      "text": "None of the awards described by the Anchorage Daily News is described as using artificial intelligence or machine learning.",
+      "on_screen": "FITS NONE OF THEM",
+      "spoken": "Not one of the awards anybody has described uses artificial intelligence",
+      "status": "VERIFIED",
+      "verbatim_source": "The words 'artificial intelligence' and 'AI' do not appear in the August 7th award coverage. The described awards are portable X-ray machines, a scheduling system, a hydroponic farm, a study of remote monitoring, a community health worker, and a pharmacy testing automated medication kiosks.",
+      "source_url": "https://www.adn.com/alaska-news/rural-alaska/2026/08/07/alaska-officials-award-less-than-2-of-rural-healthcare-funding-postponing-decision-on-remainder/",
+      "requires": [
+        "THIS IS THE HONESTY SPINE. The phrasing is 'none of the awards described by the Anchorage Daily News', NOT 'none of the 19'. The authoritative itemized list lives in a state spreadsheet the validator could not parse.",
+        "The film must NEVER imply Alaska funded 19 AI projects."
+      ],
+      "on_screen_planned": "AI IN THE AWARDS: NONE DESCRIBED",
+      "contract": {
+        "must_ship": true
+      }
+    },
+    {
+      "id": "c16",
+      "text": "Ineligible uses include broadband infrastructure or major installation projects, new construction, major building expansions or renovations, land purchase and demolition.",
+      "on_screen": "NO BROADBAND",
+      "spoken": "The same list says the money can't pay for broadband",
+      "status": "VERIFIED",
+      "verbatim_source": "\"New construction or major building expansions or renovations ... Purchase or acquisition of land ... Demolition activities ... Broadband infrastructure or major installation projects\"",
+      "source_url": "https://health.alaska.gov/en/education/rural-health-transformation-program/",
+      "credibility": "primary",
+      "requires": [
+        "HARD CORRECTION, caught by the second validator and it kills the obvious version of this film: 'the money can't buy physical things' is FALSE. Capital expenditure is CAPPED at 20 percent, not banned (c17). What is barred is BUILDING, not BUYING. Never say or draw the money as unable to purchase equipment. It bought five X-ray machines.",
+        "The defensible sentence is narrow and must stay narrow: the program will pay for a device and will not pay to build the connection or the building it lives in.",
+        "A mark that negates must negate the right thing: the strike falls on BROADBAND, the excluded item. It must never fall on the AI line.",
+        "State it as a rule of the program, not as anyone's failure."
+      ],
+      "on_screen_planned": "NOT ALLOWABLE: BROADBAND INFRASTRUCTURE",
+      "contract": {
+        "must_ship": true
+      }
+    },
+    {
+      "id": "c22",
+      "text": "Alaska is one week into a rolling award process. Nearly 1,800 proposals were submitted and just over 400 advanced to further consideration, with more than 200 local governments, hospitals and other entities competing for the year one money.",
+      "on_screen": "400+ PROPOSALS STILL LIVE",
+      "spoken": "More than four hundred proposals are still in the running",
+      "status": "VERIFIED",
+      "verbatim_source": "\"just over 400 that will undergo further consideration\" and \"More than 200 local governments, hospitals and other entities in the running to get a share of the $272 million\"",
+      "source_url": "https://www.govtech.com/health/do-alaska-rural-health-transformation-funds-point-to-ai",
+      "label": "Anchorage Daily News reporting by Iris Samuels, June 2026",
+      "requires": [
+        "THIS IS ACT 3 AND IT IS THE FILM'S STRONGEST FAIR COUNTER. Judging a $272 million program by its first 1.65 percent is a sampling error, and the film must draw that objection at full strength rather than waving it off.",
+        "The June date applies. Label it."
+      ]
+    },
+    {
+      "id": "c23",
+      "text": "Among the proposals reported in June, and NOT among the funded awards, were Tanana Chiefs Conference drone delivery of vaccines and pharmaceuticals to Interior villages, several proposals for wearable health monitoring devices tracking blood pressure and other biometrics, Wrangell Public School District VR headsets for healthcare career training, and Ryan Air aircraft for medical supply delivery.",
+      "on_screen": "PROPOSED, NOT FUNDED: DRONES  \u00b7  WEARABLES  \u00b7  VR TRAINING",
+      "spoken": "Drones to Interior villages. Wearable monitors. Those were proposed.",
+      "status": "VERIFIED_PROPOSALS_ONLY",
+      "verbatim_source": "\"several proposals to disseminate 'wearable health monitoring devices' to rural residents to track their blood pressure and other biometric data points\"",
+      "source_url": "https://www.govtech.com/health/do-alaska-rural-health-transformation-funds-point-to-ai",
+      "label": "Anchorage Daily News reporting by Iris Samuels, June 2026",
+      "requires": [
+        "HARD BLOCKER IF VIOLATED: these are PROPOSALS reported in June, not awards. None appears in the August 7th funded list. The word PROPOSED must be on screen with them. Showing them beside the awards without it is the single easiest way for this film to become false.",
+        "None of these is described as AI either."
+      ]
+    },
+    {
+      "id": "c24",
+      "text": "CMS made funding awards to all 50 states in a single announcement dated December 29th, 2025. Only the 50 states are eligible.",
+      "on_screen": "ALL 50 STATES  \u00b7  DEC. 29, 2025",
+      "spoken": "",
+      "status": "VERIFIED",
+      "verbatim_source": "\"CMS made funding awards to all 50 states.\"",
+      "source_url": "https://www.cms.gov/newsroom/press-releases/cms-announces-50-billion-awards-strengthen-rural-health-all-50-states",
+      "credibility": "primary",
+      "requires": [
+        "There is NO published Alaska five-year total in anything either validator could verify. Any multi-year Alaska figure would be the film's own arithmetic dressed as an allocation. Do not put one on screen."
+      ]
+    },
+    {
+      "id": "c17",
+      "text": "Alaska's allowable uses are capped by category, including capital and infrastructure at 20 percent, provider payments at 15 percent, administrative costs at 10 percent, and a Technology Innovation Catalyst Fund at 10 percent capped at 20 million dollars.",
+      "on_screen": "CAPITAL CAPPED AT 20%",
+      "spoken": "Capital and infrastructure is capped at twenty percent",
+      "status": "VERIFIED",
+      "source_url": "https://health.alaska.gov/en/education/rural-health-transformation-program/",
+      "credibility": "primary",
+      "requires": [
+        "This substantiates Rep. Mina's June complaint without needing to take her word for it. Prefer this fact to her quote where only one will fit."
+      ],
+      "on_screen_planned": "CAPITAL + INFRASTRUCTURE  \u00b7  CAPPED AT 20%",
+      "contract": {
+        "must_ship": true
+      }
+    },
+    {
+      "id": "c18",
+      "text": "Alaska received nearly 1,800 letters of interest from 864 organizations, invited 403 to submit implementation pathway applications, and preliminarily approved 28 for planning pathway funding.",
+      "on_screen": "864 ORGANIZATIONS ASKED  \u00b7  19 NOTICES SO FAR",
+      "spoken": "Eight hundred sixty four organizations asked for a piece of it",
+      "status": "VERIFIED",
+      "source_url": "https://health.alaska.gov/en/education/rural-health-transformation-program/",
+      "credibility": "primary",
+      "requires": [
+        "The 19 funded projects and the '19 of 300-plus out-of-state proposals advanced' figure from the June article are DIFFERENT NINETEENS. They may never appear in the same sequence."
+      ]
+    },
+    {
+      "id": "c19",
+      "text": "Several regions received no awards in the first round, including Kodiak, the Yukon-Kuskokwim Delta and the North Slope.",
+      "on_screen": "NO AWARDS",
+      "spoken": "Kodiak got nothing. The Yukon Kuskokwim Delta got nothing. The North Slope got nothing.",
+      "status": "VERIFIED",
+      "verbatim_source": "\"Several regions received no awards in this round, including Kodiak, the Yukon-Kuskokwim Delta and the North Slope.\"",
+      "source_url": "https://www.adn.com/alaska-news/rural-alaska/2026/08/07/alaska-officials-award-less-than-2-of-rural-healthcare-funding-postponing-decision-on-remainder/",
+      "label": "per the Anchorage Daily News",
+      "requires": [
+        "IN THIS ROUND. The rounds are ongoing and weekly, so 'got nothing' must be scoped to the first round every single time it is said or drawn."
+      ],
+      "on_screen_planned": "NO AWARDS: KODIAK  \u00b7  Y-K DELTA  \u00b7  NORTH SLOPE",
+      "contract": {
+        "must_ship": true
+      }
+    },
+    {
+      "id": "c20",
+      "text": "The Alaska Primary Care Association received the largest first-round award at 650,200 dollars. The average award was 241,000 dollars.",
+      "on_screen": "LARGEST: $650,200  \u00b7  AVERAGE: $241,000",
+      "spoken": "The biggest single award was six hundred fifty thousand",
+      "status": "VERIFIED",
+      "source_url": "https://www.adn.com/alaska-news/rural-alaska/2026/08/07/alaska-officials-award-less-than-2-of-rural-healthcare-funding-postponing-decision-on-remainder/",
+      "label": "per the Anchorage Daily News",
+      "requires": [
+        "19 x $241,000 = $4.58M, which reconciles with 'over $4.5 million'. The tranche's internal arithmetic is consistent."
+      ]
+    },
+    {
+      "id": "c21",
+      "text": "Alaska's year one budget period runs December 29th, 2025 through October 30th, 2026, and the funds must be fully spent by September 30th, 2027.",
+      "on_screen": "SPEND BY SEPT. 30, 2027",
+      "spoken": "and all of it has to be spent by September thirtieth, twenty twenty seven",
+      "status": "VERIFIED",
+      "source_url": "https://health.alaska.gov/en/education/rural-health-transformation-program/",
+      "credibility": "primary",
+      "requires": []
+    }
+  ],
+  "killed": [
+    "Chugachmiut described as a tribal consortium with named member villages. Not verifiable from the organization's own site.",
+    "Norton Sound Health Corporation village count, population or headquarters. Site returned 403 on every path.",
+    "Rep. Mina's quote presented as a reaction to the August 7th awards. FALSE by date, it is from June 9th.",
+    "'$300,000 for medication kiosks'. The kiosk portion is $100,000 of a three-part award.",
+    "'19 out-of-state proposals were funded'. A different nineteen from a different article.",
+    "'Final awards were expected in July'. Superseded by the August 7th reporting.",
+    "Any claim that the described awards include an AI or machine learning project. There are none."
+  ],
+  "unresolved": [
+    "https://health.alaska.gov/media/tcvker5a/ak_rhtp_awardsnotice_2026.xlsx is the authoritative itemized list of all 19 awards. It downloaded but could not be parsed by either validator, so every per-project figure rests on the Anchorage Daily News rather than on the primary notice. Disclosed in the Gmail draft, and it is why c15 is scoped to 'the awards described by the Anchorage Daily News'.",
+    "The August 7th Department of Health press release PDF and the state's project-narrative PDF were both unparseable. The state's own announcement was read only via the Country Journal republication.",
+    "The second validator could not reach adn.com at all and therefore flagged the award list as unverified from its side. That is a COVERAGE GAP, not a contradiction: the first validator did reach the August 7th article and quoted every per-project figure verbatim from it. The awards rest on one outlet read by one validator, which is why the disclosure above stands.",
+    "No verifiable figure exists for how many Alaska village clinics lack imaging, and no sourced medevac cost for imaging transport. The only material found is a 2023 first-person essay by a physician assistant saying 'There are no means for imaging in most villages'. That is anecdote, three years old and single-sourced. NO IMAGING STATISTIC MAY GO ON SCREEN.",
+    "Norton Sound Health Corporation's and Chugachmiut's own sites returned 403 or 404 on nearly every path. The ONLY screen-safe descriptions are the Anchorage Daily News wordings already pinned in c4 and c5. 'Tribal consortium', 'seven tribes', village counts, service-area square mileage and population figures are all UNVERIFIED and banned from screen."
+  ],
+  "attribution_correction": "The GovTech article is a Tribune Content Agency syndication of Anchorage Daily News reporting by Iris Samuels, published June 9th, 2026. On-screen and in-draft credit for c10, c22 and c23 belongs to the ANCHORAGE DAILY NEWS, not to GovTech.",
+  "on_screen_note": "Reconciled against video-engine/src/Ep0808.tsx before the ship step. `on_screen` is now the string the film PAINTS; the planning value is kept as `on_screen_planned`. Prose obligations stay in `requires` (read by scripts/vo_claims_check.py); machine assertions live in `contract` (read by scripts/claims_contract_check.py)."
+}

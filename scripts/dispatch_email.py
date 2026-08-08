@@ -178,9 +178,30 @@ def render(post, poster_html, vids, voice, music, sources, score, note, temporar
     # routes ANY video taller than square into the swipe-only Video tab, and 1080x1350 is taller
     # than square, so the old 4:5 label was sending every dispatch to the wrong feed. 1080x1080
     # lands in the MAIN HOME FEED beside the post copy. The 9:16 is the TikTok cut.
+    # THE RUNTIME WAS HARDCODED AT ~84s (fixed 2026-08-08). Every draft this script has ever
+    # produced told the owner the film was about 84 seconds long, because a duration true of
+    # one early episode was typed into the button label and never touched again. The film it
+    # described today is 127.8s. It is a small thing that is wrong in the one document the
+    # owner actually reads, and it is the same shape as the per-run defaults this run spent
+    # the day removing from gates: a value correct for a single run, frozen into a constant.
+    # Measure the file instead.
+    def _dur(path_or_url):
+        local = Path(__file__).resolve().parent.parent / "out" / "dispatch" / "dispatch_square.mp4"
+        if not local.exists():
+            return ""
+        try:
+            import subprocess as _sp
+            r = _sp.run(["ffprobe", "-v", "error", "-show_entries", "format=duration",
+                         "-of", "csv=p=0", str(local)], capture_output=True, text=True)
+            return f"{float(r.stdout.strip()):.0f}s"
+        except Exception:
+            return ""
+
     if vids.get("square"):
+        dur = _dur(vids["square"])
+        dur_txt = f' &middot; {dur}' if dur else ""
         buttons += (f'<a class="dl" href="{vids["square"]}">&#9660;&nbsp; Post to LinkedIn &middot; 1:1 square (main feed)'
-                    f'<small>1080&times;1080 &middot; ~84s &middot; H.264 MP4 &middot; square stays in the home feed</small></a>')
+                    f'<small>1080&times;1080{dur_txt} &middot; H.264 MP4 &middot; square stays in the home feed</small></a>')
     if vids.get("vertical"):
         buttons += (f'<a class="dl alt" href="{vids["vertical"]}">&#9660;&nbsp; TikTok &middot; 9:16 (full-screen)'
                     f'<small>1080&times;1920 &middot; on LinkedIn this goes to the vertical Video tab, not the feed</small></a>')

@@ -1482,3 +1482,43 @@ dispatch_history:
       with one carmine flank, single cyan reticle
     metaphor: a mark that finds its target perfectly and then finds no boat to sit
       on
+- date: '2026-08-08'
+  topic: Alaska Rural Health Transformation first awards and where the federal statute
+    puts AI
+  slug: not-in-the-buying
+  key_entities:
+  - Rural Health Transformation
+  - Chugachmiut
+  - Norton Sound Health Corp
+  - Turnagain Community Health
+  - Assets Inc
+  - Alaska Behavioral Health
+  - Genevieve Mina
+  - Anchorage Daily News
+  - CMS
+  archetype: records-room audit
+  palette: cool blue-grey tile, warm birch counter, sage money, amber accent, scarlet
+    for the misfit
+  voice: Gemini Sulafat
+  stance: mixed
+  angle: The federal statute names AI exactly once, inside training and technical
+    assistance, while Alaska's first nineteen awards bought equipment
+  hero: TypeSlug
+  cast:
+  - TypeSlug
+  - MoneyBlock
+  - RulePlate
+  - Recess
+  - AwardCard
+  - Character
+  - AlaskaMini
+  - FieldRadiograph
+  - AllowanceBoard
+  composition:
+    depth: near-field foreground over mid plane
+    camera: slow push with drift
+    subject_scale: object-scale props
+    symmetry: asymmetric left-weighted
+    motion: slug traverse and seat
+    light: raking shaft from upper left
+    frame_use: full-height card wall
