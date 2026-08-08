@@ -1804,17 +1804,36 @@ const S12: React.FC<SceneProps> = () => {
 //   a floor that opens toward the light, bevelled walls, a lit near lip, a contact shadow.
 //
 //   VALUE. A row is no longer a label over a bar. Each row carries the datum this whole
-//   sequence is about, from c12b: how many times artificial intelligence appears in that
-//   approved use. Four zeros and a one, and the one is amber and is the last row. The card
-//   now ADDS UP to the plate above it ("APPEARS EXACTLY ONCE") instead of illustrating it.
+//   sequence is about, from c12b: how many times artificial intelligence appears there.
+//   Zeros and a one, and the one is amber and is the last row. The card now ADDS UP to the
+//   plate above it ("APPEARS EXACTLY ONCE") instead of illustrating it.
 //
 //   DENOMINATOR. A judge's second point, and it is an accuracy point: c12b's claim is that
 //   AI appears in one of TEN approved uses, and this page drew five rows with no denominator,
 //   so the picture argued weaker than the record supports. The ten cannot be DRAWN — six of
 //   them appear nowhere in out/dispatch/claims.json, and inventing six statutory categories
 //   to fill a column would be exactly the failure this film is about. So the page is LABELLED
-//   for what it is: TEN IN THE STATUTE / PARTIAL LIST, per c12b's own wording. The list no
-//   longer reads as complete, and no string on it is one the record cannot carry.
+//   for what it is: TEN IN THE STATUTE / PARTIAL LIST, per c12b's own wording, and the list
+//   no longer reads as complete.
+//
+// AND THEN THE COLUMN TOLD A LIE THE LABEL COULD NOT COVER (2026-08-08, round-5 blocker,
+// created by the fix above). PARTIAL LIST licenses INCOMPLETENESS, not INACCURACY: it tells
+// the viewer there are more rows, not that these rows might not be in the statute. And a
+// tabulated count upgrades every label beside it from rhetoric to an assertion — to print
+// PROVIDER PAYMENTS = 0 you must know that category is in the federal text and what it says.
+// It was not. Four of the five rows failed:
+//   CYBERSECURITY    invented outright, zero occurrences in claims.json, sources.json, VO.
+//   PROVIDER PAYMENTS  c17, which is ALASKA's category-cap framing — the exact conflation
+//                      c12's `requires` forbids — and it was drawn on the S4 cap board too,
+//                      so one string appeared on both the state card and the federal one.
+//   EQUIPMENT / PURCHASES  carried only as the VO's colloquial foils ("not under equipment,
+//                      not under purchases"), which is a fair sentence and not a table row.
+// So the two the record does carry stay, RE-FRAMED as what they honestly are — WHERE PEOPLE
+// LOOK — and the one statutory row keeps its own head, IN THE STATUTE, which is c12b. The
+// zeros survive because they are entailed by c12b rather than by a category list: if AI
+// appears in the federal text exactly once, in the training clause, then anywhere else a
+// viewer looks it appears zero times. Nothing on this page now asserts that a category
+// exists in the statute except the one the record quotes verbatim.
 //
 // AND THE PAGE STOPS BELOW THE CROP LINE. It scanned up to an authored top of 372, which the
 // content zoom carries to a rendered 272: at t=110.5s crop_safety measured the top border
@@ -1844,6 +1863,75 @@ assertAboveCrop('S13 "APPEARS EXACTLY ONCE"',
   }
 }
 
+/** THE TWO GROUPS, AND THE GAP BETWEEN THEM, DERIVED.
+ *
+ *  The page now reads in two parts and the geometry says so: two rows under WHERE PEOPLE
+ *  LOOK, a rule, then the one row under IN THE STATUTE, S13_GAP away. The gap is the
+ *  argument — the slug can reach the first group and cannot reach the second — so it is a
+ *  constant with a check on it rather than a number that looks about right.
+ *
+ *  Every collision on this page is arithmetic and each one has already happened once:
+ *    - the last cut's foot against the open-caption band (1272 authored -> 1315 rendered);
+ *    - a group head against the row label under it;
+ *    - and the one the shipped cut actually had: the slug's HOVER pose, before it steps
+ *      onto the first row, sat at centre 805 with a 46px body and lay straight across
+ *      "TEN IN THE STATUTE · PARTIAL LIST" from 103.1s to 107.1s. The denominator line
+ *      the previous round added to make the count honest was covered by an object for its
+ *      first four seconds. So the hover is checked against that line's ink, not eyeballed.
+ *    - and the group heads are held OUT of the slug's column entirely (they are short and
+ *      left-anchored), which is what makes them safe against a moving object rather than
+ *      lucky: a label inside a moving element's path is a collision waiting for a frame. */
+const S13_ROW = 88, S13_TOP = 924, S13_GAP = 124;
+const S13_FOILS = 2;                 // rows before the gap: the places a viewer looks
+const S13_CUT_DY = 21, S13_CUT_H = 54;
+const S13_LABEL_DY = 22, S13_LABEL_SIZE = 22;      // the live size, the taller of the two
+const S13_SUB_Y = 806, S13_SUB_SIZE = 19;          // TEN IN THE STATUTE · PARTIAL LIST
+const S13_RULE_Y = 826, S13_SPLIT_Y = 1104;
+// 18px, not 19: the slug's HOVER pose shares this band, and at 19 the head's last glyph
+// stood 10px off the slug's left edge and read as touching it on the delivered frame.
+const S13_HEAD_A = 862, S13_HEAD_B = 1148, S13_HEAD_SIZE = 18, S13_HEAD_LS = 1.2;
+const S13_BAND_FOOT = 1272;          // the lowest ink this page may put on the paper
+const s13RowY = (i: number) => S13_TOP + i * S13_ROW + (i >= S13_FOILS ? S13_GAP : 0);
+/** the slug's own body, in TypeSlug's arithmetic at this shot's scale, so the seats below
+ *  are centres of a real object rather than an anchor with a remembered offset */
+const S13_SLUG_S = 0.62, S13_SLUG_HELD = 0.3;
+const S13_SLUG_LIFT = 18 + S13_SLUG_HELD * 46;
+const S13_SLUG_H = 74 * S13_SLUG_S;
+const S13_SLUG_HALF = ('ARTIFICIAL INTELLIGENCE'.length * 34 * 0.602 + 44) * S13_SLUG_S / 2;
+const s13SlugY = (centre: number) => centre + S13_SLUG_LIFT - S13_SLUG_H / 2;
+const S13_HOVER = 856;               // the slug's centre before it steps onto the first row
+{
+  const foot = s13RowY(2) + S13_CUT_DY + S13_CUT_H / 2;
+  if (foot > S13_BAND_FOOT) {
+    throw new Error(
+      `S13: the statute row's cut foots at ${foot}, past ${S13_BAND_FOOT}, which the content ` +
+      `zoom carries into the open-caption band. Shrink S13_GAP, not the clearance.`);
+  }
+  const subInk = S13_SUB_Y + S13_SUB_SIZE * 0.26;
+  const hoverTop = S13_HOVER - S13_SLUG_H / 2;
+  if (hoverTop < subInk + 12) {
+    throw new Error(
+      `S13: the slug hovers with its body top at ${hoverTop.toFixed(0)} and ` +
+      `"TEN IN THE STATUTE · PARTIAL LIST" inks down to ${subInk.toFixed(0)}. That is the ` +
+      `denominator line, and it may not be covered. Lower S13_HOVER (and S13_TOP with it).`);
+  }
+  ([[S13_HEAD_A, 0], [S13_HEAD_B, S13_FOILS]] as [number, number][]).forEach(([hy, row]) => {
+    const capTop = s13RowY(row) - S13_LABEL_DY - S13_LABEL_SIZE * 0.72;
+    if (hy + S13_HEAD_SIZE * 0.26 + 12 > capTop) {
+      throw new Error(
+        `S13: a group head baselines at ${hy} and the row label under it caps at ` +
+        `${capTop.toFixed(0)}. Move the head, not the row.`);
+    }
+  });
+  const headW = Math.max('WHERE PEOPLE LOOK'.length, 'IN THE STATUTE'.length);
+  const headRight = 150 + headW * S13_HEAD_SIZE * 0.602 + S13_HEAD_LS * (headW - 1);
+  if (headRight > 540 - S13_SLUG_HALF - 8) {
+    throw new Error(
+      `S13: a group head runs to x=${headRight.toFixed(0)} and the slug's column starts at ` +
+      `${(540 - S13_SLUG_HALF).toFixed(0)}. The heads stay out of the travel lane.`);
+  }
+}
+
 const S13: React.FC<SceneProps> = () => {
   const f = useCurrentFrame();
   const open = ramp(f, 6, 44);
@@ -1851,28 +1939,39 @@ const S13: React.FC<SceneProps> = () => {
   // line 22 ("not under equipment, not under purchases", local 286..350) instead of
   // finishing at local 250 with 130 frames of hold behind it
   const scan = ramp(f, 120, 344);
-  // `ai` is c12b, and it is the only figure on this page: the statute names artificial
-  // intelligence exactly once, in the training clause. Nothing here is c17 — those caps are
-  // Alaska's allowable-uses framing (see c12's `requires`, which forbids attributing that
-  // framing to the feds), and they are drawn in S4 where they belong.
+  // WHAT EACH ROW ASSERTS, AND WHAT CARRIES IT.
+  //   EQUIPMENT / PURCHASES — NOT statutory headings, and the page no longer says they are.
+  //     They are the two places the narration says a viewer looks ("not under equipment, not
+  //     under purchases", VO line 22), drawn under the head WHERE PEOPLE LOOK. Their 0 is
+  //     c12b: AI appears in the federal text exactly once, so it appears zero times wherever
+  //     else you look.
+  //   TRAINING AND TECHNICAL ASSISTANCE — c12b verbatim, the one approved use the record
+  //     quotes, under its own head, and the only row this page presents as statutory.
+  // Nothing on this page is c17: provider payments at 15 percent is ALASKA's category-cap
+  // framing, c12's `requires` forbids attributing that framing to the feds, and it is drawn
+  // on the S4 cap board and nowhere else. It used to be the first row here, in both places
+  // at once, which is the conflation that note exists to prevent.
   const USES: {label: string; ai: number; wide: boolean}[] = [
-    {label: 'PROVIDER PAYMENTS', ai: 0, wide: false},
     {label: 'EQUIPMENT', ai: 0, wide: false},
-    {label: 'CYBERSECURITY', ai: 0, wide: false},
     {label: 'PURCHASES', ai: 0, wide: false},
     {label: 'TRAINING AND TECHNICAL ASSISTANCE', ai: 1, wide: true},
   ];
   const at = Math.min(USES.length - 1, Math.floor(scan * USES.length));
-  // the slug STEPS between rows instead of teleporting: hold, ease, hold
-  const stepped = Math.min(USES.length - 1, at + smooth(Math.min(1,
-    Math.max(0, (scan * USES.length - at - 0.42) / 0.44))));
-  // ROW 88 keeps the last cut's foot at an authored 1272, which renders at 1315 — 21px shy
-  // of the open-caption band at 1336 — even at scan 0, when the page sits at its lowest.
-  const ROW = 88, TOP = 872;
-  const slugY = TOP + stepped * ROW - 58 - scan * S13_ROWTRAVEL;
+  // the slug STEPS between seats instead of teleporting: hold, ease, hold
+  const pos = at + smooth(Math.min(1, Math.max(0, (scan * USES.length - at - 0.42) / 0.44)));
+  // THE SEATS ARE CUT CENTRES, not row anchors: the slug drops INTO the cut it is being
+  // tried against. It starts hovering above the page, takes EQUIPMENT, takes PURCHASES —
+  // and the last seat repeats PURCHASES on purpose. It cannot reach across S13_GAP to the
+  // statutory row, and that failure is the shot: the amber 1 lights on the far side of the
+  // rule while the slug is still stuck in the buying. S14 is where it is finally seated.
+  const SEATS = [S13_HOVER, s13RowY(0) + S13_CUT_DY, s13RowY(1) + S13_CUT_DY,
+                 s13RowY(1) + S13_CUT_DY];
+  const seat = Math.floor(pos);
+  const centre = SEATS[seat] + (pos - seat) * (SEATS[Math.min(seat + 1, 3)] - SEATS[seat]);
+  const slugY = s13SlugY(centre) - scan * S13_ROWTRAVEL;
   // the slug on screen: TypeSlug's own width arithmetic, at this shot's scale. A narrow cut
   // is 256 wide, so the phrase stands 32px proud of it on each side and that gap IS the shot.
-  const SLUG_HALF = ('ARTIFICIAL INTELLIGENCE'.length * 34 * 0.602 + 44) * 0.62 / 2;
+  const SLUG_HALF = S13_SLUG_HALF;
   return (
     <Stage f={f} push={ramp(f, 0, 340) * 0.045} drift={0.6} deskY={1400} act={3}>
       <g opacity={open} transform={`translate(0,${-scan * S13_ROWTRAVEL})`}>
@@ -1886,29 +1985,49 @@ const S13: React.FC<SceneProps> = () => {
         <rect x={124} y={724} width={832} height={580} rx={2} fill="none"
               stroke={P.ink} strokeWidth={2} opacity={0.3} />
         {/* the page's own head: what the list IS, how much of it this is, and the column
-            the rows are counted in */}
+            the rows are counted in.
+            THE DE-EMPHASIS STAYS, THE ILLEGIBILITY GOES (2026-08-08, round-5). Measured on
+            delivered lossless pixels, the rejected rows read 2.47-2.50:1 and this
+            denominator line 3.31:1 against the accepted row's 12.30:1 — so the sentence
+            that makes the count honest was the second faintest thing on the card. Held
+            back is not the same as unreadable: everything informational here now clears
+            4.5:1, and the hierarchy is carried by weight, size and the cut's own depth. */}
         <text x={150} y={766} fontFamily={MONO} fontSize={S13_TITLE_SIZE} fontWeight={700}
               letterSpacing={1.2} fill={P.ink}>APPROVED USES OF FUNDS</text>
-        <text x={150} y={806} fontFamily={MONO} fontSize={19} fontWeight={700}
-              letterSpacing={1} fill={P.ink} opacity={0.55}>TEN IN THE STATUTE  ·  PARTIAL LIST</text>
-        <text x={862} y={806} textAnchor="middle" fontFamily={MONO} fontSize={19}
-              fontWeight={700} letterSpacing={1.2} fill={P.ink} opacity={0.7}>AI MENTIONS</text>
-        <path d="M150,826 L930,826" stroke={P.ink} strokeWidth={3} opacity={0.45} />
+        <text x={150} y={S13_SUB_Y} fontFamily={MONO} fontSize={S13_SUB_SIZE} fontWeight={700}
+              letterSpacing={1} fill={P.ink} opacity={0.82}>TEN IN THE STATUTE  ·  PARTIAL LIST</text>
+        <text x={862} y={S13_SUB_Y} textAnchor="middle" fontFamily={MONO} fontSize={S13_SUB_SIZE}
+              fontWeight={700} letterSpacing={1.2} fill={P.ink} opacity={0.82}>AI MENTIONS</text>
+        <path d={`M150,${S13_RULE_Y} L930,${S13_RULE_Y}`} stroke={P.ink} strokeWidth={3}
+              opacity={0.45} />
+        {/* THE TWO HEADS. The first is a framing and says so — it describes where a viewer
+            goes looking, not what the statute is divided into. The second is c12b. The rows
+            under them mean different things and the page may not let them read alike. */}
+        <text x={150} y={S13_HEAD_A} fontFamily={MONO} fontSize={S13_HEAD_SIZE} fontWeight={700}
+              letterSpacing={S13_HEAD_LS} fill={P.ink} opacity={0.85}>WHERE PEOPLE LOOK</text>
+        <path d={`M150,${S13_SPLIT_Y} L930,${S13_SPLIT_Y}`} stroke={P.ink} strokeWidth={3}
+              opacity={0.45} />
+        <text x={150} y={S13_HEAD_B} fontFamily={MONO} fontSize={S13_HEAD_SIZE} fontWeight={700}
+              letterSpacing={S13_HEAD_LS} fill={P.ink} opacity={0.85}>IN THE STATUTE</text>
         {USES.map((u, i) => {
           const live = i === at;
-          const y = TOP + i * ROW;
+          const y = s13RowY(i);
           return (
             <g key={i}>
-              <text x={150} y={y - 22} fontFamily={MONO} fontSize={live ? 22 : 20}
+              <text x={150} y={y - S13_LABEL_DY} fontFamily={MONO}
+                    fontSize={live ? S13_LABEL_SIZE : 20}
                     fontWeight={700} letterSpacing={0.6}
-                    fill={P.ink} opacity={live ? 1 : 0.42}>{u.label}</text>
+                    fill={P.ink} opacity={live ? 1 : 0.75}>{u.label}</text>
               <g opacity={live ? 1 : 0.55}>
-                <CutFace x={540} y={y + 21} w={u.wide ? 476 : 256} h={54} deep={live ? 1 : 0.6} />
+                <CutFace x={540} y={y + S13_CUT_DY} w={u.wide ? 476 : 256} h={S13_CUT_H}
+                         deep={live ? 1 : 0.6} />
               </g>
-              {/* THE ROW'S VALUE. The tally is the argument: four rows read 0 and the one
-                  the slug finally fits reads 1, in the amber this film uses for a cap or a
-                  count and for nothing else. */}
-              <g transform={`translate(862,${y + 21})`} opacity={live ? 1 : 0.6}>
+              {/* THE ROW'S VALUE, and it counts MENTIONS, not categories: c12b says the
+                  federal text names artificial intelligence exactly once, in the training
+                  clause, so the two places a viewer looks first read 0 and the clause that
+                  has it reads 1, in the amber this film uses for a cap or a count and for
+                  nothing else. */}
+              <g transform={`translate(862,${y + S13_CUT_DY})`} opacity={live ? 1 : 0.85}>
                 <ContactShadow cx={0} cy={26} rx={48} ry={5} opacity={0.2} />
                 <rect x={-52} y={-23} width={104} height={46} rx={2} fill="#16212a"
                       stroke={u.ai ? P.cap : '#7f8d93'} strokeWidth={4} />
@@ -2051,7 +2170,14 @@ const S15: React.FC<SceneProps> = () => {
               stroke={INK} strokeWidth={10} />
         <rect x={94} y={620} width={892} height={700} rx={2} fill="none"
               stroke={P.ink} strokeWidth={3} opacity={0.4} />
-        {/* The two clauses that did NOT take it, named, so the empties are legible.
+        {/* The two places that did NOT take it, named, so the empties are legible.
+            AND NAMED AS WHAT THEY ARE (2026-08-08, round-5, same finding as S13's table).
+            These two heads read APPROVED USE, which asserts that the federal statute has an
+            equipment use and a purchases use for the slug to fail. The record does not carry
+            that: c12b establishes what the ONE clause naming AI says, and "not under
+            equipment, not under purchases" is the VO's colloquial foil, not a statutory
+            index. The cuts, the trials and the failures all stay; the caption on them is now
+            the same framing S13 uses, which describes the viewer and not the law.
             THE BASELINE IS DERIVED FROM THE SLUG'S TRAVEL, NOT PICKED (2026-08-08). These
             sat at y=676 and the slug's arc peaks at sy=802-96=706, so with a ~40px half
             height its top reaches 666 and it bisected both labels on the film's closing
@@ -2064,8 +2190,9 @@ const S15: React.FC<SceneProps> = () => {
           const SLUG_HALF_H = 40;         // TypeSlug body at scale 0.9
           const base = SLUG_PEAK_Y - SLUG_HALF_H - 14;   // 14px clear of the slug's top edge
           return [350, 730].map((lx) => (
-            <text key={lx} x={lx} y={base} textAnchor="middle" fontFamily={MONO} fontSize={21}
-                  fontWeight={700} fill={P.ink} opacity={0.75} letterSpacing={1}>APPROVED USE</text>
+            <text key={lx} x={lx} y={base} textAnchor="middle" fontFamily={MONO} fontSize={19}
+                  fontWeight={700} fill={P.ink} opacity={0.8}
+                  letterSpacing={1}>WHERE PEOPLE LOOK</text>
           ));
         })()}
         {/* SIXTH INSTANCE OF THE OVERPRINT CLASS, and the one the round-4 note predicted:
