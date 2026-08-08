@@ -370,23 +370,117 @@ export const ServerMachine: React.FC<{
 };
 
 // A compact Alaska landmass with a pulsing North Slope pin (reused hook + map).
+//
+// CRAFT ADVANCE 2026-08-08 (panel: "the Alaska map at f095.9 is a flat silhouette"). The
+// landmass was a flat LAND fill plus ONE darker overlay path at 0.5 opacity, in frames whose
+// every other object -- the money block's form-shaded face and darker side, the 19 award cards'
+// vertical form gradient and lit top edge, the parka's lit/shadow panels -- was fully rendered.
+// It now uses the SAME devices as the rest of the library (tones/FormGradient/RimLight/
+// ContactShadow) rather than a new style: a form gradient across the body, a lit north
+// coastline and a shaded south terminator, interior relief clipped to the coast, mountains
+// with a lit face and a shadow face like the parka's panels, and a cast shadow so it sits on
+// the wall instead of floating.
+//
+// SIZED FOR opacity 0.3. In Ep0808 S11 the map is deliberately background context at 0.3, so
+// every cue here is VALUE-STRUCTURAL (rim, terminator, relief, cast shadow) rather than extra
+// saturation or a louder fill -- at 30% it must still read as a shaded object, not shout.
+const AK_COAST =
+  `M30,120 L95,78 L150,88 L172,58 L215,66 L238,40 L268,52 L310,46 L355,64 L420,58
+   L465,88 L448,118 L400,130 L418,162 L378,172 L360,214 L308,224 L280,202 L252,232
+   L212,222 L182,254 L152,232 L120,254 L90,222 L108,182 L64,172 L84,142 L30,132 Z`;
+// the two halves of that same contour, so the lit edge and the terminator can never drift
+// off the silhouette they belong to
+const AK_NORTH =
+  `M30,120 L95,78 L150,88 L172,58 L215,66 L238,40 L268,52 L310,46 L355,64 L420,58 L465,88`;
+const AK_SOUTH =
+  `M465,88 L448,118 L400,130 L418,162 L378,172 L360,214 L308,224 L280,202 L252,232
+   L212,222 L182,254 L152,232 L120,254 L90,222 L108,182 L64,172 L84,142 L30,132`;
+// the eastern upland, re-cut with a wavy inland edge (the old straight diagonal read as a
+// wedge of darker paint, not as ground) and drawn as a shaded plateau with a lit inland slope
+const AK_UPLAND =
+  `M312,44 C300,78 296,94 288,104 C300,126 300,142 296,158 C288,180 284,190 280,204
+   L308,224 L360,214 L378,172 L418,162 L400,130 L448,118 L465,88 L420,58 L355,64 Z`;
+const AK_UPLAND_LIT = `M312,44 C300,78 296,94 288,104 C300,126 300,142 296,158 C288,180 284,190 280,204`;
+// crest lines: each is drawn twice, a shade stroke on the crest and a key stroke offset up-left
+// into the light, which is what makes a ridge read as ground rather than as a contour line
+const AK_RIDGES = [
+  'M62,124 q38,-26 82,-8 q30,15 68,-10',
+  'M186,90 q34,-20 72,-4 q28,12 58,-14',
+  'M304,110 q40,-22 86,-4',
+  'M118,178 q44,-22 92,-4 q30,12 58,-10',
+  'M314,168 q40,-20 78,-2',
+];
 export const AlaskaMini: React.FC<{frame: number; x: number; y: number; scale?: number; pin?: boolean; pinLabel?: string}> = ({
   frame: f, x, y, scale = 1, pin = true, pinLabel,
 }) => {
   const pinPulse = 1 + 0.22 * Math.sin(f / 9);
+  // ids derived from THIS instance's own geometry (the MoneyBlock idiom), so two AlaskaMinis
+  // on one frame cannot collide on a gradient or clip id.
+  const uid = `am${Math.round(x)}_${Math.round(y)}_${Math.round(scale * 100)}`;
+  const T = tones(LAND);
+  const TU = tones(LAND_D);
+  const TR = tones('#6b7f8f');
   return (
     <g transform={`translate(${x},${y}) scale(${scale})`}>
-      <path
-        d="M30,120 L95,78 L150,88 L172,58 L215,66 L238,40 L268,52 L310,46 L355,64 L420,58
-           L465,88 L448,118 L400,130 L418,162 L378,172 L360,214 L308,224 L280,202 L252,232
-           L212,222 L182,254 L152,232 L120,254 L90,222 L108,182 L64,172 L84,142 L30,132 Z"
-        fill={LAND} stroke={INK} strokeWidth={OUT} strokeLinejoin="round"
-      />
-      <path d="M310,46 L355,64 L420,58 L465,88 L448,118 L400,130 L418,162 L378,172 L360,214 L308,224 L280,202 L300,150 L285,100 Z" fill={LAND_D} opacity={0.5} />
+      <defs>
+        {/* softness well under the 1.0 default, for the reason Character.tsx records at its own
+            FormGradients: at 1 the key and shade stops fall mostly OUTSIDE the shape's bounds and
+            only a sliver of the ramp is ever on screen, which is precisely how a form-shaded fill
+            still reads as flat clip-art. 0.9 was measurably no better than the flat fill here. */}
+        <FormGradient id={`${uid}_land`} t={T} softness={0.6} />
+        <FormGradient id={`${uid}_up`} t={TU} softness={0.55} />
+        <clipPath id={`${uid}_clip`}><path d={AK_COAST} /></clipPath>
+      </defs>
+      {/* grounded: the map's own shadow, thrown down-right (opposite LIGHT.dir) onto whatever
+          surface it is mounted on, plus a contact ellipse under the southern extent */}
+      <path d={AK_COAST} fill={INK} opacity={0.2} transform="translate(15,17)"
+            style={{filter: 'blur(9px)'}} />
+      <ContactShadow cx={250} cy={262} rx={205} ry={15} opacity={0.26} blur={9} />
+      {/* the body: a form gradient, not a flat fill */}
+      <path d={AK_COAST} fill={`url(#${uid}_land)`} stroke={INK} strokeWidth={OUT} strokeLinejoin="round" />
+      <g clipPath={`url(#${uid}_clip)`}>
+        {/* south-facing terminator: a thick stroke on the southern contour, clipped, so the
+            far side of the form falls off instead of ending at the ink line */}
+        <path d={AK_SOUTH} fill="none" stroke={T.shade} strokeWidth={38} strokeLinejoin="round"
+              strokeLinecap="round" opacity={0.55} />
+        {/* the north coastal plain catching the key light just inside the lit shore. Kept
+            NARROW on purpose: at 26px it merged with the gradient's key stop and flattened the
+            whole northern third into one pale band, which is the failure being fixed. */}
+        <path d={AK_NORTH} fill="none" stroke={T.key} strokeWidth={16} strokeLinejoin="round"
+              strokeLinecap="round" opacity={0.3} />
+        {/* the eastern upland, shaded as its own volume with a lit inland slope */}
+        <path d={AK_UPLAND} fill={`url(#${uid}_up)`} opacity={0.8} />
+        <path d={AK_UPLAND_LIT} fill="none" stroke={TU.key} strokeWidth={9} opacity={0.7}
+              strokeLinecap="round" />
+        {/* interior relief: crest + lit face, so the middle reads as terrain not as one blob */}
+        {AK_RIDGES.map((d, i) => (
+          <g key={i}>
+            <path d={d} fill="none" stroke={T.shade} strokeWidth={7} strokeLinecap="round" opacity={0.58} />
+            <path d={d} fill="none" stroke={T.key} strokeWidth={4.5} strokeLinecap="round" opacity={0.55}
+                  transform="translate(-3,-9)" />
+          </g>
+        ))}
+        {/* the mountains land their shadows on the ground they stand on */}
+        {[[150, 150, 30], [200, 145, 38], [255, 152, 32]].map(([mx, my, s], i) => (
+          <ellipse key={i} cx={mx + s * 0.6} cy={my + s * 0.9} rx={s * 1.15} ry={s * 0.2}
+                   fill={INK} opacity={0.2} style={{filter: 'blur(4px)'}} />
+        ))}
+        {/* the lit north shore. Screen-blended like every other RimLight in the kit, so it
+            survives being composited down to 0.3 as a value edge rather than a pale line, and
+            CLIPPED INSIDE the coast so it lights the land without erasing the ink contour --
+            drawn over the outline it bleached the silhouette's own drawn edge. */}
+        <RimLight d={AK_NORTH} w={9} opacity={0.8} />
+      </g>
       {[[150, 150, 30], [200, 145, 38], [255, 152, 32]].map(([mx, my, s], i) => (
         <g key={i}>
-          <path d={`M${mx - s},${my + s * 0.9} L${mx},${my - s} L${mx + s},${my + s * 0.9} Z`} fill="#6b7f8f" stroke={INK} strokeWidth={5} strokeLinejoin="round" />
-          <path d={`M${mx - s * 0.32},${my - s * 0.3} L${mx},${my - s} L${mx + s * 0.32},${my - s * 0.3} L${mx + s * 0.14},${my - s * 0.12} L${mx},${my - s * 0.28} L${mx - s * 0.16},${my - s * 0.1} Z`} fill={SNOW} stroke={INK} strokeWidth={3} />
+          {/* lit face / shadow face, the parka's panel treatment */}
+          <path d={`M${mx - s},${my + s * 0.9} L${mx},${my - s} L${mx},${my + s * 0.9} Z`} fill={TR.key} />
+          <path d={`M${mx},${my - s} L${mx + s},${my + s * 0.9} L${mx},${my + s * 0.9} Z`} fill={TR.shade} />
+          <path d={`M${mx - s},${my + s * 0.9} L${mx},${my - s} L${mx + s},${my + s * 0.9} Z`} fill="none" stroke={INK} strokeWidth={5} strokeLinejoin="round" />
+          {/* snowcap, split on the same axis as the rock beneath it */}
+          <path d={`M${mx - s * 0.32},${my - s * 0.3} L${mx},${my - s} L${mx},${my - s * 0.28} L${mx - s * 0.16},${my - s * 0.1} Z`} fill={SNOW} />
+          <path d={`M${mx},${my - s} L${mx + s * 0.32},${my - s * 0.3} L${mx + s * 0.14},${my - s * 0.12} L${mx},${my - s * 0.28} Z`} fill="#c6d5e2" />
+          <path d={`M${mx - s * 0.32},${my - s * 0.3} L${mx},${my - s} L${mx + s * 0.32},${my - s * 0.3} L${mx + s * 0.14},${my - s * 0.12} L${mx},${my - s * 0.28} L${mx - s * 0.16},${my - s * 0.1} Z`} fill="none" stroke={INK} strokeWidth={3} />
         </g>
       ))}
       {pin && (

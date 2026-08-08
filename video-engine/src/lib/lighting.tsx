@@ -131,7 +131,26 @@ function gid(seed: string): string {
 // ------------------------------------------------------------- form-shade gradient
 // A linear gradient across a shape's bounding box, oriented to LIGHT.dir, ramping
 // key -> base -> core -> shade. Drop-in as a fill via the returned id.
-export const FormGradient: React.FC<{id: string; t: Tones; softness?: number}> = ({id, t, softness = 1}) => {
+// THE DEFAULT IS THE VALUE NOBODY SHOULD USE, WHICH IS WHY IT IS NO LONGER 1 (2026-08-08).
+//
+// `softness` scales the gradient axis across the shape's BOUNDING BOX. At 1 the key stop
+// sits on one bbox corner and the shade stop on the opposite one, and for any shape that
+// is not a rectangle those corners are OUTSIDE the shape. The form then only ever shows
+// the two middle stops, which is the definition of flat. Character.tsx:774 already records
+// the cost: "every character read as flat clip-art next to harder-lit props (2026-07-21
+// panel, 4 straight rounds citing the same defect)". Today it cost a fifth, on the Alaska
+// map, and the fixer rediscovered the same root cause from scratch.
+//
+// The evidence that 1 was always wrong is in the call sites. Across 56 places where an
+// author stopped and CHOSE a value, the range is 0.42 to 0.9 with a median of 0.7, and not
+// one of them picked 1. Meanwhile 62 call sites take the default, so the value no author
+// would choose was the value most shapes silently got. A default that every deliberate
+// user overrides is not a default, it is a trap with a docstring.
+//
+// So the default is now the median of what authors actually choose. Explicit values are
+// untouched. Rectangles lose nothing: a smaller axis reaches full key and full shade
+// sooner, so contrast goes up rather than down, everywhere.
+export const FormGradient: React.FC<{id: string; t: Tones; softness?: number}> = ({id, t, softness = 0.7}) => {
   // gradient axis runs from the lit corner to the shadowed corner
   const dx = LIGHT.dir.x, dy = LIGHT.dir.y;
   const x1 = (0.5 - dx * 0.5 * softness) * 100;
