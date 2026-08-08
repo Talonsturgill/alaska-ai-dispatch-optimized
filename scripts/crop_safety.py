@@ -73,7 +73,51 @@ def grab(path, t):
 
 
 def structured_fraction(img, y):
-    """Fraction of the row at y whose vertical neighbourhood carries a real edge."""
+    """Fraction of the row at y whose vertical neighbourhood carries a real edge.
+
+    IT WAS MEASURING FILM GRAIN (fixed 2026-08-08). Two panel judges independently took
+    this gate apart in the same round. The grade's grain measures std 5.65 and p2p 60
+    eight-bit levels on a FLAT WALL, and this function took the MAX vertical difference per
+    column over an eight-row band across three channels, so a threshold of 26 was cleared on
+    97.5% of columns of bare plaster. One judge pulled the top rows at the three
+    highest-scoring timecodes (0.971, 0.934, 0.890) and found bare wall or an uncut
+    decorative card at all three.
+
+    So the reported 24-of-64 crossings were noise, and the improvement from 24 to 22 that
+    this run cited as evidence of a fix was meaningless in both directions. Worse, as the
+    judge put it: a 34% false-positive rate guarantees the next real head-or-plate clip gets
+    waved through. Same family as the six gates this run found reporting on the wrong
+    subject, arriving by a third route - the measure drifted away from what it was meant to
+    detect while the number kept looking authoritative.
+
+    I TRIED TWICE TO FIX THE METRIC AND BOTH ATTEMPTS FAILED, so the honest outcome is a
+    documented limitation rather than a third guess.
+
+    Attempt one took the MEDIAN of the row-differences across the band. It erased grain
+    beautifully and erased every real edge with it, because a plate boundary appears in
+    exactly ONE of the band's row-differences and the median of one hit and seven misses is
+    a miss. Against a synthesised 240px plate edge it returned 0.000, identical to bare
+    wall. The headline number - 22 crossings down to 0 - looked exactly like success, and
+    only a regression test with a known-bad frame caught it.
+
+    Attempt two averaged along x to exploit coherence, on the theory that grain is spatially
+    uncorrelated while a plate edge spans hundreds of columns. That is sound, and it did not
+    help, because the second judge measured the offending row more precisely than the first:
+    it is not grain, it is a REAL full-width wall-tile seam, luminance 225 falling to 183.
+    Genuine structure that happens to be background.
+
+    So the metric cannot be rescued at this row. A one-row horizontal seam spanning the
+    frame and a plate's bottom border spanning the frame are the same measurement, and no
+    threshold separates them, because the difference is not in the pixels - it is in whether
+    the element was AUTHORED. The build-time invariant knows that and this does not:
+    Ep0808's SAFE_TOP composes caption_band_check's SAFE_Y_MIN with the content zoom and
+    THROWS on an authored element crossing the line. That check is the authoritative one.
+
+    This file is therefore demoted to what it can honestly do: point a human at timecodes
+    where SOMETHING crosses a crop line, for a look. Its count is not evidence of a defect
+    and must never again be quoted as evidence of a fix, which is exactly what this run did
+    when it reported 24 crossings falling to 22 as if that meant anything.
+    """
     lo, hi = max(0, y - BAND), min(img.shape[0] - 1, y + BAND)
     strip = img[lo:hi + 1]
     # vertical gradient across the boundary, max over channels
@@ -113,9 +157,14 @@ def main():
         print("crop-safety: GATE IS DEAD. It sampled nothing, which is not a pass.")
         return 2
     if bad:
-        print("  Each line above names a moment where the square crop cuts through "
-              "something built. Look at the timecode before dismissing it: a decorative "
-              "foreground element crossing the line is fine, a plate or a head is not.")
+        print("  ADVISORY ONLY, AND THE COUNT IS NOT EVIDENCE. This metric cannot tell an")
+        print("  authored element from the room's own wall-tile seam: a judge measured the")
+        print("  worst-scoring rows and found bare wall and an uncut decorative card. Two")
+        print("  attempts to separate them by denoising failed (see structured_fraction).")
+        print("  Treat each line as 'go and look at this timecode', never as a defect, and")
+        print("  never cite a change in the count as a fix. The authoritative check is the")
+        print("  build-time SAFE_TOP invariant in the episode, which throws because it knows")
+        print("  which elements were authored and this does not.")
     return 1 if bad else 0
 
 
