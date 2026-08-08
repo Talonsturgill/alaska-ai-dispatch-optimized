@@ -170,8 +170,20 @@ const Plate: React.FC<{
   const s = spring({frame: f - delay, fps, config: {damping: 13, stiffness: 190}});
   if (f < delay) return null;
   const LS = 1.6;
-  const w = text.length * size * 0.602 + LS * (text.length - 1) + 56;
-  const h = size + 34 + (sub ? size * 0.62 + 12 : 0);
+  // DERIVE THE BOX FROM EVERY STRING IN IT, NOT JUST THE HEADLINE (2026-08-08 panel).
+  // The plate was sized to `text` alone while `sub` renders at 0.54em with its own
+  // letter-spacing, so a long sub-line simply overflowed a box built for a short
+  // headline: "PER THE ANCHORAGE DAILY NEWS" under "IN THIS ROUND" measured 307px of
+  // glyph inside a 310px plate and touched both borders, and its baseline sat on the
+  // bottom rule. Same defect class as the bolt heads: geometry hand-guessed from one
+  // string instead of derived from all of them.
+  const SUB_SIZE = size * 0.54;
+  const SUB_LS = 1.2;
+  const wMain = text.length * size * 0.602 + LS * (text.length - 1);
+  const wSub = sub ? sub.length * SUB_SIZE * 0.602 + SUB_LS * (sub.length - 1) : 0;
+  const w = Math.max(wMain, wSub) + 56;
+  // and the height from the sub-line's own descender + a 12px clear of the inner rule
+  const h = sub ? size * 1.46 + 62 : size + 34;
   const sc = interpolate(s, [0, 1], [0.9, 1], {extrapolateRight: 'clamp'});
   const dy = interpolate(s, [0, 1], [16, 0], {extrapolateRight: 'clamp'});
   // a plate may never enter the caption band, whatever a call site asks for
@@ -187,8 +199,8 @@ const Plate: React.FC<{
             fontSize={size} fontWeight={700} fill={tint} letterSpacing={LS}>{text}</text>
       {sub && (
         <text x={0} y={size * 0.62 + 16} textAnchor="middle" fontFamily={MONO}
-              fontSize={size * 0.54} fontWeight={700} fill={tint} opacity={0.72}
-              letterSpacing={1.2}>{sub}</text>
+              fontSize={SUB_SIZE} fontWeight={700} fill={tint} opacity={0.72}
+              letterSpacing={SUB_LS}>{sub}</text>
       )}
     </g>
   );
@@ -221,10 +233,24 @@ const MoneyBlock: React.FC<{
               stroke={INK} strokeWidth={1.6} opacity={0.24} />
       ))}
       <RimLight d={`M${-w / 2},${-bh} L${w / 2},${-bh}`} w={4} opacity={0.6} />
-      {label && (
-        <text x={0} y={-bh - 52} textAnchor="middle" fontFamily={MONO} fontSize={30}
-              fontWeight={700} fill={P.ink} letterSpacing={1.4}>{label}</text>
-      )}
+      {label && (() => {
+        // PLATED AND DERIVED (2026-08-08 panel). The label was a bare centred string
+        // floating over the block's top face, which read as text hanging off the side of
+        // a card rather than a label belonging to the volume. Give it its own box, sized
+        // by the same arithmetic every other plate uses, and hang it off the block's
+        // lit top edge so the two are visibly one object.
+        const ls = 30, lls = 1.4;
+        const lw = label.length * ls * 0.602 + lls * (label.length - 1) + 44;
+        return (
+          <g transform={`translate(0,${-bh - 62})`}>
+            <ContactShadow cx={0} cy={26} rx={lw / 2 - 8} ry={6} opacity={0.24} />
+            <rect x={-lw / 2} y={-24} width={lw} height={48} rx={3} fill={P.paper}
+                  stroke={INK} strokeWidth={5} />
+            <text x={0} y={11} textAnchor="middle" fontFamily={MONO} fontSize={ls}
+                  fontWeight={700} fill={P.ink} letterSpacing={lls}>{label}</text>
+          </g>
+        );
+      })()}
     </g>
   );
 };
@@ -325,8 +351,19 @@ const S1: React.FC = () => {
   const block = ramp(f, 62, 128);
   return (
     <Stage f={f} push={ramp(f, 0, 300) * 0.055} drift={0.7}>
-      <MoneyBlock x={700} y={1230} w={340} h={430} f={f} build={block}
-                  label={block > 0.55 ? '$272,174,856' : undefined} />
+      <MoneyBlock x={700} y={1230} w={340} h={430} f={f} build={block} />
+      {/* the hero figure, counted up and plated at hero scale */}
+      {block > 0.06 && (
+        <g transform={`translate(700,${interpolate(block, [0, 1], [1160, 838])})`}>
+          <ContactShadow cx={0} cy={46} rx={300} ry={11} opacity={0.3} />
+          <rect x={-306} y={-46} width={612} height={94} rx={3} fill={P.paper}
+                stroke={INK} strokeWidth={7} />
+          <text x={0} y={22} textAnchor="middle" fontFamily={MONO} fontSize={54}
+                fontWeight={700} fill={P.ink} letterSpacing={1.4}>
+            {'$' + Math.round(interpolate(block, [0, 1], [0, 272174856])).toLocaleString()}
+          </text>
+        </g>
+      )}
       {block > 0.7 && <Plate x={286} y={922} text="YEAR ONE" size={34} delay={96} />}
       <MotionBlur vy={vy} gain={1.2} max={28}>
         <g transform={`translate(0,${dropY}) translate(392,1150) scale(${squash},${2 - squash}) translate(-392,-1150)`}>
@@ -453,6 +490,8 @@ const S6: React.FC = () => {
   const f = useCurrentFrame();
   const deal = ramp(f, 10, 130);
   const light = ramp(f, 176, 250);
+  const ORGS = ['CHUGACHMIUT', 'GIRDWOOD', 'ASSETS INC.', 'AK BEHAVIORAL'];
+  const AMTS = ['$627,200', '$100,000', '$249,700', '$593,100'];
   const CARDS = Array.from({length: 19}).map((_, i) => ({
     x: 148 + (i % 5) * 178 + (Math.floor(i / 5) % 2) * 30,
     y: 900 + Math.floor(i / 5) * 178,
@@ -468,15 +507,17 @@ const S6: React.FC = () => {
         return (
           <g key={i} opacity={on} transform={`translate(0,${interpolate(on, [0, 1], [-70, 0])})`}>
             <AwardCard x={c.x} y={c.y} f={f} lit={lit} s={0.72} rot={c.rot}
-                       title={c.described ? ['CHUGACHMIUT', 'GIRDWOOD', 'ASSETS INC.', 'AK BEHAVIORAL'][i] : undefined}
-                       amount={c.described ? ['$627,200', '$100,000', '$249,700', '$593,100'][i] : undefined} />
+                       title={c.described ? ORGS[i] : undefined}
+                       amount={c.described ? AMTS[i] : undefined} />
           </g>
         );
       })}
-      <Plate x={540} y={566} text="19 PROJECTS  OVER $4.5M" size={38} delay={16} />
-      <Plate x={540} y={560} text="UNDER 2% OF THE YEAR'S MONEY" size={31} delay={54} />
+      <Plate x={540} y={552} text="19 PROJECTS  OVER $4.5M" size={38} delay={16} />
+      <Plate x={540} y={664} text="UNDER 2% OF THE YEAR'S MONEY" size={31} delay={54} />
+      {/* the throughline object stays on the desk through the film's longest stretch */}
+      <TypeSlug x={172} y={1244} f={f} text="AI" scale={1.0} seated={0} phase={9} />
       {light > 0.3 && (
-        <Plate x={540} y={1258} text="DESCRIBED BY THE ANCHORAGE DAILY NEWS" size={26} delay={182} />
+        <Plate x={618} y={1252} text="DESCRIBED BY THE ANCHORAGE DAILY NEWS" size={25} delay={182} />
       )}
     </Stage>
   );
@@ -652,7 +693,10 @@ const S10: React.FC = () => {
           </g>
         );
       })}
-      <TypeSlug x={300} y={1216} f={f} text="AI" scale={0.9} seated={0} phase={6} />
+      {/* the slug used to sit at y=1216, straight through the AWARDED plate's box
+          (1230..1286): a plate over a labelled glyph, the same collision class as the
+          bolt heads. Lifted clear; the plate keeps the awarded pile it actually labels. */}
+      <TypeSlug x={300} y={1108} f={f} text="AI" scale={0.9} seated={0} phase={6} />
       <Plate x={214} y={1258} text="AWARDED" size={22} delay={40} />
       <Plate x={540} y={588} text="IT IS WEEK ONE" size={42} delay={14} />
     </Stage>
@@ -742,11 +786,11 @@ const S13: React.FC = () => {
   const USES = ['PROVIDER PAYMENTS', 'EQUIPMENT', 'CYBERSECURITY', 'PURCHASES',
                 'TRAINING AND TECHNICAL ASSISTANCE'];
   const at = Math.min(USES.length - 1, Math.floor(scan * USES.length));
-  const ROW = 116, TOP = 742;
+  const ROW = 116, TOP = 742, ROWTRAVEL = 232;
   return (
     <Stage f={f} push={ramp(f, 0, 340) * 0.045} drift={0.6} deskY={1400}>
-      <g opacity={open}>
-        <rect x={96} y={604} width={888} height={706} rx={3} fill="#efeade"
+      <g opacity={open} transform={`translate(0,${-scan * ROWTRAVEL})`}>
+        <rect x={96} y={604} width={888} height={706 + ROWTRAVEL} rx={3} fill="#efeade"
               stroke={INK} strokeWidth={9} />
         <rect x={120} y={628} width={840} height={658} rx={2} fill="none"
               stroke={P.ink} strokeWidth={2} opacity={0.3} />
@@ -770,8 +814,8 @@ const S13: React.FC = () => {
           );
         })}
       </g>
-      <TypeSlug x={540} y={TOP + at * ROW - 58} f={f} text="ARTIFICIAL INTELLIGENCE"
-                scale={0.62} seated={0} held={0.3} phase={7}
+      <TypeSlug x={540} y={TOP + at * ROW - 58 - scan * ROWTRAVEL} f={f}
+                text="ARTIFICIAL INTELLIGENCE" scale={0.62} seated={0} held={0.3} phase={7}
                 recess={{w: at === USES.length - 1 ? 476 : 256, fits: at === USES.length - 1}} />
       <Plate x={540} y={566} text="APPEARS EXACTLY ONCE" size={36} delay={30} />
     </Stage>

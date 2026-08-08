@@ -38,6 +38,12 @@ CHECKS = [
     # clean, the render succeeds, and two annotations are stacked in the same pixels.
     ("nothing informational sits in the caption band",
      [sys.executable, "scripts/caption_band_check.py"], True),
+    # A phonetic respelling reaching the screen is a hard blocker every time a panel has
+    # seen one, and the fix for it is a build-time TRANSFORM with no audit trail. This
+    # asks the built artifact the question afterwards, which is the only way an ordering
+    # change gets caught. 2026-08-08: "A I" on screen under a plate reading "AI".
+    ("no phonetic respelling survived into the built props",
+     [sys.executable, "scripts/caption_spelling_check.py"], True),
     # Two elements in the same pixels cost score in three separate panel rounds on
     # 2026-08-06 and were invisible to every other check, because each element is
     # individually fine and the defect lives only in the relationship.
