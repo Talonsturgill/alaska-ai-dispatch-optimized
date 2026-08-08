@@ -45,6 +45,27 @@ if [ $# -lt 1 ]; then
   echo "Compositions are declared in video-engine/src/Root.tsx." >&2
   exit 2
 fi
+# ONE RENDER AT A TIME (2026-08-08). Two instances were started minutes apart because the
+# first launch LOOKED like it had failed - the command that started it errored on an
+# unrelated `head` of its log, so it read as dead, while nohup had in fact started it and
+# the script's own `cd` had already corrected its working directory.
+#
+# They then fought over CPU and over identically-named chunk files, and the run reported
+# "a chunk failed" while every chunk log showed 320/320 encoded. That is an expensive way
+# to lose half an hour: the failure message pointed at rendering, and the cause was that
+# there were two of everything.
+#
+# A render is exclusive by nature, so say so rather than trusting the caller to have
+# checked. flock releases automatically if the holder is killed, so a crashed run does not
+# leave a lock nobody can clear.
+exec 200>"${TMPDIR:-/tmp}/alaska-dispatch-render.lock"
+if ! flock -n 200; then
+  echo "render_parallel.sh: another render is already running (lock held)." >&2
+  echo "Wait for it, or kill it, before starting a second one. Two concurrent renders" >&2
+  echo "contend for CPU and clobber each other's chunk files." >&2
+  exit 3
+fi
+
 COMP="$1"
 OUT="${2:-out/dispatch/render_mute.mp4}"
 PROPS="${PROPS:-out/dispatch/episode_props.json}"
