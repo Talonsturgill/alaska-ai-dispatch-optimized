@@ -2204,7 +2204,7 @@ const S15: React.FC<SceneProps> = () => {
             So the LABELS retire while the object is over them, and the rule is DERIVED from
             the slug's own body rather than from a frame number: opacity is 1 whenever the
             body clears the label band by 10px in either direction, 0 when it does not. The
-            cuts never retire — an approved use that stayed empty is the whole argument. */}
+            cuts never retire — a slot the slug could not take is the whole argument. */}
         <Recess x={350} y={840} w={244} label="EQUIPMENT" f={f} labelOn={buyingLabel} />
         <Recess x={730} y={840} w={244} label="PURCHASES" f={f} labelOn={buyingLabel} />
         <Recess x={540} y={TRAIN_Y} w={476} label="TRAINING" f={f} />
