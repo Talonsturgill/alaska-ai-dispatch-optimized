@@ -47,6 +47,13 @@ CHECKS = [
     # silently declined in one run and judges found all seven.
     ("every claim obligation the fact-checker wrote is honoured",
      [sys.executable, "scripts/claims_contract_check.py"], True),
+    # THE NARRATION obeys the claim set too. Added 2026-08-08, after a false line
+    # ("five rural clinics that didn't have one") passed Gate 0E and the soundcheck
+    # and reached a synth, because Gate 0E asks whether a stranger can FOLLOW the
+    # script and the soundcheck asks whether the ASR heard it, and nothing asked
+    # whether it was TRUE. Verified in both directions on the real defect.
+    ("the narration obeys the fact-check-safe set",
+     [sys.executable, "scripts/vo_claims_check.py"], True),
     # ADVISORY ON PURPOSE, same reasoning as the block below: it has never gone green.
     # On the film that prompted it (2026-08-06) it fails 6 of 8 figures, which is the
     # honest state of the craft rather than a broken checker. Promote it to required once

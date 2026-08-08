@@ -180,6 +180,12 @@ def default_targets():
     already out, which is rewriting history to make a checker happy. The gate binds what
     this run is about to render; pass explicit paths to audit anything else.
     """
+    # FALLBACK HARDENING (2026-08-08). When the stamp carries no composition -- which is
+    # what run_guard writes unless a run sets it -- this resolver used to fall back to
+    # Episode.tsx, a shipped 2026-07 film. Three source gates then reported "clean across
+    # 1 file(s)" all run while never once reading the episode about to be rendered. A
+    # checker pointed at the wrong file is worse than no checker, because it reports PASS.
+    # The fallback is now the NEWEST Ep*.tsx, which is at worst this run's own file.
     stamp = os.path.join(REPO, "out", "dispatch", ".run_stamp.json")
     src = os.path.join(REPO, "video-engine", "src")
     if os.path.exists(stamp):

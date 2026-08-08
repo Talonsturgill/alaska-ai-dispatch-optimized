@@ -112,7 +112,14 @@ def main():
 
     problems, checked = [], 0
     for c in claims:
-        req = c.get("requires") or {}
+        # `requires` may be PROSE (a list written by the fact-checker for humans and for
+        # vo_claims_check.py) or a machine contract (a dict). A list used to crash this
+        # gate outright with AttributeError, which BLOCKED the panel on a shape mismatch
+        # rather than on a defect. Machine assertions now live in `contract`; a prose-only
+        # claim is skipped here and still checked by vo_claims_check.py.  (2026-08-08)
+        req = c.get("contract") or c.get("requires") or {}
+        if isinstance(req, list):
+            req = {}
         if not req:
             continue
         cid = c["id"]

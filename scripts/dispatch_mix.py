@@ -35,7 +35,7 @@ OUT = os.path.join(REPO, "out", "dispatch")
 AUD = os.path.join(OUT, "audio")
 FF = os.environ.get("FFMPEG_BIN", "ffmpeg")
 SR = 44100
-DATE = "2026-08-06"   # episode seed for the shuffle-bag + jitter
+DATE = "2026-08-08"   # episode seed for the shuffle-bag + jitter
 
 
 def run(cmd):
@@ -80,47 +80,43 @@ _TAIL = 2.6   # matches scripts/build_scenes.py TAIL (hold after the last word)
 VIDEO_SECS = max(x["end"] for x in _lines) + _TAIL   # derive from VO; never hardcode
 
 EVENTS = [
-    # 2026-08-07 "The Boat, Not The Brain". PER-RUN DATA, generated from this board's own
-    # 37 beats scaled onto the delivered take (vo_lines.json), never typed by hand and never
-    # carried over. Families cycle so no two consecutive events share one. ONE riser, on the
-    # rise into the fleet pullback.
-    (0.00, "tick", "standard", -0.35),   # the raw frame, one fish and one worn spike, nothing claimed yet
-    (2.22, "clank", "standard", -0.09),   # the trained hand marks the spot by eye
-    (5.98, "thud", "standard", 0.17),   # what an exact hit buys you
-    (8.42, "paper", "hero", 0.0),   # the spike still has not landed
-    (13.07, "snap", "standard", -0.01),   # the technique gets its name and its three steps
-    (15.95, "pop", "standard", 0.24),   # the second step, drawn honestly
-    (20.16, "creak", "standard", -0.2),   # what the skill actually costs
-    (22.60, "stamp", "texture", 0.06),   # almost nobody on a small boat has it
-    (27.70, "chime", "standard", 0.32),   # the machine arrives
-    (31.02, "tick", "standard", -0.12),   # the actual hard part, named
-    (33.23, "clank", "standard", 0.14),   # the founder is about to be quoted
-    (38.11, "thud", "texture", -0.3),   # three fish, three different true points
-    (40.99, "paper", "standard", -0.04),   # a ruler tries to predict the third and fails
-    (45.20, "snap", "standard", 0.22),   # so a jig is ruled out
-    (47.64, "pop", "standard", -0.22),   # the jig comes down anyway, perfectly straight
-    (52.95, "creak", "texture", 0.04),   # what the machine has to do instead
-    (55.61, "stamp", "hero", 0.0),   # the lock
-    (59.60, "chime", "standard", -0.15),   # the announcement lands on a real place
-    (61.82, "tick", "standard", 0.11),   # the machine outline arrives DOTTED
-    (66.91, "clank", "texture", -0.33),   # the claims type on, each labeled
-    (70.02, "thud", "standard", -0.07),   # the free robot and the premium
-    (73.78, "paper", "hero", 0.0),   # the number that does not exist
-    (76.22, "snap", "standard", -0.25),   # the film turns to the other side
-    (81.54, "pop", "hero", 0.0),   # this is what a real pilot looks like
-    (84.42, "creak", "standard", 0.27),   # their CTO is quoted straight
-    (88.63, "stamp", "standard", -0.17),   # the quote lands and is allowed to sit
-    (90.84, "chime", "standard", 0.08),   # so the unfair bar is named and refused
-    (95.72, "tick", "texture", 0.34),   # but the fair question is asked
-    (99.04, "clank", "standard", -0.1),   # one write-up on one side
-    (101.48, "thud", "hero", 0.0),   # an empty rack on the other
-    (106.57, "paper", "standard", -0.28),   # no boat count, stamped
-    (109.68, "snap", "hero", 0.0),   # the company's own number
-    (113.66, "pop", "standard", 0.24),   # the permits build around them
-    (116.32, "creak", "standard", -0.2),   # about a tenth of the whole state
-    (121.64, "stamp", "hero", 0.0),   # THE TURN, the pullback to a dozen different hulls
-    (124.96, "riser", "hero", 0.0),   # the hulls settle and the mark has nowhere to sit
-    (129.39, "tick", "hero", 0.0),   # the last image, the mark at rest on the spike
+    # 2026-08-08 "Not In The Buying". PER-RUN DATA, generated from this board's own
+    # 35 beats scaled onto the DELIVERED take (vo_lines.json), never typed by hand and never
+    # carried over. Families alternate so no two consecutive events share one. ONE riser.
+    (0.00, "stamp", "hero", 0.0),   # opens on the throughline object before the story exists
+    (2.43, "clank", "standard", 0.01),   # the scale, established behind the object rather than instead of it
+    (6.89, "tick", "standard", -0.32),   # names the program before anything is claimed about it
+    (9.62, "snap", "standard", 0.04),   # the constraint stated as hardware, not as narration
+    (14.18, "tick", "standard", -0.29),   # the cap drawn as a physical clamp rather than a footnote
+    (16.61, "whoosh", "standard", 0.07),   # THE INFERENCE, DRAWN: the rules push the flow somewhere
+    (21.17, "pop", "standard", -0.26),   # the forecast, attributed and dated, so it can never read as a reaction to 
+    (24.10, "chime", "standard", 0.1),   # her words, in her words, with the subject of her sentence intact
+    (28.66, "tick", "standard", -0.23),   # the second source of the expectation
+    (30.99, "chime", "standard", 0.13),   # PLANTS THE PRIMARY OPEN LOOP: the film asks where this goes and refuses to
+    (35.45, "thud", "standard", -0.2),   # the awards arrive, dated
+    (38.59, "pop", "texture", 0.16),   # the round, drawn as a countable set with its unknowns visible
+    (43.25, "clank", "standard", -0.17),   # the sourcing, stated BEFORE the finding it scopes
+    (45.68, "whoosh", "standard", 0.19),   # tonal reset into the film's one plainly warm beat
+    (50.23, "pop", "standard", -0.14),   # REVEAL 2, build-on: the thing that actually arrived, warm and round agains
+    (53.07, "whoosh", "standard", 0.22),   # a gesture that ARRIVES, with windup and overshoot, and a source drawn with
+    (57.63, "tick", "standard", -0.11),   # REHOOK 2: the count made physical, and this beat carries no irony anywhere
+    (60.26, "paper", "standard", 0.25),   # the one award on the state's technology list that did get money, drawn pla
+    (64.82, "boom", "standard", -0.08),   # REVEAL 3 AND THE SIGNATURE SHOT: the mismatch is a GAP YOU CAN SEE, not a 
+    (67.55, "pop", "texture", 0.28),   # the honesty spine, and the object states it without a word
+    (72.11, "whoosh", "hero", 0.0),   # the film announces it is about to argue against itself
+    (74.44, "boom", "standard", 0.31),   # the prematurity objection at full strength, drawn as mass
+    (79.00, "clank", "standard", -0.02),   # the concern of the people who got nothing, taken seriously on its own term
+    (81.83, "pop", "texture", 0.34),   # the required scoping, on screen, every time this fact appears
+    (86.29, "snap", "standard", 0.0),   # REHOOK 3: the film's own limitation, drawn rather than footnoted
+    (89.63, "whoosh", "standard", -0.33),   # the scope of what the film actually knows, drawn as lit and unlit
+    (94.19, "thud", "standard", 0.03),   # the film goes to the source
+    (96.72, "tick", "texture", -0.3),   # the search, performed rather than reported
+    (101.28, "paper", "standard", 0.06),   # the correction of record, drawn as two failed fits
+    (104.11, "boom", "standard", -0.27),   # REVEAL 4 AND THE PRIMARY OPEN LOOP PAYS: this is where the phrase actually
+    (108.77, "ding", "hero", 0.0),   # THE FAIRNESS BEAT: her read is affirmed in the film's own voice, drawn as 
+    (111.41, "clank", "texture", -0.24),   # holds both things at once instead of choosing
+    (115.76, "stamp", "standard", 0.12),   # THE BUTTON: the film's whole argument as three sockets, two empty and one 
+    (118.70, "snap", "hero", 0.0),   # loops back to frame one, where the same slug lay loose on a desk with nowh
 ]
 
 
@@ -147,24 +143,22 @@ EVENTS = [
 # Multipliers are relative to the bed's base level, so the shape lives here and the level
 # lives in one place in the graph.
 BED_ARC = [
-    # 2026-08-07, derived on the delivered take and CLAMPED to the film's own length.
-    # Two real floors (the CTO quote at the heart of Act 3, and the pre-button hold) and
-    # two peaks (the lock, and the permit-field reveal). Regenerated per run.
-    (0.00, 0.86),
-    (9.97, 1.16),
-    (29.69, 1.34),
-    (42.10, 1.02),
-    (55.61, 1.46),
-    (66.47, 0.9),
-    (73.78, 1.3),
-    (84.42, 0.56),
-    (95.27, 1.1),
-    (109.68, 1.4),
-    (121.64, 1.52),
-    (124.96, 0.44),
-    (132.94, 1.02),
-    (135.34, 0.72),
-    (135.39, 0.72),
+    # 2026-08-08, derived on the DELIVERED take and clamped to the film's own length.
+    # Two real floors (the held breath under the X-ray beat, and the pre-button dip after the
+    # clause underlines itself) and peaks on the question, the signature and the seat.
+    (0.00, 0.84),
+    (10.53, 1.14),
+    (30.99, 1.32),
+    (46.79, 0.98),
+    (57.63, 1.4),
+    (67.55, 0.92),
+    (86.29, 1.26),
+    (94.19, 1.44),
+    (104.11, 1.5),
+    (113.43, 0.42),
+    (115.76, 1.3),
+    (125.62, 0.86),
+    (127.82, 0.5),
 ]
 
 # A WIND BED FOR THE COUNTRY THE FILM DRIVES INTO. The same panel note asked for ambience,
