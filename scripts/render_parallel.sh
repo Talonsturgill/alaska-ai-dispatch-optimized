@@ -30,7 +30,22 @@
 # ============================================================================
 set -euo pipefail
 cd "$(dirname "$0")/.."
-COMP="${1:-Dispatch0803}"
+# NO DEFAULT COMPOSITION (2026-08-08). This read `${1:-Dispatch0803}`, so invoking the
+# script with no arguments silently rendered a film that shipped on August 3rd. It cost
+# 2.5 hours: the render succeeded, printed OK, produced a valid 3835-frame file with a
+# plausible size, and every downstream step would have graded the wrong movie.
+#
+# A default target is only ever right for the run it was written in. Nothing about a
+# per-run composition id belongs in a fallback, because the failure mode is not an error
+# but a confident success on the wrong subject. Same family as the three gates this run
+# that reported clean while reading a shipped July episode.
+if [ $# -lt 1 ]; then
+  echo "render_parallel.sh: refusing to guess which film to render." >&2
+  echo "Usage: scripts/render_parallel.sh <Comp> <out.mp4> [total_frames] [chunks]" >&2
+  echo "Compositions are declared in video-engine/src/Root.tsx." >&2
+  exit 2
+fi
+COMP="$1"
 OUT="${2:-out/dispatch/render_mute.mp4}"
 PROPS="${PROPS:-out/dispatch/episode_props.json}"
 # MORE CHUNKS THAN SLOTS, ON PURPOSE (2026-08-04). The first version cut the film into
