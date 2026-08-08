@@ -143,22 +143,41 @@ EVENTS = [
 # Multipliers are relative to the bed's base level, so the shape lives here and the level
 # lives in one place in the graph.
 BED_ARC = [
-    # 2026-08-08, derived on the DELIVERED take and clamped to the film's own length.
-    # Two real floors (the held breath under the X-ray beat, and the pre-button dip after the
-    # clause underlines itself) and peaks on the question, the signature and the seat.
-    (0.00, 0.84),
-    (10.53, 1.14),
-    (30.99, 1.32),
-    (46.79, 0.98),
-    (57.63, 1.4),
-    (67.55, 0.92),
-    (86.29, 1.26),
-    (94.19, 1.44),
-    (104.11, 1.5),
-    (113.43, 0.42),
-    (115.76, 1.3),
-    (125.62, 0.86),
-    (127.82, 0.5),
+    # 2026-08-08 pass 2. Premix LRA 6.50 still delivered 5.7 after normalization, so the
+    # arc now DUCKS HARD immediately before each measured gap and swells to 2.25 inside it.
+    # Range matters more than level: LRA is the spread, and the spread has to survive loudnorm.
+    (0.00, 0.34),
+    (15.80, 0.3),
+    (16.46, 2.25),
+    (17.22, 0.34),
+    (29.82, 0.3),
+    (30.50, 2.25),
+    (31.28, 0.34),
+    (34.92, 0.3),
+    (35.60, 2.25),
+    (36.38, 0.34),
+    (56.54, 0.3),
+    (57.18, 2.25),
+    (57.92, 0.34),
+    (58.40, 0.2),
+    (60.90, 1.05),
+    (64.78, 0.3),
+    (65.81, 2.25),
+    (66.94, 0.34),
+    (70.52, 0.3),
+    (71.20, 2.25),
+    (71.98, 0.34),
+    (83.48, 0.3),
+    (84.13, 2.25),
+    (84.88, 0.34),
+    (104.60, 2.05),
+    (116.90, 0.16),
+    (117.56, 0.3),
+    (118.31, 2.25),
+    (119.16, 0.34),
+    (119.40, 1.9),
+    (125.40, 0.9),
+    (127.80, 0.3),
 ]
 
 # A WIND BED FOR THE COUNTRY THE FILM DRIVES INTO. The same panel note asked for ambience,

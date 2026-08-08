@@ -2,7 +2,7 @@ import React from 'react';
 import {AbsoluteFill, Sequence, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {z} from 'zod';
 import {VoiceProvider} from './lib/voice';
-import {tones, FormGradient, RimLight, ContactShadow, GradeLayer, INK} from './lib/lighting';
+import {tones, FormGradient, RimLight, ContactShadow, GradeLayer, MotionBlur, INK} from './lib/lighting';
 import {Character} from './lib/Character';
 import {AlaskaMini} from './lib/kit';
 import {vitals} from './lib/motion';
@@ -106,7 +106,7 @@ const RoomBG: React.FC<{f: number; deskY?: number; parallax?: number; warmth?: n
               fill={['#c3b9a4', '#9fada8', '#b7ada0', '#8fa09b', '#c9c0ad'][i]}
               stroke={INK} strokeWidth={4} />
       ))}
-      <g transform={`translate(${880 - parallax * 0.05},${deskY - 560})`}>
+      <g transform={`translate(${892 - parallax * 0.05},${deskY - 812})`}>
         <rect x={-96} y={-72} width={192} height={144} rx={2} fill="#e6e1d3"
               stroke={INK} strokeWidth={6} />
         <rect x={-78} y={-54} width={156} height={108} rx={1} fill="none"
@@ -222,7 +222,7 @@ const MoneyBlock: React.FC<{
       ))}
       <RimLight d={`M${-w / 2},${-bh} L${w / 2},${-bh}`} w={4} opacity={0.6} />
       {label && (
-        <text x={0} y={-bh - 22} textAnchor="middle" fontFamily={MONO} fontSize={30}
+        <text x={0} y={-bh - 52} textAnchor="middle" fontFamily={MONO} fontSize={30}
               fontWeight={700} fill={P.ink} letterSpacing={1.4}>{label}</text>
       )}
     </g>
@@ -235,7 +235,9 @@ const RulePlate: React.FC<{x: number; y: number; text: string; drive: number; f:
 }) => {
   const T = tones(P.enamel);
   const id = `rp${Math.round(x)}${Math.round(y)}`;
-  const w = text.length * 22 * 0.602 + 60;
+  // padding = 2 x (bolt inset 17 + bolt radius 8 + 14px clear), so a bolt can never
+  // touch a glyph however long the string is
+  const w = text.length * 22 * 0.602 + 2 * 39 + 40;
   const dx = interpolate(drive, [0, 1], [-420, 0]);
   const over = Math.sin(Math.min(1, drive) * Math.PI) * 9;
   return (
@@ -264,8 +266,16 @@ const AwardCard: React.FC<{
 }> = ({x, y, f, lit, s = 1, rot = 0, title, amount}) => (
   <g transform={`translate(${x},${y}) rotate(${rot}) scale(${s})`}>
     <ContactShadow cx={4} cy={62} rx={72} ry={8} opacity={0.22 + lit * 0.12} />
+    <defs>
+      <linearGradient id={`ac${Math.round(x)}${Math.round(y)}`} x1="0" y1="0" x2="0.35" y2="1">
+        <stop offset="0%" stopColor={lit > 0.5 ? '#fbf8f0' : '#cdd6d2'} />
+        <stop offset="100%" stopColor={lit > 0.5 ? '#ddd6c4' : '#a2aeaa'} />
+      </linearGradient>
+    </defs>
     <rect x={-72} y={-56} width={144} height={116} rx={2}
-          fill={lit > 0.5 ? P.paper : '#b9c2be'} stroke={INK} strokeWidth={4} />
+          fill={`url(#ac${Math.round(x)}${Math.round(y)})`} stroke={INK} strokeWidth={4} />
+    <path d="M-72,-52 q0,-4 4,-4 l136,0 q4,0 4,4" fill="none" stroke="#ffffff"
+          strokeWidth={2.5} opacity={0.5} />
     {lit > 0.5 ? (
       <>
         {title && (
@@ -303,6 +313,13 @@ const Recess: React.FC<{
 // =============================================================== S1  THE DROP
 const S1: React.FC = () => {
   const f = useCurrentFrame();
+  const {fps} = useVideoConfig();
+  const SPR = {damping: 8.5, stiffness: 240, mass: 0.7};
+  const land = spring({frame: f, fps, config: SPR});
+  const dropY = interpolate(land, [0, 1], [-620, 0]);
+  const prevY = interpolate(spring({frame: f - 1, fps, config: SPR}), [0, 1], [-620, 0]);
+  const vy = f < 30 ? dropY - prevY : 0;
+  const squash = 1 + Math.sin(Math.min(1, ramp(f, 7, 21)) * Math.PI) * 0.12;
   const drop = ramp(f, 0, 9);
   const settle = Math.sin(Math.min(1, ramp(f, 6, 26)) * Math.PI) * 5;
   const block = ramp(f, 62, 128);
@@ -310,11 +327,13 @@ const S1: React.FC = () => {
     <Stage f={f} push={ramp(f, 0, 300) * 0.055} drift={0.7}>
       <MoneyBlock x={700} y={1230} w={340} h={430} f={f} build={block}
                   label={block > 0.55 ? '$272,174,856' : undefined} />
-      {block > 0.7 && <Plate x={700} y={700} text="YEAR ONE" size={34} delay={96} />}
-      <g transform={`translate(0,${interpolate(drop, [0, 1], [-560, 0])})`}>
-        <TypeSlug x={392} y={1150} f={f} text="ARTIFICIAL INTELLIGENCE" scale={1.0}
-                  seated={0} held={0} phase={1} />
-      </g>
+      {block > 0.7 && <Plate x={286} y={922} text="YEAR ONE" size={34} delay={96} />}
+      <MotionBlur vy={vy} gain={1.2} max={28}>
+        <g transform={`translate(0,${dropY}) translate(392,1150) scale(${squash},${2 - squash}) translate(-392,-1150)`}>
+          <TypeSlug x={392} y={1150} f={f} text="ARTIFICIAL INTELLIGENCE" scale={1.0}
+                    seated={0} held={0} phase={1} />
+        </g>
+      </MotionBlur>
       {/* dust thrown at the impact */}
       {drop >= 1 && f < 40 && Array.from({length: 14}).map((_, i) => {
         const a = (i / 14) * Math.PI * 2, p = ramp(f, 9, 34);
@@ -336,7 +355,7 @@ const S2: React.FC = () => {
       <MoneyBlock x={540} y={1230} w={420} h={470} f={f} build={1} />
       <RulePlate x={540} y={880} text="NO NEW CONSTRUCTION" drive={ramp(f, 8, 30)} f={f} />
       <RulePlate x={540} y={996} text="NO BROADBAND" drive={ramp(f, 34, 58)} f={f} />
-      <TypeSlug x={210} y={1330} f={f} text="AI" scale={1.0} seated={0} phase={3} />
+      <TypeSlug x={196} y={1214} f={f} text="AI" scale={1.15} seated={0} phase={3} />
       <Plate x={540} y={588} text="THE MONEY HAS RULES" size={40} delay={12} />
     </Stage>
   );
@@ -384,8 +403,8 @@ const S3: React.FC = () => {
 const S4: React.FC = () => {
   const f = useCurrentFrame();
   const card = ramp(f, 8, 34);
-  const chars = Math.floor(ramp(f, 60, 190) * 30);
-  const QUOTE = 'ALMOST DIRECTING US TO AI';
+  const QUOTE = '"ALMOST DIRECTING US TO AI"';
+  const chars = Math.floor(ramp(f, 60, 190) * (QUOTE.length + 2));
   return (
     <Stage f={f} push={ramp(f, 0, 340) * 0.05} drift={1.0}>
       <g opacity={card} transform={`translate(0,${interpolate(card, [0, 1], [40, 0])})`}>
@@ -395,16 +414,12 @@ const S4: React.FC = () => {
       <g opacity={ramp(f, 56, 74)}>
         <rect x={168} y={950} width={744} height={150} rx={3} fill={P.paper}
               stroke={INK} strokeWidth={5} />
-        <text x={200} y={1042} fontFamily={MONO} fontSize={35} fontWeight={700}
-              fill={P.ink} letterSpacing={1.1}>
-          {'"' + QUOTE.slice(0, chars)}
+        <text x={540} y={1042} textAnchor="middle" fontFamily={MONO} fontSize={33}
+              fontWeight={700} fill={P.ink} letterSpacing={1.1}>
+          {QUOTE.slice(0, Math.min(chars, QUOTE.length))}
         </text>
-        {chars >= QUOTE.length && (
-          <text x={200 + QUOTE.length * 21.1 + 12} y={1042} fontFamily={MONO} fontSize={35}
-                fontWeight={700} fill={P.ink}>{'"'}</text>
-        )}
       </g>
-      <TypeSlug x={780} y={1360} f={f} text="AI" scale={1.1} seated={0} phase={5} />
+      <TypeSlug x={846} y={1206} f={f} text="AI" scale={1.2} seated={0} phase={5} />
       <Plate x={540} y={594} text="SHE SAW FURTHER" size={36} delay={20} />
     </Stage>
   );
@@ -439,7 +454,7 @@ const S6: React.FC = () => {
   const deal = ramp(f, 10, 130);
   const light = ramp(f, 176, 250);
   const CARDS = Array.from({length: 19}).map((_, i) => ({
-    x: 150 + (i % 5) * 196 + (Math.floor(i / 5) % 2) * 44,
+    x: 148 + (i % 5) * 178 + (Math.floor(i / 5) % 2) * 30,
     y: 900 + Math.floor(i / 5) * 178,
     rot: (hash(i) * 8 - 4),
     described: i < 4,
@@ -470,6 +485,7 @@ const S6: React.FC = () => {
 // ====================================================== S7  THE X-RAY (WARM BEAT)
 const S7: React.FC = () => {
   const f = useCurrentFrame();
+  const {fps} = useVideoConfig();
   const set = ramp(f, 6, 40);
   const lid = ramp(f, 48, 104);
   const expose = ramp(f, 150, 186);
@@ -478,9 +494,13 @@ const S7: React.FC = () => {
     <Stage f={f} push={ramp(f, 0, 320) * 0.05} drift={0.8} deskY={1420} warmth={1}>
       {/* the clinic: a window, a curtain, an exam table */}
       <g>
-        <rect x={94} y={330} width={330} height={430} rx={4} fill="#f7fbfb"
+        <rect x={94} y={330} width={330} height={430} rx={4} fill="#dfeaec"
               stroke={INK} strokeWidth={6} />
+        <path d="M104,700 L184,560 L246,646 L316,494 L414,700 Z" fill="#b6c8c4"
+              stroke={INK} strokeWidth={4} />
+        <circle cx={352} cy={412} r={34} fill="#eef3f0" stroke={INK} strokeWidth={4} />
         <line x1={259} y1={330} x2={259} y2={760} stroke={INK} strokeWidth={4} opacity={0.5} />
+        <line x1={94} y1={545} x2={424} y2={545} stroke={INK} strokeWidth={4} opacity={0.5} />
         <path d={`M424,330 q${28 + 12 * Math.sin(f / 43)},220 -6,430`} fill="none"
               stroke={INK} strokeWidth={5} opacity={0.55} />
         <rect x={620} y={1180} width={392} height={34} rx={6} fill="#c8d2cc"
@@ -488,8 +508,12 @@ const S7: React.FC = () => {
         <rect x={648} y={1214} width={30} height={206} fill="#9aa8a2" stroke={INK} strokeWidth={5} data-band="ok" />
         <rect x={954} y={1214} width={30} height={206} fill="#9aa8a2" stroke={INK} strokeWidth={5} data-band="ok" />
       </g>
-      <Character x={300} y={1420} scale={1.28} frame={f} pose={f < 46 ? "carry" : "point"}
-                 gesture={ramp(f, 52, 78)} emotion="neutral" outfit="worker" headgear="bare" facing={1} />
+      <Character x={300 + Math.sin(f / 63.1) * 3.5} y={1420} scale={1.28} frame={f}
+                 pose={f < 46 ? "carry" : "point"}
+                 gesture={f < 50 ? 0 : Math.max(0, Math.min(1,
+                   interpolate(spring({frame: f - 50, fps, config: {damping: 10, stiffness: 165}}),
+                               [0, 1], [-0.2, 1]) + Math.sin(f / 37.7) * 0.045))}
+                 emotion="neutral" outfit="worker" headgear="bare" facing={1} />
       <g transform={`translate(0,${interpolate(set, [0, 1], [-180, 0])})`}>
         <FieldRadiograph x={690} y={1330} f={f} scale={0.86} lid={lid} expose={expose}
                          carried={1 - set} groundY={1420} stencil="CLINIC 01" phase={4} />
@@ -665,7 +689,8 @@ const S11: React.FC = () => {
         );
       })}
       <Plate x={540} y={594} text="NO AWARDS" size={44} delay={10} />
-      <Plate x={540} y={1266} text="IN THIS ROUND" size={30} delay={92} />
+      <Plate x={540} y={1252} text="IN THIS ROUND" size={30} delay={92}
+             sub="PER THE ANCHORAGE DAILY NEWS" />
     </Stage>
   );
 };
@@ -756,6 +781,9 @@ const S13: React.FC = () => {
 // ============================================================== S14  THE SEAT
 const S14: React.FC = () => {
   const f = useCurrentFrame();
+  const {fps} = useVideoConfig();
+  const anti = Math.sin(Math.min(1, ramp(f, 3, 15)) * Math.PI) * 28;
+  const sp = spring({frame: f - 15, fps, config: {damping: 9, stiffness: 215, mass: 0.8}});
   const seat = ramp(f, 10, 46);
   return (
     <Stage f={f} push={ramp(f, 0, 110) * 0.06} drift={0.5} deskY={1720}>
@@ -766,8 +794,14 @@ const S14: React.FC = () => {
       <text x={540} y={806} textAnchor="middle" fontFamily={MONO} fontSize={27}
             fontWeight={700} fill={P.ink} letterSpacing={1.1}>TECHNICAL ASSISTANCE</text>
       <Recess x={540} y={1010} w={476} label="" f={f} />
-      <TypeSlug x={540} y={interpolate(seat, [0, 1], [790, 972])} f={f}
-                text="ARTIFICIAL INTELLIGENCE" scale={0.9} seated={seat} phase={0} />
+      <TypeSlug x={540} y={interpolate(sp, [0, 1], [790, 972]) - anti} f={f}
+                text="ARTIFICIAL INTELLIGENCE" scale={0.9} seated={sp} phase={0} />
+      {f >= 24 && f < 48 && Array.from({length: 12}).map((_, i) => {
+        const a2 = (i / 12) * Math.PI * 2, pr = ramp(f, 24, 48);
+        return <circle key={i} cx={540 + Math.cos(a2) * (40 + pr * 200)}
+                       cy={1008 - Math.abs(Math.sin(a2)) * (6 + pr * 28)}
+                       r={3.4 * (1 - pr)} fill="#fff" opacity={0.55 * (1 - pr)} />;
+      })}
       {seat > 0.9 && (
         <>
           <path d="M300,1122 L780,1122" stroke={P.ink} strokeWidth={7}
