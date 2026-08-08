@@ -64,7 +64,35 @@ RECT_RE = re.compile(
     re.S,
 )
 FONT_RE = re.compile(r"font:\s*`\s*\d+\s+(?P<size>[\d.]+)px\s*\$\{MONO\}")
-LS_RE = re.compile(r"letterSpacing:\s*(?P<ls>[\d.]+)")
+# ...AND THE OTHER WAY THE SAME THING IS WRITTEN (2026-08-08). FONT_RE above only matches
+# the CSS shorthand form, `font: {`700 ${size}px ${MONO}`}`, which is how the July/August-03
+# generation of episodes authored mono text. This generation uses plain SVG presentation
+# attributes instead - fontFamily={MONO} fontSize={38} - and the gate matched none of them,
+# so it measured ZERO strings on the film it was gating while happily measuring eleven in a
+# shipped episode it had hardcoded as its default. Two spellings of one idea, and the
+# checker knew one. Accept both, in either attribute order.
+FONT_ATTR_RE = re.compile(
+    r"fontFamily=\{MONO\}(?=(?:[^>]*?\bfontSize=\{(?P<size_a>[\d.]+)\}))"
+    r"|fontSize=\{(?P<size_b>[\d.]+)\}(?=(?:[^>]*?\bfontFamily=\{MONO\}))")
+
+
+def font_size_of(attrs):
+    """The mono font size on this <text>, however the episode spells it, else None."""
+    m = FONT_RE.search(attrs)
+    if m:
+        return float(m.group("size"))
+    m = FONT_ATTR_RE.search(attrs)
+    if m:
+        s = m.group("size_a") or m.group("size_b")
+        if s:
+            return float(s)
+    return None
+
+# Same two-spellings problem as the font: `letterSpacing: 1.6` in the CSS form and
+# `letterSpacing={1.6}` as an SVG attribute. Reading only the first silently measured
+# every attribute-form string as if it had no tracking, which UNDER-estimates its width
+# and is the direction that lets an overflow through.
+LS_RE = re.compile(r"letterSpacing(?::\s*|=\{)(?P<ls>[\d.]+)")
 X_RE = re.compile(r"\bx=\{(?P<x>" + NUMEXPR + r")\}")
 ANCHOR_RE = re.compile(r'textAnchor="(?P<a>\w+)"')
 
@@ -105,8 +133,8 @@ def check_file(path, min_margin=MIN_MARGIN):
     for m in TEXT_RE.finditer(src):
         attrs, body = m.group("attrs"), m.group("body")
         line = src[:m.start()].count("\n") + 1
-        font = FONT_RE.search(attrs)
-        if not font:
+        size = font_size_of(attrs)
+        if size is None:
             continue  # not a mono run, or a computed size
         if not body or "{" in body or "}" in body:
             skipped.append((line, (body or "")[:44], "interpolated text"))
@@ -117,7 +145,6 @@ def check_file(path, min_margin=MIN_MARGIN):
             skipped.append((line, body[:44], "unreadable x"))
             continue
 
-        size = float(font.group("size"))
         ls = LS_RE.search(attrs)
         ls = float(ls.group("ls")) if ls else 0.0
         anchor = ANCHOR_RE.search(attrs)
@@ -178,8 +205,30 @@ def check_file(path, min_margin=MIN_MARGIN):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("files", nargs="*",
-                    default=[os.path.join(REPO, "video-engine", "src", "Ep0803.tsx")])
+    # THE DEFAULT WAS A HARDCODED PATH TO A SHIPPED FILM (fixed 2026-08-08).
+    #
+    # It read Ep0803.tsx, an episode published on August 3rd. Preflight has been printing
+    # "OK plated strings fit their plates: 11 measured, 0 failing" on every run since,
+    # and every one of those measurements was of somebody else's movie. Pointed at the
+    # episode actually being rendered it measures ZERO strings, so it has never once
+    # checked the film it was gating.
+    #
+    # That is the FIFTH gate this run found reporting a pass while grading nothing or
+    # grading the wrong file: caption_band_check resolved a July episode through a stamp
+    # field nobody writes, then passed again by returning early on a missing constant;
+    # plate_overlap_check parsed zero scenes; claims_contract_check counted only failures;
+    # and render_parallel.sh defaulted to rendering Ep0803 as well. The shape is always the
+    # same - a per-run target frozen into a default, which is correct for exactly one run
+    # and silently wrong for every run after it.
+    #
+    # Resolved through the same helper caption_band_check uses, so there is one definition
+    # of "this run's episode" and not five.
+    def _this_runs_episode():
+        sys.path.insert(0, os.path.join(REPO, "scripts"))
+        from caption_band_check import default_targets
+        return default_targets()
+
+    ap.add_argument("files", nargs="*", default=_this_runs_episode())
     ap.add_argument("--min-margin", type=float, default=MIN_MARGIN)
     a = ap.parse_args()
 
