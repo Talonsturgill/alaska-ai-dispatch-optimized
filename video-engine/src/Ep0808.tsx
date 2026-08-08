@@ -587,6 +587,17 @@ const S1: React.FC<SceneProps> = () => {
   // move it is named after, and the counter lands on the number as line 1 names the
   // program it came from.
   const block = ramp(f, 40, 265);
+  // THE NUMBER LANDS ON ITS OWN WORDS (2026-08-08, all three panel judges measured this
+  // independently). The counter was driven by `block`, so it inherited the block's f40..f265
+  // build and crawled LINEARLY at about 36M/s, settling near 9.0s. The line that speaks it,
+  // "two hundred seventy two million dollars", ends at 3.40s — so the film's biggest figure
+  // arrived 5.6 seconds after the voice had moved on to naming the program.
+  //
+  // Splitting the two is the whole fix: the VOLUME keeps building to f265 (that is what the
+  // 7.98s evidence strip is anchored to, and collapsing it would re-create the held beat the
+  // last round removed), while the NUMERAL runs its own ramp across the spoken line and eases
+  // out onto the last syllable instead of ticking past it.
+  const count = 1 - Math.pow(1 - ramp(f, 41, 102), 3);   // ease-out cubic, lands at 3.40s
   return (
     <Stage f={f} push={ramp(f, 0, 300) * 0.055} drift={0.7} act={0}>
       <MoneyBlock x={660} y={1230} w={340} h={430} f={f} build={block} />
@@ -608,14 +619,16 @@ const S1: React.FC<SceneProps> = () => {
           counter plate is 612 wide, and anchored at x=700 its right edge rendered at 1085
           under the content zoom and the World push together (1.169x about x=540), so it ran
           off a 1080px frame in every frame of the shot. */}
-      {block > 0.06 && (
-        <g transform={`translate(600,${interpolate(block, [0, 1], [1160, 838])})`}>
+      {count > 0.02 && (
+        // the plate rides the same ramp as the digits, so the whole hero element arrives
+        // together on the line rather than the number settling under a plate still travelling
+        <g transform={`translate(600,${interpolate(count, [0, 1], [1160, 838])})`}>
           <ContactShadow cx={0} cy={46} rx={300} ry={11} opacity={0.3} />
           <rect x={-306} y={-46} width={612} height={94} rx={3} fill={P.paper}
                 stroke={INK} strokeWidth={7} />
           <text x={0} y={22} textAnchor="middle" fontFamily={MONO} fontSize={54}
                 fontWeight={700} fill={P.ink} letterSpacing={1.4}>
-            {'$' + Math.round(interpolate(block, [0, 1], [0, 272174856])).toLocaleString()}
+            {'$' + Math.round(interpolate(count, [0, 1], [0, 272174856])).toLocaleString()}
           </text>
         </g>
       )}
