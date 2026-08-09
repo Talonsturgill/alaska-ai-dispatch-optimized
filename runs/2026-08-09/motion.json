@@ -1,0 +1,150 @@
+{
+  "note": "frame 1 vs frame 8 of each filmstrip window, measured on the delivered cut. changed_pct is the share of pixels differing by more than 12/255. A judge who cannot SEE motion in a strip should read this before recording that the beat is frozen.",
+  "strips": {
+    "ignite": {
+      "centre_s": 0.15,
+      "changed_pct": 21.6,
+      "peak_delta": 254
+    },
+    "tag": {
+      "centre_s": 3.2,
+      "changed_pct": 5.3,
+      "peak_delta": 153
+    },
+    "plate": {
+      "centre_s": 8.55,
+      "changed_pct": 6.1,
+      "peak_delta": 255
+    },
+    "count": {
+      "centre_s": 10.9,
+      "changed_pct": 8.2,
+      "peak_delta": 255
+    },
+    "stamp": {
+      "centre_s": 14.0,
+      "changed_pct": 5.8,
+      "peak_delta": 255
+    },
+    "pour": {
+      "centre_s": 18.54,
+      "changed_pct": 2.2,
+      "peak_delta": 91
+    },
+    "swell": {
+      "centre_s": 21.34,
+      "changed_pct": 3.3,
+      "peak_delta": 255
+    },
+    "bind": {
+      "centre_s": 25.48,
+      "changed_pct": 3.5,
+      "peak_delta": 255
+    },
+    "assemble": {
+      "centre_s": 31.35,
+      "changed_pct": 8.7,
+      "peak_delta": 255
+    },
+    "split": {
+      "centre_s": 34.1,
+      "changed_pct": 2.6,
+      "peak_delta": 185
+    },
+    "bars": {
+      "centre_s": 37.56,
+      "changed_pct": 5.6,
+      "peak_delta": 255
+    },
+    "quote": {
+      "centre_s": 40.86,
+      "changed_pct": 1.2,
+      "peak_delta": 174
+    },
+    "spinup": {
+      "centre_s": 45.2,
+      "changed_pct": 0.9,
+      "peak_delta": 160
+    },
+    "twang": {
+      "centre_s": 48.3,
+      "changed_pct": 1.2,
+      "peak_delta": 176
+    },
+    "reroute": {
+      "centre_s": 50.8,
+      "changed_pct": 1.2,
+      "peak_delta": 172
+    },
+    "draw": {
+      "centre_s": 52.06,
+      "changed_pct": 2.3,
+      "peak_delta": 255
+    },
+    "slips": {
+      "centre_s": 63.42,
+      "changed_pct": 2.3,
+      "peak_delta": 179
+    },
+    "intake": {
+      "centre_s": 68.98,
+      "changed_pct": 1.7,
+      "peak_delta": 255
+    },
+    "swing": {
+      "centre_s": 71.72,
+      "changed_pct": 3.7,
+      "peak_delta": 255
+    },
+    "zero": {
+      "centre_s": 77.94,
+      "changed_pct": 1.5,
+      "peak_delta": 255
+    },
+    "heap": {
+      "centre_s": 85.02,
+      "changed_pct": 3.2,
+      "peak_delta": 255
+    },
+    "sentence": {
+      "centre_s": 88.64,
+      "changed_pct": 4.1,
+      "peak_delta": 194
+    },
+    "crack": {
+      "centre_s": 96.1,
+      "changed_pct": 1.5,
+      "peak_delta": 255
+    },
+    "seat": {
+      "centre_s": 100.31,
+      "changed_pct": 4.2,
+      "peak_delta": 125
+    },
+    "pumps": {
+      "centre_s": 105.96,
+      "changed_pct": 2.1,
+      "peak_delta": 255
+    },
+    "meter": {
+      "centre_s": 108.96,
+      "changed_pct": 2.2,
+      "peak_delta": 163
+    },
+    "rise": {
+      "centre_s": 116.98,
+      "changed_pct": 10.7,
+      "peak_delta": 254
+    },
+    "turn": {
+      "centre_s": 121.08,
+      "changed_pct": 2.4,
+      "peak_delta": 255
+    },
+    "button": {
+      "centre_s": 125.76,
+      "changed_pct": 3.8,
+      "peak_delta": 255
+    }
+  }
+}
