@@ -78,7 +78,10 @@
    "source_url": "https://api.nsf.gov/services/v1/awards.json?keyword=%22Transformative+Bioprocessing%22",
    "requires": [
     "never a flat $6 million, which overstates by $1,588. About six million, or the exact figure."
-   ]
+   ],
+   "contract": {
+    "attribution_on_screen": "THREE LINKED NSF AWARDS"
+   }
   },
   {
    "id": "c7",
@@ -116,7 +119,10 @@
     "singular 'a predictive Virtual Assay', never plural assays",
     "'three data-coupled thrusts', never 'three components'",
     "the AI does NOT design the organism or edit genes and the film may not imply it"
-   ]
+   ],
+   "contract": {
+    "attribution_on_screen": "NSF ABSTRACT, ALL THREE THRUSTS"
+   }
   },
   {
    "id": "c10",

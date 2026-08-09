@@ -445,11 +445,17 @@ const S1b: React.FC<SceneProps> = (p) => {
     <Stage f={f} push={push} lampX={860} camY={40} parallax={90} fg={1} midSide={-1}>
       <SteelVessel f={f} x={470} y={FLOOR} scale={1.95} lid={1} tagTurn={0} phase={0.4} />
       <BrassPlate x={540} y={672} text="AWARDED 2026-08-05" size={36} delay={4} />
+      {/* THE QUALIFIER BELONGS ON THE FIRST APPEARANCE, NOT FIFTEEN SECONDS LATER. This plate
+          sat bare above UNIV. OF ALASKA ANCHORAGE, and three judges across four rounds read the
+          stack as UAA receiving the whole $5,998,412. UAA holds $3,824,575 (claim c1); the total
+          belongs to three linked awards (c6). The sub existed already, on the S3 plate at 32.5s,
+          which is long after the misread is available. */}
       {f >= numShow && (
-        <Plate x={540} y={812} text={`$${Math.round(count).toLocaleString('en-US')}`} size={60} delay={numShow} />
+        <Plate x={540} y={812} text={`$${Math.round(count).toLocaleString('en-US')}`} size={60}
+               delay={numShow} sub="THREE LINKED NSF AWARDS" />
       )}
       {f >= instShow && (
-        <BrassPlate x={540} y={962} text="UNIV. OF ALASKA ANCHORAGE" size={30} delay={instShow} />
+        <BrassPlate x={540} y={962} text="LEAD: UNIV. OF ALASKA ANCHORAGE" size={30} delay={instShow} />
       )}
     </Stage>
   );
@@ -552,7 +558,8 @@ const S3: React.FC<SceneProps> = (p) => {
                                    size={28} delay={bars + 12} />}
       </g>
       {f < bars && f >= asm && <Plate x={540} y={660} text="$5,998,412" size={56} delay={asm + 6} sub="THREE LINKED NSF AWARDS" />} {/* plate-overlap-ok: retires at bars, the verdict lands 18f later, they never share a frame */}
-      {f >= bars + 18 && <Plate x={540} y={672} text="MOST OF IT IS SOFTWARE" size={40} delay={bars + 18} />}
+      {f >= bars + 18 && <Plate x={540} y={672} text="THE METHOD IS SOFTWARE" size={40} delay={bars + 18}
+                                     sub="NSF ABSTRACT, ALL THREE THRUSTS" />}
       {f >= quote && (
         <g transform="translate(540,868)">
           <rect x={-QW / 2} y={-70} width={QW} height={172} rx={4} fill="#171310" stroke={INK} strokeWidth={5} />
