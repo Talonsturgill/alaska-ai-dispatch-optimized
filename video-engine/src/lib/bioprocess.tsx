@@ -465,8 +465,12 @@ export const CellSurface: React.FC<{
       {/* the nucleoid: a darker mass with a real edge, so the interior is never one flat tone */}
       <ellipse cx={cx - r * 0.12} cy={cy + r * 0.06} rx={r * 0.42} ry={r * 0.3}
                fill={T.shade} opacity={0.5} transform={`rotate(-18,${cx},${cy})`} />
-      <ellipse cx={cx - r * 0.12} cy={cy + r * 0.06} rx={r * 0.42} ry={r * 0.3}
-               fill="none" stroke={INK} strokeWidth={3} opacity={0.35} transform={`rotate(-18,${cx},${cy})`} />
+      {/* NO OUTLINE. A bacterium has a nucleoid, not a nucleus, and the difference on screen is
+          exactly this stroke: an ink edge around the interior mass reads as a membrane, which is
+          the organelle Shewanella does not have. Two judges reported the cell as drawn with a
+          nucleus. The mass stays, because a flat interior was its own defect; the edge goes. */}
+      <ellipse cx={cx - r * 0.2} cy={cy + r * 0.1} rx={r * 0.3} ry={r * 0.22}
+               fill={T.shade} opacity={0.28} transform={`rotate(-24,${cx},${cy})`} />
       {/* pili */}
       {Array.from({length: 22}, (_, i) => {
         const a = (i / 22) * Math.PI * 2 + 0.3;

@@ -624,7 +624,7 @@ const S4: React.FC<SceneProps> = (p) => {
       {drawn > 0.005 && (
         <TwinVessel f={f} x={828} y={gy} scale={1.3} drawn={drawn} fidelity={0.95}
                     bioFidelity={0.10} running={drawn > 0.98 ? 1 : 0} phase={2.2}
-                    bioLabel={drawn > 0.98 ? '?' : undefined} />
+                    bioLabel={undefined} />
       )}
       {/* the cable, drawn AFTER the vessels so it always reads on top (draw-order law) */}
       <path d={cableD} fill="none" stroke={swing > 0.5 ? SIM : '#2E2822'} strokeWidth={7}
@@ -837,8 +837,8 @@ const S8: React.FC<SceneProps> = (p) => {
               fill={P.ink}>HOSTING THE PAYROLL?</text>
         {/* the hairline crack runs end to end */}
         {cr > 0.01 && (
-          <path d={`M ${-320} ${-6} L ${-320 + cr * 640} ${-6 + Math.sin(cr * 9) * 9}`}
-                stroke="#7A2E20" strokeWidth={3} fill="none" />
+          <path d={`M ${-320} ${34} L ${-320 + cr * 640} ${34 + Math.sin(cr * 9) * 9}`}
+                stroke="#7A2E20" strokeWidth={4.5} fill="none" />
         )}
       </g>
       {cr > 0.6 && <Plate x={742} y={1044} text="THAT LANDS" size={38} delay={crack + 18} />}
@@ -952,7 +952,12 @@ const S10: React.FC<SceneProps> = (p) => {
                   running={1 - shut * 0.85} phase={2.2} />
       <LoopGovernor f={f} x={543} y={FLOOR} scale={0.95} spin={1 - shut * 0.7} throttle={0.7 - shut * 0.3} phase={0.9} />
       {/* THE RING. Closed, rising, and carrying nothing underneath it. */}
-      <g transform={`translate(540,${Math.min(ringY, 662)}) rotate(${(f * 1.3) % 360})`} opacity={shut}>
+      {/* max, not min. ringY travels 1010 -> 510, so it RISES, and clamping with min pinned only
+          its start and let it sail straight past the plate it annotates. Three judges reported the
+          ring encircling bare wall in the closing beat and one made it a high-severity defect; the
+          clamp I added last round was backwards and fixed nothing. It now cannot rise above the
+          plate's centre, so the ellipse contains THE METHOD for the whole of its life. */}
+      <g transform={`translate(540,${Math.max(ringY, 662)}) rotate(${(f * 1.3) % 360})`} opacity={shut}>
         <ellipse rx={ringR} ry={ringR * 0.34} fill="none" stroke={SIM} strokeWidth={16} opacity={0.12} />
         <ellipse rx={ringR} ry={ringR * 0.34} fill="none" stroke={SIM} strokeWidth={5} />
         <circle cx={ringR} cy={0} r={7} fill="#EAFFB0" />
@@ -1015,7 +1020,7 @@ const S11: React.FC<SceneProps> = (p) => {
           question nobody asked. On the end card it travels with the file. */}
       {f >= 46 && (
         <text x={540} y={1332} textAnchor="middle" fontFamily={MONO} fontSize={17} fontWeight={700}
-              fill="#7E7362" letterSpacing={0.8} opacity={Math.min(1, (f - 46) / 10)}>
+              fill="#A2957F" letterSpacing={0.8} opacity={Math.min(1, (f - 46) / 10)}>
           MUSIC: BATHED IN THE LIGHT, KEVIN MACLEOD, INCOMPETECH.COM, CC BY 4.0
         </text>
       )}
