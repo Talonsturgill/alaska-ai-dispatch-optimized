@@ -615,7 +615,7 @@ const S4: React.FC<SceneProps> = (p) => {
       <circle cx={tipX} cy={tipY} r={9} fill={swing > 0.5 ? SIM : '#3E362E'} stroke={INK} strokeWidth={3} />
       <LoopGovernor f={f} x={gx} y={gy} scale={1.22} spin={spin} throttle={0.35 + spin * 0.4} phase={0.9} />
       {f >= route + 10 && <Plate x={540} y={665} text="ON A POWER BUDGET" size={36} delay={route + 10} />}
-      {drawn > 0.97 && <BrassPlate x={742} y={1300} text="VIRTUAL PILOT PLANT" size={28} delay={draw + 62} />}
+      {drawn > 0.97 && <BrassPlate x={742} y={1246} text="VIRTUAL PILOT PLANT" size={28} delay={draw + 62} />}
     </Stage>
   );
 };
@@ -631,7 +631,7 @@ const S5: React.FC<SceneProps> = (p) => {
   return (
     <Stage f={f} push={push} lampX={280} camY={55} zoom={1.14} fg={1} midSide={-1}>
       <SteelVessel f={f} x={330} y={FLOOR} scale={1.72} lid={1} tagTurn={0} phase={0.4} mouth={1} />
-      <Plate x={684} y={652} text="NO RESULT EXISTS YET" size={34} delay={6} sub="WORK STARTS 2026-09-01" />
+      <Plate x={640} y={652} text="NO RESULT EXISTS YET" size={34} delay={6} sub="WORK STARTS 2026-09-01" />
       {/* four slips, landing one at a time, into a stack too short to cast a shadow */}
       {[0, 1, 2, 3].map((i) => {
         const d = slips + i * 12;
@@ -652,9 +652,9 @@ const S5: React.FC<SceneProps> = (p) => {
           the same affordance the NO RESULT EXISTS YET plate above already uses. It also moves
           up off y=1300, where the open caption box was cutting it in half for the 1.8s the
           "Thin material for a copy" cue is live. */}
-      {f >= slips + 52 && <Plate x={742} y={1262} text="4 PAPERS INDEXED" size={26}
+      {f >= slips + 52 && <Plate x={598} y={1088} text="4 PAPERS INDEXED" size={26}
                                  delay={slips + 52} sub="PUBMED, AS OF 2026-08-09" />}
-      {f >= thin && <Plate x={656} y={962} text="THIN MATERIAL FOR A COPY" size={32} delay={thin} />}
+      {f >= thin && <Plate x={600} y={962} text="THIN MATERIAL FOR A COPY" size={32} delay={thin} />}
     </Stage>
   );
 };
@@ -855,7 +855,7 @@ const S9: React.FC<SceneProps> = (p) => {
           21-character label is 278 wide: at 210 its left edge rendered at x=3, hard against the
           frame. 238 puts it at 35. */}
       {run > 0.3 && (
-        <g transform="translate(258,1210)">
+        <g transform="translate(276,1210)">
           <SimField f={f} x={-120} y={-120} w={240} h={120} cols={8} rows={4} filled={0.82} phase={1.4} />
           <text x={0} y={20} textAnchor="middle" fontFamily={MONO} fontSize={22} fontWeight={700}
                 fill={SIM}>PUMPS / TIMING / POWER</text>
@@ -863,7 +863,7 @@ const S9: React.FC<SceneProps> = (p) => {
       )}
       {/* the power meter, overshooting and settling just inside its limit */}
       {f >= meter && (
-        <g transform="translate(258,1400)"> {/* stays under the label above it, which moved inboard */}
+        <g transform="translate(276,1400)"> {/* stays under the label above it, which moved inboard */}
           <circle r={62} fill="#221C16" stroke={INK} strokeWidth={5} />
           <path d="M -46 8 A 46 46 0 0 1 46 8" fill="none" stroke="#6B6152" strokeWidth={4} />
           <path d="M 30 -18 L 40 -26" stroke="#C96A4A" strokeWidth={5} />

@@ -54,7 +54,13 @@ import sys
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 FRAME_W = 1080
-MARGIN = 16          # a plate that touches the very edge reads as clipped even if it is not
+# 54px is 5% of the frame, the safe area every social platform assumes. 16 was the old value and
+# it is arithmetically correct and practically wrong: the shot-6 bin row cleared it at 21px and
+# three separate judge readings across two rounds called that row clipped or bleeding. A margin
+# that passes geometry a viewer reads as cut is not measuring the thing that matters.
+MARGIN = 54
+CAPTION_TOP = 1336   # must match the episode's own constant
+CAP_MARGIN = 26      # a plate that touches the caption box reads as occluded
 DEFAULT_SIZE = {"Plate": 40, "BrassPlate": 34}
 LS = 1.6
 NUM = r"-?\d+(?:\.\d+)?"
@@ -95,6 +101,8 @@ def scenes(src: str, default_zoom: float):
         # zoom: the <Stage> tag's own literal, else the file default
         zm = re.search(r"<Stage\b[^>]*?\bzoom=\{([\d.]+)\}", blk, re.S)
         zoom = float(zm.group(1)) if zm else default_zoom
+        cm = re.search(r"<Stage\b[^>]*?\bcamY=\{(" + NUM + r")\}", blk, re.S)
+        camY = float(cm.group(1)) if cm else 0.0
 
         # push: whichever the <Stage> is actually handed. A literal is the whole story; a
         # variable means finding its interpolate and taking the largest value it can reach.
@@ -107,8 +115,26 @@ def scenes(src: str, default_zoom: float):
             if im:
                 vals = [float(v) for v in re.findall(NUM, im.group(1))]
                 push = max(vals) if vals else 0.0
-        out.append((name, line0, blk, zoom * (1.0 + push), zoom, push))
+        out.append((name, line0, blk, zoom * (1.0 + push), zoom, push, camY))
     return out
+
+
+def project_y(y, zoom, push, camY):
+    """Where an AUTHORED y actually lands on the delivered frame.
+
+    Stage composes two nested transforms and the vertical one has an offset the horizontal
+    one does not:
+
+        inner:  translate(540, 960 + camY*0.2) scale(zoom)  translate(-540, -960)
+        outer:  translate(540, 960 + camY)     scale(1+push) translate(-540, -960)
+
+    So y_rendered = 960 + camY + ((971' + (y - 971')*zoom) - 960) * (1 + push), where 971' is
+    960 + camY*0.2. Ignoring camY and push is what let a card clamped to authored 1302 render
+    at 1401, which is 65px INSIDE the burned-in caption band.
+    """
+    pivot = 960.0 + camY * 0.2
+    y_inner = pivot + (y - pivot) * zoom
+    return 960.0 + camY + (y_inner - 960.0) * (1.0 + push)
 
 
 def translate_stack(blk: str):
@@ -159,9 +185,10 @@ def check(path: str):
     src = open(path).read()
     dz = content_zoom(src)
     bad, unmeasured, n = [], [], 0
+    cap_bad = []
     per_scene = []
 
-    for name, line0, blk, scale, zoom, push in scenes(src, dz):
+    for name, line0, blk, scale, zoom, push, camY in scenes(src, dz):
         lo_safe = 540 - (540 - MARGIN) / scale
         hi_safe = 540 + (FRAME_W - MARGIN - 540) / scale
         per_scene.append((name, scale, zoom, push, lo_safe, hi_safe))
@@ -179,6 +206,16 @@ def check(path: str):
 
         def skip(pos, kind, why):
             unmeasured.append((name, line0 + blk[:pos].count("\n"), kind, why))
+
+        def record_caption(pos, kind, text, y, h):
+            """A plate's own CAP_GUARD clamp is applied in AUTHORED space, and the Stage then
+            moves it. In shot 5 a card clamped to authored 1302 renders at 1401, which is 65px
+            inside the burned-in caption band, so an open caption sat on top of the film's
+            PubMed attribution for the 1.8s its cue was live."""
+            bot = project_y(y + h / 2, zoom, push, camY)
+            if bot > CAPTION_TOP - CAP_MARGIN:
+                line = line0 + blk[:pos].count("\n")
+                cap_bad.append((name, line, kind, text[:34], round(y), round(bot)))
 
         # ---- plated strings -------------------------------------------------------------
         for m in re.finditer(r"<(Plate|BrassPlate)\b(.*?)/>", blk, re.S):
@@ -202,6 +239,12 @@ def check(path: str):
             if sub:
                 w = max(w, mono_w(sub.group(1), size * 0.54, 1.2) + 56)
             record(m.start(), kind, tm.group(1), float(xm.group(1)) + off, w)
+            ym = re.search(r"\by=\{(" + NUM + r")\}", a)
+            if ym:
+                rows = max(1, (len(tm.group(1)) // 34) + 1)
+                h = size * 1.16 * rows + (size * 0.54 * 1.5 if sub else 0) + 30
+                y_auth = min(float(ym.group(1)), (CAPTION_TOP - 34) - h / 2)
+                record_caption(m.start(), kind, tm.group(1), y_auth, h)
 
         # ---- bare centred mono strings --------------------------------------------------
         # This is the class the first version of this checker was blind to, and it is the class
@@ -245,7 +288,7 @@ def check(path: str):
             x, w = float(xm.group(1)), float(wm.group(1))
             record(m.start(), "rect", f"{w:.0f}px box", x + w / 2 + off, w)
 
-    return bad, unmeasured, n, per_scene
+    return bad, unmeasured, n, per_scene, cap_bad
 
 
 def main() -> int:
@@ -255,7 +298,7 @@ def main() -> int:
         return 1
     total_bad, total_n = 0, 0
     for path in targets:
-        bad, unmeasured, n, per_scene = check(path)
+        bad, unmeasured, n, per_scene, cap_bad = check(path)
         rel = os.path.relpath(path, REPO)
         total_n += n
         print(f"zoom_clip_check: {rel}")
@@ -271,6 +314,11 @@ def main() -> int:
                 print("       NO x can fit this string at this size. Shorten it or reduce the size.")
             else:
                 print(f"       move x into {need_lo:.0f}..{need_hi:.0f}, or reduce the size")
+        for nm, line, kind, text, y, bot in cap_bad:
+            total_bad += 1
+            print(f"  FAIL {rel}:{line}  [{nm}] {kind} '{text}'")
+            print(f"       authored y={y} renders its bottom at {bot}, inside the caption band "
+                  f"(top {CAPTION_TOP}). An open caption will sit on this string.")
         if unmeasured:
             print("  not measured (stated so coverage is never assumed):")
             for name, line, kind, why in unmeasured:
