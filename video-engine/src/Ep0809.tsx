@@ -759,7 +759,7 @@ const S7: React.FC<SceneProps> = (p) => {
                  outfit="worker" emotion="worried" headgear="beanie" />
       {f >= heapAt && (
         <Unnamed d={HEAP_D} label="LOCATION NOT IN THE RECORD" f={f - heapAt} x={676} y={1096}
-                 scale={1.45} color="#B9A891" drift={1} wide={400} tall={110} strokeWidth={4.6}
+                 scale={1.45} color="#D8CBB4" drift={1} wide={400} tall={230} strokeWidth={4.6}
                  labelSide="above" />
       )}
       {f >= 8 && <Plate x={396} y={655} text="1 OPERATING COAL MINE" size={34} delay={8} sub="ALASKA, PER DGGS" />}
