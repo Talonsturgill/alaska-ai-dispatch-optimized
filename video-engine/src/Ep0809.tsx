@@ -987,7 +987,10 @@ const S11: React.FC<SceneProps> = (p) => {
           putting its final stamp on with nothing under it. */}
       {f >= 22 && <Plate x={540} y={700} text="WHAT WOULD MAKE YOU TRUST IT" size={38} delay={22}
                          sub="A PLANT YOU HAVE NEVER SEEN RUN" />}
-      {f >= 40 && <BrassPlate x={540} y={1180} text="ALASKA.AI" size={30} delay={40} />}
+      {/* left of the tank on the open floor, not across it. "Cards land on top of the hero prop"
+          is the most repeated composition note of this run and the last frame is the worst place
+          to make it again. It also puts something in the empty lower third. */}
+      {f >= 40 && <BrassPlate x={214} y={1250} text="ALASKA.AI" size={26} delay={40} />}
     </Stage>
   );
 };
