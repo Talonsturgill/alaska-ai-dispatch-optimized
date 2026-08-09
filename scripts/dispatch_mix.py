@@ -35,7 +35,7 @@ OUT = os.path.join(REPO, "out", "dispatch")
 AUD = os.path.join(OUT, "audio")
 FF = os.environ.get("FFMPEG_BIN", "ffmpeg")
 SR = 44100
-DATE = "2026-08-08"   # episode seed for the shuffle-bag + jitter
+DATE = "2026-08-09"   # episode seed for the shuffle-bag + jitter
 
 
 def run(cmd):
@@ -80,43 +80,54 @@ _TAIL = 2.6   # matches scripts/build_scenes.py TAIL (hold after the last word)
 VIDEO_SECS = max(x["end"] for x in _lines) + _TAIL   # derive from VO; never hardcode
 
 EVENTS = [
-    # 2026-08-08 "Not In The Buying". PER-RUN DATA, generated from this board's own
-    # 35 beats scaled onto the DELIVERED take (vo_lines.json), never typed by hand and never
-    # carried over. Families alternate so no two consecutive events share one. ONE riser.
-    (0.00, "stamp", "hero", 0.0),   # opens on the throughline object before the story exists
-    (2.43, "clank", "standard", 0.01),   # the scale, established behind the object rather than instead of it
-    (6.89, "tick", "standard", -0.32),   # names the program before anything is claimed about it
-    (9.62, "snap", "standard", 0.04),   # the constraint stated as hardware, not as narration
-    (14.18, "tick", "standard", -0.29),   # the cap drawn as a physical clamp rather than a footnote
-    (16.61, "whoosh", "standard", 0.07),   # THE INFERENCE, DRAWN: the rules push the flow somewhere
-    (21.17, "pop", "standard", -0.26),   # the forecast, attributed and dated, so it can never read as a reaction to 
-    (24.10, "chime", "standard", 0.1),   # her words, in her words, with the subject of her sentence intact
-    (28.66, "tick", "standard", -0.23),   # the second source of the expectation
-    (30.99, "chime", "standard", 0.13),   # PLANTS THE PRIMARY OPEN LOOP: the film asks where this goes and refuses to
-    (35.45, "thud", "standard", -0.2),   # the awards arrive, dated
-    (38.59, "pop", "texture", 0.16),   # the round, drawn as a countable set with its unknowns visible
-    (43.25, "clank", "standard", -0.17),   # the sourcing, stated BEFORE the finding it scopes
-    (45.68, "whoosh", "standard", 0.19),   # tonal reset into the film's one plainly warm beat
-    (50.23, "pop", "standard", -0.14),   # REVEAL 2, build-on: the thing that actually arrived, warm and round agains
-    (53.07, "whoosh", "standard", 0.22),   # a gesture that ARRIVES, with windup and overshoot, and a source drawn with
-    (57.63, "tick", "standard", -0.11),   # REHOOK 2: the count made physical, and this beat carries no irony anywhere
-    (60.26, "paper", "standard", 0.25),   # the one award on the state's technology list that did get money, drawn pla
-    (64.82, "boom", "standard", -0.08),   # REVEAL 3 AND THE SIGNATURE SHOT: the mismatch is a GAP YOU CAN SEE, not a 
-    (67.55, "pop", "texture", 0.28),   # the honesty spine, and the object states it without a word
-    (72.11, "whoosh", "hero", 0.0),   # the film announces it is about to argue against itself
-    (74.44, "boom", "standard", 0.31),   # the prematurity objection at full strength, drawn as mass
-    (79.00, "clank", "standard", -0.02),   # the concern of the people who got nothing, taken seriously on its own term
-    (81.83, "pop", "texture", 0.34),   # the required scoping, on screen, every time this fact appears
-    (86.29, "snap", "standard", 0.0),   # REHOOK 3: the film's own limitation, drawn rather than footnoted
-    (89.63, "whoosh", "standard", -0.33),   # the scope of what the film actually knows, drawn as lit and unlit
-    (94.19, "thud", "standard", 0.03),   # the film goes to the source
-    (96.72, "tick", "texture", -0.3),   # the search, performed rather than reported
-    (101.28, "paper", "standard", 0.06),   # the correction of record, drawn as two failed fits
-    (104.11, "boom", "standard", -0.27),   # REVEAL 4 AND THE PRIMARY OPEN LOOP PAYS: this is where the phrase actually
-    (108.77, "ding", "hero", 0.0),   # THE FAIRNESS BEAT: her read is affirmed in the film's own voice, drawn as 
-    (111.41, "clank", "texture", -0.24),   # holds both things at once instead of choosing
-    (115.76, "stamp", "standard", 0.12),   # THE BUTTON: the film's whole argument as three sockets, two empty and one 
-    (118.70, "snap", "hero", 0.0),   # loops back to frame one, where the same slug lay loose on a desk with nowh
+
+    # 2026-08-09 "The Method, Not The Metal". PER-RUN DATA, derived from THIS film's 29 named
+    # move centres (scripts/build_evidence.py MOVES against the delivered vo_lines.json), so
+    # every hit lands on the frame something actually happens.
+    #
+    # THE TABLE THAT WAS HERE WAS YESTERDAY'S FILM. It was labelled 2026-08-08 "Not In The
+    # Buying" and its comments described that story: her words, the Fairbanks counter-point,
+    # three sockets, a slug on a desk. None of those are in this film. Its last event sat at
+    # 118.70 because that is where THAT film ended, which left this one's closing question and
+    # its final two moves in silence. All three judges reported the consequence independently
+    # ("scheduled on a metronome, not motivated by the picture", "roughly half the hits land
+    # 1.0-2.4s away from the named move", "the closing 11 seconds carry no SFX at all") and
+    # none of them could see the cause, because the schedule was internally consistent and
+    # simply belonged to a different movie. Same class as the stale filmstrip anchors and the
+    # stale bed arc: per-run data read by path that looked plausible and described another film.
+    (0.15, "boom", "hero", 0.0),   # ignite
+    (3.20, "tick", "standard", -0.22),   # tag
+    (8.55, "stamp", "standard", -0.11),   # plate
+    (10.90, "pop", "standard", 0.0),   # count
+    (14.00, "clank", "standard", 0.11),   # stamp
+    (18.54, "whoosh", "standard", 0.22),   # pour
+    (21.34, "tick", "standard", 0.33),   # swell
+    (25.48, "clank", "standard", -0.33),   # bind
+    (31.35, "thud", "hero", 0.0),   # assemble
+    (34.10, "snap", "standard", -0.11),   # split
+    (37.56, "clank", "standard", 0.0),   # bars
+    (40.86, "paper", "standard", 0.11),   # quote
+    (45.20, "whoosh", "standard", 0.22),   # spinup
+    (48.30, "ding", "standard", 0.33),   # twang
+    (50.80, "pop", "standard", -0.33),   # reroute
+    (52.06, "paper", "standard", -0.22),   # draw
+    (57.74, "pop", "texture", -0.22),   # room, filling a 11.4s hole between draw and slips
+    (63.42, "tick", "standard", -0.11),   # slips
+    (68.98, "whoosh", "standard", 0.0),   # intake
+    (71.72, "clank", "hero", 0.0),   # swing
+    (77.94, "snap", "standard", 0.22),   # zero
+    (81.48, "paper", "texture", 0.22),   # room, filling a 7.1s hole between zero and heap
+    (85.02, "thud", "standard", 0.33),   # heap
+    (88.64, "tick", "standard", -0.33),   # sentence
+    (92.37, "paper", "texture", -0.11),   # room, filling a 7.5s hole between sentence and crack
+    (96.10, "snap", "standard", -0.22),   # crack
+    (100.31, "thud", "standard", -0.11),   # seat
+    (105.96, "clank", "standard", 0.0),   # pumps
+    (108.96, "ding", "standard", 0.11),   # meter
+    (112.97, "paper", "texture", -0.22),   # room, filling a 8.0s hole between meter and rise
+    (116.98, "riser", "hero", 0.0),   # rise
+    (121.08, "tick", "standard", 0.33),   # turn
+    (125.76, "stamp", "hero", 0.0),   # button
 ]
 
 
@@ -186,8 +197,16 @@ BED_ARC = [
 # VO says "now go north, onto state land, where neither reaches" until the comment count
 # lands. It is synthesised (brown noise, lowpassed, slowly gusting) rather than sampled, so
 # it is deterministic and carries no attribution.
-AMB_IN, AMB_OUT = 21.9, 42.6
-AMB_LEVEL = 0.085
+# 2026-08-09: this film does not drive anywhere. It stands in one boiler room for 130 seconds,
+# and all three judges independently reported the same absence: 34 discrete one-shots, a music
+# bed, and no continuous layer under any of it, with 30.24s of VO silence across 33 gaps sitting
+# on music alone. The window above (21.9 to 42.6) belonged to a film that went north onto state
+# land; carried into this one it put twenty seconds of wind in a machine room and left the other
+# hundred and ten bare. A room that is visibly a working plant should hum for its whole runtime,
+# so the bed now runs the full film at a lower level, where it reads as air rather than as an
+# event. Still synthesised, still deterministic, still no attribution owed.
+AMB_IN, AMB_OUT = 0.0, 129.9
+AMB_LEVEL = 0.055
 
 
 def _assert_per_run_data_covers_the_film():

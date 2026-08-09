@@ -652,9 +652,9 @@ const S5: React.FC<SceneProps> = (p) => {
           the same affordance the NO RESULT EXISTS YET plate above already uses. It also moves
           up off y=1300, where the open caption box was cutting it in half for the 1.8s the
           "Thin material for a copy" cue is live. */}
-      {f >= slips + 52 && <Plate x={598} y={1088} text="4 PAPERS INDEXED" size={26}
+      {f >= slips + 52 && <Plate x={700} y={1136} text="4 PAPERS INDEXED" size={26}
                                  delay={slips + 52} sub="PUBMED, AS OF 2026-08-09" />}
-      {f >= thin && <Plate x={600} y={962} text="THIN MATERIAL FOR A COPY" size={32} delay={thin} />}
+      {f >= thin && <Plate x={624} y={1012} text="THIN MATERIAL FOR A COPY" size={32} delay={thin} />}
     </Stage>
   );
 };
@@ -673,10 +673,21 @@ const S6: React.FC<SceneProps> = (p) => {
   // end of this shot that is 1.10 * 1.02 = 1.122. A 268-wide card at x=212 renders its outer edge
   // at 540 + (78 - 540) * 1.122 = 21.6, which is inside the frame. The first cut authored 300-wide
   // cards at 196 and 884 and lost 7px off ALASKA and off WYOMING, one at each edge.
-  const CARD_W = 268;
-  const X = [212, 540, 868];
+  const CARD_W = 240;
+  // 240 at these x values puts the row's outer edges at 56 and 1024, a 5 percent safe area.
+  // At 268/212/868 the row measured 21px and 33px from the edges: not actually clipped, but
+  // three judges across two rounds read it as clipped, and 2 percent is why.
+  const X = [229, 540, 851];
   const NAMES = ['ALASKA', 'MONTANA', 'WYOMING'];
   const AMT = ['$4,737,612', '$1,260,800', '$0'];
+  // THE PICTURE HAS TO AGREE WITH THE NUMBER PRINTED UNDER IT. Alaska and Montana both drew
+  // five identical chips while the labels beneath them said $4,737,612 and $1,260,800, so the
+  // one beat whose entire point is who holds the money said they hold the same. All three
+  // judges called it, and one of them put it best: a quantity graphic that disagrees with its
+  // own label is worse than no graphic. Chips are now derived from the dollars, so they cannot
+  // drift from the figures again.
+  const DOLLARS = [4737612, 1260800, 0];
+  const CHIPS = DOLLARS.map((v) => 5 * (v / Math.max(...DOLLARS)));
   return (
     <Stage f={f} push={push} lampX={640} lampSwing={1} cold={cold} camY={-60} zoom={1.02} fg={0.55} midSide={1}>
       {/* the rail */}
@@ -696,10 +707,15 @@ const S6: React.FC<SceneProps> = (p) => {
                   fill="#241F13" letterSpacing={1.4}>{NAMES[i]}</text>
             {/* the money slot: coins for two, a hollow zero for the third */}
             {i < 2 ? (
-              Array.from({length: 5}, (_, k) => (
-                <rect key={k} x={-88 + k * 38} y={-46 - stack * (12 + k * 2)} width={28} height={11} rx={2}
-                      fill="#C9A05E" stroke={INK} strokeWidth={2.4} opacity={stack} />
-              ))
+              Array.from({length: 5}, (_, k) => {
+                // the last chip is drawn PARTIAL, so 1.33 chips reads as 1.33 and not as 1 or 2
+                const fill = Math.max(0, Math.min(1, CHIPS[i] - k));
+                if (fill <= 0.01) return null;
+                return (
+                  <rect key={k} x={-79 + k * 34} y={-46 - stack * (12 + k * 2)} width={25 * fill} height={11}
+                        rx={2} fill="#C9A05E" stroke={INK} strokeWidth={2.4} opacity={stack} />
+                );
+              })
             ) : (
               <text x={0} y={-22} textAnchor="middle" fontFamily={MONO} fontSize={30} fontWeight={700}
                     fill="#6B6152" opacity={stack}>{'EMPTY'}</text>
@@ -754,15 +770,20 @@ const S7: React.FC<SceneProps> = (p) => {
                  pose={walk > 0.02 && walk < 0.98 ? 'stand' : 'stand'}
                  walking={walk > 0.01 && walk < 0.99}
                  walkPhase={walk * 6.4}
-                 idleGain={2.1}
+                 idleGain={3.6}
                  facing={f >= heapAt ? 1 : -1}
                  outfit="worker" emotion="worried" headgear="beanie" />
       {f >= heapAt && (
-        <Unnamed d={HEAP_D} label="LOCATION NOT IN THE RECORD" f={f - heapAt} x={676} y={1096}
+        <Unnamed d={HEAP_D} label="" f={f - heapAt} x={676} y={1096}
                  scale={1.45} color="#D8CBB4" drift={1} wide={400} tall={230} strokeWidth={4.6}
                  labelSide="above" />
       )}
       {f >= 8 && <Plate x={396} y={655} text="1 OPERATING COAL MINE" size={34} delay={8} sub="ALASKA, PER DGGS" />}
+      {/* PLATED, like every other string in this film. It was the one bare string in the cut,
+          set in pale tan on a brown wall with its last letter over a wall panel's knob, and all
+          three judges named it: lowest contrast in the film and the only layering outlier. */}
+      {f >= heapAt + 14 && <Plate x={640} y={906} text="LOCATION NOT IN THE RECORD" size={26}
+                                  delay={heapAt + 14} />}
       {/* a printed sentence, landing flat where a conveyor would arrive, with no weight */}
       {land > 0.01 && (
         <g transform={`translate(720,${1268 - (1 - land) * 30})`} opacity={land}>
@@ -835,13 +856,22 @@ const S9: React.FC<SceneProps> = (p) => {
         {/* the power limit block descending into the recess and seating flush */}
         <g transform={`translate(0,${-92 + seated * 8 - (1 - seated) * 200})`} opacity={seated > 0.02 ? 1 : 0}>
           <rect x={-232} y={0} width={464} height={90} rx={3} fill="#8C7A45" stroke={INK} strokeWidth={5} />
-          <text x={0} y={58} textAnchor="middle" fontFamily={MONO} fontSize={31} fontWeight={700}
+          <text x={0} y={50} textAnchor="middle" fontFamily={MONO} fontSize={31} fontWeight={700}
                 fill="#241F13" letterSpacing={1.3}>ENERGY CONSTRAINED</text>
+          {/* ATTRIBUTION, because this beat carries the film's rebuttal and all three judges
+              found it was the one load-bearing assertion with nothing behind it. The narration
+              line could not be re-cut this run (the TTS API was quota-exhausted on both models),
+              so the picture does the work the audio could not: the same small-caps provenance
+              treatment every other assertion in this film already carries, naming whose design
+              choice this is rather than letting it read as a fact about the world. */}
+          <text x={0} y={78} textAnchor="middle" fontFamily={MONO} fontSize={17} fontWeight={700}
+                fill="#4A4032" letterSpacing={1.1}>NSF AWARD 2614749, ABSTRACT</text>
         </g>
-        {/* the footnote slot, open on nothing */}
-        <rect x={-240} y={122} width={480} height={64} rx={4} fill="#191410" stroke={INK} strokeWidth={5} />
+        {/* the footnote slot, open on nothing. Pulled up 40px: the panel carried 130px of dead
+            grey between the seated block and this slot, which a judge measured. */}
+        <rect x={-240} y={82} width={480} height={64} rx={4} fill="#191410" stroke={INK} strokeWidth={5} />
         {f >= foot && (
-          <text x={0} y={165} textAnchor="middle" fontFamily={MONO} fontSize={24} fontWeight={700}
+          <text x={0} y={125} textAnchor="middle" fontFamily={MONO} fontSize={24} fontWeight={700}
                 fill="#6B6152" letterSpacing={1.2}>NOT A FOOTNOTE</text>
         )}
       </g>
