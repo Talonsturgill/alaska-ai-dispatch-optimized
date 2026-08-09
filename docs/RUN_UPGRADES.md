@@ -2277,8 +2277,40 @@ found anywhere on the run date.
    thing that makes drift visible), `previous` prints the exact block the protocol demands, and
    `median` reads the bar from `config/dispatch_rubric.yaml` rather than restating it.
 
+12. **`scripts/claims_contract_check.py` — it was printing a clean line while checking nothing,
+   and that is how an unmet accuracy obligation reached a graded cut.** The gate reads machine
+   obligations from a `contract` dict and skips prose `requires` lists, which is the right split
+   and was decided deliberately on 2026-08-08. What was missing is that skipping was SILENT. This
+   run's fact-checker wrote prose for all 22 claims and a machine contract for none, so the gate
+   reported `0 obligation(s) met, none outstanding` — a sentence indistinguishable from a film
+   whose every obligation was checked and honoured. Claim c17 requires that a count which moves
+   with time be labelled on screen with an as-of date; the plate shipped as a bare
+   `4 PAPERS INDEXED`, and **two judges found it by reading**, which is judge time spent
+   re-deriving something the fact-checker had already written down. The gate now names every
+   prose obligation it did not machine-check, with counts, so a pass can never be read as
+   coverage. Four obligations are now written as real contracts and verified against what is
+   DRAWN. It earned its keep immediately: it refused a contract asserted on c20, correctly,
+   because this film never draws that claim.
+
 ### Known issues, deferred with a plan
 
+- **The open captions are not in the house type pair.** All three round-4 judges named it
+  independently (J1 low, J2 low, J3 implicitly via Typography). Every plate in the film is
+  JetBrains Mono; the caption layer is a generic bold grotesque, so the most-read type in the
+  piece sits outside the type system. Deferred deliberately rather than changed late in a run:
+  the caption face is shared rendering machinery and a legibility regression there is worse than
+  the inconsistency. Next run should either set it in the house pair or record the deviation as
+  a deliberate legibility choice so it stops reading as an oversight.
+- **No motion blur on fast moves.** All three judges named the opening lid throw, the film's
+  fastest beat at 21.6% changed pixels and a 254 peak delta, as crisp at every sampled position.
+  This is a real craft gap and a real engine change, not a tuning value.
+- **One set for 130 seconds.** J2 and J3 both located the leak in the 45-70s stretch, where the
+  named beats move 0.9-2.3% of pixels. The chain and lamp now live, which is a floor and not a
+  fix. The actual answer is a scale change or an angle change once in that window.
+- **No brand sign-off.** Three judges named it. The film ends on a data card about a second
+  after the closing question has left the screen, so the strongest loop asset is spent before the
+  last frame. Constrained this run by the 130s ceiling, so it needs the ending restructured
+  rather than extended.
 - `scripts/audio_report.py` returns `I=None TP=None` when run before the deliverable exists,
   which is correct behaviour reported confusingly. It should say "deliverable not present"
   rather than print nulls that read as a measured silence.
