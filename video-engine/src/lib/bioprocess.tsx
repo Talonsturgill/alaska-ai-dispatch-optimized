@@ -93,6 +93,10 @@ export const SteelVessel: React.FC<{
   const swing = 7 * Math.sin(f / 21.3 + phase) + 2.4 * Math.sin(f / 9.1 + phase * 1.7);
   // tagTurn drives a y-scale flip so the paper genuinely turns rather than cross-fading
   const turn = Math.cos((1 - tagTurn) * Math.PI);
+  // DERIVE THE CARD FROM EVERY STRING IN IT. 0.602em is the exact mono advance, so the widest
+  // of the two lines plus a 14px clear on each side is the card, and the payoff of the film's
+  // primary open loop can never render truncated again.
+  const TAG_W = Math.max(92, Math.max(tagText.length * 13, tagSub.length * 11) * 0.602 + 28);
 
   const rivets: React.ReactNode[] = [];
   for (let i = 0; i < 14; i++) {
@@ -156,7 +160,7 @@ export const SteelVessel: React.FC<{
         <g transform={`rotate(${swing},30,10)`}>
           <path d={`M 30 10 L ${30 + swing * 0.25} 46`} stroke={INK} strokeWidth={2.2} fill="none" />
           <g transform={`translate(${30 + swing * 0.25},46) scale(${Math.abs(turn) < 0.06 ? 0.06 : turn},1)`}>
-            <rect x={-46} y={0} width={92} height={44} rx={3}
+            <rect x={-TAG_W / 2} y={0} width={TAG_W} height={44} rx={3}
                   fill={turn > 0 ? BP.bone : '#C9C2B2'} stroke={INK} strokeWidth={3.5} />
             {turn > 0.35 && (
               <>
@@ -171,7 +175,7 @@ export const SteelVessel: React.FC<{
                  so a viewer can see there IS something written and cannot read it */
               <g opacity={0.5}>
                 {Array.from({length: 5}, (_, i) => (
-                  <rect key={i} x={-34 + hash(i, 71) * 6} y={11 + i * 5.5} width={54} height={1.6}
+                  <rect key={i} x={-TAG_W / 2 + 12 + hash(i, 71) * 6} y={11 + i * 5.5} width={TAG_W - 30} height={1.6}
                         fill={BP.steelDeep} opacity={0.5} />
                 ))}
               </g>
@@ -255,9 +259,9 @@ export const TwinVessel: React.FC<{
       )}
       {bioLabel && drawn > 0.97 && (
         <g>
-          <path d="M 60 -182 L 104 -182" stroke={SIM} strokeWidth={1.4} opacity={0.8} />
-          <text x={110} y={-177} fontFamily="JetBrains Mono, monospace" fontSize={17}
-                fontWeight={700} fill={SIM}>{bioLabel}</text>
+          <path d="M -60 -182 L -104 -182" stroke={SIM} strokeWidth={1.4} opacity={0.8} />
+          <text x={-110} y={-177} textAnchor="end" fontFamily="JetBrains Mono, monospace"
+                fontSize={17} fontWeight={700} fill={SIM}>{bioLabel}</text>
         </g>
       )}
     </g>

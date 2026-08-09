@@ -543,17 +543,17 @@ const S3: React.FC<SceneProps> = (p) => {
       {f >= bars + 18 && <Plate x={540} y={672} text="MOST OF IT IS SOFTWARE" size={40} delay={bars + 18} />}
       {f >= quote && (
         <g transform="translate(540,868)">
-          <rect x={-408} y={-70} width={816} height={172} rx={4} fill="#171310" stroke={INK} strokeWidth={5} />
-          <text x={-386} y={-24} fontFamily={MONO} fontSize={24} fontWeight={700} fill={P.bone}>
+          <rect x={-394} y={-70} width={788} height={172} rx={4} fill="#171310" stroke={INK} strokeWidth={5} />
+          <text x={-364} y={-24} fontFamily={MONO} fontSize={24} fontWeight={700} fill={P.bone}>
             {NSF.slice(0, chars)}
           </text>
-          <text x={-386} y={16} fontFamily={MONO} fontSize={24} fontWeight={700} fill={P.bone}>
+          <text x={-364} y={16} fontFamily={MONO} fontSize={24} fontWeight={700} fill={P.bone}>
             {NSF2.slice(0, Math.max(0, chars - NSF.length))}
           </text>
-          <text x={-386} y={56} fontFamily={MONO} fontSize={24} fontWeight={700} fill={P.bone}>
+          <text x={-364} y={56} fontFamily={MONO} fontSize={24} fontWeight={700} fill={P.bone}>
             {NSF3.slice(0, Math.max(0, chars - NSF.length - NSF2.length))}
           </text>
-          <text x={-386} y={90} fontFamily={MONO} fontSize={16} fontWeight={700} fill="#8E8474">
+          <text x={-364} y={90} fontFamily={MONO} fontSize={16} fontWeight={700} fill="#8E8474">
             NSF AWARD 2614749, ABSTRACT
           </text>
         </g>
@@ -701,7 +701,7 @@ const S7: React.FC<SceneProps> = (p) => {
   const heapAt = at(p, 13, 3.6);
   const sentAt = at(p, 14, 0.0);
   const push = interpolate(f, [0, 372], [0.04, 0.0], {extrapolateRight: 'clamp'});
-  const walk = interpolate(f, [heapAt + 26, heapAt + 118], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const walk = interpolate(f, [heapAt - 10, heapAt + 132], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const land = interpolate(f, [sentAt, sentAt + 15], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   return (
     <Stage f={f} push={push} lampX={880} cold={0.55} camY={30} zoom={0.98} fg={0.85} midSide={-1}>
@@ -712,12 +712,13 @@ const S7: React.FC<SceneProps> = (p) => {
           skate, and `facing` flips on the heap's own arrival frame so the look is motivated. */}
       <Character frame={f} x={368 + walk * 150} y={FLOOR} scale={0.86}
                  pose={walk > 0.02 && walk < 0.98 ? 'stand' : 'stand'}
-                 walking={walk > 0.02 && walk < 0.98}
-                 walkPhase={walk * 5.6}
+                 walking={walk > 0.01 && walk < 0.99}
+                 walkPhase={walk * 6.4}
+                 idleGain={2.1}
                  facing={f >= heapAt ? 1 : -1}
                  outfit="worker" emotion="worried" headgear="beanie" />
       {f >= heapAt && (
-        <Unnamed d={HEAP_D} label="LOCATION NOT IN THE RECORD" f={f - heapAt} x={790} y={1096}
+        <Unnamed d={HEAP_D} label="LOCATION NOT IN THE RECORD" f={f - heapAt} x={676} y={1096}
                  scale={1.45} color="#B9A891" drift={1} wide={400} tall={110} strokeWidth={4.6} />
       )}
       {f >= 8 && <Plate x={396} y={655} text="1 OPERATING COAL MINE" size={34} delay={8} sub="ALASKA, PER DGGS" />}
@@ -747,7 +748,7 @@ const S8: React.FC<SceneProps> = (p) => {
     {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   return (
     <Stage f={f} push={0.02} drift={0.45} lampX={380} lampSwing={0.35} cold={0.6} camY={-25} zoom={1.06} fg={0.6} midSide={1}>
-      <Character frame={f} x={318} y={FLOOR} scale={1.05} pose="raise" gesture={lift} outfit="worker"
+      <Character frame={f} x={318} y={FLOOR} scale={1.05} idleGain={2.4} pose="raise" gesture={lift} outfit="worker"
                  emotion="worried" headgear="beanie" />
       <g transform="translate(540,600)">
         <ContactShadow cx={0} cy={64} rx={300} ry={12} opacity={0.35} />
