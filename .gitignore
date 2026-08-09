@@ -39,3 +39,4 @@ models/
 .cache/
 .remotion/
 video-engine/.remotion/
+out/dispatch/chunkcache/
