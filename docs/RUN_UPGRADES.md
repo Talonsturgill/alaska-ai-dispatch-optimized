@@ -2263,6 +2263,20 @@ found anywhere on the run date.
    a path to. esbuild parses the whole engine in under a second, so the check is free next to a
    render. It is a PARSE and not a typecheck, and it says so.
 
+11. **`scripts/panel_ledger.py` — new. The panel protocol's second fix existed as an intention
+   and never as a mechanism.** `config/panel_protocol.md` was written after a run whose panel
+   drifted downward across re-grades of a film that was measurably improving, and its second
+   prescription is that *"a re-grade prompt MUST carry that judge's own previous axis scores."*
+   Nothing implemented that. The orchestrator held the cards in context and pasted them into the
+   next prompt, which works until the context is compacted, and on a long run the context is
+   always compacted. **This run reached round 4 able to recover three axis scores out of
+   thirty-three**, from a summary, because the only copy of round 3 lived in a conversation that
+   no longer existed. A requirement that depends on the orchestrator remembering is not a
+   requirement. The cards are small and they are JSON. `record` refuses to overwrite a different
+   card under the same round (a round grades one cut, and losing the trail destroys the only
+   thing that makes drift visible), `previous` prints the exact block the protocol demands, and
+   `median` reads the bar from `config/dispatch_rubric.yaml` rather than restating it.
+
 ### Known issues, deferred with a plan
 
 - `scripts/audio_report.py` returns `I=None TP=None` when run before the deliverable exists,
