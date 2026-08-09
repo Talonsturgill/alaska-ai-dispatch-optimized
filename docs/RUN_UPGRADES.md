@@ -2222,6 +2222,46 @@ found anywhere on the run date.
    silently stop being true.
 6. **`scripts/build_scenes.py` TAIL 2.6 -> 1.5.** The film measured 131.04s against a 130s
    ceiling purely on tail, on a VO that was itself in band at 128.4s.
+7. **`scripts/zoom_clip_check.py` — NEW, and then REBUILT mid-run when it turned out to be
+   measuring the wrong camera.** No gate in this repo could see an element leaving the SIDE of
+   the frame. `text_fit_check` asks whether a string fits its plate, `caption_band_check` models
+   the vertical crop, `plate_overlap_check` compares boxes to each other, and the defect lives
+   in none of those places: it is the relationship between an authored x and a camera scale
+   declared elsewhere in the file. The first cut clipped five elements and the worst of them was
+   the film's central quotation, NSF's own sentence reading on screen as
+   "FORCEMENT-LEARNING CONTROLLERS ... GRATED WITH MICR".
+   The first version of the checker then shipped two more clipped elements into a graded cut,
+   because it was wrong in three ways worth writing down:
+   - Stage composes `(1 + push) * zoom`, not `zoom`. `push` is the dolly and it ramps across a
+     shot. Shot 6 declares zoom 1.02 and its true worst case is 1.122.
+   - A file-wide maximum is the wrong statistic even when it is conservative, because it is
+     conservative in the wrong direction for every other scene. Scale is now computed PER SCENE.
+   - Most of what leaves the frame is not a `<Plate>`. It now walks the translate stack and
+     grades bare centred `<text>` and positioned `<rect>` too, and it distinguishes an OBJECT
+     (positioned by an enclosing translate, must stay in frame) from SET DRESSING (authored in
+     scene coordinates, several of which bleed on purpose).
+   It found the NSF quote panel by itself, which is the only reason that one is fixed. It prints
+   what it could not measure, so a pass is never mistaken for coverage.
+8. **`scripts/build_evidence.py` — the contact sheet now photographs every scene SETTLED, not
+   just on a stride.** An even sweep samples a 125s film every 9.3s, and on this run that stride
+   landed inside the NSF quote's typewriter reveal. All three judges read a half-typed line as a
+   truncated string, one raised it as a hard blocker, and the pack had no frame between 41.8s and
+   51.0s to settle it with. **The film was correct and the evidence was not.** A smaller stride
+   is not the fix, because a stride can always straddle a reveal. The pack now also takes a frame
+   half a second before every cut, when nothing in that scene is still animating, which is the
+   state the shot actually holds and the state a judge should be grading.
+9. **`scripts/build_evidence.py` — the pack was sampling the wrong cut and describing the wrong
+   film.** Two independent defects, both found because judges said so: `--video` defaulted to
+   `dispatch_square.mp4` while the panel was being asked to grade the master, so all three judges
+   reported they could not see the cut in front of them; and `MOVES` still named the 2026-08-08
+   film's beats, so every motion filmstrip was centred on a moment this film does not contain.
+10. **`scripts/render_parallel.sh` — parse the engine before spending a render on it.** One
+   misplaced JSX comment (`{/* ... */}` as the first child of a parenthesised expression, which
+   is not legal JSX) made every chunk's bundle throw. The queue cannot tell "this chunk crashed"
+   from "this film cannot compile", so it retried 12 chunks three times each, 36 identical
+   failures, and reported a generic chunk failure with the real message in a temp log nobody had
+   a path to. esbuild parses the whole engine in under a second, so the check is free next to a
+   render. It is a PARSE and not a typecheck, and it says so.
 
 ### Known issues, deferred with a plan
 
