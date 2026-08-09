@@ -49,6 +49,15 @@ CHECKS = [
     # individually fine and the defect lives only in the relationship.
     ("no two text plates share pixels",
      [sys.executable, "scripts/plate_overlap_check.py"], True),
+    # A plate can fit its own box perfectly and still be cut in half by the frame edge,
+    # because the scene's content zoom pushes everything off-centre outward. On 2026-08-09
+    # that clipped five elements including the film's central NSF quotation, which read on
+    # screen as "FORCEMENT-LEARNING CONTROLLERS ... GRATED WITH MICR". No existing check
+    # could see it: text_fit measures string against plate, caption_band models the VERTICAL
+    # crop, plate_overlap compares boxes to each other. This one projects each box through
+    # the zoom and compares it to the frame.
+    ("no plate leaves the frame under the content zoom",
+     [sys.executable, "scripts/zoom_clip_check.py"], True),
     # The fact-checker's instructions are obligations, not suggestions. Seven were
     # silently declined in one run and judges found all seven.
     ("every claim obligation the fact-checker wrote is honoured",

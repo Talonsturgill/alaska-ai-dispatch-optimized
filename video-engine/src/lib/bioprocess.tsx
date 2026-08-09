@@ -214,7 +214,7 @@ export const TwinVessel: React.FC<{
   fidelity?: number; bioFidelity?: number;
   drawn?: number; phase?: number; running?: number;
   bioLabel?: string;
-}> = ({f, x, y, scale = 1, fidelity = 0.95, bioFidelity = 0.2, drawn = 1, phase = 0, running = 1, bioLabel}) => {
+}> = ({f, x, y, scale = 1, fidelity = 0.95, bioFidelity = 0.12, drawn = 1, phase = 0, running = 1, bioLabel}) => {
   // the internal values only run once the outline has closed
   const live = drawn > 0.97 ? running : 0;
   const lvl = 0.5 + 0.42 * Math.sin(f / 31.7 + phase) + 0.08 * Math.sin(f / 11.3);
@@ -244,13 +244,13 @@ export const TwinVessel: React.FC<{
 
       {/* THE BIOLOGY SECTION, at its own fidelity. Drawn as a separate Simulated so its
           linework hunts while the body's sits still, which is the whole point. */}
-      {drawn > 0.55 && (
+      {drawn > 0.18 && (
         <Simulated
           d="M -58 -206 Q 0 -226 58 -206 L 58 -156 Q 0 -138 -58 -156 Z"
           fidelity={bioFidelity}
           f={f}
           phase={phase + 3.1}
-          drawn={Math.min(1, (drawn - 0.55) / 0.35)}
+          drawn={Math.min(1, (drawn - 0.18) / 0.30)}
         />
       )}
       {bioLabel && drawn > 0.97 && (
@@ -414,6 +414,10 @@ export const CellSurface: React.FC<{
     const jitter = 1.1 * Math.sin(f / 6.3 + i * 1.7);
     atoms.push(
       <g key={i} transform={`translate(${cx + Math.cos(a) * (rr + jitter)},${cy + Math.sin(a) * (rr + jitter)})`}>
+        {/* the contact tick, drawn toward the cell, where the atom meets the wall */}
+        <ellipse cx={-Math.cos(a) * 8} cy={-Math.sin(a) * 8} rx={7} ry={3.4}
+                 transform={`rotate(${(a * 180) / Math.PI},${-Math.cos(a) * 8},${-Math.sin(a) * 8})`}
+                 fill={INK} opacity={0.34} />
         <circle r={9.5} fill={atomColor} stroke={INK} strokeWidth={3} />
         <circle cx={-2.6} cy={-2.6} r={3.1} fill="#E7A968" opacity={0.85} />
       </g>,
@@ -445,7 +449,15 @@ export const CellSurface: React.FC<{
             A ${r * breath - dimple} ${r * breath} 0 0 1 ${cx} ${cy - r * breath} Z`}
         fill="none" stroke={INK} strokeWidth={9}
       />
+      {/* MEMBRANE THICKNESS: an inner wall line offset from the outer one, so the boundary is a
+          shell with depth rather than a single stroke. */}
+      <circle cx={cx} cy={cy} r={r * breath - 13} fill="none" stroke={INK} strokeWidth={3.5} opacity={0.42} />
+      <circle cx={cx} cy={cy} r={r * breath - 6.5} fill="none" stroke={T.shade} strokeWidth={9} opacity={0.5} />
       <circle cx={cx} cy={cy} r={r * breath} fill="none" stroke={T.key} strokeWidth={5} opacity={0.6} />
+      {/* RIM LIGHT along the upper-left arc, the one cue the panel said was missing */}
+      <path d={`M ${cx - r * breath * 0.94} ${cy - r * breath * 0.33}
+                A ${r * breath} ${r * breath} 0 0 1 ${cx + r * breath * 0.30} ${cy - r * breath * 0.95}`}
+            fill="none" stroke="#E9F0C8" strokeWidth={7} opacity={0.5} strokeLinecap="round" />
       {/* the nucleoid: a darker mass with a real edge, so the interior is never one flat tone */}
       <ellipse cx={cx - r * 0.12} cy={cy + r * 0.06} rx={r * 0.42} ry={r * 0.3}
                fill={T.shade} opacity={0.5} transform={`rotate(-18,${cx},${cy})`} />

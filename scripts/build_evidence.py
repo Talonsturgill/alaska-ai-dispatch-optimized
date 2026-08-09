@@ -16,7 +16,11 @@ rather than a doctrine note. Filmstrip centres are now computed from vo_lines.js
 a named offset INTO the line, so re-synthesising the voice moves the evidence with the
 picture exactly as it moves the scenes.
 
-Usage: python3 scripts/build_evidence.py [--video out/dispatch/dispatch_square.mp4]
+Usage: python3 scripts/build_evidence.py [--video out/dispatch/dispatch_master.mp4]
+
+SAMPLES THE 9:16 MASTER, because that is the cut config/panel_protocol.md convenes the panel
+on. It sampled the square until 2026-08-09, when all three judges independently reported they
+could not see the frame they had been asked to grade.
 """
 import argparse, glob, json, os, subprocess, sys, time
 
@@ -26,44 +30,48 @@ EV = os.path.join(REPO, "out", "evidence")
 
 # (name, vo_line, seconds INTO that line where the move actually peaks)
 MOVES = [
-    # RE-ANCHORED 2026-08-08 for "Not In The Buying". Every name above this line belonged
-    # to a previous film and NONE of those beats exist here. Anchor names and offsets are
-    # PER-RUN DATA and a run that changes the film changes them in the same commit, because
-    # a strip pointed at the wrong moment produces a judge finding that is true about the
-    # EVIDENCE and false about the FILM, which is the most expensive kind.
-    # Offsets are CONTACT times at the motion's fastest point and are clamped inside each
-    # line's own measured duration, so no strip can run off the end of its line.
-    # Nineteen strips across fifteen shots, so no shot goes unsampled.
-    ("drop",      0,  0.30),   # S1  the slug landing flat on the desk and rocking once
-    # 2026-08-08: a judge could not credit the hook-figure caption fix because NO strip and
-    # no contact frame sampled the window where $272,174,856 is actually spoken — the first
-    # contact frame is 4.6s, by which point the caption has moved on. A fix nobody can see
-    # scores as a fix nobody made. Sample the line that carries the film's headline number.
-    ("figure",    1,  0.35),   # S1  the caption window carrying the whole hook figure
-    ("block",     1,  1.20),   # S1  the money block assembling and seating behind it
-    ("bolts",     2,  1.60),   # S2  the two rule plates driving into the block face and locking
-    ("collar",    3,  1.10),   # S3  the percentage collar ratcheting closed around the block
-    ("flow",      4,  1.30),   # S3  the flow lines bending away from the locked plates
-    ("quote",     6,  2.10),   # S4  the quote printing across the dated card
-    ("lift",      8,  0.70),   # S5  the slug rising off the desk and turning to the viewer
-    ("deal",     10,  1.40),   # S6  nineteen award cards dealing out across the desk
-    ("lit",      11,  1.00),   # S6  the described cards lighting, the rest staying dark
-    ("lid",      12,  2.20),   # S7  the radiograph case opening on its latches
-    ("arm",      13,  1.10),   # S7  the boom arm rising past its mark and settling
-    ("hatch",    14,  1.60),   # S8  the kiosk dispensing hatch cycling on its test loop
-    ("gap",      15,  1.40),   # S9  THE SIGNATURE, the slug proud of an award card with the gap lit
-    ("rise",     17,  1.90),   # S10 the undecided block rising beside the sliver that went out
-    ("dark",     18,  2.60),   # S11 the three regions dropping to unlit one after another
-    ("refuse",   19,  1.80),   # S12 the lock shuddering and re-seating without turning
-    ("scan",     21,  1.20),   # S13 the slug descending the statute column, fitting none of it
-    ("seat",     23,  0.90),   # S14 the slug dropping into the training clause and going flush
-    ("button",   25,  1.10),   # S15 the button, two empty recesses and one filled
+    # RE-ANCHORED 2026-08-09 for "The Method, Not The Metal". Every name above this line
+    # belonged to a previous film and NONE of those beats exist here. Anchor names and
+    # offsets are PER-RUN DATA and a run that changes the film changes them in the same
+    # commit, because a strip pointed at the wrong moment produces a judge finding that is
+    # true about the EVIDENCE and false about the FILM, which is the most expensive kind.
+    # Offsets are CONTACT times at the motion's fastest point, clamped inside each line's
+    # own measured duration. Twenty-five strips across twelve shots, so no shot goes unsampled.
+    ("ignite",   0,  0.15),  # S1  the lamp SLAMMING on and the lid banging up off its hinge
+    ("tag",      0,  3.20),  # S1  the tag swinging out and settling with its print turned away
+    ("plate",    1,  0.25),  # S2  the award plate dropping onto the floor and bouncing once
+    ("count",    1,  2.60),  # S2  the total counting up and landing hard against the plate
+    ("stamp",    1,  5.70),  # S2  the campus plate stamping down beside the first
+    ("pour",     2,  0.30),  # S3  coal refuse pouring through frame in a torn irregular fall
+    ("swell",    2,  3.10),  # S3  the cell swelling up out of the grit until it fills frame
+    ("bind",     3,  0.70),  # S3  atoms striking the membrane, rebounding, and clamping OUTSIDE
+    ("assemble", 4,  0.25),  # S4  the money block assembling face by face
+    ("split",    4,  3.00),  # S4  the block shearing apart along its seam
+    ("bars",     5,  0.30),  # S4  the two parts rising into bars, the tall one overshooting
+    ("quote",    5,  3.60),  # S4  NSF's sentence typing itself clause by clause
+    ("spinup",   6,  0.30),  # S5  the flyballs swinging out and up as the spindle accelerates
+    ("twang",    6,  3.40),  # S5  THE REFUSAL, the cable stopping dead short of the steel
+    ("reroute",  6,  5.90),  # S5  the cable sweeping away and latching into empty air
+    ("draw",     7,  0.80),  # S5  the twin DRAWING itself into being around the latched end
+    ("slips",    9,  0.40),  # S6  four paper slips landing and skating into a very short stack
+    ("intake",  10,  0.40),  # S6  the twin's intake cranking open beside the stack
+    ("swing",   11,  0.30),  # S7  ACT 3, the lamp swinging and dragging every shadow across
+    ("zero",    12,  3.50),  # S7  coins stacking on two plates, a hollow drop on the third
+    ("heap",    13,  3.70),  # S8  the unlocated waste crawling in as a dashed absence
+    ("sentence",14,  0.30),  # S8  a printed sentence landing where a conveyor would arrive
+    ("crack",   16,  0.40),  # S9  the hairline crack running the accusation card end to end
+    ("seat",    17,  0.35),  # S10 the power limit block descending into the recess and seating
+    ("pumps",   18,  0.50),  # S10 the plant cutaway running its pumps and valves in sequence
+    ("meter",   18,  3.50),  # S10 the needle swinging up under load and settling inside its limit
+    ("rise",    20,  0.40),  # S11 THE SIGNATURE, the ring rising clear of both vessels
+    ("turn",    21,  0.40),  # S11 the tag finally swinging round to face camera
+    ("button",  22,  0.60),  # S12 the ring hanging over the still-empty vessel
 ]
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--video", default=os.path.join(OUT, "dispatch_square.mp4"))
+    ap.add_argument("--video", default=os.path.join(OUT, "dispatch_master.mp4"))
     ap.add_argument("--frames", type=int, default=14)
     a = ap.parse_args()
 

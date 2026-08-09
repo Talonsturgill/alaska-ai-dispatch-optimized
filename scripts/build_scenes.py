@@ -156,14 +156,24 @@ def _rebalance_cues(caps):
     """
     DANGLING = ("of", "out of", "the", "a", "an", "to", "in", "on", "and", "or", "for",
                 "at", "by", "with", "from", "into", "than", "as", "is", "was", "which",
-                "you", "it", "they", "we", "that", "this", "has", "have", "had", "be")
-    MAXLEN = 62
+                "you", "it", "they", "we", "that", "this", "has", "have", "had", "be",
+                # NUMBER WORDS, added 2026-08-09. The digit guard below cannot see these, and
+                # the VO script spells every number out for the synth, so a panel judge found
+                # "obligated about six" / "million dollars" split across two cards. A spelled
+                # number is exactly as torn from its unit as a numeral is.
+                "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
+                "eleven", "twelve", "twenty", "thirty", "forty", "fifty", "sixty", "seventy",
+                "eighty", "ninety", "hundred", "thousand", "million", "billion")
+    MAXLEN = 68
     # ORPHAN TAILS, added 2026-08-04. The forward-merge above only fires when the CURRENT
     # cue ends badly, so it never caught a cue whose NEXT cue is a stub. This film shipped
     # "Nobody has mapped the days you" / "can." and "It works, and Alaska barely uses" /
     # "it." -- both of the piece's punchlines alone on a card, which reads as a stutter and
     # throws the line away. A tail of one or two short words is never its own caption.
     ORPHAN_WORDS, ORPHAN_CHARS = 2, 15
+    NUMBER_WORDS = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
+                    "ten", "eleven", "twelve", "twenty", "thirty", "forty", "fifty", "sixty",
+                    "seventy", "eighty", "ninety", "hundred", "thousand", "million", "billion"}
     out = []
     i = 0
     while i < len(caps):
@@ -191,7 +201,23 @@ def _rebalance_cues(caps):
             # an orphan tail gets a longer leash than a normal merge: a stub alone on a
             # card is a worse defect than a cue the renderer has to set on two lines, and
             # the renderer now wraps and auto-fits rather than overflowing its own bar.
-            limit = 74 if (len(nxt.split()) <= ORPHAN_WORDS and len(nxt) <= ORPHAN_CHARS) else MAXLEN
+            # A NUMBER AND ITS UNIT GET A LONGER LEASH, same reasoning as the orphan tail:
+            # "obligated about six" / "million dollars" reads as an error to a viewer, because
+            # the eye finishes the card before the next one arrives, and a slightly wide card
+            # is a far smaller defect than a severed figure. The renderer wraps and auto-fits.
+            _numtail = last.lower().strip(",.") in NUMBER_WORDS
+            if len(nxt.split()) <= ORPHAN_WORDS and len(nxt) <= ORPHAN_CHARS:
+                limit = 74
+            elif _numtail:
+                # 78 rather than higher ON PURPOSE. A number-unit merge is worth a slightly wide
+                # card, and it is NOT worth a 97-character one. KNOWN LIMIT, logged rather than
+                # papered over: on this run "obligated about six" / "million dollars" still splits,
+                # because the VO line is 19 words and every width-based split point in it lands
+                # badly. The real fix is chunking by SENSE rather than by width, which is a
+                # bigger change than a delivery run should make.
+                limit = 78
+            else:
+                limit = MAXLEN
             if not bad or len(t) + 1 + len(nxt) > limit:
                 break
             cur["text"] = t + " " + nxt
