@@ -1,0 +1,298 @@
+{
+ "run_date": "2026-08-09",
+ "story": "NSF's August 5th, 2026 Focused EPSCoR Collaborations award, led by the University of Alaska Anchorage, for AI-driven microbial rare earth recovery from coal refuse and ash",
+ "sourcing_note": "Every figure below is read off NSF's own award records via api.nsf.gov, which is the citable primary because the human-readable nsf.gov award page renders an empty template to a fetcher. Two independent adversarial validators verified the set.",
+ "claims": [
+  {
+   "id": "c1",
+   "spoken": "three point eight million dollars",
+   "on_screen": "$3,824,575",
+   "what": "NSF award 2614749 to the University of Alaska Anchorage, obligated in full in FY 2026 as a Standard Grant",
+   "verbatim_source": "estimatedTotalAmt: \"3824575\"; fundsObligatedAmt: \"3824575\"; fundsObligated: [\"FY 2026 = $3,824,575.00\"]",
+   "source_url": "https://api.nsf.gov/services/v1/awards/2614749.json",
+   "requires": [
+    "the figure on screen is the exact dollar amount, never a rounded one"
+   ]
+  },
+  {
+   "id": "c2",
+   "spoken": "August fifth",
+   "on_screen": "AWARDED 2026-08-05",
+   "what": "Award date on all three linked awards. Initial and latest amendment dates are identical, so the record has not been amended.",
+   "verbatim_source": "date: \"08/05/2026\"; initAmendmentDate: \"08/05/2026\"; latestAmendmentDate: \"08/05/2026\"",
+   "source_url": "https://api.nsf.gov/services/v1/awards/2614749.json",
+   "requires": [
+    "spoken as an ordinal, August fifth, per guardrail 5a",
+    "the ISO form is a provenance stamp only"
+   ],
+   "contract": {
+    "on_screen_verbatim": true
+   }
+  },
+  {
+   "id": "c3",
+   "spoken": "the work starts September first",
+   "on_screen": "STARTS 2026-09-01",
+   "what": "Period of performance, September 1st 2026 to August 31st 2030, identical on all three awards",
+   "verbatim_source": "startDate: \"09/01/2026\"; expDate: \"08/31/2030\"",
+   "source_url": "https://api.nsf.gov/services/v1/awards/2614749.json",
+   "requires": [
+    "NOTHING may be stated in the present tense. No result exists. No lab is running.",
+    "expDate is NSF's estimated end date"
+   ],
+   "contract": {
+    "on_screen_verbatim": true
+   }
+  },
+  {
+   "id": "c4",
+   "spoken": "Brandon Briggs",
+   "on_screen": "BRANDON BRIGGS",
+   "what": "Principal investigator, and separately verified as Professor, Department of Biological Sciences, University of Alaska Anchorage, working in geomicrobiology and applied microbiology",
+   "verbatim_source": "pdPIName: \"Brandon R Briggs\" (NSF); \"Brandon Briggs, Ph.D.\" / \"Professor, Department of Biological Sciences\" (UAA faculty page)",
+   "source_url": "https://api.nsf.gov/services/v1/awards/2614749.json",
+   "source_url_2": "https://www.uaa.alaska.edu/academics/college-of-arts-and-sciences/departments/biological-sciences/faculty/briggs.cshtml",
+   "requires": [
+    "no invented title, no directorship, no email on screen",
+    "his field genuinely matches the award, which is worth saying"
+   ]
+  },
+  {
+   "id": "c5",
+   "spoken": "four co-investigators",
+   "on_screen": "4 CO-PIs",
+   "what": "Award 2614749 lists exactly four co-PIs: Mohammad Heidari Kapourchali, Subhabrata Dev, Masoumeh Heidari Kapourchali, Tyler C Brown. The last carries a uwyo.edu address.",
+   "verbatim_source": "coPDPI: [\"Mohammad Heidari Kapourchali mhkapourchali@alaska.edu\", \"Subhabrata Dev sdev@alaska.edu\", \"Masoumeh Heidari Kapourchali mheidari2@alaska.edu\", \"Tyler C Brown tbrown46@uwyo.edu\"]",
+   "source_url": "https://api.nsf.gov/services/v1/awards/2614749.json",
+   "requires": [
+    "name all four or none, never a subset",
+    "do not caption any of them with an institution: one UAF centre page gives Dev a UAA appointment, so affiliations are unsafe"
+   ]
+  },
+  {
+   "id": "c6",
+   "spoken": "about six million dollars in all",
+   "on_screen": "$5,998,412 TOTAL",
+   "what": "The three linked awards sum to $5,998,412: UAA $3,824,575, Montana Technological University $1,260,800, UAF $913,037. Three separate keyword searches of the NSF API each returned totalCount 3, so no fourth award exists under this title.",
+   "verbatim_source": "metadata: {\"offset\": 0, \"rpp\": 25, \"totalCount\": 3} returning ids 2614749, 2614750, 2614751 only",
+   "source_url": "https://api.nsf.gov/services/v1/awards.json?keyword=%22Transformative+Bioprocessing%22",
+   "requires": [
+    "never a flat $6 million, which overstates by $1,588. About six million, or the exact figure."
+   ]
+  },
+  {
+   "id": "c7",
+   "spoken": "Alaska holds seventy nine percent of it",
+   "on_screen": "AK $4,737,612 OF $5,998,412",
+   "what": "Alaska institutions hold $4,737,612 of $5,998,412, which is 79.0 percent. UAA alone holds 63.8 percent. UAF holds the SMALLEST share of the three at $913,037, less than Montana Technological University's.",
+   "verbatim_source": "awardeeStateCode: \"AK\" on 2614749 (estimatedTotalAmt \"3824575\") and 2614751 (estimatedTotalAmt \"913037\")",
+   "source_url": "https://api.nsf.gov/services/v1/awards.json?keyword=%22Transformative+Bioprocessing%22",
+   "requires": [
+    "the percentage is OUR arithmetic on two verified NSF figures, not an NSF figure",
+    "do not frame this as a Fairbanks story"
+   ]
+  },
+  {
+   "id": "c8",
+   "spoken": "Wyoming is a partner and gets none of the money",
+   "on_screen": "WYOMING: $0 AWARDED",
+   "what": "The abstract names the University of Wyoming as a full partner and the broader impacts include a Tri-State Field Course, yet no Wyoming institution holds an award under this title. Wyoming's presence is one co-PI on the UAA award.",
+   "verbatim_source": "\"a use-inspired research initiative led by the University of Alaska Anchorage, in partnership with the University of Alaska Fairbanks, Montana Technological University, and the University of Wyoming\"",
+   "source_url": "https://api.nsf.gov/services/v1/awards/2614749.json",
+   "requires": [
+    "NEVER say three states share the money. Three states are named, two hold awards.",
+    "do not put the word subaward on screen, the record does not say that"
+   ]
+  },
+  {
+   "id": "c9",
+   "spoken": "reinforcement learning controllers, inside a digital twin, wired to a microgrid simulator",
+   "on_screen": "REINFORCEMENT-LEARNING CONTROLLERS",
+   "what": "NSF's own abstract, verbatim, on what the AI actually does",
+   "verbatim_source": "\"Organized into three data-coupled thrusts, the methodology utilizes a predictive Virtual Assay to screen feedstocks, applies reinforcement-learning controllers within a bioprocess digital twin integrated with microgrid simulators, and validates bio-metallurgical purification pathways.\"",
+   "source_url": "https://api.nsf.gov/services/v1/awards/2614749.json",
+   "requires": [
+    "the microgrid clause MUST survive to screen, it is the Alaska energy hook and the first brief threw it away",
+    "singular 'a predictive Virtual Assay', never plural assays",
+    "'three data-coupled thrusts', never 'three components'",
+    "the AI does NOT design the organism or edit genes and the film may not imply it"
+   ]
+  },
+  {
+   "id": "c10",
+   "spoken": "a virtual pilot plant",
+   "on_screen": "VIRTUAL PILOT PLANT",
+   "what": "The pilot plant named in the project is a simulation. Nothing in the record describes a physical pilot plant being built.",
+   "verbatim_source": "\"This use-inspired project establishes a Smart Bio-Refinery framework and Virtual Pilot Plant to transform microbial rare earth element (REE) recovery from domestic coal refuse and ash into a predictive, energy-constrained system.\"",
+   "source_url": "https://api.nsf.gov/services/v1/awards/2614749.json",
+   "requires": [
+    "any industrial-plant imagery must read as a simulation or a concept, never as a working facility"
+   ]
+  },
+  {
+   "id": "c11",
+   "spoken": "Shewanella oneidensis",
+   "on_screen": "SHEWANELLA ONEIDENSIS",
+   "what": "The microbe the project evaluates. It is a dissimilatory metal-ion-reducing bacterium, meaning it respires iron and manganese instead of oxygen. Rare earths do NOT get eaten or breathed: they BIND to the outside of the cell, which is biosorption.",
+   "verbatim_source": "NSF: \"An iterative closed-loop framework evaluates Shewanella oneidensis extraction performance against techno-economic and life-cycle performance metrics.\" Genome paper title: \"Genome sequence of the dissimilatory metal ion-reducing bacterium Shewanella oneidensis\". Biosorption paper: \"Biosorption, where molecules adsorb to the surface of biological materials, offers a sustainable alternative to environmentally harmful solvent extractions currently used for separation of rare earth elements (REE).\"",
+   "source_url": "https://api.nsf.gov/services/v1/awards/2614749.json",
+   "source_url_2": "https://pubmed.ncbi.nlm.nih.gov/37749198/",
+   "source_url_3": "https://pubmed.ncbi.nlm.nih.gov/12368813/",
+   "requires": [
+    "HARD CUT on eats, digests, consumes, feeds on, or breathes rare earths. The verified verbs are binds, sticks to, latches onto, adsorbs.",
+    "the NSF record never uses the word bacterium, so that descriptor is sourced to the genome paper, not to NSF"
+   ]
+  },
+  {
+   "id": "c12",
+   "spoken": "coal refuse and ash",
+   "on_screen": "COAL REFUSE AND ASH",
+   "what": "The feedstock, named as domestic. The abstract names no state, no mine, no basin and no power plant as its source.",
+   "verbatim_source": "\"microbial rare earth element (REE) recovery from domestic coal refuse and ash\"; and in the plain-language paragraph, \"abundant domestic supplies locked within coal mining waste\"",
+   "source_url": "https://api.nsf.gov/services/v1/awards/2614749.json",
+   "requires": [
+    "HARD CUT on any implication that the feedstock is Alaskan. No Usibelli, no Healy, no Alaska ash pond, no map arrow from an Alaska mine.",
+    "equally, no Appalachian framing: no Appalachian partner is on the award and Appalachia is named nowhere"
+   ]
+  },
+  {
+   "id": "c13",
+   "spoken": "Alaska, Montana and Wyoming",
+   "on_screen": "EPSCoR STATES: AK / MT / WY",
+   "what": "The abstract's own geography for the project",
+   "verbatim_source": "\"Furthermore, the initiative will strengthen research infrastructure and provide industry-aligned training to build a highly skilled technology workforce across these resource-rich EPSCoR states of Alaska, Montana, and Wyoming.\"",
+   "source_url": "https://api.nsf.gov/services/v1/awards/2614749.json",
+   "requires": []
+  },
+  {
+   "id": "c14",
+   "spoken": "the program exists for states that don't usually win this money",
+   "on_screen": "EPSCoR",
+   "what": "NSF EPSCoR's stated mission, and Alaska is a named EPSCoR jurisdiction",
+   "verbatim_source": "\"The U.S. National Science Foundation EPSCoR program pursues a mission to enhance the research competitiveness of targeted jurisdictions (state, territory or commonwealth) by strengthening science, technology, engineering and mathematics (STEM) capacity and capability through a diverse portfolio of investments from talent development to local infrastructure.\"",
+   "source_url": "https://www.nsf.gov/funding/initiatives/epscor",
+   "requires": []
+  },
+  {
+   "id": "c15",
+   "spoken": "NSF files it as an artificial intelligence award",
+   "on_screen": "NSF PROGRAM TAG: ARTIFICIAL INTELLIGENCE (AI)",
+   "what": "NSF's own metadata on all three records tags the award AI, which is a primary source calling it AI rather than an inference from the title",
+   "verbatim_source": "program: \"Artificial Intelligence (AI), Critical Minerals & Materials, Biotechnology, EXP PROG TO STIM COMP RES\"",
+   "source_url": "https://api.nsf.gov/services/v1/awards/2614749.json",
+   "requires": []
+  },
+  {
+   "id": "c16",
+   "spoken": "nothing like this runs at commercial scale anywhere",
+   "on_screen": "NO COMMERCIAL SCALE ANYWHERE",
+   "what": "The fair counter-point, and the film's honest limit. The flagship Shewanella rare-earth paper calls itself a broad exploratory study and is a genome-wide knockout screen in solution.",
+   "verbatim_source": "\"To identify targets for genomic improvement we screened 3,373 mutants from the whole genome knockout collection of the known REE-biosorbing microorganism Shewanella oneidensis MR-1.\" and \"This broad exploratory study begins to elucidate how genetics affect REE-biosorption by S. oneidensis\"",
+   "source_url": "https://pubmed.ncbi.nlm.nih.gov/37749198/",
+   "requires": [
+    "phrase as no commercial scale, NEVER as nothing has ever left the lab: one 2025 paper reportedly describes field-scale biofilm work and could not be read verbatim",
+    "no first, no breakthrough, no proven"
+   ]
+  },
+  {
+   "id": "c17",
+   "spoken": "the research on this is small",
+   "on_screen": "4 PAPERS INDEXED",
+   "what": "PubMed indexes four records pairing Shewanella oneidensis with rare earths, of which one is squarely about REE binding by this organism",
+   "verbatim_source": "field: \"count\": \"4\" with idlist 40961666, 38727702, 37749198, 20952651",
+   "source_url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=Shewanella+oneidensis+AND+(rare+earth)&retmax=20&retmode=json",
+   "requires": [
+    "say PubMed-indexed, not the whole literature",
+    "labelled on screen as of 2026-08-09"
+   ],
+   "contract": {
+    "attribution_on_screen": "PUBMED, AS OF 2026-08-09"
+   }
+  },
+  {
+   "id": "c18",
+   "spoken": "the country leans on other countries for these metals",
+   "on_screen": "\"RELIES HEAVILY ON FOREIGN SOURCES\"",
+   "what": "The dependence framing, verbatim, with NO percentage",
+   "verbatim_source": "NSF: \"The U.S. relies heavily on foreign sources for rare earth elements (REEs) crucial to energy technologies, advanced manufacturing, and national defense, despite possessing abundant domestic supplies locked within coal mining waste.\"",
+   "source_url": "https://api.nsf.gov/services/v1/awards/2614749.json",
+   "requires": [
+    "HARD CUT on any import-dependence percentage. USGS Mineral Commodity Summaries returned 403 this run and no figure was verified.",
+    "HARD CUT on any ppm figure for rare earths in coal ash. The only concentration figure read was 50 to 300 micrograms per litre in LIQUID mining waste streams, a different quantity in different units."
+   ]
+  },
+  {
+   "id": "c19",
+   "spoken": "sixteen rare earths are on the country's critical minerals list",
+   "on_screen": "16 RARE EARTHS ON THE 2025 LIST",
+   "what": "The Final 2025 List of Critical Minerals names individual elements rather than one grouped rare-earths entry. Sixteen of the 60 are rare earths: cerium, dysprosium, erbium, europium, gadolinium, holmium, lanthanum, lutetium, neodymium, praseodymium, samarium, scandium, terbium, thulium, ytterbium, yttrium.",
+   "verbatim_source": "list as published: \"aluminum, antimony, arsenic, barite, beryllium, bismuth, boron, cerium, cesium, chromium, cobalt, copper, dysprosium, erbium, europium, fluorspar, gadolinium, gallium, germanium, graphite, hafnium, holmium, indium, iridium, lanthanum, lead, lithium, lutetium, magnesium, manganese, metallurgical coal, neodymium, nickel, niobium, palladium, phosphate, platinum, potash, praseodymium, rhenium, rhodium, rubidium, ruthenium, samarium, scandium, silicon, silver, tantalum, tellurium, terbium, thulium, tin, titanium, tungsten, uranium, vanadium, ytterbium, yttrium, zinc, and zirconium\"",
+   "source_url": "https://www.federalregister.gov/documents/full_text/text/2025/11/07/2025-19813.txt",
+   "requires": [
+    "the count of 16 is OUR arithmetic on the published list",
+    "never say 'rare earth elements is one of the 60 entries', it is not"
+   ]
+  },
+  {
+   "id": "c20",
+   "spoken": "nobody has written about it",
+   "on_screen": "NO COVERAGE FOUND, 2026-08-09",
+   "what": "No story on this award was found in any university newsroom or news index reachable on August 9th, 2026. uaf.edu/news ran to August 3rd with nothing; uaa.alaska.edu/news had nothing; the UA EPSCoR news list tops out at an August 8th item titled Test; three Google News queries returned one unrelated market-research headline.",
+   "verbatim_source": "labelled non-quotation: a coverage sweep of 14 surfaces on 2026-08-09, of which UAA's Green and Gold research newsroom returned HTTP 503 twice and was never actually checked",
+   "source_url": "https://news.google.com/rss/search?q=%22Transformative+Bioprocessing%22",
+   "requires": [
+    "HARD CUT on the words exclusive, scoop, or unreported as flat assertions. The supportable phrasing is NO COVERAGE FOUND, and the 503 on Green and Gold is the specific hole.",
+    "the on-screen string must carry the date"
+   ],
+   "contract_note": "no machine contract: this film never draws or speaks the no-coverage claim, and on_screen_verbatim cannot tell an unused claim from a mis-drawn one"
+  },
+  {
+   "id": "c21",
+   "spoken": null,
+   "on_screen": null,
+   "what": "CONFLATION HAZARD, recorded so it can be avoided rather than used. On July 14th, 2026 UAF announced a separate and much larger NSF Critical Mineral Accelerator Engine, reported by UAF at $15 million for two years and up to $160 million over ten, led by Lee Ann Munk. Different program, different lead campus, different PI, different order of magnitude.",
+   "verbatim_source": "\"Our NSF Engine is built on the simple but ambitious idea that Alaska can lead the nation not only with the abundance of its critical mineral resources, but also in how we innovate, develop and deploy the technologies needed to produce them responsibly.\"",
+   "source_url": "https://www.uaf.edu/news/national-science-foundation-funds-uaf-led-critical-minerals-coalition.php",
+   "requires": [
+    "ANY sentence combining this award's six million with that award's sums is a factual error",
+    "if the Engine is mentioned at all it must be labelled according to UAF, since its figures were verified only against the university newsroom"
+   ]
+  },
+  {
+   "id": "c22",
+   "spoken": "Alaska has one operating coal mine",
+   "on_screen": "1 OPERATING COAL MINE",
+   "what": "Usibelli is Alaska's only operating coal mine. Added to the safe set after the angle room, because the geography beat is load-bearing and this is a verified primary-source fact.",
+   "verbatim_source": "\"Alaska's only operating surface coal mine, the Usibelli mine, supplies about 1.2 million tons of coal per year.\"",
+   "source_url": "https://dggs.alaska.gov/energy/coal.html",
+   "requires": [
+    "NO TONNAGE ON SCREEN OR IN THE VO. The state agency says about 1.2 million tons a year and the company's own site says approximately one million, and an unresolved conflict is not a number this film gets to use.",
+    "this establishes only that Alaska's coal base is small. It must NOT be used to imply Usibelli refuse is the feedstock, which claim c12 forbids."
+   ],
+   "contract": {
+    "attribution_on_screen": "ALASKA, PER DGGS"
+   }
+  }
+ ],
+ "hard_cuts": [
+  "eats / digests / consumes / feeds on / breathes rare earths \u2014 it BINDS them",
+  "any Alaska feedstock: Usibelli, Healy, an Alaska ash pond, an arrow from an Alaska mine to a tank",
+  "any Appalachian feedstock, equally unsupported",
+  "any US import-dependence percentage for rare earths",
+  "any ppm figure for rare earths in coal ash",
+  "three states sharing the money \u2014 Wyoming receives $0",
+  "Srijan Aggarwal on award 2614749 \u2014 he is PI on UAF's 2614751, and is NOT a co-PI on the UAA award",
+  "Montana Tech or Montana State \u2014 the legal name is Montana Technological University",
+  "present tense on anything: the award period begins September 1st, 2026",
+  "the University Recharge Facility, micro-credentials, early career leadership council or Tri-State Field Course as existing things \u2014 all are prospective",
+  "exclusive / scoop / unreported / first / breakthrough / proven",
+  "a flat $6 million with no hedge",
+  "any figure cited to nsf.gov/awardsearch, which renders an empty template \u2014 cite api.nsf.gov",
+  "any Alaska coal tonnage figure: the state agency and the company disagree (about 1.2 million tons vs approximately one million)"
+ ],
+ "the_honest_limits": {
+  "alaska_link": "Alaska is leading the science, not supplying the dirt. The lead campus, the PI and 79 percent of the money are Alaskan. The feedstock is named only as domestic, and the abstract's own three-state geography points the coal waste at Montana and Wyoming.",
+  "maturity": "No commercial-scale microbial rare earth recovery exists anywhere. The pilot plant is virtual. The work starts September 1st, 2026.",
+  "what_the_ai_is": "Software that predicts which waste is worth testing, runs reinforcement-learning controllers inside a digital twin of the process wired to a microgrid simulator, and scores the result against cost and life-cycle metrics. It does not design the organism and it never touches a tank."
+ }
+}
