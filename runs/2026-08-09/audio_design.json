@@ -1,0 +1,304 @@
+{
+ "note": "SFX scheduled from THIS film's 29 named move centres, not a cadence rule.",
+ "events_total": 33,
+ "on_move_centre": 29,
+ "families": [
+  "air",
+  "bell",
+  "blip",
+  "click",
+  "metal",
+  "pluck",
+  "sub",
+  "texture"
+ ],
+ "max_gap_s": 6.22,
+ "last_event_s": 125.76,
+ "closing_beat": "hero hit on the button at 125.76s; the annotation ring closes on that frame",
+ "ambience": {
+  "kind": "synthesised plant-room tone",
+  "window_s": [
+   0.0,
+   129.9
+  ],
+  "level": 0.055,
+  "attribution_required": false
+ },
+ "music": {
+  "url": "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Bathed%20in%20the%20Light.mp3",
+  "title": "Bathed in the Light",
+  "composer": "Kevin MacLeod",
+  "license": "CC BY 4.0",
+  "source": "incompetech.com",
+  "credit": "\"Bathed in the Light\" Kevin MacLeod (incompetech.com) - CC BY 4.0",
+  "wav": "out/dispatch/music_bed.wav",
+  "duration": 166.1
+ },
+ "music_credit_on_screen": "end card strap at 129s: MUSIC: BATHED IN THE LIGHT, KEVIN MACLEOD, INCOMPETECH.COM, CC BY 4.0",
+ "events": [
+  {
+   "t": 0.15,
+   "kind": "boom",
+   "class": "hero",
+   "pan": 0.0,
+   "take": "boom_v4.wav",
+   "family": "sub"
+  },
+  {
+   "t": 3.2,
+   "kind": "tick",
+   "class": "standard",
+   "pan": -0.22,
+   "take": "tick_v4.wav",
+   "family": "click"
+  },
+  {
+   "t": 8.55,
+   "kind": "stamp",
+   "class": "standard",
+   "pan": -0.11,
+   "take": "stamp_v4.wav",
+   "family": "sub"
+  },
+  {
+   "t": 10.9,
+   "kind": "pop",
+   "class": "standard",
+   "pan": 0.0,
+   "take": "pop_kenney_drop_002.wav",
+   "family": "blip"
+  },
+  {
+   "t": 14.0,
+   "kind": "clank",
+   "class": "standard",
+   "pan": 0.11,
+   "take": "clank_kenney_impactMetal_heavy_002.wav",
+   "family": "metal"
+  },
+  {
+   "t": 18.54,
+   "kind": "whoosh",
+   "class": "standard",
+   "pan": 0.22,
+   "take": "whoosh_v2.wav",
+   "family": "air"
+  },
+  {
+   "t": 21.34,
+   "kind": "tick",
+   "class": "standard",
+   "pan": 0.33,
+   "take": "tick_v2.wav",
+   "family": "click"
+  },
+  {
+   "t": 25.48,
+   "kind": "clank",
+   "class": "standard",
+   "pan": -0.33,
+   "take": "clank_kenney_impactMetal_heavy_000.wav",
+   "family": "metal"
+  },
+  {
+   "t": 31.35,
+   "kind": "thud",
+   "class": "hero",
+   "pan": 0.0,
+   "take": "thud_kenney_impactWood_heavy_000.wav",
+   "family": "sub"
+  },
+  {
+   "t": 34.1,
+   "kind": "snap",
+   "class": "standard",
+   "pan": -0.11,
+   "take": "snap_v4.wav",
+   "family": "pluck"
+  },
+  {
+   "t": 37.56,
+   "kind": "clank",
+   "class": "standard",
+   "pan": 0.0,
+   "take": "clank_kenney_impactMetal_heavy_001.wav",
+   "family": "metal"
+  },
+  {
+   "t": 40.86,
+   "kind": "paper",
+   "class": "standard",
+   "pan": 0.11,
+   "take": "paper_v3.wav",
+   "family": "texture"
+  },
+  {
+   "t": 45.2,
+   "kind": "whoosh",
+   "class": "standard",
+   "pan": 0.22,
+   "take": "whoosh_v6.wav",
+   "family": "air"
+  },
+  {
+   "t": 48.3,
+   "kind": "ding",
+   "class": "standard",
+   "pan": 0.33,
+   "take": "ding_kenney_impactBell_heavy_002.wav",
+   "family": "bell"
+  },
+  {
+   "t": 50.8,
+   "kind": "pop",
+   "class": "standard",
+   "pan": -0.33,
+   "take": "pop_kenney_drop_001.wav",
+   "family": "blip"
+  },
+  {
+   "t": 52.06,
+   "kind": "paper",
+   "class": "standard",
+   "pan": -0.22,
+   "take": "paper_v1.wav",
+   "family": "texture"
+  },
+  {
+   "t": 57.74,
+   "kind": "pop",
+   "class": "texture",
+   "pan": -0.22,
+   "take": "pop_kenney_drop_003.wav",
+   "family": "blip"
+  },
+  {
+   "t": 63.42,
+   "kind": "tick",
+   "class": "standard",
+   "pan": -0.11,
+   "take": "tick_v6.wav",
+   "family": "click"
+  },
+  {
+   "t": 68.98,
+   "kind": "whoosh",
+   "class": "standard",
+   "pan": 0.0,
+   "take": "whoosh_v4.wav",
+   "family": "air"
+  },
+  {
+   "t": 71.72,
+   "kind": "clank",
+   "class": "hero",
+   "pan": 0.0,
+   "take": "clank_kenney_impactMetal_heavy_004.wav",
+   "family": "metal"
+  },
+  {
+   "t": 77.94,
+   "kind": "snap",
+   "class": "standard",
+   "pan": 0.22,
+   "take": "snap_v2.wav",
+   "family": "pluck"
+  },
+  {
+   "t": 81.48,
+   "kind": "paper",
+   "class": "texture",
+   "pan": 0.22,
+   "take": "paper_v2.wav",
+   "family": "texture"
+  },
+  {
+   "t": 85.02,
+   "kind": "thud",
+   "class": "standard",
+   "pan": 0.33,
+   "take": "thud_kenney_impactWood_heavy_003.wav",
+   "family": "sub"
+  },
+  {
+   "t": 88.64,
+   "kind": "tick",
+   "class": "standard",
+   "pan": -0.33,
+   "take": "tick_v5.wav",
+   "family": "click"
+  },
+  {
+   "t": 92.37,
+   "kind": "paper",
+   "class": "texture",
+   "pan": -0.11,
+   "take": "paper_v6.wav",
+   "family": "texture"
+  },
+  {
+   "t": 96.1,
+   "kind": "snap",
+   "class": "standard",
+   "pan": -0.22,
+   "take": "snap_v3.wav",
+   "family": "pluck"
+  },
+  {
+   "t": 100.31,
+   "kind": "thud",
+   "class": "standard",
+   "pan": -0.11,
+   "take": "thud_kenney_impactWood_heavy_002.wav",
+   "family": "sub"
+  },
+  {
+   "t": 105.96,
+   "kind": "clank",
+   "class": "standard",
+   "pan": 0.0,
+   "take": "clank_kenney_impactMetal_medium_000.wav",
+   "family": "metal"
+  },
+  {
+   "t": 108.96,
+   "kind": "ding",
+   "class": "standard",
+   "pan": 0.11,
+   "take": "ding_kenney_impactBell_heavy_001.wav",
+   "family": "bell"
+  },
+  {
+   "t": 112.97,
+   "kind": "paper",
+   "class": "texture",
+   "pan": -0.22,
+   "take": "paper_v5.wav",
+   "family": "texture"
+  },
+  {
+   "t": 116.98,
+   "kind": "riser",
+   "class": "hero",
+   "pan": 0.0,
+   "take": "riser_v5.wav",
+   "family": "air"
+  },
+  {
+   "t": 121.08,
+   "kind": "tick",
+   "class": "standard",
+   "pan": 0.33,
+   "take": "tick_v1.wav",
+   "family": "click"
+  },
+  {
+   "t": 125.76,
+   "kind": "stamp",
+   "class": "hero",
+   "pan": 0.0,
+   "take": "stamp_v6.wav",
+   "family": "sub"
+  }
+ ]
+}

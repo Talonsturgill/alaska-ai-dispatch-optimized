@@ -619,3 +619,76 @@ that machine reads a SAMPLE brought indoors under a lamp, this one is CARRIED TO
   bought" smuggled in a premise the evidence never supplied. `AllowanceBoard` was built to carry
   that dead thesis and survives here in a smaller role. Build the asset the ARGUMENT needs, and
   make sure the argument survives a cold reader first.
+
+## THE SIMULATION GRAMMAR — lib/simulation.tsx (CRAFT ADVANCE 2026-08-09)
+The sibling of `absence.tsx`, and it exists for the same reason that file does: the shelf had
+paid for this lesson four times and solved it zero times. This channel has drawn a MODELLED
+thing on 07-25 (the landslide digital twin), 07-30 (the glider's dead-reckoned position),
+08-06 (a capacity ceiling that was a ceiling and not a count) and 08-09 (a Virtual Pilot
+Plant), and improvised it every time.
+ABSENCE says: this should be here and is not.  SIMULATION says: this is here, it is exact, and
+it is made of arithmetic.
+- `Simulated` — renders ANY silhouette as A STATED MODEL — simulation.tsx — the contract is
+  four clauses and each is a defect somebody already found: (1) HAIRLINE strokes of uniform
+  width that IGNORE the scene's light, because a form-shaded model reads as a real object;
+  (2) NO CONTACT AND NO SHADOW EVER, enforced by there being no prop for either, because a
+  cast shadow is the strongest cue that a thing is physically present; (3) a CONTINUOUS
+  RE-SOLVE on an irrational period, because a static wireframe reads as a render that failed
+  rather than as a model that is running, which is exactly the lesson absence.tsx paid for
+  with its drift layer; (4) a REQUIRED `fidelity` prop, not optional, so a caller has to state
+  how well the modelled thing is known and low fidelity visibly loosens the linework. `drawn`
+  animates a model into being outline-first. `occupied` tints an interior for a model meant to
+  read as running — ACTIVE
+- `SimField` — a POPULATION of measurements — simulation.tsx — a grid whose EMPTY cells are
+  drawn as empty rather than omitted, because the gap between a grid's size and its fill is
+  the only honest way to draw "compressed measurements, and little to compress" — ACTIVE
+- `resolveJitter` / `SIM` / `SIM_DEEP` — the hunt function and the reserved hue, exported so a
+  scene can park a readout on the same motion as the outline it belongs to.
+- HONEST LIMITATION: the reserved-hue rule (this colour appears only on things that are not
+  real) is enforced BY CONSTRUCTION, in that the token lives here and Ep0809 paints it only
+  through these components. It is NOT enforced by AccentRegistry, which throws at paint time
+  and would kill a render. A repo-level lint on reserved-hue literals is still the open item
+  from 2026-08-01.
+
+## BIOPROCESS — the shelf's FIRST CONTROLLER and FIRST CONTAINED PROCESS — lib/bioprocess.tsx
+NET-NEW 2026-08-09 ("The Method, Not The Metal", NSF award 2614749). REAL GAP, checked against
+this file in full first: the shelf carried an orbital eye, a seafloor ear, a ground ear, two
+aerial machines, an under-ice swimmer, a bench-science family, a records and paper family, a
+civics rules kit, an absence grammar, an arthropod, a piece of media, a clinical family, a
+machine-vision layer and thirteen biomes. EVERY MACHINE ON IT PERCEIVES. Nothing on it
+CONTROLS, and nothing on it is a vessel with a process inside.
+- `LoopGovernor` — THE RUN'S HERO — bioprocess.tsx — SHAPE-LANGUAGE DECISION and a deliberate
+  break with this channel's habit: IT HAS NO EYE. Every hero here for a year has been a thing
+  that LOOKS, and this film's narration says in as many words that the software never looks at
+  the microbe, so an eye would contradict the script in every frame. Its ancestor is the
+  mechanical flyball governor, the original controller, which also makes it the ONE ROUND
+  THING in a film of dented cylinders and torn heaps. THREE STATE CHANNELS per the
+  thrice-learned one-channel lesson: THE SPIN (flyballs rise with load, the only part legible
+  at feed size), THE LOOP (a cable that leaves the head and RETURNS, because a viewer cannot
+  see that a controller is closed unless the line comes back, and which object it returns from
+  is the film's whole argument), and THE THROTTLE (a power lever, NSF's "energy constrained"
+  as a drawn part). `spin`, `throttle`, `strain`, `accent`, `phase`. tones/FormGradient/
+  RimLight/ContactShadow, routed through vitals() — ACTIVE
+- `SteelVessel` — the REAL one, heavy and irregular — bioprocess.tsx — weld seams that are not
+  straight, hash-placed rivet heads, a lid hanging off true, a sight glass, a valve, and a
+  wire-hung paper tag whose `tagTurn` carries the film's primary open loop for a hundred
+  seconds (planted at 3.2s, paid at 108.9s), so it must never be defaulted to 1 by a call
+  site. The mouth has a real lit interior FLOOR rather than a black hole, because the argument
+  is that it is empty and an empty thing needs a visible bottom — ACTIVE
+- `TwinVessel` — the SAME vessel in the simulation grammar — bioprocess.tsx — consumes the
+  shared `VESSEL_PATH`, which is load-bearing rather than a convenience: the film stages the
+  two at identical size so a viewer compares instead of ranking, and two separate paths would
+  drift apart the first time either was edited and the comparison would quietly stop being
+  true. `bioFidelity` is separate from `fidelity` ON PURPOSE and is the film's second open
+  loop: the body models well and the biology does not — ACTIVE
+- `CellSurface` — THE ACCURACY ASSET — bioprocess.tsx — Shewanella oneidensis does not eat,
+  digest or breathe rare earths; it respires iron and manganese, and the rare earth
+  interaction is BIOSORPTION. So the accuracy is built into the GEOMETRY rather than trusted
+  to a caption: bound atoms sit on a radius strictly greater than the membrane's and are drawn
+  AFTER it so they can never be occluded, and `reject` drives an atom that presses in, dimples
+  the wall and is pushed back out. A scene physically cannot use this component to show
+  ingestion — ACTIVE
+- `VESSEL_PATH` / `BP` — the shared silhouette and the family palette.
+- KNOWN NEXT ADVANCE: no look-dev harness was built. A `BioLook.tsx` with the governor at four
+  spin/throttle states, both vessels side by side, and a 0.28-scale legibility strip should
+  exist before the next story leans on this family, per the GateLook and BenchLook precedent.

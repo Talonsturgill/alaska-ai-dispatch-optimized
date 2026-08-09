@@ -2166,3 +2166,156 @@ STILL OPEN, and it is the honest residue: `band_of()` returning None should be a
 silent pass. It should print "no CAPTION_TOP in <file>, checked nothing" and exit nonzero under a
 `--strict` flag that preflight sets. That is a small change and it is deferred only because it
 wants to be made when no render is in flight.
+
+---
+
+## 2026-08-09 — "The Method, Not The Metal" (NSF award 2614749, UAA-led AI bioprocessing)
+
+**Shipped:** a 129.9s Dispatch on the August 5th NSF Focused EPSCoR Collaborations awards,
+$5,998,412 across three linked records, mostly to the University of Alaska Anchorage, for
+reinforcement-learning controllers inside a bioprocess digital twin. Found by primary-source
+mining (the NSF Awards API filtered to `awardeeStateCode=AK`), not by any outlet. No coverage
+found anywhere on the run date.
+
+### Upgrades committed this run
+
+1. **`scripts/dedupe.py` — the repeat gate was structurally incapable of returning FRESH, and
+   it was training runs to argue past it.** `check` calls DUP on any two shared word tokens,
+   which is the right threshold, but the tokeniser splits multi-word entities into single
+   words and the STOP list held twelve grammar words. On an Alaska-and-AI channel that means
+   the words in EVERY entry were casting the deciding votes. Measured on this run's honest
+   entity list, four consecutive refusals, none of which named a subject:
+   `['learning','machine']`, `['ash','learning']`, `['alaska','nsf']`, `['alaska','anchorage']`.
+   Widened STOP with the channel's own vocabulary (its geography, its technology, its recurring
+   funders and institution-shaped nouns, citation scaffolding) and added `_is_bare_number` so a
+   Federal Register volume or a bare year cannot vote, while long docket ids still can.
+   **The threshold is untouched.** This makes the gate MORE permissive, so it is worth exactly
+   what it can still catch, which is why it ships with (2).
+2. **`scripts/dedupe_selftest.py` — NEW, and it is what makes (1) safe.** Replays the real
+   30-day ledger and asserts both directions: three genuine same-subject re-pitches (the NEH
+   screening film, the Stak Energy data centre, the Anchorage crime centre) still DUP, and the
+   four measured false positives now pass. Green. Run it whenever a word is added to STOP.
+3. **`scripts/vo_length_estimate.py` — NEW. Predicts VO runtime from the script before a synth
+   is spent, and it would have saved this run a whole synth round.** The words band in
+   `config/state.yaml` is treated as the length control and it cannot see sentence count. This
+   run wrote 281 words, inside the 262-282 band, and the first synth came back at **146.5s**
+   against a 112-130 ceiling, because the script had 35 sentences and the required Pace
+   paragraph instructs a real breath at every period. Two measured points from this run's own
+   synths fit `seconds = 0.4345*words + 0.6974*sentences`; the delivered 257-word, 24-sentence
+   script predicts 128.4s and measured 128.4s. Honest about being a two-point fit, exits 0
+   always, and tells the run whether cutting words or merging sentences is the cheaper trade.
+4. **`video-engine/src/lib/simulation.tsx` — CRAFT ADVANCE, the SIMULATION GRAMMAR.** The
+   sibling of `absence.tsx`. `absence` says a thing should be here and is not; `simulation`
+   says a thing is here, is exact, and is made of arithmetic. Four clauses, each a defect
+   somebody already found: hairline uniform strokes that ignore the scene light, no contact and
+   no shadow ever (there is no prop for either), a continuous re-solve so a held model is never
+   a still photograph, and a REQUIRED `fidelity` prop so a caller has to state how well the
+   modelled thing is known. This channel had drawn a modelled thing four times (07-25 twin,
+   07-30 dead reckoning, 08-06 capacity ceiling, and now a Virtual Pilot Plant) and improvised
+   it four times.
+5. **`video-engine/src/lib/bioprocess.tsx` — NET-NEW asset family.** Checked against
+   ASSET_MANIFEST.md in full first: every machine on the shelf PERCEIVES, and nothing on it
+   CONTROLS or holds a process. `LoopGovernor` (the hero, deliberately EYELESS, three state
+   channels: the spin, the closed loop, the throttle), `SteelVessel`, `TwinVessel`,
+   `CellSurface` (the accuracy asset, geometry that makes it impossible to draw ingestion),
+   and the shared `VESSEL_PATH` both vessels consume so the film's equal-size comparison cannot
+   silently stop being true.
+6. **`scripts/build_scenes.py` TAIL 2.6 -> 1.5.** The film measured 131.04s against a 130s
+   ceiling purely on tail, on a VO that was itself in band at 128.4s.
+7. **`scripts/zoom_clip_check.py` — NEW, and then REBUILT mid-run when it turned out to be
+   measuring the wrong camera.** No gate in this repo could see an element leaving the SIDE of
+   the frame. `text_fit_check` asks whether a string fits its plate, `caption_band_check` models
+   the vertical crop, `plate_overlap_check` compares boxes to each other, and the defect lives
+   in none of those places: it is the relationship between an authored x and a camera scale
+   declared elsewhere in the file. The first cut clipped five elements and the worst of them was
+   the film's central quotation, NSF's own sentence reading on screen as
+   "FORCEMENT-LEARNING CONTROLLERS ... GRATED WITH MICR".
+   The first version of the checker then shipped two more clipped elements into a graded cut,
+   because it was wrong in three ways worth writing down:
+   - Stage composes `(1 + push) * zoom`, not `zoom`. `push` is the dolly and it ramps across a
+     shot. Shot 6 declares zoom 1.02 and its true worst case is 1.122.
+   - A file-wide maximum is the wrong statistic even when it is conservative, because it is
+     conservative in the wrong direction for every other scene. Scale is now computed PER SCENE.
+   - Most of what leaves the frame is not a `<Plate>`. It now walks the translate stack and
+     grades bare centred `<text>` and positioned `<rect>` too, and it distinguishes an OBJECT
+     (positioned by an enclosing translate, must stay in frame) from SET DRESSING (authored in
+     scene coordinates, several of which bleed on purpose).
+   It found the NSF quote panel by itself, which is the only reason that one is fixed. It prints
+   what it could not measure, so a pass is never mistaken for coverage.
+8. **`scripts/build_evidence.py` — the contact sheet now photographs every scene SETTLED, not
+   just on a stride.** An even sweep samples a 125s film every 9.3s, and on this run that stride
+   landed inside the NSF quote's typewriter reveal. All three judges read a half-typed line as a
+   truncated string, one raised it as a hard blocker, and the pack had no frame between 41.8s and
+   51.0s to settle it with. **The film was correct and the evidence was not.** A smaller stride
+   is not the fix, because a stride can always straddle a reveal. The pack now also takes a frame
+   half a second before every cut, when nothing in that scene is still animating, which is the
+   state the shot actually holds and the state a judge should be grading.
+9. **`scripts/build_evidence.py` — the pack was sampling the wrong cut and describing the wrong
+   film.** Two independent defects, both found because judges said so: `--video` defaulted to
+   `dispatch_square.mp4` while the panel was being asked to grade the master, so all three judges
+   reported they could not see the cut in front of them; and `MOVES` still named the 2026-08-08
+   film's beats, so every motion filmstrip was centred on a moment this film does not contain.
+10. **`scripts/render_parallel.sh` — parse the engine before spending a render on it.** One
+   misplaced JSX comment (`{/* ... */}` as the first child of a parenthesised expression, which
+   is not legal JSX) made every chunk's bundle throw. The queue cannot tell "this chunk crashed"
+   from "this film cannot compile", so it retried 12 chunks three times each, 36 identical
+   failures, and reported a generic chunk failure with the real message in a temp log nobody had
+   a path to. esbuild parses the whole engine in under a second, so the check is free next to a
+   render. It is a PARSE and not a typecheck, and it says so.
+
+11. **`scripts/panel_ledger.py` — new. The panel protocol's second fix existed as an intention
+   and never as a mechanism.** `config/panel_protocol.md` was written after a run whose panel
+   drifted downward across re-grades of a film that was measurably improving, and its second
+   prescription is that *"a re-grade prompt MUST carry that judge's own previous axis scores."*
+   Nothing implemented that. The orchestrator held the cards in context and pasted them into the
+   next prompt, which works until the context is compacted, and on a long run the context is
+   always compacted. **This run reached round 4 able to recover three axis scores out of
+   thirty-three**, from a summary, because the only copy of round 3 lived in a conversation that
+   no longer existed. A requirement that depends on the orchestrator remembering is not a
+   requirement. The cards are small and they are JSON. `record` refuses to overwrite a different
+   card under the same round (a round grades one cut, and losing the trail destroys the only
+   thing that makes drift visible), `previous` prints the exact block the protocol demands, and
+   `median` reads the bar from `config/dispatch_rubric.yaml` rather than restating it.
+
+12. **`scripts/claims_contract_check.py` — it was printing a clean line while checking nothing,
+   and that is how an unmet accuracy obligation reached a graded cut.** The gate reads machine
+   obligations from a `contract` dict and skips prose `requires` lists, which is the right split
+   and was decided deliberately on 2026-08-08. What was missing is that skipping was SILENT. This
+   run's fact-checker wrote prose for all 22 claims and a machine contract for none, so the gate
+   reported `0 obligation(s) met, none outstanding` — a sentence indistinguishable from a film
+   whose every obligation was checked and honoured. Claim c17 requires that a count which moves
+   with time be labelled on screen with an as-of date; the plate shipped as a bare
+   `4 PAPERS INDEXED`, and **two judges found it by reading**, which is judge time spent
+   re-deriving something the fact-checker had already written down. The gate now names every
+   prose obligation it did not machine-check, with counts, so a pass can never be read as
+   coverage. Four obligations are now written as real contracts and verified against what is
+   DRAWN. It earned its keep immediately: it refused a contract asserted on c20, correctly,
+   because this film never draws that claim.
+
+### Known issues, deferred with a plan
+
+- **The open captions are not in the house type pair.** All three round-4 judges named it
+  independently (J1 low, J2 low, J3 implicitly via Typography). Every plate in the film is
+  JetBrains Mono; the caption layer is a generic bold grotesque, so the most-read type in the
+  piece sits outside the type system. Deferred deliberately rather than changed late in a run:
+  the caption face is shared rendering machinery and a legibility regression there is worse than
+  the inconsistency. Next run should either set it in the house pair or record the deviation as
+  a deliberate legibility choice so it stops reading as an oversight.
+- **No motion blur on fast moves.** All three judges named the opening lid throw, the film's
+  fastest beat at 21.6% changed pixels and a 254 peak delta, as crisp at every sampled position.
+  This is a real craft gap and a real engine change, not a tuning value.
+- **One set for 130 seconds.** J2 and J3 both located the leak in the 45-70s stretch, where the
+  named beats move 0.9-2.3% of pixels. The chain and lamp now live, which is a floor and not a
+  fix. The actual answer is a scale change or an angle change once in that window.
+- **No brand sign-off.** Three judges named it. The film ends on a data card about a second
+  after the closing question has left the screen, so the strongest loop asset is spent before the
+  last frame. Constrained this run by the 130s ceiling, so it needs the ending restructured
+  rather than extended.
+- `scripts/audio_report.py` returns `I=None TP=None` when run before the deliverable exists,
+  which is correct behaviour reported confusingly. It should say "deliverable not present"
+  rather than print nulls that read as a measured silence.
+- The reserved-hue rule (acid green only on things that are not real) is enforced BY
+  CONSTRUCTION this run: the token lives in `lib/simulation.tsx` and the episode paints it only
+  through `Simulated` / `SimField` / `TwinVessel`. It is NOT enforced by `AccentRegistry`,
+  which throws at paint time and would kill a render. A repo-level lint on reserved-hue
+  literals is the real fix and is still the open item from 2026-08-01.

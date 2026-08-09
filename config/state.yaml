@@ -1522,3 +1522,35 @@ dispatch_history:
     motion: slug traverse and seat
     light: raking shaft from upper left
     frame_use: full-height card wall
+- date: '2026-08-09'
+  topic: NSF award to UAA for microbial rare earth recovery from coal waste, where
+    most of the described work is control software rather than biology
+  slug: the-method-not-the-metal
+  key_entities:
+  - NSF
+  - University of Alaska Anchorage
+  - Shewanella oneidensis
+  - Montana Technological University
+  - University of Wyoming
+  - EPSCoR
+  archetype: the document read against itself
+  palette: warm amber boiler room, acid-green simulation accent
+  voice: Gemini TTS Sulafat
+  stance: curious
+  angle: Alaska won a rare earth award whose described work is a control method, not
+    metal
+  hero: LoopGovernor
+  cast:
+  - SteelVessel
+  - TwinVessel
+  - LoopGovernor
+  - CellSurface
+  - Character worker
+  composition:
+    stage: single-set boiler room
+    camera: frontal locked with slow push
+    hero_placement: centre-left on floor line
+    type_system: plated mono cards
+    depth: wall/mid/near three-plane
+    palette: warm amber with acid-green sim accent
+    motion: card-led with prop cycles

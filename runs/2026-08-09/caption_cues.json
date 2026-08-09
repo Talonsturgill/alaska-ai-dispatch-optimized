@@ -1,0 +1,201 @@
+{
+ "note": "every open-caption cue in the delivered cut, in order, as built into episode_props.json and rendered by the episode. Times are seconds from the first frame. Grade caption text against THIS, not against the 14 contact stills, which sample only a fraction of the runtime.",
+ "count": 39,
+ "cues": [
+  {
+   "start": 0.0,
+   "end": 3.69,
+   "text": "Alaska just won a rare earth"
+  },
+  {
+   "start": 3.72,
+   "end": 7.58,
+   "text": "award, and it came with no rare earths."
+  },
+  {
+   "start": 8.3,
+   "end": 13.17,
+   "text": "On August fifth the National Science Foundation obligated about six"
+  },
+  {
+   "start": 13.2,
+   "end": 17.14,
+   "text": "million dollars, mostly to the University of Alaska Anchorage."
+  },
+  {
+   "start": 18.24,
+   "end": 20.51,
+   "text": "The plan pulls rare earths from"
+  },
+  {
+   "start": 20.54,
+   "end": 24.75,
+   "text": "coal waste with a microbe, Shewanella oneidensis."
+  },
+  {
+   "start": 24.78,
+   "end": 30.56,
+   "text": "The rare earths stick to the cell's outside, and nothing gets digested."
+  },
+  {
+   "start": 31.1,
+   "end": 33.21,
+   "text": "But most of the described work"
+  },
+  {
+   "start": 33.24,
+   "end": 35.92,
+   "text": "is not biology, it is software."
+  },
+  {
+   "start": 37.26,
+   "end": 42.27,
+   "text": "The award's abstract calls it a digital twin, a software copy of"
+  },
+  {
+   "start": 42.3,
+   "end": 44.0,
+   "text": "a plant built from measurements."
+  },
+  {
+   "start": 44.9,
+   "end": 49.29,
+   "text": "It never designs the microbe, it runs a copy of a tank"
+  },
+  {
+   "start": 49.32,
+   "end": 50.54,
+   "text": "on a power budget."
+  },
+  {
+   "start": 51.26,
+   "end": 53.61,
+   "text": "That copy is the only tank,"
+  },
+  {
+   "start": 53.64,
+   "end": 56.9,
+   "text": "because the award funds a virtual pilot plant."
+  },
+  {
+   "start": 57.98,
+   "end": 60.53,
+   "text": "Work starts September first, so"
+  },
+  {
+   "start": 60.56,
+   "end": 62.08,
+   "text": "no result exists yet."
+  },
+  {
+   "start": 63.02,
+   "end": 65.51,
+   "text": "PubMed indexes four papers pairing"
+  },
+  {
+   "start": 65.54,
+   "end": 67.72,
+   "text": "this microbe with rare earths."
+  },
+  {
+   "start": 68.58,
+   "end": 70.42,
+   "text": "Thin material for a copy."
+  },
+  {
+   "start": 71.42,
+   "end": 73.5,
+   "text": "Now take the hardest read."
+  },
+  {
+   "start": 74.44,
+   "end": 76.51,
+   "text": "That abstract names the University"
+  },
+  {
+   "start": 76.54,
+   "end": 80.12,
+   "text": "of Wyoming a full partner, and gives it nothing."
+  },
+  {
+   "start": 81.32,
+   "end": 84.51,
+   "text": "Run that on Alaska, one operating"
+  },
+  {
+   "start": 84.54,
+   "end": 86.49,
+   "text": "coal mine and no named source"
+  },
+  {
+   "start": 86.52,
+   "end": 87.22,
+   "text": "for the waste."
+  },
+  {
+   "start": 88.34,
+   "end": 90.52,
+   "text": "A sentence, not a supply."
+  },
+  {
+   "start": 91.78,
+   "end": 94.6,
+   "text": "Maybe leading just means hosting the payroll."
+  },
+  {
+   "start": 95.7,
+   "end": 98.74,
+   "text": "That lands, and here is where it stops."
+  },
+  {
+   "start": 99.96,
+   "end": 101.81,
+   "text": "The abstract makes the power limit"
+  },
+  {
+   "start": 101.84,
+   "end": 104.36,
+   "text": "the core problem, not a footnote."
+  },
+  {
+   "start": 105.46,
+   "end": 107.36,
+   "text": "Most of a plant is pumps,"
+  },
+  {
+   "start": 107.82,
+   "end": 109.1,
+   "text": "timing and power."
+  },
+  {
+   "start": 109.76,
+   "end": 111.52,
+   "text": "That is where the controller sits."
+  },
+  {
+   "start": 112.2,
+   "end": 115.42,
+   "text": "So Alaska bought the method, not the metal."
+  },
+  {
+   "start": 116.58,
+   "end": 117.54,
+   "text": "A method travels."
+  },
+  {
+   "start": 118.32,
+   "end": 119.54,
+   "text": "Tonnage does not."
+  },
+  {
+   "start": 120.68,
+   "end": 123.96,
+   "text": "By twenty thirty, that copy has to have earned trust."
+  },
+  {
+   "start": 125.16,
+   "end": 128.44,
+   "text": "What would make you trust a plant you had never seen run?"
+  }
+ ]
+}

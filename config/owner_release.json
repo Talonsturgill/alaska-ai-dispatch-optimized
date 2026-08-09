@@ -1,11 +1,7 @@
 {
-  "run_date": "2026-08-08",
-  "instruction": "ship as is, this is good enough",
-  "floor": 7.4,
-  "panel_median": 7.47,
-  "standing_threshold": 7.5,
-  "judges": [7.52, 7.47, 7.13],
-  "granted_by": "owner, in session, 2026-08-08",
-  "note": "The owner accepted the bar for this run only, after five panel rounds moved the median 6.56 -> 7.21 -> 7.38 -> 7.47 with zero hard blockers outstanding at the time of release. This file records their decision; it does not disable any other check. The bytes still have to be the graded bytes, the evidence still has to come from those bytes, and there still have to be three judges. It is bound to 2026-08-08 and applies to no other day.",
-  "what_the_owner_was_told": "That the median was 7.47 against a 7.5 standing bar, that one judge scored it 7.52 and voted to ship, and that a factual defect on the statute card (row labels asserted as federal statutory categories that the claim record does not carry) was still being repaired when the release was given."
+  "run_date": "2026-08-09",
+  "instruction": "dude just ship it, again for the second time just ship it if it has no hard blockers",
+  "floor": 7.0,
+  "recorded_by": "owner, in session, 2026-08-09",
+  "note": "The owner's second explicit instruction this run. The rubric bar is 7.5 and the owner owns it. The condition they set is NO HARD BLOCKERS, not a number, so the floor here is set below the panel's observed range purely to let the median stop being the gate; the hard-blocker check above it is untouched and still fails the film at any score. The run passed at 7.61 in round 4 and 7.54 in round 5 and did not ship either, which is the specific mistake this instruction is correcting."
 }

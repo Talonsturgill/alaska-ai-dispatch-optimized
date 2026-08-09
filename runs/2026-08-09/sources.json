@@ -1,0 +1,47 @@
+{
+  "run_date": "2026-08-09",
+  "title": "The Method, Not The Metal",
+  "note": "Every dollar figure, date, name and quoted phrase in this film is read off NSF's own award records through api.nsf.gov. The human-readable nsf.gov award page renders an empty template to a fetcher, so the API endpoint is the citable primary and the award-search link is included only for a human reader.",
+  "sources": [
+    {
+      "title": "NSF Award 2614749, University of Alaska Anchorage, $3,824,575, awarded 2026-08-05 (the award record, and the abstract every quoted phrase comes from)",
+      "url": "https://api.nsf.gov/services/v1/awards/2614749.json"
+    },
+    {
+      "title": "NSF Award 2614749, human-readable award page (renders empty to a fetcher, included for a reader)",
+      "url": "https://www.nsf.gov/awardsearch/show-award/?AWD_ID=2614749"
+    },
+    {
+      "title": "NSF Award 2614751, University of Alaska Fairbanks, $913,037",
+      "url": "https://api.nsf.gov/services/v1/awards/2614751.json"
+    },
+    {
+      "title": "NSF Award 2614750, Montana Technological University, $1,260,800",
+      "url": "https://api.nsf.gov/services/v1/awards/2614750.json"
+    },
+    {
+      "title": "All three linked awards under one title, which is how the $5,998,412 total and the absence of a fourth award were established",
+      "url": "https://api.nsf.gov/services/v1/awards.json?keyword=%22Transformative+Bioprocessing%22"
+    },
+    {
+      "title": "Medin et al., Genomic characterization of rare earth binding by Shewanella oneidensis, Scientific Reports 2023 (the source for BIOSORPTION, the reason the film says the rare earths BIND and are not eaten)",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/37749198/"
+    },
+    {
+      "title": "Heidelberg et al., Genome sequence of the dissimilatory metal ion-reducing bacterium Shewanella oneidensis, Nature Biotechnology 2002",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/12368813/"
+    },
+    {
+      "title": "PubMed query pairing Shewanella oneidensis with rare earths, four indexed records as of 2026-08-09",
+      "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=Shewanella+oneidensis+AND+(rare+earth)&retmode=json"
+    },
+    {
+      "title": "Alaska Division of Geological and Geophysical Surveys, coal (the source for Alaska having one operating coal mine)",
+      "url": "https://dggs.alaska.gov/energy/coal.html"
+    },
+    {
+      "title": "NSF EPSCoR, the program this award sits in and the reason Alaska is eligible for it",
+      "url": "https://www.nsf.gov/funding/initiatives/epscor"
+    }
+  ]
+}

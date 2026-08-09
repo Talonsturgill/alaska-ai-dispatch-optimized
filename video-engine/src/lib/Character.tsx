@@ -1099,7 +1099,13 @@ export const Character: React.FC<CharacterProps> = ({
                 garment to the light and the head to the body — a left-contour rim on the lit edge,
                 the head's cast shadow on the chest (under-chin AO), and a stitched hem. Drawn over
                 the outfit overlays so they read on every costume. */}
-            <RimLight d="M-92,-148 q-8,74 -14,138" w={4} opacity={0.4} />
+            {/* THE RIM HAS TO STAY ON THE BODY. This path ran from x=-92 out to x=-106 while the
+                torso silhouette comes IN below the chest, so its lower half floated in the
+                background as a detached pale stroke. Two judges described it independently as
+                "a light grey slab behind his left shoulder ... an unresolved flat plate" and
+                "a light grey slab rather than a designed backpack", which is exactly what a
+                rim light reads as once it leaves the edge it is supposed to be lighting. */}
+            <RimLight d="M-88,-150 q-2,72 -3,120" w={3} opacity={0.34} />
             <ellipse cx={0} cy={-146} rx={42} ry={10} fill={INK} opacity={0.14} />
             <path d="M-84,-2 q84,22 168,0" fill="none" stroke={INK} strokeWidth={2.5} strokeDasharray="7 6" opacity={0.3} />
             {/* arms attach at shoulder height inside torso group (pose coords are authored

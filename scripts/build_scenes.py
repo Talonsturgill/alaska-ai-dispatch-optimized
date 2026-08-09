@@ -8,7 +8,7 @@ import json, os
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 OUT = os.path.join(REPO, "out", "dispatch")
 FPS = 30
-TAIL = 2.6  # hold after the last word
+TAIL = 1.5  # hold after the last word
 
 # scene -> index of the VO line that starts it. 2026-07-22 "the checkpoint lever frozen
 # at the midpoint" has 7 scenes (S1..S7 in video-engine/src/Episode.tsx, SCENE_COMPONENTS)
@@ -102,7 +102,17 @@ TAIL = 2.6  # hold after the last word
 # the undecided block), S11 L18 (three regions go dark), S12 L19 (the spreadsheet refuses),
 # S13 L20-L22 (the statute opens, the slug descends the column), S14 L23 (it seats flush in
 # the training clause), S15 L24-L25 (the button, two empty recesses and one filled).
-SCENE_START_LINE = [0, 2, 3, 5, 7, 9, 12, 14, 15, 16, 18, 19, 20, 23, 24]
+# 2026-08-09 "The Method, Not The Metal": ELEVEN scenes (S1..S11 in video-engine/src/Ep0809.tsx)
+# onto 23 VO lines. Boundaries anchored to VO LINE STARTS so the picture cannot drift from the
+# words. S1 L0-L1 (the lamp, the empty vessel, the award plate), S2 L2-L3 (coal waste, the cell,
+# the atoms that bind and do not go in), S3 L4-L5 (the money splits, NSF's sentence prints),
+# S4 L6-L7 (THE REFUSAL, the cable stops short and the twin draws itself), S5 L8-L10 (the tag
+# still turned away, four papers, thin material), S6 L11-L12 (ACT 3, the lamp swings cold and
+# Wyoming holds zero), S7 L13-L14 (one coal mine, the unlocated waste as an absence, a sentence
+# not a supply), S8 L15-L16 (the payroll accusation, then the crack), S9 L17-L18 (THE ANSWER,
+# energy constrained seats into the core and the plant runs), S10 L19-L21 (THE SIGNATURE, the
+# ring lifts and the tag turns), S11 L22 (the button).
+SCENE_START_LINE = [0, 1, 2, 4, 6, 8, 11, 13, 15, 17, 19, 22]
 
 
 def _apply_caption_fixups(caps):
@@ -146,14 +156,24 @@ def _rebalance_cues(caps):
     """
     DANGLING = ("of", "out of", "the", "a", "an", "to", "in", "on", "and", "or", "for",
                 "at", "by", "with", "from", "into", "than", "as", "is", "was", "which",
-                "you", "it", "they", "we", "that", "this", "has", "have", "had", "be")
-    MAXLEN = 62
+                "you", "it", "they", "we", "that", "this", "has", "have", "had", "be",
+                # NUMBER WORDS, added 2026-08-09. The digit guard below cannot see these, and
+                # the VO script spells every number out for the synth, so a panel judge found
+                # "obligated about six" / "million dollars" split across two cards. A spelled
+                # number is exactly as torn from its unit as a numeral is.
+                "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
+                "eleven", "twelve", "twenty", "thirty", "forty", "fifty", "sixty", "seventy",
+                "eighty", "ninety", "hundred", "thousand", "million", "billion")
+    MAXLEN = 68
     # ORPHAN TAILS, added 2026-08-04. The forward-merge above only fires when the CURRENT
     # cue ends badly, so it never caught a cue whose NEXT cue is a stub. This film shipped
     # "Nobody has mapped the days you" / "can." and "It works, and Alaska barely uses" /
     # "it." -- both of the piece's punchlines alone on a card, which reads as a stutter and
     # throws the line away. A tail of one or two short words is never its own caption.
     ORPHAN_WORDS, ORPHAN_CHARS = 2, 15
+    NUMBER_WORDS = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
+                    "ten", "eleven", "twelve", "twenty", "thirty", "forty", "fifty", "sixty",
+                    "seventy", "eighty", "ninety", "hundred", "thousand", "million", "billion"}
     out = []
     i = 0
     while i < len(caps):
@@ -181,7 +201,23 @@ def _rebalance_cues(caps):
             # an orphan tail gets a longer leash than a normal merge: a stub alone on a
             # card is a worse defect than a cue the renderer has to set on two lines, and
             # the renderer now wraps and auto-fits rather than overflowing its own bar.
-            limit = 74 if (len(nxt.split()) <= ORPHAN_WORDS and len(nxt) <= ORPHAN_CHARS) else MAXLEN
+            # A NUMBER AND ITS UNIT GET A LONGER LEASH, same reasoning as the orphan tail:
+            # "obligated about six" / "million dollars" reads as an error to a viewer, because
+            # the eye finishes the card before the next one arrives, and a slightly wide card
+            # is a far smaller defect than a severed figure. The renderer wraps and auto-fits.
+            _numtail = last.lower().strip(",.") in NUMBER_WORDS
+            if len(nxt.split()) <= ORPHAN_WORDS and len(nxt) <= ORPHAN_CHARS:
+                limit = 74
+            elif _numtail:
+                # 78 rather than higher ON PURPOSE. A number-unit merge is worth a slightly wide
+                # card, and it is NOT worth a 97-character one. KNOWN LIMIT, logged rather than
+                # papered over: on this run "obligated about six" / "million dollars" still splits,
+                # because the VO line is 19 words and every width-based split point in it lands
+                # badly. The real fix is chunking by SENSE rather than by width, which is a
+                # bigger change than a delivery run should make.
+                limit = 78
+            else:
+                limit = MAXLEN
             if not bad or len(t) + 1 + len(nxt) > limit:
                 break
             cur["text"] = t + " " + nxt

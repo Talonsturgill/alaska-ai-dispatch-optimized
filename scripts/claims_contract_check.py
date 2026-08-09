@@ -91,6 +91,24 @@ def drawn(engine, s, _cache={}):
     return bool(n) and n in _cache[key]
 
 
+def _report_prose(prose_only, total):
+    """Never let a clean line imply coverage this gate did not provide."""
+    if not prose_only:
+        return
+    n = sum(k for _, k in prose_only)
+    print(f"\nNOT MACHINE-CHECKED HERE: {n} prose obligation(s) across "
+          f"{len(prose_only)} of {total} claim(s).")
+    print("  " + ", ".join(f"{cid}({k})" for cid, k in prose_only))
+    print("  These are written for a human and for vo_claims_check.py, which covers the "
+          "NARRATION side only.")
+    print("  Nothing here verified them against what is DRAWN. An obligation about an "
+          "on-screen string")
+    print("  (a qualifier, an as-of date, an attribution) is invisible to every gate in this "
+          "repo unless")
+    print("  it is also written as a `contract` block. If one of these constrains a card, "
+          "write it as one.")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--claims", default=os.path.join(REPO, "out", "dispatch", "claims.json"))
@@ -110,7 +128,7 @@ def main():
     vo = open(a.vo).read()
     by_id = {c["id"]: c for c in claims}
 
-    problems, checked = [], 0
+    problems, checked, prose_only = [], 0, []
     for c in claims:
         # `requires` may be PROSE (a list written by the fact-checker for humans and for
         # vo_claims_check.py) or a machine contract (a dict). A list used to crash this
@@ -119,6 +137,16 @@ def main():
         # claim is skipped here and still checked by vo_claims_check.py.  (2026-08-08)
         req = c.get("contract") or c.get("requires") or {}
         if isinstance(req, list):
+            # PROSE OBLIGATIONS ARE STILL OBLIGATIONS, AND THIS GATE MUST SAY SO (2026-08-09).
+            # Skipping them silently was the whole defect. On this run all 22 claims carried
+            # prose `requires` and not one carried a machine `contract`, so the gate printed
+            # "0 obligation(s) met, none outstanding" -- a sentence indistinguishable from a
+            # film whose every obligation was checked and honoured. Two judges then found, by
+            # reading, that c17's own requirement ("labelled on screen as of 2026-08-09") was
+            # unmet on screen. A gate whose clean output means "I checked nothing" is worse
+            # than no gate, because a run reads it and moves on.
+            if [x for x in req if str(x).strip()]:
+                prose_only.append((c["id"], len([x for x in req if str(x).strip()])))
             req = {}
         if not req:
             continue
@@ -177,8 +205,10 @@ def main():
               f"across {checked} check(s).")
         print("These are instructions the fact-checker wrote FOR the build, in the claim")
         print("record. A note the build can decline is not a safeguard, it is a suggestion.")
+        _report_prose(prose_only, len(claims))
         return 1
-    print(f"claims_contract_check: {checked} obligation(s) met, none outstanding")
+    print(f"claims_contract_check: {checked} machine obligation(s) met, none outstanding")
+    _report_prose(prose_only, len(claims))
     return 0
 
 

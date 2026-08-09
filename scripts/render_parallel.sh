@@ -86,6 +86,46 @@ _src_fingerprint() {
 }
 SRC_BEFORE="$(_src_fingerprint)"
 
+# PARSE THE SOURCES BEFORE SPENDING A RENDER ON THEM (2026-08-09).
+# A single misplaced JSX comment - `{/* ... */}` used as the first child of a parenthesised
+# expression, which is not legal JSX - made every chunk's bundle throw. The queue does not
+# know the difference between "this chunk crashed" and "this film cannot compile", so it did
+# what it is designed to do: retried each of 12 chunks 3 times, 36 identical bundle failures,
+# and reported "a chunk failed" several minutes later. The real message was on line 3 of a
+# temp log nobody had a path to.
+#
+# esbuild parses the whole engine in well under a second, so the check is free next to a
+# render, and it turns a multi-minute mystery into one line naming the file and the column.
+# It is a PARSE, not a typecheck: it catches the class that stops a bundle dead, and it does
+# not pretend to catch a type error, which Remotion would render straight through anyway.
+if [ -d video-engine/node_modules/esbuild ]; then
+  _parse_err=0
+  for _f in video-engine/src/*.tsx video-engine/src/*.ts video-engine/src/lib/*.tsx; do
+    [ -e "$_f" ] || continue
+    if ! (cd video-engine && npx --no-install esbuild "${_f#video-engine/}" \
+            --log-level=error --outfile=/dev/null) 2>&1; then
+      _parse_err=1
+    fi
+  done
+  if [ "$_parse_err" -ne 0 ]; then
+    echo "render_parallel.sh: the engine does not parse, so no chunk could ever bundle." >&2
+    echo "Fix the syntax above and re-launch. Nothing was rendered." >&2
+    exit 4
+  fi
+fi
+
+# A PASSING CUT IS FINISHED (2026-08-09, owner's instruction). ship_gate.py writes
+# out/dispatch/SHIP_NOW the moment a panel median clears the bar. While that file exists this
+# script will not start a render, because the only reason to render after a pass is to replace
+# a cut that was already good enough, and that is exactly what cost this routine nine hours and
+# five rounds on the day the rule was written.
+if [ -f out/dispatch/SHIP_NOW ]; then
+  echo "render_parallel.sh: REFUSING. A passing cut is waiting to ship." >&2
+  cat out/dispatch/SHIP_NOW >&2
+  echo "If you really mean to abandon it, delete out/dispatch/SHIP_NOW first." >&2
+  exit 5
+fi
+
 COMP="$1"
 OUT="${2:-out/dispatch/render_mute.mp4}"
 PROPS="${PROPS:-out/dispatch/episode_props.json}"
@@ -125,6 +165,27 @@ case "$OUT" in /*) ABS_OUT="$OUT";; *) ABS_OUT="$PWD/$OUT";; esac
 WORK="$(mktemp -d)"
 trap 'rm -rf "$WORK"' EXIT
 
+# CHUNK CACHE, KEYED ON CONTENT (2026-08-09). This routine box restarted twice in one run and
+# each restart killed a render mid-flight, costing ~25 minutes of work that had already been
+# done: chunks 0-3 were sitting complete in a temp dir the next invocation could not see,
+# because WORK is a fresh mktemp every time.
+#
+# A cache here is dangerous in exactly one way, and this script already documents it at length:
+# reusing bytes rendered from code that has since changed ships the wrong film, silently, with
+# every hash matching. So the key is the CONTENT of everything that can change a pixel -- the
+# composition id, the props file, and every engine source -- not an mtime and not a git rev.
+# Any edit anywhere changes the key, which makes a stale hit impossible rather than unlikely.
+# A run that changes one character gets a full re-render, which is the correct and safe cost.
+CACHE_ROOT="out/dispatch/chunkcache"
+CACHE_KEY="$( { echo "$COMP"; cat "$PROPS" 2>/dev/null; \
+                find video-engine/src -name '*.tsx' -o -name '*.ts' | sort | xargs cat 2>/dev/null; \
+              } | sha256sum | cut -c1-16 )"
+CACHE="$CACHE_ROOT/$CACHE_KEY"
+mkdir -p "$CACHE"
+# keep only the newest few keys so this never becomes a disk leak on a long-lived box
+ls -1dt "$CACHE_ROOT"/*/ 2>/dev/null | tail -n +4 | xargs -r rm -rf
+echo "  chunk cache: $CACHE  ($(ls -1 "$CACHE"/c*.mp4 2>/dev/null | wc -l) chunk(s) already rendered from this exact source)"
+
 echo "parallel render: $COMP  $TOTAL frames  $CHUNKS chunks, $SLOTS at a time"
 # DELETE THE OLD FILM BEFORE RENDERING THE NEW ONE (2026-08-04). When a chunk dies the
 # script exits 1, correctly, but it used to leave the PREVIOUS render sitting at $OUT
@@ -141,12 +202,19 @@ rm -f "$ABS_OUT"
 # hang does not set one.
 render_chunk() {
   local i="$1" A="$2" B="$3" attempt=1
+  # a cached chunk is bytes rendered from THIS EXACT SOURCE, so reusing it is not a shortcut
+  if [ -s "$CACHE/c$i.mp4" ]; then
+    cp "$CACHE/c$i.mp4" "$WORK/c$i.mp4"
+    echo "  chunk $i reused from cache (same source, same props)" >&2
+    return 0
+  fi
   while [ "$attempt" -le "$TRIES" ]; do
     ( cd video-engine && timeout -k 15 "$CHUNK_TIMEOUT" \
         npx remotion render src/index.ts "$COMP" "$WORK/c$i.mp4" \
         --props="../$PROPS" --codec=h264 --muted --concurrency=1 --crf=19 \
         --frames="$A-$B" ) >"$WORK/c$i.attempt$attempt.log" 2>&1 || true
     if [ -s "$WORK/c$i.mp4" ]; then
+      cp "$WORK/c$i.mp4" "$CACHE/c$i.mp4" 2>/dev/null || true
       cp "$WORK/c$i.attempt$attempt.log" "$WORK/c$i.log"
       [ "$attempt" -gt 1 ] && echo "  chunk $i recovered on attempt $attempt" >&2
       return 0
