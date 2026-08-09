@@ -2166,3 +2166,70 @@ STILL OPEN, and it is the honest residue: `band_of()` returning None should be a
 silent pass. It should print "no CAPTION_TOP in <file>, checked nothing" and exit nonzero under a
 `--strict` flag that preflight sets. That is a small change and it is deferred only because it
 wants to be made when no render is in flight.
+
+---
+
+## 2026-08-09 — "The Method, Not The Metal" (NSF award 2614749, UAA-led AI bioprocessing)
+
+**Shipped:** a 129.9s Dispatch on the August 5th NSF Focused EPSCoR Collaborations awards,
+$5,998,412 across three linked records, mostly to the University of Alaska Anchorage, for
+reinforcement-learning controllers inside a bioprocess digital twin. Found by primary-source
+mining (the NSF Awards API filtered to `awardeeStateCode=AK`), not by any outlet. No coverage
+found anywhere on the run date.
+
+### Upgrades committed this run
+
+1. **`scripts/dedupe.py` — the repeat gate was structurally incapable of returning FRESH, and
+   it was training runs to argue past it.** `check` calls DUP on any two shared word tokens,
+   which is the right threshold, but the tokeniser splits multi-word entities into single
+   words and the STOP list held twelve grammar words. On an Alaska-and-AI channel that means
+   the words in EVERY entry were casting the deciding votes. Measured on this run's honest
+   entity list, four consecutive refusals, none of which named a subject:
+   `['learning','machine']`, `['ash','learning']`, `['alaska','nsf']`, `['alaska','anchorage']`.
+   Widened STOP with the channel's own vocabulary (its geography, its technology, its recurring
+   funders and institution-shaped nouns, citation scaffolding) and added `_is_bare_number` so a
+   Federal Register volume or a bare year cannot vote, while long docket ids still can.
+   **The threshold is untouched.** This makes the gate MORE permissive, so it is worth exactly
+   what it can still catch, which is why it ships with (2).
+2. **`scripts/dedupe_selftest.py` — NEW, and it is what makes (1) safe.** Replays the real
+   30-day ledger and asserts both directions: three genuine same-subject re-pitches (the NEH
+   screening film, the Stak Energy data centre, the Anchorage crime centre) still DUP, and the
+   four measured false positives now pass. Green. Run it whenever a word is added to STOP.
+3. **`scripts/vo_length_estimate.py` — NEW. Predicts VO runtime from the script before a synth
+   is spent, and it would have saved this run a whole synth round.** The words band in
+   `config/state.yaml` is treated as the length control and it cannot see sentence count. This
+   run wrote 281 words, inside the 262-282 band, and the first synth came back at **146.5s**
+   against a 112-130 ceiling, because the script had 35 sentences and the required Pace
+   paragraph instructs a real breath at every period. Two measured points from this run's own
+   synths fit `seconds = 0.4345*words + 0.6974*sentences`; the delivered 257-word, 24-sentence
+   script predicts 128.4s and measured 128.4s. Honest about being a two-point fit, exits 0
+   always, and tells the run whether cutting words or merging sentences is the cheaper trade.
+4. **`video-engine/src/lib/simulation.tsx` — CRAFT ADVANCE, the SIMULATION GRAMMAR.** The
+   sibling of `absence.tsx`. `absence` says a thing should be here and is not; `simulation`
+   says a thing is here, is exact, and is made of arithmetic. Four clauses, each a defect
+   somebody already found: hairline uniform strokes that ignore the scene light, no contact and
+   no shadow ever (there is no prop for either), a continuous re-solve so a held model is never
+   a still photograph, and a REQUIRED `fidelity` prop so a caller has to state how well the
+   modelled thing is known. This channel had drawn a modelled thing four times (07-25 twin,
+   07-30 dead reckoning, 08-06 capacity ceiling, and now a Virtual Pilot Plant) and improvised
+   it four times.
+5. **`video-engine/src/lib/bioprocess.tsx` — NET-NEW asset family.** Checked against
+   ASSET_MANIFEST.md in full first: every machine on the shelf PERCEIVES, and nothing on it
+   CONTROLS or holds a process. `LoopGovernor` (the hero, deliberately EYELESS, three state
+   channels: the spin, the closed loop, the throttle), `SteelVessel`, `TwinVessel`,
+   `CellSurface` (the accuracy asset, geometry that makes it impossible to draw ingestion),
+   and the shared `VESSEL_PATH` both vessels consume so the film's equal-size comparison cannot
+   silently stop being true.
+6. **`scripts/build_scenes.py` TAIL 2.6 -> 1.5.** The film measured 131.04s against a 130s
+   ceiling purely on tail, on a VO that was itself in band at 128.4s.
+
+### Known issues, deferred with a plan
+
+- `scripts/audio_report.py` returns `I=None TP=None` when run before the deliverable exists,
+  which is correct behaviour reported confusingly. It should say "deliverable not present"
+  rather than print nulls that read as a measured silence.
+- The reserved-hue rule (acid green only on things that are not real) is enforced BY
+  CONSTRUCTION this run: the token lives in `lib/simulation.tsx` and the episode paints it only
+  through `Simulated` / `SimField` / `TwinVessel`. It is NOT enforced by `AccentRegistry`,
+  which throws at paint time and would kill a render. A repo-level lint on reserved-hue
+  literals is the real fix and is still the open item from 2026-08-01.

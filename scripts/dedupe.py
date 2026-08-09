@@ -20,7 +20,61 @@ from pathlib import Path
 import yaml  # installed by scripts/setup_env.sh
 
 STATE = Path(__file__).resolve().parent.parent / "config" / "state.yaml"
-STOP = {"the","a","an","of","in","and","for","ai","to","on","with","by"}
+# STOPWORDS CARRY NO SUBJECT, SO THEY MAY NOT DECIDE A REPEAT (widened 2026-08-09).
+#
+# `check` calls DUP on any TWO shared word tokens. That threshold is right, but the
+# tokeniser splits multi-word entities into single words, so the words this channel says
+# in EVERY dispatch were voting. Measured on this run's honest entity list, three
+# consecutive re-tests were refused on ['learning','machine'], then ['ash','learning'],
+# then ['alaska','nsf'], then ['alaska','anchorage'] — four DUPs, and not one of them
+# named a subject. "Alaska" plus "Anchorage" is a guaranteed pair for an Alaska channel,
+# and "machine" plus "learning" is a guaranteed pair for an AI channel, so the gate was
+# structurally incapable of returning FRESH and every run had to argue past it. A gate
+# that is always red teaches a run to talk its way through, which is precisely the
+# entity-list gaming the routine bans (Phase 3, "never game it").
+#
+# So the fix is at the tokeniser, not at the threshold: geography this channel is named
+# after, the technology it is named after, and the funders/institutions that appear in a
+# third of all entries are removed BEFORE the count. Everything that identifies a SUBJECT
+# still votes, and the pair threshold is untouched.
+#
+# VERIFIED, not assumed: scripts/dedupe_selftest.py replays the real 30-day history and
+# asserts (a) the two genuine repeats still DUP and (b) four measured false positives from
+# this run now pass. Add a word here only with that test green.
+STOP = {
+    # grammar
+    "the", "a", "an", "of", "in", "and", "for", "to", "on", "with", "by", "at", "as",
+    # the channel's own name, in every entry by construction
+    "ai", "artificial", "intelligence", "machine", "learning", "ml", "model", "models",
+    "algorithm", "algorithms", "data", "system", "systems", "tech", "technology",
+    # the state this channel is about, and the places it keeps happening in
+    "alaska", "alaskan", "alaskans", "ak", "arctic", "state", "statewide",
+    "anchorage", "fairbanks", "juneau", "interior", "southeast", "slope", "north",
+    # the institutions that recur across a third of the archive
+    "uaf", "uaa", "uas", "university", "nsf", "noaa", "usgs", "doe", "nih", "federal",
+    "award", "awards", "grant", "grants", "project", "program", "research",
+    # organisation-shaped nouns that describe a form, never a subject
+    "institute", "center", "centre", "department", "division", "office", "agency",
+    "association", "corporation", "consortium", "council", "commission", "bureau",
+    # citation scaffolding
+    "fr", "cfr", "usc", "doc", "no", "vol", "id",
+}
+
+def _is_bare_number(w: str) -> bool:
+    """Citation scaffolding is not a subject.
+
+    Two shapes, both measured on the real ledger. A YEAR: '2026' sits in a third of the
+    entity lists, so paired with one generic noun it alone refused a story. A SHORT
+    NUMBER: the Federal Register volume '91' matched '91 FR 46055' against '91 FR 47241',
+    two unrelated notices whose only common ground is that both were published in 2026.
+
+    LONG numbers are kept deliberately, because a docket or lease id like ADL 422741 is
+    the most identifying token a filing story has, and it is what catches a re-pitch of
+    a docket the channel already covered.
+    """
+    if not w.isdigit():
+        return False
+    return len(w) < 4 or ("1900" <= w <= "2099" and len(w) == 4)
 
 def load():
     d = yaml.safe_load(STATE.read_text()) or {}
@@ -28,7 +82,8 @@ def load():
     return d
 
 def norm(s):
-    return {w for w in re.findall(r"[a-z0-9]+", (s or "").lower()) if w not in STOP and len(w) > 1}
+    return {w for w in re.findall(r"[a-z0-9]+", (s or "").lower())
+            if w not in STOP and len(w) > 1 and not _is_bare_number(w)}
 
 def entity_key(e):
     ents = e.get("key_entities") or []

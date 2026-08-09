@@ -8,7 +8,7 @@ import json, os
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 OUT = os.path.join(REPO, "out", "dispatch")
 FPS = 30
-TAIL = 2.6  # hold after the last word
+TAIL = 1.5  # hold after the last word
 
 # scene -> index of the VO line that starts it. 2026-07-22 "the checkpoint lever frozen
 # at the midpoint" has 7 scenes (S1..S7 in video-engine/src/Episode.tsx, SCENE_COMPONENTS)
@@ -102,7 +102,17 @@ TAIL = 2.6  # hold after the last word
 # the undecided block), S11 L18 (three regions go dark), S12 L19 (the spreadsheet refuses),
 # S13 L20-L22 (the statute opens, the slug descends the column), S14 L23 (it seats flush in
 # the training clause), S15 L24-L25 (the button, two empty recesses and one filled).
-SCENE_START_LINE = [0, 2, 3, 5, 7, 9, 12, 14, 15, 16, 18, 19, 20, 23, 24]
+# 2026-08-09 "The Method, Not The Metal": ELEVEN scenes (S1..S11 in video-engine/src/Ep0809.tsx)
+# onto 23 VO lines. Boundaries anchored to VO LINE STARTS so the picture cannot drift from the
+# words. S1 L0-L1 (the lamp, the empty vessel, the award plate), S2 L2-L3 (coal waste, the cell,
+# the atoms that bind and do not go in), S3 L4-L5 (the money splits, NSF's sentence prints),
+# S4 L6-L7 (THE REFUSAL, the cable stops short and the twin draws itself), S5 L8-L10 (the tag
+# still turned away, four papers, thin material), S6 L11-L12 (ACT 3, the lamp swings cold and
+# Wyoming holds zero), S7 L13-L14 (one coal mine, the unlocated waste as an absence, a sentence
+# not a supply), S8 L15-L16 (the payroll accusation, then the crack), S9 L17-L18 (THE ANSWER,
+# energy constrained seats into the core and the plant runs), S10 L19-L21 (THE SIGNATURE, the
+# ring lifts and the tag turns), S11 L22 (the button).
+SCENE_START_LINE = [0, 1, 2, 4, 6, 8, 11, 13, 15, 17, 19, 22]
 
 
 def _apply_caption_fixups(caps):
