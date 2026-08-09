@@ -2,7 +2,7 @@ Alaska just won a rare earth award that contains no rare earths.
 
 On August 5th the National Science Foundation obligated $5,998,412 across three linked awards. Most of it went to the University of Alaska Anchorage. The plan is to pull rare earths out of coal refuse and ash using a microbe called Shewanella oneidensis. The rare earths stick to the outside of the cell. Nothing gets digested.
 
-Here is the part worth reading twice. Most of the described work is not biology. It is software. NSF's own abstract describes reinforcement-learning controllers inside a bioprocess digital twin integrated with microgrid simulators. The software never looks at the microbe. It runs a copy of a tank on a power budget. And the pilot plant named in the project is a virtual one.
+Here is the part worth reading twice. Most of the described work is not biology. It is software. NSF's own abstract describes reinforcement-learning controllers inside a bioprocess digital twin integrated with microgrid simulators. The software never designs the microbe. It runs a copy of a tank on a power budget. And the pilot plant named in the project is a virtual one.
 
 Now take the hardest read of that. The same abstract names the University of Wyoming a full partner and Wyoming holds zero dollars. So this document hands Wyoming a role the money does not back. Run that on Alaska. The state has one operating coal mine and the abstract never says whose waste feeds this. Maybe leading just means hosting a payroll.
 
