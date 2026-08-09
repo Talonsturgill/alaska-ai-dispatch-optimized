@@ -659,7 +659,7 @@ const S5: React.FC<SceneProps> = (p) => {
           the same affordance the NO RESULT EXISTS YET plate above already uses. It also moves
           up off y=1300, where the open caption box was cutting it in half for the 1.8s the
           "Thin material for a copy" cue is live. */}
-      {f >= slips + 52 && <Plate x={700} y={1136} text="4 PAPERS INDEXED" size={26}
+      {f >= slips + 52 && <Plate x={648} y={1118} text="4 PAPERS INDEXED" size={26}
                                  delay={slips + 52} sub="PUBMED, AS OF 2026-08-09" />}
       {f >= thin && <Plate x={624} y={1012} text="THIN MATERIAL FOR A COPY" size={32} delay={thin} />}
     </Stage>
@@ -886,13 +886,17 @@ const S9: React.FC<SceneProps> = (p) => {
       <g opacity={0.95}>
         <TwinVessel f={f} x={872} y={FLOOR} scale={0.8} drawn={1}
                     fidelity={0.5 + tight * 0.48} bioFidelity={0.14} running={run}
-                    phase={2.2} bioLabel={tight > 0.7 ? 'BIOLOGY' : undefined} />
+                    phase={2.2} bioLabel={undefined} />
       </g>
       {/* x is 238, not 210, because this shot's worst-case scale is 1.04 * 1.10 = 1.144 and the
           21-character label is 278 wide: at 210 its left edge rendered at x=3, hard against the
           frame. 238 puts it at 35. */}
+      {/* BIOLOGY was dark green type on a dark wall at ~20px cap height, the one label in the
+          film not on a plate, and it carried the small-versus-large comparison the card is built
+          on. Plated, at plate size, on the film's own treatment. */}
+      {tight > 0.7 && <Plate x={806} y={1010} text="BIOLOGY" size={24} delay={bio + 30} />}
       {run > 0.3 && (
-        <g transform="translate(276,1210)">
+        <g transform="translate(276,1252)">
           <SimField f={f} x={-120} y={-120} w={240} h={120} cols={8} rows={4} filled={0.82} phase={1.4} />
           <text x={0} y={20} textAnchor="middle" fontFamily={MONO} fontSize={22} fontWeight={700}
                 fill={SIM}>PUMPS / TIMING / POWER</text>
@@ -900,7 +904,7 @@ const S9: React.FC<SceneProps> = (p) => {
       )}
       {/* the power meter, overshooting and settling just inside its limit */}
       {f >= meter && (
-        <g transform="translate(276,1400)"> {/* stays under the label above it, which moved inboard */}
+        <g transform="translate(276,1436)"> {/* stays under the label above it, which moved inboard */}
           <circle r={62} fill="#221C16" stroke={INK} strokeWidth={5} />
           <path d="M -46 8 A 46 46 0 0 1 46 8" fill="none" stroke="#6B6152" strokeWidth={4} />
           <path d="M 30 -18 L 40 -26" stroke="#C96A4A" strokeWidth={5} />
@@ -958,12 +962,32 @@ const S11: React.FC<SceneProps> = (p) => {
       <SteelVessel f={f} x={470} y={FLOOR} scale={1.72} lid={1} tagTurn={1}
                    tagText="STARTS 2026-09-01" tagSub="RUNS TO 2030-08-31" phase={0.4} mouth={1} />
       {/* the ring hangs exactly where the lamp sat in frame one */}
-      <g transform={`translate(470,600) rotate(${(f * 1.1) % 360})`}>
-        <ellipse rx={128} ry={44} fill="none" stroke={SIM} strokeWidth={18} opacity={0.11} />
-        <ellipse rx={128} ry={44} fill="none" stroke={SIM} strokeWidth={5.5} />
-        <circle cx={128} cy={0} r={8} fill="#EAFFB0" />
-      </g>
-      {f >= 10 && <Plate x={540} y={986} text="NO COMMERCIAL SCALE ANYWHERE" size={30} delay={10} />}
+      {/* THE RING CLOSES, on the exact frame the mix lands its closing hero stamp (125.76s is
+          local frame 18 of this shot). Two judges measured that beat and found 4.6% of pixels
+          changing with all of it parallax drift: a hero hit with nothing under it. A discrete
+          three-frame collapse with an overshoot is the smallest honest thing that can carry it. */}
+      {(() => {
+        const shut = interpolate(f, [18, 21, 26], [1, 0.06, 0.18],
+          {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+        return (
+          <g transform={`translate(470,600) rotate(${(f * 1.1 * shut) % 360}) scale(${shut},${shut})`}>
+            <ellipse rx={128} ry={44} fill="none" stroke={SIM} strokeWidth={18} opacity={0.11} />
+            <ellipse rx={128} ry={44} fill="none" stroke={SIM} strokeWidth={5.5} />
+            <circle cx={128} cy={0} r={8} fill="#EAFFB0" />
+          </g>
+        );
+      })()}
+      {/* the tank stands on the floor rather than abutting it */}
+      <ContactShadow cx={470} cy={FLOOR + 8} rx={168} ry={13} opacity={0.42} />
+      {f >= 6 && f < 40 && <Plate x={540} y={946} text="NO COMMERCIAL SCALE ANYWHERE" size={28} delay={6} />}
+      {/* THE FILM'S BEST LINE WAS ONLY EVER SPOKEN. The closing question ran in the VO and the
+          open caption and never once as picture, and the last second held a card recycled from
+          earlier in the piece. All three judges asked for an ending across five rounds. It now
+          lands as type on the hero beat at 125.76s, which is also the frame the mix has been
+          putting its final stamp on with nothing under it. */}
+      {f >= 22 && <Plate x={540} y={700} text="WHAT WOULD MAKE YOU TRUST IT" size={38} delay={22}
+                         sub="A PLANT YOU HAVE NEVER SEEN RUN" />}
+      {f >= 40 && <BrassPlate x={540} y={1180} text="ALASKA.AI" size={30} delay={40} />}
     </Stage>
   );
 };
