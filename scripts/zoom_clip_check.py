@@ -181,6 +181,11 @@ def translate_stack(blk: str):
     return offset_at
 
 
+def w_lit(attrs):
+    m = re.search(r"\bwidth=\{(" + NUM + r")\}", attrs)
+    return f"{float(m.group(1)):.0f}px" if m else "a"
+
+
 def check(path: str):
     src = open(path).read()
     dz = content_zoom(src)
@@ -281,10 +286,25 @@ def check(path: str):
             xm = re.search(r"\bx=\{(" + NUM + r")\}", a)
             wm = re.search(r"\bwidth=\{(" + NUM + r")\}", a)
             if not xm or not wm:
-                continue          # computed geometry, and there is a great deal of it
+                # A rect whose x or width is a SYMBOL (CARD_W, a prop, an expression) is the
+                # shot-6 bin card exactly, and it is the element three judges kept calling
+                # clipped. Naming it is the difference between "I checked and it is fine" and
+                # "I could not check this one", which are not the same sentence.
+                if offset_at(m.start()) is not None and "transform" in blk[max(0, m.start() - 400):m.start()]:
+                    skip(m.start(), "rect", "x or width is a symbol, not a literal")
+                continue
             off = offset_at(m.start())
-            if off in (None, 0.0):
-                continue          # unknowable, or scene-coordinate set dressing
+            if off is None:
+                # SAY SO. Silently skipping is how the shot-6 bin row sat at a 2% margin
+                # through three judge readings across two rounds while this gate printed
+                # clean: those cards live inside `transform={`translate(${x + sl},1214)`}`,
+                # a template literal, so the checker cannot resolve their x and was dropping
+                # them on the floor without a word. A gate that omits what it could not read
+                # is indistinguishable from one that read everything and found nothing.
+                skip(m.start(), "rect", f"{w_lit(a)} box inside a computed transform")
+                continue
+            if off == 0.0:
+                continue          # scene-coordinate set dressing, several bleed on purpose
             x, w = float(xm.group(1)), float(wm.group(1))
             record(m.start(), "rect", f"{w:.0f}px box", x + w / 2 + off, w)
 
