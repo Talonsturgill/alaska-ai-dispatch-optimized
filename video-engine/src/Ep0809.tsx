@@ -397,6 +397,16 @@ const Block: React.FC<{
       <ContactShadow cx={d / 2} cy={6} rx={w / 2 + 8} ry={10} opacity={0.45} />
       <path d={`M ${-w / 2} 0 L ${-w / 2} ${-hh} L ${w / 2} ${-hh} L ${w / 2} 0 Z`}
             fill={T.base} stroke={INK} strokeWidth={5} />
+      {/* FORM, not a fill. Two judges called these slabs out by name against the tank in the
+          same frame: "a near-featureless fill" beside a prop with rim light, rivets and a
+          gasket. A lit column toward the key, a turn-shade down the away side and a hem AO
+          are the three cues that make a rectangle read as mass. */}
+      <path d={`M ${-w / 2} 0 L ${-w / 2} ${-hh} L ${-w / 2 + w * 0.34} ${-hh} L ${-w / 2 + w * 0.26} 0 Z`}
+            fill="#ffffff" opacity={0.07} />
+      <path d={`M ${w / 2 - w * 0.26} ${-hh} L ${w / 2} ${-hh} L ${w / 2} 0 L ${w / 2 - w * 0.2} 0 Z`}
+            fill={T.shade} opacity={0.4} />
+      <path d={`M ${-w / 2} ${-Math.min(26, hh * 0.16)} L ${w / 2} ${-Math.min(26, hh * 0.16)} L ${w / 2} 0 L ${-w / 2} 0 Z`}
+            fill={INK} opacity={0.16} />
       <path d={`M ${w / 2} 0 L ${w / 2} ${-hh} L ${w / 2 + d} ${-hh - d * 0.55} L ${w / 2 + d} ${-d * 0.55} Z`}
             fill={T.shade} stroke={INK} strokeWidth={5} />
       <path d={`M ${-w / 2} ${-hh} L ${w / 2} ${-hh} L ${w / 2 + d} ${-hh - d * 0.55} L ${-w / 2 + d} ${-hh - d * 0.55} Z`}
@@ -817,6 +827,7 @@ const S8: React.FC<SceneProps> = (p) => {
     {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   return (
     <Stage f={f} push={0.02} drift={0.45} lampX={380} lampSwing={0.35} cold={0.6} camY={-25} zoom={1.06} fg={0.6} midSide={1}>
+      <ContactShadow cx={318} cy={FLOOR + 5} rx={74} ry={10} opacity={0.4} />
       <Character frame={f} x={318} y={FLOOR} scale={1.05} idleGain={2.4} pose="raise" gesture={lift} outfit="worker"
                  emotion="worried" headgear="beanie" />
       <g transform="translate(540,600)">
@@ -894,7 +905,7 @@ const S9: React.FC<SceneProps> = (p) => {
       {/* BIOLOGY was dark green type on a dark wall at ~20px cap height, the one label in the
           film not on a plate, and it carried the small-versus-large comparison the card is built
           on. Plated, at plate size, on the film's own treatment. */}
-      {tight > 0.7 && <Plate x={806} y={1010} text="BIOLOGY" size={24} delay={bio + 30} />}
+      {tight > 0.7 && <Plate x={862} y={1128} text="BIOLOGY" size={22} delay={bio + 30} />}
       {run > 0.3 && (
         <g transform="translate(276,1252)">
           <SimField f={f} x={-120} y={-120} w={240} h={120} cols={8} rows={4} filled={0.82} phase={1.4} />
@@ -967,10 +978,14 @@ const S11: React.FC<SceneProps> = (p) => {
           changing with all of it parallax drift: a hero hit with nothing under it. A discrete
           three-frame collapse with an overshoot is the smallest honest thing that can carry it. */}
       {(() => {
-        const shut = interpolate(f, [18, 21, 26], [1, 0.06, 0.18],
+        // it now travels to the mark and closes AROUND it, instead of contracting in open wall
+        // and leaving a vestigial sliver on the closing card (J1 med, J3 low, both rounds).
+        const shut = interpolate(f, [18, 21, 26], [1, 0.06, 0.30],
           {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+        const tx = interpolate(f, [18, 34], [470, 214], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+        const ty = interpolate(f, [18, 34], [600, 1250], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
         return (
-          <g transform={`translate(470,600) rotate(${(f * 1.1 * shut) % 360}) scale(${shut},${shut})`}>
+          <g transform={`translate(${tx},${ty}) rotate(${(f * 1.1 * shut) % 360}) scale(${shut},${shut})`}>
             <ellipse rx={128} ry={44} fill="none" stroke={SIM} strokeWidth={18} opacity={0.11} />
             <ellipse rx={128} ry={44} fill="none" stroke={SIM} strokeWidth={5.5} />
             <circle cx={128} cy={0} r={8} fill="#EAFFB0" />
@@ -985,7 +1000,7 @@ const S11: React.FC<SceneProps> = (p) => {
           earlier in the piece. All three judges asked for an ending across five rounds. It now
           lands as type on the hero beat at 125.76s, which is also the frame the mix has been
           putting its final stamp on with nothing under it. */}
-      {f >= 22 && <Plate x={540} y={700} text="WHAT WOULD MAKE YOU TRUST IT" size={38} delay={22}
+      {f >= 22 && <Plate x={540} y={700} text="WHAT WOULD MAKE YOU TRUST IT?" size={38} delay={22}
                          sub="A PLANT YOU HAVE NEVER SEEN RUN" />}
       {/* left of the tank on the open floor, not across it. "Cards land on top of the hero prop"
           is the most repeated composition note of this run and the last frame is the worst place

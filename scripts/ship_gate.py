@@ -467,8 +467,23 @@ def cmd_check(a):
     if problems:
         fail(problems, median=median)
 
+    # A PASS IS A STOP ORDER, NOT A CHECKPOINT (2026-08-09, owner's instruction after this
+    # routine passed at 7.61, kept editing, and never cleared the bar again in five further
+    # rounds costing nine hours). The run that day had a shippable cut, found a real defect,
+    # fixed it, and destroyed the passing verdict to do so, because any source edit forces a
+    # re-render and a re-grade. The defect was genuine; fixing it THEN was the error.
+    #
+    # So the pass now leaves a lock on disk and render_parallel.sh refuses to start while it
+    # exists. Continuing to polish after a pass is no longer a judgement call a run gets to
+    # make on its own: it has to delete a file whose name says what it is doing.
+    SHIP_NOW = RENDER / "SHIP_NOW"
+    SHIP_NOW.write_text(
+        f"median {median} cleared {effective} at {time.strftime('%H:%M:%S')}.\n"
+        "SHIP THESE BYTES. Do not edit, do not re-render, do not improve.\n"
+        "Every further fix is next run's work. Delete this file only if you are deliberately\n"
+        "abandoning a passing cut, and say so out loud when you do.\n")
     print("=" * 72)
-    print("SHIP GATE: PASS")
+    print("SHIP GATE: PASS  ->  SHIP NOW, DO NOT KEEP EDITING")
     print("=" * 72)
     # print the EFFECTIVE bar, not the rubric one. The first version of this line printed
     # "7.2 >= 7.5" under a release, which is a false statement in the pass banner of the gate

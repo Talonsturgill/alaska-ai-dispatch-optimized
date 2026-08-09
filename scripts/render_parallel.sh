@@ -114,6 +114,18 @@ if [ -d video-engine/node_modules/esbuild ]; then
   fi
 fi
 
+# A PASSING CUT IS FINISHED (2026-08-09, owner's instruction). ship_gate.py writes
+# out/dispatch/SHIP_NOW the moment a panel median clears the bar. While that file exists this
+# script will not start a render, because the only reason to render after a pass is to replace
+# a cut that was already good enough, and that is exactly what cost this routine nine hours and
+# five rounds on the day the rule was written.
+if [ -f out/dispatch/SHIP_NOW ]; then
+  echo "render_parallel.sh: REFUSING. A passing cut is waiting to ship." >&2
+  cat out/dispatch/SHIP_NOW >&2
+  echo "If you really mean to abandon it, delete out/dispatch/SHIP_NOW first." >&2
+  exit 5
+fi
+
 COMP="$1"
 OUT="${2:-out/dispatch/render_mute.mp4}"
 PROPS="${PROPS:-out/dispatch/episode_props.json}"
