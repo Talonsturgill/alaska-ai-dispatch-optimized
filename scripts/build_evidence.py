@@ -123,8 +123,27 @@ def main():
 
     from PIL import Image, ImageChops, ImageDraw
 
-    # ---- contact sheet, evenly spread across the real runtime ----
-    times = [round(end * (i + 0.5) / a.frames, 2) for i in range(a.frames)]
+    # ---- contact sheet: an even sweep, PLUS every scene photographed once it has settled ----
+    # An even sweep alone samples a 125s film every 9.3s, and on 2026-08-09 that stride landed
+    # inside the NSF quote's typewriter reveal. All three judges read a half-typed line as a
+    # truncated string, one of them raised it as a hard blocker, and the pack had no frame
+    # between 41.8s and 51.0s to settle it with. The film was correct. The evidence was not.
+    #
+    # A stride can always straddle a reveal, so the fix is not a smaller stride, it is a sample
+    # taken WHERE NOTHING IS STILL ANIMATING: near the end of each scene, after every type-on,
+    # slide and spring in it has finished. That is the state the shot actually holds, and it is
+    # the state a judge should be grading.
+    _sweep = [round(end * (i + 0.5) / a.frames, 2) for i in range(a.frames)]
+    _settle = []
+    for _sc in _props.get("scenes", []):
+        _s_end = (_sc["from"] + _sc["dur"]) / 30.0
+        _t = round(min(end - 0.1, _s_end - 0.5), 2)      # half a second before the cut
+        if _t > 0.2:
+            _settle.append(_t)
+    # dedupe against the sweep, since a sweep sample that already sits in a settled tail is fine
+    times = sorted(set(_sweep) | {t for t in _settle if all(abs(t - s) > 0.6 for s in _sweep)})
+    print(f"contact sampling: {len(_sweep)} even + "
+          f"{len(times) - len(_sweep)} scene-settle = {len(times)} frames")
     paths = []
     for t in times:
         p = os.path.join(EV, f"f{t:05.1f}.jpg")

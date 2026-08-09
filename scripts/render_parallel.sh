@@ -86,6 +86,34 @@ _src_fingerprint() {
 }
 SRC_BEFORE="$(_src_fingerprint)"
 
+# PARSE THE SOURCES BEFORE SPENDING A RENDER ON THEM (2026-08-09).
+# A single misplaced JSX comment - `{/* ... */}` used as the first child of a parenthesised
+# expression, which is not legal JSX - made every chunk's bundle throw. The queue does not
+# know the difference between "this chunk crashed" and "this film cannot compile", so it did
+# what it is designed to do: retried each of 12 chunks 3 times, 36 identical bundle failures,
+# and reported "a chunk failed" several minutes later. The real message was on line 3 of a
+# temp log nobody had a path to.
+#
+# esbuild parses the whole engine in well under a second, so the check is free next to a
+# render, and it turns a multi-minute mystery into one line naming the file and the column.
+# It is a PARSE, not a typecheck: it catches the class that stops a bundle dead, and it does
+# not pretend to catch a type error, which Remotion would render straight through anyway.
+if [ -d video-engine/node_modules/esbuild ]; then
+  _parse_err=0
+  for _f in video-engine/src/*.tsx video-engine/src/*.ts video-engine/src/lib/*.tsx; do
+    [ -e "$_f" ] || continue
+    if ! (cd video-engine && npx --no-install esbuild "${_f#video-engine/}" \
+            --log-level=error --outfile=/dev/null) 2>&1; then
+      _parse_err=1
+    fi
+  done
+  if [ "$_parse_err" -ne 0 ]; then
+    echo "render_parallel.sh: the engine does not parse, so no chunk could ever bundle." >&2
+    echo "Fix the syntax above and re-launch. Nothing was rendered." >&2
+    exit 4
+  fi
+fi
+
 COMP="$1"
 OUT="${2:-out/dispatch/render_mute.mp4}"
 PROPS="${PROPS:-out/dispatch/episode_props.json}"

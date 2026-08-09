@@ -524,6 +524,10 @@ const S3: React.FC<SceneProps> = (p) => {
   const NSF2 = 'WITHIN A BIOPROCESS DIGITAL TWIN';
   const NSF3 = 'INTEGRATED WITH MICROGRID SIMULATORS';
   const chars = Math.max(0, Math.round((f - quote) * 2.6));
+  // The document panel is SIZED TO ITS LONGEST LINE, not to a number somebody liked. Hand-set at
+  // 788 it rendered 10px from each frame edge under this shot's 1.345 scale and read as cramped.
+  const QPAD = 46;
+  const QW = Math.max(NSF.length, NSF2.length, NSF3.length) * 24 * 0.602 + QPAD * 2;
   return (
     <Stage f={f} push={push} lampX={920} camY={20} parallax={140} fg={0.9} midSide={-1}>
       {/* the steel vessel stays visible behind, and has still not moved */}
@@ -539,21 +543,21 @@ const S3: React.FC<SceneProps> = (p) => {
         {rise > 0.4 && f < quote && <BrassPlate x={0} y={-(140 + rise * 430 * over) - 52} text="SOFTWARE"
                                    size={28} delay={bars + 12} />}
       </g>
-      {f < bars && f >= asm && <Plate x={540} y={660} text="$5,998,412" size={56} delay={asm + 6} />} {/* plate-overlap-ok: retires at bars, the verdict lands 18f later, they never share a frame */}
+      {f < bars && f >= asm && <Plate x={540} y={660} text="$5,998,412" size={56} delay={asm + 6} sub="THREE LINKED NSF AWARDS" />} {/* plate-overlap-ok: retires at bars, the verdict lands 18f later, they never share a frame */}
       {f >= bars + 18 && <Plate x={540} y={672} text="MOST OF IT IS SOFTWARE" size={40} delay={bars + 18} />}
       {f >= quote && (
         <g transform="translate(540,868)">
-          <rect x={-394} y={-70} width={788} height={172} rx={4} fill="#171310" stroke={INK} strokeWidth={5} />
-          <text x={-364} y={-24} fontFamily={MONO} fontSize={24} fontWeight={700} fill={P.bone}>
+          <rect x={-QW / 2} y={-70} width={QW} height={172} rx={4} fill="#171310" stroke={INK} strokeWidth={5} />
+          <text x={-QW / 2 + QPAD} y={-24} fontFamily={MONO} fontSize={24} fontWeight={700} fill={P.bone}>
             {NSF.slice(0, chars)}
           </text>
-          <text x={-364} y={16} fontFamily={MONO} fontSize={24} fontWeight={700} fill={P.bone}>
+          <text x={-QW / 2 + QPAD} y={16} fontFamily={MONO} fontSize={24} fontWeight={700} fill={P.bone}>
             {NSF2.slice(0, Math.max(0, chars - NSF.length))}
           </text>
-          <text x={-364} y={56} fontFamily={MONO} fontSize={24} fontWeight={700} fill={P.bone}>
+          <text x={-QW / 2 + QPAD} y={56} fontFamily={MONO} fontSize={24} fontWeight={700} fill={P.bone}>
             {NSF3.slice(0, Math.max(0, chars - NSF.length - NSF2.length))}
           </text>
-          <text x={-364} y={90} fontFamily={MONO} fontSize={16} fontWeight={700} fill="#8E8474">
+          <text x={-QW / 2 + QPAD} y={90} fontFamily={MONO} fontSize={16} fontWeight={700} fill="#8E8474">
             NSF AWARD 2614749, ABSTRACT
           </text>
         </g>
@@ -649,7 +653,13 @@ const S6: React.FC<SceneProps> = (p) => {
   const coins = at(p, 12, 3.3);
   const push = interpolate(f, [0, 256], [0.03, 0.10], {extrapolateRight: 'clamp'});
   const cold = interpolate(f, [0, 40], [0, 1], {extrapolateRight: 'clamp'});
-  const X = [196, 540, 884];
+  // The three cards live at the widest point of the frame, so their span is derived from the
+  // scene's own worst-case scale, not chosen by eye. Stage composes (1 + push) * zoom, and at the
+  // end of this shot that is 1.10 * 1.02 = 1.122. A 268-wide card at x=212 renders its outer edge
+  // at 540 + (78 - 540) * 1.122 = 21.6, which is inside the frame. The first cut authored 300-wide
+  // cards at 196 and 884 and lost 7px off ALASKA and off WYOMING, one at each edge.
+  const CARD_W = 268;
+  const X = [212, 540, 868];
   const NAMES = ['ALASKA', 'MONTANA', 'WYOMING'];
   const AMT = ['$4,737,612', '$1,260,800', '$0'];
   return (
@@ -664,9 +674,9 @@ const S6: React.FC<SceneProps> = (p) => {
         const rock = i === 2 ? 3.5 * Math.sin(Math.max(0, f - cd) / 3) * Math.exp(-Math.max(0, f - cd) / 18) : 0;
         return (
           <g key={i} transform={`translate(${x + sl},1214) rotate(${rock})`}>
-            <ContactShadow cx={0} cy={12} rx={118} ry={9} opacity={0.45} />
-            <rect x={-150} y={-116} width={300} height={116} rx={5} fill="#8C7A45" stroke={INK} strokeWidth={6} />
-            <rect x={-120} y={-52} width={240} height={38} rx={3} fill="#2A2418" stroke={INK} strokeWidth={4} />
+            <ContactShadow cx={0} cy={12} rx={CARD_W / 2 - 29} ry={9} opacity={0.45} />
+            <rect x={-CARD_W / 2} y={-116} width={CARD_W} height={116} rx={5} fill="#8C7A45" stroke={INK} strokeWidth={6} />
+            <rect x={-CARD_W / 2 + 27} y={-52} width={CARD_W - 54} height={38} rx={3} fill="#2A2418" stroke={INK} strokeWidth={4} />
             <text x={0} y={-72} textAnchor="middle" fontFamily={MONO} fontSize={34} fontWeight={700}
                   fill="#241F13" letterSpacing={1.4}>{NAMES[i]}</text>
             {/* the money slot: coins for two, a hollow zero for the third */}
@@ -810,8 +820,11 @@ const S9: React.FC<SceneProps> = (p) => {
                     fidelity={0.5 + tight * 0.48} bioFidelity={0.14} running={run}
                     phase={2.2} bioLabel={tight > 0.7 ? 'BIOLOGY' : undefined} />
       </g>
+      {/* x is 238, not 210, because this shot's worst-case scale is 1.04 * 1.10 = 1.144 and the
+          21-character label is 278 wide: at 210 its left edge rendered at x=3, hard against the
+          frame. 238 puts it at 35. */}
       {run > 0.3 && (
-        <g transform="translate(210,1210)">
+        <g transform="translate(238,1210)">
           <SimField f={f} x={-120} y={-120} w={240} h={120} cols={8} rows={4} filled={0.82} phase={1.4} />
           <text x={0} y={20} textAnchor="middle" fontFamily={MONO} fontSize={22} fontWeight={700}
                 fill={SIM}>PUMPS / TIMING / POWER</text>
@@ -819,7 +832,7 @@ const S9: React.FC<SceneProps> = (p) => {
       )}
       {/* the power meter, overshooting and settling just inside its limit */}
       {f >= meter && (
-        <g transform="translate(210,1400)">
+        <g transform="translate(238,1400)"> {/* stays under the label above it, which moved inboard */}
           <circle r={62} fill="#221C16" stroke={INK} strokeWidth={5} />
           <path d="M -46 8 A 46 46 0 0 1 46 8" fill="none" stroke="#6B6152" strokeWidth={4} />
           <path d="M 30 -18 L 40 -26" stroke="#C96A4A" strokeWidth={5} />
