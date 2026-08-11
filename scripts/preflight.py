@@ -62,6 +62,12 @@ CHECKS = [
     # silently declined in one run and judges found all seven.
     ("every claim obligation the fact-checker wrote is honoured",
      [sys.executable, "scripts/claims_contract_check.py"], True),
+    # The credits ride in the picture (2026-08-09, owner's request). The music is CC BY 4.0
+    # and the licence needs attribution on every surface the file reaches, not just the one
+    # comment box somebody remembers. Blocking, because a run that cannot credit its music
+    # has nothing to ship.
+    ("the film credits its music and shows its sources",
+     [sys.executable, "scripts/credits_check.py"], True),
     # THE NARRATION obeys the claim set too. Added 2026-08-08, after a false line
     # ("five rural clinics that didn't have one") passed Gate 0E and the soundcheck
     # and reached a synth, because Gate 0E asks whether a stranger can FOLLOW the
