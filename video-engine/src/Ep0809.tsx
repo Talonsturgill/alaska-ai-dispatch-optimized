@@ -1,5 +1,6 @@
 import React from 'react';
 import {AbsoluteFill, Sequence, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
+import {EndCredits} from './lib/EndCredits';
 import {z} from 'zod';
 import {VoiceProvider} from './lib/voice';
 import {tones, FormGradient, RimLight, ContactShadow, GradeLayer, NightGrade, INK} from './lib/lighting';
@@ -1072,6 +1073,8 @@ export const ep0809Schema = z.object({
   mouth: z.array(z.number()).optional(),
   accents: z.array(z.object({frame: z.number(), word: z.string(), energy: z.number().optional(),
     lineIdx: z.number().optional()})).optional(),
+  credits: z.object({music: z.string(), sources: z.array(z.string()), site: z.string(),
+    seconds: z.number().optional(), frames: z.number().optional()}).optional(),
 });
 export type Ep0809Props = z.infer<typeof ep0809Schema>;
 
@@ -1085,7 +1088,7 @@ const DEFAULT_BOUNDS = [
 const DEFAULT_LINES = [0, 8.3, 18.24, 24.78, 31.1, 37.26, 44.9, 51.26, 57.98, 63.02, 68.58,
   71.42, 74.44, 81.32, 88.34, 91.78, 95.7, 99.96, 105.46, 112.2, 116.58, 120.68, 125.16];
 
-export const Ep0809: React.FC<Ep0809Props> = ({captions, scenes, lines, mouth, accents}) => {
+export const Ep0809: React.FC<Ep0809Props> = ({captions, scenes, lines, mouth, accents, credits, total}) => {
   const bounds = scenes && scenes.length === SCENES.length ? scenes : DEFAULT_BOUNDS;
   const L = lines && lines.length >= 23 ? lines : DEFAULT_LINES;
   const voice = mouth && mouth.length ? {fps: FPS, mouth, accents: accents ?? []} : null;
@@ -1099,6 +1102,16 @@ export const Ep0809: React.FC<Ep0809Props> = ({captions, scenes, lines, mouth, a
         ))}
         <Grade />
         <Captions captions={captions} />
+        {/* THE SIGN-OFF. Appended after the story, driven entirely by episode_props.credits,
+            which build_scenes.py derives from music_credit.json and sources.json. Nothing on
+            it is typed per run. scripts/credits_check.py fails the run if it goes missing or
+            stops matching those files. */}
+        {credits && total && (
+          <Sequence from={total - (credits.frames ?? 195)}
+                    durationInFrames={credits.frames ?? 195} name="CREDITS">
+            <EndCredits data={credits} durationInFrames={credits.frames ?? 195} />
+          </Sequence>
+        )}
       </VoiceProvider>
     </AbsoluteFill>
   );

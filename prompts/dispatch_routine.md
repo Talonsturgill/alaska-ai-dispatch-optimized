@@ -1194,6 +1194,28 @@ worlds, no flat single-tone fills, no glyphs that read as broken assets.
    (whole-file forced alignment, tags stripped, monotonic) AND — via scripts/vo_envelope.py —
    mouth_track.json (per-frame 0..1 voice amplitude) + accents.json (the vo-director's emphasis
    words located at exact frames). build_scenes.py folds all of it into episode_props.json.
+
+   **THE END CREDITS ARE AUTOMATIC. DO NOT HAND-PLACE THEM, AND DO NOT LEAVE THEM OUT**
+   (owner, 2026-08-09). build_scenes.py derives an `episode_props.credits` block from
+   `out/dispatch/music_credit.json` and `out/dispatch/sources.json`, and `lib/EndCredits.tsx`
+   renders it as a 6.5s sign-off appended after the story: the ALASKA.AI mark, VISIT US AT
+   ALASKAAIHQ.COM, the grouped source ids, and the CC BY licence line, ending on the mark alone
+   fading out. The episode only has to mount `<EndCredits>` in a `<Sequence name="CREDITS">`,
+   which the current episode already does and a new one should copy verbatim.
+
+   The point is that the owner no longer pastes any of this by hand. Before this, the music
+   credit and the sources lived ONLY in the LinkedIn first comment, which is one of the
+   surfaces the file reaches: a video on TikTok, embedded on the site, or forwarded to anyone
+   carried neither, and the music is CC BY 4.0, which requires attribution wherever the work
+   is distributed. A judge filed the missing credit as a hard blocker on 2026-08-09 and was
+   right; three judges had raised it across six rounds before that.
+
+   `scripts/credits_check.py` is BLOCKING in preflight and enforces four things: the block
+   exists, the licence string equals `music_credit.json`'s `credit` VERBATIM, the episode
+   actually renders it, and every line fits the safe width at a size a phone can read. Never
+   hand-edit the credits into episode_props.json to satisfy it. If it fails, fix the record it
+   is derived from. The email still carries the clickable first-comment block, because links
+   in a comment are clickable and text on a card is not, but the film is now self-sufficient.
 3a. **THE ROUGH CUT, AND IT COMES BEFORE ANY POLISH (LAW, added 2026-08-01 — see THE ONE OUTCOME
    LAW).** Build the WHOLE film crude before you build any part of it well. Every shot in
    beats[]/shots[] gets a scene component that renders SOMETHING at the right time for the right
