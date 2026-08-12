@@ -36,6 +36,7 @@ nothing to ship.
 import glob
 import json
 import os
+import subprocess
 import re
 import sys
 
@@ -57,6 +58,48 @@ def fit_size(s, maxw, ideal, floor=13.0):
 def newest_episode():
     files = glob.glob(os.path.join(REPO, "video-engine", "src", "Ep*.tsx"))
     return max(files, key=os.path.getmtime) if files else None
+
+
+# The owner's floor, imported from the one place that sets it so the gate and the builder can
+# never disagree about the number.
+try:
+    import importlib.util as _ilu
+    _spec = _ilu.spec_from_file_location(
+        "_bs", os.path.join(os.path.dirname(os.path.abspath(__file__)), "build_scenes.py"))
+    _bs = _ilu.module_from_spec(_spec); _spec.loader.exec_module(_bs)
+    CREDITS_MIN_S = float(_bs.CREDITS_MIN_S)
+    CREDITS_TAIL_S = float(getattr(_bs, 'CREDITS_TAIL_S', 2.3))
+except Exception:
+    CREDITS_MIN_S = 10.0
+    CREDITS_TAIL_S = 2.3
+
+
+def _probe_duration(path):
+    r = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration",
+                        "-of", "csv=p=0", path], capture_output=True, text=True)
+    try:
+        return float(r.stdout.strip())
+    except ValueError:
+        return None
+
+
+def _luma(path, t):
+    """(mean, max) luma of the frame at t, off ffmpeg signalstats. (None, None) on failure."""
+    r = subprocess.run(
+        ["ffmpeg", "-v", "error", "-ss", f"{max(0.0, t):.3f}", "-i", path, "-vframes", "1",
+         "-vf", "format=gray,signalstats,metadata=print:file=-", "-f", "null", "-"],
+        capture_output=True, text=True)
+    vals = {}
+    for line in (r.stdout + r.stderr).splitlines():
+        if "lavfi.signalstats.Y" in line and "=" in line:
+            k, _, v = line.strip().partition("=")
+            try:
+                vals[k.rsplit(".", 1)[-1]] = float(v)
+            except ValueError:
+                pass
+    if "YAVG" not in vals or "YMAX" not in vals:
+        return None, None
+    return vals["YAVG"], vals["YMAX"]
 
 
 def main() -> int:
@@ -160,8 +203,57 @@ def main() -> int:
               f"music or show its sources has nothing to ship.")
         return 1
 
+    # ---- THE DWELL FLOOR (owner rule, 2026-08-12) -------------------------------
+    # "for the final scene that flashes the credits and sources and whatnot, leave that on
+    # screen for 10 seconds so ppl can actually read that stuff."
+    #
+    # Checked in TWO places on purpose. The config number says what was intended; the
+    # DELIVERED BYTES say what a viewer actually got, and those came apart on this run when
+    # the mux truncated the card off the end of the film entirely. A build gate would have
+    # called that clean.
+    #
+    # The byte-side signature is simple and stable: the sign-off is bright type on a near
+    # black field, so its luma histogram is unmistakable against the slate story frames
+    # (measured on this film: credits YAVG about 17 with YMAX at ceiling, story frames YAVG
+    # 40+). Sample just inside the end and just inside the start of the required window; both
+    # must look like the card. If the second one still shows the story, the card is short.
+    dwell_problems = []
+    secs = float(cred.get("seconds") or 0)
+    if secs + 1e-6 < CREDITS_MIN_S + CREDITS_TAIL_S:
+        dwell_problems.append(
+            f"the sign-off is configured for {secs:.1f}s, which leaves under {CREDITS_MIN_S:.0f}s of "
+            f"READABLE body once EndCredits' {CREDITS_TAIL_S:.1f}s of fades and mark sign-off are "
+            f"taken off. "
+            f"Raise CREDITS_MIN_S in scripts/build_scenes.py only to make the card LONGER. "
+            f"If the film is over its runtime ceiling, take the seconds out of the script.")
+
+    video = os.path.join(OUT, "dispatch_master.mp4")
+    if os.path.exists(video):
+        dur = _probe_duration(video)
+        if dur:
+            body_end = dur - CREDITS_TAIL_S
+            for label, t in (("end of the readable window", body_end - 0.4),
+                             ("start of the readable window", body_end - CREDITS_MIN_S + 0.8)):
+                yavg, ymax = _luma(video, t)
+                if yavg is None:
+                    dwell_problems.append(f"could not sample the frame at {t:.1f}s ({label}).")
+                elif not (yavg < 30 and ymax > 200):
+                    dwell_problems.append(
+                        f"at {t:.1f}s ({label}) the frame does not look like the sign-off card "
+                        f"(luma avg {yavg:.0f}, max {ymax:.0f}; the card measures avg under 30 "
+                        f"with max above 200). The card is on screen for less than "
+                        f"{CREDITS_MIN_S:.0f}s in the delivered cut.")
+
+    if dwell_problems:
+        for d in dwell_problems:
+            print(f"FAIL credits_check: {d}")
+        print(f"\ncredits_check: the sign-off does not hold for {CREDITS_MIN_S:.0f}s. Sources "
+              f"and a CC BY 4.0 attribution nobody can finish reading are not delivered.")
+        return 1
+
     print(f"credits_check: clean. {len(labels)} source line(s), licence string matches "
-          f"music_credit.json verbatim, {cred.get('seconds')}s sign-off rendered by the engine.")
+          f"music_credit.json verbatim, {cred.get('seconds')}s sign-off rendered by the engine "
+          f"and verified on screen for the full {CREDITS_MIN_S:.0f}s floor.")
     for l in labels:
         print(f"    {l}")
     print(f"    {site_line}")

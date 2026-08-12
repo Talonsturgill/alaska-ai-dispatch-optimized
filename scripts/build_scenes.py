@@ -265,7 +265,26 @@ def _rebalance_cues(caps):
 # So the credits are DERIVED HERE, from the same files the rest of the run is checked
 # against, and rendered by lib/EndCredits.tsx. Nothing is typed per run, so the card cannot
 # drift from the record, and scripts/credits_check.py fails the run if it ever does.
-CREDITS_S = 4.6          # long enough to read the URL and the CC BY credit, short enough to stay in band
+# THE CREDITS DWELL IS A FLOOR, NOT A BUDGET (owner rule, 2026-08-12):
+# "for the final scene that flashes the credits and sources and whatnot, leave that on screen
+# for 10 seconds so ppl can actually read that stuff."
+#
+# It had drifted to 4.6s, and I am the one who cut it there, to claw back runtime after a
+# slower VO take pushed the film past its ceiling. That was the wrong place to take the time
+# from: the card carries the source list and the CC BY 4.0 music attribution, and attribution
+# nobody can read is not attribution. Four and a half seconds is a flash, not a credit.
+#
+# This number may go UP for a longer card. It may not go down. scripts/credits_check.py
+# enforces the floor against the DELIVERED BYTES, so editing this constant alone cannot
+# defeat it, and neither can a run that decides it needs the seconds back.
+CREDITS_MIN_S = 10.0
+# The floor is 10s of READABLE body, not 10s of card. lib/EndCredits runs two fades: the body
+# (site, sources, licence) clears 46 frames before the end and starts fading 12 before that,
+# then the mark holds alone and fades last, so the film signs off on the logo. At a flat 10s
+# card that left about 7.8s of legible source list, which is not what was asked for. The tail
+# is added ON TOP of the floor so the readable window is the full ten seconds.
+CREDITS_TAIL_S = 2.3          # EndCredits: 0.3 fade-in + 0.4 body-out + 1.6 mark sign-off
+CREDITS_S = CREDITS_MIN_S + CREDITS_TAIL_S
 
 def _source_labels(srcs):
     """Group sources.json into lines a person can read off a phone in six seconds.
@@ -368,7 +387,10 @@ def main():
     # it because the scene BOUNDARIES are still correct. Shipping the line table lets a scene
     # anchor each beat to the VO LINE IT BELONGS TO, so the film re-times itself with the voice.
     # the credits tail sits AFTER the story, so it lengthens the film without touching the
-    # VO seconds band, which governs the spoken read and not the runtime
+    # VO seconds band, which governs the spoken read and not the runtime. That separation is
+    # what makes the 10s credits floor safe: a longer card costs the story nothing, and a
+    # run that finds itself over the runtime ceiling takes the time out of the SCRIPT, never
+    # out of the card people are supposed to read.
     cred = _credits()
     if cred:
         total_f += cred["frames"]
