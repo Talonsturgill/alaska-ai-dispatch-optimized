@@ -48,7 +48,7 @@ def mono_w(s, size, track=0.5):
 
 def scenes(src):
     starts = [(m.group(1), m.start()) for m in
-              re.finditer(r"^const (S\d+): React\.FC<SceneProps>", src, re.M)]
+              re.finditer(r"^const (S\d+): React\.FC<SceneProps\b[^>]*>", src, re.M)]
     for i, (name, a) in enumerate(starts):
         b = starts[i + 1][1] if i + 1 < len(starts) else len(src)
         yield name, a, src[a:b]
@@ -57,7 +57,16 @@ def scenes(src):
 def plates(body, base_line):
     """Every <Plate> in a scene, as (line, box, label)."""
     out = []
-    for m in re.finditer(r"<Plate\b", body):
+    # <Head> COUNTS TOO (2026-08-12). This gate only ever looked at <Plate>, so the 128px
+    # display word TRIPLED was invisible to it, and on this run a fix that moved TRIPLED
+    # dropped it straight on top of the ALASKA ONLY TO NATIONAL plate. All three round-4
+    # judges reported that frame as unreadable; the gate reported the file clean, because the
+    # colliding element was not a shape it knew about. A checker that only sees one of the two
+    # kinds of text in the episode cannot answer the question it is named after.
+    #
+    # Head is centre-anchored like Plate and auto-fits the same way, so the same box maths
+    # applies; only the advance differs, and HEAD_ADV is read out of the episode below.
+    for m in re.finditer(r"<(?:Plate|Head)\b", body):
         blk = body[m.start():m.start() + 420]
         end = blk.find("/>")
         if end == -1:
@@ -67,8 +76,9 @@ def plates(body, base_line):
         if not (xm and ym):
             continue
         x, y = float(xm.group(1)), float(ym.group(1))
+        is_head = body[m.start():m.start() + 6].startswith("<Head")
         sm = re.search(r"\bsize=" + NUM, blk)
-        size = float(sm.group(1)) if sm else 26.0
+        size = float(sm.group(1)) if sm else (96.0 if is_head else 26.0)
         rows = re.findall(r"'([^']*)'|`([^`]*)`|\"([^\"]*)\"", blk)
         texts = [a or b or c for a, b, c in rows if (a or b or c)]
         texts = [t for t in texts if not t.startswith("#")] or [""]

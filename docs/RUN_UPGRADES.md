@@ -2319,3 +2319,49 @@ found anywhere on the run date.
   through `Simulated` / `SimField` / `TwinVessel`. It is NOT enforced by `AccentRegistry`,
   which throws at paint time and would kill a render. A repo-level lint on reserved-hue
   literals is the real fix and is still the open item from 2026-08-01.
+
+## 2026-08-12 — "The Smallest Door" (ANA restructuring + the AI3 Action Institute)
+
+Story found by primary-source mining, unreported by any Alaska outlet. Federal Register
+91 FR 47241 retired SEDS and SEDS-Alaska; EAGLE succeeds them at $24M/31 awards against
+$2M/3, but its floor is $300,000 where Alaska's was $100,000 and it is national. The same
+notice created the AI3 Action Institute, one award, floor $2.5M, closing August 27th.
+
+### Shipped this run
+
+- **`video-engine/src/lib/threshold.tsx`, net-new craft advance.** Eligibility drawn as
+  HEIGHT. The shelf had `ThresholdGate` and `CheckpointGateLever`, both vertical barriers
+  answering a boolean. Neither could draw a rule that stays open to everyone and still
+  excludes by size. `Sill` (step height as a driven parameter), `Gauge`, `Clearance`,
+  `AskSlip`. Reusable for any future cutoff, minimum, quota or means test.
+- **`config/sources.yaml`.** Fixed `news.uaf.edu`, which 302-redirects and cost every run two
+  wasted hops to the highest-yield AI source in the sweep. Promoted the keyless primary
+  registries that actually found this story (NSF award API, Federal Register JSON API,
+  Grants.gov, Alaska Online Public Notices) and recorded the eight domains that hard-blocked
+  this run's researchers, so a future thin week is not misread as a slow news week.
+- **`config/state.yaml`, VO word band 262-282 -> 200-220.** See below.
+- Untracked three stale `out/dispatch/*` scratch files the 08-09 run committed into `main`.
+  `out/` is gitignored; a checkout carrying a previous run's artifacts at the exact paths
+  this run reads is the one door `run_guard.py` does not watch.
+
+### Repeat-offender / measured defects
+
+- **THE VO WORD BAND WAS CALIBRATED TO A RATE THIS PIPELINE NO LONGER PRODUCES.** Six takes
+  of a 282-word script: 164.3, 175.4, 172.8, 151.4, 167.2, 156.2s. That is 103 wpm against a
+  band assuming ~140. Every take missed 112-130s. Band corrected to 200-220 with the
+  measurement written beside it. This is the fix, not a note.
+- **`Sequence` inside `<svg>` renders nothing.** The first rough cut was 316KB of caption over
+  a black frame and every mechanical check passed. Each scene now owns its own `<svg>`. This
+  is exactly why the rough cut is mandatory and it paid for itself in one run.
+- **Type sized before the content zoom ran off both frame edges.** `Head` and `Plate` now fit
+  to the string against the width the zoom actually leaves, including the Stage push.
+
+### Deferred, with the reason
+
+- The run did not reach the panel, ship gate, upload or Gmail draft. The final encode was
+  still in flight. Deliverables, the 3-judge panel and the email are outstanding and the
+  branch carries everything needed to finish them.
+- Gate 0B/0C/0D returned roughly 35 findings and about a third were applied. The unapplied
+  ones are listed in those verdicts and are mostly beat-level staging: S10's three arrivals
+  in one locked frame, the 94s rehook repeating the 63s rehook's move, and the six mood cues
+  that should be physical sounds.

@@ -39,7 +39,7 @@ def scene_bodies(path):
     """{'S4': source text} for each `const S<n>: React.FC<SceneProps>` in the episode."""
     src = open(path).read()
     starts = [(m.group(1), m.start()) for m in
-              re.finditer(r"^const (S\d+): React\.FC<SceneProps>", src, re.M)]
+              re.finditer(r"^const (S\d+): React\.FC<SceneProps\b[^>]*>", src, re.M)]
     out = {}
     for i, (name, a) in enumerate(starts):
         b = starts[i + 1][1] if i + 1 < len(starts) else len(src)

@@ -148,6 +148,22 @@ def main():
             if [x for x in req if str(x).strip()]:
                 prose_only.append((c["id"], len([x for x in req if str(x).strip()])))
             req = {}
+        elif isinstance(req, str):
+            # THE SAME PROSE OBLIGATION, WRITTEN AS ONE STRING INSTEAD OF A LIST (2026-08-12).
+            # The list branch above was added on 08-09 because prose obligations were being
+            # skipped silently. It only ever handled the list spelling, so a fact-checker who
+            # wrote `"requires": "..."` as a plain sentence, which is the natural way to write
+            # one obligation and which this run's claims all use, walked straight into
+            # req.get("must_ship") on a str and took the whole gate down with an AttributeError.
+            #
+            # A crash is at least loud, so this is not the silent-skip defect returning. But
+            # preflight reported it as one FAIL line among fourteen checks and the run read
+            # past it, so in practice this gate has not evaluated a single obligation all run.
+            # Count it as prose, the same as the list spelling, and let vo_claims_check.py
+            # carry it.
+            if req.strip():
+                prose_only.append((c["id"], 1))
+            req = {}
         if not req:
             continue
         cid = c["id"]

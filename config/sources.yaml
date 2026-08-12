@@ -18,8 +18,15 @@ seed_sources:
     - {url: "https://www.nationalfisherman.com",      outlet: "National Fisherman (trade)",            credibility: "medium"}
 
   research_orgs:
-    - {url: "https://news.uaf.edu",                   outlet: "UAF News",                              credibility: "primary"}
+    # 2026-08-12: was https://news.uaf.edu, which 302-redirects here (verified with curl:
+    # 302 -> https://www.uaf.edu/news -> 301 -> https://www.uaf.edu/news/). Every run was
+    # paying a wasted hop on the single highest-yield AI source in the sweep.
+    - {url: "https://www.uaf.edu/news/",              outlet: "UAF News",                              credibility: "primary"}
     - {url: "https://www.uaa.alaska.edu/news",        outlet: "UAA News",                              credibility: "primary"}
+    # Promoted 2026-08-12: UAA's engineering AI hub publishes funded-project lists, mini-grant
+    # awardees and workshop agendas that no outlet picks up. It is where this run's story came from.
+    - {url: "https://coeng.uaa.alaska.edu/AI/",       outlet: "UAA College of Engineering AI hub",     credibility: "primary"}
+    - {url: "https://www.uaf.edu/acep/news/",         outlet: "UAF Alaska Center for Energy and Power", credibility: "primary"}
     - {url: "https://www.iarc.uaf.edu",               outlet: "International Arctic Research Center",  credibility: "primary"}
     - {url: "https://www.sealaskaheritage.org/news",  outlet: "Sealaska Heritage Institute",           credibility: "primary"}
     - {url: "https://www.ansep.net/news",             outlet: "ANSEP",                                 credibility: "primary"}
@@ -38,6 +45,39 @@ seed_sources:
     - {url: "https://www.reuters.com",                outlet: "Reuters",                               credibility: "high"}
     - {url: "https://apnews.com",                     outlet: "AP",                                    credibility: "high"}
     - {url: "https://www.bloomberg.com",              outlet: "Bloomberg",                             credibility: "high"}
+
+  # PRIMARY REGISTRIES (added 2026-08-12). These are not outlets to browse, they are
+  # QUERYABLE RECORDS, they are keyless, and every one of them was verified HTTP 200 on
+  # the day it was added. They are the highest-yield rung of the escalation ladder
+  # (primary_source_mining) and three of this channel's scoops came out of them, including
+  # this run's. Sweep these BEFORE spending WebSearch budget, because WebFetch is uncapped.
+  primary_registries:
+    - {url: "https://api.nsf.gov/services/v1/awards.json", outlet: "NSF Award API",       credibility: "primary",
+       note: "Filter by awardeeStateCode=AK plus a date range for every NSF award to an Alaska institution, with amounts, PIs and full abstracts, often weeks before any press release. Append /<awardid>.json?printFields=abstractText for full text. The free-text keyword parameter has OR semantics and returns noise, so use the structured filters."}
+    - {url: "https://www.federalregister.gov/api/v1/documents.json", outlet: "Federal Register API", credibility: "primary",
+       note: "The HTML search pages redirect to unblock.federalregister.gov and fail; the JSON API does not. Returns exact FR citations."}
+    - {url: "https://simpler.grants.gov",              outlet: "Grants.gov",                credibility: "primary",
+       note: "Notice-of-funding-opportunity records with opportunity numbers, posted and close dates, award floors and ceilings, and explicit Alaska Native eligibility language."}
+    - {url: "https://aws.state.ak.us/OnlinePublicNotices/", outlet: "Alaska Online Public Notices", credibility: "primary",
+       note: "Every state agency notice: RCA tariff filings, DNR land leases, AEA and RTO meetings. It is the only RCA-adjacent surface that does not 403. Searchable via Search.aspx?searchterm="}
+    - {url: "http://export.arxiv.org/api/query",        outlet: "arXiv API",                 credibility: "primary",
+       note: "Query abs:Alaska plus ML terms, sorted by submission date, for unreported Alaska AI research."}
+    - {url: "https://www.alaska.edu/research/initiative/", outlet: "UA Faculty Initiative Fund", credibility: "primary",
+       note: "Small internal UA grants that are never press-released but reveal what faculty are actually starting."}
+
+# KNOWN-BLOCKED DOMAINS (recorded 2026-08-12 across four parallel research beats).
+# Recorded so a future run does not spend its capped WebSearch budget rediscovering them.
+# A 403 here is NOT evidence that a story does not exist, and a thin week caused by these
+# must never be reported as a slow news week.
+blocked_domains:
+  - {url: "https://alaskabeacon.com",        status: "403", workaround: "Alaska Public Media and Alaska's News Source syndicate Beacon reporting"}
+  - {url: "https://www.akleg.gov",           status: "403", workaround: "none found; blocks all Alaska bill verification. billtrack50.com is third-party only"}
+  - {url: "https://rca.alaska.gov",          status: "403", workaround: "Alaska Online Public Notices above"}
+  - {url: "https://nativenewsonline.net",    status: "403", workaround: "none found"}
+  - {url: "https://gi.alaska.edu",           status: "503", workaround: "asf.alaska.edu/notices is a side door into the Geophysical Institute"}
+  - {url: "https://congress.gov",            status: "403", workaround: "member press offices carry bill text summaries"}
+  - {url: "https://www.miningnewsnorth.com", status: "403", workaround: "none found"}
+  - {url: "https://thenorthernjournal.com",  status: "DNS ENOTFOUND", workaround: "try northernjournal.com or the Substack"}
 
 discover:
   enabled: true

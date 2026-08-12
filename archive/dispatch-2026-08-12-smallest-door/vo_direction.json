@@ -1,0 +1,213 @@
+{
+  "narrator": "Nora, an Alaska public-radio host: warm, grounded, quietly witty",
+  "notes": "Style: curious and wary, never angry. The read is a person who has actually read the federal notice and is telling you what is in it, with dry precision and real interest. No scolding, no sneer, no sour edge, and no hype either. Pace: the required MEASURED paragraph naming one hundred and twenty seconds, verbatim, which is this format's only reliable length control. Arc: a dry, leaned-in hook, a low ledger read of the old Alaska numbers, one warm human beat at a hundred thousand dollars, a quiet drop on the word retiring, a genuine correction on the money did not shrink, the thesis landed LOW and slow rather than loud, then the concession as the BRIGHTEST passage in the film so it reads as sincere and not grudging, a flat page-read of the four objections, the biggest beat of all on the pause before A list, the Alaska mini grant read warm and concrete, the quietest line in the piece on eight still hold a list nobody published, one firm statement of position, and a plain warm sincere button. Energy runs the full one to five spread and no two neighbouring lines sit at the same level.",
+  "style_prompt": "### DIRECTOR'S NOTES\nStyle: warm, grounded and conversational, curious and wary rather than angry. This is somebody who has actually read the federal notice and is telling you what is in it, with dry precision and real interest. Never scold, never sneer, never sound sour, and never sell. Credit the other side out loud where the script does, and mean the last line completely.\nPace: MEASURED and unhurried. THIS IS A TWO MINUTE PIECE, about one hundred and twenty seconds, and the read must FILL it, so give every sentence room to land and take a real breath at every period. Do not rush the numbers. Vary the tone line to line so no two sentences sound the same.\nEmphasis: lean on the key word in each line; let numbers land. There are three separate runs of figures and each gets its own treatment: the old Alaska program's numbers read low and even like an entry in a ledger, the EAGLE numbers open up and read as genuinely good news, and the two award floors are weighed slowly, one figure at a time.",
+  "pronunciations": {
+    "Alakanuk": "ah LAK uh nuk, four syllables, stress on the second, a soft final k",
+    "A I three": "three separate spoken tokens, AY then EYE then THREE, never run together into one word",
+    "EAGLE": "the ordinary English word eagle, EE gull, never spelled out letter by letter"
+  },
+  "lines": [
+    {
+      "idx": 0,
+      "text": "In grant paperwork there's a number called the award floor. [curious] The smallest grant the government will write.",
+      "intent": "hook",
+      "emphasis": "floor",
+      "energy": 3,
+      "tags": ["[curious]"],
+      "pause_before": false,
+      "why": "The hook is deliberately dry, so it lands by leaning IN on a small piece of jargon, not by brightening; [curious] after the period turns the second sentence into someone letting you in on a definition instead of reciting one."
+    },
+    {
+      "idx": 1,
+      "text": "Until this year the Administration for Native Americans ran one just for Alaska. Two million dollars, three awards, floor of one hundred thousand.",
+      "intent": "stat",
+      "emphasis": "Alaska",
+      "energy": 2,
+      "tags": [],
+      "pause_before": false,
+      "why": "NUMBER RUN ONE of three, and it reads lowest and evenest of the three, like an entry in a ledger being read off, so the EAGLE figures later have somewhere to rise from."
+    },
+    {
+      "idx": 2,
+      "text": "A hundred thousand is a sum one village administrator runs.",
+      "intent": "stakes",
+      "emphasis": "one",
+      "energy": 4,
+      "tags": [],
+      "pause_before": false,
+      "why": "The only human being in the first act; lifting here after the flat ledger is what converts a figure into a scale a person can hold, and warms the whole opening."
+    },
+    {
+      "idx": 3,
+      "text": "On July twenty eighth the agency published a notice [short pause] retiring it.",
+      "intent": "reveal",
+      "emphasis": "retiring",
+      "energy": 2,
+      "tags": ["[short pause]"],
+      "pause_before": true,
+      "why": "The turn of the film is delivered quietly, not loudly; the mid line beat isolates the one verb everything after this depends on."
+    },
+    {
+      "idx": 4,
+      "text": "The money didn't shrink. EAGLE, the successor, carries twenty four million and thirty one awards. Alaska Native communities stay eligible.",
+      "intent": "reveal",
+      "emphasis": "didn't",
+      "energy": 4,
+      "tags": [],
+      "pause_before": false,
+      "why": "The film refusing the obvious angle, so it has to sound like a genuine correction slightly against expectation. NUMBER RUN TWO: these figures open up and read as real good news, brighter and more forward than the ledger read in line one."
+    },
+    {
+      "idx": 5,
+      "text": "But EAGLE's floor is three hundred thousand, and EAGLE is national.",
+      "intent": "contrast",
+      "emphasis": "national",
+      "energy": 3,
+      "tags": [],
+      "pause_before": false,
+      "why": "AWARD FLOOR ONE of two: cooler and more clinical than either run before it, the figure weighed rather than announced, with the whole line tipping onto the last word."
+    },
+    {
+      "idx": 6,
+      "text": "The smallest door tripled, [short pause] and went national.",
+      "intent": "reveal",
+      "emphasis": "tripled",
+      "energy": 2,
+      "tags": ["[short pause]"],
+      "pause_before": true,
+      "why": "The thesis, and it gets room by dropping LOW and slow rather than loud; a public radio host lands a point by taking energy off it, and the mid line beat gives the sentence two halves instead of one."
+    },
+    {
+      "idx": 7,
+      "text": "That same notice built something else. The A I three Action Institute. One award, floor two and a half million.",
+      "intent": "reveal",
+      "emphasis": "One",
+      "energy": 4,
+      "tags": [],
+      "pause_before": false,
+      "why": "Lift back up on discovery, because this is the film noticing a second thing in the same document. AWARD FLOOR TWO: the figure is spaced and deliberate, same weighing as line five but at higher energy so the pair is not read twice the same way."
+    },
+    {
+      "idx": 8,
+      "text": "Every A I dollar in one grant no village can lead.",
+      "intent": "stakes",
+      "emphasis": "lead",
+      "energy": 2,
+      "tags": [],
+      "pause_before": false,
+      "why": "The sting of act two, said flat and low so it reads as an observation about structure rather than an accusation; the drop from four to two carries all the weight."
+    },
+    {
+      "idx": 9,
+      "text": "Alaska has two hundred twenty nine federally recognized tribes, and A I comes with a vendor contract.",
+      "intent": "setup",
+      "emphasis": "tribes",
+      "energy": 3,
+      "tags": [],
+      "pause_before": false,
+      "why": "The concession opens here and the delivery has to change audibly, so this line is open and explanatory; the count gets pace and space rather than stress, since the stress belongs on what all those tribes are."
+    },
+    {
+      "idx": 10,
+      "text": "Picture all of them separately arguing with one vendor over their own data.",
+      "intent": "stakes",
+      "emphasis": "separately",
+      "energy": 5,
+      "tags": [],
+      "pause_before": false,
+      "why": "THE BRIGHTEST LINE IN THE FILM, on purpose: the read is most animated at the exact moment it argues against itself, which is the only way the concession sounds sincere instead of grudging."
+    },
+    {
+      "idx": 11,
+      "text": "One body doing that once is better.",
+      "intent": "reveal",
+      "emphasis": "better",
+      "energy": 2,
+      "tags": [],
+      "pause_before": false,
+      "why": "A plain admission, so it drops to almost nothing and the pitch falls on the last word. Absolutely no lift and no half smile on better, because any irony here collapses the fairness of the whole piece."
+    },
+    {
+      "idx": 12,
+      "text": "The agency asked for comment, got thirty two submissions, and printed the objections itself.",
+      "intent": "setup",
+      "emphasis": "itself",
+      "energy": 3,
+      "tags": [],
+      "pause_before": false,
+      "why": "This is credit being given, so the last word carries a touch of genuine admiration and never a smirk; it also sets up the list that follows as a quotation from the agency's own page."
+    },
+    {
+      "idx": 13,
+      "text": "Opportunity costs. Indigenous data sovereignty. Centralized program design. Tribal readiness.",
+      "intent": "stat",
+      "emphasis": "readiness",
+      "energy": 2,
+      "tags": [],
+      "pause_before": false,
+      "why": "Four items read off a page, flat and precise and evenly spaced, with no colour added to any of them; the fourth settles so the next line can pick the whole list up. One deliberately flat line between a three and a four is contrast, not monotone."
+    },
+    {
+      "idx": 14,
+      "text": "So what is the institute paid to produce? [short pause] A list.",
+      "intent": "wry",
+      "emphasis": "list",
+      "energy": 4,
+      "tags": ["[short pause]"],
+      "pause_before": false,
+      "why": "THE BIGGEST BEAT IN THE FILM. The question rises and moves, then everything drops out for the beat, and A list is said small, flat and completely straight. The dryness lives in the silence, not in the delivery of the two words."
+    },
+    {
+      "idx": 15,
+      "text": "Alaska already made one. A University of Alaska Anchorage grant asked any Alaskan organization to name its problem.",
+      "intent": "setup",
+      "emphasis": "already",
+      "energy": 3,
+      "tags": [],
+      "pause_before": false,
+      "why": "Act four opens warmer and starts moving again after the flattest moment in the piece; already is the hinge word and the rest of the sentence rides out from it."
+    },
+    {
+      "idx": 16,
+      "text": "Twelve did. Nome's utility asked about the ground under its pipes. The Village of Alakanuk Tribe asked about infrastructure.",
+      "intent": "stat",
+      "emphasis": "Twelve",
+      "energy": 4,
+      "tags": [],
+      "pause_before": false,
+      "why": "The pleasure of concrete detail after four acts of program design, so it brightens; the two named examples are read plainly and respectfully as facts of the record, with Alakanuk given its full four syllables from the pronunciation guide."
+    },
+    {
+      "idx": 17,
+      "text": "Four were funded. [short pause] Eight still hold a list nobody published.",
+      "intent": "stakes",
+      "emphasis": "Eight",
+      "energy": 1,
+      "tags": ["[short pause]"],
+      "pause_before": false,
+      "why": "THE QUIETEST LINE IN THE PIECE, dropping from four to one in a single breath. It is not a complaint, it is a fact stated softly, and the softness is what makes it land."
+    },
+    {
+      "idx": 18,
+      "text": "The institute isn't the mistake. Retiring the small Alaska door in the same notice is.",
+      "intent": "stakes",
+      "emphasis": "Retiring",
+      "energy": 4,
+      "tags": [],
+      "pause_before": false,
+      "why": "The film's position, said firm, clear and direct after the quietest line, which gives it maximum lift. Firm, not raised; the final is lands clean and stops."
+    },
+    {
+      "idx": 19,
+      "text": "Applications close August twenty seventh. [short pause] If a village leads the winning bid, I'm wrong, and I'd like to be.",
+      "intent": "button",
+      "emphasis": "wrong",
+      "energy": 2,
+      "tags": ["[short pause]"],
+      "pause_before": false,
+      "why": "The date is practical and useful, then the beat separates it from the only first person moment in the film. Warm, plain, unhurried, and completely sincere: I'd like to be must sound like the speaker means it, not like a rhetorical flourish, so it stays low, slows down, and does not turn up at the end."
+    }
+  ],
+  "assembled_prompt": "Read ONLY the transcript below aloud as speech. The lines above \"Transcript:\" are direction; never speak them.\n# AUDIO PROFILE: Nora, an Alaska public-radio host: warm, grounded, quietly witty. Neutral American accent, light and natural, not announcer-y.\n### DIRECTOR'S NOTES\nStyle: warm, grounded and conversational, curious and wary rather than angry. This is somebody who has actually read the federal notice and is telling you what is in it, with dry precision and real interest. Never scold, never sneer, never sound sour, and never sell. Credit the other side out loud where the script does, and mean the last line completely.\nPace: MEASURED and unhurried. THIS IS A TWO MINUTE PIECE, about one hundred and twenty seconds, and the read must FILL it, so give every sentence room to land and take a real breath at every period. Do not rush the numbers. Vary the tone line to line so no two sentences sound the same.\nEmphasis: lean on the key word in each line; let numbers land. There are three separate runs of figures and each gets its own treatment: the old Alaska program's numbers read low and even like an entry in a ledger, the EAGLE numbers open up and read as genuinely good news, and the two award floors are weighed slowly, one figure at a time.\nTranscript:\nIn grant paperwork there's a number called the award floor. [curious] The smallest grant the government will write.\nUntil this year the Administration for Native Americans ran one just for Alaska. Two million dollars, three awards, floor of one hundred thousand.\nA hundred thousand is a sum one village administrator runs.\nOn July twenty eighth the agency published a notice [short pause] retiring it.\nThe money didn't shrink. EAGLE, the successor, carries twenty four million and thirty one awards. Alaska Native communities stay eligible.\nBut EAGLE's floor is three hundred thousand, and EAGLE is national.\nThe smallest door tripled, [short pause] and went national.\nThat same notice built something else. The A I three Action Institute. One award, floor two and a half million.\nEvery A I dollar in one grant no village can lead.\nAlaska has two hundred twenty nine federally recognized tribes, and A I comes with a vendor contract.\nPicture all of them separately arguing with one vendor over their own data.\nOne body doing that once is better.\nThe agency asked for comment, got thirty two submissions, and printed the objections itself.\nOpportunity costs. Indigenous data sovereignty. Centralized program design. Tribal readiness.\nSo what is the institute paid to produce? [short pause] A list.\nAlaska already made one. A University of Alaska Anchorage grant asked any Alaskan organization to name its problem.\nTwelve did. Nome's utility asked about the ground under its pipes. The Village of Alakanuk Tribe asked about infrastructure.\nFour were funded. [short pause] Eight still hold a list nobody published.\nThe institute isn't the mistake. Retiring the small Alaska door in the same notice is.\nApplications close August twenty seventh. [short pause] If a village leads the winning bid, I'm wrong, and I'd like to be."
+}

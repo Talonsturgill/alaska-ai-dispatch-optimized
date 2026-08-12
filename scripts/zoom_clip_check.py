@@ -90,8 +90,20 @@ def scenes(src: str, default_zoom: float):
     Anything before the first one is shared machinery (Plate, Stage, the vessels) whose geometry
     is relative to a caller, so it is deliberately not graded here.
     """
+    # THE PATTERN REQUIRED AN EXACT <SceneProps> AND THAT IS HOW THIS GATE DIED (2026-08-12).
+    # Ep0812 types its scenes `React.FC<SceneProps & {dur: number}>`, which is an ordinary
+    # intersection and a perfectly normal thing to write. The old anchored pattern matched
+    # zero of its thirteen scenes, so the gate measured nothing on the very episode whose
+    # plates were clipping the right frame edge, and two panel judges found by eye what this
+    # script exists to find in four seconds.
+    #
+    # The gate's loud "measured NOTHING" failure worked exactly as designed and said so. It
+    # is the pattern that was too narrow, so widen it: SceneProps followed by anything up to
+    # the closing angle bracket. Keep it anchored on SceneProps so a non-scene component with
+    # some other props type is still correctly skipped.
     starts = [(m.start(), m.group(1)) for m in
-              re.finditer(r"^const (S[0-9A-Za-z]*)\s*:\s*React\.FC<SceneProps>\s*=\s*\(", src, re.M)]
+              re.finditer(r"^const (S[0-9A-Za-z]*)\s*:\s*React\.FC<SceneProps\b[^>]*>\s*=\s*\(",
+                          src, re.M)]
     out = []
     for i, (pos, name) in enumerate(starts):
         end = starts[i + 1][0] if i + 1 < len(starts) else len(src)

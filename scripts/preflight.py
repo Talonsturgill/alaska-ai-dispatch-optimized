@@ -44,6 +44,13 @@ CHECKS = [
     # change gets caught. 2026-08-08: "A I" on screen under a plate reading "AI".
     ("no phonetic respelling survived into the built props",
      [sys.executable, "scripts/caption_spelling_check.py"], True),
+    # Every other caption check in this list asks what the captions SAY or where they SIT.
+    # None of them asked whether they are on screen at all, so on 2026-08-12 a {start,end}
+    # cue met a {t,d} reader, matched no frame, and the film shipped 4602 frames of empty
+    # caption band with a clean preflight. Three judges found it. This reads the delivered
+    # bytes and asks the direct question.
+    ("the captions are actually on screen in the delivered cut",
+     [sys.executable, "scripts/caption_render_check.py"], True),
     # Two elements in the same pixels cost score in three separate panel rounds on
     # 2026-08-06 and were invisible to every other check, because each element is
     # individually fine and the defect lives only in the relationship.
@@ -135,9 +142,47 @@ def deliverables_are_fresh():
     return True, f"cut is newer than every source (newest: {os.path.relpath(newest, REPO)})"
 
 
+def git_identity_is_the_owners():
+    """The PERMANENT media host is a git push, so git identity is a DELIVERY prerequisite.
+
+    WHY THIS EXISTS (2026-08-12, and it cost a run its download links). upload_video.py
+    refuses to author a media commit as Claude/Anthropic, which is correct and is CLAUDE.md's
+    rule. But git user.email was unset, so the permanent GitHub host declined, the script fell
+    back to a temporary host, that host served an HTML error page, verification failed, and the
+    run reached the Gmail draft with NO DOWNLOAD LINKS AT ALL.
+
+    Every one of those steps behaved correctly. The failure was that a prerequisite for
+    delivery was only discovered AT delivery, which is the most expensive moment available and
+    the one place a run is most tempted to shrug and ship without it. One `git config` would
+    have prevented the whole chain, and preflight is where that belongs.
+
+    A check that runs before the first frame costs nothing. The same check at the delivery step
+    costs the deliverable.
+    """
+    import subprocess
+    r = subprocess.run(["git", "config", "user.email"], capture_output=True, text=True)
+    email = (r.stdout or "").strip()
+    if not email:
+        return False, ("git config user.email is UNSET. upload_video.py's permanent host is a "
+                       "git push and will decline, so the run will reach the Gmail draft with no "
+                       "download links. Set it to the owner's address.")
+    if "anthropic.com" in email.lower() or "noreply@" in email.lower():
+        return False, (f"git config user.email is {email!r}, which upload_video.py refuses "
+                       f"(CLAUDE.md forbids authoring this repo's commits as Claude/Anthropic). "
+                       f"Set it to the owner's address or media upload falls back and fails.")
+    return True, f"git identity is {email}, so the permanent media host will accept a push"
+
+
 def main():
     os.chdir(REPO)
     failures, advisories = [], []
+
+    ok, msg = git_identity_is_the_owners()
+    if ok is False:
+        failures.append(("git identity is the owner's", msg))
+        print(f"  FAIL  git identity is the owner's: {msg}")
+    elif ok:
+        print(f"  OK    git identity is the owner's: {msg}")
 
     ok, msg = deliverables_are_fresh()
     if ok is False:

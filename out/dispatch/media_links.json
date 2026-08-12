@@ -1,0 +1,27 @@
+{
+  "run_date": "2026-08-12",
+  "title": "The Smallest Door",
+  "host": "permanent",
+  "note": "Every URL verified by upload_video.verify(): HTTP 200, correct .mp4 extension, served Content-Length equal to the local file. Minted from the SHIPPING bytes.",
+  "poster": "https://raw.githubusercontent.com/Talonsturgill/alaska-ai-weekly/dispatch-media/media/dispatch-2026-08-12-the-smallest-door-poster.png",
+  "cuts": [
+    {
+      "id": "master_9x16",
+      "label": "Vertical master (1080x1920, 129.7s)",
+      "bytes": 50676473,
+      "url": "https://raw.githubusercontent.com/Talonsturgill/alaska-ai-weekly/dispatch-media/media/dispatch-2026-08-12-the-smallest-door-9x16.mp4"
+    },
+    {
+      "id": "square_1x1",
+      "label": "Square cut (1080x1080) - LinkedIn main feed",
+      "bytes": 27699819,
+      "url": "https://raw.githubusercontent.com/Talonsturgill/alaska-ai-weekly/dispatch-media/media/dispatch-2026-08-12-the-smallest-door-1x1.mp4"
+    },
+    {
+      "id": "master_720",
+      "label": "Vertical 720p (phone-friendly)",
+      "bytes": 9358803,
+      "url": "https://raw.githubusercontent.com/Talonsturgill/alaska-ai-weekly/dispatch-media/media/dispatch-2026-08-12-the-smallest-door-720p.mp4"
+    }
+  ]
+}

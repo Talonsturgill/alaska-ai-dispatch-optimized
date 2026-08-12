@@ -37,6 +37,7 @@ The pass line prints checked/skipped counts. If checked ever drops to zero, the 
 stopped working and the run should treat that as a failure, not a pass.
 """
 import argparse
+import math
 import os
 import re
 import sys
@@ -203,6 +204,80 @@ def check_file(path, min_margin=MIN_MARGIN):
     return failures, checked, skipped
 
 
+# The legibility floor for auto-fitted plate type, in px at 1080x1920. Below this a string
+# is technically inside its plate and unreadable on a phone, which the rubric calls out
+# ("legible muted at phone size"). 22px is the smallest size that survived a thumb-sized
+# read in the 2026-08-12 evidence pack.
+MIN_PLATE_PX = 22.0
+
+PLATE_CALL_RE = re.compile(r"<Plate\b(?P<attrs>[^>]*?)/>", re.S)
+PLATE_TEXT_RE = re.compile(r'\btext="(?P<t>[^"]*)"')
+PLATE_SIZE_RE = re.compile(r"\bsize=\{(?P<s>[\d.]+)\}")
+PLATE_LS_RE = re.compile(r"\bls=\{(?P<ls>[\d.]+)\}")
+
+
+def check_plate_call_sites(path, min_px=MIN_PLATE_PX):
+    """Measure <Plate text="..."/> call sites, which the literal-<text> pass cannot see.
+
+    WHY THIS EXISTS (2026-08-12). This gate reported "GATE IS DEAD, it measured nothing"
+    on the episode whose plates were clipping the frame, and it was right to: Ep0812 does
+    not inline its strings. It factors them through a Plate component that computes its own
+    fontSize, so both of the gate's patterns miss by construction. TEXT_RE wants a literal
+    body and finds the JSX expression {text}; FONT_ATTR_RE wants fontSize={38} and finds
+    fontSize={fit}. Every string in the film was invisible to it.
+
+    Factoring text through a component is better engineering, not a defect, and Plate
+    already makes overflow arithmetically impossible by shrinking type until it fits. So the
+    interesting question moves: not "does the string overflow" but "what did it cost to make
+    it fit". Auto-fit converts an overflow into an illegibility, silently, and a 14px plate
+    on a phone is as much a defect as one running off the edge.
+
+    This mirrors Plate's own fit arithmetic (keep the two in step) and fails any call site
+    whose type is driven below the legibility floor.
+    """
+    src = open(path).read()
+    # Read the geometry out of the episode rather than hardcoding it, so a retuned zoom or
+    # advance cannot leave this measuring against numbers the film stopped using.
+    def const(name, default):
+        m = re.search(r"^const\s+" + name + r"\s*=\s*([-\d.]+)", src, re.M)
+        return float(m.group(1)) if m else default
+
+    W = const("W", 1080.0)
+    zoom = const("CONTENT_ZOOM", 1.22)
+    adv = const("ADV", 0.62)
+    usable = (W - 150) / (zoom * 1.10)
+    pad_x = 26.0
+
+    fails, checked = [], 0
+    for m in PLATE_CALL_RE.finditer(src):
+        attrs = m.group("attrs")
+        tm = PLATE_TEXT_RE.search(attrs)
+        if not tm:
+            continue  # a computed string; zoom_clip_check reports these as not measured
+        text = tm.group("t")
+        sm = PLATE_SIZE_RE.search(attrs)
+        size = float(sm.group("s")) if sm else 34.0
+        lsm = PLATE_LS_RE.search(attrs)
+        ls = float(lsm.group("ls")) if lsm else 2.0
+        fit = min(size, math.floor((usable - pad_x * 2) / max(1, len(text) * adv + ls)))
+        checked += 1
+        if fit < min_px:
+            fails.append({
+                "line": src[:m.start()].count("\n") + 1,
+                "text": text,
+                "size": f"authored {size:.0f}px, auto-fitted to {fit:.0f}px",
+                "text_w": round(len(text) * fit * adv + ls * max(0, len(text) - 1)),
+                "plate": (0, round(usable)),
+                "margin_l": 0,
+                "margin_r": 0,
+                "why": (f"Plate auto-fit drove this string to {fit:.0f}px to make it fit, below "
+                        f"the {min_px:.0f}px legibility floor. It is inside its plate and "
+                        f"unreadable on a phone. Shorten the string or split it across two "
+                        f"plates; do not raise the floor."),
+            })
+    return fails, checked
+
+
 def main():
     ap = argparse.ArgumentParser()
     # THE DEFAULT WAS A HARDCODED PATH TO A SHIPPED FILM (fixed 2026-08-08).
@@ -240,6 +315,11 @@ def main():
         for x in f:
             x["file"] = path
         bad += f
+        pf, pc = check_plate_call_sites(path)
+        total_checked += pc
+        for x in pf:
+            x["file"] = path
+        bad += pf
 
     # Coverage is printed, always. The whole reason this file exists is that a gate
     # reported a pass while quietly measuring none of the string that was broken.

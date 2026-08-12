@@ -9,8 +9,8 @@ dispatch_seconds_band:
 - 112
 - 130
 dispatch_vo_words_band:
-- 262
-- 282
+- 200
+- 220
 dispatch_history:
 - date: 2026-06-24
   topic: Cook Inlet beluga acoustic AI (NOAA + Microsoft AI for Good)
@@ -1554,3 +1554,63 @@ dispatch_history:
     depth: wall/mid/near three-plane
     palette: warm amber with acid-green sim accent
     motion: card-led with prop cycles
+- date: '2026-08-12'
+  topic: 'THE SMALLEST DOOR: on July 28th the Administration for Native Americans
+    published 91 FR 47241 retiring SEDS and SEDS-Alaska. EAGLE succeeds them and is
+    larger (24,000,000 dollars, 31 awards vs 2,000,000 and 3) but its floor is 300,000
+    where SEDS-Alaska''s was 100,000, and EAGLE is national. The same notice created
+    the AI3 Action Institute, one award nationwide, floor 2,500,000, closing August
+    27th 2026, holding every AI dollar it made. What that award is paid to produce
+    is a list of practical AI opportunities in Native communities. A 380,000 dollar
+    NSF grant at UAA (award 2433241) already produced one for Alaska: twelve organizations
+    named their own problems with no menu, four were funded including Nome Joint Utilities
+    System (thermal conductivity of warming permafrost) and the Village of Alakanuk
+    Tribe (infrastructure coordination), eight still hold an unpublished list. Position:
+    the institute is not the mistake, retiring the small Alaska door in the same notice
+    is. Falsifier stated on screen. No Alaska outlet covered it; found by primary-source
+    mining. AFN quote KILLED (sole source 403s).'
+  slug: dispatch-2026-08-12-smallest-door
+  key_entities:
+  - administration for native americans
+  - ana
+  - 91 fr 47241
+  - seds
+  - seds-alaska
+  - eagle program
+  - ai3 action institute
+  - award floor
+  - alaska native villages
+  - tribal economic development
+  - nsf 2433241
+  - raise mini grants
+  - uaa
+  - nome joint utilities system
+  - village of alakanuk tribe
+  - kenrick mock
+  - indigenous data sovereignty
+  - centralized program design
+  archetype: administrative void, a threshold measured against a brass rule
+  palette: cold slate teal institution, bone paperwork, brass gauge, terracotta reserved
+    for a named problem, one signal red spent once
+  voice: ''
+  stance: mixed
+  angle: The smallest award an Alaska applicant can win tripled and the field went
+    national, and the thing the new AI money is paid to produce is a list a much smaller
+    Alaska grant already produced for free
+  hero: Sill
+  cast:
+  - Sill
+  - Gauge
+  - AskSlip
+  - Clearance
+  composition:
+    pov: cross-section-cutaway
+    layout: single-object-void
+    motion_vector: vertical-rise
+    hero_treatment: structure-as-subject
+    register: data-brutalist
+    camera_strategy: rise-reveal
+    light_story: night-practical
+    palette: cold slate teal institution, bone paperwork, brass gauge, terracotta
+      reserved for a named problem, one signal red spent once
+    metaphor: eligibility drawn as the height of a step you either clear or do not

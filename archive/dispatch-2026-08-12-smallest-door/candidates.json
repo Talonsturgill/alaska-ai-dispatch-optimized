@@ -1,0 +1,141 @@
+{
+  "run_date": "2026-08-12",
+  "window_reported_by_gate": 10,
+  "window_note": "Last shipped 2026-08-09, three days skipped. Skipped days widen the window; stories from them are unspent inventory.",
+  "search_budget": "4 researchers, 20 WebSearch each. Three of four reported their cap exhausted; the wildcard beat used 7 of 20 and worked by WebFetch index sweep instead. Not a slow week: eight domains hard-blocked the sweep (alaskabeacon.com 403, akleg.gov 403, gi.alaska.edu 503, congress.gov 403, nativenewsonline.net 403, rca.alaska.gov 403, miningnewsnorth.com 403, thenorthernjournal.com DNS).",
+  "rungs": [
+    {
+      "rung": "in_window_sweep",
+      "attempted": true,
+      "note": "4 parallel researchers across energy/grid/data-centers, science + award records, government/policy/defense/rural tech, and a wildcard outlet sweep."
+    },
+    {
+      "rung": "outlet_index_sweep",
+      "attempted": true,
+      "note": "WebFetch index reads of adn.com, alaskapublic.org, ktoo.org, knba.org, kyuk.org, kucb.org, kdll.org, kmxt.org, newsminer.com, juneauempire.com, mustreadalaska.com, akbizmag.com, petroleumnews.com, nationalfisherman.com, alaska-native-news.com, uaf.edu/news, uaa.alaska.edu/news. Roughly 40 headline-level rejections recorded with reasons."
+    },
+    {
+      "rung": "widened_window",
+      "attempted": true,
+      "note": "Accepted anything up to 30 days old the audience has not been shown. The winning story's primary notice is 2026-07-28."
+    },
+    {
+      "rung": "carried_leads",
+      "attempted": false,
+      "note": "Not needed; the ladder locked at rung 5."
+    },
+    {
+      "rung": "primary_source_mining",
+      "attempted": true,
+      "note": "THIS IS WHERE THE STORY CAME FROM. Federal Register API, Grants.gov (simpler.grants.gov), NSF/DOE award records, Alaska Online Public Notices, PubMed Central. The winning story has no Alaska outlet coverage at all."
+    },
+    {
+      "rung": "follow_up",
+      "attempted": false
+    },
+    {
+      "rung": "pegged_explainer",
+      "attempted": false
+    }
+  ],
+  "locked_story": {
+    "id": "who-names-the-problem",
+    "found_at_rung": "primary_source_mining",
+    "one_line": "Two answers to the same question landed ten days apart. On July 28th the federal government retired SEDS and SEDS-Alaska and put money into a single nationwide AI institute that will identify AI opportunities for Native communities. On August 7th, in a borrowed library room in Anchorage, four Alaska organizations showed what happened when they were asked to name their own problem instead, among them the Village of Alakanuk Tribe and Nome Joint Utilities System.",
+    "primary_sources": [
+      "https://www.federalregister.gov/documents/2026/07/28/2026-15150/notice-of-final-issuance-on-the-adoption-of-administration-for-native-americans-program-policies-and",
+      "https://www.federalregister.gov/documents/2026/03/20/2026-05484/notice-for-public-comment-on-administration-for-native-americans-program-policies-and-procedures",
+      "https://simpler.grants.gov/opportunity/8b106d7a-a5ec-4226-b3d4-90bc8c3eade1",
+      "https://simpler.grants.gov/opportunity/fd13f1bb-9657-495a-a053-e36348181662",
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC13202658/",
+      "https://coeng.uaa.alaska.edu/AI/raise-mini-grant-awardee-announcement-25-26/",
+      "https://coeng.uaa.alaska.edu/AI/ai-solutions-consortium-2026-workshop/",
+      "https://coeng.uaa.alaska.edu/AI/raise-mini-grants-community/",
+      "https://api.nsf.gov/services/v1/awards/2433241.json"
+    ],
+    "cultural_care_binding": [
+      "No Alaska Native voice could be verbatim-verified. The AFN position exists but its only source 403s and the quote is search-snippet-only, so it is UNUSABLE. The film quotes the agency's own written responses instead.",
+      "Name entities precisely: ANCSA village corporations, Alaska Native regional corporations, federally recognized tribes and nonprofit tribal consortia are legally distinct and the NOFO treats them separately.",
+      "Never present Alaska Native opinion as a bloc. Never apply characterized-object humor to any Native subject.",
+      "Do not state a count of federally recognized tribes in Alaska without verifying it."
+    ],
+    "headline": "Who Names The Problem",
+    "story_question": "Who decides what AI in Alaska is for, the community with the problem or the institute with the mandate?",
+    "merged_from": [
+      "ana-ai3",
+      "uaa-raise-consortium"
+    ],
+    "verified_by_orchestrator": [
+      "Project/partner pairings read directly off the UAA awardee page: Village of Alakanuk Tribe pairs with ARCTIC, Nome Joint Utilities System pairs with the permafrost thermal conductivity project.",
+      "Workshop page states August 7th 2026, 10:15 AM to 1:30 PM, UAA/APU Consortium Library room 307.",
+      "NSF award 2433241 fetched from api.nsf.gov: University of Alaska Anchorage, estimatedTotalAmt 380000, expires 07/31/2027, TIP directorate, co-PIs Kamberov, Heidari Kapourchali, Desai.",
+      "No dollar amount is published for any individual mini grant. The film may not state one."
+    ]
+  },
+  "candidates": [
+    {
+      "id": "ana-ai3",
+      "title": "Federal tribal economic-development money is reallocated into a single national AI institute; SEDS-Alaska has no successor",
+      "verdict": "LOCKED",
+      "dedupe": "FRESH",
+      "why": "AI-central in the primary document rather than in a reporter's gloss. In window (91 FR 47241, July 28th; NOFO posted July 30th). Doubly primary-sourced. A live, actionable August 27th deadline. No Alaska outlet has covered it."
+    },
+    {
+      "id": "uaa-raise-consortium",
+      "title": "UAA's Alaska AI Solutions Consortium showed four community-partnered AI projects on August 7th, including a Yup'ik tribal government and Nome's utility",
+      "verdict": "LOCKED AS CO-LEAD",
+      "dedupe": "FRESH",
+      "why": "In window (workshop August 7th 2026), primary-sourced from the funder's own pages and the NSF award record, and completely unreported by any outlet. Supplies named Alaska places and an Alaska-Native-led actor, which is exactly what the federal story lacked."
+    },
+    {
+      "id": "edna-fisheries",
+      "title": "Murkowski's Fisheries Science Modernization Act names autonomous and AI-enabled sampling systems",
+      "verdict": "REJECTED",
+      "dedupe": "DUP vs 2026-07-21 salmon-bycatch counting dispatch",
+      "why": "Strong story and an explicit primary-source AI phrase, but this channel has run Alaska-fish-plus-machine-counting on 2026-07-21 (NOAA YOLOv11 bycatch) and 2026-08-07 (Shinkei salmon robot). A third inside 22 days is a repeat to the viewer, which is the test the routine actually applies. Carried forward as a lead once the window clears."
+    },
+    {
+      "id": "awos-outage",
+      "title": "Over 50 Alaska automated weather stations went dark in one morning",
+      "verdict": "REJECTED",
+      "dedupe": "FRESH",
+      "why": "Excellent story, honestly zero AI content. The researcher said so plainly and was right. Running it as an AI story would require inventing the angle."
+    },
+    {
+      "id": "enstar-gas-collision",
+      "title": "Enstar warns of rolling blackouts while Alaska is pitched gigawatt AI compute",
+      "verdict": "REJECTED",
+      "why": "AI link is inferential, no source mentions AI, and it sits on top of four already-covered data-center subjects."
+    },
+    {
+      "id": "erate-fcc",
+      "title": "FCC reviews E-Rate, which pays for nearly all rural Alaska school and library internet",
+      "verdict": "REJECTED",
+      "why": "No AI anywhere in it. Precondition argument only. Held as a strong future lead (docket 26-133)."
+    },
+    {
+      "id": "ak-ai-policy-vacuum",
+      "title": "Alaska has one AI statute and a stalled task force",
+      "verdict": "REJECTED",
+      "why": "Most AI-central in-window item after the winner, but both substantive pieces are by the same author (Roger Kaye, ADN opinion + Northern Center), so it fails the two-source rule, and akleg.gov 403'd every attempt to verify HB 47 and HCR 3."
+    },
+    {
+      "id": "juneau-glof",
+      "title": "Suicide Basin glacial outburst flood",
+      "verdict": "REJECTED",
+      "why": "Biggest live Alaska news this week and the monitoring stack is a laser rangefinder and time-lapse cameras. Three credible outlets contain no autonomy or ML content. Declined deliberately."
+    },
+    {
+      "id": "bering-acidity-model",
+      "title": "Seasonal Bering Sea acidification forecast",
+      "verdict": "REJECTED",
+      "why": "Physics and biogeochemistry, not machine learning, and the paper never claims otherwise."
+    },
+    {
+      "id": "kenaitze-cyber",
+      "title": "Cyberattack degrades Kenaitze Indian Tribe health services",
+      "verdict": "REJECTED",
+      "why": "No evidence of any AI involvement. Pairing it with an unrelated AI-hacking wire story would be manufacturing a connection."
+    }
+  ]
+}

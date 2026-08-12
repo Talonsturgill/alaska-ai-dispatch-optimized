@@ -11,7 +11,7 @@ from urllib.parse import urlparse
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 OUT = os.path.join(REPO, "out", "dispatch")
 FPS = 30
-TAIL = 1.5  # hold after the last word
+TAIL = 1.0  # hold after the last word (1.5 -> 1.0 on 2026-08-12 to land in band)
 
 # scene -> index of the VO line that starts it. 2026-07-22 "the checkpoint lever frozen
 # at the midpoint" has 7 scenes (S1..S7 in video-engine/src/Episode.tsx, SCENE_COMPONENTS)
@@ -115,7 +115,28 @@ TAIL = 1.5  # hold after the last word
 # not a supply), S8 L15-L16 (the payroll accusation, then the crack), S9 L17-L18 (THE ANSWER,
 # energy constrained seats into the core and the plant runs), S10 L19-L21 (THE SIGNATURE, the
 # ring lifts and the tag turns), S11 L22 (the button).
-SCENE_START_LINE = [0, 1, 2, 4, 6, 8, 11, 13, 15, 17, 19, 22]
+# 2026-08-12 "The Smallest Door": THIRTEEN shots (S1..S13 in video-engine/src/Ep0812.tsx)
+# onto 20 VO lines. S1 L0 (the sill lands + the definition), S2 L1 (the agency nameplate +
+# SEDS Alaska figures + the gauge locking at 100,000), S3 L2 (the desk lamp + a slip clearing
+# the low step), S4 L3 (the notice slides in + the chips go dark), S5 L4 (THE REHOOK, the money
+# grew + EAGLE at full size + eligibility unchanged), S6 L5-L6 (the second gauge at 300,000 +
+# the rail extending + the step tripling), S7 L7 (the page turns + the tall slot + its two
+# facts), S8 L8 (THE SIGNATURE RISE, every AI dollar into one slot), S9 L9-L11 (ACT 3, the
+# 229 field + the contract + the collapse into one volume), S10 L12-L13 (the envelopes + the
+# notice printing its own objections + the red stamp), S11 L14-L15 (THE DIP + one sheet + the
+# warm side step), S12 L16-L17 (twelve slips sort + the two named asks + four over eight below),
+# S13 L18-L19 (the verdict + the envelope closing + the button returning frame 1 inverted).
+# Remapped 2026-08-12 for the round-2 VO recut: 20 lines became 17, so the old table's
+# last entry (18) no longer exists and every index past 6 pointed at the wrong sentence.
+# 13 shots, 17 lines. Each entry is the VO line a shot opens on; a shot holds until the
+# next entry, so lines 9, 11, 13 and 15 are absorbed into the shot before them.
+# S13 moved from line 16 to line 15 (2026-08-12, panel round 3). The thesis card lives in
+# S13, but S13 opened on line 16 ("Applications close..."), so the film's two most important
+# lines, "The institute isn't the mistake" at 97.76s and "Retiring the small Alaska door in
+# the same notice is", were spoken while S12 was still holding the Nome and Alakanuk grid.
+# All three judges measured the lag; one put it at six seconds, at the beat the whole piece
+# turns on. The card now lands on the line it belongs to.
+SCENE_START_LINE = [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 14, 15]
 
 
 def _apply_caption_fixups(caps):
@@ -244,7 +265,7 @@ def _rebalance_cues(caps):
 # So the credits are DERIVED HERE, from the same files the rest of the run is checked
 # against, and rendered by lib/EndCredits.tsx. Nothing is typed per run, so the card cannot
 # drift from the record, and scripts/credits_check.py fails the run if it ever does.
-CREDITS_S = 6.5          # long enough to read a URL out loud, short enough not to be a cost
+CREDITS_S = 4.6          # long enough to read the URL and the CC BY credit, short enough to stay in band
 
 def _source_labels(srcs):
     """Group sources.json into lines a person can read off a phone in six seconds.
@@ -317,7 +338,17 @@ def _credits():
 
 def main():
     lines = json.load(open(os.path.join(OUT, "vo_lines.json")))["lines"]
+    # FIXUPS RUN LAST, NOT FIRST (2026-08-12). They used to run only on the way IN, and
+    # _rebalance_cues re-splits cues from the word timings, which rebuilds cue text and
+    # throws the corrected spellings away. So the map was applied, discarded, and the
+    # respelling reached the props anyway: this run built "the A I three Action Institute"
+    # onto the screen with a caption_fixups map sitting right there declaring AI3.
+    # caption_spelling_check reads the BUILT PROPS, so it caught it, and its advice
+    # ("re-run build_scenes.py") could never help, because re-running reproduced it exactly.
+    # Apply on the way in AND on the way out; the inbound pass still helps rebalance split
+    # on corrected text.
     caps = _rebalance_cues(_apply_caption_fixups(json.load(open(os.path.join(OUT, "captions.json")))))
+    caps = _apply_caption_fixups(caps)
     start = {L["idx"]: L["start"] for L in lines}
     last_end = max(L["end"] for L in lines)
     total_s = last_end + TAIL
@@ -341,6 +372,32 @@ def main():
     cred = _credits()
     if cred:
         total_f += cred["frames"]
+
+    # THE CAPTION CONTRACT IS {t, d, text} AND IT IS NOT THE SHAPE captions.json USES
+    # (2026-08-12, found by a panel judge, not by any gate).
+    #
+    # captions.json is the forced-alignment output and speaks in {start, end}. Every caption
+    # component this engine has ever had reads {t, d} — Ep0812's is
+    #     cues.find((c) => t >= c.t && t < c.t + c.d)
+    # Handed a {start, end} cue, c.t is undefined, `t >= undefined` is false for every frame,
+    # and .find() returns undefined forever. The component's own guard (`if (!cue) return null`)
+    # then does exactly what it was written to do and draws nothing. So the film rendered with
+    # a completely empty caption band, all 4602 frames of it, and NOTHING objected: the props
+    # were valid JSON, the zod schema is only applied to Studio inputs and not to CLI --props,
+    # caption_check.py lints the caption TEXT rather than its delivery, and the pixel gates look
+    # at the story region. It took three judges reading 57 frames to notice.
+    #
+    # Convert here, at the boundary, because this is the one place that knows both shapes. Do
+    # not "fix" it by teaching the component to accept {start, end} as well: two accepted shapes
+    # is how a mismatch hides, and the next component would have to know both too.
+    caps = [{"t": round(float(c["start"]), 3),
+             "d": round(float(c["end"]) - float(c["start"]), 3),
+             "text": c["text"]}
+            for c in caps]
+    bad = [c for c in caps if c["d"] <= 0]
+    if bad:
+        raise SystemExit(f"build_scenes: {len(bad)} caption cue(s) have a non-positive duration "
+                         f"and would never display: {bad[:3]}")
 
     props = {"captions": caps, "scenes": scenes, "total": total_f,
              "lines": [round(L["start"], 3) for L in sorted(lines, key=lambda x: x["idx"])]}

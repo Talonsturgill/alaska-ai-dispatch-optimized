@@ -1,0 +1,16 @@
+{
+  "run_date": "2026-08-12",
+  "title": "The Smallest Door",
+  "sources": [
+    {"id": "s1", "title": "Federal Register, Notice of Final Issuance on the Adoption of Administration for Native Americans Program Policies and Procedures, 91 FR 47241, July 28th 2026", "url": "https://www.federalregister.gov/documents/2026/07/28/2026-15150/notice-of-final-issuance-on-the-adoption-of-administration-for-native-americans-program-policies-and", "claims": ["c1","c2","c3","c4","c5","c10","c11","c12","c13","c14"]},
+    {"id": "s2", "title": "Grants.gov, AI3 Action Institute, Artificial Intelligence for American Indians, HHS-2026-ACF-ANA-NAI-0035", "url": "https://simpler.grants.gov/opportunity/8b106d7a-a5ec-4226-b3d4-90bc8c3eade1", "claims": ["c6"]},
+    {"id": "s3", "title": "Grants.gov, Economic Advancement Grants for Local Empowerment (EAGLE), HHS-2026-ACF-ANA-NEG-0120", "url": "https://simpler.grants.gov/opportunity/bb965470-bd8d-4529-b30b-39efe6f81147", "claims": ["c7"]},
+    {"id": "s4", "title": "Grants.gov, Social and Economic Development Strategies for Alaska, SEDS-AK, HHS-2025-ACF-ANA-NK-0111", "url": "https://simpler.grants.gov/opportunity/fd13f1bb-9657-495a-a053-e36348181662", "claims": ["c8","c9"]},
+    {"id": "s5", "title": "NSF Award 2433241, Rural AI Solutions and Engagement (RAISE), University of Alaska Anchorage", "url": "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2433241", "claims": ["c15"]},
+    {"id": "s6", "title": "UAA College of Engineering, RAISE mini grant awardees, academic year 25/26", "url": "https://coeng.uaa.alaska.edu/AI/raise-mini-grant-awardee-announcement-25-26/", "claims": ["c16","c17","c18"]},
+    {"id": "s7", "title": "UAA College of Engineering, RAISE community mini grants, eligibility and timeline", "url": "https://coeng.uaa.alaska.edu/AI/raise-mini-grants-community/", "claims": ["c19"]},
+    {"id": "s8", "title": "UAA College of Engineering, 2026 AI Solutions Consortium Workshop, August 7th 2026", "url": "https://coeng.uaa.alaska.edu/AI/ai-solutions-consortium-2026-workshop/", "claims": ["c20"]},
+    {"id": "s9", "title": "Bureau of Indian Affairs, Alaska Regional Office, 229 federally recognized Tribes", "url": "https://www.bia.gov/regional-offices/alaska", "claims": ["c21"]}
+  ],
+  "note": "Every figure in this film is quoted from a federal notice of funding opportunity, the Federal Register full text, an NSF award record, or the funder's own pages, current as of 2026-08-12. Nothing is modelled, projected or estimated."
+}

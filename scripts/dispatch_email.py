@@ -15,7 +15,7 @@ Usage:
     --note "On-screen numbers are illustrative unless drawn from a live feed." \
     --temporary --date 2026-06-27 --title "Cook Inlet belugas" --out-html out/dispatch/email.html
 """
-import argparse, base64, json, datetime as dt, re, sys
+import argparse, base64, json, datetime as dt, re, subprocess, sys
 from pathlib import Path
 
 # THE MAILBOX IS docket@alaskaaihq.com AND IT IS THE SAME ONE EVERY TIME (owner, 2026-07-31).
@@ -31,6 +31,77 @@ DRAFT_TO = "docket@alaskaaihq.com"
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from run_guard import fresh, StaleArtifactError  # noqa: E402
 from caption_check import lint as caption_lint  # noqa: E402
+
+
+def refuse_unless_links_are_live(urls, allow_temporary=False):
+    """Refuse to build the draft unless every download link actually resolves to media.
+
+    WHY THIS EXISTS (2026-08-12, owner directive, verbatim: "I do not go into github to find
+    videos. You are explicitly instructed to drop the download links in my email ... fix
+    whatever allowed u to take the easy way out and fail again").
+
+    That run's upload step failed loudly and correctly: upload_video.py exited 3 because
+    git config user.email was unset, so media_email() refused to author a media commit as
+    Anthropic. The defect was NOT the refusal. The defect was what happened next — the run
+    hand-wrote a Gmail draft with no video links at all and a caveat line explaining their
+    absence, and called that delivered. The pipeline had no opinion, because --video-url-*
+    was only ever checked for being a non-empty string. A caveat is not a deliverable. The
+    video IS the deliverable, and a draft without a working link to it has not delivered it.
+
+    So the link is now load-bearing the same way the sources block is: no working link, no
+    draft. The check is upload_video.verify()'s, minus the local-file comparison it cannot
+    do from a URL alone:
+      (1) the URL path ends in a media extension, so it downloads as a playable file rather
+          than an extensionless octet-stream blob (the 2026-07-21 dead-link bug), and
+      (2) the final response is 200, and
+      (3) it is not served as text/html, which is what a 404 page or a login wall looks like
+          to a naive status check, and
+      (4) Content-Length, when present, is over 100 KB — a real cut is tens of megabytes and
+          anything smaller is an error document with a generous status code.
+
+    There is deliberately no bypass flag. The whole failure mode was a run granting itself
+    permission to ship less than the deliverable; a gate with an escape hatch is a suggestion.
+    A genuinely link-less run is a FAILED run: fix the upload and re-run, do not email a
+    caveat. --temporary is not a bypass either; it only relaxes nothing and still requires
+    the temporary host to be answering right now.
+    """
+    media_ext = (".mp4", ".mov", ".m4v", ".webm")
+    problems = []
+    for label, url in urls:
+        if not url:
+            problems.append(f"{label}: no URL was passed")
+            continue
+        path = url.lower().split("?")[0]
+        if not path.endswith(media_ext):
+            problems.append(f"{label}: URL does not end in a media extension "
+                            f"(a browser would download an unopenable blob): {url}")
+            continue
+        r = subprocess.run(["curl", "-sSLI", "--max-time", "120", url],
+                           capture_output=True, text=True)
+        if r.returncode != 0:
+            problems.append(f"{label}: HEAD request failed: {(r.stderr or '').strip()[-160:]}")
+            continue
+        head = r.stdout
+        codes = re.findall(r"HTTP/\d(?:\.\d)?\s+(\d{3})", head)
+        if not codes or codes[-1] != "200":
+            problems.append(f"{label}: HTTP {codes[-1] if codes else '?'} (expected 200): {url}")
+            continue
+        if re.search(r"(?im)^content-type:\s*text/html", head):
+            problems.append(f"{label}: served as text/html, so it is an error page and not the "
+                            f"video: {url}")
+            continue
+        m = re.search(r"(?im)^content-length:\s*(\d+)", head)
+        if m and int(m.group(1)) < 100 * 1024:
+            problems.append(f"{label}: Content-Length {m.group(1)} bytes is far too small to be a "
+                            f"cut of this film: {url}")
+    if problems:
+        sys.exit("REFUSING TO BUILD DRAFT: the download links are the deliverable and these do not "
+                 "work.\n  - " + "\n  - ".join(problems) +
+                 "\n\nDo NOT email a draft that explains the absence instead. Re-run "
+                 "scripts/upload_video.py until it prints HOST=... VERIFIED=ok for every cut, then "
+                 "build the draft with those URLs. If the upload is failing, read its error: the "
+                 "usual cause is git config user.email being unset, which makes upload_video "
+                 "refuse to author a media commit as Anthropic.")
 
 
 def refuse_unless_copy_is_clean(post_text, source_path):
@@ -292,6 +363,13 @@ def main():
     # Lint the string, not a path. See refuse_unless_copy_is_clean for why that distinction
     # is the whole point: on 2026-08-06 the run linted caption.txt and emailed post.txt.
     refuse_unless_copy_is_clean(post, a.post)
+    # THE LINKS ARE THE DELIVERABLE. See refuse_unless_links_are_live for the 2026-08-12
+    # incident this exists to make impossible. The square cut is optional as an argument
+    # but is checked whenever it is passed, because a broken link is worse than none.
+    refuse_unless_links_are_live(
+        [("9:16 vertical master", a.video_url_vertical)] +
+        ([("1:1 square cut", a.video_url_square)] if a.video_url_square else []),
+        allow_temporary=a.temporary)
     if a.poster_url:
         poster_html = f'<div class="poster"><img src="{a.poster_url}" alt="poster"/></div>'
     elif a.poster and Path(a.poster).exists():

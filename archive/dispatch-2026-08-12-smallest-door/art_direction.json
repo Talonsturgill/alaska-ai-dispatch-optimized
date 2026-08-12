@@ -1,0 +1,52 @@
+{
+  "run_date": "2026-08-12",
+  "title": "The Smallest Door",
+  "palette": {
+    "why": "Diverges hard from the last two dispatches. 08-08 was cool blue-grey tile with warm birch and sage. 08-09 was a warm amber boiler room with an acid-green simulation accent. This film has neither a warm interior nor a green. It is a COLD ADMINISTRATIVE SLATE holding a single warm object, because the story is a warm specific ask sitting inside a cold general rule.",
+    "sky": "#243239  cold slate teal, the institutional air",
+    "ground": "#161F23  deeper slate, the floor the sill stands on",
+    "hero": "#D9D3C4  bone, the colour of paperwork and of the sill itself",
+    "accent": "#C2643A  terracotta, RESERVED BY CONSTRUCTION for a slip that carries a named problem. Nothing general is ever terracotta.",
+    "alarm": "#D6483B  signal red, spent EXACTLY ONCE, on the phrase centralized program design when the agency prints the objection to itself",
+    "shadow": "#0B1114",
+    "brass": "#C99A3B  the height gauge on the sill, the only metal in the film"
+  },
+  "light": {
+    "time": "no time of day. This is a lit interior with no window, deliberately, because a grant notice has no weather.",
+    "direction": "hard key from high front left at about 60 degrees, so every sill casts a long readable shadow DOWN the step it creates. The shadow is the information.",
+    "key_fill_rim": "key hard and slightly cool, fill very low so the slate reads deep, rim on the bone sill only, which makes the threshold the brightest edge in every frame it appears in",
+    "depth": "three planes minimum. Far wall of filing recession, mid plane the sill and the queue, near plane loose slips drifting through frame below the caption band. Value ladder of about 11 percent lightness per plane, enforced, because a monochrome slate interior is the textbook flat-frame trap."
+  },
+  "shape_language": {
+    "institution": "RECTILINEAR AND HORIZONTALLY BARRED. Sills, lintels, queue rails, filing drawers, the long straight top edge of a step. Machined edges, no radius over 4px.",
+    "the_ask": "SMALL, IRREGULAR, TORN EDGED. Every slip carrying a named problem has a hand-torn top edge and sits slightly off square.",
+    "why": "The film's whole argument is a size mismatch between a general rule and a specific ask, so the grammar is a straight machined edge against a torn one. A viewer should be able to tell the two apart at thumbnail size with the sound off."
+  },
+  "casting": {
+    "hero_net_new": "Sill  ·  the AWARD FLOOR made physical. An institutional threshold that RAISES. Brass height gauge up its left jamb reading in dollars, a lintel above carrying lamp slots, and a bone step whose height is a driven parameter. Its emotional tell is NOT a cartoon face, it is the gauge and the lamps, because this subject may not be played for laughs. Differs from the last two heroes, TypeSlug and LoopGovernor, in silhouette, in material and in function.",
+    "from_the_shelf": "Sheet and PaperFiber from lib/paper.tsx for the slips. PaperOfficeBG's filing recession as the far plane, re-tinted cold. ContactShadow, RimLight, FormGradient, tones from lib/lighting.tsx on every form.",
+    "explicitly_not_cast": "No Character rig. No human figure appears anywhere in this film. That is a CULTURAL RULING, not a style choice: the subject is federal program design, and a drawn person here would inevitably read as standing in for an Alaska Native person, which the film has no standing to do."
+  },
+  "motion_language": {
+    "hero_moves": "THE RAISE. The sill's step climbs from knee height to overhead across a single continuous move with anticipation, a hard overshoot and a settle, while the brass gauge counts. This is the film's one signature move and it happens once.",
+    "secondary": "slips flutter on their torn edges with follow-through, the queue rail rings, lamp slots go dark one at a time with a settle on each",
+    "ambient": "an always-running dust drift in the key light plus a slow push on every scene wrapper, about 1.00 to 1.09, so no frame is ever still. Authored BEFORE any event, per DISPATCH_STANDARD section 8."
+  },
+  "composition": {
+    "approach": "the sill sits on the lower third so its step reads against the deep slate, and the vertical above it is staged with filing recession and lintel structure that the 1:1 square crop never sees",
+    "safe_area": "all informational plates author their TOP edge below the square crop line. The 9:16 canvas above y=420 and below y=1500 carries atmosphere and near-field slips only.",
+    "signature_shot": "THE STEP FROM BELOW. Camera at the foot of the sill looking up as the step raises overhead, the brass gauge climbing past a hundred thousand, and one terracotta slip resting on the old low step that is now far below the new one."
+  },
+  "craft_advance": {
+    "system": "lib/threshold.tsx, net-new",
+    "what": "A reusable THRESHOLD grammar the shelf does not have. It has gates that open and close (ThresholdGate, CheckpointGateLever) but nothing that expresses ELIGIBILITY AS HEIGHT. threshold.tsx gives a Sill whose step height is a driven parameter, a brass Gauge that reads that height in a supplied unit, and a Clearance test that takes a queue of objects and visibly sorts them into cleared and not cleared. Height as a rule, drawn.",
+    "why_it_compounds": "Any future dispatch about a bar, a cutoff, a threshold, a minimum wage, a quota or an eligibility rule can cast this instead of improvising it."
+  },
+  "cultural_constraints_binding_the_art": [
+    "No human figure of any kind, anywhere in this film.",
+    "No Indigenous motif, pattern, regalia, mask form or totemic figure, decoratively or otherwise.",
+    "No village imagery, no medevac aircraft, no clinic, no landscape standing in for a community.",
+    "The Village of Alakanuk Tribe and Nome Joint Utilities System appear ONLY as set type on a slip, spelled exactly, never as a drawn place or a characterized object.",
+    "Characterization is limited to paperwork and programs. The sill, the slips, the queue and the notice may be characterized. Nothing living, nothing Native, nothing real and named."
+  ]
+}

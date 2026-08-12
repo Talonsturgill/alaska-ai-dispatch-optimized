@@ -169,8 +169,19 @@ def main():
     # a fix I cannot see", about a caption defect that WAS fixed. Stills sample 14 moments
     # out of ~125 seconds, so a caption defect between two samples is unfalsifiable in
     # either direction. The cue list is 6KB and makes every caption in the film checkable.
-    _cues = [{"start": round(c["start"], 2), "end": round(c["end"], 2), "text": c["text"]}
-             for c in _props.get("captions", [])]
+    # episode_props.json now carries cues in the ENGINE's shape, {t, d, text}, because
+    # build_scenes converts at the boundary (2026-08-12: the props used to hand the engine
+    # {start, end}, which its reader compares against undefined, and the film shipped with an
+    # empty caption band for all 4602 frames). This reader still spoke the old shape and
+    # died on KeyError. Accept either, and emit start/end here because that is what a human
+    # grading a cue list wants to read.
+    def _se(c):
+        if "t" in c and "d" in c:
+            return round(c["t"], 2), round(c["t"] + c["d"], 2)
+        return round(c["start"], 2), round(c["end"], 2)
+
+    _cues = [{"start": s, "end": e, "text": c["text"]}
+             for c in _props.get("captions", []) for s, e in [_se(c)]]
     _j.dump({"note": "every open-caption cue in the delivered cut, in order, as built into "
                      "episode_props.json and rendered by the episode. Times are seconds from "
                      "the first frame. Grade caption text against THIS, not against the 14 "
@@ -243,6 +254,47 @@ def main():
                "strips": motion},
               open(os.path.join(EV, "motion.json"), "w"), indent=2)
     print("  motion.json written:", {k: v["changed_pct"] for k, v in motion.items()})
+
+    import subprocess as _sp
+    # SAMPLE THE CREDITS CARD (2026-08-12, panel round 6). The still sampler walks the VO's
+    # named moves, and the credits sit AFTER the last word, so it never sampled them. Three
+    # judges in one round reported the CC BY 4.0 music credit as unverifiable or absent and
+    # docked Sound for it; the card was on screen the whole time, at 127.5s, and the pack
+    # simply stopped at 125.0. Attribution is a licence condition, so "the evidence cannot
+    # show it" is not an acceptable resting place. Grab a frame from the last two seconds.
+    try:
+        _dur = float(_sp.run(["ffprobe", "-v", "error", "-show_entries", "format=duration",
+                              "-of", "csv=p=0", a.video], capture_output=True,
+                             text=True).stdout.strip())
+        _t = max(0.0, _dur - 2.0)
+        _sp.run(["ffmpeg", "-v", "error", "-ss", f"{_t:.2f}", "-i", a.video, "-vframes", "1",
+                 "-q:v", "3", "-y", os.path.join(EV, f"f{_t:05.1f}.jpg")],
+                capture_output=True, text=True)
+        print(f"  credits card sampled at {_t:.1f}s")
+    except Exception as _e:
+        print(f"  !! could not sample the credits card: {_e}")
+
+    # THE AUDIO REPORT IS PART OF THE PACK, SO THIS BUILDS IT (2026-08-12).
+    # It used to be whatever audio_report.py last happened to write, whenever that was. On
+    # this run the pack shipped a report describing a 153.5s cut to a panel grading a 119.57s
+    # one: last_word_ends_s 150.94 and gap entries at 129.52s and 134.98s, both past the end
+    # of the film, with loudness figures a full 0.65 LU off the delivered master. All three
+    # judges spotted it and one filed it as an evidence-hygiene flag, which is a judge's
+    # attention spent on our filing rather than on the film.
+    #
+    # Every other artifact in this directory is rebuilt from the delivered bytes each time.
+    # This one was the exception purely because it lived in a different script, so run that
+    # script here. A stale number in an evidence pack is worse than a missing one: a missing
+    # file is obviously missing, and a stale file is quietly believed.
+    _ar = os.path.join(os.path.dirname(os.path.abspath(__file__)), "audio_report.py")
+    _r = _sp.run([sys.executable, _ar], capture_output=True, text=True)
+    if _r.returncode == 0:
+        print("  audio_report.json rebuilt from the delivered cut")
+    else:
+        # Loud, and not fatal: the rest of the pack is still worth having, but nobody should
+        # be able to read past this and assume the report describes this film.
+        print("  !! audio_report.json COULD NOT BE REBUILT and may describe a different cut:")
+        print("     " + (_r.stderr or _r.stdout).strip()[-300:])
 
 
 if __name__ == "__main__":

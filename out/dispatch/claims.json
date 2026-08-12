@@ -1,304 +1,284 @@
 {
- "run_date": "2026-08-09",
- "story": "NSF's August 5th, 2026 Focused EPSCoR Collaborations award, led by the University of Alaska Anchorage, for AI-driven microbial rare earth recovery from coal refuse and ash",
- "sourcing_note": "Every figure below is read off NSF's own award records via api.nsf.gov, which is the citable primary because the human-readable nsf.gov award page renders an empty template to a fetcher. Two independent adversarial validators verified the set.",
- "claims": [
-  {
-   "id": "c1",
-   "spoken": "three point eight million dollars",
-   "on_screen": "$3,824,575",
-   "what": "NSF award 2614749 to the University of Alaska Anchorage, obligated in full in FY 2026 as a Standard Grant",
-   "verbatim_source": "estimatedTotalAmt: \"3824575\"; fundsObligatedAmt: \"3824575\"; fundsObligated: [\"FY 2026 = $3,824,575.00\"]",
-   "source_url": "https://api.nsf.gov/services/v1/awards/2614749.json",
-   "requires": [
-    "the figure on screen is the exact dollar amount, never a rounded one"
-   ]
-  },
-  {
-   "id": "c2",
-   "spoken": "August fifth",
-   "on_screen": "AWARDED 2026-08-05",
-   "what": "Award date on all three linked awards. Initial and latest amendment dates are identical, so the record has not been amended.",
-   "verbatim_source": "date: \"08/05/2026\"; initAmendmentDate: \"08/05/2026\"; latestAmendmentDate: \"08/05/2026\"",
-   "source_url": "https://api.nsf.gov/services/v1/awards/2614749.json",
-   "requires": [
-    "spoken as an ordinal, August fifth, per guardrail 5a",
-    "the ISO form is a provenance stamp only"
-   ],
-   "contract": {
-    "on_screen_verbatim": true
-   }
-  },
-  {
-   "id": "c3",
-   "spoken": "the work starts September first",
-   "on_screen": "STARTS 2026-09-01",
-   "what": "Period of performance, September 1st 2026 to August 31st 2030, identical on all three awards",
-   "verbatim_source": "startDate: \"09/01/2026\"; expDate: \"08/31/2030\"",
-   "source_url": "https://api.nsf.gov/services/v1/awards/2614749.json",
-   "requires": [
-    "NOTHING may be stated in the present tense. No result exists. No lab is running.",
-    "expDate is NSF's estimated end date"
-   ],
-   "contract": {
-    "on_screen_verbatim": true
-   }
-  },
-  {
-   "id": "c4",
-   "spoken": "Brandon Briggs",
-   "on_screen": "BRANDON BRIGGS",
-   "what": "Principal investigator, and separately verified as Professor, Department of Biological Sciences, University of Alaska Anchorage, working in geomicrobiology and applied microbiology",
-   "verbatim_source": "pdPIName: \"Brandon R Briggs\" (NSF); \"Brandon Briggs, Ph.D.\" / \"Professor, Department of Biological Sciences\" (UAA faculty page)",
-   "source_url": "https://api.nsf.gov/services/v1/awards/2614749.json",
-   "source_url_2": "https://www.uaa.alaska.edu/academics/college-of-arts-and-sciences/departments/biological-sciences/faculty/briggs.cshtml",
-   "requires": [
-    "no invented title, no directorship, no email on screen",
-    "his field genuinely matches the award, which is worth saying"
-   ]
-  },
-  {
-   "id": "c5",
-   "spoken": "four co-investigators",
-   "on_screen": "4 CO-PIs",
-   "what": "Award 2614749 lists exactly four co-PIs: Mohammad Heidari Kapourchali, Subhabrata Dev, Masoumeh Heidari Kapourchali, Tyler C Brown. The last carries a uwyo.edu address.",
-   "verbatim_source": "coPDPI: [\"Mohammad Heidari Kapourchali mhkapourchali@alaska.edu\", \"Subhabrata Dev sdev@alaska.edu\", \"Masoumeh Heidari Kapourchali mheidari2@alaska.edu\", \"Tyler C Brown tbrown46@uwyo.edu\"]",
-   "source_url": "https://api.nsf.gov/services/v1/awards/2614749.json",
-   "requires": [
-    "name all four or none, never a subset",
-    "do not caption any of them with an institution: one UAF centre page gives Dev a UAA appointment, so affiliations are unsafe"
-   ]
-  },
-  {
-   "id": "c6",
-   "spoken": "about six million dollars in all",
-   "on_screen": "$5,998,412 TOTAL",
-   "what": "The three linked awards sum to $5,998,412: UAA $3,824,575, Montana Technological University $1,260,800, UAF $913,037. Three separate keyword searches of the NSF API each returned totalCount 3, so no fourth award exists under this title.",
-   "verbatim_source": "metadata: {\"offset\": 0, \"rpp\": 25, \"totalCount\": 3} returning ids 2614749, 2614750, 2614751 only",
-   "source_url": "https://api.nsf.gov/services/v1/awards.json?keyword=%22Transformative+Bioprocessing%22",
-   "requires": [
-    "never a flat $6 million, which overstates by $1,588. About six million, or the exact figure."
-   ],
-   "contract": {
-    "attribution_on_screen": "THREE LINKED NSF AWARDS"
-   }
-  },
-  {
-   "id": "c7",
-   "spoken": "Alaska holds seventy nine percent of it",
-   "on_screen": "AK $4,737,612 OF $5,998,412",
-   "what": "Alaska institutions hold $4,737,612 of $5,998,412, which is 79.0 percent. UAA alone holds 63.8 percent. UAF holds the SMALLEST share of the three at $913,037, less than Montana Technological University's.",
-   "verbatim_source": "awardeeStateCode: \"AK\" on 2614749 (estimatedTotalAmt \"3824575\") and 2614751 (estimatedTotalAmt \"913037\")",
-   "source_url": "https://api.nsf.gov/services/v1/awards.json?keyword=%22Transformative+Bioprocessing%22",
-   "requires": [
-    "the percentage is OUR arithmetic on two verified NSF figures, not an NSF figure",
-    "do not frame this as a Fairbanks story"
-   ]
-  },
-  {
-   "id": "c8",
-   "spoken": "Wyoming is a partner and gets none of the money",
-   "on_screen": "WYOMING: $0 AWARDED",
-   "what": "The abstract names the University of Wyoming as a full partner and the broader impacts include a Tri-State Field Course, yet no Wyoming institution holds an award under this title. Wyoming's presence is one co-PI on the UAA award.",
-   "verbatim_source": "\"a use-inspired research initiative led by the University of Alaska Anchorage, in partnership with the University of Alaska Fairbanks, Montana Technological University, and the University of Wyoming\"",
-   "source_url": "https://api.nsf.gov/services/v1/awards/2614749.json",
-   "requires": [
-    "NEVER say three states share the money. Three states are named, two hold awards.",
-    "do not put the word subaward on screen, the record does not say that"
-   ]
-  },
-  {
-   "id": "c9",
-   "spoken": "reinforcement learning controllers, inside a digital twin, wired to a microgrid simulator",
-   "on_screen": "REINFORCEMENT-LEARNING CONTROLLERS",
-   "what": "NSF's own abstract, verbatim, on what the AI actually does",
-   "verbatim_source": "\"Organized into three data-coupled thrusts, the methodology utilizes a predictive Virtual Assay to screen feedstocks, applies reinforcement-learning controllers within a bioprocess digital twin integrated with microgrid simulators, and validates bio-metallurgical purification pathways.\"",
-   "source_url": "https://api.nsf.gov/services/v1/awards/2614749.json",
-   "requires": [
-    "the microgrid clause MUST survive to screen, it is the Alaska energy hook and the first brief threw it away",
-    "singular 'a predictive Virtual Assay', never plural assays",
-    "'three data-coupled thrusts', never 'three components'",
-    "the AI does NOT design the organism or edit genes and the film may not imply it"
-   ],
-   "contract": {
-    "attribution_on_screen": "NSF ABSTRACT, ALL THREE THRUSTS"
-   }
-  },
-  {
-   "id": "c10",
-   "spoken": "a virtual pilot plant",
-   "on_screen": "VIRTUAL PILOT PLANT",
-   "what": "The pilot plant named in the project is a simulation. Nothing in the record describes a physical pilot plant being built.",
-   "verbatim_source": "\"This use-inspired project establishes a Smart Bio-Refinery framework and Virtual Pilot Plant to transform microbial rare earth element (REE) recovery from domestic coal refuse and ash into a predictive, energy-constrained system.\"",
-   "source_url": "https://api.nsf.gov/services/v1/awards/2614749.json",
-   "requires": [
-    "any industrial-plant imagery must read as a simulation or a concept, never as a working facility"
-   ]
-  },
-  {
-   "id": "c11",
-   "spoken": "Shewanella oneidensis",
-   "on_screen": "SHEWANELLA ONEIDENSIS",
-   "what": "The microbe the project evaluates. It is a dissimilatory metal-ion-reducing bacterium, meaning it respires iron and manganese instead of oxygen. Rare earths do NOT get eaten or breathed: they BIND to the outside of the cell, which is biosorption.",
-   "verbatim_source": "NSF: \"An iterative closed-loop framework evaluates Shewanella oneidensis extraction performance against techno-economic and life-cycle performance metrics.\" Genome paper title: \"Genome sequence of the dissimilatory metal ion-reducing bacterium Shewanella oneidensis\". Biosorption paper: \"Biosorption, where molecules adsorb to the surface of biological materials, offers a sustainable alternative to environmentally harmful solvent extractions currently used for separation of rare earth elements (REE).\"",
-   "source_url": "https://api.nsf.gov/services/v1/awards/2614749.json",
-   "source_url_2": "https://pubmed.ncbi.nlm.nih.gov/37749198/",
-   "source_url_3": "https://pubmed.ncbi.nlm.nih.gov/12368813/",
-   "requires": [
-    "HARD CUT on eats, digests, consumes, feeds on, or breathes rare earths. The verified verbs are binds, sticks to, latches onto, adsorbs.",
-    "the NSF record never uses the word bacterium, so that descriptor is sourced to the genome paper, not to NSF"
-   ]
-  },
-  {
-   "id": "c12",
-   "spoken": "coal refuse and ash",
-   "on_screen": "COAL REFUSE AND ASH",
-   "what": "The feedstock, named as domestic. The abstract names no state, no mine, no basin and no power plant as its source.",
-   "verbatim_source": "\"microbial rare earth element (REE) recovery from domestic coal refuse and ash\"; and in the plain-language paragraph, \"abundant domestic supplies locked within coal mining waste\"",
-   "source_url": "https://api.nsf.gov/services/v1/awards/2614749.json",
-   "requires": [
-    "HARD CUT on any implication that the feedstock is Alaskan. No Usibelli, no Healy, no Alaska ash pond, no map arrow from an Alaska mine.",
-    "equally, no Appalachian framing: no Appalachian partner is on the award and Appalachia is named nowhere"
-   ]
-  },
-  {
-   "id": "c13",
-   "spoken": "Alaska, Montana and Wyoming",
-   "on_screen": "EPSCoR STATES: AK / MT / WY",
-   "what": "The abstract's own geography for the project",
-   "verbatim_source": "\"Furthermore, the initiative will strengthen research infrastructure and provide industry-aligned training to build a highly skilled technology workforce across these resource-rich EPSCoR states of Alaska, Montana, and Wyoming.\"",
-   "source_url": "https://api.nsf.gov/services/v1/awards/2614749.json",
-   "requires": []
-  },
-  {
-   "id": "c14",
-   "spoken": "the program exists for states that don't usually win this money",
-   "on_screen": "EPSCoR",
-   "what": "NSF EPSCoR's stated mission, and Alaska is a named EPSCoR jurisdiction",
-   "verbatim_source": "\"The U.S. National Science Foundation EPSCoR program pursues a mission to enhance the research competitiveness of targeted jurisdictions (state, territory or commonwealth) by strengthening science, technology, engineering and mathematics (STEM) capacity and capability through a diverse portfolio of investments from talent development to local infrastructure.\"",
-   "source_url": "https://www.nsf.gov/funding/initiatives/epscor",
-   "requires": []
-  },
-  {
-   "id": "c15",
-   "spoken": "NSF files it as an artificial intelligence award",
-   "on_screen": "NSF PROGRAM TAG: ARTIFICIAL INTELLIGENCE (AI)",
-   "what": "NSF's own metadata on all three records tags the award AI, which is a primary source calling it AI rather than an inference from the title",
-   "verbatim_source": "program: \"Artificial Intelligence (AI), Critical Minerals & Materials, Biotechnology, EXP PROG TO STIM COMP RES\"",
-   "source_url": "https://api.nsf.gov/services/v1/awards/2614749.json",
-   "requires": []
-  },
-  {
-   "id": "c16",
-   "spoken": "nothing like this runs at commercial scale anywhere",
-   "on_screen": "NO COMMERCIAL SCALE ANYWHERE",
-   "what": "The fair counter-point, and the film's honest limit. The flagship Shewanella rare-earth paper calls itself a broad exploratory study and is a genome-wide knockout screen in solution.",
-   "verbatim_source": "\"To identify targets for genomic improvement we screened 3,373 mutants from the whole genome knockout collection of the known REE-biosorbing microorganism Shewanella oneidensis MR-1.\" and \"This broad exploratory study begins to elucidate how genetics affect REE-biosorption by S. oneidensis\"",
-   "source_url": "https://pubmed.ncbi.nlm.nih.gov/37749198/",
-   "requires": [
-    "phrase as no commercial scale, NEVER as nothing has ever left the lab: one 2025 paper reportedly describes field-scale biofilm work and could not be read verbatim",
-    "no first, no breakthrough, no proven"
-   ]
-  },
-  {
-   "id": "c17",
-   "spoken": "the research on this is small",
-   "on_screen": "4 PAPERS INDEXED",
-   "what": "PubMed indexes four records pairing Shewanella oneidensis with rare earths, of which one is squarely about REE binding by this organism",
-   "verbatim_source": "field: \"count\": \"4\" with idlist 40961666, 38727702, 37749198, 20952651",
-   "source_url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=Shewanella+oneidensis+AND+(rare+earth)&retmax=20&retmode=json",
-   "requires": [
-    "say PubMed-indexed, not the whole literature",
-    "labelled on screen as of 2026-08-09"
-   ],
-   "contract": {
-    "attribution_on_screen": "PUBMED, AS OF 2026-08-09"
-   }
-  },
-  {
-   "id": "c18",
-   "spoken": "the country leans on other countries for these metals",
-   "on_screen": "\"RELIES HEAVILY ON FOREIGN SOURCES\"",
-   "what": "The dependence framing, verbatim, with NO percentage",
-   "verbatim_source": "NSF: \"The U.S. relies heavily on foreign sources for rare earth elements (REEs) crucial to energy technologies, advanced manufacturing, and national defense, despite possessing abundant domestic supplies locked within coal mining waste.\"",
-   "source_url": "https://api.nsf.gov/services/v1/awards/2614749.json",
-   "requires": [
-    "HARD CUT on any import-dependence percentage. USGS Mineral Commodity Summaries returned 403 this run and no figure was verified.",
-    "HARD CUT on any ppm figure for rare earths in coal ash. The only concentration figure read was 50 to 300 micrograms per litre in LIQUID mining waste streams, a different quantity in different units."
-   ]
-  },
-  {
-   "id": "c19",
-   "spoken": "sixteen rare earths are on the country's critical minerals list",
-   "on_screen": "16 RARE EARTHS ON THE 2025 LIST",
-   "what": "The Final 2025 List of Critical Minerals names individual elements rather than one grouped rare-earths entry. Sixteen of the 60 are rare earths: cerium, dysprosium, erbium, europium, gadolinium, holmium, lanthanum, lutetium, neodymium, praseodymium, samarium, scandium, terbium, thulium, ytterbium, yttrium.",
-   "verbatim_source": "list as published: \"aluminum, antimony, arsenic, barite, beryllium, bismuth, boron, cerium, cesium, chromium, cobalt, copper, dysprosium, erbium, europium, fluorspar, gadolinium, gallium, germanium, graphite, hafnium, holmium, indium, iridium, lanthanum, lead, lithium, lutetium, magnesium, manganese, metallurgical coal, neodymium, nickel, niobium, palladium, phosphate, platinum, potash, praseodymium, rhenium, rhodium, rubidium, ruthenium, samarium, scandium, silicon, silver, tantalum, tellurium, terbium, thulium, tin, titanium, tungsten, uranium, vanadium, ytterbium, yttrium, zinc, and zirconium\"",
-   "source_url": "https://www.federalregister.gov/documents/full_text/text/2025/11/07/2025-19813.txt",
-   "requires": [
-    "the count of 16 is OUR arithmetic on the published list",
-    "never say 'rare earth elements is one of the 60 entries', it is not"
-   ]
-  },
-  {
-   "id": "c20",
-   "spoken": "nobody has written about it",
-   "on_screen": "NO COVERAGE FOUND, 2026-08-09",
-   "what": "No story on this award was found in any university newsroom or news index reachable on August 9th, 2026. uaf.edu/news ran to August 3rd with nothing; uaa.alaska.edu/news had nothing; the UA EPSCoR news list tops out at an August 8th item titled Test; three Google News queries returned one unrelated market-research headline.",
-   "verbatim_source": "labelled non-quotation: a coverage sweep of 14 surfaces on 2026-08-09, of which UAA's Green and Gold research newsroom returned HTTP 503 twice and was never actually checked",
-   "source_url": "https://news.google.com/rss/search?q=%22Transformative+Bioprocessing%22",
-   "requires": [
-    "HARD CUT on the words exclusive, scoop, or unreported as flat assertions. The supportable phrasing is NO COVERAGE FOUND, and the 503 on Green and Gold is the specific hole.",
-    "the on-screen string must carry the date"
-   ],
-   "contract_note": "no machine contract: this film never draws or speaks the no-coverage claim, and on_screen_verbatim cannot tell an unused claim from a mis-drawn one"
-  },
-  {
-   "id": "c21",
-   "spoken": null,
-   "on_screen": null,
-   "what": "CONFLATION HAZARD, recorded so it can be avoided rather than used. On July 14th, 2026 UAF announced a separate and much larger NSF Critical Mineral Accelerator Engine, reported by UAF at $15 million for two years and up to $160 million over ten, led by Lee Ann Munk. Different program, different lead campus, different PI, different order of magnitude.",
-   "verbatim_source": "\"Our NSF Engine is built on the simple but ambitious idea that Alaska can lead the nation not only with the abundance of its critical mineral resources, but also in how we innovate, develop and deploy the technologies needed to produce them responsibly.\"",
-   "source_url": "https://www.uaf.edu/news/national-science-foundation-funds-uaf-led-critical-minerals-coalition.php",
-   "requires": [
-    "ANY sentence combining this award's six million with that award's sums is a factual error",
-    "if the Engine is mentioned at all it must be labelled according to UAF, since its figures were verified only against the university newsroom"
-   ]
-  },
-  {
-   "id": "c22",
-   "spoken": "Alaska has one operating coal mine",
-   "on_screen": "1 OPERATING COAL MINE",
-   "what": "Usibelli is Alaska's only operating coal mine. Added to the safe set after the angle room, because the geography beat is load-bearing and this is a verified primary-source fact.",
-   "verbatim_source": "\"Alaska's only operating surface coal mine, the Usibelli mine, supplies about 1.2 million tons of coal per year.\"",
-   "source_url": "https://dggs.alaska.gov/energy/coal.html",
-   "requires": [
-    "NO TONNAGE ON SCREEN OR IN THE VO. The state agency says about 1.2 million tons a year and the company's own site says approximately one million, and an unresolved conflict is not a number this film gets to use.",
-    "this establishes only that Alaska's coal base is small. It must NOT be used to imply Usibelli refuse is the feedstock, which claim c12 forbids."
-   ],
-   "contract": {
-    "attribution_on_screen": "ALASKA, PER DGGS"
-   }
-  }
- ],
- "hard_cuts": [
-  "eats / digests / consumes / feeds on / breathes rare earths \u2014 it BINDS them",
-  "any Alaska feedstock: Usibelli, Healy, an Alaska ash pond, an arrow from an Alaska mine to a tank",
-  "any Appalachian feedstock, equally unsupported",
-  "any US import-dependence percentage for rare earths",
-  "any ppm figure for rare earths in coal ash",
-  "three states sharing the money \u2014 Wyoming receives $0",
-  "Srijan Aggarwal on award 2614749 \u2014 he is PI on UAF's 2614751, and is NOT a co-PI on the UAA award",
-  "Montana Tech or Montana State \u2014 the legal name is Montana Technological University",
-  "present tense on anything: the award period begins September 1st, 2026",
-  "the University Recharge Facility, micro-credentials, early career leadership council or Tri-State Field Course as existing things \u2014 all are prospective",
-  "exclusive / scoop / unreported / first / breakthrough / proven",
-  "a flat $6 million with no hedge",
-  "any figure cited to nsf.gov/awardsearch, which renders an empty template \u2014 cite api.nsf.gov",
-  "any Alaska coal tonnage figure: the state agency and the company disagree (about 1.2 million tons vs approximately one million)"
- ],
- "the_honest_limits": {
-  "alaska_link": "Alaska is leading the science, not supplying the dirt. The lead campus, the PI and 79 percent of the money are Alaskan. The feedstock is named only as domestic, and the abstract's own three-state geography points the coal waste at Montana and Wyoming.",
-  "maturity": "No commercial-scale microbial rare earth recovery exists anywhere. The pilot plant is virtual. The work starts September 1st, 2026.",
-  "what_the_ai_is": "Software that predicts which waste is worth testing, runs reinforcement-learning controllers inside a digital twin of the process wired to a microgrid simulator, and scores the result against cost and life-cycle metrics. It does not design the organism and it never touches a tank."
- }
+  "run_date": "2026-08-12",
+  "story": "One Federal Register notice consolidated three things at once, and the objection on the record against the AI piece is the same objection as against the rest of it.",
+  "rule": "A claim ships only if a primary government page or the funder's own page was personally fetched and the value read on it. Trade press alone does not carry a claim. Arithmetic on two verified fields is labelled derived and never presented as a published figure. A 403 is UNVERIFIED and the claim is CUT, not softened.",
+  "claims": [
+    {
+      "id": "c1",
+      "status": "verified",
+      "on_screen": "91 FR 47241  \u00b7  JULY 28TH 2026  \u00b7  NOTICE OF FINAL ISSUANCE",
+      "spoken": "Ninety one Federal Register forty seven thousand two hundred forty one, published July twenty eighth.",
+      "source": "https://www.federalregister.gov/api/v1/documents/2026-15150.json",
+      "note": "Federal Register API record",
+      "verbatim_source": "field: citation = \"91 FR 47241\", publication_date = \"2026-07-28\", action = \"Notice of Final Issuance.\""
+    },
+    {
+      "id": "c2",
+      "status": "verified",
+      "on_screen": "32 SUBMISSIONS OF PUBLIC COMMENT",
+      "spoken": "Thirty two submissions of public comment.",
+      "source": "https://www.federalregister.gov/documents/full_text/text/2026/07/28/2026-15150.txt",
+      "note": "Federal Register full text",
+      "verbatim_source": "\"ANA received and considered comments from 32 submissions.\""
+    },
+    {
+      "id": "c3",
+      "status": "verified",
+      "on_screen": "ANA CONFIRMS THAT SEDS HAS EVOLVED AND EAGLE SIGNIFIES THIS EVOLVEMENT",
+      "spoken": "The agency's own words. A N A confirms that SEDS has evolved, and EAGLE signifies this evolvement.",
+      "source": "https://www.federalregister.gov/documents/full_text/text/2026/07/28/2026-15150.txt",
+      "note": "Federal Register full text, ANA response voice",
+      "verbatim_source": "\"ANA confirms that SEDS has evolved, and EAGLE signifies this evolvement.\"",
+      "requires": "ANA never uses the word 'replace' in its own response voice. Do not put it in the agency's mouth."
+    },
+    {
+      "id": "c4",
+      "status": "verified",
+      "on_screen": "THE INSTITUTE WILL COMPLEMENT NOT REPLACE BROADER SOCIAL AND ECONOMIC DEVELOPMENT EFFORTS",
+      "spoken": "The Institute will complement, not replace, broader social and economic development efforts.",
+      "source": "https://www.federalregister.gov/documents/full_text/text/2026/07/28/2026-15150.txt",
+      "note": "Federal Register full text, on the AI3 Action Institute",
+      "verbatim_source": "\"The Institute will complement--not replace--broader social and economic development efforts.\"",
+      "requires": "THIS KILLS THE FRAMING THAT AI3 REPLACED SEDS. EAGLE is the successor. AI3 is an additional award."
+    },
+    {
+      "id": "c5",
+      "status": "verified",
+      "on_screen": "COMMENTERS RAISED  \u00b7  OPPORTUNITY COSTS  \u00b7  INDIGENOUS DATA SOVEREIGNTY  \u00b7  CENTRALIZED PROGRAM DESIGN  \u00b7  TRIBAL READINESS",
+      "spoken": "Commenters raised concerns about opportunity costs, Indigenous data sovereignty, centralized program design, and Tribal readiness.",
+      "source": "https://www.federalregister.gov/documents/full_text/text/2026/07/28/2026-15150.txt",
+      "note": "Federal Register full text, comments on the AI3 Action Institute",
+      "verbatim_source": "\"some commenters raised concerns regarding \\\"opportunity costs, Indigenous data sovereignty, centralized program design, Tribal readiness\\\"\"",
+      "requires": "Attribute to commenters. The notice names no commenter, so no organization may be named."
+    },
+    {
+      "id": "c6",
+      "status": "verified",
+      "on_screen": "AI3 ACTION INSTITUTE  \u00b7  ONE AWARD  \u00b7  FLOOR 2,500,000  \u00b7  CLOSES AUGUST 27TH 2026",
+      "spoken": "The A I three Action Institute. One award, nationwide, closing August twenty seventh.",
+      "source": "https://simpler.grants.gov/opportunity/8b106d7a-a5ec-4226-b3d4-90bc8c3eade1",
+      "note": "agency notice of funding opportunity",
+      "verbatim_source": "field: Award Floor = \"$2,500,000\", Award Ceiling = \"$3,500,000\", Total Program Funding = \"$3,500,000\", Expected Number of Awards = \"1\", Close Date = \"August 27, 2026\". The ceiling equalling the whole program funding is the arithmetic confirmation that this is a single national award."
+    },
+    {
+      "id": "c7",
+      "status": "verified",
+      "on_screen": "EAGLE  \u00b7  24 MILLION DOLLARS  \u00b7  31 AWARDS  \u00b7  COST SHARING REQUIRED",
+      "spoken": "EAGLE. Twenty four million dollars. Thirty one awards. Cost sharing required.",
+      "source": "https://simpler.grants.gov/opportunity/bb965470-bd8d-4529-b30b-39efe6f81147",
+      "note": "agency notice of funding opportunity",
+      "verbatim_source": "field: Total Program Funding = \"$24,000,000\", Expected Number of Awards = \"31\", Award Floor = \"$300,000\", Award Ceiling = \"$1,000,000\", Cost Sharing/Matching = \"Yes\"",
+      "requires": "Do NOT say '24 million over three years'. The page does not attach the three year qualifier to that figure."
+    },
+    {
+      "id": "c8",
+      "status": "verified",
+      "on_screen": "SEDS ALASKA  \u00b7  FY2025  \u00b7  2,000,000  \u00b7  3 AWARDS  \u00b7  FLOOR 100,000  \u00b7  CEILING 900,000",
+      "spoken": "SEDS Alaska. Fiscal year twenty twenty five. Two million dollars, three awards. It closed July twenty second, twenty twenty five.",
+      "source": "https://simpler.grants.gov/opportunity/fd13f1bb-9657-495a-a053-e36348181662",
+      "note": "agency notice of funding opportunity, the last SEDS-Alaska competition",
+      "verbatim_source": "field: Opportunity Title = \"Social and Economic Development Strategies for Alaska-SEDS-AK\", Total Program Funding = \"$2,000,000\", Expected Number of Awards = \"3\", Award Floor = \"$100,000\", Award Ceiling = \"$900,000\", Close Date = \"July 22, 2025\""
+    },
+    {
+      "id": "c9",
+      "status": "verified",
+      "on_screen": "FOR FY2026 THERE ARE THREE ANA OPPORTUNITIES AND NONE IS ALASKA SPECIFIC",
+      "spoken": "For fiscal year twenty twenty six there are three A N A opportunities, and none of them is Alaska specific.",
+      "source": "https://simpler.grants.gov/search?query=Administration%20for%20Native%20Americans",
+      "note": "grants.gov search performed 2026-08-12, corroborated by the Federal Register naming the same three",
+      "verbatim_source": "LABELLED NON-QUOTATION, this is a search finding: grants.gov returns exactly three FY2026 ANA opportunities, AI3 (NAI-0035), EAGLE (NEG-0120) and NCNTTA (NTA-0038). The Federal Register notice names the same three."
+    },
+    {
+      "id": "c10",
+      "status": "verified",
+      "on_screen": "COMMENTERS NAMED THE POTENTIAL LOSS OF AN ALASKA SPECIFIC FUNDING OPPORTUNITY",
+      "spoken": "Commenters named the potential loss of an Alaska specific funding opportunity, and the possibility that Alaska Tribes could face new barriers competing under a new notice.",
+      "source": "https://www.federalregister.gov/documents/full_text/text/2026/07/28/2026-15150.txt",
+      "note": "Federal Register full text, ANA's summary of comments",
+      "verbatim_source": "\"Multiple commenters raised concerns regarding the replacement of SEDS-AK with EAGLE, including the potential loss of an Alaska-specific funding opportunity and the possibility that Alaska Tribes could face new barriers in competing for funding under a new NOFO.\""
+    },
+    {
+      "id": "c11",
+      "status": "verified",
+      "on_screen": "THE EAGLE IDEAS PROJECT AREA CARRIES FORWARD THE SPIRIT OF ALASKAN SELF DETERMINATION",
+      "spoken": "The EAGLE IDEAS project area carries forward the spirit of Alaskan self determination.",
+      "source": "https://www.federalregister.gov/documents/full_text/text/2026/07/28/2026-15150.txt",
+      "note": "Federal Register full text, ANA's answer to the Alaska objection",
+      "verbatim_source": "\"The EAGLE IDEAS project area carries forward the spirit of Alaskan self-determination.\""
+    },
+    {
+      "id": "c12",
+      "status": "verified",
+      "on_screen": "FOUR ASSISTANCE CONTRACTS CONSOLIDATED INTO ONE",
+      "spoken": "Four training and technical assistance contracts consolidated into one cooperative agreement.",
+      "source": "https://www.federalregister.gov/documents/full_text/text/2026/07/28/2026-15150.txt",
+      "note": "Federal Register full text",
+      "verbatim_source": "\"The consolidation of ANA's four TTA contracts into a single cooperative agreement will streamline operations and strengthen program support.\""
+    },
+    {
+      "id": "c13",
+      "status": "verified",
+      "on_screen": "A COMMENTER SAID IT EQUATES TO A REDUCTION OF MORE THAN 70 PERCENT IN REGIONAL STAFFING CAPACITY",
+      "spoken": "One commenter said it equates to a reduction of more than seventy percent in regional staffing capacity.",
+      "source": "https://www.federalregister.gov/documents/full_text/text/2026/07/28/2026-15150.txt",
+      "note": "Federal Register full text, a comment quoted by ANA",
+      "verbatim_source": "\"the proposed ceiling level of $3.1M over three years for a single NCNTTA cooperative agreement represents a substantial consolidation of resources and equates to a reduction of more than 70 percent in regional staffing capacity.\"",
+      "requires": "MUST be paired with c14. The film may not air one side of this."
+    },
+    {
+      "id": "c14",
+      "status": "verified",
+      "on_screen": "THE AGENCY ANSWERED 3.1 MILLION DOLLARS PER FISCAL YEAR",
+      "spoken": "The agency answered that the funding level is three point one million per fiscal year.",
+      "source": "https://www.federalregister.gov/documents/full_text/text/2026/07/28/2026-15150.txt",
+      "note": "Federal Register full text, ANA response",
+      "verbatim_source": "\"The funding level, which is 3.1 million per fiscal year, is intended to support a coordinated national technical assistance approach\"",
+      "requires": "The commenter says over three years, the agency says per fiscal year. THE RECORD DOES NOT RESOLVE IT. The film must show both and say it is unresolved."
+    },
+    {
+      "id": "c15",
+      "status": "verified",
+      "on_screen": "NSF 2433241  \u00b7  RAISE  \u00b7  380000 DOLLARS  \u00b7  UAA",
+      "spoken": "National Science Foundation award two four three three two four one. Rural A I Solutions and Engagement. Three hundred eighty thousand dollars, to the University of Alaska Anchorage.",
+      "source": "https://api.nsf.gov/services/v1/awards/2433241.json",
+      "note": "NSF award API record, fetched by the orchestrator",
+      "verbatim_source": "field: awardee = \"UNIVERSITY OF ALASKA ANCHORAGE\", estimatedTotalAmt = \"380000\", expDate = \"07/31/2027\", title = \"Rural AI Solutions and Engagement (RAISE)\""
+    },
+    {
+      "id": "c16",
+      "status": "verified",
+      "on_screen": "TWELVE ALASKA ORGANIZATIONS ASKED  \u00b7  FOUR WERE FUNDED",
+      "spoken": "Twelve Alaska organizations asked. Four were funded.",
+      "source": "https://coeng.uaa.alaska.edu/AI/raise-mini-grant-community-statement-of-need/",
+      "note": "funder's own page; the four funded projects are listed on the awardee page",
+      "verbatim_source": "LABELLED NON-QUOTATION, this is a count off the funder's own two pages: the statement-of-need page lists the submitted community proposals and the awardee page names four funded projects.",
+      "requires": "If the twelve cannot be recounted item by item at build time, drop the twelve and say only that four were funded."
+    },
+    {
+      "id": "c17",
+      "status": "verified",
+      "on_screen": "NOME JOINT UTILITIES SYSTEM  \u00b7  PREDICTING THERMAL CONDUCTIVITY OF WARMING PERMAFROST",
+      "spoken": "Nome Joint Utilities System asked about predicting the thermal conductivity of warming permafrost.",
+      "source": "https://coeng.uaa.alaska.edu/AI/raise-mini-grant-awardee-announcement-25-26/",
+      "note": "funder's own awardee page, fetched by the orchestrator",
+      "verbatim_source": "\"Predicting Thermal Conductivity of Warming Permafrost for Hazards Estimation using Machine Learning\" paired on the page with \"Community Partner: Nome Joint Utilities System\""
+    },
+    {
+      "id": "c18",
+      "status": "verified",
+      "on_screen": "VILLAGE OF ALAKANUK TRIBE  \u00b7  AI FOR RURAL COMMUNITY TRANSFORMATION AND INFRASTRUCTURE COORDINATION",
+      "spoken": "The Village of Alakanuk Tribe asked for A I for rural community transformation and infrastructure coordination.",
+      "source": "https://coeng.uaa.alaska.edu/AI/raise-mini-grant-awardee-announcement-25-26/",
+      "note": "funder's own awardee page, fetched by the orchestrator",
+      "verbatim_source": "\"ARCTIC: AI for Rural Community Transformation and Infrastructure Coordination\" paired on the page with \"Community Partner: Village of Alakanuk Tribe\""
+    },
+    {
+      "id": "c19",
+      "status": "verified",
+      "on_screen": "ANY ALASKAN ORGANIZATION OUTSIDE OF THE UNIVERSITY",
+      "spoken": "Eligibility was any Alaskan organization outside of the university.",
+      "source": "https://coeng.uaa.alaska.edu/AI/raise-mini-grants-community/",
+      "note": "funder's own program page",
+      "verbatim_source": "\"any Alaskan organization outside of the university, including large or small businesses, Alaska native organizations, K-12 education, government entities, non-profits, or UA research center\""
+    },
+    {
+      "id": "c20",
+      "status": "verified",
+      "on_screen": "AUGUST 7TH 2026  \u00b7  CONSORTIUM LIBRARY ROOM 307",
+      "spoken": "August seventh, twenty twenty six, in Consortium Library room three oh seven.",
+      "source": "https://coeng.uaa.alaska.edu/AI/ai-solutions-consortium-2026-workshop/",
+      "note": "funder's own workshop page, fetched by the orchestrator",
+      "verbatim_source": "field: \"August 7, 2026, 10:15 AM - 1:30 PM\", \"Library 307\", \"UAA/APU Consortium Library\""
+    },
+    {
+      "id": "c21",
+      "status": "verified",
+      "on_screen": "229 FEDERALLY RECOGNIZED TRIBES IN ALASKA",
+      "spoken": "Alaska has two hundred twenty nine federally recognized tribes.",
+      "source": "https://www.bia.gov/regional-offices/alaska",
+      "note": "BIA Alaska Regional Office, which STATES the number rather than requiring a count",
+      "verbatim_source": "\"More than 180,000 Tribal members make up the 229 Federally Recognized Tribes under the jurisdiction of the Alaska Regional Office\"",
+      "requires": "Cite the BIA page. NEVER derive this by counting the Federal Register list, which is not numbered; a first fetch fabricated a count of it during validation."
+    },
+    {
+      "id": "c22",
+      "status": "verified",
+      "on_screen": "ALASKA NATIVE COMMUNITIES WILL REMAIN ELIGIBLE ACROSS EAGLE PROJECT AREAS",
+      "spoken": "Alaska Native communities stay eligible.",
+      "source": "https://www.federalregister.gov/documents/full_text/text/2026/07/28/2026-15150.txt",
+      "note": "Federal Register full text, re-fetched 2026-08-12 specifically to source this line after panel round 2 found it carried no claim id. The film's even-handedness card rested on nothing; it rests on this now.",
+      "verbatim_source": "\"Alaska Native communities will remain eligible across EAGLE project areas.\"",
+      "requires": "This sources ELIGIBILITY and nothing else. It does not license any claim about who can realistically LEAD or WIN an award, which is the inference the round-2 script made and which is now cut."
+    },
+    {
+      "id": "c23",
+      "status": "KILLED",
+      "on_screen": "(cut) WHAT IS IT PAID TO PRODUCE / A LIST OF WHERE AI COULD HELP",
+      "spoken": "(cut) So what is the institute paid to produce? A list.",
+      "source": "https://www.federalregister.gov/documents/full_text/text/2026/07/28/2026-15150.txt",
+      "note": "KILLED 2026-08-12 after panel round 2. This was the pivot the whole back half of the film turned on and it carried no claim id. The Federal Register full text was re-fetched and asked directly for any statement of the AI3 Institute's deliverable, output, roadmap, assessment, inventory, report or scope of work. ABSENT. The notice states only a purpose, supporting informed community decision-making, and that the Institute will address ethical, practical and governance considerations. Nothing says it produces a list. The characterization was the run's own and it is cut, not softened.",
+      "verbatim_source": "NOT FOUND. The document contains no statement of the Institute's deliverable.",
+      "requires": "Never restore this line without a primary page that states the deliverable in its own words."
+    },
+    {
+      "id": "c24",
+      "status": "KILLED",
+      "on_screen": "(cut) 8 STILL HOLDING A LIST NOBODY PUBLISHED",
+      "spoken": "(cut) Eight still hold a list nobody published.",
+      "source": "https://coeng.uaa.alaska.edu/AI/raise-mini-grant-community-statement-of-need/",
+      "note": "KILLED 2026-08-12 after panel round 2, and it is contradicted by c16's own verbatim note, which records that the statement-of-need page LISTS the submitted community proposals. If that page lists them, the eight asks are published and the line is simply false. It was also the film's primary open-loop payoff, planted at 14.3s and paid at 102.12s, which is exactly the kind of line that gets written for its shape rather than its truth. Replaced with the fact c16 does carry: eight went unfunded.",
+      "verbatim_source": "Contradicted by c16: \"the statement-of-need page lists the submitted community proposals\".",
+      "requires": "The unfunded eight are UNFUNDED, not unpublished. Do not conflate the two again."
+    },
+    {
+      "id": "c25",
+      "status": "KILLED",
+      "on_screen": "(cut) AI COMES WITH A VENDOR CONTRACT",
+      "spoken": "(cut) and A I comes with a vendor contract",
+      "source": "none",
+      "note": "KILLED 2026-08-12 after panel round 5. It carried no claim id and it was LOAD-BEARING: the film's entire steelman at 63.68s rested on it. That is the same failure mode that killed c23, a characterization the run made, delivered with the authority of the record. Nothing in the notice says an AI award comes with a vendor contract. The steelman is rebuilt on c12, which is ANA's own sentence about consolidating four TTA contracts into a single agreement.",
+      "verbatim_source": "NOT FOUND. No primary page states this.",
+      "requires": "Do not restore without a primary page that says it in its own words."
+    }
+  ],
+  "killed": [
+    {
+      "claim": "Any Alaska Federation of Natives quotation",
+      "why": "Sole source nativenewsonline.net returns HTTP 403, reproduced twice. The quote exists only as a search-engine snippet. The Federal Register names no commenter. NO AFN QUOTE MAY APPEAR."
+    },
+    {
+      "claim": "SEDS-Alaska ran for about 30 years",
+      "why": "No source. acf.gov/ana/programs/seds returns HTTP 403. The film may not state how long the program ran, not thirty years and not any other figure."
+    },
+    {
+      "claim": "The AI3 Action Institute replaced SEDS or SEDS-Alaska",
+      "why": "REFUTED BY THE PRIMARY DOCUMENT. ANA writes the Institute will 'complement--not replace--broader social and economic development efforts'. EAGLE is the successor. AI3 is an additional award."
+    },
+    {
+      "claim": "The AI3 project period in years",
+      "why": "Not stated on the grants.gov record. The three year period belongs to EAGLE only and may not be carried across."
+    },
+    {
+      "claim": "24 million dollars over three years",
+      "why": "The page does not attach the three year qualifier to the 24 million figure. State them as two separate facts."
+    },
+    {
+      "claim": "Any claim that a UAA mini-grant tool works",
+      "why": "No result, finding, accuracy figure or deployment is published for any of the four projects. No per-project dollar figure exists publicly either."
+    },
+    {
+      "claim": "Any assertion that an Alaskan has been denied a grant",
+      "why": "No AI3 award has been made and no EAGLE award is announced. Asserting harm already done would be false."
+    }
+  ],
+  "cultural_flags": [
+    "ANA never writes 'replaced' in its own response voice. It writes 'evolved' and 'transition'. Putting 'replace' in the agency's mouth misquotes a federal agency.",
+    "The Alaska-specific objection is ON THE RECORD as commenters' words, not the film's inference. Attribute it to commenters. The notice names none, so name no organization.",
+    "Indigenous data sovereignty was raised directly against the AI3 Institute. A film about an AI program for Native communities that omits that objection omits the load-bearing critique the record contains.",
+    "The AI3 eligibility pool is WIDER than tribes: Native CDFIs, Urban Indian Centers, Tribal Colleges, and Native Hawaiian and Pacific Islander serving agencies are all in it. One award against a field that broad.",
+    "Do not render Alaska Native villages as passive recipients. The eligibility text is a list of Alaska Native institutions with legal standing as applicants. What changed is the competition's shape, not their standing.",
+    "Federally recognized tribes, ANCSA village corporations, Alaska Native regional corporations, nonprofit tribal consortia and advocacy organizations are legally distinct and none speaks for the others.",
+    "NEVER draw any Alaska Native person, community, tribal government or the Village of Alakanuk Tribe as a characterized object with a face. Characterized-object treatment is reserved for the paperwork and the programs."
+  ],
+  "on_screen_numbers_are_illustrative_note": "Every figure on screen is quoted from a federal notice of funding opportunity, the Federal Register full text, or the NSF award record, and is current as of 2026-08-12. No figure is modelled, projected or estimated by this film."
 }

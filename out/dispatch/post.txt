@@ -1,17 +1,25 @@
-Alaska just won a rare earth award that contains no rare earths.
+A federal notice just tripled one grant's award floor and retired the Alaska-only program it belonged to.
 
-On August 5th the National Science Foundation obligated $5,998,412 across three linked awards. Most of it went to the University of Alaska Anchorage. The plan is to pull rare earths out of coal refuse and ash using a microbe called Shewanella oneidensis. The rare earths stick to the outside of the cell. Nothing gets digested.
+On July 28th the Administration for Native Americans retired SEDS Alaska. Two million dollars, three awards, and a floor of one hundred thousand. That's a sum one village administrator can actually run.
 
-Here is the part worth reading twice. Most of the described work is not biology. It is software. NSF's own abstract describes reinforcement-learning controllers inside a bioprocess digital twin integrated with microgrid simulators. The software never designs the microbe. It runs a copy of a tank on a power budget. And the pilot plant named in the project is a virtual one.
+The money didn't shrink. EAGLE, the successor, carries twenty four million dollars and thirty one awards. Alaska Native communities stay eligible. The agency said so in writing.
 
-Now take the hardest read of that. The same abstract names the University of Wyoming a full partner and Wyoming holds zero dollars. So this document hands Wyoming a role the money does not back. Run that on Alaska. The state has one operating coal mine and the abstract never says whose waste feeds this. Maybe leading just means hosting a payroll.
+EAGLE's floor is three hundred thousand. EAGLE is national. The smallest door tripled and the field went from Alaska to the whole country.
 
-That objection lands. Here is where it stops. NSF put the energy constraint in the core of the project rather than in the extras. Most of a plant is pumps, timing and power. That is the layer NSF's abstract puts a controller on. Nobody runs microbial rare earth recovery at commercial scale anywhere today. So the thing that gets built first is the method.
+That same notice built the AI3 Action Institute. One award. Nationwide. A floor of two and a half million dollars. Applications close August 27th.
 
-A method travels. Tonnage does not.
+The case for doing that is real. Alaska has two hundred twenty nine federally recognized tribes. The agency is folding four training and technical assistance contracts into a single cooperative agreement, which it says will streamline operations. One body doing that once is better than everyone doing it separately.
 
-Work starts September 1st and runs to 2030. By then the test is not whether Alaska mined a rare earth. It is whether the model got good enough that somebody else's plant would trust it.
+The agency asked for comment and got thirty two submissions. It printed their objections in its own notice. Opportunity costs. Indigenous data sovereignty. Centralized program design.
 
-What would make you trust a plant you had never seen run?
+The notice says the institute will complement, not replace, broader social and economic development efforts.
 
-#Alaska #AI #CriticalMinerals #Biotechnology #NSF
+Alaska already did the opposite. A three hundred eighty thousand dollar grant at the University of Alaska Anchorage asked any Alaskan organization to name its own problem. Twelve wrote one down. Nome Joint Utilities System asked about thermal conductivity in warming permafrost. The Village of Alakanuk Tribe asked about infrastructure coordination. Four were funded. Eight went unfunded.
+
+The institute isn't the mistake. Retiring the small Alaska door in the same notice is.
+
+If an Alaska village leads the winning bid when applications close on August 27th, I'm wrong, and I'd like to be.
+
+If somebody asked you to name the problem yourself, what would you put on the line?
+
+#Alaska #ArtificialIntelligence #TribalSovereignty #RuralAlaska #PublicPolicy

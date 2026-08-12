@@ -1,0 +1,1256 @@
+{
+  "date": "2026-08-12",
+  "title": "The Smallest Door",
+  "engine": "infographic-2.5d",
+  "derived_from": "scratch",
+  "total_seconds": 121.0,
+  "concept": "A federal notice tripled the smallest grant an Alaska applicant can win in this lane and made the field national, and put every AI dollar it created into one award no village can lead. What that award is [KILLED c23 - removed] is a list, and a much smaller Alaska grant already produced one.",
+  "angle": {
+    "run_date": "2026-08-12",
+    "title": "The Smallest Door",
+    "thesis": "The federal government did not cut Alaska Native funding. It raised the floor. The smallest award an Alaska applicant could win in this lane went from one hundred thousand dollars to two and a half million, and the field went from Alaska only to nationwide, and the thing that big new award is [KILLED c23 - removed] is a list that a much smaller grant in Anchorage already produced for free.",
+    "long_form": "On July 28th the Administration for Native Americans published a final notice retiring SEDS and SEDS Alaska. Its successor, EAGLE, is bigger: twenty four million dollars and thirty one awards against SEDS Alaska's two million and three. In the same notice ANA created the AI3 Action Institute, one award, nationwide, with a floor of two and a half million dollars, whose job is to identify responsible and practical opportunities to apply AI in Native communities. Nobody has been cut and nobody has been denied. What changed is the size of the smallest door. SEDS Alaska's floor was one hundred thousand dollars, which is a sum a village office can administer, and its field was Alaska. AI3's floor is two and a half million, and its field is every federally recognized tribe plus Native CDFIs, Urban Indian Centers, Tribal Colleges and Native Hawaiian and Pacific Islander serving agencies. Meanwhile a three hundred and eighty thousand dollar NSF grant to the University of Alaska Anchorage asked any Alaskan organization to name its own problem. Twelve wrote one down. Four were funded, among them Nome Joint Utilities System on predicting the thermal conductivity of warming permafrost, and the Village of Alakanuk Tribe on AI for rural community transformation and infrastructure coordination. That set of twelve is the deliverable AI3 is being [KILLED c23 - removed], and it already exists for Alaska.",
+    "valence": "curious and wary, unresolved, with a live deadline",
+    "valence_defense": "Alarm is unavailable on the facts. Nobody has been denied anything, no AI3 award has been made, no EAGLE award is announced, and the successor program carries more money and more awards than the program it succeeded. Celebration is unavailable too, because a bigger pot arranged as one national award is a different instrument, and the Alaska alternative has published no results at all. The honest posture is a structural observation and a deadline fifteen days out.",
+    "falsifiability": "FALSE if ANA posts an FY2026 Alaska specific competition, or if an EAGLE or IDEAS award floor lands at or below nine hundred thousand dollars with an open project definition, or if the AI3 award announced after August 27th 2026 goes to a Native led applicant that runs its own open call for community named problems. Any one of those and the thesis is wrong.",
+    "supporting_facts": [
+      "SEDS Alaska FY2025: two million dollars, three awards, floor one hundred thousand, ceiling nine hundred thousand, closed July 22nd 2025. For FY2026 grants.gov returns three ANA opportunities and none is Alaska specific.",
+      "AI3 Action Institute: one award, nationwide, floor two and a half million dollars, ceiling and total program funding both three and a half million, closes August 27th 2026.",
+      "NSF award 2433241 to UAA, three hundred and eighty thousand dollars. Its mini grant call was open to any Alaskan organization outside the university. Twelve asked, four were funded."
+    ],
+    "fair_counterpoint_that_gets_a_scene": "Consolidation is a rational answer to a real problem, and Act 3 gives it the widest, best lit scene in the film. Two hundred and twenty nine federally recognized tribes in Alaska, and five hundred and seventy five federally recognized entities nationwide, each separately evaluating the same vendors and each separately failing to negotiate data sovereignty terms, is a worse outcome than one body doing it once. Vendor leverage, shared governance language and a reusable sovereignty framework are exactly the goods a one hundred thousand dollar village award can never buy. EAGLE is also genuinely larger than what it succeeded. ANA ran a real process: a proposed notice on March 20th, a thirty day comment period, thirty two submissions, and it widened Welders to Elders past welding in response to comment. And ANA wrote that Alaska Native communities remain eligible across EAGLE project areas including IDEAS, a project area whose name is Indigenous Designs to Empower and Advance Self Determination.",
+    "how_it_narrows_honestly": "The film does not say the institute is a mistake, because it is not. It says the institute and the retirement of the small Alaska lane arrived in one package, and only the second of those is the problem. It grades design against design and says out loud that neither side has published a result, and that AI3 has no grantee at all until after August 27th.",
+    "the_lazy_angle_we_refuse": "Two, one on each side. We refuse the feds killed Alaska Native funding and swapped it for an AI buzzword, which is false: Alaska Native villages are explicitly eligible, the successor program is larger, and no application has been rejected. We refuse its mirror, a twenty seven and a half million dollar AI windfall, because most of that is EAGLE and not AI, and one national award is a windfall for nobody who does not win it.",
+    "who_it_serves": "An Alaska Native village council, tribal consortium, Native CDFI or Tribal College with a decision to make in fifteen days: lead a bid by August 27th, join somebody else's as a named partner, or compete under EAGLE instead. And any Alaska organization that had a problem SEDS Alaska would have funded, who now needs to know where the remaining small door is.",
+    "throughline_object": "THE SILL, the award floor drawn as a physical threshold you must step over, whose height changes when the rule changes",
+    "runners_up": [
+      {
+        "angle": "AI3 replaced Alaska's grant program with an AI institute",
+        "why_it_lost": "REFUTED BY THE PRIMARY DOCUMENT. ANA writes that the Institute will complement, not replace, broader social and economic development efforts. EAGLE is the successor. The fact check killed this framing before it reached a script."
+      },
+      {
+        "angle": "The federal government told Native communities what their problems are while Alaska let them name their own",
+        "why_it_lost": "The red team killed it on four counts. EAGLE contains IDEAS, an explicitly open self determination project area, so the menu is not closed. UAA also gatekept, twelve in and four out, picked by a university committee with a faculty PI on every funded project. RAISE is an NSF capacity grant open to any Alaskan organization with no Native mandate, so the Native self determination frame was imported rather than found. And RAISE began in August 2024, so it is not an answer to a July 2026 rule and the ten days apart framing manufactured a dialogue that never happened."
+      },
+      {
+        "angle": "The AI learning curve the institute targets has already closed inside Alaska's tribal health system",
+        "why_it_lost": "The evidence is one symposium report whose authors describe their own 2025 group as a homogenous group of individuals working with electronic health record data, thirty one people, at least sixteen percent of them from Stanford and the CDC. It says nothing about communities and nothing about ANA. Carrying it would have cost six binding narrowings for a point the spine does not need. Cut whole."
+      }
+    ],
+    "cultural_ruling_binding": [
+      "The subject is federal program design and public documents. The film never describes what Alaska Native people want, need, fear or lost.",
+      "No Alaska Federation of Natives position may appear. Its only source is a confirmed HTTP 403 and AFN's own reachable site carries no statement on this.",
+      "The film states on screen that no Alaska Native political or advocacy organization was reachable for a position, so it speaks about the program and not for anyone affected by it, and it invites correction.",
+      "Every position traces to 91 FR 47241, a grants.gov notice, the NSF award record or the funder's own page, or is owned as this publisher's opinion.",
+      "Never say Alakanuk, Nome Joint Utilities System or any partner named its own problem, endorses this framing or holds any view. The call invited it and they are the named partners. That is all.",
+      "Federally recognized tribes, ANCSA village and regional corporations, nonprofit tribal consortia, tribal health organizations and advocacy bodies are legally distinct and none speaks for the others.",
+      "32 submissions is a total comment count. Not 32 Alaskans, not 32 objections. Nothing in the record states how many objected.",
+      "NEVER draw with a face: any Alaska Native person or community, any tribe or tribal government, any real named organization or person, villages, medevac aircraft, or any mask, totemic or Indigenous visual form. No Indigenous motif is used decoratively anywhere.",
+      "Characterization is permitted ONLY for paperwork and programs: the notice, the funding line, the sill, the slips, the queue."
+    ]
+  },
+  "treatment": {
+    "winner": "THE EXPLAINER, 'The Smallest Door'",
+    "judge_reasoning": "The Explainer lens won because the film's entire argument is a number made physical, and the award floor is a literal floor. The Dramatist's opposing-force framing was grafted into Act 3, where the case FOR consolidation is drawn at full strength rather than said in a clause. The Comedian lens was deliberately NOT convened: the subject touches Alaska Native institutions and the cultural ruling forbids characterized-object humor anywhere near it.",
+    "grafts": [
+      "From the Dramatist, Act 3's 229 contracts opening at once, which makes the case against the film's own thesis the loudest picture in the piece.",
+      "From the Enthusiast, the warm key light on the low side step, so the Alaska half is not merely the underdog but visibly the more habitable place.",
+      "From the Explainer, the brass gauge that reads eligibility as a height in dollars."
+    ],
+    "lenses_run": "Explainer, Dramatist, Enthusiast. Comedian withheld on cultural grounds.",
+    "retention_plan": {
+      "the_test": "Act 3, 52.96 to 82.25s. The case for one national institute gets the widest field, the most elements and the longest continuous move in the film. 229 slots light at once, 229 contracts open on the same page, and the film concedes in its own narration that one body doing that once is better.",
+      "throughline_object": "THE SILL. A low step at 100,000, an empty slot, a step raised overhead to 2,500,000, lamps going dark to one, a low warm side step, and the first frame returned with the gauge changed.",
+      "the_two_loops": "Primary: at 5.17s the gauge names the smallest door and the film withholds who is left outside it until 102.91s, a span of 97.7 seconds. Secondary: at 39.62s the institute is introduced and what it is [KILLED c23 - removed] is withheld until 84.60s, 45 seconds later and 18.3 seconds clear of the primary payoff.",
+      "padding_test": "Every Act 3 beat was tested against a 90 second cut. The 229-contract field, the circled clause and the collapse into one volume are the film's strongest argument against itself and a 90 second cut would have compressed them into a single clause, which is exactly the failure this act exists to prevent."
+    }
+  },
+  "fingerprint": {
+    "pov": "cross-section-cutaway",
+    "layout": "single-object-void",
+    "motion_vector": "vertical-rise",
+    "hero_treatment": "structure-as-subject",
+    "register": "data-brutalist",
+    "camera_strategy": "rise-reveal",
+    "light_story": "night-practical",
+    "palette": "cold slate teal institution, bone paperwork, brass gauge, terracotta reserved for a named problem, one signal red spent once",
+    "metaphor": "eligibility drawn as the height of a step you either clear or do not"
+  },
+  "palette": "cold slate teal institution, bone paperwork, brass gauge, terracotta reserved for a named problem, one signal red spent once",
+  "light": {
+    "sun": "no daylight. A hard cold interior key from high front left at about 60 degrees, so every sill throws a long readable shadow down the step it makes.",
+    "mood": "administrative cold holding exactly one warm pool, because the story is a specific warm ask inside a cold general rule"
+  },
+  "divergence_note": "Authored from scratch. Diverges from the last two dispatches on every fingerprint axis: 08-09 was a warm amber boiler-room interior with an acid-green simulation accent and a contained-process hero; 08-08 was cool tile and warm birch with a typographic hero. This is a cold slate administrative void whose hero is a threshold and whose motion vector is a single vertical raise, which neither recent film used.",
+  "hook": {
+    "pattern": "anomaly-question",
+    "frame1": "A low bone threshold alone on a deep slate floor, slamming into frame with dust jumping off its lit top edge.",
+    "headline": "THE AWARD FLOOR",
+    "motion_by_s": 0.3,
+    "loopback": "The final beat returns to this exact sill with the same terracotta slip on it, and the only thing changed is the number on the brass gauge."
+  },
+  "throughline": {
+    "object": "THE SILL, the award floor drawn as a physical step",
+    "lands_in_button": true,
+    "states": [
+      {
+        "at_s": 0.0,
+        "state": "the bone sill lands alone in frame, a low step, nothing explained yet"
+      },
+      {
+        "at_s": 14.3,
+        "state": "a low bone step, gauge locked at ONE HUNDRED THOUSAND, a slip steps over it easily"
+      },
+      {
+        "at_s": 21.45,
+        "state": "the notice slides in and the Alaska chips go dark. Retired."
+      },
+      {
+        "at_s": 39.48,
+        "state": "the step snaps up to three times its height and the field widens past both frame edges"
+      },
+      {
+        "at_s": 51.06,
+        "state": "one tall slot towers over the low step and takes every AI dollar"
+      },
+      {
+        "at_s": 80.2,
+        "state": "the lintel lamps go dark one at a time until a single lamp remains"
+      },
+      {
+        "at_s": 102.12,
+        "state": "a low warm side step, four slips clear it and eight rest below"
+      },
+      {
+        "at_s": 112.85,
+        "state": "the opening sill returns, low again, with the new number on its gauge"
+      }
+    ]
+  },
+  "open_loop": {
+    "plant_t": 14.3,
+    "pay_t": 102.12,
+    "what": "The gauge names the smallest door you can walk through, and the film refuses to say who is left standing outside it until eight unfunded slips settle at the foot of the step."
+  },
+  "open_loop_2": {
+    "plant_t": 42.48,
+    "pay_t": 84.2,
+    "what": "The institute is introduced with its size and its scope, and what it is actually [KILLED c23 - removed] is withheld until one sheet slides out of the slot."
+  },
+  "reveals": [
+    {
+      "t": 39.48,
+      "type": "build-on",
+      "what": "the step snaps up three times while the gauge follows each snap",
+      "hold_s": 0.6
+    },
+    {
+      "t": 51.06,
+      "type": "scale-pullback",
+      "what": "the camera rises the full height of the tall slot and the low step recedes to a line",
+      "hold_s": 0.8
+    },
+    {
+      "t": 80.2,
+      "type": "build-on",
+      "what": "three of four objection lines fall away and the surviving phrase stamps signal red",
+      "hold_s": 0.7
+    },
+    {
+      "t": 93.97,
+      "type": "morph-to-chart",
+      "what": "twelve torn slips arrive and sort themselves into a readable list",
+      "hold_s": 0.7
+    }
+  ],
+  "audio_arc": {
+    "build_steps": [
+      10.9,
+      45.8,
+      63.07,
+      93.97
+    ],
+    "dip_at": 81.95,
+    "riser_at": 100.0,
+    "silence_at": 111.5,
+    "payoff_at": 102.12,
+    "button_pattern": "callback",
+    "note": "The 81.95 dip is the held breath before the institute's deliverable is named. The bed drops at least 6 dB and the tall slot sits alone in near silence before one sheet slides out."
+  },
+  "shots": [
+    {
+      "id": "S1",
+      "t": "0.0-7.29",
+      "framing": "macro-closeup",
+      "scale": "insert",
+      "height": "low",
+      "pov": "macro-closeup",
+      "layout": "single-object-void",
+      "motion_vector": "push-in-only",
+      "transition_in": null,
+      "thread": null,
+      "camera": "static:the hook is a landing and any camera move would compete with the one thing that moves",
+      "stage3d": "planes",
+      "centered": true,
+      "means": "the sill alone",
+      "hero": {
+        "name": "Sill",
+        "parts": 5,
+        "zones": 3,
+        "detail_note": "bone tread with a lit top face, a dark under-nose, front face, deterministic tread scoring, and a rim on the leading edge. Zones: tread, jamb, floor."
+      },
+      "hero_treatment": "structure-as-subject"
+    },
+    {
+      "id": "S2",
+      "t": "7.29-17.16",
+      "framing": "data-panel",
+      "scale": "close",
+      "height": "eye",
+      "pov": "macro-closeup",
+      "layout": "grid-modular",
+      "motion_vector": "assemble-build",
+      "transition_in": "push-in",
+      "thread": "build",
+      "camera": "truckAcross",
+      "stage3d": "planes",
+      "centered": true,
+      "means": "the agency and the figures",
+      "hero": {
+        "name": "Sill",
+        "parts": 7,
+        "zones": 3,
+        "detail_note": "jamb with a seated brass nameplate, an intake slot, three figure chips across the face, and the brass gauge on the left jamb. Zones: lintel, jamb, tread."
+      },
+      "hero_treatment": "instrument-as-subject"
+    },
+    {
+      "id": "S3",
+      "t": "17.16-21.45",
+      "framing": "subject-portrait",
+      "scale": "medium",
+      "height": "low",
+      "pov": "eye-level-immersive",
+      "layout": "single-object-void",
+      "motion_vector": "push-in-only",
+      "transition_in": "match-action",
+      "thread": "carry",
+      "camera": "static:the human-scale beat holds still so the lamp pool is the only thing that changes",
+      "stage3d": "planes",
+      "centered": true,
+      "means": "the human scale",
+      "hero": {
+        "name": "Sill",
+        "parts": 6,
+        "zones": 3,
+        "detail_note": "low tread lit by a single desk lamp pool, a terracotta slip mid-step, contact shadows under both. Zones: tread, lamp pool, floor."
+      },
+      "hero_treatment": "structure-as-subject"
+    },
+    {
+      "id": "S4",
+      "t": "21.45-26.17",
+      "framing": "push-detail",
+      "scale": "insert",
+      "height": "eye",
+      "pov": "macro-closeup",
+      "layout": "hud-instrument-frame",
+      "motion_vector": "vertical-descent",
+      "transition_in": "focus-pull",
+      "thread": "match",
+      "camera": "static:the retirement is a held frame because the information is what goes dark in it",
+      "stage3d": "planes",
+      "centered": true,
+      "means": "the notice, the slot going dark",
+      "hero": {
+        "name": "Sill",
+        "parts": 6,
+        "zones": 3,
+        "detail_note": "jamb slot receiving a dated notice while three face chips extinguish in sequence, jamb lamp falling. Zones: slot, face, lintel."
+      },
+      "hero_treatment": "instrument-as-subject"
+    },
+    {
+      "id": "S5",
+      "t": "26.17-34.76",
+      "framing": "wide-establish",
+      "scale": "wide",
+      "height": "high",
+      "pov": "eye-level-immersive",
+      "layout": "stacked-layers",
+      "motion_vector": "vertical-rise",
+      "transition_in": "pull-out",
+      "thread": "build",
+      "camera": "craneDown",
+      "stage3d": "planes",
+      "centered": true,
+      "means": "the successor at full size",
+      "hero": {
+        "name": "Sill",
+        "parts": 7,
+        "zones": 3,
+        "detail_note": "a wide ledger plate rising behind the darkened tread, its figures counting up, lintel above. Zones: plate, tread, lintel."
+      },
+      "hero_treatment": "data-as-subject"
+    },
+    {
+      "id": "S6",
+      "t": "34.76-42.48",
+      "framing": "two-up",
+      "scale": "medium",
+      "height": "eye",
+      "pov": "cross-section-cutaway",
+      "layout": "fullbleed-split",
+      "motion_vector": "horizontal-traverse",
+      "transition_in": "match-cut",
+      "thread": "match",
+      "camera": "truckAcross",
+      "stage3d": "planes",
+      "centered": true,
+      "means": "the two floors side by side",
+      "hero": {
+        "name": "Sill",
+        "parts": 8,
+        "zones": 3,
+        "detail_note": "two brass gauges side by side at different locked heights, the queue rail extending past both frame edges. Zones: gauges, rail, tread."
+      },
+      "hero_treatment": "data-as-subject"
+    },
+    {
+      "id": "S7",
+      "t": "42.48-51.06",
+      "framing": "alt-vantage",
+      "scale": "medium",
+      "height": "low",
+      "pov": "eye-level-immersive",
+      "layout": "single-object-void",
+      "motion_vector": "vertical-rise",
+      "transition_in": "whip-pan",
+      "thread": "build",
+      "camera": "riseWith",
+      "stage3d": "planes",
+      "centered": true,
+      "means": "the institute introduced",
+      "hero": {
+        "name": "Sill",
+        "parts": 7,
+        "zones": 3,
+        "detail_note": "the tread with a tall narrow slot rising in the jamb behind a turning notice page, one lamp igniting above it. Zones: slot, jamb, tread."
+      },
+      "hero_treatment": "structure-as-subject"
+    },
+    {
+      "id": "S8",
+      "t": "51.06-55.78",
+      "framing": "wide-establish",
+      "scale": "extreme-wide",
+      "height": "ground",
+      "pov": "exploded-diagram",
+      "layout": "stacked-layers",
+      "motion_vector": "vertical-rise",
+      "transition_in": "pull-out",
+      "thread": "carry",
+      "camera": "riseWith",
+      "stage3d": "planes",
+      "centered": true,
+      "means": "THE RAISE",
+      "hero": {
+        "name": "Sill",
+        "parts": 6,
+        "zones": 3,
+        "detail_note": "the tall slot seen from the foot of the tread, full height, with the low step receding to a line below. Zones: slot, jamb, floor."
+      },
+      "hero_treatment": "structure-as-subject"
+    },
+    {
+      "id": "S9",
+      "t": "55.78-71.66",
+      "framing": "map-territory",
+      "scale": "extreme-wide",
+      "height": "overhead",
+      "pov": "top-down-map",
+      "layout": "grid-modular",
+      "motion_vector": "radial-emanate",
+      "transition_in": "map-travel",
+      "thread": "travel",
+      "camera": "dollyThrough",
+      "stage3d": "planes",
+      "centered": true,
+      "means": "229 slots and the contract",
+      "hero": {
+        "name": "Sill",
+        "parts": 8,
+        "zones": 4,
+        "detail_note": "a wide field of identical small slots with one contract landing and repeating across it, then collapsing inward into a single volume. Zones: field, contract, volume, horizon."
+      },
+      "hero_treatment": "multiplicity-swarm"
+    },
+    {
+      "id": "S10",
+      "t": "71.66-81.95",
+      "framing": "data-panel",
+      "scale": "close",
+      "height": "eye",
+      "pov": "macro-closeup",
+      "layout": "hud-instrument-frame",
+      "motion_vector": "scroll-data",
+      "transition_in": "push-in",
+      "thread": "match",
+      "camera": "static:the page is held so the printing onto it is the only motion in frame",
+      "stage3d": "planes",
+      "centered": true,
+      "means": "the comments and the red stamp",
+      "hero": {
+        "name": "Sill",
+        "parts": 7,
+        "zones": 3,
+        "detail_note": "the jamb slot stacking envelopes while the notice prints objection lines onto its own page. Zones: slot, page, lintel."
+      },
+      "hero_treatment": "data-as-subject"
+    },
+    {
+      "id": "S11",
+      "t": "81.95-93.97",
+      "framing": "push-detail",
+      "scale": "insert",
+      "height": "eye",
+      "pov": "macro-closeup",
+      "layout": "single-object-void",
+      "motion_vector": "vertical-descent",
+      "transition_in": "focus-pull",
+      "thread": "build",
+      "camera": "craneDown",
+      "stage3d": "planes",
+      "centered": true,
+      "means": "the list, and the smaller door",
+      "hero": {
+        "name": "Sill",
+        "parts": 7,
+        "zones": 3,
+        "detail_note": "the tall slot alone in near darkness releasing one sheet, then a low warm side step opening beside it. Zones: tall slot, sheet, warm step."
+      },
+      "hero_treatment": "instrument-as-subject"
+    },
+    {
+      "id": "S12",
+      "t": "93.97-106.41",
+      "framing": "two-up",
+      "scale": "medium",
+      "height": "low",
+      "pov": "eye-level-immersive",
+      "layout": "grid-modular",
+      "motion_vector": "assemble-build",
+      "transition_in": "assemble",
+      "thread": "travel",
+      "camera": "dollyThrough",
+      "stage3d": "planes",
+      "centered": true,
+      "means": "twelve slips",
+      "hero": {
+        "name": "Sill",
+        "parts": 8,
+        "zones": 3,
+        "detail_note": "the low warm step with twelve torn slips sorting into a column, four lifting over the tread and eight settling at its foot. Zones: step, slips over, slips below."
+      },
+      "hero_treatment": "multiplicity-swarm"
+    },
+    {
+      "id": "S13",
+      "t": "106.41-121.0",
+      "framing": "macro-closeup",
+      "scale": "close",
+      "height": "low",
+      "pov": "macro-closeup",
+      "layout": "single-object-void",
+      "motion_vector": "push-in-only",
+      "transition_in": "graphic-match",
+      "thread": "match",
+      "camera": "static:the button returns the opening frame so the camera returns to it too",
+      "stage3d": "planes",
+      "centered": true,
+      "means": "the button",
+      "hero": {
+        "name": "Sill",
+        "parts": 6,
+        "zones": 3,
+        "detail_note": "the opening tread returned, one terracotta slip on it, the brass gauge reading the new figure, two bone cards below. Zones: tread, gauge, cards."
+      },
+      "hero_treatment": "structure-as-subject"
+    }
+  ],
+  "beats": [
+    {
+      "i": 1,
+      "t": 0.0,
+      "vo": 0,
+      "sfx": "a stone slab landing, one hard slap",
+      "means": "opens on the object the film returns to",
+      "shows": "a bone threshold alone in cold slate",
+      "draw": {
+        "subject": "a low bone sill alone on a deep slate floor",
+        "action": "slams into frame and settles, dust jumping off its lit top edge",
+        "emotion": "matter-of-fact",
+        "annotation": "THE AWARD FLOOR"
+      },
+      "choreo": {
+        "primary": "the sill lands and rings",
+        "reaction": "dust jumps and settles",
+        "ambient": "filing recession drifts far behind"
+      }
+    },
+    {
+      "i": 2,
+      "t": 3.36,
+      "vo": 0,
+      "sfx": "a pen tick",
+      "means": "defines the term before relying on it",
+      "shows": "the definition, plain",
+      "draw": {
+        "subject": "a bone card set into the sill's face",
+        "action": "slides out and sets one line of type",
+        "emotion": "dry",
+        "annotation": "THE SMALLEST GRANT THE GOVERNMENT WILL WRITE"
+      },
+      "choreo": {
+        "primary": "the card slides out",
+        "reaction": "the sill's rim sharpens",
+        "ambient": "dust drifts"
+      }
+    },
+    {
+      "i": 3,
+      "t": 7.3,
+      "vo": 1,
+      "sfx": "a drawer rolling open, brass",
+      "means": "names the agency, which the cold read demanded",
+      "shows": "the issuing body",
+      "draw": {
+        "subject": "a brass nameplate seating into the jamb above the slot",
+        "action": "seats down and locks with a brass click",
+        "emotion": "institutional",
+        "annotation": "ADMINISTRATION FOR NATIVE AMERICANS"
+      },
+      "choreo": {
+        "primary": "the nameplate seats",
+        "reaction": "the jamb lamp warms",
+        "ambient": "dust"
+      }
+    },
+    {
+      "i": 4,
+      "t": 10.77,
+      "vo": 1,
+      "sfx": "three ledger thumps",
+      "means": "the Alaska program with its own figures",
+      "shows": "the record, quoted",
+      "draw": {
+        "subject": "three bone chips locking in a row across the sill's face",
+        "action": "each chip snaps in with a tick and its figure counts up",
+        "emotion": "factual",
+        "annotation": "SEDS ALASKA  \u00b7  2,000,000  \u00b7  3 AWARDS"
+      },
+      "choreo": {
+        "primary": "chips snap in one by one",
+        "reaction": "the sill takes each hit",
+        "ambient": "recession drifts"
+      }
+    },
+    {
+      "i": 5,
+      "t": 14.02,
+      "vo": 1,
+      "sfx": "a brass gauge climbing and locking",
+      "means": "THE GAUGE. Eligibility becomes a height",
+      "shows": "the floor, as a number and a height",
+      "draw": {
+        "subject": "a brass height gauge up the sill's left jamb",
+        "action": "the needle climbs and locks at one hundred thousand",
+        "emotion": "precise",
+        "annotation": "AWARD FLOOR  \u00b7  100,000"
+      },
+      "choreo": {
+        "primary": "the needle climbs and locks",
+        "reaction": "the step's rim brightens",
+        "ambient": "dust"
+      },
+      "open_loop": "plant: the size of the smallest door, and who is left standing outside it"
+    },
+    {
+      "i": 6,
+      "t": 15.85,
+      "vo": 2,
+      "sfx": "a single lamp click, a chair scrape",
+      "means": "scales the number to a person WITHOUT drawing one",
+      "shows": "one desk, one lamp, no figure",
+      "draw": {
+        "subject": "a single desk lamp over one drawer behind the low step",
+        "action": "the lamp clicks on over an empty desk and its pool spreads",
+        "emotion": "quiet",
+        "annotation": "A SUM ONE ADMINISTRATOR RUNS"
+      },
+      "choreo": {
+        "primary": "the lamp clicks on",
+        "reaction": "its pool spreads across the floor",
+        "ambient": "dust turns in the new light"
+      }
+    },
+    {
+      "i": 7,
+      "t": 19.64,
+      "vo": 2,
+      "sfx": "paper settling",
+      "means": "holds the human scale, and shows the step being cleared",
+      "shows": "a slip stepping over easily",
+      "draw": {
+        "subject": "a torn terracotta slip walking up to the low step",
+        "action": "steps over the low sill without effort and settles",
+        "emotion": "easy",
+        "annotation": "YOU CAN WALK THROUGH THIS"
+      },
+      "choreo": {
+        "primary": "the slip clears the step",
+        "reaction": "the step's shadow shortens",
+        "ambient": "dust"
+      }
+    },
+    {
+      "i": 8,
+      "t": 21.34,
+      "vo": 3,
+      "sfx": "a date stamp, then a filament dying",
+      "means": "THE REHOOK. Act one turns",
+      "shows": "the notice, and the empty slot",
+      "draw": {
+        "subject": "a dated notice sliding into the jamb slot and the Alaska chips going dark",
+        "action": "the notice slides in and the three chips go out one by one",
+        "emotion": "cold",
+        "annotation": "JULY 28TH 2026  \u00b7  RETIRED"
+      },
+      "choreo": {
+        "primary": "the notice slides in",
+        "reaction": "the three chips go dark in sequence",
+        "ambient": "the desk lamp pool shrinks"
+      },
+      "rehook": "rehook: the thing just shown as reachable is retired, and the film has not said what replaced it"
+    },
+    {
+      "i": 9,
+      "t": 25.91,
+      "vo": 4,
+      "sfx": "a low swell, upward",
+      "means": "THE REHOOK. Refuses the lazy angle at the exact moment a viewer expects it",
+      "shows": "the money going UP",
+      "draw": {
+        "subject": "a wide bone ledger plate rising behind the dark step",
+        "action": "rises taller and brighter, numbers counting up with easing",
+        "emotion": "corrective",
+        "annotation": "THE MONEY DIDN'T SHRINK"
+      },
+      "choreo": {
+        "primary": "the plate rises",
+        "reaction": "its numbers count up",
+        "ambient": "dust lifts on the swell"
+      },
+      "rehook": "rehook: the film immediately corrects the expectation it just set, the money went UP not down"
+    },
+    {
+      "i": 10,
+      "t": 29.62,
+      "vo": 4,
+      "sfx": "a heavy ledger thump",
+      "means": "gives the successor its full and fair size",
+      "shows": "EAGLE at scale",
+      "draw": {
+        "subject": "the ledger plate carrying the successor's figures",
+        "action": "thumps into place and locks",
+        "emotion": "fair",
+        "annotation": "EAGLE  \u00b7  24,000,000  \u00b7  31 AWARDS"
+      },
+      "choreo": {
+        "primary": "the plate locks",
+        "reaction": "the numbers settle",
+        "ambient": "recession drifts"
+      }
+    },
+    {
+      "i": 11,
+      "t": 32.37,
+      "vo": 4,
+      "sfx": "a soft affirming chime",
+      "means": "the agency's fair point, in the agency's own terms",
+      "shows": "eligibility, unchanged",
+      "draw": {
+        "subject": "a bone line of type set under the ledger plate",
+        "action": "fades up unhurried and holds",
+        "emotion": "even-handed",
+        "annotation": "ALASKA NATIVE COMMUNITIES STAY ELIGIBLE"
+      },
+      "choreo": {
+        "primary": "the line fades up",
+        "reaction": "the ledger dims to give it the frame",
+        "ambient": "dust"
+      }
+    },
+    {
+      "i": 12,
+      "t": 34.68,
+      "vo": 5,
+      "sfx": "a brass gauge climbing, shorter",
+      "means": "THE CORRECTED FACT the cold read forced",
+      "shows": "EAGLE's own floor",
+      "draw": {
+        "subject": "a second brass gauge beside the first",
+        "action": "its needle climbs and locks at three hundred thousand, well above the first",
+        "emotion": "exact",
+        "annotation": "EAGLE FLOOR  \u00b7  300,000"
+      },
+      "choreo": {
+        "primary": "the second needle locks higher",
+        "reaction": "the first needle sits below it, still",
+        "ambient": "dust"
+      }
+    },
+    {
+      "i": 13,
+      "t": 37.37,
+      "vo": 5,
+      "sfx": "a metal cap snapping and a long rail sliding",
+      "means": "the field widening, drawn",
+      "shows": "Alaska only, then national",
+      "draw": {
+        "subject": "the queue rail in front of the step extending off both sides of frame",
+        "action": "its end cap snaps off and the rail slides out past both frame edges",
+        "emotion": "widening",
+        "annotation": "ALASKA ONLY  to  NATIONAL"
+      },
+      "choreo": {
+        "primary": "the end cap snaps off and flies",
+        "reaction": "the rail slides out past the frame edge",
+        "ambient": "dust lifts off the moving rail"
+      }
+    },
+    {
+      "i": 14,
+      "t": 41.01,
+      "vo": 6,
+      "sfx": "a three-step riser",
+      "means": "the thesis, arithmetically",
+      "shows": "the step, tripled",
+      "draw": {
+        "subject": "the low step growing to three times its height in three snaps",
+        "action": "rises in three discrete snaps, each with overshoot and settle",
+        "emotion": "plain",
+        "annotation": "THE SMALLEST DOOR TRIPLED"
+      },
+      "choreo": {
+        "primary": "the step snaps up three times",
+        "reaction": "the gauge follows each snap",
+        "ambient": "dust falls off each riser"
+      },
+      "reveal": "build-on"
+    },
+    {
+      "i": 15,
+      "t": 42.58,
+      "vo": 7,
+      "sfx": "a page turning, then a deep servo",
+      "means": "the pivot, physical",
+      "shows": "the second thing in the same notice",
+      "draw": {
+        "subject": "the notice page turning in the jamb to reveal a taller slot behind",
+        "action": "turns over and a tall narrow slot rises behind it",
+        "emotion": "turning",
+        "annotation": "THAT SAME NOTICE"
+      },
+      "choreo": {
+        "primary": "the page turns",
+        "reaction": "the tall slot rises behind it",
+        "ambient": "dust"
+      },
+      "open_loop_2": "plant: the institute exists, and what it is [KILLED c23 - removed] is withheld"
+    },
+    {
+      "i": 16,
+      "t": 45.75,
+      "vo": 7,
+      "sfx": "a lock and a single lamp igniting",
+      "means": "names the institute plainly",
+      "shows": "the institute, introduced",
+      "draw": {
+        "subject": "the tall bone slot with one lamp above it",
+        "action": "seats into the jamb and its single lamp ignites",
+        "emotion": "institutional",
+        "annotation": "AI3 ACTION INSTITUTE"
+      },
+      "choreo": {
+        "primary": "the slot seats",
+        "reaction": "its lamp ignites",
+        "ambient": "dust"
+      }
+    },
+    {
+      "i": 17,
+      "t": 48.4,
+      "vo": 7,
+      "sfx": "two hard ticks",
+      "means": "its shape in two facts",
+      "shows": "one award, and the floor",
+      "draw": {
+        "subject": "two bone chips locking under the tall slot",
+        "action": "each snaps in with a tick",
+        "emotion": "precise",
+        "annotation": "ONE AWARD  \u00b7  FLOOR 2,500,000"
+      },
+      "choreo": {
+        "primary": "the chips snap in",
+        "reaction": "the tall slot brightens on each",
+        "ambient": "dust"
+      }
+    },
+    {
+      "i": 18,
+      "t": 51.33,
+      "vo": 8,
+      "sfx": "a long groan and a boom",
+      "means": "THE SIGNATURE SHOT. All the AI money, one door",
+      "shows": "the tall slot from its foot",
+      "draw": {
+        "subject": "the tall slot seen from the foot of the sill, towering, the low step far below",
+        "action": "the camera rises the full height while every AI dollar pours into the one slot",
+        "emotion": "overwhelming",
+        "annotation": "EVERY AI DOLLAR  \u00b7  ONE GRANT"
+      },
+      "choreo": {
+        "primary": "the climb up the full height",
+        "reaction": "the low step recedes to a line below",
+        "ambient": "dust falls the whole height"
+      },
+      "reveal": "scale-pullback"
+    },
+    {
+      "i": 19,
+      "t": 55.9,
+      "vo": 9,
+      "sfx": "a wide room tone opening out",
+      "means": "ACT 3 ARGUES AGAINST THE FILM",
+      "shows": "the real scale of the problem",
+      "draw": {
+        "subject": "a wide bone field of many identical small slots opening out",
+        "action": "the field opens and every slot lights at once",
+        "emotion": "genuine",
+        "annotation": "229 FEDERALLY RECOGNIZED TRIBES IN ALASKA"
+      },
+      "choreo": {
+        "primary": "the field opens out",
+        "reaction": "every slot lights together",
+        "ambient": "dust lifts across the whole field"
+      }
+    },
+    {
+      "i": 20,
+      "t": 59.37,
+      "vo": 9,
+      "sfx": "a contract slapping down",
+      "means": "sets up the vendor premise the cold read flagged",
+      "shows": "what AI actually arrives as",
+      "draw": {
+        "subject": "a single bone contract landing hard on the field",
+        "action": "lands and flips open to a signature line",
+        "emotion": "dry",
+        "annotation": "FOUR TTA CONTRACTS INTO ONE"
+      },
+      "choreo": {
+        "primary": "the contract lands and opens",
+        "reaction": "its pages flex",
+        "ambient": "the field breathes"
+      }
+    },
+    {
+      "i": 21,
+      "t": 62.9,
+      "vo": 10,
+      "sfx": "many overlapping paper rustles",
+      "means": "THE REHOOK. The case for consolidation at full strength",
+      "shows": "everyone doing the same work separately",
+      "draw": {
+        "subject": "the same contract repeating across the whole field, all opening at once",
+        "action": "every copy opens to the same page at the same moment",
+        "emotion": "exhausting",
+        "annotation": "THE SAME CONTRACT  \u00b7  EVERY TIME"
+      },
+      "choreo": {
+        "primary": "all copies open together",
+        "reaction": "the rustle piles into one noise",
+        "ambient": "dust churns"
+      },
+      "rehook": "rehook: the film turns and makes the strongest case against its own thesis"
+    },
+    {
+      "i": 22,
+      "t": 64.88,
+      "vo": 10,
+      "sfx": "a pen dropping onto paper and a dry argumentative clatter",
+      "means": "the specific thing each one loses alone",
+      "shows": "the clause, circled and repeated",
+      "draw": {
+        "subject": "one contract pulled forward with a clause circled in terracotta",
+        "action": "a pen drops onto the page and circles the clause, and the circle repeats to the horizon",
+        "emotion": "losing",
+        "annotation": "[KILLED c25 - removed]"
+      },
+      "choreo": {
+        "primary": "the pen drops and circles",
+        "reaction": "the circle repeats into the distance",
+        "ambient": "the field of pages breathes"
+      }
+    },
+    {
+      "i": 23,
+      "t": 68.8,
+      "vo": 11,
+      "sfx": "a single clean lock",
+      "means": "concedes the point properly",
+      "shows": "one body, once",
+      "draw": {
+        "subject": "the whole field of contracts collapsing into one bone volume",
+        "action": "they stack inward and lock into a single clean volume",
+        "emotion": "conceding",
+        "annotation": "ONE BODY DOING THAT ONCE IS BETTER"
+      },
+      "choreo": {
+        "primary": "the field collapses inward",
+        "reaction": "the single volume settles and rings",
+        "ambient": "dust falls away"
+      }
+    },
+    {
+      "i": 24,
+      "t": 71.66,
+      "vo": 12,
+      "sfx": "soft envelope drops",
+      "means": "the public record, counted",
+      "shows": "the comments arriving",
+      "draw": {
+        "subject": "bone envelopes dropping into the jamb slot and stacking",
+        "action": "they fall one after another and the stack leans",
+        "emotion": "procedural",
+        "annotation": "THE AGENCY ASKED FOR COMMENT  \u00b7  32 SUBMISSIONS"
+      },
+      "choreo": {
+        "primary": "envelopes drop and stack",
+        "reaction": "the stack leans",
+        "ambient": "dust"
+      }
+    },
+    {
+      "i": 25,
+      "t": 74.65,
+      "vo": 12,
+      "sfx": "a press roller",
+      "means": "the sharpest fact in the film",
+      "shows": "the agency printing its own criticism",
+      "draw": {
+        "subject": "the notice printing the objections onto its own page",
+        "action": "the page prints lines that criticise the page it is printed on",
+        "emotion": "pointed",
+        "annotation": "AND PRINTED THE OBJECTIONS ITSELF"
+      },
+      "choreo": {
+        "primary": "the lines print onto the notice",
+        "reaction": "the notice does not flinch",
+        "ambient": "dust"
+      }
+    },
+    {
+      "i": 26,
+      "t": 76.15,
+      "vo": 13,
+      "sfx": "four typewriter strikes",
+      "means": "the objections, in the record's own words",
+      "shows": "what they raised",
+      "draw": {
+        "subject": "four bone lines striking onto the printed notice",
+        "action": "each line strikes in with a typewriter hit",
+        "emotion": "documentary",
+        "annotation": "OPPORTUNITY COSTS  \u00b7  INDIGENOUS DATA SOVEREIGNTY  \u00b7  CENTRALIZED PROGRAM DESIGN  \u00b7  TRIBAL READINESS"
+      },
+      "choreo": {
+        "primary": "four lines strike in",
+        "reaction": "the page flexes under each",
+        "ambient": "dust"
+      }
+    },
+    {
+      "i": 27,
+      "t": 80.38,
+      "vo": 13,
+      "sfx": "a hard red stamp, then held air",
+      "means": "ACT 3 PAYOFF. The record indicts itself",
+      "shows": "three words isolated",
+      "draw": {
+        "subject": "the phrase centralized program design alone, stamped signal red",
+        "action": "the other three lines fall away and this one stamps red",
+        "emotion": "damning",
+        "annotation": "CENTRALIZED PROGRAM DESIGN"
+      },
+      "choreo": {
+        "primary": "the phrase stamps red",
+        "reaction": "the lintel lamps go dark one at a time until one remains",
+        "ambient": "everything else falls away"
+      },
+      "reveal": "build-on"
+    },
+    {
+      "i": 28,
+      "t": 81.98,
+      "vo": 14,
+      "sfx": "the bed dipping to near silence",
+      "means": "THE DIP. The question that opens act four",
+      "shows": "the deliverable, withheld one beat longer",
+      "draw": {
+        "subject": "the tall slot alone in near darkness, one lamp lit",
+        "action": "holds in silence, then opens a hand's width",
+        "emotion": "asking",
+        "annotation": "[KILLED c23 - removed]"
+      },
+      "choreo": {
+        "primary": "the slot opens a crack",
+        "reaction": "its lamp steadies",
+        "ambient": "dust hangs almost still"
+      }
+    },
+    {
+      "i": 29,
+      "t": 84.08,
+      "vo": 14,
+      "sfx": "one sheet sliding out",
+      "means": "the answer, deliberately small",
+      "shows": "a list",
+      "draw": {
+        "subject": "a single bone sheet sliding out of the tall slot",
+        "action": "slides out and hangs, almost weightless",
+        "emotion": "anticlimactic",
+        "annotation": "[KILLED c23 - removed]"
+      },
+      "choreo": {
+        "primary": "the sheet slides out",
+        "reaction": "it hangs and turns",
+        "ambient": "dust"
+      },
+      "open_loop_2_pay": "pay: the institute is [KILLED c23 - removed] a list"
+    },
+    {
+      "i": 30,
+      "t": 85.97,
+      "vo": 15,
+      "sfx": "a warm drawer opening",
+      "means": "THE TURN. The film's own evidence",
+      "shows": "the smaller door, in warm light",
+      "draw": {
+        "subject": "a low side step in warm key light, its slot wide open",
+        "action": "the low step lights warm and its slot opens wide",
+        "emotion": "warm",
+        "annotation": "UNIVERSITY OF ALASKA ANCHORAGE  \u00b7  NSF 2433241"
+      },
+      "choreo": {
+        "primary": "the low step lights warm",
+        "reaction": "its slot opens wide",
+        "ambient": "dust warms in the new light"
+      }
+    },
+    {
+      "i": 31,
+      "t": 90.3,
+      "vo": 15,
+      "sfx": "a pen landing on paper, then room tone",
+      "means": "the mechanism that made the list",
+      "shows": "an open line, and no menu",
+      "draw": {
+        "subject": "an empty ruled line on a blank form with no checkboxes anywhere",
+        "action": "a pen lands on the empty ruled line and waits there, and no checkboxes arrive beside it",
+        "emotion": "open",
+        "annotation": "NAME YOUR PROBLEM  \u00b7  NO MENU"
+      },
+      "choreo": {
+        "primary": "the pen lands on the blank line",
+        "reaction": "the line flexes under it",
+        "ambient": "warm dust drifts"
+      }
+    },
+    {
+      "i": 32,
+      "t": 94.03,
+      "vo": 16,
+      "sfx": "twelve torn-paper arrivals",
+      "means": "THE REHOOK. The list arrives as objects",
+      "shows": "twelve specific asks",
+      "draw": {
+        "subject": "twelve torn terracotta slips arriving and sorting into a column",
+        "action": "they fly in and arrange themselves into a readable list",
+        "emotion": "specific",
+        "annotation": "12 WROTE ONE DOWN"
+      },
+      "choreo": {
+        "primary": "twelve slips arrive and sort",
+        "reaction": "each torn edge flexes on landing",
+        "ambient": "dust churns warm"
+      },
+      "rehook": "rehook: the abstract list becomes twelve objects you can read",
+      "reveal": "morph-to-chart"
+    },
+    {
+      "i": 33,
+      "t": 97.11,
+      "vo": 16,
+      "sfx": "two distinct paper settles",
+      "means": "two named asks, spelled exactly",
+      "shows": "the specifics",
+      "draw": {
+        "subject": "two slips pulled forward, each setting its own line of type",
+        "action": "the first sets its type, then the second",
+        "emotion": "concrete",
+        "annotation": "NOME JOINT UTILITIES SYSTEM  \u00b7  THERMAL CONDUCTIVITY OF WARMING PERMAFROST"
+      },
+      "choreo": {
+        "primary": "the first slip sets its type",
+        "reaction": "the second waits its turn",
+        "ambient": "the other ten hold"
+      }
+    },
+    {
+      "i": 34,
+      "t": 99.56,
+      "vo": 16,
+      "sfx": "a single settle",
+      "means": "the second named ask",
+      "shows": "the tribe's own project title",
+      "draw": {
+        "subject": "the second slip setting its line",
+        "action": "sets its type and holds",
+        "emotion": "concrete",
+        "annotation": "VILLAGE OF ALAKANUK TRIBE  \u00b7  INFRASTRUCTURE COORDINATION"
+      },
+      "choreo": {
+        "primary": "the second slip sets type",
+        "reaction": "the first holds beside it",
+        "ambient": "dust"
+      }
+    },
+    {
+      "i": 35,
+      "t": 102.35,
+      "vo": 17,
+      "sfx": "four lifts and eight settles",
+      "means": "THE PRIMARY PAYOFF. Who cleared the step",
+      "shows": "four over, eight below",
+      "draw": {
+        "subject": "four slips lifting over the low step and eight settling at its foot",
+        "action": "four clear the step, eight settle below and stay lit",
+        "emotion": "unresolved",
+        "annotation": "4 FUNDED  \u00b7  8 WENT UNFUNDED [KILLED c24 - removed]"
+      },
+      "choreo": {
+        "primary": "four lift over the step",
+        "reaction": "eight settle below and stay lit",
+        "ambient": "dust"
+      },
+      "open_loop_pay": "pay: these eight are the ones left standing outside the smallest door"
+    },
+    {
+      "i": 36,
+      "t": 106.49,
+      "vo": 18,
+      "sfx": "a clean two-part hit",
+      "means": "the film's position, stated plainly",
+      "shows": "the verdict, split",
+      "draw": {
+        "subject": "the tall slot and the low step together in one frame",
+        "action": "the tall slot holds steady while the low step's lamp dims out",
+        "emotion": "clear",
+        "annotation": "THE INSTITUTE ISN'T THE MISTAKE"
+      },
+      "choreo": {
+        "primary": "the low step's lamp dims",
+        "reaction": "the tall slot does not move",
+        "ambient": "dust"
+      }
+    },
+    {
+      "i": 37,
+      "t": 109.24,
+      "vo": 18,
+      "sfx": "a lid closing over both",
+      "means": "names the actual error",
+      "shows": "one notice, two acts",
+      "draw": {
+        "subject": "a single notice envelope folding shut over both the low step and the tall slot",
+        "action": "the envelope folds over both at once and the low step vanishes under it",
+        "emotion": "pointed",
+        "annotation": "RETIRING THE SMALL ALASKA DOOR IN THE SAME NOTICE"
+      },
+      "choreo": {
+        "primary": "the envelope folds over both",
+        "reaction": "the low step disappears beneath it",
+        "ambient": "dust"
+      }
+    },
+    {
+      "i": 38,
+      "t": 112.64,
+      "vo": 19,
+      "sfx": "a riser, then air",
+      "means": "THE BUTTON. The opening frame returns inverted",
+      "shows": "the deadline, and the falsifier",
+      "draw": {
+        "subject": "the opening low bone sill again with one terracotta slip on it",
+        "action": "the first frame returns, and the gauge now reads the new floor",
+        "emotion": "open-handed",
+        "annotation": "APPLICATIONS FOR THE INSTITUTE CLOSE AUGUST 27TH 2026"
+      },
+      "choreo": {
+        "primary": "the first frame returns inverted",
+        "reaction": "the gauge reads 2,500,000 on the small sill",
+        "ambient": "dust settles for the first time"
+      }
+    },
+    {
+      "i": 39,
+      "t": 116.66,
+      "vo": 19,
+      "sfx": "one soft tail",
+      "means": "the falsifier, said out loud",
+      "shows": "the test the film offers against itself",
+      "draw": {
+        "subject": "a bone card set low under the returning sill",
+        "action": "fades up and holds",
+        "emotion": "candid",
+        "annotation": "IF A VILLAGE LEADS THE WINNING BID, I'M WRONG"
+      },
+      "choreo": {
+        "primary": "the card fades up",
+        "reaction": "the slip on the sill holds",
+        "ambient": "dust settles"
+      }
+    },
+    {
+      "i": 40,
+      "t": 118.6,
+      "vo": 19,
+      "sfx": "a last soft settle",
+      "means": "the honest limit, on screen, as the cultural ruling requires",
+      "shows": "what the film could not get",
+      "draw": {
+        "subject": "a second plain bone card, quiet, below the first",
+        "action": "fades up beneath it and holds to the end",
+        "emotion": "candid",
+        "annotation": "NO ALASKA NATIVE ORGANIZATION WAS REACHABLE FOR A POSITION  \u00b7  THIS FILM SPEAKS ABOUT THE PROGRAM, NOT FOR ANYONE AFFECTED"
+      },
+      "choreo": {
+        "primary": "the second card fades up",
+        "reaction": "the sill holds behind both",
+        "ambient": "dust settles"
+      }
+    }
+  ],
+  "_kill_note": "c23, c24 and c25 were killed during this run and their strings were scrubbed from this board on 2026-08-12. A judge found them still sitting here as on-screen annotations after they had been removed from the VO, the claim map, the post and the engine: a board is a RENDER INPUT, so leaving a killed claim in it means the next thing built from it ships the claim again. The kill list is not done until the board is clean too."
+}

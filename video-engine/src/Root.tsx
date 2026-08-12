@@ -32,6 +32,7 @@ import { Ep0806, ep0806Schema } from './Ep0806';
 import { Ep0807, ep0807Schema } from './Ep0807';
 import { Ep0808, ep0808Schema } from './Ep0808';
 import { Ep0809, ep0809Schema } from './Ep0809';
+import { Ep0812, ep0812Schema } from './Ep0812';
 
 const standoffSchema = z.object({
   yesCount: z.number(),
@@ -47,6 +48,19 @@ const standoffSchema = z.object({
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      <Composition
+        id="Dispatch0812"
+        component={Ep0812}
+        durationInFrames={3630}
+        fps={30}
+        width={1080}
+        height={1920}
+        schema={ep0812Schema}
+        defaultProps={{ captions: [] }}
+        calculateMetadata={({ props }) => ({
+          durationInFrames: (props as { total?: number }).total ?? 3630,
+        })}
+      />
       <Composition
         id="Dispatch0809"
         component={Ep0809}

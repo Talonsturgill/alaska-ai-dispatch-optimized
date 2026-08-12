@@ -24,8 +24,20 @@ if [ "$#" -ne 3 ]; then
 fi
 VIDEO="$1"; AUDIO="$2"; OUT="$3"
 
+# PAD THE AUDIO TO THE PICTURE; NEVER CUT THE PICTURE TO THE AUDIO (2026-08-12).
+# `-shortest` alone truncates whichever stream ends first, and the audio master always
+# ends first because it is mixed against the VO while the render carries an end-credits
+# tail after the last spoken word. On 2026-08-12 that silently cut 5.4s off a 119.6s film
+# and took the whole credits card with it, which is where the music is attributed. The bed
+# is CC BY 4.0, so attribution is a LICENCE CONDITION and not a courtesy, and a panel judge
+# had already reported being unable to find the credit on any viewer-facing surface. The
+# mux was eating it.
+#
+# apad extends the audio with silence; -shortest then trims that padding back to the exact
+# video duration instead of trimming the video. Keep both: apad without -shortest would run
+# forever, and -shortest without apad is the bug above.
 "$FF" -y -i "$VIDEO" -i "$AUDIO" \
-  -map 0:v:0 -map 1:a:0 \
+  -map 0:v:0 -map 1:a:0 -af apad \
   -c:v copy -c:a aac -b:a 192k -ar 48000 -movflags +faststart -shortest "$OUT" >/dev/null 2>&1
 
 # verify the OUTPUT actually carries audio

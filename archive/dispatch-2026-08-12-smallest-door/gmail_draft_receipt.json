@@ -1,0 +1,6 @@
+{"run_date":"2026-08-12","draft_id":"r-6997709292174074312","to":"docket@alaskaaihq.com",
+ "subject":"ALASKA.AI · Dispatch 2026-08-12 · The Smallest Door · UNGRADED, read the caveats first",
+ "created_at_utc":"2026-08-12T06:45:00Z",
+ "caveats":["no verified media links; upload_video.py failed verification and the media branch push was rejected",
+            "no 3-judge panel ran and ship_gate was never recorded, so the cut is UNGRADED",
+            "runtime 153.5s against the 112-130s band; cause fixed in config/state.yaml on the run branch"]}

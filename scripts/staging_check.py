@@ -131,7 +131,7 @@ def scan_engine(path):
     """Every <Character> with its scene number, poses, and whether its gesture is driven."""
     src = open(path).read()
     decls = [(int(m.group(2)), m.start())
-             for m in re.finditer(r"^const (S(\d+)): React\.FC<SceneProps>", src, re.M)]
+             for m in re.finditer(r"^const (S(\d+)): React\.FC<SceneProps\b[^>]*>", src, re.M)]
     out = []
     for m in re.finditer(r"<Character\b", src):
         blk = char_block(src, m.start())
