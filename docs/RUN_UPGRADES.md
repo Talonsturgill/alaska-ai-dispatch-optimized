@@ -9,9 +9,20 @@ back on if a later run regresses. Newest first.
 
 ## 2026-08-13 — "The Machine Nobody Wrote Down" (NSF 2626692, UAF, the generator model that was never written down) — DID NOT SHIP
 
-**Status: the panel did not clear the bar and the branch was NOT merged.** Round-2 panel returned
-5.96 / 5.78 / 6.48 against a 7.5 ship threshold. No upload, no feed entry, no Gmail draft. The run
-branch `claude/dispatch-2026-08-13` carries the film, the evidence pack and every fix below.
+**Status: the panel did not clear the bar and the branch was NOT merged.** Round 2 returned
+5.96 / 5.78 / 6.48; round 3, on the re-rendered cut, returned **5.32 / 5.76 / 5.68, median 5.68**,
+below the 7.5 bar by 1.82. No upload, no feed entry, no Gmail draft. The run branch
+`claude/dispatch-2026-08-13` carries the film, the evidence pack and every fix below.
+
+**The round-3 median FELL while the film improved, and all three judges said so themselves.** Each
+one declared the drop as MY STANDARD MOVED rather than a regression, and each named the element:
+judge 1 began pricing the single reused background plate and applying the audio gate; judge 2
+priced the blank prints and the closed drawer for the first time; judge 3 read the filmstrips
+properly and found that the large `changed_pct` figures were shot cuts. That is the exact drift
+`config/panel_protocol.md` was written about. It also means the round-2 to round-3 delta is not a
+measurement of this run's work. What IS a measurement: every hard blocker they were asked
+to re-verify came back cleared, judge 3 on the safe-area fix in their own words, "IT LANDED. Not
+half-landed."
 
 **Story (verified, and worth keeping for a re-run):** NSF award 2626692, made August 10th 2026 to the
 University of Alaska Fairbanks, PI Mariko Shirazi, with a companion award to Wisconsin-Madison. Put a
@@ -56,6 +67,24 @@ and never says AI, because the award never does.
   1.608 opening zoom. Both are sized to the shot now and the case walks out through the right edge
   carrying the same handle, seam and latch it was planted with.
 
+### The audio hard blocker, found by the panel and fixed the same session
+
+All three judges independently failed the run on the rubric's audio line: the delivered square
+measured **true peak -0.67 dBTP against a -1.0 ceiling**, self-reported in `audio_report.json` as
+`"true_peak": false`. Judge 1 also caught the contradiction that located the cause: the report
+asserts the square is a video-only crop of the master carrying the same mix, and a video crop
+cannot move true peak by a decibel.
+
+It could not, and it did not. `encode_deliverables.sh` was re-encoding the audio with
+`-c:a aac -b:a 192k`, and a lossy re-encode of a signal already near the ceiling reconstructs
+inter-sample peaks above it. Measured per channel with `ebur128=peak=true`: master -1.7/-1.7,
+re-encoded square -1.5/**-0.7**. One transcode cost a full decibel on the right channel.
+
+The master's audio is already AAC 48k stereo out of the mux, so there was nothing to convert.
+Both derivative renditions now use `-c:a copy`. Verified after the fix: square I -13.8, peak -1.7,
+byte-identical mix to the master, and `audio_report.json` now reads `"true_peak": true`. The
+report's "same mix" claim is now true by construction instead of by assertion.
+
 ### Machine upgrades
 
 - **`scripts/edge_bleed_check.py` (new).** Reads the encoded master and reports TYPE running into the
@@ -69,6 +98,35 @@ and never says AI, because the award never does.
   starting BEFORE its predecessor ended and lasting 0.2s, which is a flash and made `caption_rechunk`
   assert and stop. The repair redistributes only the runs the aligner contradicted itself on, holds
   the run's outer boundaries fixed, and leaves every cue it got right untouched to the millisecond.
+
+- **`build_evidence.py`: filmstrips no longer straddle cuts.** Two judges independently worked out
+  that every strip reporting 42 to 67 percent motion was centred on a shot boundary, so the
+  headline numbers measured CUTS and reported them as animation. This is the worst class of
+  instrument bug available here, because `motion.json`'s own note tells a judge to read those
+  figures BEFORE recording a beat as frozen. The cause was arithmetic: most `MOVES` carry
+  `off=0.0`, the centre is therefore the line start, and a line start is a shot boundary. Windows
+  are now slid clear of the nearest boundary into the shot the centre belongs to, every row
+  records `straddled_cut` and `window_start_s`, and the file note says outright that large figures
+  in older packs are shot changes.
+- **`claims.json` now declares its one illustrative figure.** The file's rule says a number not in
+  it does not go on screen, and its closing note asserted "Every figure on screen comes from this
+  file" while the film's central prop carried an invented 365 kW. Two judges flagged the
+  contradiction and asked for an explicit ruling rather than silence. There is now an
+  `illustrative_figures` block recording the value, why it is invented (the record publishes no
+  nameplate for any specific village machine, and borrowing a real utility's number would attach
+  the story to a plant it is not about), and its standing obligations: visible ILLUSTRATIVE badge
+  in every appearance, never spoken, never placed beside the sourced 500 kW-scale figures.
+
+### Still open after round 3
+
+- `config/panel_anchors.md` **does not exist**, though `panel_protocol.md` prescribes it as the fix
+  for cause #1 of the drift it documents. Judge 3 raised it unprompted. Every judge is still
+  scoring from word-descriptors alone, which is precisely the condition the protocol says produces
+  a floating scale, and all three floated downward this round. Building the anchor file is the
+  highest-value panel fix available and it is not a film fix at all.
+- The drawer gag never opens on screen, the five prints in the Act 3 rebuttal are blank grey
+  rectangles, and the S11 "village dock, snow light" is the same interior wall as every other shot.
+  All three are picture, all three were named by at least two judges.
 
 ### Why it did not ship, measured
 

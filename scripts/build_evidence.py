@@ -200,6 +200,30 @@ def main():
     print(f"caption cues: {len(_cues)} written to evidence")
 
     # ---- motion filmstrips, CENTRED ON THE REAL MOVE ----
+    #
+    # A STRIP THAT STRADDLES A CUT MEASURES THE CUT (2026-08-13). Two judges independently
+    # worked this out from the pack and one put it plainly: "every strip reporting 42-67%
+    # sits exactly on a storyboard shot boundary, so those numbers measure cuts and not
+    # animation." They were right, and it is the worst kind of wrong, because motion.json's
+    # own note tells a judge to read these figures BEFORE recording a beat as frozen. The
+    # instrument was handing out 66.7% for a hard cut between two frozen tableaux and a judge
+    # who trusted it would have scored motion that does not exist.
+    #
+    # The cause is arithmetic: many MOVES carry off=0.0, so the centre IS the line start, and
+    # a line start is a shot boundary. An 8-frame window centred there is 4 frames of the
+    # outgoing shot and 4 of the incoming one.
+    #
+    # So the window is now slid off the boundary into whichever shot the centre belongs to,
+    # and every entry records whether it had to move. changed_pct now means WITHIN-SHOT
+    # motion in every row, which is the only thing it was ever supposed to mean.
+    bounds = []
+    try:
+        _sc = json.load(open(os.path.join(OUT, "episode_props.json"))).get("scenes") or []
+        bounds = sorted({round(s["from"] / 30.0, 3) for s in _sc if s.get("from")})
+    except Exception as _e:
+        print(f"  (no scene boundaries available, strips not de-straddled: {_e})")
+
+    WIN = 8 / 30.0
     motion = {}
     for name, line, off in MOVES:
         if line not in start:
@@ -207,6 +231,12 @@ def main():
             continue
         centre = start[line] + off
         t0 = max(0.0, centre - 0.13)          # 8 frames at 30fps spans ~0.27s
+        straddled = next((b for b in bounds if t0 < b < t0 + WIN), None)
+        if straddled is not None:
+            # keep the shot the CENTRE belongs to, and sit clear of the cut by one frame
+            t0 = straddled + 1 / 30.0 if centre >= straddled else max(0.0, straddled - WIN - 1 / 30.0)
+            print(f"  filmstrip {name}: window straddled the cut at {straddled:.2f}s, "
+                  f"slid to {t0:.2f}s so the measurement is within-shot")
         subprocess.run(["ffmpeg", "-y", "-ss", f"{t0:.3f}", "-i", a.video, "-frames:v", "8",
                         "-vsync", "0", "-q:v", "3",
                         os.path.join(EV, f"s_{name}_%d.jpg"), "-v", "error"], check=True)
@@ -239,7 +269,9 @@ def main():
         changed = 100.0 * sum(hist[12:]) / px
         peak = max((i for i, c in enumerate(hist) if c), default=0)
         motion[name] = {"centre_s": round(centre, 2), "changed_pct": round(changed, 1),
-                        "peak_delta": peak}
+                        "peak_delta": peak, "window_start_s": round(t0, 2),
+                        "straddled_cut": straddled is not None,
+                        "within_shot": True}
 
         t2, h2 = int(w * 0.34), int(h * 0.34)
         st = Image.new("RGB", (len(xs) * t2, h2 + 34), "white")
@@ -259,7 +291,13 @@ def main():
     json.dump({"note": "frame 1 vs frame 8 of each filmstrip window, measured on the "
                        "delivered cut. changed_pct is the share of pixels differing by "
                        "more than 12/255. A judge who cannot SEE motion in a strip should "
-                       "read this before recording that the beat is frozen.",
+                       "read this before recording that the beat is frozen. EVERY WINDOW "
+                       "HERE IS WITHIN A SINGLE SHOT: any window that straddled a cut has "
+                       "been slid clear of it and is marked straddled_cut, because a strip "
+                       "spanning a cut measures the cut and reports it as animation. Before "
+                       "2026-08-13 it did not do this, and the large figures in older packs "
+                       "are shot changes, not motion. Cross-check against "
+                       "motion_registered.json, which solves the camera out per shot.",
                "strips": motion},
               open(os.path.join(EV, "motion.json"), "w"), indent=2)
     print("  motion.json written:", {k: v["changed_pct"] for k, v in motion.items()})
