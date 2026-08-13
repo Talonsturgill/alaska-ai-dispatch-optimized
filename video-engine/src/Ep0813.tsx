@@ -744,7 +744,13 @@ const S7: React.FC<SceneProps & {dur: number}> = (p) => {
 /** S8 63.37-71.89 — THE CUTAWAY. The probe goes out and comes back changed. */
 const S8: React.FC<SceneProps & {dur: number}> = (p) => {
   const f = useCurrentFrame();
-  const trip = interpolate(f, [10, 92], [0, 2], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  // THE WIRE KEEPS ASKING (2026-08-13, round 8b). The probe made one out-and-back over f10-92
+  // and then an 8.5-second shot had nothing travelling in it, which is both why S8 measured
+  // under the registered floor and, worse, the opposite of what this beat argues: the whole
+  // proposal is an instrument that stays on the wall and asks again. It cycles now.
+  const trip = f <= 92
+    ? interpolate(f, [10, 92], [0, 2], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})
+    : ((f - 92) / 74) % 2;
   const curve = interpolate(f, [at(p, 8, 4.2), at(p, 8, 7.4)], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   return (
     <Stage f={f} dur={p.dur} drift={0.5} zoom={0.98}>
@@ -765,7 +771,15 @@ const S8: React.FC<SceneProps & {dur: number}> = (p) => {
                   cy={1012} r={13} fill={P.violet} stroke={INK} strokeWidth={3} />
         </Smear>
       )}
-      <Plate x={540} y={1120} text="PROBE THE GRID" size={30} />
+      {/* y=1206, not 1120. Judge 1 read this chip as "PROBE THE GR" and was exactly right: the
+          transfer-curve panel is staged at x 636..916 and this plate's text runs to x~688, so
+          the panel covered the last four characters of the film's most important verb. Nothing
+          could have caught it -- plate_overlap_check models plate-on-plate and this is a plate
+          under ART, which is the defect class probe_frames.sh exists for. y=1206 was the
+          obvious move and it is taken by LEARN HOW IT ANSWERS, so the chip stays on its own
+          row and moves LEFT of the panel instead, to x=430, where it sits under the stretch of
+          wire it actually labels. The panel reads on the right, the chip on the left. */}
+      <Plate x={430} y={1120} text="PROBE THE GRID" size={28} />
       {curve > 0 && (
         <g opacity={curve}>
           {/* the transfer curve drawing itself from out minus back */}
@@ -806,7 +820,7 @@ const S9: React.FC<SceneProps & {dur: number}> = (p) => {
           and crop_safety already model, and the width stops at 900 because Stage's push closes
           the visible authored band to x[142,938] by the end of a shot. */}
       {pin.o > 0 && (
-        <g opacity={pin.o} transform={`translate(0 ${pin.dy}) rotate(${-2 + drift * 1.4} 700 880)`}>
+        <g opacity={pin.o} transform={`translate(${Math.sin(f / 31) * 5} ${pin.dy}) rotate(${-2 + drift * 1.4 + Math.sin(f / 24.3) * 1.5 + Math.sin(f / 9.7) * 0.4} 700 610)`}>
           <ContactShadow cx={700} cy={1052} rx={210} ry={13} opacity={0.24} />
           <rect x={500} y={596} width={400} height={444} rx={3} fill="#F1EDE3" stroke={INK} strokeWidth={4} />
           <rect x={522} y={618} width={356} height={330} fill="#8E9AA0" />
