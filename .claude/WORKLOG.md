@@ -1,13 +1,51 @@
 # WORKLOG — Dispatch 2026-08-13, "THE MACHINE NOBODY WROTE DOWN"
 
-## Status: UNSHIPPED. Panel median 6.72 (round 9). SHIP BAR IS NOW 7.0. Round 10 rendering.
+## Status: UNSHIPPED. Panel median 6.77 (round 10). BAR IS 7.0. GAP 0.23.
 
-**The owner lowered the ship gate from 7.5 to 7.0 on 2026-08-13, permanently**, verbatim: "move
-the ship gate down from 7.5, down to 7.0 permanently". It lives in `config/dispatch_rubric.yaml`;
-`ship_gate.py` reads it, never hardcodes it. The run in flight was at 6.72 and did NOT clear the
-new bar either — recorded so nobody later reads that edit as a gate moved to fit a number.
+The owner lowered the ship gate 7.5 -> 7.0 on 2026-08-13, permanently, verbatim: "move the ship
+gate down from 7.5, down to 7.0 permanently". It lives in `config/dispatch_rubric.yaml`;
+`ship_gate.py` reads it and never hardcodes it.
 
-GAP TO SHIP IS NOW 0.28.
+## START HERE NEXT SESSION
+
+Commit `8754644` contains an UNRENDERED, UNGRADED change that all three round-10 judges asked
+for and that I could not verify before running out of room. **Render it and re-panel first.**
+
+**The camera fix.** Every judge wrote the same sentence: `dx`/`dy` are 0.0 in all 42 samples,
+the camera is locked, the brand's hand-staged parallax is measurably absent. It was authored the
+whole time — at amplitude 30 on a 43.7-frame period scaled by a per-shot `drift` of 0.3-0.8, the
+frame moved ~0.7px across the 4-frame gap the solver measures. Sub-pixel, so it registered as
+exactly 0.0 and read as a tripod. Now amplitude 44 on a 31.7-frame period (~5px per sampled gap)
+with the background counter-drift raised to match. Judge 2: *"a 1-2% push with layered per-plane
+parallax in every shot would lift Motion, Hook and Composition at once and clear the one
+sub-floor shot."* That is 0.32 of rubric weight plus the last floor breach — the single biggest
+remaining item, and it is already written, just unproven.
+
+WATCH FOR: a 44px drift at 1.2 zoom is ~53px on screen. If it reads seasick, drop toward 36
+rather than reverting to 30, and check `crop_safety` since more drift means more edge exposure.
+
+## THE PATTERN THAT KEEPS COSTING ME ROUNDS
+
+Three times now I have shipped something that was arithmetically present and optically absent:
+1. the room flicker (round 7) — metric moved 0.5 -> 1.2, judges still saw frozen backgrounds
+2. the exhaust plume (round 8) — drawn in a colour within 9 luminance levels of the wall
+3. the camera (round 10) — authored drift moving 0.7px per sampled gap
+
+Every time, the fix was to make the thing BIGGER, not to add another thing. Before believing any
+motion or finish work has landed, probe a frame and look, or measure the delta directly.
+
+## Panel trajectory (median)
+
+| round | judges | median |
+|---|---|---|
+| 6 | 5.76 / 5.82 / 5.98 | 5.82 |
+| 7 | 6.46 / 6.56 / 6.26 | 6.46 |
+| 9 | 6.72 / 6.90 / 6.70 | 6.72 |
+| 10 | 6.77 / 6.80 / 6.76 | **6.77** |
+
+Round-10 axes (j1/j2/j3): Hook 6/6/6 · Illustration 7/7/7 · **Motion 6/6/6** · Composition 6/6/6 ·
+Color 7/6/7 · Typography 7/7/6 · Sound 6/7/7 · VO-sync 7/7/7 · Accuracy 8.5/8/8 · Alaska 7/8/7 ·
+Writing 8/8/8
 
 ## Panel trajectory (median)
 
@@ -63,24 +101,33 @@ actually moving.
 - St. Mary's: rounded hazed hills, willow scrub, sun bloom (kept low relief on purpose, see below)
 - `motion_check` now holds registered_pct to the floor too, not just block_max
 
-### STILL OPEN after round 9 — ranked by weighted points available
-- [ ] **BREAK THE SINGLE STAGE.** See the root-cause section above. 0.40 of the rubric.
-- [ ] **SFX. There is still no `sfx_events.json`.** Every judge caps Sound at 6-7 purely for
-      absent layer evidence, 0.10 weight, and two have now flagged it twice. 25.2s of silence
-      across 24 gaps. Does NOT need a re-render, only re-mix + re-encode + evidence.
-- [ ] **Runtime.** 130.8s with 25.2s of VO silence; judges want ~90-110s. S1 alone is 12.37s.
-      Needs `vo_patch_lines.py` + re-align + re-mix.
-- [ ] **S8 registered_pct 1.15** against a 1.2 floor — the last shot under. S14 sits exactly on
-      1.20. Try `door={0.8}` (it passes 0.5) and `ProbeResponse amp` 46 -> 68.
-- [ ] **Put a person in the film.** All three judges: the only human presence in 131s is a
-      disembodied hand, and it caps BOTH Alaska (0.06) and entertainment inside VO-sync (0.08).
-- [ ] **Kinetic type**, 0.06. Chips slide and sit; nothing animates on its cue.
-- [ ] **Ship `quality_gate.py` output inside the evidence pack.** Judge 2 has now been unable to
-      verify the objective pre-gate for two rounds running: "a gate no judge can see is not a
-      check and balance." Same for a palette-recency ledger, which makes one rubric hard blocker
-      unfalsifiable from the pack.
-- [ ] **`config/panel_anchors.md`** — artifacts are preserved at `config/anchors/r9-*.jpg` and
-      round 9 produced three agreed cards. It can finally be written.
+### STILL OPEN after round 10 — ranked
+- [ ] **RENDER + PANEL the camera fix in `8754644`.** See START HERE. 0.32 of weight + the floor.
+- [ ] **The VO still says "a new one any hour."** The on-screen chip and the polaroid stamps are
+      fixed, but the narration asserts a cadence no claim carries. Judge 2 flagged this in round 7
+      and it survived three rounds. Needs `scripts/vo_patch_lines.py` (surgical single-line
+      re-synth; it asserts no later line moves). Do this — it is an accuracy defect, not a taste
+      note, in a brand whose whole position is sourcing.
+- [ ] **SFX. Still no `sfx_events.json`.** Sound capped at 6-7 by every judge for absent layer
+      evidence, 0.10 weight, flagged in four consecutive rounds. 25.2s of silence across 24 gaps.
+      Needs re-mix + re-encode + evidence, NOT a re-render.
+- [ ] **Idle life on held hands**, esp. S14 at 118.9s (the film's last 12 seconds) and the pair
+      beat at 28.6s. All three judges. `breath` exists on `Hand` now but judges still read the
+      loopback hand as pixel-identical, so it is too small — make it bigger, per the pattern above.
+- [ ] **Caption chunking.** Judge 1: "A rating plate on a village / diesel generator." and
+      "that blank space, at the University / of Alaska Fairbanks." Re-chunk on phrase boundaries.
+- [ ] **"just under" strands its figure.** Judge 2: cues 96.28/98.39 leave an unhedged
+      "three hundred twenty five thousand dollars" on screen 4.5s after the hedge leaves.
+- [ ] **"Alaska's utilities are ahead of the science"** is a comparative characterisation absent
+      from claims.json, in both VO (88.38s) and post.txt. Source it or soften it.
+- [ ] **The "usually unavailable" subline** is legible now but still dark-on-mid grey. Judge 2
+      wants it light-on-dark like the ILLUSTRATIVE badge that already got this treatment.
+- [ ] **Ship `quality_gate.py` output + a palette-recency ledger inside the evidence pack.**
+      Judge 2, three rounds running: "a gate no judge can see is not a check and balance."
+- [ ] **`config/panel_anchors.md`** — artifacts preserved at `config/anchors/r9-*.jpg`, and there
+      are now two rounds of agreed cards to anchor against.
+- [ ] **Break the single stage** (11 of 14 shots, one plate). The safe route is restaging content
+      in authored space, not changing Stage's transform — see the note further down.
 
 ### FIXED in round 9/10 (do not re-fix)
 - sources ledger complete + contiguous + URLs agree, incl. URLs cited in prose `note` fields
