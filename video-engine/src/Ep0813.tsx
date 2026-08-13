@@ -110,8 +110,16 @@ const Stage: React.FC<{f: number; dur: number; children: React.ReactNode; drift?
   // -0.05 and closing at +0.13 keeps the framing the shots were staged for and still travels
   // 18 percent, front-loaded where a viewer is still reading the frame.
   const push = -0.05 + 0.18 * (1 - Math.pow(1 - pt, 2));
-  const dx = Math.sin(f / 43.7) * 30 * drift;
-  const dy = Math.cos(f / 59.3) * 17 * drift;
+  // A CAMERA NOBODY CAN MEASURE IS NOT A CAMERA (2026-08-13, round 10). All three judges wrote
+  // the same sentence: dx and dy are 0.0 in all 42 samples, the camera is locked, the brand's
+  // hand-staged parallax is measurably absent. It was authored the whole time. At amplitude 30
+  // on a 43.7-frame period, scaled by a per-shot drift of 0.3 to 0.8, the frame moves about
+  // 0.7px across the 4-frame gap the solver measures, which is sub-pixel, so it registers as
+  // exactly zero and reads as a locked-off tripod. Same failure as the exhaust plume: present
+  // in the arithmetic, absent in the picture. Larger amplitude on a SHORTER period puts about
+  // 5px between sampled frames, which a viewer reads as a hand-held drift and a solver can see.
+  const dx = Math.sin(f / 31.7) * 44 * drift;
+  const dy = Math.cos(f / 41.3) * 24 * drift;
   const fl = roomFlicker(f, hunt);
   return (
     <Frame>
@@ -832,7 +840,7 @@ const S9: React.FC<SceneProps & {dur: number}> = (p) => {
         </g>
       )}
       <Plate x={540} y={1120} text="A MEASUREMENT IS THE MOMENT" size={26} />
-      {drift > 0.35 && <Plate x={540} y={1206} text="LOAD SWINGS  ·  FORTY BELOW" size={24} />}
+      {drift > 0.35 && <Plate x={540} y={1206} text="LOAD SWINGS  ·  THE WEATHER TURNS" size={24} />}
       <DayGrade f={f} amount={0.48} floor={0.3} haze={0.13} sunX={0.06} sunY={0.22} />
     </Stage>
   );
@@ -891,7 +899,7 @@ const S10: React.FC<SceneProps & {dur: number}> = (p) => {
               <path d={`M -58 38 H 58`} stroke={INK} strokeWidth={2} opacity={0.4} />
             </g>
             <text x={0} y={104} textAnchor="middle" fontSize={19} fontFamily={MONO} fill="#39424A">
-              {['08:14', '09:14', '10:14', '11:14', '12:14'][i]}
+              {['08:14', '09:02', '11:40', '12:15', '14:03'][i]}
             </text>
           </g>
         );
@@ -901,7 +909,7 @@ const S10: React.FC<SceneProps & {dur: number}> = (p) => {
           two days before the work starts. The hardware genuinely is already on the wall (c17,
           shipped 2023); the METHOD is what has not happened. "THE AIM" is c9's own licensed
           framing and marks the whole pair prospective. Judge 3 raised this twice. */}
-      <Plate x={540} y={1120} text="THE AIM  ·  A NEW ONE ANY HOUR" size={27} />
+      <Plate x={540} y={1120} text="THE AIM  ·  TUNING IN THE FIELD" size={27} />
       {seat.o > 0 && (
         <g opacity={seat.o} transform={`translate(0 ${seat.dy})`}>
           <Plate x={540} y={1206} text="ALREADY ON THE WALL" size={26} />

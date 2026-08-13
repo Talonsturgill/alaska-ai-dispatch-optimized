@@ -533,7 +533,11 @@ export const PowerhouseBG: React.FC<{f: number; parallax?: number; door?: number
    * far wall now counter-drifts against Stage's own drift, on a different period, so the room
    * has depth that survives the camera being solved out -- and the corrugation, the dressing
    * and the floor grid all sweep against the props instead of riding with them. */
-  <g transform={`translate(${Math.sin(f / 67.9) * -21 * (1 + parallax)} ${Math.cos(f / 88.3) * -9})`}>
+  /* THE PLANES HAVE TO DISAGREE BY A VISIBLE AMOUNT. This counter-drift is what makes the room
+      a background rather than a card glued to the props, and at amplitude 21 on a 67.9-frame
+      period it moved about 0.4px per sampled gap, which is nothing. Faster and larger, and still
+      counter to Stage's own drift, so the parallax reads as depth instead of as a pan. */
+  <g transform={`translate(${Math.sin(f / 34.7) * -38 * (1 + parallax)} ${Math.cos(f / 44.1) * -16})`}>
     <defs>
       <linearGradient id="phwall" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0%" stopColor="#7E888E" />
