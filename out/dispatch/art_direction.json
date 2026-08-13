@@ -1,0 +1,87 @@
+{
+  "run_date": "2026-08-13",
+  "title_working": "THE MACHINE NOBODY WROTE DOWN",
+  "binding": "This plan is an INPUT the build executes against and Phase 6 checks the render against it. If a build decision contradicts it, either fix the build or consciously revise this file and say why in the retrospective.",
+
+  "palette": {
+    "world": "COLD HIGH-KEY DAYLIGHT INSIDE A WORKING POWERHOUSE. Snow-glare coming through an open door, everything legible, nothing hidden.",
+    "roles": {
+      "sky": "#DCE6EC  snow-glare daylight, the light source and the ambient",
+      "ground": "#B9BFC0  pale concrete floor, high albedo, shadows fill rather than crush",
+      "hero": "#3F5D4A  industrial enamel green, the genset's factory colour, desaturated and old",
+      "hero_age": "#7A3B2E  oxblood rust and heat scale, the visible record of decades of service",
+      "counterpart": "#E8E4DA  bone-white battery cabinet with #2B2F33 graphite panel lines, factory-new, no patina",
+      "accent": "#7B4BFF  ELECTRIC VIOLET, RESERVED BY CONSTRUCTION",
+      "shadow": "#8A9296  cool grey, LIFTED, never approaching black"
+    },
+    "accent_law": "VIOLET APPEARS ONLY ON THE MEASUREMENT. The probe leaving the inverter, the response coming back, and the writing that lands on the rating plate. Nothing else in the film is ever violet. This is enforced through lighting.tsx AccentRegistry (AccentLicense + useAccent) so a leak throws at paint time rather than being caught by a judge. The rule means something: violet is what has been MEASURED, so a violet mark on the plate is a fact the machine established for itself, and the plate's remaining blank fields are blank precisely because no violet ever reached them.",
+    "divergence": "The last two dispatches were 2026-08-09 warm amber boiler room with an acid-green simulation accent, and 2026-08-12 cold slate teal institution with bone paperwork, brass and one signal red. Both natural readings of a diesel powerhouse are therefore spent: warm amber engine room is 08-09, and dark institutional slate is 08-12. THIS FILM GOES THE THIRD WAY, into HIGH-KEY COLD DAYLIGHT, which no recent dispatch has used at all. It is also the honest light for this story: nothing here is sinister or hidden, the problem is simply that a fact was never written down, and a brightly lit room where you can see everything and still not know the answer is a better picture of that than a shadow.",
+    "why_this_story": "A high-key world with one reserved chroma lets ABSENCE read as absence. On a dark palette a blank field is just unlit. On a bright one, blank is blank."
+  },
+
+  "light": {
+    "time_of_day": "late morning, midwinter, hard low sun on snow outside the open door",
+    "direction": "a single hard cold shaft from screen left through the doorway, plus a broad snow-bounce fill from below and behind",
+    "key_fill_rim": "Key is the doorway shaft, cold and directional. Fill is snow bounce, which is why shadows stay open. Rim is a pale cold edge separating both machines from the back wall.",
+    "depth_approach": "DayGrade (lighting.tsx, added 2026-07-31) with a LIFTED floor, which is the whole point: at high albedo, outdoor and snow-lit shadows fill with skylight and never approach black. Crushed blacks here would read as a studio tabletop, which is the exact failure DayGrade was written to prevent. Aerial perspective separates the three depth planes rather than value alone.",
+    "the_light_means": "Nothing is being concealed. The room is fully lit and the answer still is not in it."
+  },
+
+  "shape_language": {
+    "thesis": "TWO GRAMMARS, DELIBERATELY OPPOSED, ON ONE LINE.",
+    "the_genset": "ORGANIC-ACCRETED. Nothing on it is parallel to anything. Decades of service drawn as geometry: mismatched fasteners, a patched exhaust wrap, a replacement panel in a slightly different green, weld beads that are not straight, hose runs added by different hands at different times. It is not shabby, it is MAINTAINED, which is a different and more respectful drawing. This machine works. Nobody wrote it down.",
+    "the_battery_cabinet": "MACHINED-ORTHOGONAL. Every edge parallel, panel lines exact, corner screws recessed on a regular pitch, one flush display. Factory-new, no history, and therefore nothing to know about it that is not already documented.",
+    "the_contrast_carries_the_argument": "The film's claim is that the OLD machine is the unknown one, which inverts the usual reading where new equals mysterious and old equals understood. The shapes say it before the narration does.",
+    "not_generic": "This is not a hard-versus-soft cliche. Both objects are hard industrial metal. The axis is REGULAR versus ACCRETED, which is the axis the story is actually about."
+  },
+
+  "casting": {
+    "hero": "FieldGenset (NET-NEW, lib/identify.tsx)",
+    "hero_justification": "The shelf has no engine-generator set. The nearest prior art is kit.tsx Sourdough, a personified regional POWER PLANT, warm and rounded and blocky with a furnace-window chest, which is a whole utility characterised as a friendly civic building. This is a different object and a different verb: a skid-mounted diesel genset in one small powerhouse, and its defining property is that it is UNDOCUMENTED rather than that it is friendly. Sourdough also played hero on 2026-07-19 and 2026-07-29, and re-casting it for a second Alaska grid story is exactly the cast-churn failure the 2026-07-21 rule was written against.",
+    "hero_dedupe": "FRESH with --hero FieldGenset. Differs from the last two heroes, LoopGovernor (2026-08-09) and Sill (2026-08-12).",
+    "throughline_object": "RatingPlate (NET-NEW, lib/identify.tsx)",
+    "supporting_from_the_shelf": [
+      "lib/absence.tsx Unnamed / UnnamedField for the blank dynamic fields, which is what that grammar exists for",
+      "lib/lighting.tsx DayGrade, AccentRegistry, AccentLicense, useAccent, tones, FormGradient, RimLight, ContactShadow",
+      "lib/motion.tsx vitals, entrance, followThrough, MotionBlur, ChipShadow",
+      "lib/materials.tsx brushedMetal and corrugated for the powerhouse wall and the cabinet skin",
+      "lib/props.tsx StatCard and Nameplate for plated figures, form-shaded by default",
+      "lib/simulation.tsx Simulated for the laboratory act, because a lab test bed IS a stated model of a village grid and that is precisely what that grammar means",
+      "lib/EndCredits.tsx, mounted verbatim"
+    ],
+    "no_human_figure_rule": "A HUMAN OPERATOR APPEARS, AND IT IS DELIBERATE. The cultural rail says rural Alaskans are the competent party, not the beneficiary, so the film shows a pair of gloved hands and a clipboard doing real work at the right moments, and never a face performing helplessness or rescue. Mariko Shirazi is named on a plate and is NEVER drawn as a character. Staging must satisfy staging_check.py: any figure on screen has a beat and an act to perform."
+  },
+
+  "motion_language": {
+    "the_signature_move": "THE ROUND TRIP. A violet probe pulse leaves the inverter, travels the busbar left to right, meets the genset, and RETURNS CHANGED. Out clean, back wobbling. The camera tracks it out and tracks it back, so the film's motion vector is a return rather than a traverse.",
+    "what_earns_180_degree_blur": "the probe pulse at its fastest, and the flywheel at speed",
+    "hero_moves_named": [
+      "the flywheel never stops turning, the whole film, because a genset that stops turning is a village in the dark and this film never shows that",
+      "the oscillation: two bodies on one line, each overshooting the other's correction, amplitude growing on a shared spring, then caught",
+      "the writing: measured values arriving on the plate in violet, letter by letter, in a different hand from the stamped kilowatt figure",
+      "the pull-back at roughly 100s revealing the plate is a GRID of operating points and only one column has been written"
+    ],
+    "anti_slideshow": "Per DISPATCH_STANDARD section 8: every scene wrapper carries a continuous slow push (about 1.00 to 1.10 across the shot) plus a lateral drift on an irrational period, and one always-running ambient layer, authored BEFORE any event. Always-running layers available here: the flywheel, dust in the door shaft, a slack cable swaying, the snow outside."
+  },
+
+  "composition": {
+    "focal_hierarchy": "the plate is the smallest object and the most important, so it earns scale by camera rather than by size",
+    "the_9x16_and_the_square": "The 9:16 master is the graded cut and is composed for. Content outside y 420 to 1500 is free canvas that stages the vertical: the powerhouse roof structure and hanging conduit above, the concrete floor and cable tray in the near foreground below. The paired machines and every plate sit inside the square safe box so the derived crop never amputates the argument.",
+    "negative_space_beats": "the moment after the probe returns, before anything is written, holds on an empty plate field with the room quiet",
+    "the_signature_shot": "THE PULL-BACK AT ~100s. The camera has been close on one written line for the whole of Act 3. It pulls back and the plate is revealed to be a grid of many operating-point columns, with exactly one column written in violet and every other column blank. The film's honesty and its hope are the same picture: something real was measured, and most of it has not been."
+  },
+
+  "craft_advance": {
+    "primary": "lib/identify.tsx, THE SYSTEM IDENTIFICATION GRAMMAR",
+    "why_it_is_a_real_gap": "The shelf can draw a thing that PERCEIVES (vision.tsx), a thing that LISTENS (sensors.tsx), a thing that CONTROLS (bioprocess.tsx LoopGovernor), a thing that IS NOT THERE (absence.tsx), and a thing MADE OF ARITHMETIC (simulation.tsx). Nothing on it draws MEASURING AN UNKNOWN SYSTEM. The distinction from absence.tsx is exact and is the same kind of distinction simulation.tsx was built on: Unnamed draws a thing that should be here and is not, this draws a thing that IS here, plainly present and working, whose INSIDE is unknown.",
+    "components": [
+      "Unknown: renders any silhouette as PRESENT BUT UNCHARACTERISED. Not dashed, because it is really there. The contract is a solid confident outline with an interior that refuses to resolve, and a slow internal churn on an irrational period so it never reads as a failed render.",
+      "Probe and Response: the paired question and answer. Out clean on a straight line, back on a perturbed one. They are ONE component because they are one event and drawing them separately is what makes a viewer read two unrelated pulses.",
+      "RatingPlate: the throughline. Stamped fields versus measured fields, in two visibly different hands, on a grid of operating-point columns. `written` fills a column, `columns` sets how many remain blank, so the film's final honest frame is a parameter rather than a redraw.",
+      "CoupledRinging: two bodies on a shared line whose correction overshoots, with amplitude growing on a real spring and a catch. The shelf has no oscillation primitive and this channel covers grid physics regularly."
+    ],
+    "secondary": "First real use of DayGrade's lifted floor at full strength in a high-key interior, and first use of AccentRegistry to make a semantic rule (violet means measured) a property of the scene graph."
+  },
+
+  "the_one_thing_a_viewer_remembers": "A rating plate with the kilowatt figure stamped hard at the top and everything underneath it blank, and then one column of it written in violet by the machine next door."
+}
