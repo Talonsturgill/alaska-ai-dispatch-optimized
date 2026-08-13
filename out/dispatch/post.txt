@@ -6,7 +6,7 @@ Here is the mechanism. Put a battery next to that diesel, about the same size an
 
 On a big grid you would characterize each machine by itself, because they sit far apart. In a powerhouse they don't. And in the abstract's own words, accurate generator models are also usually unavailable.
 
-So the standard fix needs a document nobody ever wrote.
+So the standard fix needs a document that usually isn't there.
 
 The proposal is to stop asking for it. The battery's own grid forming inverter will put a question into the wire and learn how the diesel answers, then retune itself.
 
@@ -14,12 +14,12 @@ The aim NSF names is to catch these interactions on site, without the specialize
 
 The fair objection is that a measurement is only the moment you took it. Units cycle. Load swings. The weather turns. A model measured Tuesday can be wrong Thursday. The answer isn't a better measurement. It's that the instrument will already be on the wall.
 
-Two caveats. The work starts on August 15th, so nothing has been measured yet, and the validation will happen in a laboratory test bed. A companion award sends $225,000 to Wisconsin.
+Two caveats. The work starts on August 15th, so nothing has been measured yet, and the validation will happen in a laboratory test bed. A companion award sends $225,000 to Wisconsin-Madison.
 
-And Alaska's utilities are ahead of the science anyway. A one megawatt grid forming battery shipped to the village of Saint Mary's back in 2023, and the co-op wrote its own acceptance tests for running with the diesels off.
+And Alaska's utilities are ahead of the science anyway. A one megawatt grid forming battery shipped to Saint Mary's, Alaska back in 2023, and AVEC wrote its own acceptance tests for running with the diesels off.
 
 One more thing. The award never says artificial intelligence. It says data driven.
 
 What would you need measured before you trusted a battery to hold up your grid on its own?
 
-#Alaska #Energy #Microgrids #EnergyStorage
+#Alaska #Microgrids #EnergyStorage #GridForming
