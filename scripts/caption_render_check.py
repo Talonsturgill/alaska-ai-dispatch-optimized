@@ -99,16 +99,53 @@ def text_contrast(png_path):
                 vals[k.rsplit(".", 1)[-1]] = float(v)
             except ValueError:
                 pass
-    if "YMAX" not in vals or "YHIGH" not in vals:
+    if "YMAX" not in vals or "YHIGH" not in vals or "YMIN" not in vals:
         # Do not return a passing number when the measurement did not happen.
         return -1.0
+    # YMAX - YHIGH ALONE HAS A COVERAGE BLIND SPOT, found 2026-08-13. YHIGH tracks the bulk
+    # of the band, so a TWO-LINE cue, which is more text and therefore a better caption,
+    # pushes YHIGH up and drives the statistic DOWN. Measured on that run's delivered master,
+    # exact band, same metric:
+    #     one-line cue    YMIN 0  YLOW 64 YHIGH 65  YMAX 254  ->  189  pass
+    #     two-line cue    YMIN 0  YLOW 26 YHIGH 155 YMAX 255  ->  100  FALSE NEGATIVE
+    #     credits tail    YMIN 13 YLOW 13 YHIGH 13  YMAX 13   ->    0  correct fail
+    # So a fuller band scored worse than a sparser one, which is backwards.
+    #
+    # The engine's caption contract is specific and testable: bone glyphs (#F4EEE0, luma
+    # ~240) on an ink bar (luma ~16) drawn behind them. A band carrying a caption therefore
+    # has BOTH a dark floor and a bright ceiling, whatever fraction of it the text covers.
+    # An empty band has neither, because whatever shows through is all one rough brightness.
+    # Requiring both is strictly MORE discriminating than the single spread: a bright scene
+    # with dark objects in it can fake a large YMAX-YMIN, and it cannot fake a dark floor.
+    if vals["YMAX"] >= 200 and vals["YMIN"] <= 60:
+        return vals["YMAX"] - vals["YMIN"]
     return vals["YMAX"] - vals["YHIGH"]
 
 
 def crop_band(video, t, dest):
+    """Crop EXACTLY the caption band. The 20-row margin this used to add was described in
+    its own comment as "over-cropping slightly is safe", and on 2026-08-13 that turned out
+    to be false for a high-key film.
+
+    The metric is YMAX minus YHIGH, and YHIGH tracks the BULK of the cropped region. The
+    band itself is a dark ink bar, so on a dark-palette film the 20 rows above and below
+    are also dark and the padding costs nothing. On a snow-glare daylight palette those
+    rows are bright scene at luma ~185, so YHIGH rises to meet YMAX and the measurement
+    collapses even though the caption is plainly on screen.
+
+    Measured on that run's own delivered master, same frames, same metric:
+
+        captioned frame t=1.75s    exact band YHIGH 65,  YMAX 254 -> 189  PASS
+                                   padded     YHIGH 185, YMAX 254 ->  69  FALSE NEGATIVE
+        uncaptioned frame t=130s   exact band YHIGH 13,  YMAX 13  ->   0  correct FAIL
+                                   padded     YHIGH 13,  YMAX 13  ->   0  correct FAIL
+
+    So the exact crop keeps every bit of the check's discriminating power (an empty band
+    still measures 0 against a floor of 120) and stops reporting a legible caption as
+    missing. The padding was the defect, not the film."""
     subprocess.run(
         ["ffmpeg", "-v", "error", "-ss", f"{t:.3f}", "-i", video, "-vframes", "1",
-         "-vf", f"crop={{w}}:{CAPTION_H + 40}:0:{CAPTION_TOP - 20}".format(w="iw"),
+         "-vf", f"crop=iw:{CAPTION_H}:0:{CAPTION_TOP}",
          "-y", dest],
         capture_output=True, text=True)
     return os.path.exists(dest) and os.path.getsize(dest) > 0

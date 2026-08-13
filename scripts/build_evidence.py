@@ -30,42 +30,51 @@ EV = os.path.join(REPO, "out", "evidence")
 
 # (name, vo_line, seconds INTO that line where the move actually peaks)
 MOVES = [
-    # RE-ANCHORED 2026-08-09 for "The Method, Not The Metal". Every name above this line
-    # belonged to a previous film and NONE of those beats exist here. Anchor names and
-    # offsets are PER-RUN DATA and a run that changes the film changes them in the same
-    # commit, because a strip pointed at the wrong moment produces a judge finding that is
-    # true about the EVIDENCE and false about the FILM, which is the most expensive kind.
-    # Offsets are CONTACT times at the motion's fastest point, clamped inside each line's
-    # own measured duration. Twenty-five strips across twelve shots, so no shot goes unsampled.
-    ("ignite",   0,  0.15),  # S1  the lamp SLAMMING on and the lid banging up off its hinge
-    ("tag",      0,  3.20),  # S1  the tag swinging out and settling with its print turned away
-    ("plate",    1,  0.25),  # S2  the award plate dropping onto the floor and bouncing once
-    ("count",    1,  2.60),  # S2  the total counting up and landing hard against the plate
-    ("stamp",    1,  5.70),  # S2  the campus plate stamping down beside the first
-    ("pour",     2,  0.30),  # S3  coal refuse pouring through frame in a torn irregular fall
-    ("swell",    2,  3.10),  # S3  the cell swelling up out of the grit until it fills frame
-    ("bind",     3,  0.70),  # S3  atoms striking the membrane, rebounding, and clamping OUTSIDE
-    ("assemble", 4,  0.25),  # S4  the money block assembling face by face
-    ("split",    4,  3.00),  # S4  the block shearing apart along its seam
-    ("bars",     5,  0.30),  # S4  the two parts rising into bars, the tall one overshooting
-    ("quote",    5,  3.60),  # S4  NSF's sentence typing itself clause by clause
-    ("spinup",   6,  0.30),  # S5  the flyballs swinging out and up as the spindle accelerates
-    ("twang",    6,  3.40),  # S5  THE REFUSAL, the cable stopping dead short of the steel
-    ("reroute",  6,  5.90),  # S5  the cable sweeping away and latching into empty air
-    ("draw",     7,  0.80),  # S5  the twin DRAWING itself into being around the latched end
-    ("slips",    9,  0.40),  # S6  four paper slips landing and skating into a very short stack
-    ("intake",  10,  0.40),  # S6  the twin's intake cranking open beside the stack
-    ("swing",   11,  0.30),  # S7  ACT 3, the lamp swinging and dragging every shadow across
-    ("zero",    12,  3.50),  # S7  coins stacking on two plates, a hollow drop on the third
-    ("heap",    13,  3.70),  # S8  the unlocated waste crawling in as a dashed absence
-    ("sentence",14,  0.30),  # S8  a printed sentence landing where a conveyor would arrive
-    ("crack",   16,  0.40),  # S9  the hairline crack running the accusation card end to end
-    ("seat",    17,  0.35),  # S10 the power limit block descending into the recess and seating
-    ("pumps",   18,  0.50),  # S10 the plant cutaway running its pumps and valves in sequence
-    ("meter",   18,  3.50),  # S10 the needle swinging up under load and settling inside its limit
-    ("rise",    20,  0.40),  # S11 THE SIGNATURE, the ring rising clear of both vessels
-    ("turn",    21,  0.40),  # S11 the tag finally swinging round to face camera
-    ("button",  22,  0.60),  # S12 the ring hanging over the still-empty vessel
+    # RE-ANCHORED 2026-08-13 for "The Machine Nobody Wrote Down". Every name above this line
+    # belonged to a previous film and NONE of those beats exist here. Anchor names and offsets
+    # are PER-RUN DATA and a run that changes the film changes them in the same commit, because
+    # a strip pointed at the wrong moment produces a judge finding that is true about the
+    # EVIDENCE and false about the FILM, which is the most expensive kind.
+    # Each strip CENTRES on its own storyboard beat, and the board was remapped onto the
+    # delivered vo_lines.json first, so board and strips are finally on one clock. One strip
+    # per beat, thirty-seven of them, across all fourteen shots.
+    ("land",  0,  0.00),  # opens on the object the film returns to
+    ("tap",  0,  2.66),  # plants loop 1 before anyone knows what it is
+    ("stamp",  1,  0.00),  # the one fact the plate does carry
+    ("blanks",  1,  3.73),  # the contrast the whole film rests on
+    ("form",  2,  0.00),  # names the absence as an absence
+    ("record",  2,  4.52),  # the reason nobody can look it up
+    ("drums",  3,  0.00),  # the news peg, dated
+    ("nameplate",  3,  3.86),  # draws the two-award obligation instead of captioning it
+    ("pair",  3,  7.03),  # names the actor before the film uses her
+    ("ring",  4,  0.00),  # the two machines as equals
+    ("note",  4,  3.59),  # the failure mode, drawn
+    ("switchoff",  4,  6.11),  # keeps the operators competent and the room lit
+    ("fuelstop",  5,  0.00),  # why the battery is there at all
+    ("contactor",  5,  2.81),  # the saving made physical
+    ("hold",  6,  0.00),  # the stake, and it plants loop 2
+    ("unroll",  6,  3.75),  # the cost of not knowing, with nothing broken in frame
+    ("collapse",  7,  0.00),  # why the standard fix does not fit
+    ("drawer",  7,  3.86),  # the scale contrast that kills the method
+    ("probeout",  7,  6.80),  # the running gag lands and the bottleneck is named
+    ("probeback",  8,  0.00),  # the proposal, in the record's own words
+    ("shutter",  8,  3.63),  # the answer read off the difference
+    ("pinned",  9,  0.00),  # the fair objection opens
+    ("change",  9,  3.39),  # THE TEST, held and not rescued
+    ("strip",  9,  6.24),  # what changed while the photograph stayed the same
+    ("seat", 10,  0.00),  # the rebuttal, inside the same picture
+    ("crate", 10,  3.11),  # the shape of the answer
+    ("panel", 11,  0.00),  # the operators' half, and it is theirs
+    ("sandia", 11,  3.65),  # the utilities are ahead of the paperwork
+    ("boundary", 11,  5.75),  # the operators' competence is shown, not asserted
+    ("pullback", 12,  0.00),  # the honest size, said out loud
+    ("sheet", 12,  2.80),  # THE SIGNATURE SHOT
+    ("search", 13,  0.00),  # the film's one beat about its own name
+    ("stencil", 13,  2.91),  # the checked absence, drawn as an absence
+    ("breath", 14,  0.00),  # the tense discipline as a picture
+    ("button", 14,  2.60),  # the held breath before the button
+    ("pulse", 15,  0.00),  # the button, and loop 1 pays
+    ("loopback", 15,  3.09),  # the last image, and the loopback
 ]
 
 
