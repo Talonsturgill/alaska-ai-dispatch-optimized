@@ -199,11 +199,24 @@ def main():
 
     print(f"{'shot':>5}  {'window':>14}  {'gross':>7}  {'registered':>11}  {'block_max':>10}")
     dead = []
+    thin = []
     for r in rows:
         flag = ""
         if r["block_max_pct"] < a.floor:
             dead.append(r)
             flag = "   <- nothing articulates here"
+        # THE GATE WAS MEASURING A DIFFERENT NUMBER FROM THE PANEL (2026-08-13, round 7).
+        # The floor was applied ONLY to block_max, the best-changed sixteenth of the frame,
+        # which is the right question for "is anything alive at all" and the wrong one for
+        # "does this shot read as moving". block_max runs 2-9% on this film while registered
+        # runs 1.1-4.2%, so the gate printed "every shot clears the floor" in the same hour a
+        # judge wrote that two shots sit under it. They were both right and only one of them
+        # was measuring what a viewer sees. registered_pct is the number the panel reads, so
+        # it is now held to the same floor, reported separately so the two questions stay
+        # distinguishable.
+        elif r["registered_pct"] < a.floor:
+            thin.append(r)
+            flag = "   <- reads as static across the whole frame"
         print(f"{r['shot']:>5}  {r['from_s']:>6.1f}-{r['to_s']:<7.1f}  "
               f"{r['gross_pct']:>6.2f}%  {r['registered_pct']:>10.2f}%  "
               f"{r['block_max_pct']:>9.2f}%{flag}")
@@ -225,8 +238,22 @@ def main():
         print("shot an event, before spending a panel on it.")
         if a.strict:
             return 1
-    elif rows:
+    elif rows and not thin:
         print(f"\nmotion_check: every shot clears the {a.floor}% articulation floor")
+
+    # I ADDED THE SECOND FLOOR AND THEN DID NOT REPORT IT (2026-08-13, round 8). The `thin`
+    # list was collected and never printed, so this gate said "every shot clears the floor"
+    # in the same run where five shots were under it on the number the panel actually reads.
+    # A check that computes a failure and does not say so is worse than no check, because it
+    # launders the failure as a pass.
+    if thin:
+        print(f"\n{len(thin)} shot(s) at or above block_max but BELOW the {a.floor}% floor on "
+              f"registered motion: " + ", ".join(f"{r['shot']} {r['registered_pct']:.2f}" for r in thin))
+        print("Something in these frames moves, but not enough of the frame moves for the shot")
+        print("to read as alive. This is the number the panel reads and reports as 'static'.")
+        print("Give the shot continuous motion over a LARGE area, not another small mover.")
+        if a.strict:
+            return 1
     print(f"wrote {os.path.relpath(a.out, REPO)}")
     return 0
 

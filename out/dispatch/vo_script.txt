@@ -1,17 +1,16 @@
-In grant paperwork there's a number called the award floor. The smallest grant the government will write.
-Until this year the Administration for Native Americans ran one just for Alaska. Two million dollars, floor of one hundred thousand.
-A hundred thousand is a sum one village administrator runs.
-On July twenty eighth the agency retired it.
-The money didn't shrink. EAGLE, the successor, carries twenty four million. Alaska Native communities stay eligible.
-But EAGLE's floor is three hundred thousand, and EAGLE is national.
-The smallest door tripled, and went national.
-That same notice built the A I three Action Institute. One award, floor two and a half million.
-Alaska has two hundred twenty nine federally recognized tribes.
-The agency is folding four support contracts into one agreement. One body doing that once is better.
-The agency asked for comment, got thirty two submissions, and printed the objections itself.
-Opportunity costs. Indigenous data sovereignty. Centralized program design.
-Alaska already names its own problems. A University of Alaska Anchorage grant asked organizations to name one.
-Twelve did. Nome's utility asked about the ground under its pipes.
-Four were funded. Eight went unfunded.
-The institute isn't the mistake. Retiring the small Alaska door in the same notice is.
-Applications close August twenty seventh. If a village leads the winning bid, I'm wrong, and I'd like to be.
+A rating plate on a village diesel generator.
+The top number is stamped deep, the power this machine can make.
+Everything under it is blank, because nobody ever wrote down how this machine behaves.
+On August 10th the National Science Foundation put money behind that blank space, at the University of Alaska Fairbanks.
+Set a battery beside it, about the same size, and N S F says the two can interact and produce sustained oscillations.
+That battery exists to let the diesel switch off, which is where the fuel saving comes from.
+So if the two fight each other instead of settling, the diesel keeps running and the saving never arrives.
+On a big grid you'd study each machine alone, but here they are wired too close, and nobody wrote this one down.
+So the battery's own inverter will put a question into the wire and learn how the diesel answers.
+But a measurement is only the moment you took it, and a photograph of a running engine is out of date before it's pinned up.
+The aim is a new one any hour, on hardware already on the wall.
+And Alaska's utilities are ahead of the science, with a megawatt battery already shipped to the village of Saint Mary's.
+The Fairbanks award is just under three hundred twenty five thousand dollars, and the test bed is a lab.
+You'd expect a machine that learns to be called artificial intelligence, but this award only says data driven.
+The work starts August 15th, two days from now.
+The plate still won't say how that machine behaves. Fairbanks is finally going to ask it.

@@ -1,284 +1,273 @@
 {
-  "run_date": "2026-08-12",
-  "story": "One Federal Register notice consolidated three things at once, and the objection on the record against the AI piece is the same objection as against the rest of it.",
-  "rule": "A claim ships only if a primary government page or the funder's own page was personally fetched and the value read on it. Trade press alone does not carry a claim. Arithmetic on two verified fields is labelled derived and never presented as a published figure. A 403 is UNVERIFIED and the claim is CUT, not softened.",
-  "claims": [
-    {
-      "id": "c1",
-      "status": "verified",
-      "on_screen": "91 FR 47241  \u00b7  JULY 28TH 2026  \u00b7  NOTICE OF FINAL ISSUANCE",
-      "spoken": "Ninety one Federal Register forty seven thousand two hundred forty one, published July twenty eighth.",
-      "source": "https://www.federalregister.gov/api/v1/documents/2026-15150.json",
-      "note": "Federal Register API record",
-      "verbatim_source": "field: citation = \"91 FR 47241\", publication_date = \"2026-07-28\", action = \"Notice of Final Issuance.\""
-    },
-    {
-      "id": "c2",
-      "status": "verified",
-      "on_screen": "32 SUBMISSIONS OF PUBLIC COMMENT",
-      "spoken": "Thirty two submissions of public comment.",
-      "source": "https://www.federalregister.gov/documents/full_text/text/2026/07/28/2026-15150.txt",
-      "note": "Federal Register full text",
-      "verbatim_source": "\"ANA received and considered comments from 32 submissions.\""
-    },
-    {
-      "id": "c3",
-      "status": "verified",
-      "on_screen": "ANA CONFIRMS THAT SEDS HAS EVOLVED AND EAGLE SIGNIFIES THIS EVOLVEMENT",
-      "spoken": "The agency's own words. A N A confirms that SEDS has evolved, and EAGLE signifies this evolvement.",
-      "source": "https://www.federalregister.gov/documents/full_text/text/2026/07/28/2026-15150.txt",
-      "note": "Federal Register full text, ANA response voice",
-      "verbatim_source": "\"ANA confirms that SEDS has evolved, and EAGLE signifies this evolvement.\"",
-      "requires": "ANA never uses the word 'replace' in its own response voice. Do not put it in the agency's mouth."
-    },
-    {
-      "id": "c4",
-      "status": "verified",
-      "on_screen": "THE INSTITUTE WILL COMPLEMENT NOT REPLACE BROADER SOCIAL AND ECONOMIC DEVELOPMENT EFFORTS",
-      "spoken": "The Institute will complement, not replace, broader social and economic development efforts.",
-      "source": "https://www.federalregister.gov/documents/full_text/text/2026/07/28/2026-15150.txt",
-      "note": "Federal Register full text, on the AI3 Action Institute",
-      "verbatim_source": "\"The Institute will complement--not replace--broader social and economic development efforts.\"",
-      "requires": "THIS KILLS THE FRAMING THAT AI3 REPLACED SEDS. EAGLE is the successor. AI3 is an additional award."
-    },
-    {
-      "id": "c5",
-      "status": "verified",
-      "on_screen": "COMMENTERS RAISED  \u00b7  OPPORTUNITY COSTS  \u00b7  INDIGENOUS DATA SOVEREIGNTY  \u00b7  CENTRALIZED PROGRAM DESIGN  \u00b7  TRIBAL READINESS",
-      "spoken": "Commenters raised concerns about opportunity costs, Indigenous data sovereignty, centralized program design, and Tribal readiness.",
-      "source": "https://www.federalregister.gov/documents/full_text/text/2026/07/28/2026-15150.txt",
-      "note": "Federal Register full text, comments on the AI3 Action Institute",
-      "verbatim_source": "\"some commenters raised concerns regarding \\\"opportunity costs, Indigenous data sovereignty, centralized program design, Tribal readiness\\\"\"",
-      "requires": "Attribute to commenters. The notice names no commenter, so no organization may be named."
-    },
-    {
-      "id": "c6",
-      "status": "verified",
-      "on_screen": "AI3 ACTION INSTITUTE  \u00b7  ONE AWARD  \u00b7  FLOOR 2,500,000  \u00b7  CLOSES AUGUST 27TH 2026",
-      "spoken": "The A I three Action Institute. One award, nationwide, closing August twenty seventh.",
-      "source": "https://simpler.grants.gov/opportunity/8b106d7a-a5ec-4226-b3d4-90bc8c3eade1",
-      "note": "agency notice of funding opportunity",
-      "verbatim_source": "field: Award Floor = \"$2,500,000\", Award Ceiling = \"$3,500,000\", Total Program Funding = \"$3,500,000\", Expected Number of Awards = \"1\", Close Date = \"August 27, 2026\". The ceiling equalling the whole program funding is the arithmetic confirmation that this is a single national award."
-    },
-    {
-      "id": "c7",
-      "status": "verified",
-      "on_screen": "EAGLE  \u00b7  24 MILLION DOLLARS  \u00b7  31 AWARDS  \u00b7  COST SHARING REQUIRED",
-      "spoken": "EAGLE. Twenty four million dollars. Thirty one awards. Cost sharing required.",
-      "source": "https://simpler.grants.gov/opportunity/bb965470-bd8d-4529-b30b-39efe6f81147",
-      "note": "agency notice of funding opportunity",
-      "verbatim_source": "field: Total Program Funding = \"$24,000,000\", Expected Number of Awards = \"31\", Award Floor = \"$300,000\", Award Ceiling = \"$1,000,000\", Cost Sharing/Matching = \"Yes\"",
-      "requires": "Do NOT say '24 million over three years'. The page does not attach the three year qualifier to that figure."
-    },
-    {
-      "id": "c8",
-      "status": "verified",
-      "on_screen": "SEDS ALASKA  \u00b7  FY2025  \u00b7  2,000,000  \u00b7  3 AWARDS  \u00b7  FLOOR 100,000  \u00b7  CEILING 900,000",
-      "spoken": "SEDS Alaska. Fiscal year twenty twenty five. Two million dollars, three awards. It closed July twenty second, twenty twenty five.",
-      "source": "https://simpler.grants.gov/opportunity/fd13f1bb-9657-495a-a053-e36348181662",
-      "note": "agency notice of funding opportunity, the last SEDS-Alaska competition",
-      "verbatim_source": "field: Opportunity Title = \"Social and Economic Development Strategies for Alaska-SEDS-AK\", Total Program Funding = \"$2,000,000\", Expected Number of Awards = \"3\", Award Floor = \"$100,000\", Award Ceiling = \"$900,000\", Close Date = \"July 22, 2025\""
-    },
-    {
-      "id": "c9",
-      "status": "verified",
-      "on_screen": "FOR FY2026 THERE ARE THREE ANA OPPORTUNITIES AND NONE IS ALASKA SPECIFIC",
-      "spoken": "For fiscal year twenty twenty six there are three A N A opportunities, and none of them is Alaska specific.",
-      "source": "https://simpler.grants.gov/search?query=Administration%20for%20Native%20Americans",
-      "note": "grants.gov search performed 2026-08-12, corroborated by the Federal Register naming the same three",
-      "verbatim_source": "LABELLED NON-QUOTATION, this is a search finding: grants.gov returns exactly three FY2026 ANA opportunities, AI3 (NAI-0035), EAGLE (NEG-0120) and NCNTTA (NTA-0038). The Federal Register notice names the same three."
-    },
-    {
-      "id": "c10",
-      "status": "verified",
-      "on_screen": "COMMENTERS NAMED THE POTENTIAL LOSS OF AN ALASKA SPECIFIC FUNDING OPPORTUNITY",
-      "spoken": "Commenters named the potential loss of an Alaska specific funding opportunity, and the possibility that Alaska Tribes could face new barriers competing under a new notice.",
-      "source": "https://www.federalregister.gov/documents/full_text/text/2026/07/28/2026-15150.txt",
-      "note": "Federal Register full text, ANA's summary of comments",
-      "verbatim_source": "\"Multiple commenters raised concerns regarding the replacement of SEDS-AK with EAGLE, including the potential loss of an Alaska-specific funding opportunity and the possibility that Alaska Tribes could face new barriers in competing for funding under a new NOFO.\""
-    },
-    {
-      "id": "c11",
-      "status": "verified",
-      "on_screen": "THE EAGLE IDEAS PROJECT AREA CARRIES FORWARD THE SPIRIT OF ALASKAN SELF DETERMINATION",
-      "spoken": "The EAGLE IDEAS project area carries forward the spirit of Alaskan self determination.",
-      "source": "https://www.federalregister.gov/documents/full_text/text/2026/07/28/2026-15150.txt",
-      "note": "Federal Register full text, ANA's answer to the Alaska objection",
-      "verbatim_source": "\"The EAGLE IDEAS project area carries forward the spirit of Alaskan self-determination.\""
-    },
-    {
-      "id": "c12",
-      "status": "verified",
-      "on_screen": "FOUR ASSISTANCE CONTRACTS CONSOLIDATED INTO ONE",
-      "spoken": "Four training and technical assistance contracts consolidated into one cooperative agreement.",
-      "source": "https://www.federalregister.gov/documents/full_text/text/2026/07/28/2026-15150.txt",
-      "note": "Federal Register full text",
-      "verbatim_source": "\"The consolidation of ANA's four TTA contracts into a single cooperative agreement will streamline operations and strengthen program support.\""
-    },
-    {
-      "id": "c13",
-      "status": "verified",
-      "on_screen": "A COMMENTER SAID IT EQUATES TO A REDUCTION OF MORE THAN 70 PERCENT IN REGIONAL STAFFING CAPACITY",
-      "spoken": "One commenter said it equates to a reduction of more than seventy percent in regional staffing capacity.",
-      "source": "https://www.federalregister.gov/documents/full_text/text/2026/07/28/2026-15150.txt",
-      "note": "Federal Register full text, a comment quoted by ANA",
-      "verbatim_source": "\"the proposed ceiling level of $3.1M over three years for a single NCNTTA cooperative agreement represents a substantial consolidation of resources and equates to a reduction of more than 70 percent in regional staffing capacity.\"",
-      "requires": "MUST be paired with c14. The film may not air one side of this."
-    },
-    {
-      "id": "c14",
-      "status": "verified",
-      "on_screen": "THE AGENCY ANSWERED 3.1 MILLION DOLLARS PER FISCAL YEAR",
-      "spoken": "The agency answered that the funding level is three point one million per fiscal year.",
-      "source": "https://www.federalregister.gov/documents/full_text/text/2026/07/28/2026-15150.txt",
-      "note": "Federal Register full text, ANA response",
-      "verbatim_source": "\"The funding level, which is 3.1 million per fiscal year, is intended to support a coordinated national technical assistance approach\"",
-      "requires": "The commenter says over three years, the agency says per fiscal year. THE RECORD DOES NOT RESOLVE IT. The film must show both and say it is unresolved."
-    },
-    {
-      "id": "c15",
-      "status": "verified",
-      "on_screen": "NSF 2433241  \u00b7  RAISE  \u00b7  380000 DOLLARS  \u00b7  UAA",
-      "spoken": "National Science Foundation award two four three three two four one. Rural A I Solutions and Engagement. Three hundred eighty thousand dollars, to the University of Alaska Anchorage.",
-      "source": "https://api.nsf.gov/services/v1/awards/2433241.json",
-      "note": "NSF award API record, fetched by the orchestrator",
-      "verbatim_source": "field: awardee = \"UNIVERSITY OF ALASKA ANCHORAGE\", estimatedTotalAmt = \"380000\", expDate = \"07/31/2027\", title = \"Rural AI Solutions and Engagement (RAISE)\""
-    },
-    {
-      "id": "c16",
-      "status": "verified",
-      "on_screen": "TWELVE ALASKA ORGANIZATIONS ASKED  \u00b7  FOUR WERE FUNDED",
-      "spoken": "Twelve Alaska organizations asked. Four were funded.",
-      "source": "https://coeng.uaa.alaska.edu/AI/raise-mini-grant-community-statement-of-need/",
-      "note": "funder's own page; the four funded projects are listed on the awardee page",
-      "verbatim_source": "LABELLED NON-QUOTATION, this is a count off the funder's own two pages: the statement-of-need page lists the submitted community proposals and the awardee page names four funded projects.",
-      "requires": "If the twelve cannot be recounted item by item at build time, drop the twelve and say only that four were funded."
-    },
-    {
-      "id": "c17",
-      "status": "verified",
-      "on_screen": "NOME JOINT UTILITIES SYSTEM  \u00b7  PREDICTING THERMAL CONDUCTIVITY OF WARMING PERMAFROST",
-      "spoken": "Nome Joint Utilities System asked about predicting the thermal conductivity of warming permafrost.",
-      "source": "https://coeng.uaa.alaska.edu/AI/raise-mini-grant-awardee-announcement-25-26/",
-      "note": "funder's own awardee page, fetched by the orchestrator",
-      "verbatim_source": "\"Predicting Thermal Conductivity of Warming Permafrost for Hazards Estimation using Machine Learning\" paired on the page with \"Community Partner: Nome Joint Utilities System\""
-    },
-    {
-      "id": "c18",
-      "status": "verified",
-      "on_screen": "VILLAGE OF ALAKANUK TRIBE  \u00b7  AI FOR RURAL COMMUNITY TRANSFORMATION AND INFRASTRUCTURE COORDINATION",
-      "spoken": "The Village of Alakanuk Tribe asked for A I for rural community transformation and infrastructure coordination.",
-      "source": "https://coeng.uaa.alaska.edu/AI/raise-mini-grant-awardee-announcement-25-26/",
-      "note": "funder's own awardee page, fetched by the orchestrator",
-      "verbatim_source": "\"ARCTIC: AI for Rural Community Transformation and Infrastructure Coordination\" paired on the page with \"Community Partner: Village of Alakanuk Tribe\""
-    },
-    {
-      "id": "c19",
-      "status": "verified",
-      "on_screen": "ANY ALASKAN ORGANIZATION OUTSIDE OF THE UNIVERSITY",
-      "spoken": "Eligibility was any Alaskan organization outside of the university.",
-      "source": "https://coeng.uaa.alaska.edu/AI/raise-mini-grants-community/",
-      "note": "funder's own program page",
-      "verbatim_source": "\"any Alaskan organization outside of the university, including large or small businesses, Alaska native organizations, K-12 education, government entities, non-profits, or UA research center\""
-    },
-    {
-      "id": "c20",
-      "status": "verified",
-      "on_screen": "AUGUST 7TH 2026  \u00b7  CONSORTIUM LIBRARY ROOM 307",
-      "spoken": "August seventh, twenty twenty six, in Consortium Library room three oh seven.",
-      "source": "https://coeng.uaa.alaska.edu/AI/ai-solutions-consortium-2026-workshop/",
-      "note": "funder's own workshop page, fetched by the orchestrator",
-      "verbatim_source": "field: \"August 7, 2026, 10:15 AM - 1:30 PM\", \"Library 307\", \"UAA/APU Consortium Library\""
-    },
-    {
-      "id": "c21",
-      "status": "verified",
-      "on_screen": "229 FEDERALLY RECOGNIZED TRIBES IN ALASKA",
-      "spoken": "Alaska has two hundred twenty nine federally recognized tribes.",
-      "source": "https://www.bia.gov/regional-offices/alaska",
-      "note": "BIA Alaska Regional Office, which STATES the number rather than requiring a count",
-      "verbatim_source": "\"More than 180,000 Tribal members make up the 229 Federally Recognized Tribes under the jurisdiction of the Alaska Regional Office\"",
-      "requires": "Cite the BIA page. NEVER derive this by counting the Federal Register list, which is not numbered; a first fetch fabricated a count of it during validation."
-    },
-    {
-      "id": "c22",
-      "status": "verified",
-      "on_screen": "ALASKA NATIVE COMMUNITIES WILL REMAIN ELIGIBLE ACROSS EAGLE PROJECT AREAS",
-      "spoken": "Alaska Native communities stay eligible.",
-      "source": "https://www.federalregister.gov/documents/full_text/text/2026/07/28/2026-15150.txt",
-      "note": "Federal Register full text, re-fetched 2026-08-12 specifically to source this line after panel round 2 found it carried no claim id. The film's even-handedness card rested on nothing; it rests on this now.",
-      "verbatim_source": "\"Alaska Native communities will remain eligible across EAGLE project areas.\"",
-      "requires": "This sources ELIGIBILITY and nothing else. It does not license any claim about who can realistically LEAD or WIN an award, which is the inference the round-2 script made and which is now cut."
-    },
-    {
-      "id": "c23",
-      "status": "KILLED",
-      "on_screen": "(cut) WHAT IS IT PAID TO PRODUCE / A LIST OF WHERE AI COULD HELP",
-      "spoken": "(cut) So what is the institute paid to produce? A list.",
-      "source": "https://www.federalregister.gov/documents/full_text/text/2026/07/28/2026-15150.txt",
-      "note": "KILLED 2026-08-12 after panel round 2. This was the pivot the whole back half of the film turned on and it carried no claim id. The Federal Register full text was re-fetched and asked directly for any statement of the AI3 Institute's deliverable, output, roadmap, assessment, inventory, report or scope of work. ABSENT. The notice states only a purpose, supporting informed community decision-making, and that the Institute will address ethical, practical and governance considerations. Nothing says it produces a list. The characterization was the run's own and it is cut, not softened.",
-      "verbatim_source": "NOT FOUND. The document contains no statement of the Institute's deliverable.",
-      "requires": "Never restore this line without a primary page that states the deliverable in its own words."
-    },
-    {
-      "id": "c24",
-      "status": "KILLED",
-      "on_screen": "(cut) 8 STILL HOLDING A LIST NOBODY PUBLISHED",
-      "spoken": "(cut) Eight still hold a list nobody published.",
-      "source": "https://coeng.uaa.alaska.edu/AI/raise-mini-grant-community-statement-of-need/",
-      "note": "KILLED 2026-08-12 after panel round 2, and it is contradicted by c16's own verbatim note, which records that the statement-of-need page LISTS the submitted community proposals. If that page lists them, the eight asks are published and the line is simply false. It was also the film's primary open-loop payoff, planted at 14.3s and paid at 102.12s, which is exactly the kind of line that gets written for its shape rather than its truth. Replaced with the fact c16 does carry: eight went unfunded.",
-      "verbatim_source": "Contradicted by c16: \"the statement-of-need page lists the submitted community proposals\".",
-      "requires": "The unfunded eight are UNFUNDED, not unpublished. Do not conflate the two again."
-    },
-    {
-      "id": "c25",
-      "status": "KILLED",
-      "on_screen": "(cut) AI COMES WITH A VENDOR CONTRACT",
-      "spoken": "(cut) and A I comes with a vendor contract",
-      "source": "none",
-      "note": "KILLED 2026-08-12 after panel round 5. It carried no claim id and it was LOAD-BEARING: the film's entire steelman at 63.68s rested on it. That is the same failure mode that killed c23, a characterization the run made, delivered with the authority of the record. Nothing in the notice says an AI award comes with a vendor contract. The steelman is rebuilt on c12, which is ANA's own sentence about consolidating four TTA contracts into a single agreement.",
-      "verbatim_source": "NOT FOUND. No primary page states this.",
-      "requires": "Do not restore without a primary page that says it in its own words."
-    }
-  ],
-  "killed": [
-    {
-      "claim": "Any Alaska Federation of Natives quotation",
-      "why": "Sole source nativenewsonline.net returns HTTP 403, reproduced twice. The quote exists only as a search-engine snippet. The Federal Register names no commenter. NO AFN QUOTE MAY APPEAR."
-    },
-    {
-      "claim": "SEDS-Alaska ran for about 30 years",
-      "why": "No source. acf.gov/ana/programs/seds returns HTTP 403. The film may not state how long the program ran, not thirty years and not any other figure."
-    },
-    {
-      "claim": "The AI3 Action Institute replaced SEDS or SEDS-Alaska",
-      "why": "REFUTED BY THE PRIMARY DOCUMENT. ANA writes the Institute will 'complement--not replace--broader social and economic development efforts'. EAGLE is the successor. AI3 is an additional award."
-    },
-    {
-      "claim": "The AI3 project period in years",
-      "why": "Not stated on the grants.gov record. The three year period belongs to EAGLE only and may not be carried across."
-    },
-    {
-      "claim": "24 million dollars over three years",
-      "why": "The page does not attach the three year qualifier to the 24 million figure. State them as two separate facts."
-    },
-    {
-      "claim": "Any claim that a UAA mini-grant tool works",
-      "why": "No result, finding, accuracy figure or deployment is published for any of the four projects. No per-project dollar figure exists publicly either."
-    },
-    {
-      "claim": "Any assertion that an Alaskan has been denied a grant",
-      "why": "No AI3 award has been made and no EAGLE award is announced. Asserting harm already done would be false."
-    }
-  ],
-  "cultural_flags": [
-    "ANA never writes 'replaced' in its own response voice. It writes 'evolved' and 'transition'. Putting 'replace' in the agency's mouth misquotes a federal agency.",
-    "The Alaska-specific objection is ON THE RECORD as commenters' words, not the film's inference. Attribute it to commenters. The notice names none, so name no organization.",
-    "Indigenous data sovereignty was raised directly against the AI3 Institute. A film about an AI program for Native communities that omits that objection omits the load-bearing critique the record contains.",
-    "The AI3 eligibility pool is WIDER than tribes: Native CDFIs, Urban Indian Centers, Tribal Colleges, and Native Hawaiian and Pacific Islander serving agencies are all in it. One award against a field that broad.",
-    "Do not render Alaska Native villages as passive recipients. The eligibility text is a list of Alaska Native institutions with legal standing as applicants. What changed is the competition's shape, not their standing.",
-    "Federally recognized tribes, ANCSA village corporations, Alaska Native regional corporations, nonprofit tribal consortia and advocacy organizations are legally distinct and none speaks for the others.",
-    "NEVER draw any Alaska Native person, community, tribal government or the Village of Alakanuk Tribe as a characterized object with a face. Characterized-object treatment is reserved for the paperwork and the programs."
-  ],
-  "on_screen_numbers_are_illustrative_note": "Every figure on screen is quoted from a federal notice of funding opportunity, the Federal Register full text, or the NSF award record, and is current as of 2026-08-12. No figure is modelled, projected or estimated by this film."
+ "run_date": "2026-08-13",
+ "story": "NSF award 2626692 (Collaborative Research), made 2026-08-10 to the University of Alaska Fairbanks, PI Mariko Shirazi: use the battery's own grid-forming inverter to probe a small isolated grid, learn how each unit responds, and tune the controls so a battery and a similarly sized diesel generator stop interacting badly. The award never uses the word AI.",
+ "rule": "THIS FILE IS THE ONLY SOURCE OF TRUTH FOR ANYTHING THE FILM SAYS, PAINTS OR NARRATES. A number, name, quote or characterisation that is not in here does not go on screen and is not spoken. Every `requires` is an obligation the build must honour, not advice, and scripts/claims_contract_check.py reads them.",
+ "hard_constraints_for_this_film": [
+  "TENSE DISCIPLINE IS MANDATORY. The award period begins 2026-08-15, two days after this film publishes. NOTHING HAS BEEN BUILT, TESTED OR MEASURED under it. Say 'will', never 'has'. No result may be implied to exist.",
+  "THIS IS NOT AN AI PROJECT AND THE FILM MUST NOT CALL IT ONE. The abstract contains no occurrence of artificial intelligence, AI, machine learning, neural, or learned model. Its named methods are input-output transfer function identification, analytical stability specifications, and active damping. The film may say data-driven, system identification, and learn-how-it-responds, because those are the record's own words. It may not say AI.",
+  "DO NOT CONFLATE WITH AURORA-AI. ACEP published a DIFFERENT award on 2026-08-11: $725,000 from the Department of Energy, PI Richard Wies, with Colorado State and Cordova Electric Cooperative. Different agency, different PI, different amount, different project. That subject also sits inside the 30-day dedupe window and is not this film's story. Any sentence of the form 'UAF just got money for AI on rural grids' describes THAT award and is forbidden here.",
+  "DO NOT SAY 'UNREPORTED' FLATLY. A universal negative could not be established. The licensed phrasing is 'no coverage found as of August 13th' and even that is optional.",
+  "$324,995 IS UAF'S SHARE, NOT THE PROJECT. Naming a project total requires naming $549,995 and the companion award.",
+  "THE ABSTRACT NEVER SAYS ALASKA, NEVER SAYS VILLAGE, NEVER SAYS CONSULTANT. Its furthest reach is 'rural and remote communities that face some of the nation's highest electricity prices'. Alaska relevance comes from the awardee, the PI and ACEP's own lab, and every Alaska figure on screen must be attributed to ACEP or AEA, never to NSF."
+ ],
+ "claims": [
+  {
+   "id": "c1",
+   "status": "verified",
+   "on_screen": "NSF 2626692  ·  AUGUST 10TH 2026  ·  STANDARD GRANT",
+   "spoken": "On August tenth, the National Science Foundation made an award to the University of Alaska Fairbanks.",
+   "source": "https://api.nsf.gov/services/v1/awards/2626692.json",
+   "note": "NSF award API record, the federal system of record",
+   "verbatim_source": "field: id = \"2626692\", date = \"08/10/2026\", transType = \"Standard Grant\", awardeeName = \"University of Alaska Fairbanks Campus\"",
+   "requires": "The award DATE is the news peg. Do not use it as the start date; those are different facts and c4 carries the other one."
+  },
+  {
+   "id": "c2",
+   "status": "verified",
+   "on_screen": "$324,995",
+   "spoken": "Three hundred twenty four thousand, nine hundred ninety five dollars.",
+   "source": "https://api.nsf.gov/services/v1/awards/2626692.json",
+   "note": "NSF award API record",
+   "verbatim_source": "field: fundsObligatedAmt = \"324995\", fundsObligated = [\"FY 2026 = $324,995.00\"]",
+   "requires": "This is UAF's obligation. It may NEVER be called the project's value or total. If a total appears anywhere, c3 must appear with it."
+  },
+  {
+   "id": "c3",
+   "status": "verified",
+   "on_screen": "COMPANION AWARD 2626693  ·  WISCONSIN  ·  $225,000",
+   "spoken": "A companion award sends two hundred twenty five thousand to the University of Wisconsin at Madison.",
+   "source": "https://api.nsf.gov/services/v1/awards.json?keyword=%22Stability-certified+Tuning+of+Hybrid+Diesel%22",
+   "note": "NSF award API, companion record under the identical title; PI Dominic Gross",
+   "verbatim_source": "field: id = \"2626693\", fundsObligatedAmt = \"225000\", awardee = University of Wisconsin-Madison, pi = Dominic Gross",
+   "requires": "This is why the real title begins 'Collaborative Research:'. If the film quotes the title it uses the full string including that prefix, or paraphrases. A truncated title in quotation marks is forbidden."
+  },
+  {
+   "id": "c4",
+   "status": "verified",
+   "on_screen": "STARTS AUGUST 15TH 2026  ·  RUNS TO JULY 31ST 2029",
+   "spoken": "The work starts on August fifteenth and runs to the summer of twenty twenty nine.",
+   "source": "https://api.nsf.gov/services/v1/awards/2626692.json",
+   "note": "NSF award API record",
+   "verbatim_source": "field: startDate = \"08/15/2026\", expDate = \"07/31/2029\"",
+   "requires": "THE FILM'S SINGLE MOST IMPORTANT HONESTY OBLIGATION. This starts two days after publication. Every verb about the work is future tense. No sentence may imply a measurement, a result or a deployment exists."
+  },
+  {
+   "id": "c5",
+   "status": "verified",
+   "on_screen": "MARIKO SHIRAZI  ·  UNIVERSITY OF ALASKA PRESIDENT'S PROFESSOR IN ENERGY",
+   "spoken": "The principal investigator is Mariko Shirazi, the University of Alaska President's Professor in Energy at the Alaska Center for Energy and Power.",
+   "source": "https://www.uaf.edu/acep/about/our-team/mariko-shirazi.php",
+   "note": "UAF ACEP faculty page; title independently corroborated by her IEEE Xplore author record",
+   "verbatim_source": "\"University of Alaska President's Professor in Energy\"",
+   "requires": "Sole PI, no co-PIs on the UAF award. Her faculty page uses she/her and that is the only pronoun evidence; use no other. She is a real named person, so the characterized-object humour rules apply: she is never drawn as a comic object and never given a face that performs a joke."
+  },
+  {
+   "id": "c6",
+   "status": "verified",
+   "on_screen": "\"the battery energy storage system and the diesel generators are co-located and are commensurate in size\"",
+   "spoken": "In these grids the battery and the diesels sit side by side, and they are about the same size.",
+   "source": "https://api.nsf.gov/services/v1/awards/2626692.json",
+   "note": "quoting the NSF award abstract",
+   "verbatim_source": "\"However, in many of these systems, the battery energy storage system and the diesel generators are co-located and are commensurate in size. These conditions can lead to adverse power interactions.\"",
+   "requires": "If the on-screen string is shown in quotation marks it must be this exact fragment with no added emphasis and no elision inside it."
+  },
+  {
+   "id": "c7",
+   "status": "verified",
+   "on_screen": "\"the two can interact and produce sustained oscillations\"",
+   "spoken": "Run a grid forming inverter next to a diesel of about the same size, and the two can interact and produce sustained oscillations.",
+   "source": "https://api.nsf.gov/services/v1/awards/2626692.json",
+   "note": "quoting the NSF award abstract",
+   "verbatim_source": "\"when grid-forming (GFM) inverters (i.e., power electronic devices that impose the grid's voltage and frequency) run alongside comparably sized, electrically close diesel generators, the two can interact and produce sustained oscillations.\"",
+   "requires": "PRESENT THIS AS NSF'S CHARACTERISATION OF A FAILURE MODE, NEVER AS AN OBSERVED ALASKA EVENT. No Alaska incident is cited anywhere in the record. The film may not show a named community's lights going out, or imply an outage happened."
+  },
+  {
+   "id": "c8",
+   "status": "verified",
+   "on_screen": "\"accurate generator models are also usually unavailable\"",
+   "spoken": "The methods built for big transmission systems fail down here, and accurate generator models are usually unavailable.",
+   "source": "https://api.nsf.gov/services/v1/awards/2626692.json",
+   "note": "quoting the NSF award abstract",
+   "verbatim_source": "\"Solutions designed to address this in large transmission systems, where such units are far apart and can be analyzed separately, fail in low-voltage community grids, where accurate generator models are also usually unavailable.\"",
+   "requires": "THIS IS THE REAL STATED BOTTLENECK AND THE FILM'S ARGUMENT IS BUILT ON IT. It is a MISSING-DATA problem, not a study-cost problem. Any framing that makes the barrier an invoice rather than an absent model is unsourced and forbidden."
+  },
+  {
+   "id": "c9",
+   "status": "verified",
+   "on_screen": "\"without specialized studies and expertise that small utilities rarely have\"",
+   "spoken": "The aim is to catch and prevent those interactions on site, in the abstract's words, without specialized studies and expertise that small utilities rarely have.",
+   "source": "https://api.nsf.gov/services/v1/awards/2626692.json",
+   "note": "quoting the NSF award abstract",
+   "verbatim_source": "\"The project will bring transformative change by developing a practical, data-driven way to detect and prevent these interactions on-site, without specialized studies and expertise that small utilities rarely have.\"",
+   "requires": "This and the parallel verbatim phrase \"without requiring complex interconnection studies\" are the ONLY licensed phrasings of the studies point. 'Rarely have' is the claim. 'Must pay a consultant per village' is not, and is killed."
+  },
+  {
+   "id": "c10",
+   "status": "verified",
+   "on_screen": "\"using the battery inverter itself to probe the grid\"",
+   "spoken": "The idea is to use the battery inverter itself to probe the grid, learn how each unit responds, and then adjust the battery's controls to keep the system stable.",
+   "source": "https://api.nsf.gov/services/v1/awards/2626692.json",
+   "note": "quoting the NSF award abstract",
+   "verbatim_source": "\"This will be achieved by using the battery inverter itself to probe the grid and learn how each unit responds and then adjusting the battery controls accordingly to keep the system stable.\"",
+   "requires": "THE FILM'S CENTRAL IMAGE COMES FROM THIS SENTENCE. Keep it future tense: this is a proposed approach, not a working one."
+  },
+  {
+   "id": "c11",
+   "status": "verified",
+   "on_screen": "\"a 500kW-scale laboratory test bed\"",
+   "spoken": "It is to be tested in what the abstract calls a five hundred kilowatt scale laboratory test bed, with grid forming inverters and diesel generators in it.",
+   "source": "https://api.nsf.gov/services/v1/awards/2626692.json",
+   "note": "quoting the NSF award abstract",
+   "verbatim_source": "\"The proposed approach will be implemented in a 500kW-scale laboratory test bed including GFM inverters and diesel generators for data collection and experimental validation.\"",
+   "requires": "DO NOT APPEND 'AT UAF' TO THIS QUOTE OR TO THIS BEAT. The abstract names no location and the co-awardee is in Wisconsin. Putting UAF and 500 kW in one sentence requires switching attribution to c12."
+  },
+  {
+   "id": "c12",
+   "status": "verified",
+   "on_screen": "ACEP POWER SYSTEMS INTEGRATION LABORATORY  ·  UP TO 500 kW  ·  UAF CAMPUS",
+   "spoken": "ACEP runs a lab on the Fairbanks campus that, in its own words, emulates an isolated hybrid diesel grid at up to five hundred kilowatts.",
+   "source": "https://www.uaf.edu/acep/facilities/power-systems-integration-laboratory.php",
+   "note": "ACEP facility page, a SEPARATE source from the award record",
+   "verbatim_source": "\"emulates an isolated hybrid-diesel grid at up to 500 kW of permanently installed capacity and potential capacity of several MW\"; \"located within the Energy Technology Facility on the University of Alaska Fairbanks campus\"",
+   "requires": "Must be said as ACEP describing its own laboratory, never as NSF describing this award's test bed. If both c11 and c12 appear, the film must not let a viewer read them as one sourced statement."
+  },
+  {
+   "id": "c13",
+   "status": "verified",
+   "on_screen": "MORE THAN 200 REMOTE MICROGRIDS",
+   "spoken": "Alaska has more than two hundred remote microgrids, and ACEP says diesel is the primary source of generation in most of them.",
+   "source": "https://www.uaf.edu/acep/our-resources/what-is-a-microgrid.php",
+   "note": "ACEP, University of Alaska Fairbanks",
+   "verbatim_source": "\"diesel generators act as a primary source of electricity generation in most of Alaska's more than 200 remote microgrids\"",
+   "requires": "Attributed to ACEP, never to NSF. The page prints no year, so the film may not date this figure."
+  },
+  {
+   "id": "c14",
+   "status": "verified",
+   "on_screen": "193 COMMUNITIES  ·  82,000 ALASKANS",
+   "spoken": "The state's Power Cost Equalization program serves eighty two thousand Alaskans in a hundred ninety three communities that are largely reliant on diesel.",
+   "source": "https://www.akenergyauthority.org/PCE",
+   "note": "Alaska Energy Authority",
+   "verbatim_source": "\"serves 82,000 Alaskans in 193 communities that are largely reliant on diesel fuel for power generation\"",
+   "requires": "COUNTS A DIFFERENT THING FROM c13. 193 is communities enrolled in a state subsidy program; 200-plus is microgrids. The film may never present them as rival counts of the same thing, and may never subtract or divide them."
+  },
+  {
+   "id": "c15",
+   "status": "verified",
+   "on_screen": "\"some of the nation's highest electricity prices\"",
+   "spoken": "The stated payoff is lower energy costs and more resilience for rural and remote communities that face some of the nation's highest electricity prices.",
+   "source": "https://api.nsf.gov/services/v1/awards/2626692.json",
+   "note": "quoting the NSF award abstract",
+   "verbatim_source": "\"The broader impacts of the project include lower energy costs and greater resilience for rural and remote communities that face some of the nation's highest electricity prices.\"",
+   "requires": "This is the abstract's furthest reach toward anywhere rural. It still never says Alaska. Do not pair this quote with an on-screen Alaska map in a way that implies NSF wrote the word Alaska."
+  },
+  {
+   "id": "c16",
+   "status": "verified",
+   "on_screen": "artificial intelligence  ·  0 FOUND  |  machine learning  ·  0 FOUND  |  neural  ·  0 FOUND",
+   "spoken": "The award never says artificial intelligence. It never says machine learning. What it says is data driven.",
+   "source": "https://api.nsf.gov/services/v1/awards/2626692.json",
+   "note": "verified absence, checked across the full abstract text in two independent API queries  DRAWN AS AN ABSENCE 2026-08-13 (round 7): the earlier rendering asserted the negation as a caption chip reading 'NO AI  ·  NO MACHINE LEARNING', which both truncated the approved string and did the one thing this claim's `requires` forbids. The film now runs the three terms this claim was verified against as a search over the award's own named methods, and each returns 0 FOUND with the strikethrough drawing on. The absence is watched rather than stated.",
+   "verbatim_source": "labelled non-quotation: the abstract contains zero occurrences of 'artificial intelligence', 'AI', 'machine learning', 'neural'. Its named methods are \"determine the input-output (IO) transfer functions of microgrid components\", \"analytical stability specifications\" and \"Active damping functions\".",
+   "requires": "This claim is an ABSENCE and must be drawn as one, using the absence grammar, not asserted as a caption. It is also the film's own honesty about its own channel name."
+  },
+  {
+   "id": "c17",
+   "status": "verified",
+   "on_screen": "ST. MARY'S, ALASKA  ·  1 MW / 1 MWh  ·  SHIPPED AUGUST 2023",
+   "spoken": "A one megawatt battery, built to hold a village grid up on its own so the diesels can shut down, was tested in Fairbanks and shipped to Saint Mary's in August of twenty twenty three.",
+   "source": "https://www.uaf.edu/acep/news/2023/a-new-grid-bridging-system-tested-at-acep-to-serve-villages-in-alaska.php",
+   "note": "ACEP, University of Alaska Fairbanks, April 2023, with the shipping date from AVEC's own project page at https://avec.org/about/projects/st-marys-grid-bridging-system/",
+   "verbatim_source": "\"A short-term energy storage system that allows costly diesel generators to turn off for periods of time and to run on renewables to reduce fuel consumption.\"",
+   "requires": "THE RECORD STOPS AT INSTALLATION. AVEC's page gives no commissioning date and no in-service statement. The film may say tested, shipped, and installation underway. It may NOT say the unit is running, operating, or in service today."
+  },
+  {
+   "id": "c18",
+   "status": "verified",
+   "on_screen": "SANDIA NATIONAL LABORATORIES  ·  \"design and deployment\"  ·  ST. MARY'S",
+   "spoken": "Sandia National Laboratories lists Saint Mary's among its current grid bridging deployments, with AVEC and the Alaska Center for Energy and Power.",
+   "source": "https://energy.sandia.gov/programs/electric-grid/advanced-microgrids/",
+   "note": "Sandia National Laboratories, Advanced Microgrids programme page, undated",
+   "verbatim_source": "\"Current efforts involve design and deployment of a grid bridging system in the remote village of St. Mary's, Alaska, in partnership with Alaska Village Electric Coop (AVEC) and the Alaska Center for Energy and Power (ACEP).\"",
+   "requires": "The page says DEPLOYMENT, not OPERATION, and carries no date. A third institution naming the same project is corroboration that the work is real, not evidence that it is energised."
+  },
+  {
+   "id": "c19",
+   "status": "verified",
+   "on_screen": "APRIL 21ST, 2025  ·  ACEP AND AVEC BRIEF THE FIELD",
+   "spoken": "And in April of twenty twenty five, ACEP's power systems lead sat down with an AVEC engineer to brief the field on what ACEP called operational experience with these inverters, in remote Alaska microgrids.",
+   "source": "https://www.uaf.edu/acep/news/2025/seminar-on-grid-forming-inverters-in-remote-alska-microgrids.php",
+   "note": "Alaska Center for Energy and Power seminar announcement, April 21st 2025. The speakers are Mariko Shirazi and William Thomson of Alaska Village Electric Cooperative.",
+   "verbatim_source": "\"will discuss operational experience and recommendations for GFM battery energy storage inverters in remote Alaska microgrids\"",
+   "requires": "THIS IS ACEP'S ASSERTION ABOUT ITS OWN SPEAKERS AND MUST BE ATTRIBUTED AS ONE, never stated as independent documentation of an installation. The phrase is the announcement's DESCRIPTION of the content, not a published talk title, so it may NOT be presented in quotation marks as a title. No pronoun is stated for William Thomson by any source; use none."
+  },
+  {
+   "id": "c20",
+   "status": "verified",
+   "on_screen": "ABOUT 200 ISOLATED MICROGRIDS",
+   "spoken": "Alaska runs roughly two hundred isolated microgrids, each one its own island of a power system.",
+   "source": "https://www.uaf.edu/acep/research/power-systems-integration.php",
+   "note": "ACEP, University of Alaska Fairbanks",
+   "verbatim_source": "\"approximately 200 isolated microgrids which serve remote communities\"",
+   "requires": "A second ACEP wording of the same fact as c13. Use ONE of the two on screen, never both, and never as if they were independent counts."
+  },
+  {
+   "id": "c21",
+   "status": "verified-with-a-stated-sourcing-limit",
+   "on_screen": "AVEC WROTE ITS OWN ACCEPTANCE TESTS FOR RUNNING WITH THE DIESELS OFF",
+   "spoken": "Alaska Village Electric Cooperative has already written its own acceptance tests for grid forming batteries running with the diesels off.",
+   "source": "https://www.tananachiefs.org/wp-content/uploads/2025/09/Attachment-E-BESS-Testing-Requirements.pdf",
+   "note": "AVEC testing requirements, attached to a Tanana Chiefs Conference request for proposals, September 2025",
+   "verbatim_source": "field: document title = \"AVEC TESTING REQUIREMENTS FOR GRID FORMING BATTERY ENERGY STORAGE SYSTEMS FOR DIESEL OFF MICROGRID OPERATION\"",
+   "requires": "SOURCING LIMIT, AND IT MUST BE DISCLOSED IN THE GMAIL DRAFT: the PDF would not render to text in the checking environment, so the title string comes from a search index and a second independent extraction that agreed on its substance. Nobody read the document end to end. It is the FIRST BEAT TO CUT if the film runs long, and it may never be the sole support for any argument."
+  }
+ ],
+ "killed": [
+  {
+   "claim": "Adding a battery to an Alaska village grid requires a bespoke consultant-run stability study per village",
+   "why": "Unsourced. The words consultant, bespoke and village appear nowhere in the record. The abstract says small utilities rarely have the specialized studies and expertise, which is a different and weaker claim, and separately locates the root cause in unavailable generator models."
+  },
+  {
+   "claim": "This is an AI project / an AI award / AI on the grid",
+   "why": "The abstract contains no AI or machine-learning term at all. Its methods are transfer function identification and active damping. Calling it AI would be the film inventing its own hook, and it would also read as a description of the DOE AURORA-AI award ACEP published the next day."
+  },
+  {
+   "claim": "Validated on a 500 kW test bed at UAF, per NSF",
+   "why": "The abstract says '500kW-scale' and names no location; the co-awardee is in Wisconsin. UAF's lab is corroborated only by ACEP's own facility page and needs its own attribution."
+  },
+  {
+   "claim": "The award title is 'In-field, GFM-enabled, Data-driven, and Stability-certified Tuning of Hybrid Diesel Generator/IBR Microgrids'",
+   "why": "Truncated. The record's title begins 'Collaborative Research:', and dropping it hides the companion award."
+  },
+  {
+   "claim": "$324,995 is the project's value",
+   "why": "It is UAF's obligation. The two-award project totals $549,995."
+  },
+  {
+   "claim": "This award is unreported",
+   "why": "A universal negative that could not be established with the available tools. Two search engines degraded or 403'd. A three-day-old award being quiet is not evidence of neglect."
+  },
+  {
+   "claim": "Any past or present tense implying the work has begun, tested, or shown anything",
+   "why": "The period of performance begins 2026-08-15, two days after publication."
+  },
+  {
+   "claim": "A named Alaska community losing power to this failure mode",
+   "why": "No Alaska incident is cited anywhere in the record. The oscillation is NSF's characterisation of a failure mode, not a reported event."
+  }
+ ],
+ "cultural_flags": [
+  "Mariko Shirazi is a real named individual. She may be named, quoted from her own faculty page, and drawn respectfully, and she is never a characterized comic object.",
+  "The film touches rural and predominantly Alaska Native communities by subject matter. It names NO community that is not in the source record, and the record names none. It must not depict a specific village, must not put a named place in the dark, and must not present rural Alaskans as waiting to be rescued by a laboratory. The people who run these powerhouses are operators with expertise, and the abstract's own phrase is that small utilities rarely have specialized STUDIES, not that they lack competence."
+ ],
+ "on_screen_numbers_are_illustrative_note": "Every SOURCED figure on screen comes from this file and is a published federal or state record, not a live feed. No number in this film is measured by the film. THE ONE EXCEPTION IS DECLARED BELOW in illustrative_figures, and it is declared because two panel judges independently found this note asserting something the film had stopped doing. A contract that is quietly false is worse than no contract.",
+ "illustrative_figures": [
+  {
+   "value": "365 kW",
+   "where": "the rating plate, which is the film's central prop and is on screen for roughly a third of the runtime",
+   "status": "INVENTED. Not a claim, not sourced, and deliberately so: the film needed a generic village-scale diesel nameplate and the record does not publish one for any specific machine. Using a real utility's number would have been the worse choice, because it would attach this story to a plant it is not about.",
+   "requires": "It carries a visible ILLUSTRATIVE badge in EVERY appearance, and the badge must stay legible: it was the least legible text in the film until 2026-08-13 and is now light type on a dark chip. It is never spoken. It is never summed with, compared to, or placed beside the sourced 500 kW-scale figures in c11/c12.",
+   "why_it_is_recorded_here": "The rule above says a number not in this file does not go on screen. This one does. Rather than weaken the rule or hide the exception, the exception is written down where the rule can see it."
+  }
+ ]
 }

@@ -1,0 +1,119 @@
+{
+ "run_date": "2026-08-13",
+ "title": "The Machine Nobody Wrote Down",
+ "sources": [
+  {
+   "id": "s1",
+   "title": "National Science Foundation, Award 2626692, Collaborative Research: In-field, GFM-enabled, Data-driven, and Stability-certified Tuning of Hybrid Diesel Generator/IBR Microgrids, awarded August 10th 2026 to the University of Alaska Fairbanks",
+   "url": "https://api.nsf.gov/services/v1/awards/2626692.json",
+   "claims": [
+    "c1",
+    "c2",
+    "c4",
+    "c6",
+    "c7",
+    "c8",
+    "c9",
+    "c10",
+    "c11",
+    "c15",
+    "c16"
+   ],
+   "used_in_film": true
+  },
+  {
+   "id": "s2",
+   "title": "National Science Foundation, Award 2626693, the companion award to the University of Wisconsin-Madison",
+   "url": "https://api.nsf.gov/services/v1/awards.json?keyword=%22Stability-certified+Tuning+of+Hybrid+Diesel%22",
+   "claims": [
+    "c3"
+   ],
+   "used_in_film": true
+  },
+  {
+   "id": "s3",
+   "title": "Alaska Center for Energy and Power, University of Alaska Fairbanks, Mariko Shirazi faculty page",
+   "url": "https://www.uaf.edu/acep/about/our-team/mariko-shirazi.php",
+   "claims": [
+    "c5"
+   ],
+   "used_in_film": true
+  },
+  {
+   "id": "s4",
+   "title": "Alaska Center for Energy and Power, Power Systems Integration Laboratory",
+   "url": "https://www.uaf.edu/acep/facilities/power-systems-integration-laboratory.php",
+   "claims": [
+    "c12"
+   ],
+   "used_in_film": true
+  },
+  {
+   "id": "s5",
+   "title": "Alaska Center for Energy and Power, What is a microgrid",
+   "url": "https://www.uaf.edu/acep/our-resources/what-is-a-microgrid.php",
+   "claims": [
+    "c13",
+    "c20"
+   ],
+   "used_in_film": true,
+   "urls": [
+    "https://www.uaf.edu/acep/our-resources/what-is-a-microgrid.php",
+    "https://www.uaf.edu/acep/research/power-systems-integration.php"
+   ]
+  },
+  {
+   "id": "s6",
+   "title": "Alaska Village Electric Cooperative, St. Mary's Grid Bridging System, with Alaska Center for Energy and Power, A new grid bridging system tested at ACEP to serve villages in Alaska",
+   "url": "https://avec.org/about/projects/st-marys-grid-bridging-system/",
+   "claims": [
+    "c17"
+   ],
+   "used_in_film": true,
+   "urls": [
+    "https://avec.org/about/projects/st-marys-grid-bridging-system/",
+    "https://www.uaf.edu/acep/news/2023/a-new-grid-bridging-system-tested-at-acep-to-serve-villages-in-alaska.php",
+    "https://www.avec.org/st-marys-grid-bridging-system/"
+   ],
+   "note": "AVEC's own project page. The url recorded here was www.avec.org/st-marys-grid-bridging-system/, which 301s to the path below; the canonical form is used so the ledger and claims.json cite the same document."
+  },
+  {
+   "id": "s7",
+   "title": "Sandia National Laboratories, Advanced Microgrids programme",
+   "url": "https://energy.sandia.gov/programs/electric-grid/advanced-microgrids/",
+   "claims": [
+    "c18"
+   ],
+   "used_in_film": true
+  },
+  {
+   "id": "s8",
+   "title": "Alaska Center for Energy and Power, seminar on grid-forming inverters in remote Alaska microgrids, April 21st 2025",
+   "url": "https://www.uaf.edu/acep/news/2025/seminar-on-grid-forming-inverters-in-remote-alska-microgrids.php",
+   "claims": [
+    "c19"
+   ],
+   "used_in_film": true
+  },
+  {
+   "id": "s9",
+   "title": "Alaska Energy Authority, Power Cost Equalization program",
+   "url": "https://www.akenergyauthority.org/PCE",
+   "claims": [
+    "c14"
+   ],
+   "used_in_film": false,
+   "note": "c14 was verified and then dropped from the cut. The entry stays so the ledger accounts for every sourced claim; used_in_film keeps it off the end card, which may only cite what the film says."
+  },
+  {
+   "id": "s10",
+   "title": "Tanana Chiefs Conference, Attachment E, BESS Testing Requirements",
+   "url": "https://www.tananachiefs.org/wp-content/uploads/2025/09/Attachment-E-BESS-Testing-Requirements.pdf",
+   "claims": [
+    "c21"
+   ],
+   "used_in_film": false,
+   "note": "c21 is verified-with-a-stated-sourcing-limit and dropped from the cut. Same reasoning as the AEA entry."
+  }
+ ]
+}

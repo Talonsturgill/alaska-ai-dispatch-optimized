@@ -1,0 +1,212 @@
+{
+  "run_date": "2026-08-13",
+  "narrator": "Nora, an Alaska public-radio host: warm, grounded, quietly witty",
+  "voice": "Sulafat",
+  "target_seconds": 120,
+  "band_seconds": [112, 130],
+  "predicted_runtime_s": 129.6,
+  "pronunciations": {},
+  "pronunciation_note": "Deliberately empty. The locked script already spells N S F for the synth and the caption fixup restores NSF on screen. Nothing else in these sixteen lines is a proper noun the voice has ever mishandled, and a respelling that the caption fixups do not cover would either burn wrong text or inflate WER, so none is added.",
+  "notes": "Style: curious and warm, an observation rather than a warning, matching the angle's curious-leaning-hopeful valence. Open hushed and close on the rating plate, build through the two machines, drop hard for the stake, let genuine pleasure into the inverter question, play the objection dead straight and unhurried, speak about the utilities with respect and not surprise, one dry beat on artificial intelligence, land the button quiet and a little unresolved. Pace: the required runtime-anchored paragraph, verbatim, because it is the only reliable length control this format has and the predicted read is 129.6s against a 112 to 130 band. Contrast: energies run 3,2,4,3,4,3,2,3,5,2,3,4,2,3,4,2, no two neighbours equal, spread 2 to 5, with the widest swing around the proposal and the objection. Tags: six inline tags in sixteen lines, all mid-line, all from the vetted palette; every emotional cue lives here in the notes instead.",
+  "style_prompt": "### DIRECTOR'S NOTES\nStyle: warm, grounded and genuinely curious, the sound of someone showing you something small she finds interesting, not selling it. Open close and quiet, almost hushed, like a hand resting on a cold metal plate, and let interest rather than volume carry the first four sentences. Warm up through the middle and let real pleasure into the line about the inverter putting a question into the wire, because that is the idea this whole piece likes. Play the objection about the photograph completely straight and unhurried, with no hint of arguing back, and let it sit. Speak about the utilities and the field crews with plain respect, never surprise. One dry half smile on the artificial intelligence line and nowhere else. Land the last two sentences quietly and a little unresolved. No alarm, no hype, no announcer voice; this is an observation.\nPace: MEASURED and unhurried. THIS IS A TWO MINUTE PIECE, about one hundred and twenty seconds, and the read must FILL it, so give every sentence room to land and take a real breath at every period. Do not rush the numbers. Vary the tone line to line so no two sentences sound the same.\nEmphasis: lean on the key word in each line; let numbers land.",
+  "arc": [
+    {"window_s": [0, 26], "lines": [0, 1, 2, 3], "register": "quiet, close, factual. A hand on a plate. Curiosity, not drama. This is an observation."},
+    {"window_s": [26, 53], "lines": [4, 5, 6], "register": "the two machines and the failure mode. Energy rises, then the first real drop on the stake, which wants weight and not volume."},
+    {"window_s": [53, 72], "lines": [7, 8], "register": "the complication and the proposal. The most pleasurable idea in the piece. Warmth allowed."},
+    {"window_s": [72, 90], "lines": [9, 10], "register": "the test. The fair objection played straight and unhurried, allowed to sit, with no rush to the rebuttal."},
+    {"window_s": [90, 100], "lines": [11], "register": "the operators' beat. Respect. Competent people who got there first."},
+    {"window_s": [100, 117], "lines": [12, 13], "register": "the honest size, then the one wry beat about the word artificial intelligence."},
+    {"window_s": [117, 130], "lines": [14, 15], "register": "the button. Quiet, landing, a little unresolved."}
+  ],
+  "lines": [
+    {
+      "idx": 0,
+      "text": "A rating plate on a village diesel generator.",
+      "intent": "hook",
+      "emphasis": "plate",
+      "energy": 3,
+      "pace": "unhurried, close, almost spoken to yourself",
+      "tags": [],
+      "pause_before": false,
+      "why": "The throughline object arrives first and it is a physical thing, so the hook pulls by getting quieter, not louder; no tag because a line-initial cue is the one that leaks."
+    },
+    {
+      "idx": 1,
+      "text": "The top number is stamped deep, the power this machine can make.",
+      "intent": "setup",
+      "emphasis": "make",
+      "energy": 2,
+      "pace": "even and slow, one hand tracing the stamping",
+      "tags": [],
+      "pause_before": false,
+      "why": "Settling below the hook opens the piece's lowest register early and sets up the make versus behaves pair that the button pays off."
+    },
+    {
+      "idx": 2,
+      "text": "Everything under it is blank, [short pause] because nobody ever wrote down how this machine behaves.",
+      "intent": "reveal",
+      "emphasis": "behaves",
+      "energy": 4,
+      "pace": "the pause lands on the blank, then the reason arrives steadily",
+      "tags": ["[short pause]"],
+      "pause_before": false,
+      "why": "The film's whole argument is this absence, so it gets the first real lift, of interest and not of volume, with a beat to let the blank field register."
+    },
+    {
+      "idx": 3,
+      "text": "On August 10th the National Science Foundation put money behind that blank space, at the University of Alaska Fairbanks.",
+      "intent": "stat",
+      "emphasis": "money",
+      "energy": 3,
+      "pace": "slow slightly on the date and on the institution names",
+      "tags": [],
+      "pause_before": false,
+      "why": "The news lands as a plain report; dropping back from the reveal keeps the date and the agency clean and stops the opening feeling like an announcement."
+    },
+    {
+      "idx": 4,
+      "text": "Set a battery beside it, about the same size, and N S F says the two can interact and produce sustained oscillations.",
+      "intent": "setup",
+      "emphasis": "oscillations",
+      "energy": 4,
+      "pace": "brisker through the setup clause, then slow onto the last three words",
+      "tags": [],
+      "pause_before": false,
+      "why": "The second movement starts rising here, but oscillations is a characterisation and never a reported outage, so the lift is engagement rather than alarm."
+    },
+    {
+      "idx": 5,
+      "text": "That battery exists to let the diesel switch off, which is where the fuel saving comes from.",
+      "intent": "setup",
+      "emphasis": "off",
+      "energy": 3,
+      "pace": "plain and level, an explainer beat",
+      "tags": [],
+      "pause_before": false,
+      "why": "A step down keeps the mechanism legible and buys the room the next line needs to drop into."
+    },
+    {
+      "idx": 6,
+      "text": "So if the two fight each other instead of settling, [short pause] the diesel keeps running and the saving never arrives.",
+      "intent": "stakes",
+      "emphasis": "never",
+      "energy": 2,
+      "pace": "the slowest line in the film; take the pause fully and put weight on the last four words",
+      "tags": ["[short pause]"],
+      "pause_before": false,
+      "why": "The film's first real drop. Gravity comes from getting quieter and slower, not louder, and the pause before the consequence is what makes never arrives land."
+    },
+    {
+      "idx": 7,
+      "text": "On a big grid you'd study each machine alone, but here they are wired too close, and nobody wrote this one down.",
+      "intent": "contrast",
+      "emphasis": "close",
+      "energy": 3,
+      "pace": "recover to a working pace, lean into the turn at but",
+      "tags": [],
+      "pause_before": false,
+      "why": "Climbing back out of the drop one step at a time builds toward the proposal instead of jumping to it, and the pivot word is why the ordinary method fails here."
+    },
+    {
+      "idx": 8,
+      "text": "So the battery's own inverter will put a question into the wire [curious] and learn how the diesel answers.",
+      "intent": "reveal",
+      "emphasis": "question",
+      "energy": 5,
+      "pace": "brightest line of the piece, still unhurried; a small smile on the second half",
+      "tags": ["[curious]"],
+      "pause_before": true,
+      "why": "One machine asking its neighbour a question is the idea the film enjoys most, so it takes the top of the energy curve, and the tag sits mid-line where a cue reads as stage direction."
+    },
+    {
+      "idx": 9,
+      "text": "But a measurement is only the moment you took it, [short pause] and a photograph of a running engine is out of date before it's pinned up.",
+      "intent": "stakes",
+      "emphasis": "moment",
+      "energy": 2,
+      "pace": "the second slowest line; let the image sit, no lift at the end",
+      "tags": ["[short pause]"],
+      "pause_before": true,
+      "why": "The fair objection is played dead straight at the biggest drop in the film, three levels below the line before it, so nothing in the voice argues with it."
+    },
+    {
+      "idx": 10,
+      "text": "You can take a new one any hour though, on hardware already on the wall.",
+      "intent": "contrast",
+      "emphasis": "hour",
+      "energy": 3,
+      "pace": "matter of fact, no triumph, do not accelerate",
+      "tags": [],
+      "pause_before": false,
+      "why": "The rebuttal is only one step up because a rush here would editorialise against an objection the piece just promised to honour."
+    },
+    {
+      "idx": 11,
+      "text": "And Alaska's utilities are ahead of the science, with a megawatt battery already shipped to the village of Saint Mary's.",
+      "intent": "reveal",
+      "emphasis": "ahead",
+      "energy": 4,
+      "pace": "warm and open, slow on the place name",
+      "tags": [],
+      "pause_before": true,
+      "why": "The operators' beat is admiration and not a gotcha, so the lift is warmth in the tone rather than surprise, and the village name gets its own room."
+    },
+    {
+      "idx": 12,
+      "text": "The Fairbanks award is three hundred twenty five thousand dollars, and the test bed is a lab.",
+      "intent": "stat",
+      "emphasis": "lab",
+      "energy": 2,
+      "pace": "slow through the figure, then flat and unapologetic on the last clause",
+      "tags": [],
+      "pause_before": false,
+      "why": "The honest size is stated without wincing and without selling, and dropping two levels from the utilities beat is what makes it read as candour."
+    },
+    {
+      "idx": 13,
+      "text": "You'd expect a machine that learns to be called artificial intelligence, [wry] but this award only says data driven.",
+      "intent": "wry",
+      "emphasis": "only",
+      "energy": 3,
+      "pace": "slightly quicker, thrown away, a half smile and no more",
+      "tags": ["[wry]"],
+      "pause_before": false,
+      "why": "The single dry beat in the piece; it is one aside about a word, so it stays light and never becomes the spine."
+    },
+    {
+      "idx": 14,
+      "text": "The work starts August 15th, two days from now.",
+      "intent": "stat",
+      "emphasis": "two",
+      "energy": 4,
+      "pace": "clear and forward, a small lift on the clock",
+      "tags": [],
+      "pause_before": false,
+      "why": "The only true negative here is a date, so it is delivered as a live fact with a lift, which also sets up the fall into the button."
+    },
+    {
+      "idx": 15,
+      "text": "The plate still won't say how that machine behaves. [short pause] Fairbanks is finally going to ask it.",
+      "intent": "button",
+      "emphasis": "ask",
+      "energy": 2,
+      "pace": "quiet, direct, take the full pause, and do not resolve the last word upward",
+      "tags": ["[short pause]"],
+      "pause_before": true,
+      "why": "The throughline object returns and the read lands two levels below the line before it, so the ending is settled rather than triumphant and stays a little open."
+    }
+  ],
+  "contrast_check": {
+    "energies": [3, 2, 4, 3, 4, 3, 2, 3, 5, 2, 3, 4, 2, 3, 4, 2],
+    "adjacent_equal_pairs": 0,
+    "spread": [2, 5],
+    "note": "No two neighbours share a level. The widest swings are 3 to 5 into the proposal, 5 to 2 into the objection, and 4 to 2 into the button, which is where the pitch variance the sound check measures should come from."
+  },
+  "synth_risks": [
+    "N S F on line 4 is spelled for the synth on purpose. The ASR may return NSF as one token, which can read as a word error even on a clean take; the caption fixup restores NSF on screen.",
+    "test bed on line 12 may be transcribed as testbed. Cosmetic, not a delivery problem.",
+    "Saint Mary's on line 11 must not be clipped. It is the operators' beat and the place name carries the respect, hence the slow-on-the-place-name note.",
+    "Line 8 carries [curious] mid-line. If any take speaks the word curious aloud, move the cue into the Style line as pleasure on the inverter question and re-emit."
+  ],
+  "assembled_prompt": "Read ONLY the transcript below aloud as speech. The lines above \"Transcript:\" are direction; never speak them.\n# AUDIO PROFILE: Nora, an Alaska public-radio host: warm, grounded, quietly witty. Neutral American accent, light and natural, not announcer-y.\n### DIRECTOR'S NOTES\nStyle: warm, grounded and genuinely curious, the sound of someone showing you something small she finds interesting, not selling it. Open close and quiet, almost hushed, like a hand resting on a cold metal plate, and let interest rather than volume carry the first four sentences. Warm up through the middle and let real pleasure into the line about the inverter putting a question into the wire, because that is the idea this whole piece likes. Play the objection about the photograph completely straight and unhurried, with no hint of arguing back, and let it sit. Speak about the utilities and the field crews with plain respect, never surprise. One dry half smile on the artificial intelligence line and nowhere else. Land the last two sentences quietly and a little unresolved. No alarm, no hype, no announcer voice; this is an observation.\nPace: MEASURED and unhurried. THIS IS A TWO MINUTE PIECE, about one hundred and twenty seconds, and the read must FILL it, so give every sentence room to land and take a real breath at every period. Do not rush the numbers. Vary the tone line to line so no two sentences sound the same.\nEmphasis: lean on the key word in each line; let numbers land.\nTranscript:\nA rating plate on a village diesel generator.\nThe top number is stamped deep, the power this machine can make.\nEverything under it is blank, [short pause] because nobody ever wrote down how this machine behaves.\nOn August 10th the National Science Foundation put money behind that blank space, at the University of Alaska Fairbanks.\nSet a battery beside it, about the same size, and N S F says the two can interact and produce sustained oscillations.\nThat battery exists to let the diesel switch off, which is where the fuel saving comes from.\nSo if the two fight each other instead of settling, [short pause] the diesel keeps running and the saving never arrives.\nOn a big grid you'd study each machine alone, but here they are wired too close, and nobody wrote this one down.\nSo the battery's own inverter will put a question into the wire [curious] and learn how the diesel answers.\nBut a measurement is only the moment you took it, [short pause] and a photograph of a running engine is out of date before it's pinned up.\nYou can take a new one any hour though, on hardware already on the wall.\nAnd Alaska's utilities are ahead of the science, with a megawatt battery already shipped to the village of Saint Mary's.\nThe Fairbanks award is three hundred twenty five thousand dollars, and the test bed is a lab.\nYou'd expect a machine that learns to be called artificial intelligence, [wry] but this award only says data driven.\nThe work starts August 15th, two days from now.\nThe plate still won't say how that machine behaves. [short pause] Fairbanks is finally going to ask it."
+}

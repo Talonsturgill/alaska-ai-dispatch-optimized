@@ -30,42 +30,54 @@ EV = os.path.join(REPO, "out", "evidence")
 
 # (name, vo_line, seconds INTO that line where the move actually peaks)
 MOVES = [
-    # RE-ANCHORED 2026-08-09 for "The Method, Not The Metal". Every name above this line
-    # belonged to a previous film and NONE of those beats exist here. Anchor names and
-    # offsets are PER-RUN DATA and a run that changes the film changes them in the same
-    # commit, because a strip pointed at the wrong moment produces a judge finding that is
-    # true about the EVIDENCE and false about the FILM, which is the most expensive kind.
-    # Offsets are CONTACT times at the motion's fastest point, clamped inside each line's
-    # own measured duration. Twenty-five strips across twelve shots, so no shot goes unsampled.
-    ("ignite",   0,  0.15),  # S1  the lamp SLAMMING on and the lid banging up off its hinge
-    ("tag",      0,  3.20),  # S1  the tag swinging out and settling with its print turned away
-    ("plate",    1,  0.25),  # S2  the award plate dropping onto the floor and bouncing once
-    ("count",    1,  2.60),  # S2  the total counting up and landing hard against the plate
-    ("stamp",    1,  5.70),  # S2  the campus plate stamping down beside the first
-    ("pour",     2,  0.30),  # S3  coal refuse pouring through frame in a torn irregular fall
-    ("swell",    2,  3.10),  # S3  the cell swelling up out of the grit until it fills frame
-    ("bind",     3,  0.70),  # S3  atoms striking the membrane, rebounding, and clamping OUTSIDE
-    ("assemble", 4,  0.25),  # S4  the money block assembling face by face
-    ("split",    4,  3.00),  # S4  the block shearing apart along its seam
-    ("bars",     5,  0.30),  # S4  the two parts rising into bars, the tall one overshooting
-    ("quote",    5,  3.60),  # S4  NSF's sentence typing itself clause by clause
-    ("spinup",   6,  0.30),  # S5  the flyballs swinging out and up as the spindle accelerates
-    ("twang",    6,  3.40),  # S5  THE REFUSAL, the cable stopping dead short of the steel
-    ("reroute",  6,  5.90),  # S5  the cable sweeping away and latching into empty air
-    ("draw",     7,  0.80),  # S5  the twin DRAWING itself into being around the latched end
-    ("slips",    9,  0.40),  # S6  four paper slips landing and skating into a very short stack
-    ("intake",  10,  0.40),  # S6  the twin's intake cranking open beside the stack
-    ("swing",   11,  0.30),  # S7  ACT 3, the lamp swinging and dragging every shadow across
-    ("zero",    12,  3.50),  # S7  coins stacking on two plates, a hollow drop on the third
-    ("heap",    13,  3.70),  # S8  the unlocated waste crawling in as a dashed absence
-    ("sentence",14,  0.30),  # S8  a printed sentence landing where a conveyor would arrive
-    ("crack",   16,  0.40),  # S9  the hairline crack running the accusation card end to end
-    ("seat",    17,  0.35),  # S10 the power limit block descending into the recess and seating
-    ("pumps",   18,  0.50),  # S10 the plant cutaway running its pumps and valves in sequence
-    ("meter",   18,  3.50),  # S10 the needle swinging up under load and settling inside its limit
-    ("rise",    20,  0.40),  # S11 THE SIGNATURE, the ring rising clear of both vessels
-    ("turn",    21,  0.40),  # S11 the tag finally swinging round to face camera
-    ("button",  22,  0.60),  # S12 the ring hanging over the still-empty vessel
+    # RE-ANCHORED 2026-08-13 for "The Machine Nobody Wrote Down". Every name above this line
+    # belonged to a previous film and NONE of those beats exist here. Anchor names and offsets
+    # are PER-RUN DATA and a run that changes the film changes them in the same commit, because
+    # a strip pointed at the wrong moment produces a judge finding that is true about the
+    # EVIDENCE and false about the FILM, which is the most expensive kind.
+    # Each strip CENTRES on its own storyboard beat, and the board was remapped onto the
+    # delivered vo_lines.json first, so board and strips are finally on one clock. One strip
+    # per beat, thirty-seven of them, across all fourteen shots.
+    ("land",  0,  0.00),  # opens on the object the film returns to
+    ("tap",  0,  2.15),  # plants loop 1 before anyone knows what it is
+    # 2.66 -> 2.15: the knuckle taps run f58-74, i.e. 1.93-2.47s, so a window centred
+    # at 2.66 opened AFTER the move ended and three judges reported the hand frozen
+    # across all 8 frames. They were right about the strip and wrong about the film.
+    ("stamp",  1,  0.00),  # the one fact the plate does carry
+    ("blanks",  1,  3.73),  # the contrast the whole film rests on
+    ("form",  2,  0.00),  # names the absence as an absence
+    ("record",  2,  4.52),  # the reason nobody can look it up
+    ("drums",  3,  0.00),  # the news peg, dated
+    ("nameplate",  3,  3.86),  # draws the two-award obligation instead of captioning it
+    ("pair",  3,  7.03),  # names the actor before the film uses her
+    ("ring",  4,  0.00),  # the two machines as equals
+    ("note",  4,  3.59),  # the failure mode, drawn
+    ("switchoff",  4,  6.11),  # keeps the operators competent and the room lit
+    ("fuelstop",  5,  0.00),  # why the battery is there at all
+    ("contactor",  5,  2.81),  # the saving made physical
+    ("hold",  6,  0.00),  # the stake, and it plants loop 2
+    ("unroll",  6,  3.75),  # the cost of not knowing, with nothing broken in frame
+    ("collapse",  7,  0.00),  # why the standard fix does not fit
+    ("drawer",  7,  3.86),  # the scale contrast that kills the method
+    ("probeout",  7,  6.80),  # the running gag lands and the bottleneck is named
+    ("probeback",  8,  0.00),  # the proposal, in the record's own words
+    ("shutter",  8,  3.63),  # the answer read off the difference
+    ("pinned",  9,  0.00),  # the fair objection opens
+    ("change",  9,  3.39),  # THE TEST, held and not rescued
+    ("strip",  9,  6.24),  # what changed while the photograph stayed the same
+    ("seat", 10,  0.00),  # the rebuttal, inside the same picture
+    ("crate", 10,  3.11),  # the shape of the answer
+    ("panel", 11,  0.00),  # the operators' half, and it is theirs
+    ("sandia", 11,  3.65),  # the utilities are ahead of the paperwork
+    ("boundary", 11,  5.75),  # the operators' competence is shown, not asserted
+    ("pullback", 12,  0.00),  # the honest size, said out loud
+    ("sheet", 12,  2.80),  # THE SIGNATURE SHOT
+    ("search", 13,  0.00),  # the film's one beat about its own name
+    ("stencil", 13,  2.91),  # the checked absence, drawn as an absence
+    ("breath", 14,  0.00),  # the tense discipline as a picture
+    ("button", 14,  2.60),  # the held breath before the button
+    ("pulse", 15,  0.00),  # the button, and loop 1 pays
+    ("loopback", 15,  3.09),  # the last image, and the loopback
 ]
 
 
@@ -191,6 +203,30 @@ def main():
     print(f"caption cues: {len(_cues)} written to evidence")
 
     # ---- motion filmstrips, CENTRED ON THE REAL MOVE ----
+    #
+    # A STRIP THAT STRADDLES A CUT MEASURES THE CUT (2026-08-13). Two judges independently
+    # worked this out from the pack and one put it plainly: "every strip reporting 42-67%
+    # sits exactly on a storyboard shot boundary, so those numbers measure cuts and not
+    # animation." They were right, and it is the worst kind of wrong, because motion.json's
+    # own note tells a judge to read these figures BEFORE recording a beat as frozen. The
+    # instrument was handing out 66.7% for a hard cut between two frozen tableaux and a judge
+    # who trusted it would have scored motion that does not exist.
+    #
+    # The cause is arithmetic: many MOVES carry off=0.0, so the centre IS the line start, and
+    # a line start is a shot boundary. An 8-frame window centred there is 4 frames of the
+    # outgoing shot and 4 of the incoming one.
+    #
+    # So the window is now slid off the boundary into whichever shot the centre belongs to,
+    # and every entry records whether it had to move. changed_pct now means WITHIN-SHOT
+    # motion in every row, which is the only thing it was ever supposed to mean.
+    bounds = []
+    try:
+        _sc = json.load(open(os.path.join(OUT, "episode_props.json"))).get("scenes") or []
+        bounds = sorted({round(s["from"] / 30.0, 3) for s in _sc if s.get("from")})
+    except Exception as _e:
+        print(f"  (no scene boundaries available, strips not de-straddled: {_e})")
+
+    WIN = 8 / 30.0
     motion = {}
     for name, line, off in MOVES:
         if line not in start:
@@ -198,6 +234,43 @@ def main():
             continue
         centre = start[line] + off
         t0 = max(0.0, centre - 0.13)          # 8 frames at 30fps spans ~0.27s
+        straddled = next((b for b in bounds if t0 < b < t0 + WIN), None)
+        if straddled is None:
+            # A CUT IS NOT ALWAYS A SHOT BOUNDARY (2026-08-13, round 4). All three judges
+            # caught the same row: filmstrip_pulse visibly cuts between frames 4 and 5 while
+            # this file marked it straddled_cut false, because that cut is a BEAT change
+            # inside S14 (the threshold card giving way to the plate) and the scene table
+            # knows nothing about it. So the boundary list is not the authority any more --
+            # the PIXELS are. Cut a cheap probe pair either side of each interior frame and
+            # slide off whichever gap is a cut. Empirical beats declarative here, because the
+            # thing being measured is exactly "did the picture change wholesale".
+            probe = os.path.join(EV, f"_p_{name}_%d.jpg")
+            subprocess.run(["ffmpeg", "-y", "-ss", f"{t0:.3f}", "-i", a.video, "-frames:v", "8",
+                            "-vsync", "0", "-q:v", "6", "-vf", "scale=120:-1", probe,
+                            "-v", "error"], check=False)
+            pg = sorted(glob.glob(os.path.join(EV, f"_p_{name}_*.jpg")),
+                        key=lambda q: int(q.rsplit("_", 1)[1].split(".")[0]))
+            ims = [Image.open(q).convert("L") for q in pg]
+            for k in range(len(ims) - 1):
+                d = ImageChops.difference(ims[k], ims[k + 1]).histogram()
+                px = ims[k].size[0] * ims[k].size[1]
+                if 100.0 * sum(d[40:]) / px > 22.0:          # a wholesale picture change
+                    straddled = t0 + (k + 1) / 30.0
+                    break
+            for q in pg:
+                os.remove(q)
+        if straddled is not None:
+            # keep the shot the CENTRE belongs to, and sit clear of the cut by one frame
+            # EPSILON, and it is not a nicety (2026-08-13, round 5). A beat whose centre IS the
+            # cut -- every strip with off=0.0 -- compares equal, and float representation decided
+            # which way it fell. On this run centre and cut were both 115.76 and it slid BACKWARD,
+            # so the button strip showed only the OUTGOING shot and a judge correctly reported
+            # "the plate has not returned" for a beat where the plate returns exactly on its line.
+            # A tie must resolve FORWARD, into the shot the beat is about.
+            t0 = (straddled + 1 / 30.0 if centre >= straddled - 1e-6
+                  else max(0.0, straddled - WIN - 1 / 30.0))
+            print(f"  filmstrip {name}: window straddled the cut at {straddled:.2f}s, "
+                  f"slid to {t0:.2f}s so the measurement is within-shot")
         subprocess.run(["ffmpeg", "-y", "-ss", f"{t0:.3f}", "-i", a.video, "-frames:v", "8",
                         "-vsync", "0", "-q:v", "3",
                         os.path.join(EV, f"s_{name}_%d.jpg"), "-v", "error"], check=True)
@@ -230,7 +303,9 @@ def main():
         changed = 100.0 * sum(hist[12:]) / px
         peak = max((i for i, c in enumerate(hist) if c), default=0)
         motion[name] = {"centre_s": round(centre, 2), "changed_pct": round(changed, 1),
-                        "peak_delta": peak}
+                        "peak_delta": peak, "window_start_s": round(t0, 2),
+                        "straddled_cut": straddled is not None,
+                        "within_shot": True}
 
         t2, h2 = int(w * 0.34), int(h * 0.34)
         st = Image.new("RGB", (len(xs) * t2, h2 + 34), "white")
@@ -250,7 +325,13 @@ def main():
     json.dump({"note": "frame 1 vs frame 8 of each filmstrip window, measured on the "
                        "delivered cut. changed_pct is the share of pixels differing by "
                        "more than 12/255. A judge who cannot SEE motion in a strip should "
-                       "read this before recording that the beat is frozen.",
+                       "read this before recording that the beat is frozen. EVERY WINDOW "
+                       "HERE IS WITHIN A SINGLE SHOT: any window that straddled a cut has "
+                       "been slid clear of it and is marked straddled_cut, because a strip "
+                       "spanning a cut measures the cut and reports it as animation. Before "
+                       "2026-08-13 it did not do this, and the large figures in older packs "
+                       "are shot changes, not motion. Cross-check against "
+                       "motion_registered.json, which solves the camera out per shot.",
                "strips": motion},
               open(os.path.join(EV, "motion.json"), "w"), indent=2)
     print("  motion.json written:", {k: v["changed_pct"] for k, v in motion.items()})

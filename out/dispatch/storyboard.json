@@ -1,1256 +1,1233 @@
 {
-  "date": "2026-08-12",
-  "title": "The Smallest Door",
-  "engine": "infographic-2.5d",
-  "derived_from": "scratch",
-  "total_seconds": 121.0,
-  "concept": "A federal notice tripled the smallest grant an Alaska applicant can win in this lane and made the field national, and put every AI dollar it created into one award no village can lead. What that award is [KILLED c23 - removed] is a list, and a much smaller Alaska grant already produced one.",
-  "angle": {
-    "run_date": "2026-08-12",
-    "title": "The Smallest Door",
-    "thesis": "The federal government did not cut Alaska Native funding. It raised the floor. The smallest award an Alaska applicant could win in this lane went from one hundred thousand dollars to two and a half million, and the field went from Alaska only to nationwide, and the thing that big new award is [KILLED c23 - removed] is a list that a much smaller grant in Anchorage already produced for free.",
-    "long_form": "On July 28th the Administration for Native Americans published a final notice retiring SEDS and SEDS Alaska. Its successor, EAGLE, is bigger: twenty four million dollars and thirty one awards against SEDS Alaska's two million and three. In the same notice ANA created the AI3 Action Institute, one award, nationwide, with a floor of two and a half million dollars, whose job is to identify responsible and practical opportunities to apply AI in Native communities. Nobody has been cut and nobody has been denied. What changed is the size of the smallest door. SEDS Alaska's floor was one hundred thousand dollars, which is a sum a village office can administer, and its field was Alaska. AI3's floor is two and a half million, and its field is every federally recognized tribe plus Native CDFIs, Urban Indian Centers, Tribal Colleges and Native Hawaiian and Pacific Islander serving agencies. Meanwhile a three hundred and eighty thousand dollar NSF grant to the University of Alaska Anchorage asked any Alaskan organization to name its own problem. Twelve wrote one down. Four were funded, among them Nome Joint Utilities System on predicting the thermal conductivity of warming permafrost, and the Village of Alakanuk Tribe on AI for rural community transformation and infrastructure coordination. That set of twelve is the deliverable AI3 is being [KILLED c23 - removed], and it already exists for Alaska.",
-    "valence": "curious and wary, unresolved, with a live deadline",
-    "valence_defense": "Alarm is unavailable on the facts. Nobody has been denied anything, no AI3 award has been made, no EAGLE award is announced, and the successor program carries more money and more awards than the program it succeeded. Celebration is unavailable too, because a bigger pot arranged as one national award is a different instrument, and the Alaska alternative has published no results at all. The honest posture is a structural observation and a deadline fifteen days out.",
-    "falsifiability": "FALSE if ANA posts an FY2026 Alaska specific competition, or if an EAGLE or IDEAS award floor lands at or below nine hundred thousand dollars with an open project definition, or if the AI3 award announced after August 27th 2026 goes to a Native led applicant that runs its own open call for community named problems. Any one of those and the thesis is wrong.",
-    "supporting_facts": [
-      "SEDS Alaska FY2025: two million dollars, three awards, floor one hundred thousand, ceiling nine hundred thousand, closed July 22nd 2025. For FY2026 grants.gov returns three ANA opportunities and none is Alaska specific.",
-      "AI3 Action Institute: one award, nationwide, floor two and a half million dollars, ceiling and total program funding both three and a half million, closes August 27th 2026.",
-      "NSF award 2433241 to UAA, three hundred and eighty thousand dollars. Its mini grant call was open to any Alaskan organization outside the university. Twelve asked, four were funded."
-    ],
-    "fair_counterpoint_that_gets_a_scene": "Consolidation is a rational answer to a real problem, and Act 3 gives it the widest, best lit scene in the film. Two hundred and twenty nine federally recognized tribes in Alaska, and five hundred and seventy five federally recognized entities nationwide, each separately evaluating the same vendors and each separately failing to negotiate data sovereignty terms, is a worse outcome than one body doing it once. Vendor leverage, shared governance language and a reusable sovereignty framework are exactly the goods a one hundred thousand dollar village award can never buy. EAGLE is also genuinely larger than what it succeeded. ANA ran a real process: a proposed notice on March 20th, a thirty day comment period, thirty two submissions, and it widened Welders to Elders past welding in response to comment. And ANA wrote that Alaska Native communities remain eligible across EAGLE project areas including IDEAS, a project area whose name is Indigenous Designs to Empower and Advance Self Determination.",
-    "how_it_narrows_honestly": "The film does not say the institute is a mistake, because it is not. It says the institute and the retirement of the small Alaska lane arrived in one package, and only the second of those is the problem. It grades design against design and says out loud that neither side has published a result, and that AI3 has no grantee at all until after August 27th.",
-    "the_lazy_angle_we_refuse": "Two, one on each side. We refuse the feds killed Alaska Native funding and swapped it for an AI buzzword, which is false: Alaska Native villages are explicitly eligible, the successor program is larger, and no application has been rejected. We refuse its mirror, a twenty seven and a half million dollar AI windfall, because most of that is EAGLE and not AI, and one national award is a windfall for nobody who does not win it.",
-    "who_it_serves": "An Alaska Native village council, tribal consortium, Native CDFI or Tribal College with a decision to make in fifteen days: lead a bid by August 27th, join somebody else's as a named partner, or compete under EAGLE instead. And any Alaska organization that had a problem SEDS Alaska would have funded, who now needs to know where the remaining small door is.",
-    "throughline_object": "THE SILL, the award floor drawn as a physical threshold you must step over, whose height changes when the rule changes",
-    "runners_up": [
-      {
-        "angle": "AI3 replaced Alaska's grant program with an AI institute",
-        "why_it_lost": "REFUTED BY THE PRIMARY DOCUMENT. ANA writes that the Institute will complement, not replace, broader social and economic development efforts. EAGLE is the successor. The fact check killed this framing before it reached a script."
-      },
-      {
-        "angle": "The federal government told Native communities what their problems are while Alaska let them name their own",
-        "why_it_lost": "The red team killed it on four counts. EAGLE contains IDEAS, an explicitly open self determination project area, so the menu is not closed. UAA also gatekept, twelve in and four out, picked by a university committee with a faculty PI on every funded project. RAISE is an NSF capacity grant open to any Alaskan organization with no Native mandate, so the Native self determination frame was imported rather than found. And RAISE began in August 2024, so it is not an answer to a July 2026 rule and the ten days apart framing manufactured a dialogue that never happened."
-      },
-      {
-        "angle": "The AI learning curve the institute targets has already closed inside Alaska's tribal health system",
-        "why_it_lost": "The evidence is one symposium report whose authors describe their own 2025 group as a homogenous group of individuals working with electronic health record data, thirty one people, at least sixteen percent of them from Stanford and the CDC. It says nothing about communities and nothing about ANA. Carrying it would have cost six binding narrowings for a point the spine does not need. Cut whole."
-      }
-    ],
-    "cultural_ruling_binding": [
-      "The subject is federal program design and public documents. The film never describes what Alaska Native people want, need, fear or lost.",
-      "No Alaska Federation of Natives position may appear. Its only source is a confirmed HTTP 403 and AFN's own reachable site carries no statement on this.",
-      "The film states on screen that no Alaska Native political or advocacy organization was reachable for a position, so it speaks about the program and not for anyone affected by it, and it invites correction.",
-      "Every position traces to 91 FR 47241, a grants.gov notice, the NSF award record or the funder's own page, or is owned as this publisher's opinion.",
-      "Never say Alakanuk, Nome Joint Utilities System or any partner named its own problem, endorses this framing or holds any view. The call invited it and they are the named partners. That is all.",
-      "Federally recognized tribes, ANCSA village and regional corporations, nonprofit tribal consortia, tribal health organizations and advocacy bodies are legally distinct and none speaks for the others.",
-      "32 submissions is a total comment count. Not 32 Alaskans, not 32 objections. Nothing in the record states how many objected.",
-      "NEVER draw with a face: any Alaska Native person or community, any tribe or tribal government, any real named organization or person, villages, medevac aircraft, or any mask, totemic or Indigenous visual form. No Indigenous motif is used decoratively anywhere.",
-      "Characterization is permitted ONLY for paperwork and programs: the notice, the funding line, the sill, the slips, the queue."
-    ]
+ "date": "2026-08-13",
+ "title": "THE MACHINE NOBODY WROTE DOWN",
+ "engine": "infographic-2.5d",
+ "derived_from": "scratch",
+ "total_seconds": 122.3,
+ "concept": "A village diesel generator's rating plate carries one number stamped deep, the power it can make, and nothing at all about how it behaves, because nobody ever wrote that down. NSF award 2626692, made on August 10th 2026 to the University of Alaska Fairbanks, proposes to stop asking for that missing page and let the battery's own grid-forming inverter put a question into the wire and learn how the diesel answers. The film is built on the rating plate, holds the fair objection at full strength for fifteen seconds, gives the operators who got there first their own act, and says out loud that the work starts in two days and that the award never once says artificial intelligence.",
+ "angle": {
+  "run_date": "2026-08-13",
+  "title_working": "THE MACHINE NOBODY WROTE DOWN",
+  "thesis": "The thing standing between an Alaska village and a battery that actually saves fuel is not the battery. It is that nobody has an accurate model of the diesel already sitting in the powerhouse, so the proposal is to stop asking for that model and let the battery measure one, across the same wire that carries the trouble.",
+  "falsifiability": {
+   "question_answered_first": true,
+   "kills": [
+    "If the method still needs a supplied generator model as an input, that is, if identification only converges because the lab genset's governor and exciter parameters were already known, then measurement has not replaced documentation and the thesis is dead.",
+    "If the deliverable turns out to be an offline screening or modelling tool that a utility submits data to, rather than a function that runs on the inverter already standing in the powerhouse, the thesis is dead, because the abstract's own end state is on-site without specialized studies (c9).",
+    "If accurate dynamic models of these gensets turn out to be routinely available from manufacturers or from prior commissioning, then there is no missing page and the framing collapses."
+   ],
+   "stated_on_screen": true,
+   "note": "This field was answered before any other, per the Phase 3.5 law added 2026-08-08. A thesis no observation could falsify is a description, and this one is falsifiable on the record's own terms."
   },
-  "treatment": {
-    "winner": "THE EXPLAINER, 'The Smallest Door'",
-    "judge_reasoning": "The Explainer lens won because the film's entire argument is a number made physical, and the award floor is a literal floor. The Dramatist's opposing-force framing was grafted into Act 3, where the case FOR consolidation is drawn at full strength rather than said in a clause. The Comedian lens was deliberately NOT convened: the subject touches Alaska Native institutions and the cultural ruling forbids characterized-object humor anywhere near it.",
-    "grafts": [
-      "From the Dramatist, Act 3's 229 contracts opening at once, which makes the case against the film's own thesis the loudest picture in the piece.",
-      "From the Enthusiast, the warm key light on the low side step, so the Alaska half is not merely the underdog but visibly the more habitable place.",
-      "From the Explainer, the brass gauge that reads eligibility as a height in dollars."
-    ],
-    "lenses_run": "Explainer, Dramatist, Enthusiast. Comedian withheld on cultural grounds.",
-    "retention_plan": {
-      "the_test": "Act 3, 52.96 to 82.25s. The case for one national institute gets the widest field, the most elements and the longest continuous move in the film. 229 slots light at once, 229 contracts open on the same page, and the film concedes in its own narration that one body doing that once is better.",
-      "throughline_object": "THE SILL. A low step at 100,000, an empty slot, a step raised overhead to 2,500,000, lamps going dark to one, a low warm side step, and the first frame returned with the gauge changed.",
-      "the_two_loops": "Primary: at 5.17s the gauge names the smallest door and the film withholds who is left outside it until 102.91s, a span of 97.7 seconds. Secondary: at 39.62s the institute is introduced and what it is [KILLED c23 - removed] is withheld until 84.60s, 45 seconds later and 18.3 seconds clear of the primary payoff.",
-      "padding_test": "Every Act 3 beat was tested against a 90 second cut. The 229-contract field, the circled clause and the collapse into one volume are the film's strongest argument against itself and a 90 second cut would have compressed them into a single clause, which is exactly the failure this act exists to prevent."
-    }
+  "why_its_true": {
+   "load_bearing": "c8 is the pivot and it carries two failures at once: transmission-scale methods work because units are far apart and can be analysed separately, and they fail in low-voltage community grids where accurate generator models are also usually unavailable. c6 supplies the physical reason decomposition fails (co-located, commensurate in size). c7 names the consequence (sustained oscillations). c10 is the answer in the record's own words: use the battery inverter itself to probe the grid and learn how each unit responds.",
+   "strongest_point_against_that_it_survives": "System identification is decades old and probing a plant with its own actuator is ordinary practice in power electronics. Nobody here was being brave, they were being accurate. The thesis does not claim novelty. It claims that in THIS class of grid the model has to be PRODUCED rather than RETRIEVED, on a live isolated system with no separable units, and that the answer has to terminate in something the inverter can act on."
   },
-  "fingerprint": {
-    "pov": "cross-section-cutaway",
-    "layout": "single-object-void",
-    "motion_vector": "vertical-rise",
-    "hero_treatment": "structure-as-subject",
-    "register": "data-brutalist",
-    "camera_strategy": "rise-reveal",
-    "light_story": "night-practical",
-    "palette": "cold slate teal institution, bone paperwork, brass gauge, terracotta reserved for a named problem, one signal red spent once",
-    "metaphor": "eligibility drawn as the height of a step you either clear or do not"
+  "who_it_serves": "The operator or manager in one of the 193 PCE communities (c14), or one of ACEP's more than 200 remote microgrids (c13), weighing a battery against diesels that are already there and about the same size (c6). It hands them a durable test to apply to every rural energy grant that follows: does the method need a specialist to fly in, or does it run on hardware the utility already bought? A method that becomes a control setting scales to a utility with a few hundred meters. A method that needs a study per site does not.",
+  "valence": "Curious, and genuinely hopeful, with the clock stated out loud. Not celebration, because the award is three days old and the work starts two days after this film publishes. Not caution, because no Alaska outage is in the record and the oscillation is NSF's characterisation of a failure mode, never a reported event. The only true negative here is a date, and a date is not a defect. Rotation note: the ledger's recent stances stack mixed and curious, and this lands curious-leaning-hopeful, which is a step off that stack without manufacturing a downside the facts do not support.",
+  "stance": "curious",
+  "second_movement": "Because the barrier is an ABSENT model rather than an expensive study, the SHAPE of the deliverable has to change. It cannot be a report, because a report is precisely the specialized study the abstract says small utilities rarely have (c9). It has to be a function living inside a device already bolted to the wall. The unit of delivery moves from a document to a control setting, and that is why the abstract's word is on-site.",
+  "the_stakes_sentence": "If the diesel never gets to shut off, the fuel saving that justified the battery never arrives. That is what the oscillation actually costs, and it is why this is not a research curiosity but the gate on the economics of every battery already bought.",
+  "act3_the_test": {
+   "window_s": [
+    60,
+    95
+   ],
+   "the_case_against_at_full_strength": "A probe only tells you the plant at the operating point you probed it. A village powerhouse changes operating point all day: units cycle, a load swings, ambient drops to forty below, the governor gets serviced in spring. A model measured Tuesday can be wrong Thursday.",
+   "how_it_is_drawn": "The identified response is drawn as a photograph of a running animal, perfectly sharp and already out of date, pinned to the powerhouse wall while the machine behind it has changed. The film holds on it and does not reach for the rebuttal too fast.",
+   "the_fair_rebuttal_in_the_same_picture": "A measurement you can re-run any hour beats a study you commissioned once. But the award has to show the retune keeps up, and it has not started.",
+   "supporting_beat_if_c17_verifies": "If grid-forming battery inverters are confirmed already running in remote Alaska, that belongs here as the operators' half of the argument: field crews are already handling this, and this award is certifying what practice has learned. It must never be framed as rural Alaskans awaiting rescue by a laboratory.",
+   "if_c17_fails": "Act 3 stands on the operating-point objection alone, which is stronger anyway because it does not depend on a verification and is true on the record's own terms."
   },
-  "palette": "cold slate teal institution, bone paperwork, brass gauge, terracotta reserved for a named problem, one signal red spent once",
-  "light": {
-    "sun": "no daylight. A hard cold interior key from high front left at about 60 degrees, so every sill throws a long readable shadow down the step it makes.",
-    "mood": "administrative cold holding exactly one warm pool, because the story is a specific warm ask inside a cold general rule"
+  "fair_counter_point_the_film_must_honor": "This is a funding notice for work that has not started. $324,995 over nearly three years is roughly one or two graduate students and a share of lab time, validation is in a laboratory test bed with no field site named, and the abstract never says Alaska. The film says all of this out loud rather than letting a viewer discover it.",
+  "throughline_object": {
+   "object": "THE RATING PLATE on the diesel, where the kilowatt field is stamped hard and the dynamic fields are blank",
+   "why": "It is the film's argument as a physical object. A machine that has a number for what it can produce and no number for how it behaves. The missing page is not requested from anyone, it is measured across the same wire that carries the trouble.",
+   "lands_in_button": true
   },
-  "divergence_note": "Authored from scratch. Diverges from the last two dispatches on every fingerprint axis: 08-09 was a warm amber boiler-room interior with an acid-green simulation accent and a contained-process hero; 08-08 was cool tile and warm birch with a typographic hero. This is a cold slate administrative void whose hero is a threshold and whose motion vector is a single vertical raise, which neither recent film used.",
-  "hook": {
-    "pattern": "anomaly-question",
-    "frame1": "A low bone threshold alone on a deep slate floor, slamming into frame with dust jumping off its lit top edge.",
-    "headline": "THE AWARD FLOOR",
-    "motion_by_s": 0.3,
-    "loopback": "The final beat returns to this exact sill with the same terracotta slip on it, and the only thing changed is the number on the brass gauge."
-  },
-  "throughline": {
-    "object": "THE SILL, the award floor drawn as a physical step",
-    "lands_in_button": true,
-    "states": [
-      {
-        "at_s": 0.0,
-        "state": "the bone sill lands alone in frame, a low step, nothing explained yet"
-      },
-      {
-        "at_s": 14.3,
-        "state": "a low bone step, gauge locked at ONE HUNDRED THOUSAND, a slip steps over it easily"
-      },
-      {
-        "at_s": 21.45,
-        "state": "the notice slides in and the Alaska chips go dark. Retired."
-      },
-      {
-        "at_s": 39.48,
-        "state": "the step snaps up to three times its height and the field widens past both frame edges"
-      },
-      {
-        "at_s": 51.06,
-        "state": "one tall slot towers over the low step and takes every AI dollar"
-      },
-      {
-        "at_s": 80.2,
-        "state": "the lintel lamps go dark one at a time until a single lamp remains"
-      },
-      {
-        "at_s": 102.12,
-        "state": "a low warm side step, four slips clear it and eight rest below"
-      },
-      {
-        "at_s": 112.85,
-        "state": "the opening sill returns, low again, with the new number on its gauge"
-      }
-    ]
-  },
-  "open_loop": {
-    "plant_t": 14.3,
-    "pay_t": 102.12,
-    "what": "The gauge names the smallest door you can walk through, and the film refuses to say who is left standing outside it until eight unfunded slips settle at the foot of the step."
-  },
-  "open_loop_2": {
-    "plant_t": 42.48,
-    "pay_t": 84.2,
-    "what": "The institute is introduced with its size and its scope, and what it is actually [KILLED c23 - removed] is withheld until one sheet slides out of the slot."
-  },
-  "reveals": [
-    {
-      "t": 39.48,
-      "type": "build-on",
-      "what": "the step snaps up three times while the gauge follows each snap",
-      "hold_s": 0.6
-    },
-    {
-      "t": 51.06,
-      "type": "scale-pullback",
-      "what": "the camera rises the full height of the tall slot and the low step recedes to a line",
-      "hold_s": 0.8
-    },
-    {
-      "t": 80.2,
-      "type": "build-on",
-      "what": "three of four objection lines fall away and the surviving phrase stamps signal red",
-      "hold_s": 0.7
-    },
-    {
-      "t": 93.97,
-      "type": "morph-to-chart",
-      "what": "twelve torn slips arrive and sort themselves into a readable list",
-      "hold_s": 0.7
-    }
+  "the_image": "Two machines side by side at the same height in one small powerhouse, drawn as equals with no hero and no villain: a diesel with a heavy spinning flywheel, a battery cabinet with no moving parts. One line between them. A small ripple leaves the battery, travels the line, touches the diesel, and returns changed. On the diesel's rating plate the kilowatt field is stamped and the dynamic fields are blank. The room stays lit the whole time.",
+  "cultural_and_honesty_rails": [
+   "The room is LIT throughout. No named village, no place put in the dark, nobody rescued by a laboratory.",
+   "Operators have expertise. The abstract's claim is that small utilities rarely have specialized STUDIES (c9), not that they lack competence, and the film says the narrower thing.",
+   "Every verb about the work is future tense (c4).",
+   "The film may say data-driven. It may not say AI (c16), and it says that plainly about itself once, as one beat, not as the spine.",
+   "The film never names or narrates the other UAF grid award."
   ],
-  "audio_arc": {
-    "build_steps": [
-      10.9,
-      45.8,
-      63.07,
-      93.97
-    ],
-    "dip_at": 81.95,
-    "riser_at": 100.0,
-    "silence_at": 111.5,
-    "payoff_at": 102.12,
-    "button_pattern": "callback",
-    "note": "The 81.95 dip is the held breath before the institute's deliverable is named. The bed drops at least 6 dB and the tall slot sits alone in near silence before one sheet slides out."
+  "runners_up_and_why_they_lost": [
+   {
+    "angle": "THE WORD: an award whose whole method is learning never once says AI, and the naming predicts the deliverable's shape.",
+    "why_it_lost": "Its own analyst's self-check is the reason: framed as the spine it risks being media criticism wearing an engineer's coat, and it makes the film's subject the film. A viewer would learn something about our vocabulary and nothing about their power bill. KEPT AS ONE BEAT, and the honesty of turning it on this channel is kept with it.",
+    "grafted": "one beat, roughly 70 to 78s, plus the Act 3 device of a second cover sheet carrying a bigger word over an unchanged methods list"
+   },
+   {
+    "angle": "THE GAP: the distance between a $324,995 lab bench and a powerhouse in January, with the tense as the spine.",
+    "why_it_lost": "The tense is a constraint every honest dispatch obeys, not a claim about the world. But its Act 3 FOR-the-award case is the best material any analyst produced.",
+    "grafted": "THE STAKES SENTENCE (if the diesel never shuts off, the fuel saving never arrives), the leverage argument (the answer is a control law, so it replicates at zero marginal cost across more than 200 microgrids), the AUG 15 2026 to JUL 31 2029 date rail, and the LABORATORY dashed boundary with the powerhouse floor drawn but not entered"
+   },
+   {
+    "angle": "The lab as Alaska's asset, a 500 kW facility where you can safely break an isolated hybrid grid.",
+    "why_it_lost": "c11 names no location and the co-awardee is in Wisconsin, so the strongest version needs a bridge the record refuses. It also makes the film about a building instead of a bottleneck."
+   },
+   {
+    "angle": "The money map, Fairbanks plus Madison to $549,995.",
+    "why_it_lost": "A procurement story that tells an Alaskan nothing about whether the diesel ever gets to shut off."
+   }
+  ],
+  "casting": {
+   "hero": "FieldGenset",
+   "hero_dedupe": "FRESH on the distinctive entity set with --hero FieldGenset. Differs from the last two heroes (LoopGovernor 2026-08-09, Sill 2026-08-12).",
+   "generic_token_note": "A broad entity set returns DUP against 2026-07-29 on the shared tokens 'grid' and 'microgrid'. Adjudicated honestly in candidates.json: different problem, different mechanism, different argument, and the film is barred from the 'another unreported UAF grid award' frame that would make it a repeat."
+  }
+ },
+ "treatment": {
+  "winner": "THE COMEDIAN",
+  "judge_reasoning": "Four lenses pitched. The Comedian wins on its running gag, which is also the film's argument: a filing drawer labelled ACCURATE GENERATOR MODELS that opens long and hollow on one index card, recurs in the background of shots nobody is discussing it in, and at the payoff slides shut ON ITS OWN because nobody needs it any more rather than because anybody filled it. That is the thesis as choreography and no other pitch had it. GRAFTED: the Explainer's probe-and-return cutaway, which is the best mechanism teaching in the room; the Dramatist's maximum-pressure frame at 48s, where nothing in the picture is broken, both machines are healthy and correct, and the money still burns; the Enthusiast's two fuel drums stencilled with the two award figures and never poured into one tank, which draws the c2/c3 obligation instead of captioning it, and its placement of the operators' beat as the Alaskan pride beat.",
+  "cultural_ruling": "Machines and paperwork are the comic objects. Mariko Shirazi is named on a brass plate and never drawn as a character. Operators appear as competent gloved hands with a clipboard and are the only figures in the film who are never wrong about anything. No village is named as being in the dark, the room stays lit in every frame including the oscillation beat, and the one named community, St. Mary's, appears as a place that got there first."
+ },
+ "fingerprint": {
+  "pov": "two-shot-elevation",
+  "layout": "paired-equals-on-one-line",
+  "motion_vector": "out-and-back-return",
+  "hero_treatment": "undocumented-subject",
+  "register": "field-service-manual",
+  "camera_strategy": "track-the-signal",
+  "light_story": "cold-daylight-through-a-door",
+  "palette": "snow-glare white daylight, raw concrete grey, accreted service-green machine skin with oxblood heat scale, chalk-pale cabinet steel, and one electric violet that appears nowhere except on a measurement",
+  "metaphor": "the missing page is not requested from anyone, it is measured across the same wire that carries the trouble"
+ },
+ "palette": "snow-glare white daylight, raw concrete grey, accreted service-green machine skin with oxblood heat scale, chalk-pale cabinet steel, and one electric violet that appears nowhere except on a measurement",
+ "light": {
+  "sun": "hard low midwinter sun from screen left through an open powerhouse door, with a broad snow-bounce fill from below",
+  "mood": "nothing is being concealed. The room is fully lit and the answer still is not in it."
+ },
+ "divergence_note": "The last two dispatches were 2026-08-09, a warm amber boiler room with an acid-green simulation accent, and 2026-08-12, a cold slate teal institution with bone paperwork, brass and one signal red. Both natural readings of a diesel powerhouse were therefore already spent: warm amber engine room is 08-09 and dark institutional slate is 08-12. This film goes the third way, into HIGH-KEY COLD DAYLIGHT, which no recent dispatch has used at all, and it is the honest light for this story rather than a novelty, because nothing here is sinister or hidden. The problem is simply that a fact was never written down, and a brightly lit room where you can see everything and still not know the answer is a better picture of that than a shadow. Structurally it also diverges: 08-12 was a single-object void in vertical rise with a cross-section pov, and this is a two-shot elevation of paired equals whose motion vector is a ROUND TRIP, a probe going out and coming back changed, which no board in the history has used. The hero is an accreted, maintained, un-modelled machine rather than an institution or an instrument, and the throughline is a rating plate whose blankness is the argument.",
+ "hook": {
+  "pattern": "anomaly-question",
+  "frame1": "A stamped steel rating plate filling frame in cold daylight, slamming into place with dust jumping off its lit top edge, the kilowatt field punched deep and every field below it blank.",
+  "headline": "THE MACHINE NOBODY WROTE DOWN",
+  "motion_by_s": 0.3,
+  "loopback": "The final beat returns to this exact plate at the same scale, still blank, with the same gloved knuckle tapping the same empty field, and the only thing changed is that one violet pulse crosses it and leaves."
+ },
+ "throughline": {
+  "object": "the diesel's rating plate, kilowatt field stamped hard and the dynamic fields blank",
+  "states": [
+   {
+    "at_s": 0.0,
+    "state": "full frame, cold, kilowatt stamped deep, the fields below it milled smooth and empty"
+   },
+   {
+    "at_s": 12.36,
+    "state": "the blank fields open into a true void with a drift inside, named as an absence"
+   },
+   {
+    "at_s": 47.84,
+    "state": "absent from frame while the consequence plays, the packed case waiting by the door"
+   },
+   {
+    "at_s": 77.11,
+    "state": "replaced on the wall by the pinned photograph, which is what a measured answer looks like when it ages"
+   },
+   {
+    "at_s": 99.08,
+    "state": "revealed at full extent as a grid of operating-point columns with exactly one written in violet"
+   },
+   {
+    "at_s": 115.76,
+    "state": "identical to frame one, still blank, one violet pulse crossing it and leaving"
+   }
+  ],
+  "lands_in_button": true
+ },
+ "open_loop": {
+  "plant_t": 2.66,
+  "pay_t": 115.76,
+  "what": "the gloved knuckle tapping the blank field twice, the reflex of somebody checking a gauge that might be stuck. Paid in the button when the same hand taps the same still-blank field and the audience now knows exactly what would fill it and which day the attempt starts."
+ },
+ "open_loop_2": {
+  "plant_t": 47.84,
+  "pay_t": 96.28,
+  "what": "the fuel saving personified as a packed case standing by the powerhouse door with its coat on, which cannot leave while the diesel keeps running. Paid when the laboratory boundary is drawn and the case finally picks itself up and walks out through it."
+ },
+ "reveals": [
+  {
+   "t": 25.46,
+   "type": "build-on",
+   "what": "the two award figures built as two stencilled fuel drums standing apart, never poured into one tank",
+   "hold_s": 0.6
   },
-  "shots": [
-    {
-      "id": "S1",
-      "t": "0.0-7.29",
-      "framing": "macro-closeup",
-      "scale": "insert",
-      "height": "low",
-      "pov": "macro-closeup",
-      "layout": "single-object-void",
-      "motion_vector": "push-in-only",
-      "transition_in": null,
-      "thread": null,
-      "camera": "static:the hook is a landing and any camera move would compete with the one thing that moves",
-      "stage3d": "planes",
-      "centered": true,
-      "means": "the sill alone",
-      "hero": {
-        "name": "Sill",
-        "parts": 5,
-        "zones": 3,
-        "detail_note": "bone tread with a lit top face, a dark under-nose, front face, deterministic tread scoring, and a rim on the leading edge. Zones: tread, jamb, floor."
-      },
-      "hero_treatment": "structure-as-subject"
-    },
-    {
-      "id": "S2",
-      "t": "7.29-17.16",
-      "framing": "data-panel",
-      "scale": "close",
-      "height": "eye",
-      "pov": "macro-closeup",
-      "layout": "grid-modular",
-      "motion_vector": "assemble-build",
-      "transition_in": "push-in",
-      "thread": "build",
-      "camera": "truckAcross",
-      "stage3d": "planes",
-      "centered": true,
-      "means": "the agency and the figures",
-      "hero": {
-        "name": "Sill",
-        "parts": 7,
-        "zones": 3,
-        "detail_note": "jamb with a seated brass nameplate, an intake slot, three figure chips across the face, and the brass gauge on the left jamb. Zones: lintel, jamb, tread."
-      },
-      "hero_treatment": "instrument-as-subject"
-    },
-    {
-      "id": "S3",
-      "t": "17.16-21.45",
-      "framing": "subject-portrait",
-      "scale": "medium",
-      "height": "low",
-      "pov": "eye-level-immersive",
-      "layout": "single-object-void",
-      "motion_vector": "push-in-only",
-      "transition_in": "match-action",
-      "thread": "carry",
-      "camera": "static:the human-scale beat holds still so the lamp pool is the only thing that changes",
-      "stage3d": "planes",
-      "centered": true,
-      "means": "the human scale",
-      "hero": {
-        "name": "Sill",
-        "parts": 6,
-        "zones": 3,
-        "detail_note": "low tread lit by a single desk lamp pool, a terracotta slip mid-step, contact shadows under both. Zones: tread, lamp pool, floor."
-      },
-      "hero_treatment": "structure-as-subject"
-    },
-    {
-      "id": "S4",
-      "t": "21.45-26.17",
-      "framing": "push-detail",
-      "scale": "insert",
-      "height": "eye",
-      "pov": "macro-closeup",
-      "layout": "hud-instrument-frame",
-      "motion_vector": "vertical-descent",
-      "transition_in": "focus-pull",
-      "thread": "match",
-      "camera": "static:the retirement is a held frame because the information is what goes dark in it",
-      "stage3d": "planes",
-      "centered": true,
-      "means": "the notice, the slot going dark",
-      "hero": {
-        "name": "Sill",
-        "parts": 6,
-        "zones": 3,
-        "detail_note": "jamb slot receiving a dated notice while three face chips extinguish in sequence, jamb lamp falling. Zones: slot, face, lintel."
-      },
-      "hero_treatment": "instrument-as-subject"
-    },
-    {
-      "id": "S5",
-      "t": "26.17-34.76",
-      "framing": "wide-establish",
-      "scale": "wide",
-      "height": "high",
-      "pov": "eye-level-immersive",
-      "layout": "stacked-layers",
-      "motion_vector": "vertical-rise",
-      "transition_in": "pull-out",
-      "thread": "build",
-      "camera": "craneDown",
-      "stage3d": "planes",
-      "centered": true,
-      "means": "the successor at full size",
-      "hero": {
-        "name": "Sill",
-        "parts": 7,
-        "zones": 3,
-        "detail_note": "a wide ledger plate rising behind the darkened tread, its figures counting up, lintel above. Zones: plate, tread, lintel."
-      },
-      "hero_treatment": "data-as-subject"
-    },
-    {
-      "id": "S6",
-      "t": "34.76-42.48",
-      "framing": "two-up",
-      "scale": "medium",
-      "height": "eye",
-      "pov": "cross-section-cutaway",
-      "layout": "fullbleed-split",
-      "motion_vector": "horizontal-traverse",
-      "transition_in": "match-cut",
-      "thread": "match",
-      "camera": "truckAcross",
-      "stage3d": "planes",
-      "centered": true,
-      "means": "the two floors side by side",
-      "hero": {
-        "name": "Sill",
-        "parts": 8,
-        "zones": 3,
-        "detail_note": "two brass gauges side by side at different locked heights, the queue rail extending past both frame edges. Zones: gauges, rail, tread."
-      },
-      "hero_treatment": "data-as-subject"
-    },
-    {
-      "id": "S7",
-      "t": "42.48-51.06",
-      "framing": "alt-vantage",
-      "scale": "medium",
-      "height": "low",
-      "pov": "eye-level-immersive",
-      "layout": "single-object-void",
-      "motion_vector": "vertical-rise",
-      "transition_in": "whip-pan",
-      "thread": "build",
-      "camera": "riseWith",
-      "stage3d": "planes",
-      "centered": true,
-      "means": "the institute introduced",
-      "hero": {
-        "name": "Sill",
-        "parts": 7,
-        "zones": 3,
-        "detail_note": "the tread with a tall narrow slot rising in the jamb behind a turning notice page, one lamp igniting above it. Zones: slot, jamb, tread."
-      },
-      "hero_treatment": "structure-as-subject"
-    },
-    {
-      "id": "S8",
-      "t": "51.06-55.78",
-      "framing": "wide-establish",
-      "scale": "extreme-wide",
-      "height": "ground",
-      "pov": "exploded-diagram",
-      "layout": "stacked-layers",
-      "motion_vector": "vertical-rise",
-      "transition_in": "pull-out",
-      "thread": "carry",
-      "camera": "riseWith",
-      "stage3d": "planes",
-      "centered": true,
-      "means": "THE RAISE",
-      "hero": {
-        "name": "Sill",
-        "parts": 6,
-        "zones": 3,
-        "detail_note": "the tall slot seen from the foot of the tread, full height, with the low step receding to a line below. Zones: slot, jamb, floor."
-      },
-      "hero_treatment": "structure-as-subject"
-    },
-    {
-      "id": "S9",
-      "t": "55.78-71.66",
-      "framing": "map-territory",
-      "scale": "extreme-wide",
-      "height": "overhead",
-      "pov": "top-down-map",
-      "layout": "grid-modular",
-      "motion_vector": "radial-emanate",
-      "transition_in": "map-travel",
-      "thread": "travel",
-      "camera": "dollyThrough",
-      "stage3d": "planes",
-      "centered": true,
-      "means": "229 slots and the contract",
-      "hero": {
-        "name": "Sill",
-        "parts": 8,
-        "zones": 4,
-        "detail_note": "a wide field of identical small slots with one contract landing and repeating across it, then collapsing inward into a single volume. Zones: field, contract, volume, horizon."
-      },
-      "hero_treatment": "multiplicity-swarm"
-    },
-    {
-      "id": "S10",
-      "t": "71.66-81.95",
-      "framing": "data-panel",
-      "scale": "close",
-      "height": "eye",
-      "pov": "macro-closeup",
-      "layout": "hud-instrument-frame",
-      "motion_vector": "scroll-data",
-      "transition_in": "push-in",
-      "thread": "match",
-      "camera": "static:the page is held so the printing onto it is the only motion in frame",
-      "stage3d": "planes",
-      "centered": true,
-      "means": "the comments and the red stamp",
-      "hero": {
-        "name": "Sill",
-        "parts": 7,
-        "zones": 3,
-        "detail_note": "the jamb slot stacking envelopes while the notice prints objection lines onto its own page. Zones: slot, page, lintel."
-      },
-      "hero_treatment": "data-as-subject"
-    },
-    {
-      "id": "S11",
-      "t": "81.95-93.97",
-      "framing": "push-detail",
-      "scale": "insert",
-      "height": "eye",
-      "pov": "macro-closeup",
-      "layout": "single-object-void",
-      "motion_vector": "vertical-descent",
-      "transition_in": "focus-pull",
-      "thread": "build",
-      "camera": "craneDown",
-      "stage3d": "planes",
-      "centered": true,
-      "means": "the list, and the smaller door",
-      "hero": {
-        "name": "Sill",
-        "parts": 7,
-        "zones": 3,
-        "detail_note": "the tall slot alone in near darkness releasing one sheet, then a low warm side step opening beside it. Zones: tall slot, sheet, warm step."
-      },
-      "hero_treatment": "instrument-as-subject"
-    },
-    {
-      "id": "S12",
-      "t": "93.97-106.41",
-      "framing": "two-up",
-      "scale": "medium",
-      "height": "low",
-      "pov": "eye-level-immersive",
-      "layout": "grid-modular",
-      "motion_vector": "assemble-build",
-      "transition_in": "assemble",
-      "thread": "travel",
-      "camera": "dollyThrough",
-      "stage3d": "planes",
-      "centered": true,
-      "means": "twelve slips",
-      "hero": {
-        "name": "Sill",
-        "parts": 8,
-        "zones": 3,
-        "detail_note": "the low warm step with twelve torn slips sorting into a column, four lifting over the tread and eight settling at its foot. Zones: step, slips over, slips below."
-      },
-      "hero_treatment": "multiplicity-swarm"
-    },
-    {
-      "id": "S13",
-      "t": "106.41-121.0",
-      "framing": "macro-closeup",
-      "scale": "close",
-      "height": "low",
-      "pov": "macro-closeup",
-      "layout": "single-object-void",
-      "motion_vector": "push-in-only",
-      "transition_in": "graphic-match",
-      "thread": "match",
-      "camera": "static:the button returns the opening frame so the camera returns to it too",
-      "stage3d": "planes",
-      "centered": true,
-      "means": "the button",
-      "hero": {
-        "name": "Sill",
-        "parts": 6,
-        "zones": 3,
-        "detail_note": "the opening tread returned, one terracotta slip on it, the brass gauge reading the new figure, two bone cards below. Zones: tread, gauge, cards."
-      },
-      "hero_treatment": "structure-as-subject"
-    }
+  {
+   "t": 31.38,
+   "type": "scale-pullback",
+   "what": "the plate's blank field pulls back to the whole powerhouse and there are TWO machines at the same height",
+   "hold_s": 0.7
+  },
+  {
+   "t": 59.62,
+   "type": "scale-pullback",
+   "what": "a hundred miles of transmission spacing collapses to two machines feet apart on one bar",
+   "hold_s": 0.6
+  },
+  {
+   "t": 99.08,
+   "type": "scale-pullback",
+   "what": "THE SIGNATURE SHOT: the plate pulls back to reveal a grid of operating-point columns with exactly one written",
+   "hold_s": 0.8
+  }
+ ],
+ "audio_arc": {
+  "build_steps": [
+   12.36,
+   41.12,
+   65.2,
+   96.28
   ],
-  "beats": [
-    {
-      "i": 1,
-      "t": 0.0,
-      "vo": 0,
-      "sfx": "a stone slab landing, one hard slap",
-      "means": "opens on the object the film returns to",
-      "shows": "a bone threshold alone in cold slate",
-      "draw": {
-        "subject": "a low bone sill alone on a deep slate floor",
-        "action": "slams into frame and settles, dust jumping off its lit top edge",
-        "emotion": "matter-of-fact",
-        "annotation": "THE AWARD FLOOR"
-      },
-      "choreo": {
-        "primary": "the sill lands and rings",
-        "reaction": "dust jumps and settles",
-        "ambient": "filing recession drifts far behind"
-      }
-    },
-    {
-      "i": 2,
-      "t": 3.36,
-      "vo": 0,
-      "sfx": "a pen tick",
-      "means": "defines the term before relying on it",
-      "shows": "the definition, plain",
-      "draw": {
-        "subject": "a bone card set into the sill's face",
-        "action": "slides out and sets one line of type",
-        "emotion": "dry",
-        "annotation": "THE SMALLEST GRANT THE GOVERNMENT WILL WRITE"
-      },
-      "choreo": {
-        "primary": "the card slides out",
-        "reaction": "the sill's rim sharpens",
-        "ambient": "dust drifts"
-      }
-    },
-    {
-      "i": 3,
-      "t": 7.3,
-      "vo": 1,
-      "sfx": "a drawer rolling open, brass",
-      "means": "names the agency, which the cold read demanded",
-      "shows": "the issuing body",
-      "draw": {
-        "subject": "a brass nameplate seating into the jamb above the slot",
-        "action": "seats down and locks with a brass click",
-        "emotion": "institutional",
-        "annotation": "ADMINISTRATION FOR NATIVE AMERICANS"
-      },
-      "choreo": {
-        "primary": "the nameplate seats",
-        "reaction": "the jamb lamp warms",
-        "ambient": "dust"
-      }
-    },
-    {
-      "i": 4,
-      "t": 10.77,
-      "vo": 1,
-      "sfx": "three ledger thumps",
-      "means": "the Alaska program with its own figures",
-      "shows": "the record, quoted",
-      "draw": {
-        "subject": "three bone chips locking in a row across the sill's face",
-        "action": "each chip snaps in with a tick and its figure counts up",
-        "emotion": "factual",
-        "annotation": "SEDS ALASKA  \u00b7  2,000,000  \u00b7  3 AWARDS"
-      },
-      "choreo": {
-        "primary": "chips snap in one by one",
-        "reaction": "the sill takes each hit",
-        "ambient": "recession drifts"
-      }
-    },
-    {
-      "i": 5,
-      "t": 14.02,
-      "vo": 1,
-      "sfx": "a brass gauge climbing and locking",
-      "means": "THE GAUGE. Eligibility becomes a height",
-      "shows": "the floor, as a number and a height",
-      "draw": {
-        "subject": "a brass height gauge up the sill's left jamb",
-        "action": "the needle climbs and locks at one hundred thousand",
-        "emotion": "precise",
-        "annotation": "AWARD FLOOR  \u00b7  100,000"
-      },
-      "choreo": {
-        "primary": "the needle climbs and locks",
-        "reaction": "the step's rim brightens",
-        "ambient": "dust"
-      },
-      "open_loop": "plant: the size of the smallest door, and who is left standing outside it"
-    },
-    {
-      "i": 6,
-      "t": 15.85,
-      "vo": 2,
-      "sfx": "a single lamp click, a chair scrape",
-      "means": "scales the number to a person WITHOUT drawing one",
-      "shows": "one desk, one lamp, no figure",
-      "draw": {
-        "subject": "a single desk lamp over one drawer behind the low step",
-        "action": "the lamp clicks on over an empty desk and its pool spreads",
-        "emotion": "quiet",
-        "annotation": "A SUM ONE ADMINISTRATOR RUNS"
-      },
-      "choreo": {
-        "primary": "the lamp clicks on",
-        "reaction": "its pool spreads across the floor",
-        "ambient": "dust turns in the new light"
-      }
-    },
-    {
-      "i": 7,
-      "t": 19.64,
-      "vo": 2,
-      "sfx": "paper settling",
-      "means": "holds the human scale, and shows the step being cleared",
-      "shows": "a slip stepping over easily",
-      "draw": {
-        "subject": "a torn terracotta slip walking up to the low step",
-        "action": "steps over the low sill without effort and settles",
-        "emotion": "easy",
-        "annotation": "YOU CAN WALK THROUGH THIS"
-      },
-      "choreo": {
-        "primary": "the slip clears the step",
-        "reaction": "the step's shadow shortens",
-        "ambient": "dust"
-      }
-    },
-    {
-      "i": 8,
-      "t": 21.34,
-      "vo": 3,
-      "sfx": "a date stamp, then a filament dying",
-      "means": "THE REHOOK. Act one turns",
-      "shows": "the notice, and the empty slot",
-      "draw": {
-        "subject": "a dated notice sliding into the jamb slot and the Alaska chips going dark",
-        "action": "the notice slides in and the three chips go out one by one",
-        "emotion": "cold",
-        "annotation": "JULY 28TH 2026  \u00b7  RETIRED"
-      },
-      "choreo": {
-        "primary": "the notice slides in",
-        "reaction": "the three chips go dark in sequence",
-        "ambient": "the desk lamp pool shrinks"
-      },
-      "rehook": "rehook: the thing just shown as reachable is retired, and the film has not said what replaced it"
-    },
-    {
-      "i": 9,
-      "t": 25.91,
-      "vo": 4,
-      "sfx": "a low swell, upward",
-      "means": "THE REHOOK. Refuses the lazy angle at the exact moment a viewer expects it",
-      "shows": "the money going UP",
-      "draw": {
-        "subject": "a wide bone ledger plate rising behind the dark step",
-        "action": "rises taller and brighter, numbers counting up with easing",
-        "emotion": "corrective",
-        "annotation": "THE MONEY DIDN'T SHRINK"
-      },
-      "choreo": {
-        "primary": "the plate rises",
-        "reaction": "its numbers count up",
-        "ambient": "dust lifts on the swell"
-      },
-      "rehook": "rehook: the film immediately corrects the expectation it just set, the money went UP not down"
-    },
-    {
-      "i": 10,
-      "t": 29.62,
-      "vo": 4,
-      "sfx": "a heavy ledger thump",
-      "means": "gives the successor its full and fair size",
-      "shows": "EAGLE at scale",
-      "draw": {
-        "subject": "the ledger plate carrying the successor's figures",
-        "action": "thumps into place and locks",
-        "emotion": "fair",
-        "annotation": "EAGLE  \u00b7  24,000,000  \u00b7  31 AWARDS"
-      },
-      "choreo": {
-        "primary": "the plate locks",
-        "reaction": "the numbers settle",
-        "ambient": "recession drifts"
-      }
-    },
-    {
-      "i": 11,
-      "t": 32.37,
-      "vo": 4,
-      "sfx": "a soft affirming chime",
-      "means": "the agency's fair point, in the agency's own terms",
-      "shows": "eligibility, unchanged",
-      "draw": {
-        "subject": "a bone line of type set under the ledger plate",
-        "action": "fades up unhurried and holds",
-        "emotion": "even-handed",
-        "annotation": "ALASKA NATIVE COMMUNITIES STAY ELIGIBLE"
-      },
-      "choreo": {
-        "primary": "the line fades up",
-        "reaction": "the ledger dims to give it the frame",
-        "ambient": "dust"
-      }
-    },
-    {
-      "i": 12,
-      "t": 34.68,
-      "vo": 5,
-      "sfx": "a brass gauge climbing, shorter",
-      "means": "THE CORRECTED FACT the cold read forced",
-      "shows": "EAGLE's own floor",
-      "draw": {
-        "subject": "a second brass gauge beside the first",
-        "action": "its needle climbs and locks at three hundred thousand, well above the first",
-        "emotion": "exact",
-        "annotation": "EAGLE FLOOR  \u00b7  300,000"
-      },
-      "choreo": {
-        "primary": "the second needle locks higher",
-        "reaction": "the first needle sits below it, still",
-        "ambient": "dust"
-      }
-    },
-    {
-      "i": 13,
-      "t": 37.37,
-      "vo": 5,
-      "sfx": "a metal cap snapping and a long rail sliding",
-      "means": "the field widening, drawn",
-      "shows": "Alaska only, then national",
-      "draw": {
-        "subject": "the queue rail in front of the step extending off both sides of frame",
-        "action": "its end cap snaps off and the rail slides out past both frame edges",
-        "emotion": "widening",
-        "annotation": "ALASKA ONLY  to  NATIONAL"
-      },
-      "choreo": {
-        "primary": "the end cap snaps off and flies",
-        "reaction": "the rail slides out past the frame edge",
-        "ambient": "dust lifts off the moving rail"
-      }
-    },
-    {
-      "i": 14,
-      "t": 41.01,
-      "vo": 6,
-      "sfx": "a three-step riser",
-      "means": "the thesis, arithmetically",
-      "shows": "the step, tripled",
-      "draw": {
-        "subject": "the low step growing to three times its height in three snaps",
-        "action": "rises in three discrete snaps, each with overshoot and settle",
-        "emotion": "plain",
-        "annotation": "THE SMALLEST DOOR TRIPLED"
-      },
-      "choreo": {
-        "primary": "the step snaps up three times",
-        "reaction": "the gauge follows each snap",
-        "ambient": "dust falls off each riser"
-      },
-      "reveal": "build-on"
-    },
-    {
-      "i": 15,
-      "t": 42.58,
-      "vo": 7,
-      "sfx": "a page turning, then a deep servo",
-      "means": "the pivot, physical",
-      "shows": "the second thing in the same notice",
-      "draw": {
-        "subject": "the notice page turning in the jamb to reveal a taller slot behind",
-        "action": "turns over and a tall narrow slot rises behind it",
-        "emotion": "turning",
-        "annotation": "THAT SAME NOTICE"
-      },
-      "choreo": {
-        "primary": "the page turns",
-        "reaction": "the tall slot rises behind it",
-        "ambient": "dust"
-      },
-      "open_loop_2": "plant: the institute exists, and what it is [KILLED c23 - removed] is withheld"
-    },
-    {
-      "i": 16,
-      "t": 45.75,
-      "vo": 7,
-      "sfx": "a lock and a single lamp igniting",
-      "means": "names the institute plainly",
-      "shows": "the institute, introduced",
-      "draw": {
-        "subject": "the tall bone slot with one lamp above it",
-        "action": "seats into the jamb and its single lamp ignites",
-        "emotion": "institutional",
-        "annotation": "AI3 ACTION INSTITUTE"
-      },
-      "choreo": {
-        "primary": "the slot seats",
-        "reaction": "its lamp ignites",
-        "ambient": "dust"
-      }
-    },
-    {
-      "i": 17,
-      "t": 48.4,
-      "vo": 7,
-      "sfx": "two hard ticks",
-      "means": "its shape in two facts",
-      "shows": "one award, and the floor",
-      "draw": {
-        "subject": "two bone chips locking under the tall slot",
-        "action": "each snaps in with a tick",
-        "emotion": "precise",
-        "annotation": "ONE AWARD  \u00b7  FLOOR 2,500,000"
-      },
-      "choreo": {
-        "primary": "the chips snap in",
-        "reaction": "the tall slot brightens on each",
-        "ambient": "dust"
-      }
-    },
-    {
-      "i": 18,
-      "t": 51.33,
-      "vo": 8,
-      "sfx": "a long groan and a boom",
-      "means": "THE SIGNATURE SHOT. All the AI money, one door",
-      "shows": "the tall slot from its foot",
-      "draw": {
-        "subject": "the tall slot seen from the foot of the sill, towering, the low step far below",
-        "action": "the camera rises the full height while every AI dollar pours into the one slot",
-        "emotion": "overwhelming",
-        "annotation": "EVERY AI DOLLAR  \u00b7  ONE GRANT"
-      },
-      "choreo": {
-        "primary": "the climb up the full height",
-        "reaction": "the low step recedes to a line below",
-        "ambient": "dust falls the whole height"
-      },
-      "reveal": "scale-pullback"
-    },
-    {
-      "i": 19,
-      "t": 55.9,
-      "vo": 9,
-      "sfx": "a wide room tone opening out",
-      "means": "ACT 3 ARGUES AGAINST THE FILM",
-      "shows": "the real scale of the problem",
-      "draw": {
-        "subject": "a wide bone field of many identical small slots opening out",
-        "action": "the field opens and every slot lights at once",
-        "emotion": "genuine",
-        "annotation": "229 FEDERALLY RECOGNIZED TRIBES IN ALASKA"
-      },
-      "choreo": {
-        "primary": "the field opens out",
-        "reaction": "every slot lights together",
-        "ambient": "dust lifts across the whole field"
-      }
-    },
-    {
-      "i": 20,
-      "t": 59.37,
-      "vo": 9,
-      "sfx": "a contract slapping down",
-      "means": "sets up the vendor premise the cold read flagged",
-      "shows": "what AI actually arrives as",
-      "draw": {
-        "subject": "a single bone contract landing hard on the field",
-        "action": "lands and flips open to a signature line",
-        "emotion": "dry",
-        "annotation": "FOUR TTA CONTRACTS INTO ONE"
-      },
-      "choreo": {
-        "primary": "the contract lands and opens",
-        "reaction": "its pages flex",
-        "ambient": "the field breathes"
-      }
-    },
-    {
-      "i": 21,
-      "t": 62.9,
-      "vo": 10,
-      "sfx": "many overlapping paper rustles",
-      "means": "THE REHOOK. The case for consolidation at full strength",
-      "shows": "everyone doing the same work separately",
-      "draw": {
-        "subject": "the same contract repeating across the whole field, all opening at once",
-        "action": "every copy opens to the same page at the same moment",
-        "emotion": "exhausting",
-        "annotation": "THE SAME CONTRACT  \u00b7  EVERY TIME"
-      },
-      "choreo": {
-        "primary": "all copies open together",
-        "reaction": "the rustle piles into one noise",
-        "ambient": "dust churns"
-      },
-      "rehook": "rehook: the film turns and makes the strongest case against its own thesis"
-    },
-    {
-      "i": 22,
-      "t": 64.88,
-      "vo": 10,
-      "sfx": "a pen dropping onto paper and a dry argumentative clatter",
-      "means": "the specific thing each one loses alone",
-      "shows": "the clause, circled and repeated",
-      "draw": {
-        "subject": "one contract pulled forward with a clause circled in terracotta",
-        "action": "a pen drops onto the page and circles the clause, and the circle repeats to the horizon",
-        "emotion": "losing",
-        "annotation": "[KILLED c25 - removed]"
-      },
-      "choreo": {
-        "primary": "the pen drops and circles",
-        "reaction": "the circle repeats into the distance",
-        "ambient": "the field of pages breathes"
-      }
-    },
-    {
-      "i": 23,
-      "t": 68.8,
-      "vo": 11,
-      "sfx": "a single clean lock",
-      "means": "concedes the point properly",
-      "shows": "one body, once",
-      "draw": {
-        "subject": "the whole field of contracts collapsing into one bone volume",
-        "action": "they stack inward and lock into a single clean volume",
-        "emotion": "conceding",
-        "annotation": "ONE BODY DOING THAT ONCE IS BETTER"
-      },
-      "choreo": {
-        "primary": "the field collapses inward",
-        "reaction": "the single volume settles and rings",
-        "ambient": "dust falls away"
-      }
-    },
-    {
-      "i": 24,
-      "t": 71.66,
-      "vo": 12,
-      "sfx": "soft envelope drops",
-      "means": "the public record, counted",
-      "shows": "the comments arriving",
-      "draw": {
-        "subject": "bone envelopes dropping into the jamb slot and stacking",
-        "action": "they fall one after another and the stack leans",
-        "emotion": "procedural",
-        "annotation": "THE AGENCY ASKED FOR COMMENT  \u00b7  32 SUBMISSIONS"
-      },
-      "choreo": {
-        "primary": "envelopes drop and stack",
-        "reaction": "the stack leans",
-        "ambient": "dust"
-      }
-    },
-    {
-      "i": 25,
-      "t": 74.65,
-      "vo": 12,
-      "sfx": "a press roller",
-      "means": "the sharpest fact in the film",
-      "shows": "the agency printing its own criticism",
-      "draw": {
-        "subject": "the notice printing the objections onto its own page",
-        "action": "the page prints lines that criticise the page it is printed on",
-        "emotion": "pointed",
-        "annotation": "AND PRINTED THE OBJECTIONS ITSELF"
-      },
-      "choreo": {
-        "primary": "the lines print onto the notice",
-        "reaction": "the notice does not flinch",
-        "ambient": "dust"
-      }
-    },
-    {
-      "i": 26,
-      "t": 76.15,
-      "vo": 13,
-      "sfx": "four typewriter strikes",
-      "means": "the objections, in the record's own words",
-      "shows": "what they raised",
-      "draw": {
-        "subject": "four bone lines striking onto the printed notice",
-        "action": "each line strikes in with a typewriter hit",
-        "emotion": "documentary",
-        "annotation": "OPPORTUNITY COSTS  \u00b7  INDIGENOUS DATA SOVEREIGNTY  \u00b7  CENTRALIZED PROGRAM DESIGN  \u00b7  TRIBAL READINESS"
-      },
-      "choreo": {
-        "primary": "four lines strike in",
-        "reaction": "the page flexes under each",
-        "ambient": "dust"
-      }
-    },
-    {
-      "i": 27,
-      "t": 80.38,
-      "vo": 13,
-      "sfx": "a hard red stamp, then held air",
-      "means": "ACT 3 PAYOFF. The record indicts itself",
-      "shows": "three words isolated",
-      "draw": {
-        "subject": "the phrase centralized program design alone, stamped signal red",
-        "action": "the other three lines fall away and this one stamps red",
-        "emotion": "damning",
-        "annotation": "CENTRALIZED PROGRAM DESIGN"
-      },
-      "choreo": {
-        "primary": "the phrase stamps red",
-        "reaction": "the lintel lamps go dark one at a time until one remains",
-        "ambient": "everything else falls away"
-      },
-      "reveal": "build-on"
-    },
-    {
-      "i": 28,
-      "t": 81.98,
-      "vo": 14,
-      "sfx": "the bed dipping to near silence",
-      "means": "THE DIP. The question that opens act four",
-      "shows": "the deliverable, withheld one beat longer",
-      "draw": {
-        "subject": "the tall slot alone in near darkness, one lamp lit",
-        "action": "holds in silence, then opens a hand's width",
-        "emotion": "asking",
-        "annotation": "[KILLED c23 - removed]"
-      },
-      "choreo": {
-        "primary": "the slot opens a crack",
-        "reaction": "its lamp steadies",
-        "ambient": "dust hangs almost still"
-      }
-    },
-    {
-      "i": 29,
-      "t": 84.08,
-      "vo": 14,
-      "sfx": "one sheet sliding out",
-      "means": "the answer, deliberately small",
-      "shows": "a list",
-      "draw": {
-        "subject": "a single bone sheet sliding out of the tall slot",
-        "action": "slides out and hangs, almost weightless",
-        "emotion": "anticlimactic",
-        "annotation": "[KILLED c23 - removed]"
-      },
-      "choreo": {
-        "primary": "the sheet slides out",
-        "reaction": "it hangs and turns",
-        "ambient": "dust"
-      },
-      "open_loop_2_pay": "pay: the institute is [KILLED c23 - removed] a list"
-    },
-    {
-      "i": 30,
-      "t": 85.97,
-      "vo": 15,
-      "sfx": "a warm drawer opening",
-      "means": "THE TURN. The film's own evidence",
-      "shows": "the smaller door, in warm light",
-      "draw": {
-        "subject": "a low side step in warm key light, its slot wide open",
-        "action": "the low step lights warm and its slot opens wide",
-        "emotion": "warm",
-        "annotation": "UNIVERSITY OF ALASKA ANCHORAGE  \u00b7  NSF 2433241"
-      },
-      "choreo": {
-        "primary": "the low step lights warm",
-        "reaction": "its slot opens wide",
-        "ambient": "dust warms in the new light"
-      }
-    },
-    {
-      "i": 31,
-      "t": 90.3,
-      "vo": 15,
-      "sfx": "a pen landing on paper, then room tone",
-      "means": "the mechanism that made the list",
-      "shows": "an open line, and no menu",
-      "draw": {
-        "subject": "an empty ruled line on a blank form with no checkboxes anywhere",
-        "action": "a pen lands on the empty ruled line and waits there, and no checkboxes arrive beside it",
-        "emotion": "open",
-        "annotation": "NAME YOUR PROBLEM  \u00b7  NO MENU"
-      },
-      "choreo": {
-        "primary": "the pen lands on the blank line",
-        "reaction": "the line flexes under it",
-        "ambient": "warm dust drifts"
-      }
-    },
-    {
-      "i": 32,
-      "t": 94.03,
-      "vo": 16,
-      "sfx": "twelve torn-paper arrivals",
-      "means": "THE REHOOK. The list arrives as objects",
-      "shows": "twelve specific asks",
-      "draw": {
-        "subject": "twelve torn terracotta slips arriving and sorting into a column",
-        "action": "they fly in and arrange themselves into a readable list",
-        "emotion": "specific",
-        "annotation": "12 WROTE ONE DOWN"
-      },
-      "choreo": {
-        "primary": "twelve slips arrive and sort",
-        "reaction": "each torn edge flexes on landing",
-        "ambient": "dust churns warm"
-      },
-      "rehook": "rehook: the abstract list becomes twelve objects you can read",
-      "reveal": "morph-to-chart"
-    },
-    {
-      "i": 33,
-      "t": 97.11,
-      "vo": 16,
-      "sfx": "two distinct paper settles",
-      "means": "two named asks, spelled exactly",
-      "shows": "the specifics",
-      "draw": {
-        "subject": "two slips pulled forward, each setting its own line of type",
-        "action": "the first sets its type, then the second",
-        "emotion": "concrete",
-        "annotation": "NOME JOINT UTILITIES SYSTEM  \u00b7  THERMAL CONDUCTIVITY OF WARMING PERMAFROST"
-      },
-      "choreo": {
-        "primary": "the first slip sets its type",
-        "reaction": "the second waits its turn",
-        "ambient": "the other ten hold"
-      }
-    },
-    {
-      "i": 34,
-      "t": 99.56,
-      "vo": 16,
-      "sfx": "a single settle",
-      "means": "the second named ask",
-      "shows": "the tribe's own project title",
-      "draw": {
-        "subject": "the second slip setting its line",
-        "action": "sets its type and holds",
-        "emotion": "concrete",
-        "annotation": "VILLAGE OF ALAKANUK TRIBE  \u00b7  INFRASTRUCTURE COORDINATION"
-      },
-      "choreo": {
-        "primary": "the second slip sets type",
-        "reaction": "the first holds beside it",
-        "ambient": "dust"
-      }
-    },
-    {
-      "i": 35,
-      "t": 102.35,
-      "vo": 17,
-      "sfx": "four lifts and eight settles",
-      "means": "THE PRIMARY PAYOFF. Who cleared the step",
-      "shows": "four over, eight below",
-      "draw": {
-        "subject": "four slips lifting over the low step and eight settling at its foot",
-        "action": "four clear the step, eight settle below and stay lit",
-        "emotion": "unresolved",
-        "annotation": "4 FUNDED  \u00b7  8 WENT UNFUNDED [KILLED c24 - removed]"
-      },
-      "choreo": {
-        "primary": "four lift over the step",
-        "reaction": "eight settle below and stay lit",
-        "ambient": "dust"
-      },
-      "open_loop_pay": "pay: these eight are the ones left standing outside the smallest door"
-    },
-    {
-      "i": 36,
-      "t": 106.49,
-      "vo": 18,
-      "sfx": "a clean two-part hit",
-      "means": "the film's position, stated plainly",
-      "shows": "the verdict, split",
-      "draw": {
-        "subject": "the tall slot and the low step together in one frame",
-        "action": "the tall slot holds steady while the low step's lamp dims out",
-        "emotion": "clear",
-        "annotation": "THE INSTITUTE ISN'T THE MISTAKE"
-      },
-      "choreo": {
-        "primary": "the low step's lamp dims",
-        "reaction": "the tall slot does not move",
-        "ambient": "dust"
-      }
-    },
-    {
-      "i": 37,
-      "t": 109.24,
-      "vo": 18,
-      "sfx": "a lid closing over both",
-      "means": "names the actual error",
-      "shows": "one notice, two acts",
-      "draw": {
-        "subject": "a single notice envelope folding shut over both the low step and the tall slot",
-        "action": "the envelope folds over both at once and the low step vanishes under it",
-        "emotion": "pointed",
-        "annotation": "RETIRING THE SMALL ALASKA DOOR IN THE SAME NOTICE"
-      },
-      "choreo": {
-        "primary": "the envelope folds over both",
-        "reaction": "the low step disappears beneath it",
-        "ambient": "dust"
-      }
-    },
-    {
-      "i": 38,
-      "t": 112.64,
-      "vo": 19,
-      "sfx": "a riser, then air",
-      "means": "THE BUTTON. The opening frame returns inverted",
-      "shows": "the deadline, and the falsifier",
-      "draw": {
-        "subject": "the opening low bone sill again with one terracotta slip on it",
-        "action": "the first frame returns, and the gauge now reads the new floor",
-        "emotion": "open-handed",
-        "annotation": "APPLICATIONS FOR THE INSTITUTE CLOSE AUGUST 27TH 2026"
-      },
-      "choreo": {
-        "primary": "the first frame returns inverted",
-        "reaction": "the gauge reads 2,500,000 on the small sill",
-        "ambient": "dust settles for the first time"
-      }
-    },
-    {
-      "i": 39,
-      "t": 116.66,
-      "vo": 19,
-      "sfx": "one soft tail",
-      "means": "the falsifier, said out loud",
-      "shows": "the test the film offers against itself",
-      "draw": {
-        "subject": "a bone card set low under the returning sill",
-        "action": "fades up and holds",
-        "emotion": "candid",
-        "annotation": "IF A VILLAGE LEADS THE WINNING BID, I'M WRONG"
-      },
-      "choreo": {
-        "primary": "the card fades up",
-        "reaction": "the slip on the sill holds",
-        "ambient": "dust settles"
-      }
-    },
-    {
-      "i": 40,
-      "t": 118.6,
-      "vo": 19,
-      "sfx": "a last soft settle",
-      "means": "the honest limit, on screen, as the cultural ruling requires",
-      "shows": "what the film could not get",
-      "draw": {
-        "subject": "a second plain bone card, quiet, below the first",
-        "action": "fades up beneath it and holds to the end",
-        "emotion": "candid",
-        "annotation": "NO ALASKA NATIVE ORGANIZATION WAS REACHABLE FOR A POSITION  \u00b7  THIS FILM SPEAKS ABOUT THE PROGRAM, NOT FOR ANYONE AFFECTED"
-      },
-      "choreo": {
-        "primary": "the second card fades up",
-        "reaction": "the sill holds behind both",
-        "ambient": "dust settles"
-      }
-    }
-  ],
-  "_kill_note": "c23, c24 and c25 were killed during this run and their strings were scrubbed from this board on 2026-08-12. A judge found them still sitting here as on-screen annotations after they had been removed from the VO, the claim map, the post and the engine: a board is a RENDER INPUT, so leaving a killed claim in it means the next thing built from it ships the claim again. The kill list is not done until the board is clean too."
+  "dip_at": 77.11,
+  "riser_at": 96.28,
+  "silence_at": 114.03,
+  "payoff_at": 99.08,
+  "button_pattern": "callback",
+  "note": "The 76.4 dip is THE TEST being allowed to sit. The bed drops at least 6 dB and the pinned photograph hangs in near silence while the machine behind it changes, with no music reaching for the rebuttal. The 119.5 silence is the held breath before the button returns to the opening frame."
+ },
+ "shots": [
+  {
+   "id": "S1",
+   "framing": "macro-closeup",
+   "scale": "insert",
+   "height": "eye",
+   "pov": "macro-closeup",
+   "layout": "single-object-void",
+   "motion_vector": "push-in-only",
+   "hero_treatment": "structure-as-subject",
+   "transition_in": null,
+   "camera": "static:the hook is a landing so the camera holds",
+   "stage3d": "planes",
+   "centered": true,
+   "means": "the plate alone, and the hand that reads it",
+   "hero": {
+    "name": "RatingPlate",
+    "parts": 6,
+    "zones": 3,
+    "detail_note": "stamped kilowatt field with a real cut shadow, milled blank fields below, four corner screws on a regular pitch, a wiped smear across the steel, deterministic pitting. Zones: stamped band, blank grid, mounting flange."
+   },
+   "t": "0.00-12.36"
+  },
+  {
+   "id": "S2",
+   "framing": "push-detail",
+   "scale": "close",
+   "height": "eye",
+   "pov": "macro-closeup",
+   "layout": "field-grid",
+   "motion_vector": "lateral-drift",
+   "hero_treatment": "absence-as-subject",
+   "transition_in": "push-in",
+   "thread": "carry",
+   "camera": "cranedown",
+   "stage3d": "planes",
+   "centered": true,
+   "means": "the blank fields drawn in the absence grammar",
+   "hero": {
+    "name": "RatingPlate",
+    "parts": 6,
+    "zones": 2,
+    "detail_note": "the blank grid at full width, each empty cell a true void with a slow interior drift, dashed edges crawling"
+   },
+   "t": "12.36-21.60"
+  },
+  {
+   "id": "S3",
+   "framing": "data-panel",
+   "scale": "medium",
+   "height": "high",
+   "pov": "bench-top-overhead",
+   "layout": "record-and-two-drums",
+   "motion_vector": "vertical-settle",
+   "hero_treatment": "record-as-subject",
+   "transition_in": "graphic-match",
+   "thread": "match",
+   "camera": "cranedown",
+   "stage3d": "planes",
+   "centered": true,
+   "means": "the award record, the two drums, the name plate",
+   "hero": {
+    "name": "AwardRecord",
+    "parts": 7,
+    "zones": 3,
+    "detail_note": "a stamped federal record with a date impression, two stencilled fuel drums standing apart, a countersunk brass name plate"
+   },
+   "t": "21.60-31.38"
+  },
+  {
+   "id": "S4",
+   "framing": "two-up",
+   "scale": "wide",
+   "height": "eye",
+   "pov": "two-shot-elevation",
+   "layout": "paired-equals-on-one-line",
+   "motion_vector": "coupled-ringing",
+   "hero_treatment": "two-machines-as-equals",
+   "transition_in": "pull-out",
+   "thread": "build",
+   "camera": "cranedown+dollythrough",
+   "stage3d": "planes",
+   "centered": true,
+   "means": "both machines at equal height with one conductor between them",
+   "hero": {
+    "name": "FieldGenset",
+    "parts": 22,
+    "zones": 4,
+    "detail_note": "accreted enamel-green genset: mismatched fasteners, a patched exhaust wrap, a replacement panel in a slightly different green, non-straight weld beads, hose runs added by different hands, radiator grille, control box, heavy flywheel turning. Zones: engine block, radiator, control face, skid."
+   },
+   "t": "31.38-41.12"
+  },
+  {
+   "id": "S5",
+   "framing": "push-detail",
+   "scale": "medium",
+   "height": "low",
+   "pov": "two-shot-elevation",
+   "layout": "paired-equals-on-one-line",
+   "motion_vector": "switch-off-fall",
+   "hero_treatment": "machine-with-a-purpose",
+   "transition_in": "match-action",
+   "thread": "match",
+   "camera": "dollythrough",
+   "stage3d": "planes",
+   "centered": true,
+   "means": "the diesel handing the room to the battery",
+   "hero": {
+    "name": "FieldGenset",
+    "parts": 22,
+    "zones": 3,
+    "detail_note": "the flywheel slowing to a stop, exhaust shimmer fading, the battery's bar lights climbing beside it"
+   },
+   "t": "41.12-47.84"
+  },
+  {
+   "id": "S6",
+   "framing": "wide-establish",
+   "scale": "wide",
+   "height": "eye",
+   "pov": "wide-room",
+   "layout": "room-with-a-waiting-object",
+   "motion_vector": "held-still",
+   "hero_treatment": "consequence-as-subject",
+   "transition_in": "hard-cut",
+   "thread": "build",
+   "camera": "truckacross",
+   "stage3d": "planes",
+   "centered": false,
+   "means": "the widest frame in the film, nothing broken in it, and the money still burning",
+   "hero": {
+    "name": "WaitingCase",
+    "parts": 8,
+    "zones": 2,
+    "detail_note": "a packed case standing by the powerhouse door with its coat on and a watch, contact shadow, never leaving"
+   },
+   "t": "47.84-55.76"
+  },
+  {
+   "id": "S7",
+   "framing": "map-territory",
+   "scale": "extreme-wide",
+   "height": "high",
+   "pov": "map-scale-comparison",
+   "layout": "split-scale",
+   "motion_vector": "horizontal-shrink",
+   "hero_treatment": "scale-contrast",
+   "transition_in": "pull-out",
+   "thread": "build",
+   "camera": "orbitreveal",
+   "stage3d": "planes",
+   "centered": true,
+   "means": "a hundred miles collapsing into a few feet, and the empty drawer",
+   "hero": {
+    "name": "TransmissionSchematic",
+    "parts": 12,
+    "zones": 3,
+    "detail_note": "an oversized fold-out schematic with towers a hundred miles apart, hanging off both walls, tearing where it can't fold"
+   },
+   "t": "55.76-65.20"
+  },
+  {
+   "id": "S8",
+   "framing": "alt-vantage",
+   "scale": "medium",
+   "height": "eye",
+   "pov": "cross-section-cutaway",
+   "layout": "one-line-between-two",
+   "motion_vector": "out-and-back-return",
+   "hero_treatment": "mechanism-as-subject",
+   "transition_in": "match-cut",
+   "thread": "match",
+   "camera": "truckacross",
+   "stage3d": "planes",
+   "centered": true,
+   "means": "THE CUTAWAY: the probe leaves, meets the machine, returns changed",
+   "hero": {
+    "name": "ProbeAndResponse",
+    "parts": 10,
+    "zones": 3,
+    "detail_note": "violet probe pulse out clean along the conductor, the genset's governor and inertia drawn as lags, the pulse returning perturbed, a transfer curve drawing itself from the difference"
+   },
+   "t": "65.20-73.72"
+  },
+  {
+   "id": "S9",
+   "framing": "push-detail",
+   "scale": "close",
+   "height": "eye",
+   "pov": "wall-elevation",
+   "layout": "object-beside-its-photograph",
+   "motion_vector": "held-still",
+   "hero_treatment": "evidence-as-subject",
+   "transition_in": "whip-pan",
+   "thread": "carry",
+   "camera": "static:the objection is allowed to sit unrescued",
+   "stage3d": "planes",
+   "centered": true,
+   "means": "THE TEST, held: a sharp photograph already out of date",
+   "hero": {
+    "name": "PinnedPhotograph",
+    "parts": 7,
+    "zones": 2,
+    "detail_note": "a tack-sharp print of the running engine pinned to the wall with a real pin and a cast shadow, curling at one corner, while the machine behind it changes posture"
+   },
+   "t": "73.72-82.40"
+  },
+  {
+   "id": "S10",
+   "framing": "data-panel",
+   "scale": "medium",
+   "height": "eye",
+   "pov": "wall-elevation",
+   "layout": "repeated-strip",
+   "motion_vector": "accumulate",
+   "hero_treatment": "repetition-as-subject",
+   "transition_in": "assemble",
+   "thread": "build",
+   "camera": "truckacross",
+   "stage3d": "planes",
+   "centered": false,
+   "means": "the rebuttal, in the same picture: a strip of timestamped prints",
+   "hero": {
+    "name": "PhotoStrip",
+    "parts": 9,
+    "zones": 2,
+    "detail_note": "timestamped prints accumulating along the wall, each seated with its own contact shadow, the original pin outnumbered"
+   },
+   "t": "82.40-88.38"
+  },
+  {
+   "id": "S11",
+   "framing": "map-territory",
+   "scale": "wide",
+   "height": "high",
+   "pov": "place-and-object",
+   "layout": "dock-and-crate",
+   "motion_vector": "map-travel",
+   "hero_treatment": "operators-as-subject",
+   "transition_in": "map-travel",
+   "thread": "travel",
+   "camera": "cranedown",
+   "stage3d": "planes",
+   "centered": true,
+   "means": "the operators' half, and it is theirs",
+   "hero": {
+    "name": "BatteryCrate",
+    "parts": 11,
+    "zones": 3,
+    "detail_note": "a crated one megawatt battery landed on a village dock, stencilled, banded, panel coming off under gloved hands, snow light, contact shadow"
+   },
+   "t": "88.38-96.28"
+  },
+  {
+   "id": "S12",
+   "framing": "push-detail",
+   "scale": "close",
+   "height": "high",
+   "pov": "bench-top-overhead",
+   "layout": "two-drums-and-a-boundary",
+   "motion_vector": "vertical-settle",
+   "hero_treatment": "record-as-subject",
+   "transition_in": "sound-bridge",
+   "thread": "match",
+   "camera": "orbitreveal",
+   "stage3d": "planes",
+   "centered": true,
+   "means": "the honest size, and THE SIGNATURE PULL-BACK to the column grid",
+   "hero": {
+    "name": "RatingPlate",
+    "parts": 8,
+    "zones": 3,
+    "detail_note": "the plate revealed as a grid of operating-point columns, exactly one written in violet in a different hand from the stamped figure, every other column blank"
+   },
+   "t": "96.28-103.04"
+  },
+  {
+   "id": "S13",
+   "framing": "data-panel",
+   "scale": "insert",
+   "height": "overhead",
+   "pov": "flat-document",
+   "layout": "stacked-cover-sheets",
+   "motion_vector": "slide-off",
+   "hero_treatment": "absence-as-subject",
+   "transition_in": "mask-wipe",
+   "thread": "carry",
+   "camera": "static:the sheet moves and the camera does not",
+   "stage3d": "flat:this beat is paperwork on a bench and depth would dress up a gag that works flat",
+   "centered": true,
+   "means": "the checked absence, drawn as an absence",
+   "hero": {
+    "name": "CoverSheet",
+    "parts": 6,
+    "zones": 2,
+    "detail_note": "a fresh cover sheet with a bigger word sliding over an unchanged three-line methods list, then sliding off, the list never changing"
+   },
+   "t": "103.04-111.24"
+  },
+  {
+   "id": "S14",
+   "framing": "macro-closeup",
+   "scale": "close",
+   "height": "eye",
+   "pov": "macro-closeup",
+   "layout": "single-object-void",
+   "motion_vector": "push-in-only",
+   "hero_treatment": "structure-as-subject",
+   "transition_in": "match-cut",
+   "thread": "match",
+   "camera": "dollythrough",
+   "stage3d": "planes",
+   "centered": true,
+   "means": "the date on the threshold, then the button, identical to frame one",
+   "hero": {
+    "name": "RatingPlate",
+    "parts": 6,
+    "zones": 3,
+    "detail_note": "the opening frame exactly, still blank, with one violet pulse crossing it and leaving"
+   },
+   "t": "111.24-122.30"
+  }
+ ],
+ "beats": [
+  {
+   "i": 1,
+   "t": 0.0,
+   "vo": 0,
+   "sfx": "a steel slab landing, one hard slap with a metallic ring under it",
+   "means": "opens on the object the film returns to",
+   "shows": "a stamped rating plate filling frame, cold daylight raking across it",
+   "draw": {
+    "subject": "a steel rating plate bolted to a diesel generator",
+    "action": "slams into frame and settles, dust jumping off its lit top edge",
+    "emotion": "matter-of-fact",
+    "annotation": "RATING PLATE"
+   },
+   "choreo": {
+    "primary": "the plate lands and rings",
+    "reaction": "dust jumps off the stamped groove",
+    "ambient": "the flywheel keeps turning behind, never stopping"
+   }
+  },
+  {
+   "i": 2,
+   "t": 2.66,
+   "vo": 0,
+   "sfx": "a gloved knuckle on steel, two dry taps",
+   "means": "plants loop 1 before anyone knows what it is",
+   "shows": "a gloved hand wipes the plate and knuckle-taps the blank field twice",
+   "draw": {
+    "subject": "a gloved operator hand",
+    "action": "wipes the plate clean and taps the empty field twice",
+    "emotion": "unhurried and competent",
+    "annotation": "CHECKING A GAUGE THAT MIGHT BE STUCK"
+   },
+   "choreo": {
+    "primary": "the hand wipes and taps",
+    "reaction": "the blank field does not change",
+    "ambient": "dust turning slowly in the door shaft"
+   },
+   "open_loop_plant": true
+  },
+  {
+   "i": 3,
+   "t": 5.54,
+   "vo": 1,
+   "sfx": "a punch-press thud, deep",
+   "means": "the one fact the plate does carry",
+   "shows": "the kilowatt figure stamped deep enough to cast its own shadow",
+   "draw": {
+    "subject": "the stamped kilowatt number",
+    "action": "punches deeper into the steel and throws a hard shadow",
+    "emotion": "assertive",
+    "annotation": "kW  \u00b7  STAMPED"
+   },
+   "choreo": {
+    "primary": "the number seats with a thud",
+    "reaction": "the plate rings once",
+    "ambient": "the flywheel keeps turning behind, never stopping"
+   }
+  },
+  {
+   "i": 4,
+   "t": 9.27,
+   "vo": 1,
+   "sfx": "a thin cold room tone",
+   "means": "the contrast the whole film rests on",
+   "shows": "the stamped field throwing shadow while the fields below catch none",
+   "draw": {
+    "subject": "the empty fields under the number",
+    "action": "stay flat and shadowless while the number above them casts",
+    "emotion": "indifferent",
+    "annotation": "NOTHING BELOW IT"
+   },
+   "choreo": {
+    "primary": "light rakes across and finds no relief in the blanks",
+    "reaction": "the stamped groove holds its shadow",
+    "ambient": "dust turning slowly in the door shaft"
+   }
+  },
+  {
+   "i": 5,
+   "t": 12.36,
+   "vo": 2,
+   "sfx": "a hollow drawer of air",
+   "means": "names the absence as an absence",
+   "shows": "the blank fields in the absence grammar, dashed and drifting, labelled",
+   "draw": {
+    "subject": "the blank dynamic fields",
+    "action": "open into a true void with a slow drift inside, refusing to resolve",
+    "emotion": "hollow",
+    "annotation": "HOW IT BEHAVES  \u00b7  NOT RECORDED"
+   },
+   "choreo": {
+    "primary": "the blanks open out",
+    "reaction": "the stamped number stays solid above them",
+    "ambient": "the drift inside the void"
+   }
+  },
+  {
+   "i": 6,
+   "t": 16.88,
+   "vo": 2,
+   "sfx": "a single sheet turning over",
+   "means": "the reason nobody can look it up",
+   "shows": "a hand reaching with a service form and finding nothing to copy",
+   "draw": {
+    "subject": "a gloved hand holding a blank service form",
+    "action": "reaches to transcribe, then stops with the pen off the paper",
+    "emotion": "stalled",
+    "annotation": "NOBODY WROTE IT DOWN"
+   },
+   "choreo": {
+    "primary": "the pen hovers and withdraws",
+    "reaction": "the form stays blank",
+    "ambient": "the flywheel keeps turning behind, never stopping"
+   }
+  },
+  {
+   "i": 7,
+   "t": 20.78,
+   "vo": 3,
+   "sfx": "a rubber stamp, one firm hit",
+   "means": "the news peg, dated",
+   "shows": "the federal award record set down and stamped",
+   "draw": {
+    "subject": "the NSF award record",
+    "action": "drops onto the bench and takes a date impression",
+    "emotion": "official and plain",
+    "annotation": "NSF 2626692  \u00b7  AUGUST 10TH 2026"
+   },
+   "choreo": {
+    "primary": "the record lands and is stamped",
+    "reaction": "the bench takes the weight",
+    "ambient": "dust turning slowly in the door shaft"
+   }
+  },
+  {
+   "i": 8,
+   "t": 25.46,
+   "vo": 3,
+   "sfx": "two drums setting on concrete, a beat apart",
+   "means": "draws the two-award obligation instead of captioning it",
+   "shows": "two fuel drums standing apart, stencilled, never poured into one tank",
+   "draw": {
+    "subject": "two stencilled fuel drums",
+    "action": "set down apart and stay apart, a measured gap held between them",
+    "emotion": "deliberate",
+    "annotation": "$324,995  UAF   \u00b7   $225,000  WISCONSIN"
+   },
+   "choreo": {
+    "primary": "the drums land apart",
+    "reaction": "a pouring funnel is offered and withdrawn",
+    "ambient": "cold daylight from the door"
+   },
+   "reveal": "build-on"
+  },
+  {
+   "i": 9,
+   "t": 28.63,
+   "vo": 3,
+   "sfx": "a brass plate seating into a recess",
+   "means": "names the actor before the film uses her",
+   "shows": "the principal investigator on a machined plate, no face and no caricature",
+   "draw": {
+    "subject": "a countersunk brass name plate",
+    "action": "sets into the light with weight",
+    "emotion": "respectful",
+    "annotation": "MARIKO SHIRAZI  \u00b7  PRESIDENT'S PROFESSOR IN ENERGY"
+   },
+   "choreo": {
+    "primary": "the plate seats",
+    "reaction": "light catches the engraving",
+    "ambient": "dust turning slowly in the door shaft"
+   }
+  },
+  {
+   "i": 10,
+   "t": 31.38,
+   "vo": 4,
+   "sfx": "a heavy latch, then a low hum starting",
+   "means": "the two machines as equals",
+   "shows": "the powerhouse revealed, both machines at the same height on one conductor",
+   "draw": {
+    "subject": "the diesel and the battery cabinet",
+    "action": "stand side by side at equal height with one conductor between them",
+    "emotion": "evenly matched",
+    "annotation": "CO-LOCATED  \u00b7  COMMENSURATE IN SIZE"
+   },
+   "choreo": {
+    "primary": "the room opens out to hold both",
+    "reaction": "the conductor tightens between them",
+    "ambient": "snow glare through the open door"
+   },
+   "rehook": "the room finally opens and there are TWO machines, not one",
+   "reveal": "scale-pullback"
+  },
+  {
+   "i": 11,
+   "t": 34.97,
+   "vo": 4,
+   "sfx": "two tones beating against each other, growing",
+   "means": "the failure mode, drawn",
+   "shows": "the shared conductor beginning to ring, amplitude climbing on a real spring",
+   "draw": {
+    "subject": "the conductor between the two machines",
+    "action": "drops onto the handrail and its pen swings down on its string, ticking once against the steel",
+    "emotion": "escalating",
+    "annotation": "\"the two can interact and produce sustained oscillations\""
+   },
+   "choreo": {
+    "primary": "the clipboard lands on the rail and the pen swings",
+    "reaction": "the pen tip strikes the steel and rebounds",
+    "ambient": "the overhead lights never flicker"
+   }
+  },
+  {
+   "i": 12,
+   "t": 37.49,
+   "vo": 4,
+   "sfx": "a clipboard pen, one calm tick",
+   "means": "keeps the operators competent and the room lit",
+   "shows": "a clipboard hand making one unhurried note about the rhythm",
+   "draw": {
+    "subject": "an operator's clipboard",
+    "action": "drops onto the handrail so its pen swings down on its string and ticks against the steel",
+    "emotion": "unbothered and professional",
+    "annotation": "NSF'S CHARACTERISATION OF A FAILURE MODE"
+   },
+   "choreo": {
+    "primary": "the clipboard lands on the rail and the pen swings",
+    "reaction": "the pen tip strikes the steel and rebounds",
+    "ambient": "the two machines keep nodding behind"
+   }
+  },
+  {
+   "i": 13,
+   "t": 41.12,
+   "vo": 5,
+   "sfx": "a big contactor dropping out, then quiet",
+   "means": "why the battery is there at all",
+   "shows": "the flywheel slowing and the battery taking the room on its own",
+   "draw": {
+    "subject": "the diesel generator",
+    "action": "winds down and hands the room to the battery beside it",
+    "emotion": "relieved",
+    "annotation": "THE DIESEL SWITCHES OFF"
+   },
+   "choreo": {
+    "primary": "the flywheel slows",
+    "reaction": "the battery's bar lights climb",
+    "ambient": "the room stays lit throughout"
+   }
+  },
+  {
+   "i": 14,
+   "t": 43.93,
+   "vo": 5,
+   "sfx": "fuel sloshing, then stopping",
+   "means": "the saving made physical",
+   "shows": "a fuel line stopping mid-flow with the drum beside it staying full",
+   "draw": {
+    "subject": "a fuel drum and its line",
+    "action": "stops drawing, the level holding where it is",
+    "emotion": "satisfied",
+    "annotation": "THIS IS WHERE THE SAVING COMES FROM"
+   },
+   "choreo": {
+    "primary": "the flow stops",
+    "reaction": "the level holds",
+    "ambient": "the battery hums"
+   }
+  },
+  {
+   "i": 15,
+   "t": 47.84,
+   "vo": 6,
+   "sfx": "the contactor slamming back in",
+   "means": "the stake, and it plants loop 2",
+   "shows": "the diesel forced back on, and the saving as a packed case that cannot leave",
+   "draw": {
+    "subject": "a packed case standing by the powerhouse door",
+    "action": "waits with its coat on, checks a watch, and does not leave",
+    "emotion": "patient and thwarted",
+    "annotation": "THE SAVING NEVER ARRIVES"
+   },
+   "choreo": {
+    "primary": "the case waits by the door",
+    "reaction": "the flywheel spins back up",
+    "ambient": "fuel resumes drawing"
+   },
+   "open_loop_2_plant": true
+  },
+  {
+   "i": 16,
+   "t": 51.59,
+   "vo": 6,
+   "sfx": "a long low engine note, unbroken",
+   "means": "the cost of not knowing, with nothing broken in frame",
+   "shows": "the diesel running steadily and healthily, and burning",
+   "draw": {
+    "subject": "the running diesel",
+    "action": "slams open across the room, kicks the tool tray off the bench and drops over the door",
+    "emotion": "implacable",
+    "annotation": "IT KEEPS RUNNING"
+   },
+   "choreo": {
+    "primary": "the schematic slams open and knocks the tray to the floor",
+    "reaction": "the tray lands and scatters",
+    "ambient": "exhaust shimmer"
+   }
+  },
+  {
+   "i": 17,
+   "t": 55.76,
+   "vo": 7,
+   "sfx": "an enormous drawing unrolling",
+   "means": "why the standard fix does not fit",
+   "shows": "a transmission schematic unrolled over the powerhouse, towers a hundred miles apart",
+   "draw": {
+    "subject": "a giant fold-out transmission schematic",
+    "action": "slams open across the room, knocks the tool tray off the bench and drops over the doorway",
+    "emotion": "absurdly oversized",
+    "annotation": "ON A BIG GRID YOU STUDY EACH MACHINE ALONE"
+   },
+   "choreo": {
+    "primary": "the schematic slams open and knocks the tray to the floor",
+    "reaction": "the tray lands and scatters its contents",
+    "ambient": "the sheet ripples in the door draught"
+   }
+  },
+  {
+   "i": 18,
+   "t": 59.62,
+   "vo": 7,
+   "sfx": "paper tearing, then a hard snap to close",
+   "means": "the scale contrast that kills the method",
+   "shows": "a hundred-mile spacing collapsing to two machines feet apart",
+   "draw": {
+    "subject": "the spacing between two machines",
+    "action": "collapses from a hundred miles to a few feet in one continuous move",
+    "emotion": "compressed",
+    "annotation": "WIRED TOO CLOSE FOR THAT"
+   },
+   "choreo": {
+    "primary": "the gap collapses",
+    "reaction": "the schematic tears where it can't fold",
+    "ambient": "dust turning slowly in the door shaft"
+   },
+   "rehook": "the map slams shut into a room you could touch",
+   "reveal": "scale-pullback"
+  },
+  {
+   "i": 19,
+   "t": 62.56,
+   "vo": 7,
+   "sfx": "a long hollow drawer, then one index card",
+   "means": "the running gag lands and the bottleneck is named",
+   "shows": "the drawer marked ACCURATE GENERATOR MODELS opening on a single index card",
+   "draw": {
+    "subject": "a filing drawer labelled ACCURATE GENERATOR MODELS",
+    "action": "rumbles open long and hollow and holds one index card",
+    "emotion": "deadpan",
+    "annotation": "\"accurate generator models are also usually unavailable\""
+   },
+   "choreo": {
+    "primary": "the drawer runs out and stops",
+    "reaction": "the card sits alone",
+    "ambient": "the two drawers above it bulge with manuals"
+   }
+  },
+  {
+   "i": 20,
+   "t": 65.2,
+   "vo": 8,
+   "sfx": "a clean tone leaving, travelling out",
+   "means": "the proposal, in the record's own words",
+   "shows": "the violet probe pulse leaving the inverter and running the conductor",
+   "draw": {
+    "subject": "a violet probe pulse",
+    "action": "leaves the battery's inverter and travels the shared line toward the diesel",
+    "emotion": "curious and deliberate",
+    "annotation": "\"using the battery inverter itself to probe the grid\""
+   },
+   "choreo": {
+    "primary": "the pulse travels out clean",
+    "reaction": "the conductor carries it",
+    "ambient": "the flywheel keeps turning behind, never stopping"
+   },
+   "rehook": "something finally leaves the battery and goes looking"
+  },
+  {
+   "i": 21,
+   "t": 68.83,
+   "vo": 8,
+   "sfx": "the same tone returning, bent",
+   "means": "the answer read off the difference",
+   "shows": "the pulse returning visibly changed, a transfer curve drawing itself from it",
+   "draw": {
+    "subject": "the returned pulse",
+    "action": "comes back wobbling and resolves into a curve inside the cabinet",
+    "emotion": "reading",
+    "annotation": "THE ANSWER IS IN HOW IT CAME BACK"
+   },
+   "choreo": {
+    "primary": "the pulse returns bent",
+    "reaction": "a curve draws itself from out minus back",
+    "ambient": "the diesel keeps turning"
+   }
+  },
+  {
+   "i": 22,
+   "t": 73.72,
+   "vo": 9,
+   "sfx": "a shutter, one hard mechanical clack",
+   "means": "the fair objection opens",
+   "shows": "a single sharp photograph taken of the running engine",
+   "draw": {
+    "subject": "a camera shutter over the running engine",
+    "action": "fires once and freezes the machine mid-stride",
+    "emotion": "clinical",
+    "annotation": "A MEASUREMENT IS THE MOMENT YOU TOOK IT"
+   },
+   "choreo": {
+    "primary": "the shutter fires",
+    "reaction": "the engine keeps moving after it",
+    "ambient": "the print develops"
+   }
+  },
+  {
+   "i": 23,
+   "t": 77.11,
+   "vo": 9,
+   "sfx": "a pin into board, then room tone and nothing",
+   "means": "THE TEST, held and not rescued",
+   "shows": "the photograph pinned to the wall, tack sharp, while the machine behind it has changed",
+   "draw": {
+    "subject": "a pinned photograph of the running engine",
+    "action": "hangs perfectly sharp and already out of date while the real machine changes behind it",
+    "emotion": "serenely wrong",
+    "annotation": "OUT OF DATE BEFORE IT'S PINNED UP"
+   },
+   "choreo": {
+    "primary": "the photograph hangs still",
+    "reaction": "the real machine shifts posture behind it",
+    "ambient": "the picture holds and nothing rescues it"
+   }
+  },
+  {
+   "i": 24,
+   "t": 79.96,
+   "vo": 9,
+   "sfx": "a governor part set down on a bench",
+   "means": "what changed while the photograph stayed the same",
+   "shows": "the machine's real state moving on, a serviced part, a colder room",
+   "draw": {
+    "subject": "the real diesel behind the photograph",
+    "action": "swaps a serviced part and settles at a new operating point",
+    "emotion": "indifferent to the photograph",
+    "annotation": "UNITS CYCLE  \u00b7  LOAD SWINGS  \u00b7  FORTY BELOW"
+   },
+   "choreo": {
+    "primary": "the machine changes state",
+    "reaction": "the photograph does not",
+    "ambient": "frost creeping at the door"
+   }
+  },
+  {
+   "i": 25,
+   "t": 82.4,
+   "vo": 10,
+   "sfx": "a shutter again, then again, accelerating",
+   "means": "the rebuttal, inside the same picture",
+   "shows": "the single print becoming a strip of timestamped ones along the wall",
+   "draw": {
+    "subject": "a strip of timestamped photographs",
+    "action": "accumulates along the wall, each one fresher than the last",
+    "emotion": "dogged",
+    "annotation": "YOU CAN TAKE A NEW ONE ANY HOUR"
+   },
+   "choreo": {
+    "primary": "the strip accumulates",
+    "reaction": "the original pin is outnumbered",
+    "ambient": "the inverter's status light pulses"
+   }
+  },
+  {
+   "i": 26,
+   "t": 85.51,
+   "vo": 10,
+   "sfx": "a small seat-and-click, satisfying",
+   "means": "the shape of the answer",
+   "shows": "the measured value seating into the inverter's control block instead of a document",
+   "draw": {
+    "subject": "the measured value",
+    "action": "drops into the inverter's control block and seats home",
+    "emotion": "settled",
+    "annotation": "ON HARDWARE ALREADY ON THE WALL"
+   },
+   "choreo": {
+    "primary": "the value seats with a click",
+    "reaction": "the cabinet door closes on it",
+    "ambient": "the filing drawer slides shut on its own behind them"
+   }
+  },
+  {
+   "i": 27,
+   "t": 88.38,
+   "vo": 11,
+   "sfx": "a shipping crate landing on a dock, heavy",
+   "means": "the operators' half, and it is theirs",
+   "shows": "a one megawatt battery crate landed and opened by working hands",
+   "draw": {
+    "subject": "a crated one megawatt battery",
+    "action": "lands on a village dock and is opened by gloved hands",
+    "emotion": "capable and matter-of-fact",
+    "annotation": "ST. MARY'S, ALASKA  \u00b7  1 MW / 1 MWh  \u00b7  SHIPPED AUGUST 2023"
+   },
+   "choreo": {
+    "primary": "the crate lands and opens",
+    "reaction": "gloved hands take the panel off",
+    "ambient": "snow light"
+   },
+   "rehook": "this already happened, three years ago, without waiting for anybody"
+  },
+  {
+   "i": 28,
+   "t": 92.03,
+   "vo": 11,
+   "sfx": "a stamp on a manila folder",
+   "means": "the utilities are ahead of the paperwork",
+   "shows": "a second institution's record set beside the opened crate",
+   "draw": {
+    "subject": "a stamped programme record",
+    "action": "sets down beside the open crate",
+    "emotion": "corroborating",
+    "annotation": "SANDIA NATIONAL LABORATORIES  \u00b7  \"design and deployment\""
+   },
+   "choreo": {
+    "primary": "the record sets down",
+    "reaction": "the crate stays open",
+    "ambient": "working hands continue"
+   }
+  },
+  {
+   "i": 29,
+   "t": 94.13,
+   "vo": 11,
+   "sfx": "a panel bolt backing out, one turn",
+   "means": "the operators' competence is shown, not asserted",
+   "shows": "gloved hands setting the battery's own panel aside on the dock, unhurried",
+   "draw": {
+    "subject": "an operator's gloved hands on the battery cabinet",
+    "action": "back a panel bolt out and set the panel down flat",
+    "emotion": "practised",
+    "annotation": "AHEAD OF THE SCIENCE"
+   },
+   "choreo": {
+    "primary": "the panel comes off and is set down",
+    "reaction": "the crate settles on its skids",
+    "ambient": "snow light and breath"
+   }
+  },
+  {
+   "i": 30,
+   "t": 96.28,
+   "vo": 12,
+   "sfx": "two drums again, and a lab door closing",
+   "means": "the honest size, said out loud",
+   "shows": "the two drums returning and a dashed LABORATORY boundary around the test bed",
+   "draw": {
+    "subject": "the dashed LABORATORY boundary",
+    "action": "draws itself around the test bed with the powerhouse floor visible beyond and never entered",
+    "emotion": "scrupulous",
+    "annotation": "THE FAIRBANKS AWARD  \u00b7  THE TEST BED IS A LAB"
+   },
+   "choreo": {
+    "primary": "the boundary draws itself",
+    "reaction": "the packed case finally picks itself up and walks out through it",
+    "ambient": "snow glare"
+   },
+   "open_loop_2_pay": true
+  },
+  {
+   "i": 31,
+   "t": 99.08,
+   "vo": 12,
+   "sfx": "a long pull of air, then a wide settle",
+   "means": "THE SIGNATURE SHOT",
+   "shows": "the pull-back revealing the plate is a grid of operating-point columns with one written",
+   "draw": {
+    "subject": "the rating plate at full extent",
+    "action": "pulls back to reveal a grid of columns, one written in violet and the rest blank",
+    "emotion": "honest and unresolved",
+    "annotation": "ONE COLUMN MEASURED  \u00b7  THE REST STILL BLANK"
+   },
+   "choreo": {
+    "primary": "the camera pulls back and the grid appears",
+    "reaction": "the single violet column sits alone in it",
+    "ambient": "dust turning slowly in the door shaft"
+   },
+   "reveal": "scale-pullback",
+   "signature": true
+  },
+  {
+   "i": 32,
+   "t": 102.53,
+   "vo": 13,
+   "sfx": "a sheet laid down, then sliding off",
+   "means": "the film's one beat about its own name",
+   "shows": "a cover sheet with a bigger word laid over an unchanged methods list, then sliding away",
+   "draw": {
+    "subject": "a cover sheet carrying a bigger word",
+    "action": "slides over the methods list and then slides off, leaving it unchanged",
+    "emotion": "wry",
+    "annotation": "TRANSFER FUNCTIONS  \u00b7  STABILITY SPECIFICATIONS  \u00b7  ACTIVE DAMPING"
+   },
+   "choreo": {
+    "primary": "the cover sheet slides on and off",
+    "reaction": "the methods list underneath never changes",
+    "ambient": "the plate waits"
+   }
+  },
+  {
+   "i": 33,
+   "t": 105.95,
+   "vo": 13,
+   "sfx": "a search tick, three times, finding nothing",
+   "means": "the checked absence, drawn as an absence",
+   "shows": "a search running the award text for three terms and returning empty, then landing on one",
+   "draw": {
+    "subject": "a search running the award text",
+    "action": "hunts three terms and comes back empty, then highlights the one it finds",
+    "emotion": "plain",
+    "annotation": "NO AI  \u00b7  NO MACHINE LEARNING  \u00b7  \"DATA DRIVEN\""
+   },
+   "choreo": {
+    "primary": "the search returns empty three times",
+    "reaction": "the found phrase highlights",
+    "ambient": "the abstract text stays intact underneath"
+   }
+  },
+  {
+   "i": 34,
+   "t": 110.6,
+   "vo": 14,
+   "sfx": "a stencil press, one firm push",
+   "means": "the tense discipline as a picture",
+   "shows": "the start date stencilled on the laboratory threshold, not yet crossed",
+   "draw": {
+    "subject": "the start date on the threshold",
+    "action": "presses onto the concrete at the boundary line",
+    "emotion": "imminent",
+    "annotation": "STARTS AUGUST 15TH 2026"
+   },
+   "choreo": {
+    "primary": "the date presses onto the concrete",
+    "reaction": "the boundary holds",
+    "ambient": "nothing crosses it yet"
+   }
+  },
+  {
+   "i": 35,
+   "t": 113.84,
+   "vo": 14,
+   "sfx": "the bed drops out, room tone alone",
+   "means": "the held breath before the button",
+   "shows": "the laboratory threshold holding, with the powerhouse floor beyond it and nothing crossing",
+   "draw": {
+    "subject": "the dashed laboratory threshold",
+    "action": "holds absolutely still while the stencilled date dries on the concrete",
+    "emotion": "waiting",
+    "annotation": "NOT YET"
+   },
+   "choreo": {
+    "primary": "nothing crosses the line",
+    "reaction": "the stencil edge sets",
+    "ambient": "dust settling in the door shaft"
+   }
+  },
+  {
+   "i": 36,
+   "t": 115.76,
+   "vo": 15,
+   "sfx": "room tone alone, then two dry knuckle taps",
+   "means": "the button, and loop 1 pays",
+   "shows": "the plate exactly as in frame one, still blank, and the hand taps it once more",
+   "draw": {
+    "subject": "the rating plate, identical to frame one",
+    "action": "holds still and blank while a gloved knuckle taps the empty field twice",
+    "emotion": "waiting",
+    "annotation": "THE PLATE STILL WON'T SAY"
+   },
+   "choreo": {
+    "primary": "the hand taps the blank field",
+    "reaction": "the field stays blank",
+    "ambient": "the flywheel keeps turning behind, never stopping"
+   },
+   "open_loop_pay": true
+  },
+  {
+   "i": 37,
+   "t": 118.85,
+   "vo": 15,
+   "sfx": "one clean violet tone leaving, unresolved",
+   "means": "the last image, and the loopback",
+   "shows": "a violet pulse crossing the blank plate from the battery's side and leaving frame",
+   "draw": {
+    "subject": "a violet probe pulse",
+    "action": "crosses the blank plate from the battery's side and leaves the frame",
+    "emotion": "expectant",
+    "annotation": "FAIRBANKS IS FINALLY GOING TO ASK IT"
+   },
+   "choreo": {
+    "primary": "the pulse crosses and exits",
+    "reaction": "the blank field is briefly lit violet and then is not",
+    "ambient": "the room stays lit"
+   }
+  }
+ ],
+ "retime_note": "Beat, reveal, loop, throughline and audio-arc times were authored against the VO LENGTH ESTIMATE and have been remapped onto the DELIVERED vo_lines.json, piecewise per VO line. The board now describes the film that exists rather than the film that was planned, which is what makes evidence_coverage_check meaningful: it compares board beats against strip centres, and those are only the same clock once this remap has happened."
 }

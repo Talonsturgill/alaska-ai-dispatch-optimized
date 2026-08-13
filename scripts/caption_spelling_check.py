@@ -57,6 +57,21 @@ def main():
             if re.search(r"(?<![A-Za-z0-9])" + re.escape(wrong) + r"(?![A-Za-z0-9])", t, re.I):
                 findings.append((c.get("start"), wrong, right, t))
 
+    # ...AND ACROSS THE SEAM (2026-08-13). This checker read one cue at a time and therefore
+    # agreed with a transform that also read one cue at a time, so when the chunker split
+    # "N S F" into "...and N S" / "F says...", both of them saw a clean film and the phonetic
+    # respelling shipped. Two tools sharing a blind spot is not two checks. Read the pair.
+    for a, b in zip(caps, caps[1:]):
+        seam = (a.get("text", "").rstrip() + " " + b.get("text", "").lstrip()).strip()
+        for wrong, right in fixups.items():
+            if len(wrong.split()) < 2:
+                continue
+            if re.search(r"(?<![A-Za-z0-9])" + re.escape(wrong) + r"(?![A-Za-z0-9])", seam, re.I) \
+               and not re.search(r"(?<![A-Za-z0-9])" + re.escape(wrong) + r"(?![A-Za-z0-9])",
+                                 a.get("text", ""), re.I):
+                findings.append((a.get("start"), wrong, right,
+                                 f"SPLIT ACROSS CUES: {a.get('text','')!r} + {b.get('text','')!r}"))
+
     if not findings:
         print(f"caption_spelling_check: clean, {len(caps)} cues carry none of the "
               f"{len(fixups)} declared respellings")

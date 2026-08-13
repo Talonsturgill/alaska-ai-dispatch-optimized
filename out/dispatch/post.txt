@@ -1,25 +1,25 @@
-A federal notice just tripled one grant's award floor and retired the Alaska-only program it belonged to.
+A diesel generator's rating plate tells you how much power it can make. It says nothing about how it behaves.
 
-On July 28th the Administration for Native Americans retired SEDS Alaska. Two million dollars, three awards, and a floor of one hundred thousand. That's a sum one village administrator can actually run.
+That blank space is the problem. On August 10th the National Science Foundation put $324,995 behind it, at the University of Alaska Fairbanks, with Mariko Shirazi as principal investigator.
 
-The money didn't shrink. EAGLE, the successor, carries twenty four million dollars and thirty one awards. Alaska Native communities stay eligible. The agency said so in writing.
+Here is the mechanism. Put a battery next to that diesel, about the same size and electrically close. NSF's own abstract says the two can interact and produce sustained oscillations.
 
-EAGLE's floor is three hundred thousand. EAGLE is national. The smallest door tripled and the field went from Alaska to the whole country.
+On a big grid you would characterize each machine by itself, because they sit far apart. In a powerhouse they don't. And in the abstract's own words, accurate generator models are also usually unavailable.
 
-That same notice built the AI3 Action Institute. One award. Nationwide. A floor of two and a half million dollars. Applications close August 27th.
+So the standard fix needs a document that usually isn't there.
 
-The case for doing that is real. Alaska has two hundred twenty nine federally recognized tribes. The agency is folding four training and technical assistance contracts into a single cooperative agreement, which it says will streamline operations. One body doing that once is better than everyone doing it separately.
+The proposal is to stop asking for it. The battery's own grid forming inverter will put a question into the wire and learn how the diesel answers, then retune itself.
 
-The agency asked for comment and got thirty two submissions. It printed their objections in its own notice. Opportunity costs. Indigenous data sovereignty. Centralized program design.
+The aim NSF names is to catch these interactions on site, without the specialized studies and expertise that small utilities rarely have. The stated payoff is lower costs for communities paying some of the nation's highest electricity prices.
 
-The notice says the institute will complement, not replace, broader social and economic development efforts.
+The fair objection is that a measurement is only the moment you took it. Units cycle. Load swings. The weather turns. A model measured Tuesday can be wrong Thursday. The answer isn't a better measurement. It's that the instrument will already be on the wall.
 
-Alaska already did the opposite. A three hundred eighty thousand dollar grant at the University of Alaska Anchorage asked any Alaskan organization to name its own problem. Twelve wrote one down. Nome Joint Utilities System asked about thermal conductivity in warming permafrost. The Village of Alakanuk Tribe asked about infrastructure coordination. Four were funded. Eight went unfunded.
+Two caveats. The work starts on August 15th, so nothing has been measured yet, and the validation will happen in a laboratory test bed. A companion award sends $225,000 to Wisconsin-Madison.
 
-The institute isn't the mistake. Retiring the small Alaska door in the same notice is.
+And Alaska's utilities are ahead of the science. A one megawatt grid forming battery shipped to Saint Mary's, Alaska back in 2023.
 
-If an Alaska village leads the winning bid when applications close on August 27th, I'm wrong, and I'd like to be.
+One more thing. The award never says artificial intelligence. It says data driven.
 
-If somebody asked you to name the problem yourself, what would you put on the line?
+What would you need measured before you trusted a battery to hold up your grid on its own?
 
-#Alaska #ArtificialIntelligence #TribalSovereignty #RuralAlaska #PublicPolicy
+#Alaska #Microgrids #EnergyStorage #GridForming

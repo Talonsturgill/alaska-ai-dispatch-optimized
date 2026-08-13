@@ -136,7 +136,20 @@ TAIL = 1.0  # hold after the last word (1.5 -> 1.0 on 2026-08-12 to land in band
 # the same notice is", were spoken while S12 was still holding the Nome and Alakanuk grid.
 # All three judges measured the lag; one put it at six seconds, at the beat the whole piece
 # turns on. The card now lands on the line it belongs to.
-SCENE_START_LINE = [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 14, 15]
+# 2026-08-13 "The Machine Nobody Wrote Down": FOURTEEN shots (S1..S14 in
+# video-engine/src/Ep0813.tsx) onto 16 VO lines. Boundaries are anchored to VO LINE
+# STARTS so the picture can never drift from the words. S1 L0-L1 (the plate lands, the
+# hand taps it, the stamped kilowatt), S2 L2 (the blank fields as an absence + the form
+# with nothing to copy), S3 L3 (the award record + the two drums + the name plate),
+# S4 L4 (both machines at equal height + the ringing line), S5 L5 (the diesel switches
+# off + the fuel stops), S6 L6 (MAXIMUM PRESSURE, nothing broken and the money burns),
+# S7 L7 (the schematic slams open, the scale collapses, the empty drawer), S8 L8 (THE
+# CUTAWAY, probe out and back), S9 L9 (THE TEST, the pinned photograph held), S10 L10
+# (the strip accumulates, the value seats, the drawer shuts itself), S11 L11 (St Mary's,
+# the operators got there first), S12 L12 (the lab boundary + THE SIGNATURE PULL-BACK),
+# S13 L13 (the cover sheet slides off the unchanged methods list), S14 L14-L15 (the date
+# on the threshold, then the button back on the plate).
+SCENE_START_LINE = [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 
 
 def _apply_caption_fixups(caps):
@@ -155,12 +168,96 @@ def _apply_caption_fixups(caps):
     # (e.g. "A.I." ends in '.', so \b after it never matches and the fixup silently no-ops —
     # the 2026-07-21c panel caught "A.I." leaking on screen while NOAA/GAIA normalized fine).
     # Longest keys first so a key that is a prefix of another can't pre-empt it.
+    # A KEY SPLIT ACROSS TWO CUES IS INVISIBLE TO A PER-CUE SUBSTITUTION (2026-08-13).
+    # The chunker broke "and N S F says" into "...about the same size, and N S" / "F says the
+    # two can interact", so neither cue ever contained the declared key "N S F", the fixup
+    # no-opped, caption_spelling_check reported clean, and "N S" shipped on screen at the exact
+    # moment the film attributes its failure-mode claim to NSF. Multi-token keys are the whole
+    # point of this map (initialisms are always spelled out phonetically), so the boundary case
+    # is not an edge case, it is the main case. Pull a split key whole into the earlier cue
+    # first, then substitute.
+    multi = [k for k in fixups if len(k.split()) > 1]
+    for a, b in zip(caps, caps[1:]):
+        for key in sorted(multi, key=lambda k: -len(k)):
+            toks = key.split()
+            for cut in range(1, len(toks)):
+                head, tail = " ".join(toks[:cut]), " ".join(toks[cut:])
+                at = a.get("text", "").rstrip()
+                bt = b.get("text", "").lstrip()
+                if at.lower().endswith(head.lower()) and bt.lower().startswith(tail.lower()):
+                    a["text"] = at + " " + bt[:len(tail)]
+                    b["text"] = bt[len(tail):].lstrip()
+                    break
     for c in caps:
         t = c.get("text", "")
         for wrong, right in sorted(fixups.items(), key=lambda kv: -len(kv[0])):
             t = _re.sub(r"(?<![A-Za-z0-9])" + _re.escape(wrong) + r"(?![A-Za-z0-9])", right, t, flags=_re.IGNORECASE)
         c["text"] = t
-    return caps
+    return [c for c in caps if c.get("text", "").strip()]
+
+
+def _resplit_bad_breaks(caps, dangling, numbers, limit=68):
+    """Re-chunk a WHOLE VO line by sense when any break inside it is illegal.
+
+    THE KNOWN LIMIT THIS CLOSES (2026-08-13). _rebalance_cues merges a cue that ends on a
+    dangling or number word into the next, and abandons the merge when the result is too wide,
+    leaving the bad break exactly where it was. Its own comment admits it: "on this run
+    'obligated about six' / 'million dollars' still splits ... the real fix is chunking by
+    SENSE rather than by width". Two judges then found the same defect here, where
+    "just under three hundred" / "twenty five thousand dollars" cut a figure in half on screen.
+
+    A PAIRWISE fix cannot solve it either, and it is worth writing down why: the only legal
+    two-way break in that pair lands at 77 characters, and the caption renderer fits ~35 per
+    line over two lines and DROPS the rest, so a 77-character cue would silently lose words.
+    The unit that has to be re-chunked is the whole line.
+
+    So: if any break inside a segment is illegal, rebuild that segment's cues from its joined
+    text, greedily filling to `limit` and backing off to the last legal boundary. Time is
+    allocated across the new chunks in proportion to characters, inside the segment's existing
+    start and end, which are anchored to the VO line -- so the line stays in sync with the shot
+    even though the words inside it regroup. Segments with no illegal break are untouched."""
+    bad_tail = lambda w: w.lower().strip(",.;:") in dangling or w.lower().strip(",.;:") in numbers
+    out, i = [], 0
+    while i < len(caps):
+        j = i
+        while j + 1 < len(caps) and caps[j + 1].get("seg") == caps[i].get("seg"):
+            j += 1
+        grp = caps[i:j + 1]
+        needs = any(bad_tail(grp[k]["text"].split()[-1])
+                    for k in range(len(grp) - 1) if grp[k]["text"].split())
+        if not needs or len(grp) < 2:
+            out.extend(grp)
+            i = j + 1
+            continue
+        words = " ".join(c["text"].strip() for c in grp).split()
+        chunks, cur = [], []
+        for w in words:
+            trial = (" ".join(cur + [w])).strip()
+            if cur and len(trial) > limit:
+                back = len(cur)
+                while back > 1 and bad_tail(cur[back - 1]):
+                    back -= 1
+                chunks.append(" ".join(cur[:back]))
+                cur = cur[back:] + [w]
+            else:
+                cur.append(w)
+        if cur:
+            chunks.append(" ".join(cur))
+        # a trailing stub is worse than a slightly wide card; fold it back
+        if len(chunks) > 1 and len(chunks[-1]) <= 15:
+            chunks[-2] = chunks[-2] + " " + chunks[-1]
+            chunks.pop()
+        t0, t1 = grp[0]["start"], grp[-1]["end"]
+        total = max(1, sum(len(c) for c in chunks))
+        acc = t0
+        for n, text in enumerate(chunks):
+            share = (t1 - t0) * len(text) / total
+            out.append({"text": text, "start": round(acc, 3),
+                        "end": round(t1 if n == len(chunks) - 1 else acc + share, 3),
+                        "seg": grp[0].get("seg")})
+            acc += share
+        i = j + 1
+    return out
 
 
 def _rebalance_cues(caps):
@@ -198,6 +295,7 @@ def _rebalance_cues(caps):
     NUMBER_WORDS = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
                     "ten", "eleven", "twelve", "twenty", "thirty", "forty", "fifty", "sixty",
                     "seventy", "eighty", "ninety", "hundred", "thousand", "million", "billion"}
+    caps = _resplit_bad_breaks(caps, set(DANGLING), NUMBER_WORDS)
     out = []
     i = 0
     while i < len(caps):
@@ -298,6 +396,13 @@ def _source_labels(srcs):
     for e in srcs:
         url = (e.get("url") or "").strip()
         m = re.search(r"/awards/(\d+)\.json", url) or re.search(r"AWD_ID=(\d+)", url)
+        # AN AWARD CITED BY KEYWORD IS STILL AN AWARD (2026-08-13). The companion award's only
+        # stable URL is an aggregate keyword query, so it fell through to the `awards.json?keyword`
+        # skip below and its id never reached the card. The end card then read "NSF AWARDS
+        # 2626692" -- plural, one number -- while the companion award's $225,000 was on screen
+        # in the film. Two judges caught it. The id is in the source TITLE, so read it there.
+        if not m:
+            m = re.search(r"\bAwards?\s+(\d{7,})", e.get("title") or "")
         if m:
             if m.group(1) not in awards:
                 awards.append(m.group(1))
@@ -324,9 +429,9 @@ def _source_labels(srcs):
 
     labels = []
     if awards:
-        labels.append("NSF AWARDS " + ", ".join(awards))
+        labels.append(("NSF AWARDS " if len(awards) > 1 else "NSF AWARD ") + ", ".join(awards))
     if papers:
-        labels.append("PUBMED " + ", ".join(papers))
+        labels.append(("PUBMED " if len(papers) > 1 else "PUBMED ") + ", ".join(papers))
     labels.extend(other)
     return labels
 
@@ -341,6 +446,16 @@ def _credits():
         srcs = json.load(open(os.path.join(OUT, "sources.json"))).get("sources", [])
     except Exception:
         srcs = []
+    # THE LEDGER AND THE END CARD ARE TWO DIFFERENT OBLIGATIONS (2026-08-13, round 8).
+    # sources.json must account for EVERY claim in claims.json, so the accuracy record is
+    # auditable and a removal cannot pass silently -- three judges docked the film for a
+    # ledger that skipped s6 and carried no entry for c14 or c21. The END CARD has the
+    # opposite duty: it may only cite sources for claims the film actually MAKES, and a
+    # previous panel specifically credited it for not listing the two dropped ones. Those
+    # requirements only conflict if one file serves both, so entries carry `used_in_film`
+    # and the card reads the subset. Absent means true, so an entry cannot vanish from the
+    # card by omission.
+    srcs = [s for s in srcs if s.get("used_in_film", True)]
     labels = _source_labels(srcs)
     if not music:
         print("build_scenes: NO MUSIC CREDIT. out/dispatch/music_credit.json has no `credit`.")

@@ -33,19 +33,20 @@ instead of the synth ones, automatically.
 
 ## Real recordings (assets/sfx/real/ — win over synth, per kind)
 
-Harvested by scripts/fetch_sfx.py from kenney.nl audio packs — **CC0/public
-domain** (verified at kenney.nl/support: "public domain licensed (CC0)... free
-to use them, even in commercial projects"), so committing them here is clean.
-No attribution required (credit "Kenney" anyway — thanks!). Full provenance
-(source URL, pack, sha256, retrieval date) in `real/manifest.json`.
+30 file(s), regenerated from real/manifest.json, which carries the
+source URL, pack, sha256 and retrieval date for each one.
 
-- `clank_kenney_impactMetal_*.wav` — 6 takes — Impact Sounds pack
-- `thud_kenney_impactWood_*.wav` — 6 takes — Impact Sounds pack
-- `ding_kenney_impactBell_*.wav` — 5 takes — Impact Sounds pack
-- `paw_kenney_impactSoft_*.wav` — 5 takes — Impact Sounds pack
-- `pop_kenney_drop_*.wav` — 4 takes — Interface Sounds pack
-- `chime_kenney_confirmation_*.wav` — 4 takes — Interface Sounds pack
+Licence: CC0-1.0. Author: Kenney (kenney.nl).
+CC0 requires no attribution; credit is given anyway. Committing CC0 material
+here is clean.
+
+- `chime_*` — 4 take(s) — interface-sounds
+- `clank_*` — 6 take(s) — impact-sounds
+- `ding_*` — 5 take(s) — impact-sounds
+- `paw_*` — 5 take(s) — impact-sounds
+- `pop_*` — 4 take(s) — interface-sounds
+- `thud_*` — 6 take(s) — impact-sounds
 
 Do NOT add Sonniss/Pixabay/Mixkit files here (commercial use OK, but
-redistribution — i.e. committing — is prohibited). BBC RemArc is
+redistribution, which is what committing is, is prohibited). BBC RemArc is
 non-commercial: never use it. CC0-only in this directory.

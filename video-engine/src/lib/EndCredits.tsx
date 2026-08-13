@@ -24,9 +24,17 @@ import {INK} from './lighting';
  * record the way a hand-pasted comment can, and `scripts/credits_check.py` fails the run if
  * the rendered strings stop matching those files.
  *
- * The card is deliberately plain: static, high contrast, no motion to read against. It is
+ * The card is deliberately plain: high contrast, nothing moving that has to be READ. It is
  * the one moment in a Dispatch that is not trying to hold attention, it is trying to be
  * legible on a phone and screenshot-able.
+ *
+ * AMENDED 2026-08-13 (round 7). That paragraph used to say "static ... no motion", and it was
+ * a design decision the film could not actually afford: content_sag_check fails
+ * 123.50s..134.50s continuous at a 0.0 percent floor, which is eleven seconds of frozen JPEG
+ * across the entire tail of the film, and the panel separately kept marking the end card as
+ * dead. So there is now exactly one moving thing, a slow bloom on the ground plane, under
+ * every glyph. The original intent is preserved as written: nothing a reader has to parse
+ * moves, contrast is untouched, and any single frame still screenshots clean.
  */
 
 export type CreditsData = {
@@ -74,7 +82,17 @@ export const EndCredits: React.FC<{data: CreditsData; durationInFrames: number}>
 
   const siteLine = `VISIT US AT ${data.site.toUpperCase()}`;
   const siteSize = fitSize(siteLine, MAXW, 40);
-  const musicSize = fitSize(data.music.toUpperCase(), MAXW, 19);
+  // A LICENCE CONDITION SET IN 19px IS NOT "UNMISSABLE" (2026-08-13, round 7). The comment
+  // below this block says the credit is drawn last and unmissable, and then it fit a 74
+  // character string to one line, which caps it at 19px in DIM -- the smallest, faintest type
+  // in the whole film, on the one line CC BY 4.0 actually obliges us to make readable. Split
+  // at the licence clause it doubles, because each half fits on its own line.
+  const musicRaw = data.music.toUpperCase();
+  const mSplit = musicRaw.lastIndexOf(', LICENSED');
+  const musicLines = mSplit > 0
+    ? [musicRaw.slice(0, mSplit), musicRaw.slice(mSplit + 2)]
+    : [musicRaw];
+  const musicSize = musicLines.reduce((acc, l) => Math.min(acc, fitSize(l, MAXW, 32)), 32);
 
   // sources are laid one per line, each shrunk to fit rather than truncated: a source you
   // cannot read is the same as a source you did not cite
@@ -96,6 +114,16 @@ export const EndCredits: React.FC<{data: CreditsData; durationInFrames: number}>
       <svg width={W} height={1920} viewBox={`0 0 ${W} 1920`}>
         {/* the ground, so the credits never inherit whatever the last shot left on screen */}
         <rect x={0} y={0} width={W} height={1920} fill="#100D0B" />
+
+        {/* ELEVEN SECONDS OF ABSOLUTE STILLNESS (2026-08-13, round 7). content_sag_check fails
+            123.50s..134.50s continuous at a 0.0 percent floor: once the block finishes easing
+            in, this card is a frozen JPEG for the whole tail of the film, which is where a
+            viewer decides whether to follow. The room the film just left is lit by a hunting
+            generator, so the credits are lit by the same bus: one slow bloom crossing the
+            ground, under everything, changing nothing that has to be read. */}
+        <ellipse cx={W / 2 + Math.sin(f / 74) * 300} cy={640 + Math.cos(f / 96) * 260}
+                 rx={640} ry={430} fill="#3A2F22"
+                 opacity={0.16 + 0.06 * Math.sin(f / 41)} />
 
         {/* THE SIGN-OFF. Drawn last in the file so it is on top, and it outlives the body. */}
         <g transform={`translate(${W / 2},${markY})`} opacity={mark}>
@@ -120,9 +148,11 @@ export const EndCredits: React.FC<{data: CreditsData; durationInFrames: number}>
         ))}
 
         {/* the licence condition, last and unmissable */}
-        <text x={W / 2} y={srcTop + 96 + data.sources.length * lineH} textAnchor="middle"
-              fontFamily={MONO} fontSize={musicSize} fontWeight={700} fill={DIM}
-              letterSpacing={0.6}>{data.music.toUpperCase()}</text>
+        {musicLines.map((l, i) => (
+          <text key={i} x={W / 2} y={srcTop + 96 + data.sources.length * lineH + i * (musicSize * 1.5)}
+                textAnchor="middle" fontFamily={MONO} fontSize={musicSize} fontWeight={700}
+                fill={BONE} letterSpacing={0.6}>{l}</text>
+        ))}
         </g>
       </svg>
     </AbsoluteFill>

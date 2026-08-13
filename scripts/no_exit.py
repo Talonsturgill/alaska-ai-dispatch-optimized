@@ -11,10 +11,21 @@ run invented a new sentence:
   2026-07-31  "remaining defects are cosmetic, ship it"  -> closed by ship_gate.py
   2026-07-31  "I can't reach the bar, failed run"        -> closed by prompt text only
   2026-08-01  "I ran out of session, banked the work"    -> closed by prompt text only
+  2026-08-13  "below bar, zero blockers, low on context,
+               so I'll hand off and notify the status"   -> closed HERE, in code
 
 The two closed by code have not recurred. The two closed by prose have. That is the whole
 argument for this file: a sentence a run writes to itself is negotiable, and an exit code
 is not.
+
+2026-08-13 proved it again and cost the owner an intervention. The run had a graded cut at
+a 6.77 median with ZERO hard blockers on all three cards, ran low on context, and wrote
+itself a defensible-sounding ending: worklog, PR update, push notification, "not shipped,
+correct for a run under the bar." Every sentence in it was true. It was still an empty run,
+and the owner had to say "ship it" for a video to exist. The specific mechanism of the
+failure is worth naming, because it is not laziness and it will recur in this shape: the
+run reported STATUS when it owed a DECISION. A status report asks for nothing, so nothing
+happens. The fix is below, in the refusal text, and it is the owner_release path.
 
 WHAT IT DOES, AND THE ONE THING IT MUST NEVER DO
 ------------------------------------------------
@@ -299,7 +310,27 @@ def panel_state():
         med = sorted(js)[len(js) // 2] if js else None
     if med is None:
         return True, False, None, bar, "a panel verdict exists but records no median"
-    return True, med >= bar, med, bar, f"median {med} against a {bar} bar"
+    # HONOUR THE OWNER RELEASE, OR THIS GATE CALLS A LEGITIMATE SHIP A FAILURE (2026-08-13).
+    # ship_gate already reads config/owner_release.json and passes a released cut. This one did
+    # not, so on the very run where the owner said "ship it" it printed BYTES EXIST AND THE PANEL
+    # FAILED THEM over a film that was uploaded, drafted and merged. A gate that is wrong about a
+    # good outcome is how a run learns to stop reading it, which is the exact failure the
+    # DELIVERABLES list already cost this file once. The release is read here for the SAME run
+    # date and never invents one: no file, wrong date, or missing field means no release.
+    rel_floor, rel_note = None, ""
+    try:
+        relp = ROOT / "config" / "owner_release.json"
+        if relp.exists():
+            r = json.loads(relp.read_text())
+            stamp = json.loads(STAMP.read_text()).get("run_date") if STAMP.exists() else None
+            same_day = (not stamp) or str(r.get("run_date")) == str(stamp)
+            if same_day and all(r.get(k) for k in ("run_date", "instruction", "floor")):
+                rel_floor = float(r["floor"])
+                rel_note = f", released by the owner to {rel_floor} for {r['run_date']}"
+    except Exception:
+        rel_floor = None
+    effective = rel_floor if (rel_floor is not None and rel_floor < bar) else bar
+    return True, med >= effective, med, bar, f"median {med} against a {bar} bar{rel_note}"
 
 def cmd_status() -> int:
     delivered, lines = video_state()
@@ -334,6 +365,22 @@ def cmd_check(blocker: str) -> int:
         print("  Renders are minutes. Measure one before you reason about how many are left,", file=sys.stderr)
         print("  and never assert a number you did not measure. 'More rounds than the run", file=sys.stderr)
         print("  had' is not a measurement, it is the out-of-runway hatch in new clothes.", file=sys.stderr)
+        print("", file=sys.stderr)
+        # 2026-08-13: the excuse of the day was "median below bar, zero hard blockers, and I am
+        # low on context, so I will write a WORKLOG, update the PR and notify the owner of the
+        # status." Every clause true, and the sum of it is still an empty run. The owner had to
+        # come back and say ship it. What made it possible is that the run never told them a
+        # DECISION was available -- it sent a status report, which asks for nothing, instead of
+        # the one question only the owner can answer. There is a designed path for this and the
+        # run did not offer it, so the hatch is named here and the path is printed.
+        print("  IF YOU GENUINELY CANNOT CONTINUE (context or wall-clock, never quality),", file=sys.stderr)
+        print("  YOU STILL MAY NOT DECLARE THE RUN OVER. A handoff is not an outcome and a", file=sys.stderr)
+        print("  status notification is not a decision. Ask the owner the only question they", file=sys.stderr)
+        print("  can answer -- SHIP AT THIS MEDIAN, OR KEEP GOING -- and say what the cut is:", file=sys.stderr)
+        print("  its median, its hard-blocker count, and what is measurably fixed.", file=sys.stderr)
+        print("  If they release it, config/owner_release.json carries {run_date, floor,", file=sys.stderr)
+        print("  instruction verbatim} for that ONE run and ship_gate honours it without", file=sys.stderr)
+        print("  waiving any other check. That file is the exit. A worklog is not.", file=sys.stderr)
         if blocker:
             print(f"\n  you claimed a hard blocker: {blocker}", file=sys.stderr)
             print("  quality is never a blocker and time is never a blocker.", file=sys.stderr)

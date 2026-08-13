@@ -511,7 +511,8 @@ enforced in code by DEDUPE_WINDOW_DAYS in scripts/dedupe.py, so `list` and `chec
 
 ### THE BAR IS READ, NEVER QUOTED (2026-08-06, and it cost this run five panel rounds)
 
-This line used to say "ship 9.0". The rubric has said 7.5 since 2026-07-31 and had already
+This line used to say "ship 9.0". The rubric said 7.5 from 2026-07-31 and says 7.0 since
+2026-08-13, both the owner's calls, and it had already
 recalibrated OFF 9.0 on 2026-07-21, with the reason written out: 9.0 was implicitly calibrated
 against a painterly fidelity this brand deliberately does not use, so the ceiling on every run
 became the house style itself and the panel's weakest axis was "the flat-vector characters" for

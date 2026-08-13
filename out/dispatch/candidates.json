@@ -1,0 +1,196 @@
+{
+  "run_date": "2026-08-13",
+  "window_reported_by_gate": 10,
+  "window_note": "story_gate reported WINDOW 10 (last shipped dispatch 2026-08-12, 1 day ago). Researchers were briefed to prefer 2026-08-01 onward and to reach back to 2026-07-14 only for material the Alaska public has never been shown. The locked story is dated 2026-08-10, three days old, well inside the window.",
+  "search_budget": {
+    "round_one_researchers": 4,
+    "caps_briefed": "20 WebSearch each (15 for the outlet-sweep beat), WebFetch uncapped and preferred",
+    "actually_spent": "20 + 19 + 18 + 14 = 71 of the shared session pool",
+    "exhausted": false,
+    "note": "One researcher (energy/defense) reached its own 20-call cap and said so. The pool was NOT exhausted and no agent reported a budget-exhausted result. Round two was therefore available and was not needed: two independent researchers converged on the same locked story from different beats, which is the strongest possible signal that round one was sufficient. Every candidate below rests on a page an agent actually opened."
+  },
+  "rungs": [
+    {
+      "rung": "in_window_sweep",
+      "attempted": true,
+      "note": "4 parallel researchers: (a) gov/.edu science + federal award and primary-source mining, (b) energy/grid/mining/transport/defense/aviation/UAS, (c) Alaska Native-led and rural tech, fisheries, health, education, (d) a WebFetch-heavy wildcard sweep of what is breaking right now."
+    },
+    {
+      "rung": "outlet_index_sweep",
+      "attempted": true,
+      "note": "20+ Alaska outlet indexes read directly by WebFetch, which costs no search budget: adn.com, alaskapublic.org, ktoo.org, newsminer.com, alaskasnewssource.com, webcenterfairbanks.com, juneauempire.com, alaskalandmine.com, arctictoday.com, highnorthnews.com, kyuk.org, kucb.org, kfsk.org, mustreadalaska.com, peninsulaclarion.com, homernews.com, nomenugget.com, alaska-native-news.com, uaf.edu/news, thealaskastory.com, knba.org. RESULT: adn.com, Alaska's News Source, News-Miner, KUCB, KFSK, Nome Nugget, Homer News, Peninsula Clarion and Must Read Alaska ran ZERO AI/robotics/ML items in the window. That is a measured negative from indexes actually read, NOT an inference from a thin search."
+    },
+    {
+      "rung": "primary_source_mining",
+      "attempted": true,
+      "found_the_story": true,
+      "note": "THE RUNG THAT PRODUCED THE STORY, for the fourth time in this channel's history. The NSF Award API returned the complete set of 18 awards to Alaska institutions between 07-14 and 08-13. The locked story is one of them, dated 2026-08-10, and no outlet on earth has written a word about it, including the awardee's own newsroom. Also swept: Federal Register API (zero in-window Alaska documents pairing Alaska with ML or autonomy), arXiv, Zenodo, DOE/science.osti.gov, NASA, USGS, NOAA. NIH RePORTER (405, POST-only) and SBIR.gov (429) could not be swept and are recorded as unswept rather than empty."
+    },
+    {
+      "rung": "widened_window",
+      "attempted": true,
+      "note": "Researchers were authorised back to 2026-07-14 and returned out-of-window material (the Microsoft/ADF&G caribou OWL model, June 11th; the International Journal of Circumpolar Health Alaska Native health AI paper, May 23rd). Neither was needed: the locked story is three days old. Both are carried forward as leads."
+    },
+    {
+      "rung": "carried_leads",
+      "attempted": false,
+      "note": "Not reached. The ladder terminated at primary_source_mining with a live, in-window, unreported story."
+    },
+    {
+      "rung": "follow_up",
+      "attempted": false,
+      "note": "Not reached. Available if needed: UAF's August 11th announcement of the DOE AURORA-AI award is a genuine new development on the 2026-07-29 dispatch, but that subject is inside the 30-day dedupe window and running it would show the audience the same story twice."
+    },
+    {
+      "rung": "pegged_explainer",
+      "attempted": false,
+      "note": "The floor, not needed."
+    }
+  ],
+  "locked_story": {
+    "id": "ask-the-machine",
+    "found_at_rung": "primary_source_mining",
+    "headline": "THE MACHINE WITH NO DATASHEET",
+    "one_line": "On August 10th the National Science Foundation awarded the University of Alaska Fairbanks $324,995 for a fix to a problem that bites when a village puts a battery next to its diesel generator: two machines of about the same size, electrically close together, can start fighting each other and oscillate. The reason the standard remedies fail here is that nobody has an accurate model of the generator actually sitting in that powerhouse. So the proposal is to let the battery's own inverter put a question into the grid and listen to what comes back, learning the machine it has to live with. The award never once uses the word AI.",
+    "story_question": "How do you keep two machines from fighting when you have no idea how one of them behaves?",
+    "why_this_one": [
+      "IN WINDOW: awarded 2026-08-10, three days old.",
+      "GENUINELY UNREPORTED: no outlet has covered it, and UAF's own news page carried a different, AI-branded grid award on August 11th while never mentioning this one. The 'unreported' claim is checkable and was checked against the UAF news index directly.",
+      "PRIMARY SOURCED: the NSF award record is the system of record, with award ID, dollar figure, dates, PI, program and full abstract. Nothing rests on a press release.",
+      "CONVERGENT: two researchers on two different beats found it independently and both recommended it first.",
+      "HONEST AI ANGLE: the mechanism is data-driven system identification and adaptive control, which is real machine learning and is the unglamorous kind that keeps lights on. The abstract calls it data-driven and never calls it AI, and that restraint is itself the most interesting fact in the story.",
+      "ALASKA-FIRST AND AI-FIRST: the stated payoff is lower energy costs and greater resilience for communities facing some of the nation's highest electricity prices. This is a story about Alaska possibly winning something.",
+      "DRAWABLE: the failure mode is two machines the same size, too close, ringing against each other. The fix is one of them asking a question out loud and listening. Both are pictures, not slides."
+    ],
+    "primary_sources": [
+      "https://api.nsf.gov/services/v1/awards/2626692.json",
+      "https://api.nsf.gov/services/v1/awards.json?awardeeStateCode=AK&dateStart=07/14/2026&dateEnd=08/13/2026",
+      "https://www.uaf.edu/acep/about/our-team/mariko-shirazi.php",
+      "https://www.uaf.edu/news/"
+    ],
+    "dedupe": {
+      "generic_token_hit": "A first check on a broad entity set returned DUP against the 2026-07-29 dispatch on the shared tokens 'grid' and 'microgrid'.",
+      "honest_retest": "FRESH on the distinctive set (mariko shirazi, nsf 2626692, grid-forming inverter self-commissioning, battery storage stability study, village diesel genset interaction, in-field control tuning, 500 kw test bed).",
+      "viewers_question": "Would someone who watched the 07-29 dispatch feel they are being shown the same story again? No. That film was about a one-line entry in a DOE award list and why Alaska's islanded grids make it knowable. This film is about a specific physical instability between two specific machines, and about the fact that the generator in the powerhouse has no accurate model. Different problem, different mechanism, different argument.",
+      "guard_the_run_must_honour": "The film must NOT be framed as 'another unreported UAF grid award', because that IS the 07-29 frame. It is framed on the oscillation and the missing datasheet."
+    },
+    "stance_intent": "Rotation says look away from the recent mixed/curious stack. The facts here support genuine interest and a real possible win, with a named limit: this is a research award, no village has it, and the validation is a laboratory test bed. Final valence is the angle room's call, not predetermined here.",
+    "verified_by_orchestrator": "Independent adversarial fact-check dispatched before the pick was locked; the safe set is whatever that check returns, not what the researchers reported."
+  },
+  "candidates": [
+    {
+      "id": "ask-the-machine",
+      "status": "LOCKED",
+      "headline": "NSF 2626692: the battery inverter probes the grid to learn the diesel generator nobody has a model for",
+      "date": "2026-08-10",
+      "unreported": true,
+      "confidence": 0.93
+    },
+    {
+      "id": "koniag-ice-call-center",
+      "status": "REJECTED",
+      "headline": "Koniag Government Services wins a $63M ICE contract to run a 24-hour national law-enforcement call center",
+      "date": "2026-08-12",
+      "why_rejected": "The AI content is an absence: the contract documents name database cross-checks, 'targeting focus and material', and a clause asking the vendor to identify 'emerging technologies'. No AI is named anywhere. That makes it a serious immigration-enforcement and Alaska Native corporation governance story with a thin technology spine, and this channel would be reaching to claim the AI. The cultural rules also bind hard here (an ANCSA corporation is not a tribal government and speaks for neither its shareholders' opinions nor Alaska Native people), and the contract record itself was one verification step away because usaspending.gov is JS-rendered. Genuinely newsworthy, wrong outlet, and it deserves better than an AI framing bolted on.",
+      "carry_forward": true
+    },
+    {
+      "id": "edna-fisheries-bill",
+      "status": "RUNNER-UP",
+      "headline": "Murkowski and Whitehouse introduce the Fisheries Science Modernization Act: eDNA stock assessment, and no algorithm in it",
+      "date": "2026-08-06",
+      "why_not": "The strongest clean alternative and a genuinely good 'automation without an algorithm' story, well sourced across a senator's own release plus two independent Alaska outlets. It loses to the locked story on two counts: it was already covered by three Alaska outlets so the audience has seen it, and its AI content is entirely negative space. Carried forward as a strong future peg once a bill number is confirmed on congress.gov.",
+      "carry_forward": true
+    },
+    {
+      "id": "caribou-owl-model",
+      "status": "CARRIED",
+      "headline": "Microsoft AI for Good and an ADF&G biologist publish a caribou-counting model that hit within 3.1 percent, plus 17.3 GB of open Alaska training data",
+      "date": "2026-06-11",
+      "why_not": "Out of window by two months and, more decisively, adfg.alaska.gov returned 503 on every attempt today, so there is no department-side confirmation of how or whether the model is used operationally. Excellent television and a real Alaska story; it deserves a run where the verification gap can actually be closed.",
+      "carry_forward": true
+    },
+    {
+      "id": "ak-native-health-ai-symposium",
+      "status": "CARRIED",
+      "headline": "Peer-reviewed report from the 2025 AI in Alaska Native Health Care Systems symposium: an ambient scribe already deployed, a sepsis model untested on local data, and data sovereignty as the governing principle",
+      "date": "2026-05-23",
+      "why_not": "Out of window by nearly three months. Substantively the most interesting AI item either researcher found, unreported by any Alaska general-interest outlet, and it carries the sharpest AI-governance idea in the state. It needs a news peg, not a slot.",
+      "carry_forward": true
+    },
+    {
+      "id": "aurora-ai-announcement",
+      "status": "EXCLUDED",
+      "headline": "UAF announces a $725,000 DOE Genesis Mission award for AURORA-AI with Cordova Electric Cooperative",
+      "date": "2026-08-11",
+      "why_rejected": "Inside the 30-day dedupe window. The 2026-07-29 dispatch already told this story from the DOE award list before any announcement existed. Two researchers recommended it without knowing it was excluded, which is a good sign about its news value and does not change the ruling. Running it would show the audience the same subject twice in 15 days.",
+      "carry_forward": false
+    },
+    {
+      "id": "nsf-engine-ai-pillar",
+      "status": "EXCLUDED",
+      "headline": "The $15M NSF Critical Mineral Accelerator Engine's first technical pillar is AI-based mineral discovery, with NANA Regional Corp a named partner",
+      "date": "2026-07-14",
+      "why_rejected": "The Engine was the 2026-07-17 dispatch. The AI pillar and the NANA partnership are genuinely underreported details, but the subject is inside the window.",
+      "carry_forward": true
+    },
+    {
+      "id": "fire-wui",
+      "status": "EXCLUDED",
+      "headline": "NSF 2536745, $1,588,147 to UAF for a machine-learning prescribed-burn window toolkit",
+      "date": "2026-07-31",
+      "why_rejected": "Shipped as the 2026-08-03 dispatch. Surfaced independently by two researchers this run, both unaware.",
+      "carry_forward": false
+    },
+    {
+      "id": "gaia-digital-twin",
+      "status": "EXCLUDED",
+      "headline": "NSF 2608510, $1,772,170 to UAF for real-time landslide digital twins",
+      "date": "2026-07-10",
+      "why_rejected": "Shipped as the 2026-07-25 dispatch, which named this award and its dollar figure directly.",
+      "carry_forward": false
+    },
+    {
+      "id": "alaska-ai-policy-vacuum",
+      "status": "REJECTED",
+      "headline": "An ADN op-ed counts Alaska's AI law and finds almost none, days before a primary with manipulated candidate imagery circulating",
+      "date": "2026-08-10",
+      "why_rejected": "The policy half is checkable but the piece is an op-ed whose legislative claims could not be verified because akleg.gov returns 403 to automated requests. The manipulated-image incident is single-sourced to an openly partisan outlet reporting an attack on a candidate of its own alignment, and the reporting itself can't establish whether a model or a photo editor made it. Also adjacent to the excluded governor-race item.",
+      "carry_forward": true
+    },
+    {
+      "id": "ai-money-in-the-primary",
+      "status": "REJECTED",
+      "headline": "AI-company employee money in Alaska's primary, at two different totals",
+      "date": "2026-08-12",
+      "why_rejected": "Two partisan outlets report the same six donors at $327,000 and $372,000, a $45,000 disagreement neither resolves, and FEC browse pages are JS-rendered so neither figure could be verified today. Adjacent to the excluded governor-race dispatch. Separately, the donors work for the company that makes the model running this pipeline, and this channel should not be the one narrating that without a human in the loop.",
+      "carry_forward": false
+    },
+    {
+      "id": "juneau-outburst-flood",
+      "status": "REJECTED",
+      "headline": "Juneau urges 1,900 homes to evacuate on a hydrologic forecast during the 2026 Suicide Basin outburst",
+      "date": "2026-08-12",
+      "why_rejected": "A live emergency with no AI in it, and thematically adjacent to the excluded landslide dispatch. The honest 'this is what a high-stakes prediction looks like when it is not AI' angle is real and worth keeping. CARRIED WARNING: the widely circulated 16.65 ft crest at 7:15 a.m. on August 13th is from 2025, not 2026, because both floods crest on the same calendar day and search summaries conflate them. Do not publish a 2026 crest figure without a fresh primary reading.",
+      "carry_forward": true
+    },
+    {
+      "id": "arctic-report-card",
+      "status": "REJECTED",
+      "headline": "NOAA withdraws support for the Arctic Report Card, which a UAF climate specialist co-edits",
+      "date": "2026-08-12",
+      "why_rejected": "No model, no algorithm, no automation. The 'the data keeps flowing and the meaning stops' point is a good essay and not a Dispatch.",
+      "carry_forward": true
+    }
+  ],
+  "blocked_sources_this_run": [
+    {"url": "https://adfg.alaska.gov", "status": "503 on every attempt", "impact": "Cost the caribou candidate its verification. Not evidence of no story."},
+    {"url": "https://acuasi.alaska.edu/news", "status": "503", "impact": "Alaska's autonomy program of record went entirely unswept this run."},
+    {"url": "https://dot.alaska.gov", "status": "503", "impact": "DOT&PF robotics, avalanche and UAS programs unswept."},
+    {"url": "https://alaskabeacon.com", "status": "403", "impact": "Read through syndication partners instead."},
+    {"url": "https://www.gi.alaska.edu", "status": "503", "impact": "Geophysical Institute unread."},
+    {"url": "https://reporter.nih.gov", "status": "405, POST-only API", "impact": "NIH awards unswept."},
+    {"url": "https://api.www.sbir.gov", "status": "429", "impact": "SBIR/STTR awards to Alaska COMPANIES unswept; this is the one federal surface that catches non-university Alaska AI work."},
+    {"url": "https://asf.alaska.edu/notices", "status": "301 to earthdata.nasa.gov, which 403s", "impact": "The documented workaround in config/sources.yaml is stale and no longer works."}
+  ]
+}

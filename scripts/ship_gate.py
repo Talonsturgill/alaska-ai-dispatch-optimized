@@ -383,21 +383,42 @@ def check_beats_delivered():
     as static, so this is not the explanation for that score. It is here as a regression guard
     against a build that quietly stops drawing what the board promised, which is a failure that
     contact sheets hide and that cost a full review cycle to even suspect.
+
+    LIVE, AND ADVISORY ON PURPOSE (2026-08-13). Until this run the body opened with a glob
+    of out/dispatch/frames/frame_*.png, a directory the pipeline has never produced -- it
+    renders straight to mp4 -- so this returned silently on every run since it was written
+    and never once looked at a frame. It was dead code wearing the costume of a gate.
+
+    It now samples the DELIVERED CUT (beat_delivery.analyze_cut) with the EPISODE'S OWN
+    CAPTION_TOP rather than beat_delivery's stale 1420, which on a film using 1336 was
+    counting burned captions as beat motion and made the check too lenient.
+
+    It does NOT fail the run yet, and that is the whole point of this step. The check ends
+    in fail(problems), so making it blocking in the same change that makes it live would arm
+    a hard gate nobody has ever seen pass, on the critical path, mid-delivery. Promote it to
+    a hard fail only after it has been observed passing a good film. Anything it reports here
+    is a note for the fix loop, not a refusal.
     """
-    import glob as _g
-    if not _g.glob(str(OUT / "frames" / "frame_*.png")):
-        return
     try:
         sys.path.insert(0, str(ROOT / "scripts"))
         import beat_delivery as _bd
-        r = _bd.analyze(str(OUT / "frames"), str(OUT / "storyboard.json"))
-        print(f"  beat delivery: {r['delivered']}/{r['beats']} beats draw a visible event")
-        if r["problems"]:
-            fail(r["problems"])
-    except SystemExit:
-        raise
+        import glob as _g
+        frames = _g.glob(str(OUT / "frames" / "frame_*.png"))
+        if frames:
+            r = _bd.analyze(str(OUT / "frames"), str(OUT / "storyboard.json"),
+                            caption_top=_bd.episode_caption_top())
+        else:
+            r = _bd.analyze_cut(str(OUT / "dispatch_master.mp4"),
+                                str(OUT / "storyboard.json"))
+        print(f"  beat delivery (ADVISORY): {r['delivered']}/{r['beats']} beats draw a "
+              f"visible event ({r['share']*100:.0f}%), caption band from "
+              f"y={_bd.episode_caption_top()}")
+        for p in r["problems"]:
+            print(f"    advisory: {p}")
+    except SystemExit as e:
+        print(f"  beat delivery (ADVISORY): could not run ({e}); beats not delivery-checked")
     except Exception as e:
-        print(f"  beat delivery: could not run ({e}); beats not delivery-checked")
+        print(f"  beat delivery (ADVISORY): could not run ({e}); beats not delivery-checked")
 
 
 def cmd_check(a):

@@ -189,6 +189,58 @@ def _verify(y, text):
     return wer, heard
 
 
+MIN_DWELL = 0.60    # a cue the eye cannot land on is not a caption
+
+
+def _repair_cues(cues):
+    """Make a cue list monotonic and readable WITHOUT re-timing what the aligner got right.
+
+    THE BUG THIS FIXES (2026-08-13). Aligning a single re-cut line is a much weaker problem
+    than aligning the whole passage: there is no surrounding context to anchor on, and on a
+    long spoken numeral the aligner can collapse. On this run it returned, for one line,
+
+        'The Fairbanks award is just under'   96.28..98.37
+        'three hundred twenty five thousand'  98.20..98.40     <- starts BEFORE the previous
+        'dollars, and the test bed is'        98.43..102.13       cue ends, and lasts 0.2s
+
+    A 0.2s cue is a flash, and an overlap makes the next tool in the chain
+    (caption_rechunk.py) assert and stop. The line's OUTER span was right and its interior
+    was nonsense, so throwing the alignment away would trade correct sync for made-up sync.
+
+    This repairs only the runs of cues the aligner contradicted itself on. It walks the list,
+    collects any maximal run whose boundaries are non-monotonic or below MIN_DWELL, holds the
+    run's outer start and end fixed (those came from cues the aligner agreed with), and
+    redistributes the interior boundaries across the run in proportion to characters. Cues
+    outside such a run are returned untouched, to the millisecond. Text is never altered."""
+    if not cues:
+        return cues
+    c = [dict(x) for x in cues]
+    bad = [i for i in range(len(c))
+           if c[i]["end"] - c[i]["start"] < MIN_DWELL
+           or (i + 1 < len(c) and c[i + 1]["start"] < c[i]["end"] - 1e-6)]
+    if not bad:
+        return c
+    runs, cur = [], [bad[0]]
+    for i in bad[1:]:
+        if i <= cur[-1] + 1:
+            cur.append(i)
+        else:
+            runs.append(cur); cur = [i]
+    runs.append(cur)
+    for run in runs:
+        lo, hi = min(run), min(len(c) - 1, max(run) + 1)   # absorb the neighbour we overlap
+        t0, t1 = c[lo]["start"], c[hi]["end"]
+        w = [max(1, len(c[i]["text"])) for i in range(lo, hi + 1)]
+        tot = float(sum(w))
+        t = t0
+        for k, i in enumerate(range(lo, hi + 1)):
+            span = (t1 - t0) * w[k] / tot
+            c[i]["start"], c[i]["end"] = round(t, 3), round(t + span, 3)
+            t += span
+        c[hi]["end"] = round(t1, 3)
+    return c
+
+
 def _recaption(y, text, offset, seg):
     """Word timings for the patched line only, shifted into the film's clock."""
     import vo_synth_gemini as vs
@@ -200,6 +252,10 @@ def _recaption(y, text, offset, seg):
     for c in cues:
         out.append({"text": c["text"], "start": round(c["start"] + offset, 3),
                     "end": round(c["end"] + offset, 3), "seg": seg})
+    out = _repair_cues(out)
+    for a, b in zip(out, out[1:]):
+        assert b["start"] >= a["end"] - 1e-6, "cue repair left an overlap"
+    assert all(x["end"] - x["start"] >= MIN_DWELL - 1e-6 for x in out), "cue repair left a flash"
     return out
 
 
