@@ -258,7 +258,14 @@ def main():
                 os.remove(q)
         if straddled is not None:
             # keep the shot the CENTRE belongs to, and sit clear of the cut by one frame
-            t0 = straddled + 1 / 30.0 if centre >= straddled else max(0.0, straddled - WIN - 1 / 30.0)
+            # EPSILON, and it is not a nicety (2026-08-13, round 5). A beat whose centre IS the
+            # cut -- every strip with off=0.0 -- compares equal, and float representation decided
+            # which way it fell. On this run centre and cut were both 115.76 and it slid BACKWARD,
+            # so the button strip showed only the OUTGOING shot and a judge correctly reported
+            # "the plate has not returned" for a beat where the plate returns exactly on its line.
+            # A tie must resolve FORWARD, into the shot the beat is about.
+            t0 = (straddled + 1 / 30.0 if centre >= straddled - 1e-6
+                  else max(0.0, straddled - WIN - 1 / 30.0))
             print(f"  filmstrip {name}: window straddled the cut at {straddled:.2f}s, "
                   f"slid to {t0:.2f}s so the measurement is within-shot")
         subprocess.run(["ffmpeg", "-y", "-ss", f"{t0:.3f}", "-i", a.video, "-frames:v", "8",
