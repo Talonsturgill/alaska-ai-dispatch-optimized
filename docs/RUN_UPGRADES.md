@@ -2663,5 +2663,14 @@ models plate-on-plate; this was a plate under ART. Only looking finds those, whi
 - `quality_gate.py` output and a palette-recency ledger are not in the evidence pack, so two
   rubric hard blockers are unfalsifiable from what a judge is given. Judge 2, three rounds
   running: "a gate no judge can see is not a check and balance."
+- **`upload_video.py` diagnosis is buried when it falls through.** On this run the GitHub host
+  correctly refused the 148MB master and the script printed `(fell through: github: file >99MB
+  exceeds GitHub's push limit)`, which is exactly the right message. It then tried tmpfiles,
+  which returned a Cloudflare error page, and something in that path emitted the raw HTML body
+  into the combined output. Reading the log by its tail therefore showed markup instead of the
+  one line that mattered, and cost about twenty minutes of misdiagnosis. Its own error strings
+  are already capped at 200-300 chars, so the leak is elsewhere in the fallback. Find it and cap
+  it, or write the fell-through reason to a file the caller can read directly. Lesson meanwhile:
+  when an upload fails, grep the log for `fell through`, never tail it.
 - `config/panel_anchors.md` still unwritten. Artifacts are preserved at `config/anchors/r9-*.jpg`
   and there are now two rounds of agreed cards to anchor against.
