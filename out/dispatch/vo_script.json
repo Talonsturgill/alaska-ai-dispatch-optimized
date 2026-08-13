@@ -1,32 +1,123 @@
 {
-  "run_date": "2026-08-13",
-  "title": "THE MACHINE NOBODY WROTE DOWN",
-  "note": "NSF award 2626692, made 2026-08-10 to UAF, PI Mariko Shirazi. Every verb about the award's work is FUTURE TENSE, because the period of performance begins 2026-08-15, two days after this publishes. The film says data-driven and never says AI. Predicted runtime 126.5s by scripts/vo_length_estimate.py (259 words, 20 sentences), inside the 112 to 130 band.",
-  "caption_fixups": {
-    "N S F": "NSF",
-    "U A F": "UAF",
-    "twenty twenty three": "2023",
-    "August 10th": "August 10th",
-    "August 15th": "August 15th"
+ "run_date": "2026-08-13",
+ "title": "THE MACHINE NOBODY WROTE DOWN",
+ "note": "NSF award 2626692, made 2026-08-10 to UAF, PI Mariko Shirazi. Every verb about the award's work is FUTURE TENSE (period of performance begins 2026-08-15). The film says data-driven and never says AI. Gate 0E passed on round 3 (ship:true) after two rejections: round 1 killed the stake leap and the unanchored money referent, round 2 killed the surviving partitive and caught that nothing in the script established that anything LEARNS, which made the artificial-intelligence beat rebut a label the film had never earned. All three are fixed in this text. Spoken figure rounds $324,995 to three hundred twenty five thousand dollars; the exact figure is on screen.",
+ "caption_fixups": {
+  "N S F": "NSF",
+  "twenty twenty three": "2023"
+ },
+ "lines": [
+  {
+   "idx": 0,
+   "text": "A rating plate on a village diesel generator.",
+   "claims": []
   },
-  "lines": [
-    {"idx": 0, "text": "A rating plate on a village diesel generator.", "claims": []},
-    {"idx": 1, "text": "The top number is stamped deep, the power this machine can make.", "claims": []},
-    {"idx": 2, "text": "Everything under it is blank, and that is how the machine behaves, which nobody ever wrote down.", "claims": ["c8"]},
-    {"idx": 3, "text": "On August 10th, the National Science Foundation put money behind that blank space.", "claims": ["c1"]},
-    {"idx": 4, "text": "Set a battery beside that diesel, about the same size, and N S F says the two can interact and produce sustained oscillations.", "claims": ["c6", "c7"]},
-    {"idx": 5, "text": "On a big grid you study each machine alone, because they sit far apart.", "claims": ["c8"]},
-    {"idx": 6, "text": "In a powerhouse they don't, and accurate generator models are usually unavailable.", "claims": ["c8"]},
-    {"idx": 7, "text": "And if the diesel never gets to shut off, the fuel saving that justified the battery never arrives.", "claims": ["c15"]},
-    {"idx": 8, "text": "So the battery's own inverter will put a question into the wire and read how the diesel answers.", "claims": ["c10"]},
-    {"idx": 9, "text": "But a measurement is only the moment you took it.", "claims": []},
-    {"idx": 10, "text": "A photograph of a running engine is out of date before it is pinned up.", "claims": []},
-    {"idx": 11, "text": "You can take a new one any hour though, on hardware already bolted to the wall.", "claims": ["c9", "c10"]},
-    {"idx": 12, "text": "And Alaska's utilities are ahead of this, because a one megawatt battery shipped to Saint Mary's in twenty twenty three.", "claims": ["c17"]},
-    {"idx": 13, "text": "A study gets bought again at every site, and a setting copies for nothing.", "claims": ["c9", "c13"]},
-    {"idx": 14, "text": "That is only U A F's share, and the test bed is a lab.", "claims": ["c2", "c3", "c11"]},
-    {"idx": 15, "text": "The award never says artificial intelligence. It says data driven.", "claims": ["c16"]},
-    {"idx": 16, "text": "The work starts August 15th, two days from now.", "claims": ["c4"]},
-    {"idx": 17, "text": "The plate still won't say how that machine behaves. Somebody is finally going to ask it.", "claims": ["c8", "c10"]}
-  ]
+  {
+   "idx": 1,
+   "text": "The top number is stamped deep, the power this machine can make.",
+   "claims": []
+  },
+  {
+   "idx": 2,
+   "text": "Everything under it is blank, because nobody ever wrote down how this machine behaves.",
+   "claims": [
+    "c8"
+   ]
+  },
+  {
+   "idx": 3,
+   "text": "On August 10th the National Science Foundation put money behind that blank space, at the University of Alaska Fairbanks.",
+   "claims": [
+    "c1"
+   ]
+  },
+  {
+   "idx": 4,
+   "text": "Set a battery beside it, about the same size, and N S F says the two can interact and produce sustained oscillations.",
+   "claims": [
+    "c6",
+    "c7"
+   ]
+  },
+  {
+   "idx": 5,
+   "text": "That battery exists to let the diesel switch off, which is where the fuel saving comes from.",
+   "claims": [
+    "c17"
+   ]
+  },
+  {
+   "idx": 6,
+   "text": "So if the two fight each other instead of settling, the diesel keeps running and the saving never arrives.",
+   "claims": [
+    "c7",
+    "c15"
+   ]
+  },
+  {
+   "idx": 7,
+   "text": "On a big grid you'd study each machine alone, but here they are wired too close, and nobody wrote this one down.",
+   "claims": [
+    "c8"
+   ]
+  },
+  {
+   "idx": 8,
+   "text": "So the battery's own inverter will put a question into the wire and learn how the diesel answers.",
+   "claims": [
+    "c10"
+   ]
+  },
+  {
+   "idx": 9,
+   "text": "But a measurement is only the moment you took it, and a photograph of a running engine is out of date before it's pinned up.",
+   "claims": []
+  },
+  {
+   "idx": 10,
+   "text": "You can take a new one any hour though, on hardware already on the wall.",
+   "claims": [
+    "c9",
+    "c10"
+   ]
+  },
+  {
+   "idx": 11,
+   "text": "And Alaska's utilities are ahead of the science, with a megawatt battery already shipped to the village of Saint Mary's.",
+   "claims": [
+    "c17",
+    "c18"
+   ]
+  },
+  {
+   "idx": 12,
+   "text": "The Fairbanks award is three hundred twenty five thousand dollars, and the test bed is a lab.",
+   "claims": [
+    "c2",
+    "c11"
+   ]
+  },
+  {
+   "idx": 13,
+   "text": "You'd expect a machine that learns to be called artificial intelligence, but this award only says data driven.",
+   "claims": [
+    "c16"
+   ]
+  },
+  {
+   "idx": 14,
+   "text": "The work starts August 15th, two days from now.",
+   "claims": [
+    "c4"
+   ]
+  },
+  {
+   "idx": 15,
+   "text": "The plate still won't say how that machine behaves. Fairbanks is finally going to ask it.",
+   "claims": [
+    "c8",
+    "c10"
+   ]
+  }
+ ]
 }
