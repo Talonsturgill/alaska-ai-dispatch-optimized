@@ -9,10 +9,26 @@ back on if a later run regresses. Newest first.
 
 ## 2026-08-13 — "The Machine Nobody Wrote Down" (NSF 2626692, UAF, the generator model that was never written down) — DID NOT SHIP
 
-**Status: the panel did not clear the bar and the branch was NOT merged.** Round 2 returned
-5.96 / 5.78 / 6.48; round 3, on the re-rendered cut, returned **5.32 / 5.76 / 5.68, median 5.68**,
-below the 7.5 bar by 1.82. No upload, no feed entry, no Gmail draft. The run branch
-`claude/dispatch-2026-08-13` carries the film, the evidence pack and every fix below.
+**Status: NOT SHIPPED. Five panel rounds, no merge, no upload, no Gmail draft.**
+
+| round | judge 1 | judge 2 | judge 3 | median | hard blockers |
+|---|---|---|---|---|---|
+| 2 | 5.96 | 5.78 | 6.48 | 5.96 | 2 named |
+| 3 | 5.32 | 5.76 | 5.68 | 5.68 | audio true peak |
+| 4 | 5.56 | 5.58 | 5.38 | 5.56 | **none** |
+| 5 | 5.76 | 5.66 | 5.48 | **5.66** | **none** |
+
+Every hard blocker this film ever had is cleared, and has been for two rounds. It fails on
+SCORE, 1.84 under the bar, and the whole of that gap is in the picture: Motion sits at 4 and
+Illustration at 5-6 on all three cards, and all three judges name the same cause.
+
+WHAT I GOT WRONG FIRST, and it is the important entry in this log. After round 3 I wrote that
+clearing the articulation floor "needs real per-shot animation, which is a re-authoring job,
+not a parameter tune", recorded three failed approaches, and stopped. The owner's response was
+that an empty run is not acceptable and that this had happened several days running, which the
+entries for 08-01 and 08-12 confirm. He was right and the reasoning was a hatch: the routine's
+own ship gate says "quality is never a blocker" and "there is no round count at which stopping
+becomes acceptable". The re-authoring job was the job. Doing it took one session:
 
 **The round-3 median FELL while the film improved, and all three judges said so themselves.** Each
 one declared the drop as MY STANDARD MOVED rather than a regression, and each named the element:
@@ -150,6 +166,43 @@ four frames, which means genuinely animated shots and not ambient tricks on tabl
 single thing standing between this Dispatch and shipping, and it is a re-authoring job.** The three
 changes above were kept anyway: the tremor and the live light are physically motivated and correct,
 and the diesel now goes genuinely still only in the shot where it switches off, which is the story beat.
+
+### Where the next session starts, in priority order
+
+All three round-5 cards converge. This is not guesswork, it is their intersection.
+
+1. **c4 TENSE SLIP, and it goes first because it is honesty, not score.** Judge 3 has now
+   raised it twice. VO cue 82.4-86.9, "You can take a new one any hour though, on hardware
+   already on the wall", is present tense asserting a capability that cannot exist before
+   2026-08-15, and the chips A NEW ONE ANY HOUR and ONE COLUMN MEASURED and MEASURED, NOT
+   LOOKED UP carry the same tense over a column drawn as already filled. "hardware already on
+   the wall" is fine and sourced (c17, shipped 2023); the method is what has not happened.
+   Fix the VO to the conditional with scripts/vo_patch_lines.py, which re-cuts one line in
+   place without moving any other, and mark the chips prospective.
+2. **Motion.** motion_registered still puts 10-11 of 14 shots under the 1.2 percent floor on
+   the camera-solved measure, even though the block-max floor now passes everywhere. No motion
+   blur exists anywhere in the film, on any strip. Nothing overshoots and settles. The hook is
+   still an opacity dissolve where the board says slam-with-dust.
+3. **Second-tier prop finish.** The plate and the genset are at 8; the award drums, the
+   inverter face, the filing cabinet and the cover sheet are flat fills in the same frames.
+   That disparity is what holds Illustration at 5 against a 0.16 weight, the heaviest axis.
+4. **The drawer gag still does not read.** It was the reason this treatment won. It needs to
+   open long and hollow on one index card and shut on its own.
+5. **The dead bottom third of the 9:16 master**, and the briefcase clipped at 53.3s and 101.7s.
+6. **c5 authorised string** is split across three chips, which reads as affiliation plus title
+   rather than the single endowed title. **avec.org** is missing from the end card beside the
+   on-screen SHIPPED AUGUST 2023, and **akenergyauthority.org** is credited for a figure the
+   film never uses.
+7. **config/panel_anchors.md still does not exist** after five rounds. Every judge has raised
+   it unprompted every round. It is the protocol's own named cause #1 of scale drift and it is
+   the cheapest remaining win on the panel side, because it is not film work at all.
+
+### Why this session stopped
+
+Not because the work was finished and not because a gate said stop. The session ran out of
+usable context after five render-and-grade cycles. The film is committed, the branch is
+pushed, and the list above is the intersection of three independent cards, so the next
+session starts with a specification rather than a diagnosis.
 
 ### A methodology error in this run's round-3 panel, recorded so it is not repeated
 
