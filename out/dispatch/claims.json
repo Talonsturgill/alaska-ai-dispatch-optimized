@@ -173,12 +173,53 @@
     },
     {
       "id": "c17",
-      "status": "PENDING VERIFICATION",
-      "on_screen": "(pending)",
-      "spoken": "(pending)",
-      "source": "pending",
-      "note": "ACT 3 LOAD-BEARING. The adversarial check reported, in its case-against, that grid-forming battery inverters are ALREADY operating in remote Alaska, citing an April 2025 ACEP seminar by Shirazi and William Thomson of Alaska Village Electric Cooperative on operational experience and recommendations for GFM battery energy storage inverters in remote Alaska microgrids. If true this is the strongest fair case against the film's thesis and it earns its own act. It was NOT in the verified safe set, so it is UNVERIFIED and a second check is running. If it cannot be verified it does not go on screen and Act 3 is rebuilt on the falsifier instead.",
-      "requires": "Do not build a frame on this until status flips to verified."
+      "status": "verified",
+      "on_screen": "ST. MARY'S, ALASKA  ·  1 MW / 1 MWh  ·  SHIPPED AUGUST 2023",
+      "spoken": "A one megawatt battery, built to hold a village grid up on its own so the diesels can shut down, was tested in Fairbanks and shipped to Saint Mary's in August of twenty twenty three.",
+      "source": "https://www.uaf.edu/acep/news/2023/a-new-grid-bridging-system-tested-at-acep-to-serve-villages-in-alaska.php",
+      "note": "ACEP, University of Alaska Fairbanks, April 2023, with the shipping date from AVEC's own project page at https://avec.org/about/projects/st-marys-grid-bridging-system/",
+      "verbatim_source": "\"A short-term energy storage system that allows costly diesel generators to turn off for periods of time and to run on renewables to reduce fuel consumption.\"",
+      "requires": "THE RECORD STOPS AT INSTALLATION. AVEC's page gives no commissioning date and no in-service statement. The film may say tested, shipped, and installation underway. It may NOT say the unit is running, operating, or in service today."
+    },
+    {
+      "id": "c18",
+      "status": "verified",
+      "on_screen": "SANDIA NATIONAL LABORATORIES  ·  \"design and deployment\"  ·  ST. MARY'S",
+      "spoken": "Sandia National Laboratories lists Saint Mary's among its current grid bridging deployments, with AVEC and the Alaska Center for Energy and Power.",
+      "source": "https://energy.sandia.gov/programs/electric-grid/advanced-microgrids/",
+      "note": "Sandia National Laboratories, Advanced Microgrids programme page, undated",
+      "verbatim_source": "\"Current efforts involve design and deployment of a grid bridging system in the remote village of St. Mary's, Alaska, in partnership with Alaska Village Electric Coop (AVEC) and the Alaska Center for Energy and Power (ACEP).\"",
+      "requires": "The page says DEPLOYMENT, not OPERATION, and carries no date. A third institution naming the same project is corroboration that the work is real, not evidence that it is energised."
+    },
+    {
+      "id": "c19",
+      "status": "verified",
+      "on_screen": "APRIL 21ST, 2025  ·  ACEP AND AVEC BRIEF THE FIELD",
+      "spoken": "And in April of twenty twenty five, ACEP's power systems lead sat down with an AVEC engineer to brief the field on what ACEP called operational experience with these inverters, in remote Alaska microgrids.",
+      "source": "https://www.uaf.edu/acep/news/2025/seminar-on-grid-forming-inverters-in-remote-alska-microgrids.php",
+      "note": "Alaska Center for Energy and Power seminar announcement, April 21st 2025. The speakers are Mariko Shirazi and William Thomson of Alaska Village Electric Cooperative.",
+      "verbatim_source": "\"will discuss operational experience and recommendations for GFM battery energy storage inverters in remote Alaska microgrids\"",
+      "requires": "THIS IS ACEP'S ASSERTION ABOUT ITS OWN SPEAKERS AND MUST BE ATTRIBUTED AS ONE, never stated as independent documentation of an installation. The phrase is the announcement's DESCRIPTION of the content, not a published talk title, so it may NOT be presented in quotation marks as a title. No pronoun is stated for William Thomson by any source; use none."
+    },
+    {
+      "id": "c20",
+      "status": "verified",
+      "on_screen": "ABOUT 200 ISOLATED MICROGRIDS",
+      "spoken": "Alaska runs roughly two hundred isolated microgrids, each one its own island of a power system.",
+      "source": "https://www.uaf.edu/acep/research/power-systems-integration.php",
+      "note": "ACEP, University of Alaska Fairbanks",
+      "verbatim_source": "\"approximately 200 isolated microgrids which serve remote communities\"",
+      "requires": "A second ACEP wording of the same fact as c13. Use ONE of the two on screen, never both, and never as if they were independent counts."
+    },
+    {
+      "id": "c21",
+      "status": "verified-with-a-stated-sourcing-limit",
+      "on_screen": "AVEC WROTE ITS OWN ACCEPTANCE TESTS FOR RUNNING WITH THE DIESELS OFF",
+      "spoken": "Alaska Village Electric Cooperative has already written its own acceptance tests for grid forming batteries running with the diesels off.",
+      "source": "https://www.tananachiefs.org/wp-content/uploads/2025/09/Attachment-E-BESS-Testing-Requirements.pdf",
+      "note": "AVEC testing requirements, attached to a Tanana Chiefs Conference request for proposals, September 2025",
+      "verbatim_source": "field: document title = \"AVEC TESTING REQUIREMENTS FOR GRID FORMING BATTERY ENERGY STORAGE SYSTEMS FOR DIESEL OFF MICROGRID OPERATION\"",
+      "requires": "SOURCING LIMIT, AND IT MUST BE DISCLOSED IN THE GMAIL DRAFT: the PDF would not render to text in the checking environment, so the title string comes from a search index and a second independent extraction that agreed on its substance. Nobody read the document end to end. It is the FIRST BEAT TO CUT if the film runs long, and it may never be the sole support for any argument."
     }
   ],
   "killed": [
