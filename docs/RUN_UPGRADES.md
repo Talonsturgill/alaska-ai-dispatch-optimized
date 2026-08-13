@@ -93,6 +93,17 @@ single thing standing between this Dispatch and shipping, and it is a re-authori
 changes above were kept anyway: the tremor and the live light are physically motivated and correct,
 and the diesel now goes genuinely still only in the shot where it switches off, which is the story beat.
 
+### A methodology error in this run's round-3 panel, recorded so it is not repeated
+
+`config/panel_protocol.md` is explicit that a judge forms the score from the evidence pack
+ALONE and that the change list is disclosed only AFTER the axis scores are committed, because
+"telling a judge which five things were fixed reliably sends them hunting somewhere else."
+The round-3 judge prompts written by this run put the previous card's blockers and the fix
+list IN THE PROMPT, ahead of scoring. That is the exact failure mode the protocol was written
+to stop. Round-3 numbers are therefore prompt-steered and are NOT a clean re-grade; they
+should not be used as a drift baseline for round 4. The protocol needs the two-phase prompt
+written down as a template rather than left to each run to reconstruct from prose.
+
 ### Deferred, with the reason
 
 - **Per-shot animation for S1, S5, S10, S11, S14.** The named next-run task, with the gate's own
