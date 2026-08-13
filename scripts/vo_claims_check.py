@@ -76,6 +76,20 @@ QUANT = re.compile(
     r"half|most|fewest|largest|smallest|only one|not one|exactly once|every|all of)\b", re.I)
 DATEISH = re.compile(r"\b(august|june|july|september|friday|monday|year one)\b", re.I)
 
+# 3. UNSOURCED CADENCE (2026-08-13). QUANT catches numbers, proportions and superlatives, and a
+# RATE is none of those, so "The aim is a new one any hour" passed this gate clean while
+# asserting a refresh frequency no claim in the file carries. Two judges reported it, three
+# rounds apart, and the run shipped the video anyway and told the owner it "needs a single-line
+# re-synth" -- i.e. handed over a knowingly wrong narration and deferred the fix. The owner's
+# answer: "why would u give me a video, and say it needs a resynth, who's gonna do that?"
+#
+# A cadence is a factual assertion about how often something happens. It is exactly as
+# load-bearing as a number and it was the one shape of claim nothing here was reading.
+CADENCE = re.compile(
+    r"\b(any hour|every hour|each hour|hourly|per hour|a minute|per minute|every minute|"
+    r"every day|each day|daily|per day|every second|per second|continuously|"
+    r"in real time|round the clock|constantly|on demand|any time)\b", re.I)
+
 
 def _span_ids(lines, cid):
     """The line indices citing this claim, plus one line either side, as a string."""
@@ -128,6 +142,28 @@ def main():
                             f"      no line in the claim's span contains '{token}'. "
                             f"Span is L{_span_ids(script['lines'], cid)}.")
 
+        # A CITED LINE IS NOT A SOURCED CADENCE. "The aim is a new one any hour" carries a claim
+        # id and that claim says nothing about hours, so a `not cited` test passes it. For a rate
+        # the citation has to actually CONTAIN the rate: the cadence words, or an equivalent, must
+        # appear in the claim's own verbatim_source. Anything else is the film borrowing a claim's
+        # credibility for an assertion the claim never made.
+        m = CADENCE.search(text)
+        if m:
+            word = m.group(0).lower()
+            backing = " ".join(
+                str(claims[c].get("verbatim_source") or "") + " " + str(claims[c].get("spoken") or "")
+                for c in cited).lower()
+            if not cited:
+                problems.append(
+                    f"line {idx}: asserts a CADENCE ({word!r}) with no claim id. A rate is a factual "
+                    f"claim about how often something happens and is as load-bearing as a number.\n"
+                    f"      {text[:150]}")
+            elif word not in backing:
+                problems.append(
+                    f"line {idx}: asserts a CADENCE ({word!r}) and cites {','.join(cited)}, but none of "
+                    f"those claims' verbatim source says it. A citation is not a licence for a rate "
+                    f"the record never states. Say what the record says, or drop the cadence.\n"
+                    f"      {text[:150]}")
         if QUANT.search(text) and not cited and not DATEISH.search(text):
             problems.append(
                 f"L{idx} states a quantity and cites NO claim id. Every number in the "
@@ -152,7 +188,7 @@ def main():
         sys.exit(1)
 
     print(f"PASS [vo_claims_check] {len(script['lines'])} narration lines checked against "
-          f"{len(claims)} claims; no obligation violated and no unsourced quantity.")
+          f"{len(claims)} claims; no obligation violated, no unsourced quantity and no unsourced cadence.")
     return 0
 
 

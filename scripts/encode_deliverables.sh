@@ -71,6 +71,48 @@ ffmpeg -y -i "$OUT/dispatch_master.mp4" -vf scale=720:1280 \
   -pix_fmt yuv420p -movflags +faststart -c:a copy \
   "$OUT/dispatch_master_720.mp4" -v error
 
+# ============================================================================
+# THE HOSTED CUT MUST FIT THE HOST, AT FULL RESOLUTION (2026-08-13).
+#
+# WHY THIS EXISTS. The 08-13 run rendered a 155MB 9:16 master, GitHub hard-limits hosted files
+# at 100MB, and the run's answer was to put the 720p rendition in the owner's email and call the
+# real fix "logged for the next run". That is shipping a degraded deliverable and deferring the
+# work, and the owner's response was one word: unacceptable. Prior runs hosted 9:16 at 35.7MB,
+# so 155MB was the anomaly, not the ceiling: the same picture re-encoded at CRF 22 is 59.3MB at
+# a full 1080x1920. There was never a reason to downscale.
+#
+# THE RULE. Resolution is NOT negotiable, bitrate is. This finds the first CRF in the ladder that
+# fits the host limit and keeps 1080x1920. Downscaling to make a file fit is now impossible here,
+# and if even the last rung will not fit, this FAILS the encode rather than quietly shipping
+# something smaller than the deliverable.
+# ============================================================================
+HOST_MAX_MB="${HOST_MAX_MB:-95}"
+HOSTED="$OUT/dispatch_master_hosted.mp4"
+hosted_ok=0
+for crf in 20 22 24 26; do
+  ffmpeg -y -i "$OUT/dispatch_master.mp4" \
+    -c:v libx264 -profile:v high -crf "$crf" -pix_fmt yuv420p -movflags +faststart \
+    -c:a copy "$HOSTED" -v error
+  mb=$(( $(stat -c%s "$HOSTED") / 1048576 ))
+  wh="$(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=p=0 "$HOSTED")"
+  if [ "$wh" != "${VERT_W},${VERT_H}," ] && [ "$wh" != "${VERT_W},${VERT_H}" ]; then
+    echo "  FAIL hosted 9:16 is ${wh}, not ${VERT_W}x${VERT_H}. Resolution is not negotiable." >&2
+    exit 1
+  fi
+  if [ "$mb" -le "$HOST_MAX_MB" ]; then
+    echo "  OK  hosted 9:16 ${VERT_W}x${VERT_H} at CRF ${crf}, ${mb}MB (host limit ${HOST_MAX_MB}MB)"
+    hosted_ok=1; break
+  fi
+  echo "  ..  CRF ${crf} gives ${mb}MB, over the ${HOST_MAX_MB}MB host limit; trying the next rung"
+done
+if [ "$hosted_ok" != "1" ]; then
+  echo "  FAIL no CRF in the ladder fits ${HOST_MAX_MB}MB at full resolution." >&2
+  echo "       Do NOT substitute the 720p rendition -- that is shipping a degraded deliverable." >&2
+  echo "       Something in the picture is defeating inter-frame compression (on 08-13 it was an" >&2
+  echo "       animated grain field, 53MB -> 155MB for the same runtime). Fix the CAUSE." >&2
+  exit 1
+fi
+
 # THE POSTER IS THE SCROLL-STOP, SO DO NOT GRAB FRAME 0 (2026-08-08). Two panel judges
 # independently called this out: `-ss 0` yields whatever the film opens on, and this film
 # opens on an empty records room with the hero slug still mid-flight, no headline and no

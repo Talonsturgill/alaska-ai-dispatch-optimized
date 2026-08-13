@@ -21,6 +21,7 @@ a repeated palette). Exit 0 = the composition is genuinely distinct; you may bui
 Same contract as quality_gate.py / caption_check.py: machine-checked, no cap, fix the cause and
 re-run. You do not get to relax the rule to pass — you change the composition.
 """
+from collections import Counter
 import sys, json, re
 from pathlib import Path
 import yaml
@@ -193,6 +194,34 @@ def main():
                         f"transitions for a {_rt:.0f}s piece at the {srule['max_shot_seconds']}s oner ceiling "
                         f"(a scene change ~every 10-15s — NOT one continuous 'oner' like the sonar Dispatch).")
     else:
+        # THE STAGE RULE. Framing, scale and height can all vary on ONE set, which is how the
+        # 08-13 board passed every variety check and still played 11 of 14 shots against the same
+        # wall. `stage` asks the crude question none of the others ask: WHERE does this happen.
+        # A board that does not declare it is treated as a single-stage board, because an
+        # undeclared set is exactly the board that turns out to be one room.
+        stages = [str(s.get("stage") or s.get("set") or s.get("location") or "").strip().lower()
+                  for s in shots]
+        named = [x for x in stages if x]
+        if len(named) < len(shots):
+            problems.append(
+                f"{len(shots) - len(named)} shot(s) declare no `stage`. Every shot must name the SET "
+                f"it plays on (not its framing), because the variety axes above can all be satisfied "
+                f"inside one room and that is the most expensive defect this panel has named.")
+        if named:
+            distinct = len(set(named))
+            if distinct < srule.get("min_distinct_stages", 3):
+                problems.append(
+                    f"the board plays on only {distinct} distinct stage(s); need >= "
+                    f"{srule.get('min_distinct_stages', 3)}. Different framings of the same wall are "
+                    f"ONE stage. Give the film somewhere else to be.")
+            top, n = Counter(named).most_common(1)[0]
+            share = n / len(shots)
+            if share > srule.get("max_stage_share", 0.65):
+                problems.append(
+                    f"stage {top!r} carries {n}/{len(shots)} shots ({share:.0%}), over the "
+                    f"{srule.get('max_stage_share', 0.65):.0%} ceiling. One set carrying the runtime "
+                    f"caps Composition, Color, Motion and Hook at once, which is 0.40 of the rubric.")
+
         framings = [str(s.get("framing", "")).strip().lower() for s in shots]
         if len({f for f in framings if f}) < srule["min_distinct_framings"]:
             problems.append(f"shots use only {len({f for f in framings if f})} distinct framings; need >= "

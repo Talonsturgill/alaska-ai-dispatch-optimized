@@ -474,6 +474,33 @@ def cmd_check(a):
         if name not in (v.get("artifacts") or {}):
             problems.append(f"{name} is a deliverable but was never graded.")
 
+    # ---- 2b. IS THERE A SOUND DESIGN AT ALL? (2026-08-13) ----
+    # Every judge on every round capped Sound at 6 or 7 with the same sentence: the mix passes
+    # its loudness metrics and the pack shows no evidence of a single layer beyond VO and music.
+    # 25.2s of the 08-13 runtime was VO silence over a near-static picture. Four consecutive
+    # rounds reported it, the run wrote "still no sfx_events.json" into a retro each time, and
+    # shipped anyway, because nothing here was asking. Sound carries 0.10 of the rubric and a
+    # film about a machine had no machine in its ears.
+    #
+    # This asks the crude question only: does a sound-design layer EXIST. It does not grade it.
+    sfx = OUT / "sfx_events.json"
+    if not sfx.exists():
+        problems.append(
+            "no out/dispatch/sfx_events.json. The film has no sound design layer, only VO and a "
+            "music bed. scripts/sfx_bank.py and scripts/build_sfx_library.py exist for this. A "
+            "Dispatch about a physical machine may not ship silent.")
+    else:
+        try:
+            ev = json.loads(sfx.read_text())
+            ev = ev.get("events", ev) if isinstance(ev, dict) else ev
+            if not isinstance(ev, list) or len(ev) < 6:
+                problems.append(
+                    f"sfx_events.json carries {len(ev) if isinstance(ev, list) else 0} event(s). "
+                    f"That is a placeholder, not a sound design. Every judge has capped Sound at "
+                    f"6-7 for exactly this.")
+        except Exception as e:
+            problems.append(f"sfx_events.json does not parse ({e}).")
+
     # ---- 3. WAS THE EVIDENCE DERIVED FROM THOSE BYTES? ----
     graded_ev = v.get("evidence") or {}
     if not graded_ev:

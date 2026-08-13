@@ -43,6 +43,24 @@ rule:
   require_wide_class: true          # ...and at least one wide, so the close-up has something to contrast against
   max_consecutive_same_scale: 2     # never 3+ shots running at one size (that IS the "one camera height" failure)
   min_distinct_heights: 2           # >= 2 camera heights (a low or high angle must appear, not all eye-level)
+  # THE STAGE RULE (2026-08-13, owner: "11 of 14 shots share one stage sounds insane ... set a rule
+  # in ur variety engines that will just fix this from the jump so the judges don't have to deal
+  # with lazy creation anymore").
+  #
+  # Every axis above can be satisfied ON ONE SET. The 08-13 board declared distinct framings,
+  # four scales and two heights, and then played eleven of fourteen shots against the same
+  # powerhouse wall, because none of those axes asks WHERE a shot happens. A judge put it
+  # exactly: "one background plate and one locked camera across all 14 shots is simultaneously
+  # capping Composition, Color, Motion and Hook, which together carry 0.40 of the rubric." That
+  # is the single most expensive defect the panel has ever named and no gate could see it.
+  #
+  # `stage` is the SET a shot plays on, not its framing: the powerhouse interior, the village
+  # dock, a document surface, an exterior. Two shots on the same wall at different focal lengths
+  # are ONE stage. This is deliberately the crudest possible question, because the crude question
+  # is the one that was going unasked.
+  min_distinct_stages: 3            # >= 3 genuinely different sets across the runtime
+  max_stage_share: 0.65             # no single set may carry more than 65% of the shots
+                                    # (08-13 ran 0.79 and nothing objected)
   require_transitions: true    # every shot after the first declares a motivated transition_in
   # THE ANTI-ZOOM RULE (added after the v2 critique: the "scene changes" were just the camera zooming/
   # panning over ONE rendered sonar display — reframing, not scene-breaking). Each shot declares its OWN
