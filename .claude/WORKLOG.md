@@ -1,6 +1,43 @@
 # WORKLOG — Dispatch 2026-08-13, "THE MACHINE NOBODY WROTE DOWN"
 
-## Status: UNSHIPPED. Panel median 6.46 against a 7.5 ship floor. Round 7 complete.
+## Status: UNSHIPPED. Panel median 6.46 against a 7.5 ship floor. Round 8 rendered, awaiting panel.
+
+### Round 8 shipped these (commit `1b3aaf6`), all from the round-7 cards
+- tap rebuilt as a 4-part strike over 44 frames (was a 3.75/sec sine that aliased to "frozen")
+- whole-hand breath; smear derived from the hand's own vertical speed; fingertip contact shadow
+- exhaust plume made VISIBLE (old colour was within 9 luminance levels of the wall behind it)
+- lamp sway 2.3 -> 7.2 degrees
+- grain + vignette at frame level (the "no filmic finishing" note from all three)
+- sources.json reconciled: all 21 sourced claims covered, contiguous ids, URLs agree.
+  New gate `scripts/sources_reconcile_check.py`. It found a third divergence (c20) unaided.
+  `used_in_film` added so the LEDGER can be complete while the END CARD stays honest.
+- Shirazi title break moved so no chip reads as "she is the university president"
+- St. Mary's: rounded hazed hills, willow scrub, sun bloom (kept low relief on purpose, see below)
+- `motion_check` now holds registered_pct to the floor too, not just block_max
+
+### STILL OPEN after round 8 - do these next
+- **SFX. There is still no `sfx_events.json`.** Every judge caps Sound at 6-7 purely for absent
+  layer evidence, 0.10 weight. 25.2s of silence across 24 gaps. This is the largest single
+  untouched lever and it does NOT require a re-render, only a re-mix + re-encode + evidence.
+- **Hook, 0.12, sitting at 5-6.** Judges want S1 cut from 12.37s (a quarter of the runtime) and
+  the eight longest VO gaps (1.26-1.58s) pulled back. Needs `vo_patch_lines.py` + re-align.
+- **Kinetic type, 0.06.** No caption or chip changes across any 8-frame window. `Plate` has no
+  entrance animation and cannot get one without being told its own start frame; callers gate on
+  frame thresholds already, so pass `from` at the call sites.
+- **Shot-size variety.** Still 11 of 14 on the same eye-level wide. Judges want a real close-up,
+  a low angle, one true wide. Stage would need a focus-point origin, which the geometry gates
+  currently model as fixed - check `caption_band_check`/`crop_safety` if you add one.
+- **`PROBE THE GRID` occluded at t=72.6s**, reads "PROBE THE GR". Not yet fixed.
+- **ILLUSTRATIVE badge** still sub-legible per judge 3. Not yet fixed.
+- **`config/panel_anchors.md`** still absent. Round 7 gave three agreed cards on one pack; that
+  is the anchor set. PRESERVE a copy of `out/evidence/` first - `build_evidence.py` overwrites it.
+
+### On the St. Mary's geography note - do not "fix" this without checking
+Round-7 judge 3 called the skyline an imported mountain range on a real Yup'ik community. I
+softened the profile but did NOT flatten it, because St. Mary's sits on the Andreafsky off the
+lower Yukon with the Andreafsky/Nulato Hills to the northeast, and Mountain Village just
+downriver is named for its hill. Low relief is defensible there; a table-flat delta would be a
+different invention. If a future round presses this, verify against a source before changing it.
 
 Branch `claude/dispatch-2026-08-13`. The ship gate is sha256-bound to the delivered cut and has
 no override. Nothing merges, emails or uploads until the median clears 7.5.

@@ -126,14 +126,14 @@ export const RatingPlate: React.FC<{
         <rect x={-W / 2} y={-H / 2} width={W} height={H} rx={8} />
       </clipPath>
       <g clipPath={`url(#plclip${Math.round(x)})`}>
-        <rect x={-W / 2 + ((f * 9.1 + phase * 61) % (W + 460)) - 320} y={-H / 2 - 40}
-              width={150} height={H + 80} fill="#FFFFFF" opacity={0.30}
+        <rect x={-W / 2 + ((f * 13.6 + phase * 61) % (W + 460)) - 320} y={-H / 2 - 40}
+              width={292} height={H + 80} fill="#FFFFFF" opacity={0.36}
               transform={`skewX(-16)`} />
-        <rect x={-W / 2 + ((f * 9.1 + phase * 61) % (W + 460)) - 196} y={-H / 2 - 40}
-              width={54} height={H + 80} fill="#FFFFFF" opacity={0.19}
+        <rect x={-W / 2 + ((f * 13.6 + phase * 61) % (W + 460)) + 20} y={-H / 2 - 40}
+              width={78} height={H + 80} fill="#FFFFFF" opacity={0.22}
               transform={`skewX(-16)`} />
-        <rect x={-W / 2 + ((f * 9.1 + phase * 61) % (W + 460)) - 396} y={-H / 2 - 40}
-              width={30} height={H + 80} fill="#20262B" opacity={0.10}
+        <rect x={-W / 2 + ((f * 13.6 + phase * 61) % (W + 460)) - 430} y={-H / 2 - 40}
+              width={54} height={H + 80} fill="#20262B" opacity={0.13}
               transform={`skewX(-16)`} />
       </g>
       <rect x={-W / 2} y={-H / 2} width={W} height={H} rx={8} fill="none" stroke={INK} strokeWidth={4} />
@@ -599,11 +599,20 @@ export const PowerhouseBG: React.FC<{f: number; parallax?: number; door?: number
        * yard, the door rocks. Breathing it on two irrational periods gives every shot in the
        * film a slow live value change over a big area, which is what a room lit by one hole
        * in the wall actually looks like, and it costs the staging nothing. */
-      <g opacity={door * (0.78 + 0.22 * Math.sin(f / 71.3))}>
+      /* THE SHAFT WAS BREATHING TOO SLOWLY TO COUNT (2026-08-13, round 8). Every period here
+          was 47 to 84 frames, so across the 4-frame gap motion_check measures, the largest
+          bright shape in the room changed by almost nothing, and five shots sat under the
+          registered floor on that account. Weather does not move on one clock: cloud crossing a
+          doorway is fast, the door itself rocks slowly. The fast terms are what a viewer reads
+          as living light and what the instrument can actually see. Eleven shots share this
+          background, so it is one edit and five fixes. */
+      <g opacity={door * (0.72 + 0.16 * Math.sin(f / 71.3) + 0.12 * Math.sin(f / 12.7 + 0.6))}>
         <rect x={-380} y={180} width={300} height={1000} fill={ID.glare}
-              opacity={0.42 + 0.14 * Math.sin(f / 47.9 + 1.1)} />
-        <path d={`M -80 ${180 + Math.sin(f / 83.7) * 26} L ${700 + Math.sin(f / 61.1) * 54} 1180
-                  L 220 1180 L -80 ${640 + Math.cos(f / 73.3) * 22} Z`} fill="url(#phshaft)" />
+              opacity={0.42 + 0.14 * Math.sin(f / 47.9 + 1.1) + 0.10 * Math.sin(f / 9.3)} />
+        <path d={`M -80 ${180 + Math.sin(f / 83.7) * 26 + Math.sin(f / 14.1) * 18}
+                  L ${700 + Math.sin(f / 61.1) * 54 + Math.cos(f / 11.9) * 46} 1180
+                  L 220 1180 L -80 ${640 + Math.cos(f / 73.3) * 22 + Math.sin(f / 16.3) * 20} Z`}
+              fill="url(#phshaft)" />
         {Array.from({length: 22}, (_, i) => {
           const t = (f / 120 + i * 0.045) % 1;
           return (
