@@ -136,7 +136,20 @@ TAIL = 1.0  # hold after the last word (1.5 -> 1.0 on 2026-08-12 to land in band
 # the same notice is", were spoken while S12 was still holding the Nome and Alakanuk grid.
 # All three judges measured the lag; one put it at six seconds, at the beat the whole piece
 # turns on. The card now lands on the line it belongs to.
-SCENE_START_LINE = [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 14, 15]
+# 2026-08-13 "The Machine Nobody Wrote Down": FOURTEEN shots (S1..S14 in
+# video-engine/src/Ep0813.tsx) onto 16 VO lines. Boundaries are anchored to VO LINE
+# STARTS so the picture can never drift from the words. S1 L0-L1 (the plate lands, the
+# hand taps it, the stamped kilowatt), S2 L2 (the blank fields as an absence + the form
+# with nothing to copy), S3 L3 (the award record + the two drums + the name plate),
+# S4 L4 (both machines at equal height + the ringing line), S5 L5 (the diesel switches
+# off + the fuel stops), S6 L6 (MAXIMUM PRESSURE, nothing broken and the money burns),
+# S7 L7 (the schematic slams open, the scale collapses, the empty drawer), S8 L8 (THE
+# CUTAWAY, probe out and back), S9 L9 (THE TEST, the pinned photograph held), S10 L10
+# (the strip accumulates, the value seats, the drawer shuts itself), S11 L11 (St Mary's,
+# the operators got there first), S12 L12 (the lab boundary + THE SIGNATURE PULL-BACK),
+# S13 L13 (the cover sheet slides off the unchanged methods list), S14 L14-L15 (the date
+# on the threshold, then the button back on the plate).
+SCENE_START_LINE = [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 
 
 def _apply_caption_fixups(caps):
