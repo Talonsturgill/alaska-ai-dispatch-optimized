@@ -1,0 +1,199 @@
+{
+  "run_date": "2026-08-13",
+  "story": "NSF award 2626692 (Collaborative Research), made 2026-08-10 to the University of Alaska Fairbanks, PI Mariko Shirazi: use the battery's own grid-forming inverter to probe a small isolated grid, learn how each unit responds, and tune the controls so a battery and a similarly sized diesel generator stop interacting badly. The award never uses the word AI.",
+  "rule": "THIS FILE IS THE ONLY SOURCE OF TRUTH FOR ANYTHING THE FILM SAYS, PAINTS OR NARRATES. A number, name, quote or characterisation that is not in here does not go on screen and is not spoken. Every `requires` is an obligation the build must honour, not advice, and scripts/claims_contract_check.py reads them.",
+  "hard_constraints_for_this_film": [
+    "TENSE DISCIPLINE IS MANDATORY. The award period begins 2026-08-15, two days after this film publishes. NOTHING HAS BEEN BUILT, TESTED OR MEASURED under it. Say 'will', never 'has'. No result may be implied to exist.",
+    "THIS IS NOT AN AI PROJECT AND THE FILM MUST NOT CALL IT ONE. The abstract contains no occurrence of artificial intelligence, AI, machine learning, neural, or learned model. Its named methods are input-output transfer function identification, analytical stability specifications, and active damping. The film may say data-driven, system identification, and learn-how-it-responds, because those are the record's own words. It may not say AI.",
+    "DO NOT CONFLATE WITH AURORA-AI. ACEP published a DIFFERENT award on 2026-08-11: $725,000 from the Department of Energy, PI Richard Wies, with Colorado State and Cordova Electric Cooperative. Different agency, different PI, different amount, different project. That subject also sits inside the 30-day dedupe window and is not this film's story. Any sentence of the form 'UAF just got money for AI on rural grids' describes THAT award and is forbidden here.",
+    "DO NOT SAY 'UNREPORTED' FLATLY. A universal negative could not be established. The licensed phrasing is 'no coverage found as of August 13th' and even that is optional.",
+    "$324,995 IS UAF'S SHARE, NOT THE PROJECT. Naming a project total requires naming $549,995 and the companion award.",
+    "THE ABSTRACT NEVER SAYS ALASKA, NEVER SAYS VILLAGE, NEVER SAYS CONSULTANT. Its furthest reach is 'rural and remote communities that face some of the nation's highest electricity prices'. Alaska relevance comes from the awardee, the PI and ACEP's own lab, and every Alaska figure on screen must be attributed to ACEP or AEA, never to NSF."
+  ],
+  "claims": [
+    {
+      "id": "c1",
+      "status": "verified",
+      "on_screen": "NSF 2626692  ·  AUGUST 10TH 2026  ·  STANDARD GRANT",
+      "spoken": "On August tenth, the National Science Foundation made an award to the University of Alaska Fairbanks.",
+      "source": "https://api.nsf.gov/services/v1/awards/2626692.json",
+      "note": "NSF award API record, the federal system of record",
+      "verbatim_source": "field: id = \"2626692\", date = \"08/10/2026\", transType = \"Standard Grant\", awardeeName = \"University of Alaska Fairbanks Campus\"",
+      "requires": "The award DATE is the news peg. Do not use it as the start date; those are different facts and c4 carries the other one."
+    },
+    {
+      "id": "c2",
+      "status": "verified",
+      "on_screen": "$324,995",
+      "spoken": "Three hundred twenty four thousand, nine hundred ninety five dollars.",
+      "source": "https://api.nsf.gov/services/v1/awards/2626692.json",
+      "note": "NSF award API record",
+      "verbatim_source": "field: fundsObligatedAmt = \"324995\", fundsObligated = [\"FY 2026 = $324,995.00\"]",
+      "requires": "This is UAF's obligation. It may NEVER be called the project's value or total. If a total appears anywhere, c3 must appear with it."
+    },
+    {
+      "id": "c3",
+      "status": "verified",
+      "on_screen": "COMPANION AWARD 2626693  ·  WISCONSIN  ·  $225,000",
+      "spoken": "A companion award sends two hundred twenty five thousand to the University of Wisconsin at Madison.",
+      "source": "https://api.nsf.gov/services/v1/awards.json?keyword=%22Stability-certified+Tuning+of+Hybrid+Diesel%22",
+      "note": "NSF award API, companion record under the identical title; PI Dominic Gross",
+      "verbatim_source": "field: id = \"2626693\", fundsObligatedAmt = \"225000\", awardee = University of Wisconsin-Madison, pi = Dominic Gross",
+      "requires": "This is why the real title begins 'Collaborative Research:'. If the film quotes the title it uses the full string including that prefix, or paraphrases. A truncated title in quotation marks is forbidden."
+    },
+    {
+      "id": "c4",
+      "status": "verified",
+      "on_screen": "STARTS AUGUST 15TH 2026  ·  RUNS TO JULY 31ST 2029",
+      "spoken": "The work starts on August fifteenth and runs to the summer of twenty twenty nine.",
+      "source": "https://api.nsf.gov/services/v1/awards/2626692.json",
+      "note": "NSF award API record",
+      "verbatim_source": "field: startDate = \"08/15/2026\", expDate = \"07/31/2029\"",
+      "requires": "THE FILM'S SINGLE MOST IMPORTANT HONESTY OBLIGATION. This starts two days after publication. Every verb about the work is future tense. No sentence may imply a measurement, a result or a deployment exists."
+    },
+    {
+      "id": "c5",
+      "status": "verified",
+      "on_screen": "MARIKO SHIRAZI  ·  UNIVERSITY OF ALASKA PRESIDENT'S PROFESSOR IN ENERGY",
+      "spoken": "The principal investigator is Mariko Shirazi, the University of Alaska President's Professor in Energy at the Alaska Center for Energy and Power.",
+      "source": "https://www.uaf.edu/acep/about/our-team/mariko-shirazi.php",
+      "note": "UAF ACEP faculty page; title independently corroborated by her IEEE Xplore author record",
+      "verbatim_source": "\"University of Alaska President's Professor in Energy\"",
+      "requires": "Sole PI, no co-PIs on the UAF award. Her faculty page uses she/her and that is the only pronoun evidence; use no other. She is a real named person, so the characterized-object humour rules apply: she is never drawn as a comic object and never given a face that performs a joke."
+    },
+    {
+      "id": "c6",
+      "status": "verified",
+      "on_screen": "\"the battery energy storage system and the diesel generators are co-located and are commensurate in size\"",
+      "spoken": "In these grids the battery and the diesels sit side by side, and they are about the same size.",
+      "source": "https://api.nsf.gov/services/v1/awards/2626692.json",
+      "note": "quoting the NSF award abstract",
+      "verbatim_source": "\"However, in many of these systems, the battery energy storage system and the diesel generators are co-located and are commensurate in size. These conditions can lead to adverse power interactions.\"",
+      "requires": "If the on-screen string is shown in quotation marks it must be this exact fragment with no added emphasis and no elision inside it."
+    },
+    {
+      "id": "c7",
+      "status": "verified",
+      "on_screen": "\"the two can interact and produce sustained oscillations\"",
+      "spoken": "Run a grid forming inverter next to a diesel of about the same size, and the two can interact and produce sustained oscillations.",
+      "source": "https://api.nsf.gov/services/v1/awards/2626692.json",
+      "note": "quoting the NSF award abstract",
+      "verbatim_source": "\"when grid-forming (GFM) inverters (i.e., power electronic devices that impose the grid's voltage and frequency) run alongside comparably sized, electrically close diesel generators, the two can interact and produce sustained oscillations.\"",
+      "requires": "PRESENT THIS AS NSF'S CHARACTERISATION OF A FAILURE MODE, NEVER AS AN OBSERVED ALASKA EVENT. No Alaska incident is cited anywhere in the record. The film may not show a named community's lights going out, or imply an outage happened."
+    },
+    {
+      "id": "c8",
+      "status": "verified",
+      "on_screen": "\"accurate generator models are also usually unavailable\"",
+      "spoken": "The methods built for big transmission systems fail down here, and accurate generator models are usually unavailable.",
+      "source": "https://api.nsf.gov/services/v1/awards/2626692.json",
+      "note": "quoting the NSF award abstract",
+      "verbatim_source": "\"Solutions designed to address this in large transmission systems, where such units are far apart and can be analyzed separately, fail in low-voltage community grids, where accurate generator models are also usually unavailable.\"",
+      "requires": "THIS IS THE REAL STATED BOTTLENECK AND THE FILM'S ARGUMENT IS BUILT ON IT. It is a MISSING-DATA problem, not a study-cost problem. Any framing that makes the barrier an invoice rather than an absent model is unsourced and forbidden."
+    },
+    {
+      "id": "c9",
+      "status": "verified",
+      "on_screen": "\"without specialized studies and expertise that small utilities rarely have\"",
+      "spoken": "The aim is to catch and prevent those interactions on site, in the abstract's words, without specialized studies and expertise that small utilities rarely have.",
+      "source": "https://api.nsf.gov/services/v1/awards/2626692.json",
+      "note": "quoting the NSF award abstract",
+      "verbatim_source": "\"The project will bring transformative change by developing a practical, data-driven way to detect and prevent these interactions on-site, without specialized studies and expertise that small utilities rarely have.\"",
+      "requires": "This and the parallel verbatim phrase \"without requiring complex interconnection studies\" are the ONLY licensed phrasings of the studies point. 'Rarely have' is the claim. 'Must pay a consultant per village' is not, and is killed."
+    },
+    {
+      "id": "c10",
+      "status": "verified",
+      "on_screen": "\"using the battery inverter itself to probe the grid\"",
+      "spoken": "The idea is to use the battery inverter itself to probe the grid, learn how each unit responds, and then adjust the battery's controls to keep the system stable.",
+      "source": "https://api.nsf.gov/services/v1/awards/2626692.json",
+      "note": "quoting the NSF award abstract",
+      "verbatim_source": "\"This will be achieved by using the battery inverter itself to probe the grid and learn how each unit responds and then adjusting the battery controls accordingly to keep the system stable.\"",
+      "requires": "THE FILM'S CENTRAL IMAGE COMES FROM THIS SENTENCE. Keep it future tense: this is a proposed approach, not a working one."
+    },
+    {
+      "id": "c11",
+      "status": "verified",
+      "on_screen": "\"a 500kW-scale laboratory test bed\"",
+      "spoken": "It is to be tested in what the abstract calls a five hundred kilowatt scale laboratory test bed, with grid forming inverters and diesel generators in it.",
+      "source": "https://api.nsf.gov/services/v1/awards/2626692.json",
+      "note": "quoting the NSF award abstract",
+      "verbatim_source": "\"The proposed approach will be implemented in a 500kW-scale laboratory test bed including GFM inverters and diesel generators for data collection and experimental validation.\"",
+      "requires": "DO NOT APPEND 'AT UAF' TO THIS QUOTE OR TO THIS BEAT. The abstract names no location and the co-awardee is in Wisconsin. Putting UAF and 500 kW in one sentence requires switching attribution to c12."
+    },
+    {
+      "id": "c12",
+      "status": "verified",
+      "on_screen": "ACEP POWER SYSTEMS INTEGRATION LABORATORY  ·  UP TO 500 kW  ·  UAF CAMPUS",
+      "spoken": "ACEP runs a lab on the Fairbanks campus that, in its own words, emulates an isolated hybrid diesel grid at up to five hundred kilowatts.",
+      "source": "https://www.uaf.edu/acep/facilities/power-systems-integration-laboratory.php",
+      "note": "ACEP facility page, a SEPARATE source from the award record",
+      "verbatim_source": "\"emulates an isolated hybrid-diesel grid at up to 500 kW of permanently installed capacity and potential capacity of several MW\"; \"located within the Energy Technology Facility on the University of Alaska Fairbanks campus\"",
+      "requires": "Must be said as ACEP describing its own laboratory, never as NSF describing this award's test bed. If both c11 and c12 appear, the film must not let a viewer read them as one sourced statement."
+    },
+    {
+      "id": "c13",
+      "status": "verified",
+      "on_screen": "MORE THAN 200 REMOTE MICROGRIDS",
+      "spoken": "Alaska has more than two hundred remote microgrids, and ACEP says diesel is the primary source of generation in most of them.",
+      "source": "https://www.uaf.edu/acep/our-resources/what-is-a-microgrid.php",
+      "note": "ACEP, University of Alaska Fairbanks",
+      "verbatim_source": "\"diesel generators act as a primary source of electricity generation in most of Alaska's more than 200 remote microgrids\"",
+      "requires": "Attributed to ACEP, never to NSF. The page prints no year, so the film may not date this figure."
+    },
+    {
+      "id": "c14",
+      "status": "verified",
+      "on_screen": "193 COMMUNITIES  ·  82,000 ALASKANS",
+      "spoken": "The state's Power Cost Equalization program serves eighty two thousand Alaskans in a hundred ninety three communities that are largely reliant on diesel.",
+      "source": "https://www.akenergyauthority.org/PCE",
+      "note": "Alaska Energy Authority",
+      "verbatim_source": "\"serves 82,000 Alaskans in 193 communities that are largely reliant on diesel fuel for power generation\"",
+      "requires": "COUNTS A DIFFERENT THING FROM c13. 193 is communities enrolled in a state subsidy program; 200-plus is microgrids. The film may never present them as rival counts of the same thing, and may never subtract or divide them."
+    },
+    {
+      "id": "c15",
+      "status": "verified",
+      "on_screen": "\"some of the nation's highest electricity prices\"",
+      "spoken": "The stated payoff is lower energy costs and more resilience for rural and remote communities that face some of the nation's highest electricity prices.",
+      "source": "https://api.nsf.gov/services/v1/awards/2626692.json",
+      "note": "quoting the NSF award abstract",
+      "verbatim_source": "\"The broader impacts of the project include lower energy costs and greater resilience for rural and remote communities that face some of the nation's highest electricity prices.\"",
+      "requires": "This is the abstract's furthest reach toward anywhere rural. It still never says Alaska. Do not pair this quote with an on-screen Alaska map in a way that implies NSF wrote the word Alaska."
+    },
+    {
+      "id": "c16",
+      "status": "verified",
+      "on_screen": "NO AI  ·  NO MACHINE LEARNING  ·  NO NEURAL ANYTHING",
+      "spoken": "The award never says artificial intelligence. It never says machine learning. What it says is data driven.",
+      "source": "https://api.nsf.gov/services/v1/awards/2626692.json",
+      "note": "verified absence, checked across the full abstract text in two independent API queries",
+      "verbatim_source": "labelled non-quotation: the abstract contains zero occurrences of 'artificial intelligence', 'AI', 'machine learning', 'neural'. Its named methods are \"determine the input-output (IO) transfer functions of microgrid components\", \"analytical stability specifications\" and \"Active damping functions\".",
+      "requires": "This claim is an ABSENCE and must be drawn as one, using the absence grammar, not asserted as a caption. It is also the film's own honesty about its own channel name."
+    },
+    {
+      "id": "c17",
+      "status": "PENDING VERIFICATION",
+      "on_screen": "(pending)",
+      "spoken": "(pending)",
+      "source": "pending",
+      "note": "ACT 3 LOAD-BEARING. The adversarial check reported, in its case-against, that grid-forming battery inverters are ALREADY operating in remote Alaska, citing an April 2025 ACEP seminar by Shirazi and William Thomson of Alaska Village Electric Cooperative on operational experience and recommendations for GFM battery energy storage inverters in remote Alaska microgrids. If true this is the strongest fair case against the film's thesis and it earns its own act. It was NOT in the verified safe set, so it is UNVERIFIED and a second check is running. If it cannot be verified it does not go on screen and Act 3 is rebuilt on the falsifier instead.",
+      "requires": "Do not build a frame on this until status flips to verified."
+    }
+  ],
+  "killed": [
+    {"claim": "Adding a battery to an Alaska village grid requires a bespoke consultant-run stability study per village", "why": "Unsourced. The words consultant, bespoke and village appear nowhere in the record. The abstract says small utilities rarely have the specialized studies and expertise, which is a different and weaker claim, and separately locates the root cause in unavailable generator models."},
+    {"claim": "This is an AI project / an AI award / AI on the grid", "why": "The abstract contains no AI or machine-learning term at all. Its methods are transfer function identification and active damping. Calling it AI would be the film inventing its own hook, and it would also read as a description of the DOE AURORA-AI award ACEP published the next day."},
+    {"claim": "Validated on a 500 kW test bed at UAF, per NSF", "why": "The abstract says '500kW-scale' and names no location; the co-awardee is in Wisconsin. UAF's lab is corroborated only by ACEP's own facility page and needs its own attribution."},
+    {"claim": "The award title is 'In-field, GFM-enabled, Data-driven, and Stability-certified Tuning of Hybrid Diesel Generator/IBR Microgrids'", "why": "Truncated. The record's title begins 'Collaborative Research:', and dropping it hides the companion award."},
+    {"claim": "$324,995 is the project's value", "why": "It is UAF's obligation. The two-award project totals $549,995."},
+    {"claim": "This award is unreported", "why": "A universal negative that could not be established with the available tools. Two search engines degraded or 403'd. A three-day-old award being quiet is not evidence of neglect."},
+    {"claim": "Any past or present tense implying the work has begun, tested, or shown anything", "why": "The period of performance begins 2026-08-15, two days after publication."},
+    {"claim": "A named Alaska community losing power to this failure mode", "why": "No Alaska incident is cited anywhere in the record. The oscillation is NSF's characterisation of a failure mode, not a reported event."}
+  ],
+  "cultural_flags": [
+    "Mariko Shirazi is a real named individual. She may be named, quoted from her own faculty page, and drawn respectfully, and she is never a characterized comic object.",
+    "The film touches rural and predominantly Alaska Native communities by subject matter. It names NO community that is not in the source record, and the record names none. It must not depict a specific village, must not put a named place in the dark, and must not present rural Alaskans as waiting to be rescued by a laboratory. The people who run these powerhouses are operators with expertise, and the abstract's own phrase is that small utilities rarely have specialized STUDIES, not that they lack competence."
+  ],
+  "on_screen_numbers_are_illustrative_note": "Every figure on screen comes from this file and is a published federal or state record, not a live feed. No number in this film is measured by the film."
+}
