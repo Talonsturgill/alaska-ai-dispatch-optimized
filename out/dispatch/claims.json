@@ -164,10 +164,10 @@
   {
    "id": "c16",
    "status": "verified",
-   "on_screen": "NO AI  ·  NO MACHINE LEARNING  ·  NO NEURAL ANYTHING",
+   "on_screen": "artificial intelligence  ·  0 FOUND  |  machine learning  ·  0 FOUND  |  neural  ·  0 FOUND",
    "spoken": "The award never says artificial intelligence. It never says machine learning. What it says is data driven.",
    "source": "https://api.nsf.gov/services/v1/awards/2626692.json",
-   "note": "verified absence, checked across the full abstract text in two independent API queries",
+   "note": "verified absence, checked across the full abstract text in two independent API queries  DRAWN AS AN ABSENCE 2026-08-13 (round 7): the earlier rendering asserted the negation as a caption chip reading 'NO AI  ·  NO MACHINE LEARNING', which both truncated the approved string and did the one thing this claim's `requires` forbids. The film now runs the three terms this claim was verified against as a search over the award's own named methods, and each returns 0 FOUND with the strikethrough drawing on. The absence is watched rather than stated.",
    "verbatim_source": "labelled non-quotation: the abstract contains zero occurrences of 'artificial intelligence', 'AI', 'machine learning', 'neural'. Its named methods are \"determine the input-output (IO) transfer functions of microgrid components\", \"analytical stability specifications\" and \"Active damping functions\".",
    "requires": "This claim is an ABSENCE and must be drawn as one, using the absence grammar, not asserted as a caption. It is also the film's own honesty about its own channel name."
   },

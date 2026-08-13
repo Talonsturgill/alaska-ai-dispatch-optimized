@@ -212,8 +212,8 @@ const Head: React.FC<{x: number; y: number; text: string; size?: number; fill?: 
 };
 
 /** The gloved operator hand. Competent, unhurried, never a face, never helpless. */
-const Hand: React.FC<{f: number; x: number; y: number; s?: number; tap?: number; rot?: number}> = ({
-  f, x, y, s = 1, tap = 0, rot = 0,
+const Hand: React.FC<{f: number; x: number; y: number; s?: number; tap?: number; rot?: number; mirror?: boolean}> = ({
+  f, x, y, s = 1, tap = 0, rot = 0, mirror = false,
 }) => {
   const knock = tap > 0 ? Math.abs(Math.sin(tap * Math.PI * 2)) * 26 : 0;
   // It is the only recurring human element in the film and three judges called it the
@@ -230,7 +230,14 @@ const Hand: React.FC<{f: number; x: number; y: number; s?: number; tap?: number;
     {bx: 18, by: 8, len: 45, w: 19, rot: 9},
   ];
   return (
-    <g transform={`translate(${x} ${y - knock}) scale(${s}) rotate(${rot})`}>
+    /* WHICH SIDE THE OPERATOR IS STANDING ON (2026-08-13, round 7). On the contact sheet the
+       arm is a green diagonal BAR across seven of twenty-six frames, and the reason is staging
+       logic I had backwards: the hand sits right of the plate, so the operator is standing to
+       the right, and the arm was running LEFT across the entire picture to a body that would
+       have to be on the far side of the room. Reaching in from the near edge is both correct
+       and about a fifth of the length, so the limb stops being the largest object in the shot.
+       The mirror makes it the other hand, which is what the other side of a machine gets. */
+    <g transform={`translate(${x} ${y - knock}) scale(${mirror ? -s : s} ${s}) rotate(${mirror ? -rot : rot})`}>
       {/* IT HAS TO BE ATTACHED TO SOMEBODY, AND IT HAS TO TOUCH THINGS (2026-08-13).
           Both judges independently called this the least-finished asset in every frame it
           appears in, and both named the same three things: no wrist, no arm, and no contact
@@ -353,7 +360,7 @@ const S1: React.FC<SceneProps & {dur: number}> = (p) => {
           })}
         </g>
       )}
-      {f > 46 && <Hand f={f} x={760} y={1010} s={1.05} tap={tap} rot={-14} />}
+      {f > 46 && <Hand f={f} x={760} y={1010} s={1.05} tap={tap} rot={-14} mirror />}
       {/* THE TITLE WAS AN EMPTY GROUP (2026-08-13, round 7). Every judge for three rounds wrote
           "no title card anywhere in the film" and I kept reading that as a taste note. It was a
           bug report: this block rendered `<g opacity={stamp.o}>` around nothing at all, so the
@@ -366,8 +373,12 @@ const S1: React.FC<SceneProps & {dur: number}> = (p) => {
         return (
           <Smear id="s1title" ax={Math.min(6, Math.max(0, 30 - f) * 0.5)} ay={0}>
             <g opacity={tout} transform={`translate(${(1 - tin) * -190} 0)`}>
-              <Head x={540} y={512} text="THE MACHINE" size={92} />
-              <Head x={540} y={588} text="NOBODY WROTE DOWN" size={62} />
+              {/* 496/600, not 512/588: plate_overlap_check models a headline's box from its
+                  font size and read a 25px collision between the two lines of the lockup. It
+                  looked clean in the frame, and the gate is still right to hold a two-line
+                  lockup to the same clearance as any other pair of drawn strings. */}
+              <Head x={540} y={496} text="THE MACHINE" size={92} />
+              <Head x={540} y={600} text="NOBODY WROTE DOWN" size={62} />
             </g>
           </Smear>
         );
@@ -399,7 +410,7 @@ const S2: React.FC<SceneProps & {dur: number}> = (p) => {
         <g opacity={form.o} transform={`translate(0 ${form.dy})`}>
           <rect x={702} y={1030} width={230} height={150} rx={4} fill="#F1EDE3" stroke={INK} strokeWidth={3.5}
                 transform="rotate(-7 817 1105)" />
-          <Hand f={f} x={840} y={1060} s={0.78} rot={22} />
+          <Hand f={f} x={840} y={1060} s={0.78} rot={22} mirror />
           <Plate x={540} y={1206} text="NOBODY WROTE IT DOWN" size={26} />
         </g>
       )}
@@ -665,7 +676,11 @@ const S7: React.FC<SceneProps & {dur: number}> = (p) => {
       )}
       {/* AFTER the drawer, and above it, because furniture must never sit on a label.
           Three judges read this plate as "WIRED TOO C" for ~6s when it was drawn first. */}
-      <Plate x={540} y={356} text={collapse > 0.5 ? 'A HUNDRED MILES APART' : 'WIRED TOO CLOSE'} size={26} />
+      {/* y=496, not 356. caption_band_check: at 356 this plate renders at authored-top 278 under
+          the World push, which is wholly ABOVE the square crop line at y=420, so the load-
+          bearing label of this beat was invisible in the 1:1 LinkedIn cut. Lowest safe y is 490,
+          and 496 keeps its clearance from STUDY EACH MACHINE ALONE at 566. */}
+      <Plate x={540} y={496} text={collapse > 0.5 ? 'A HUNDRED MILES APART' : 'WIRED TOO CLOSE'} size={26} />
       <DayGrade f={f} amount={0.55} floor={0.3} haze={0.16} sunX={0.06} sunY={0.2} />
     </Stage>
   );
@@ -725,19 +740,26 @@ const S9: React.FC<SceneProps & {dur: number}> = (p) => {
       <PowerhouseBG f={f} parallax={0.2} door={0.45} />
       {/* the real machine, changing behind the photograph */}
       <g transform={`translate(${drift * 26} ${drift * -12})`}>
-        <FieldGenset f={f} x={330} y={940} s={0.82} spin={1} burning={0.35} groundY={300} phase={0.6} />
+        <FieldGenset f={f} x={300} y={940} s={0.92} spin={1} burning={0.35} groundY={300} phase={0.6} />
       </g>
-      {/* the pinned photograph: sharp, correct, and frozen */}
+      {/* the pinned photograph: sharp, correct, and frozen.
+          STAGED BIGGER (2026-08-13, round 7). On the contact sheet this is the emptiest frame
+          in the film: a machine cropped at the left edge, a small card, and roughly half the
+          picture bare wall, under the line that carries the whole thesis. The beat is right and
+          only its scale was wrong, so the photograph is now large enough to read as the rival
+          to the machine it is lying about. Vertical extents stay inside what caption_band_check
+          and crop_safety already model, and the width stops at 900 because Stage's push closes
+          the visible authored band to x[142,938] by the end of a shot. */}
       {pin.o > 0 && (
         <g opacity={pin.o} transform={`translate(0 ${pin.dy}) rotate(${-2 + drift * 1.4} 700 880)`}>
-          <ContactShadow cx={700} cy={1064} rx={168} ry={12} opacity={0.24} />
-          <rect x={528} y={700} width={344} height={364} rx={3} fill="#F1EDE3" stroke={INK} strokeWidth={4} />
-          <rect x={548} y={720} width={304} height={272} fill="#8E9AA0" />
+          <ContactShadow cx={700} cy={1052} rx={210} ry={13} opacity={0.24} />
+          <rect x={500} y={596} width={400} height={444} rx={3} fill="#F1EDE3" stroke={INK} strokeWidth={4} />
+          <rect x={522} y={618} width={356} height={330} fill="#8E9AA0" />
           <g opacity={0.85}>
-            <FieldGenset f={0} x={700} y={880} s={0.28} spin={0} burning={0} groundY={300} />
+            <FieldGenset f={0} x={700} y={800} s={0.34} spin={0} burning={0} groundY={300} />
           </g>
-          <text x={700} y={1032} textAnchor="middle" fontSize={22} fontFamily={MONO} fill="#39424A">08:14</text>
-          <circle cx={700} cy={712} r={9} fill="#B44A3A" stroke={INK} strokeWidth={2.5} />
+          <text x={700} y={1004} textAnchor="middle" fontSize={26} fontFamily={MONO} fill="#39424A">08:14</text>
+          <circle cx={700} cy={610} r={10} fill="#B44A3A" stroke={INK} strokeWidth={2.5} />
         </g>
       )}
       <Plate x={540} y={1120} text="A MEASUREMENT IS THE MOMENT" size={26} />
@@ -867,7 +889,7 @@ const S11: React.FC<SceneProps & {dur: number}> = (p) => {
           </g>
         )}
         <Hand f={f} x={742 + panel * 150} y={bolt < 1 ? 916 : 916 + panel * 260} s={0.78}
-              rot={-24 + bolt * 18 + panel * 22} />
+              rot={-24 + bolt * 18 + panel * 22} mirror />
       </g>
       {/* c17 keeps its verb: the record stops at SHIPPED, and the crate itself carries the
           1 MW / 1 MWh stencil, so the chip does not have to sit on top of the crate to say it. */}
@@ -1045,7 +1067,7 @@ const S14: React.FC<SceneProps & {dur: number}> = (p) => {
       {onPlate && (
         <g>
           <RatingPlate f={f} x={540} y={880} s={1.02} kw="365 kW" columns={1} written={0} />
-          <Hand f={f} x={760} y={1010} s={1.05} tap={tap} rot={-14} />
+          <Hand f={f} x={760} y={1010} s={1.05} tap={tap} rot={-14} mirror />
           {/* THE INSTRUMENT IS ON THE WALL, so it asks more than once. One 4-second sweep
               across a 12-second closing shot left the payoff frozen either side of it; the
               wire now carries a repeating question-and-answer, which is the film's whole
