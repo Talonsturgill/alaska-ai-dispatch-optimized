@@ -7,6 +7,104 @@ back on if a later run regresses. Newest first.
 
 ---
 
+## 2026-08-13 — "The Machine Nobody Wrote Down" (NSF 2626692, UAF, the generator model that was never written down) — DID NOT SHIP
+
+**Status: the panel did not clear the bar and the branch was NOT merged.** Round-2 panel returned
+5.96 / 5.78 / 6.48 against a 7.5 ship threshold. No upload, no feed entry, no Gmail draft. The run
+branch `claude/dispatch-2026-08-13` carries the film, the evidence pack and every fix below.
+
+**Story (verified, and worth keeping for a re-run):** NSF award 2626692, made August 10th 2026 to the
+University of Alaska Fairbanks, PI Mariko Shirazi, with a companion award to Wisconsin-Madison. Put a
+grid-forming battery next to a village diesel about the same size and electrically close and the two
+can interact and produce sustained oscillations. The standard fix is to characterise each machine
+alone, which needs a generator model, and in the abstract's own words accurate generator models are
+also usually unavailable. The proposal is to stop asking for the document and let the inverter put a
+question into the wire. Twenty-one claims, every one sourced to a primary. The film says data driven
+and never says AI, because the award never does.
+
+### The two hard blockers, fixed and verified against pixels
+
+- **The wrong number, spoken as an identity.** The 96.28s line said "three hundred twenty five
+  thousand dollars" while the film prints $324,995 at 28.6s. `scripts/vo_patch_lines.py` re-cut the
+  single line to "just under three hundred twenty five thousand dollars" INSIDE ITS EXISTING SLOT:
+  wer 0.0, pace 1.051x, 5,112,072 samples outside the slot bit-identical, so no shot boundary, sfx
+  event or storyboard beat needed re-fitting. This is the tool working exactly as it was written to.
+- **Six seconds of clipped on-screen text.** "WIRED TOO CLOSE FOR THAT" rendered as "WIRED TOO C",
+  the drawer header as "ACCURATE GENERATOR MODE", its card as "usually unavaila". One root cause: an
+  open FilingDrawer reaches `s*370` to the RIGHT of its authored x, and at x=742 under the scene's
+  composed scale that is past the cut line. Drawer moved inboard in both scenes, the annotation now
+  drawn AFTER and above it, and S10's photo strip respaced because its fifth card was leaving frame.
+
+### Also fixed — every one of these was seen by a judge and by no gate
+
+- **The flywheel was six-fold symmetric.** It rotated at 4.2 deg/frame the whole time, and three
+  judges independently graded it frozen, correctly: every frame is identical to one 60 degrees away.
+  Motion nobody can see is not motion. It carries an asymmetric cream balance weight and rim notch
+  now, plus a real smear while turning.
+- **The recurring glove was one blob path** ("a two-lump mitten"). Rebuilt with a cuff, four separate
+  fingers, a thumb, knuckle seams, form shading and an idle.
+- **The hero numeral was light-on-light.** The stamp's two layers were ordered light on top, so the
+  numeral that read was #C6CFD4 on light steel. A stamp is a RECESS, so the dark layer goes on top.
+  Same physics, opposite contrast, and it now reads at thumbnail size.
+- **ILLUSTRATIVE was the least legible text in the film** while being the film's sourcing caveat. It
+  is a dark chip with light type now.
+- **The floor below the caption band was a flat gradient in nearly every shot.** It has perspective
+  slab joints, a painted bay outline and a drain. Note the trap: authored y is not rendered y under
+  CONTENT_ZOOM, and the first attempt landed entirely behind the caption band and off the bottom edge.
+- **open_loop_2 never paid.** The case was authored off the left edge AND behind the caption band,
+  and the LABORATORY boundary it was meant to cross was itself wider than the frame at that scene's
+  1.608 opening zoom. Both are sized to the shot now and the case walks out through the right edge
+  carrying the same handle, seam and latch it was planted with.
+
+### Machine upgrades
+
+- **`scripts/edge_bleed_check.py` (new).** Reads the encoded master and reports TYPE running into the
+  outer margin. `zoom_clip_check.py` is static and cannot resolve `translate(open * 210)` inside a
+  library component, which is exactly how this defect shipped. Counts horizontal edge transitions per
+  row, requires both a glyph-like stem density and a run 11-64 rows tall, so a cut label reports and
+  the breaker panel this engine stages half-out on purpose does not. Validated against the master that
+  carried the bug: it reports the 62-65s drawer window. Advisory, exit 2, never fails a run.
+- **`scripts/vo_patch_lines.py::_repair_cues` (new).** Aligning ONE re-cut line is a weaker problem
+  than aligning a passage: there is no surrounding context to anchor on. On this run it returned a cue
+  starting BEFORE its predecessor ended and lasting 0.2s, which is a flash and made `caption_rechunk`
+  assert and stop. The repair redistributes only the runs the aligner contradicted itself on, holds
+  the run's outer boundaries fixed, and leaves every cue it got right untouched to the millisecond.
+
+### Why it did not ship, measured
+
+`motion_check.py` reports **5 of 14 shots below the 1.2% articulation floor with the camera solved
+out** (S1, S5, S10, S11, S14). This is the same thing all three judges meant by "static", and it is a
+measurement rather than a taste note: the film mean is 0.85% registered against a 1.2% floor.
+
+Three approaches were tried and honestly reported rather than quietly dropped:
+
+| change | film mean (registered) |
+|---|---|
+| baseline | 0.79% |
+| running-diesel tremor on FieldGenset, scaled by `burning` | 0.83% |
+| live door light (shaft breathing on two irrational periods) | 0.84% |
+| true plane parallax (BG counter-drifts against Stage) | 0.85% |
+
+None of them is the fix, and it is worth writing down why: `gross` is a mean absolute luma difference
+over the WHOLE frame, so it is dominated by the large static wall and floor. Moving a prop a few pixels
+changes its edges only. Clearing 1.2% needs roughly a tenth of the frame changing substantially every
+four frames, which means genuinely animated shots and not ambient tricks on tableaux. **This is the
+single thing standing between this Dispatch and shipping, and it is a re-authoring job.** The three
+changes above were kept anyway: the tremor and the live light are physically motivated and correct,
+and the diesel now goes genuinely still only in the shot where it switches off, which is the story beat.
+
+### Deferred, with the reason
+
+- **Per-shot animation for S1, S5, S10, S11, S14.** The named next-run task, with the gate's own
+  numbers above. S1 is 10 seconds of held tableau after the hand tap and is the place to start.
+- **The end card runs 12.3s of a 123.3s film** and ends on a bare URL with no closing question, which
+  the panel flagged. Not touched: `credits_check.py` gates the site line verbatim and enforces a 10s
+  floor, so this is a deliberate brand element and changing it is a doctrine decision, not a fix.
+- **The "THE FAIRBANKS AWARD / A LAB TEST BED" plate ends 5px inside the right safe line** at 100s.
+  Legible, measured, not worth a 13-minute re-render on its own. Size 23 to 21 fixes it next pass.
+
+---
+
 ## 2026-08-02 — "The Copy In The Mud" (the USGS ash archive nobody built, read out of Gulf of Alaska mud)
 
 **Shipped:** 98.8s vertical + 4:5 Dispatch, Gemini narrator (Sulafat, 16-line read, soundcheck 0.986 clean,
