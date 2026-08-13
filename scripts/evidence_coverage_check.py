@@ -77,6 +77,12 @@ def main():
     # anchors, a per-run artifact read by path that looked plausible and described something
     # else. A judge reporting motion absent from evidence that was never written is the most
     # expensive possible way to find this.
+    # BOUND BEFORE FIRST USE (2026-08-13, round 6). The on-disk guard below was appending to
+    # `problems` a dozen lines before `problems` was created, so the check written this morning
+    # to catch a pack whose filmstrips were destroyed raised NameError instead of reporting one.
+    # A guard that cannot fire is worse than no guard, because it reads as a passing check.
+    # Found by a judge reading the source, which is not where this should have been caught.
+    problems, notes = [], []
     missing_on_disk = [n for n in strips if not os.path.exists(os.path.join(EV, f"filmstrip_{n}.jpg"))]
     if missing_on_disk:
         problems.append(
@@ -87,7 +93,6 @@ def main():
             f"Re-run scripts/build_evidence.py and re-check BEFORE convening a panel.")
 
     samples = sorted([s["centre_s"] for s in strips.values()] + contact_times())
-    problems, notes = [], []
 
     # 1. every shot sampled
     for i, sc in enumerate(scenes):

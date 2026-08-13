@@ -618,7 +618,7 @@ const S8: React.FC<SceneProps & {dur: number}> = (p) => {
                   cy={1012} r={13} fill={P.violet} stroke={INK} strokeWidth={3} />
         </Smear>
       )}
-      <Plate x={540} y={1206} text="PROBE THE GRID" size={30} />
+      <Plate x={540} y={1120} text="PROBE THE GRID" size={30} />
       {curve > 0 && (
         <g opacity={curve}>
           {/* the transfer curve drawing itself from out minus back */}
