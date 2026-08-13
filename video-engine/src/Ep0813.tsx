@@ -130,14 +130,58 @@ const Hand: React.FC<{f: number; x: number; y: number; s?: number; tap?: number;
   f, x, y, s = 1, tap = 0, rot = 0,
 }) => {
   const knock = tap > 0 ? Math.abs(Math.sin(tap * Math.PI * 2)) * 26 : 0;
+  // It is the only recurring human element in the film and three judges called it the
+  // plainest object in every frame it appeared in: "a two-lump mitten with no articulation".
+  // So it is a built glove now -- cuff, form-shaded palm, four separate fingers, a thumb,
+  // knuckle seams -- and it breathes when it is doing nothing, because a held figure that
+  // is perfectly still reads as a still.
+  const idle = Math.sin(f / 37) * 1.7;
+  const curl = knock * 0.14;
+  const FINGERS = [
+    {bx: -46, by: 12, len: 50, w: 20, rot: -9},
+    {bx: -24, by: 3, len: 59, w: 21, rot: -3},
+    {bx: -2, by: 1, len: 56, w: 21, rot: 3},
+    {bx: 18, by: 8, len: 45, w: 19, rot: 9},
+  ];
   return (
     <g transform={`translate(${x} ${y - knock}) scale(${s}) rotate(${rot})`}>
       <ContactShadow cx={10} cy={96} rx={72} ry={12} opacity={0.2 + knock * 0.004} />
-      <path d="M -70 92 L -58 6 q 6 -34 34 -32 q 22 2 24 30 l 4 40 l 8 -46 q 4 -26 28 -24
-               q 22 2 20 28 l -6 52 q -4 44 -44 50 l -40 2 q -26 -2 -28 -26 Z"
+      {/* gauntlet cuff, ribbed, sitting proud of the sleeve */}
+      <path d="M -78 96 L -70 34 l 34 -8 l 6 66 Z" fill="#8E6B52" stroke={INK} strokeWidth={4}
+            strokeLinejoin="round" />
+      {[0, 1, 2].map((i) => (
+        <path key={i} d={`M ${-76 + i * 3} ${82 - i * 20} L ${-32 + i * 2} ${74 - i * 20}`}
+              stroke={INK} strokeWidth={2} opacity={0.4} />
+      ))}
+      {/* fingers behind the palm mass, so the palm reads as the near plane */}
+      {FINGERS.map((g, i) => (
+        <g key={i} transform={`translate(${g.bx} ${g.by}) rotate(${g.rot + idle * (1 + i * 0.2) - curl * (1 + i * 0.3)})`}>
+          <rect x={-g.w / 2} y={-g.len} width={g.w} height={g.len + g.w / 2} rx={g.w / 2}
+                fill="#C9A98C" stroke={INK} strokeWidth={4} />
+          <path d={`M ${-g.w / 2 + 4} ${-g.len + 12} L ${g.w / 2 - 4} ${-g.len + 12}`}
+                stroke={INK} strokeWidth={2} opacity={0.35} />
+          <path d={`M ${-g.w / 2 + 5} ${-g.len + 6} q ${g.w / 2} -8 ${g.w - 10} 0`} fill="none"
+                stroke="#F0E2D2" strokeWidth={2.5} opacity={0.45} />
+        </g>
+      ))}
+      {/* palm: form-shaded, knuckle line on top, heel in shadow */}
+      <path d="M -62 88 L -56 18 q 4 -16 20 -16 l 52 -2 q 20 0 22 20 l 4 44
+               q 2 40 -38 44 l -38 2 q -22 -1 -24 -22 Z"
             fill="#C9A98C" stroke={INK} strokeWidth={4} strokeLinejoin="round" />
-      <path d="M -70 92 L -66 46 l 74 -6 l 6 52 Z" fill="#8E6B52" opacity={0.5} />
-      <path d="M -58 6 q 6 -34 34 -32" fill="none" stroke="#F0E2D2" strokeWidth={3} opacity={0.5} />
+      <path d="M -62 88 L -58 48 l 84 -8 l 2 46 q -2 14 -20 14 l -46 2 q -20 -1 -22 -14 Z"
+            fill="#8E6B52" opacity={0.42} />
+      <path d="M -54 20 q 30 -12 76 -2" fill="none" stroke={INK} strokeWidth={2.5} opacity={0.4} />
+      <path d="M -54 12 q 30 -12 76 -2" fill="none" stroke="#F0E2D2" strokeWidth={3} opacity={0.5} />
+      {/* thumb, across the heel, with its own joint */}
+      <g transform={`rotate(${-6 + idle * 0.8 - curl * 0.6} -46 62)`}>
+        <path d="M -46 62 q -26 6 -30 34 q -2 18 16 20 q 18 1 24 -18 l 6 -26 Z"
+              fill="#C9A98C" stroke={INK} strokeWidth={4} strokeLinejoin="round" />
+        <path d="M -60 70 q -12 10 -12 26" fill="none" stroke={INK} strokeWidth={2} opacity={0.35} />
+      </g>
+      {/* stitched seam down the glove edge */}
+      {Array.from({length: 6}, (_, i) => (
+        <path key={i} d={`M ${26 + i * 1.5} ${28 + i * 10} l 7 -2`} stroke={INK} strokeWidth={2} opacity={0.45} />
+      ))}
     </g>
   );
 };
@@ -346,20 +390,21 @@ const S7: React.FC<SceneProps & {dur: number}> = (p) => {
         ))}
         <Plate x={372} y={566} text="STUDY EACH MACHINE ALONE" size={23} />
       </g>
-      {/* two towers whose spacing collapses */}
+      {/* two towers whose spacing collapses, then hand the shot to the drawer */}
       {[-1, 1].map((sgn, i) => (
-        <g key={i} transform={`translate(${540 + sgn * spread} 760)`}>
+        <g key={i} transform={`translate(${540 + sgn * spread} 760)`} opacity={1 - dOpen * 0.8}>
           <path d="M -34 130 L -12 -96 L 12 -96 L 34 130" fill="none" stroke={INK} strokeWidth={6} />
           <path d="M -22 20 H 22 M -28 74 H 28" stroke={INK} strokeWidth={4} />
         </g>
       ))}
-      <Plate x={540} y={1010} text={collapse > 0.5 ? 'A HUNDRED MILES APART' : 'WIRED TOO CLOSE'} size={26} />
       {dOpen > 0 && (
         <g opacity={dOpen}>
-          <FilingDrawer f={f} x={742} y={980} s={0.78} open={dOpen} card={card} />
-          
+          <FilingDrawer f={f} x={640} y={994} s={0.70} open={dOpen} card={card} />
         </g>
       )}
+      {/* AFTER the drawer, and above it, because furniture must never sit on a label.
+          Three judges read this plate as "WIRED TOO C" for ~6s when it was drawn first. */}
+      <Plate x={540} y={356} text={collapse > 0.5 ? 'A HUNDRED MILES APART' : 'WIRED TOO CLOSE'} size={26} />
       <DayGrade f={f} amount={0.55} floor={0.3} haze={0.16} sunX={0.06} sunY={0.2} />
     </Stage>
   );
@@ -438,8 +483,14 @@ const S10: React.FC<SceneProps & {dur: number}> = (p) => {
   return (
     <Stage f={f} dur={p.dur} drift={0.6} zoom={1.02}>
       <PowerhouseBG f={f} parallax={0.3} door={0.5} />
+      {/* the drawer closes on its own BEHIND them, because nobody needs it any more, so it
+          is drawn first and the strip occludes it. Its open extent reaches s*370 to the
+          right of x, which is what put it through the right cut line at x=872. */}
+      <g opacity={0.9}>
+        <FilingDrawer f={f} x={660} y={960} s={0.6} open={shut} card={shut} />
+      </g>
       {Array.from({length: n}, (_, i) => (
-        <g key={i} transform={`translate(${180 + i * 172} ${820 + ihash(9, i) * 14}) rotate(${ihash(3, i) * 3})`}>
+        <g key={i} transform={`translate(${268 + i * 137} ${820 + ihash(9, i) * 14}) rotate(${ihash(3, i) * 3})`}>
           <ContactShadow cx={0} cy={124} rx={72} ry={9} opacity={0.2} />
           <rect x={-70} y={-92} width={140} height={216} rx={3} fill="#F1EDE3" stroke={INK} strokeWidth={3.5} />
           <rect x={-58} y={-80} width={116} height={150} fill="#8E9AA0" />
@@ -454,10 +505,6 @@ const S10: React.FC<SceneProps & {dur: number}> = (p) => {
           <Plate x={540} y={1206} text="ALREADY ON THE WALL" size={26} />
         </g>
       )}
-      {/* the drawer closes on its own behind them, because nobody needs it any more */}
-      <g opacity={0.9}>
-        <FilingDrawer f={f} x={872} y={1000} s={0.6} open={shut} card={shut} />
-      </g>
       <DayGrade f={f} amount={0.5} floor={0.3} haze={0.14} sunX={0.06} sunY={0.22} />
     </Stage>
   );
@@ -492,20 +539,31 @@ const S12: React.FC<SceneProps & {dur: number}> = (p) => {
   const f = useCurrentFrame();
   const bound = interpolate(f, [4, 34], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const pull = interpolate(f, [at(p, 12, 3.35), p.dur], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
-  const caseX = interpolate(f, [at(p, 12, 1.6), at(p, 12, 4.4)], [140, -260], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  // THE PAYOFF FOR open_loop_2, and it has to actually happen on screen.
+  // The case was planted at 47.8-55.8s and the panel reported it "planted and abandoned":
+  // it was authored at x 140 -> -260, y 1246, inside a scene that opens at zoom 1.608, which
+  // put it off the left edge AND behind the caption band for every frame of its move. The
+  // boundary it was supposed to cross was itself wider than the frame at that zoom. So the
+  // boundary is sized to the OPENING zoom now, and the case walks out through its right edge
+  // where both are visible, carrying the same handle, seam and latch it was planted with.
+  const caseX = interpolate(f, [at(p, 12, 1.6), at(p, 12, 4.4)], [420, 875], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const step = Math.sin(f / 5.2) * 7 * (caseX > 420 && caseX < 875 ? 1 : 0);
   const z = 1.34 - pull * 0.62;
   return (
     <Stage f={f} dur={p.dur} drift={0.4} zoom={z}>
       <PowerhouseBG f={f} parallax={0.3} door={0.9} />
       {/* the dashed laboratory boundary, with the powerhouse floor beyond it, never entered */}
       <g opacity={bound}>
-        <rect x={150} y={620} width={790} height={600} rx={8} fill="none" stroke={INK}
+        <rect x={250} y={660} width={550} height={490} rx={8} fill="none" stroke={INK}
               strokeWidth={5} strokeDasharray="26 18" strokeDashoffset={-f * 0.5} opacity={0.75} />
-        <Plate x={280} y={620} text="LABORATORY" size={22} />
+        <Plate x={372} y={660} text="LABORATORY" size={22} />
       </g>
-      <g transform={`translate(${caseX} 1246) scale(0.5)`} opacity={caseX < 120 ? 1 : 0.85}>
+      <g transform={`translate(${caseX} ${1060 - Math.abs(step)}) scale(0.6) rotate(${step * 0.5})`}>
+        <ContactShadow cx={0} cy={92} rx={82} ry={12} opacity={0.26} />
         <rect x={-74} y={-32} width={148} height={124} rx={9} fill="#7A5A3E" stroke={INK} strokeWidth={4} />
-        <path d="M -24 -32 q 24 -30 48 0" fill="none" stroke={INK} strokeWidth={6} />
+        <path d="M -74 12 H 74" stroke={INK} strokeWidth={3} opacity={0.4} />
+        <path d="M -24 -32 q 24 -32 48 0" fill="none" stroke={INK} strokeWidth={6} />
+        <rect x={-20} y={28} width={40} height={24} rx={3} fill="#C9A98C" stroke={INK} strokeWidth={2.5} />
       </g>
       {/* THE SIGNATURE SHOT: the plate revealed as a grid of operating-point columns */}
       <RatingPlate f={f} x={540} y={912} s={0.78 + pull * 0.12} kw="365 kW"

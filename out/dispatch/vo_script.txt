@@ -10,7 +10,7 @@ So the battery's own inverter will put a question into the wire and learn how th
 But a measurement is only the moment you took it, and a photograph of a running engine is out of date before it's pinned up.
 You can take a new one any hour though, on hardware already on the wall.
 And Alaska's utilities are ahead of the science, with a megawatt battery already shipped to the village of Saint Mary's.
-The Fairbanks award is three hundred twenty five thousand dollars, and the test bed is a lab.
+The Fairbanks award is just under three hundred twenty five thousand dollars, and the test bed is a lab.
 You'd expect a machine that learns to be called artificial intelligence, but this award only says data driven.
 The work starts August 15th, two days from now.
 The plate still won't say how that machine behaves. Fairbanks is finally going to ask it.
