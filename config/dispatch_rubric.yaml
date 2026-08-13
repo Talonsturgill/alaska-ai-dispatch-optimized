@@ -3,8 +3,13 @@
 # The routine iterates until this passes. Bar is intentionally high ("banger tier"),
 # and it is graded WITHIN the brand style (see style_charter below).
 rubric:
-  ship_threshold: 7.5          # out of 10 (owner decision, 2026-07-31)
+  ship_threshold: 7.0          # out of 10 (owner decision, 2026-08-13)
   # 8.6 -> 7.8 -> 7.5, all three the owner's calls on 2026-07-31, in that order.
+  # 7.5 -> 7.0 on 2026-08-13, the owner's call, given verbatim as "move the ship gate down
+  # from 7.5, down to 7.0 permanently". PERMANENTLY is the operative word: this is the standing
+  # bar from now on, not a waiver for the run that was in flight when it was said. That run was
+  # sitting at a 6.72 median and the change did not clear it either, which is worth recording
+  # so nobody later reads this edit as a gate moved to fit a number.
   # The bar belongs to the owner. A run may not move it, may not route around it, and
   # may not invent a condition under which not reaching it is acceptable.
   # THRESHOLD RECALIBRATION (2026-07-21, owner decision): the previous 9.0 was implicitly calibrated

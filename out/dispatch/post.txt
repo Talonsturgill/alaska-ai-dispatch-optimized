@@ -16,7 +16,7 @@ The fair objection is that a measurement is only the moment you took it. Units c
 
 Two caveats. The work starts on August 15th, so nothing has been measured yet, and the validation will happen in a laboratory test bed. A companion award sends $225,000 to Wisconsin-Madison.
 
-And Alaska's utilities are ahead of the science anyway. A one megawatt grid forming battery shipped to Saint Mary's, Alaska back in 2023, and AVEC wrote its own acceptance tests for running with the diesels off.
+And Alaska's utilities are ahead of the science. A one megawatt grid forming battery shipped to Saint Mary's, Alaska back in 2023.
 
 One more thing. The award never says artificial intelligence. It says data driven.
 

@@ -726,7 +726,7 @@ const S7: React.FC<SceneProps & {dur: number}> = (p) => {
       ))}
       {dVisible && (
         <g opacity={Math.min(1, (f - at(p, 7, 3.1)) / 8)}>
-          <FilingDrawer f={f} x={640} y={994} s={0.70} open={dOpen} card={card} />
+          <FilingDrawer f={f} x={508} y={994} s={0.86} open={dOpen} card={card} />
         </g>
       )}
       {/* AFTER the drawer, and above it, because furniture must never sit on a label.

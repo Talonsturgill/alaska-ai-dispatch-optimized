@@ -65,15 +65,17 @@
   {
    "id": "s6",
    "title": "Alaska Village Electric Cooperative, St. Mary's Grid Bridging System, with Alaska Center for Energy and Power, A new grid bridging system tested at ACEP to serve villages in Alaska",
-   "url": "https://www.avec.org/st-marys-grid-bridging-system/",
+   "url": "https://avec.org/about/projects/st-marys-grid-bridging-system/",
    "claims": [
     "c17"
    ],
    "used_in_film": true,
    "urls": [
-    "https://www.avec.org/st-marys-grid-bridging-system/",
-    "https://www.uaf.edu/acep/news/2023/a-new-grid-bridging-system-tested-at-acep-to-serve-villages-in-alaska.php"
-   ]
+    "https://avec.org/about/projects/st-marys-grid-bridging-system/",
+    "https://www.uaf.edu/acep/news/2023/a-new-grid-bridging-system-tested-at-acep-to-serve-villages-in-alaska.php",
+    "https://www.avec.org/st-marys-grid-bridging-system/"
+   ],
+   "note": "AVEC's own project page. The url recorded here was www.avec.org/st-marys-grid-bridging-system/, which 301s to the path below; the canonical form is used so the ledger and claims.json cite the same document."
   },
   {
    "id": "s7",

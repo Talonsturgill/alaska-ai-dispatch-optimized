@@ -72,6 +72,29 @@ def main() -> int:
                     f"{cid}: claims.json cites {src} but ledger entry {e.get('id')} carries "
                     f"{urls}. List both on the entry's `urls` if it covers two documents.")
 
+    # A URL CITED IN PROSE IS STILL A CITATION (2026-08-13, round 9). This checker compared the
+    # `source` field and passed, and a judge then found that c17's NOTE cites
+    # avec.org/about/projects/st-marys-grid-bridging-system/ while the ledger entry for the same
+    # page carries www.avec.org/st-marys-grid-bridging-system/. Claims put their secondary
+    # documents in `note` (a shipping date, a corroborating page), and those are exactly the
+    # citations nobody re-checks. Compared on host+path so a bare www. or a trailing slash is
+    # not reported as a divergence, because that would be noise and this has to stay believable.
+    import re as _re
+    from urllib.parse import urlparse as _up
+
+    def _key(u: str) -> str:
+        p = _up(u.strip().rstrip("/"))
+        return (p.netloc.lower().removeprefix("www."), p.path.rstrip("/").lower())
+
+    ledger_keys = {_key(u) for e in entries for u in (e.get("urls") or ([e["url"]] if e.get("url") else []))}
+    for cid, c in by_id.items():
+        for field in ("note", "verbatim_source", "requires"):
+            for u in _re.findall(r"https?://[^\s,)'\"]+", str(c.get(field) or "")):
+                if _key(u) not in ledger_keys:
+                    problems.append(
+                        f"{cid}: its `{field}` cites {u}, which no ledger entry carries. A "
+                        f"document good enough to name in the record is good enough to list.")
+
     on_card = [e for e in entries if e.get("used_in_film", True)]
     notes.append(f"{len(entries)} ledger entries covering {len(covered)} claim(s); "
                  f"{len(on_card)} cited on the end card, {len(entries) - len(on_card)} held off it "
