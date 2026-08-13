@@ -302,16 +302,20 @@ const S3: React.FC<SceneProps & {dur: number}> = (p) => {
           <text x={640} y={712} textAnchor="middle" fontSize={26} fontFamily={MONO} fill={P.oxblood}>AUG 10 2026</text>
         </g>
       </g>
-      <Plate x={540} y={900} text="NSF 2626692  ·  AUGUST 10TH 2026" size={26} />
+      {/* ABOVE the drums, not behind them. Raising the drums to make room for c5's full title
+          put them straight through this chip, which read "6692 . AUGUST 1" with both ends
+          hidden -- the same occlusion class this run has been clearing all day, reintroduced
+          by a fix to something else. It sits over the award document instead. */}
+      <Plate x={540} y={772} text="NSF 2626692  ·  AUGUST 10TH 2026" size={26} />
       {/* two drums, apart, never poured into one tank */}
       {[{e: dA, x: 330, t: '$324,995', s: 'UAF'}, {e: dB, x: 750, t: '$225,000', s: 'WISCONSIN'}].map((d, i) => (
         <g key={i} opacity={d.e.o} transform={`translate(0 ${d.e.dy})`}>
           <ContactShadow cx={d.x} cy={1178} rx={92} ry={13} opacity={0.28} />
-          <rect x={d.x - 80} y={880} width={160} height={220} rx={10} fill="#8E9AA0" stroke={INK} strokeWidth={4} />
-          {[0, 1, 2].map((k) => <path key={k} d={`M ${d.x - 80} ${920 + k * 62} h 160`} stroke={INK} strokeWidth={3} opacity={0.35} />)}
-          <RimLight d={`M ${d.x - 70} 882 H ${d.x + 70}`} w={3} opacity={0.5} />
-          <text x={d.x} y={1012} textAnchor="middle" fontSize={25} fontFamily={MONO} fill="#1D2226">{d.t}</text>
-          <text x={d.x} y={1048} textAnchor="middle" fontSize={19} fontFamily={MONO} fill="#39424A">{d.s}</text>
+          <rect x={d.x - 80} y={800} width={160} height={220} rx={10} fill="#8E9AA0" stroke={INK} strokeWidth={4} />
+          {[0, 1, 2].map((k) => <path key={k} d={`M ${d.x - 80} ${840 + k * 62} h 160`} stroke={INK} strokeWidth={3} opacity={0.35} />)}
+          <RimLight d={`M ${d.x - 70} 802 H ${d.x + 70}`} w={3} opacity={0.5} />
+          <text x={d.x} y={932} textAnchor="middle" fontSize={25} fontFamily={MONO} fill="#1D2226">{d.t}</text>
+          <text x={d.x} y={968} textAnchor="middle" fontSize={19} fontFamily={MONO} fill="#39424A">{d.s}</text>
         </g>
       ))}
       {/* c5's authorised on-screen string is the name AND the title. The title was dropped, so
@@ -319,8 +323,9 @@ const S3: React.FC<SceneProps & {dur: number}> = (p) => {
           does not fit one plate at a readable size, so it takes the row above. */}
       {nm.o > 0 && (
         <g opacity={nm.o} transform={`translate(0 ${nm.dy})`}>
-          <Plate x={540} y={1128} text="MARIKO SHIRAZI" size={26} bg="#5C4A22" />
-          <Plate x={540} y={1200} text="UNIVERSITY OF ALASKA PRESIDENT'S PROFESSOR IN ENERGY" size={17} bg="#5C4A22" />
+          <Plate x={540} y={1064} text="MARIKO SHIRAZI" size={26} bg="#5C4A22" />
+          <Plate x={540} y={1136} text="UNIVERSITY OF ALASKA" size={22} bg="#5C4A22" />
+          <Plate x={540} y={1206} text="PRESIDENT'S PROFESSOR IN ENERGY" size={22} bg="#5C4A22" />
         </g>
       )}
       <DayGrade f={f} amount={0.52} floor={0.3} haze={0.14} sunX={0.06} sunY={0.2} />
