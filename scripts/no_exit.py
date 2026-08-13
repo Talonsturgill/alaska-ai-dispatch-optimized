@@ -310,7 +310,27 @@ def panel_state():
         med = sorted(js)[len(js) // 2] if js else None
     if med is None:
         return True, False, None, bar, "a panel verdict exists but records no median"
-    return True, med >= bar, med, bar, f"median {med} against a {bar} bar"
+    # HONOUR THE OWNER RELEASE, OR THIS GATE CALLS A LEGITIMATE SHIP A FAILURE (2026-08-13).
+    # ship_gate already reads config/owner_release.json and passes a released cut. This one did
+    # not, so on the very run where the owner said "ship it" it printed BYTES EXIST AND THE PANEL
+    # FAILED THEM over a film that was uploaded, drafted and merged. A gate that is wrong about a
+    # good outcome is how a run learns to stop reading it, which is the exact failure the
+    # DELIVERABLES list already cost this file once. The release is read here for the SAME run
+    # date and never invents one: no file, wrong date, or missing field means no release.
+    rel_floor, rel_note = None, ""
+    try:
+        relp = ROOT / "config" / "owner_release.json"
+        if relp.exists():
+            r = json.loads(relp.read_text())
+            stamp = json.loads(STAMP.read_text()).get("run_date") if STAMP.exists() else None
+            same_day = (not stamp) or str(r.get("run_date")) == str(stamp)
+            if same_day and all(r.get(k) for k in ("run_date", "instruction", "floor")):
+                rel_floor = float(r["floor"])
+                rel_note = f", released by the owner to {rel_floor} for {r['run_date']}"
+    except Exception:
+        rel_floor = None
+    effective = rel_floor if (rel_floor is not None and rel_floor < bar) else bar
+    return True, med >= effective, med, bar, f"median {med} against a {bar} bar{rel_note}"
 
 def cmd_status() -> int:
     delivered, lines = video_state()
