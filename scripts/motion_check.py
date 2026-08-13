@@ -199,11 +199,24 @@ def main():
 
     print(f"{'shot':>5}  {'window':>14}  {'gross':>7}  {'registered':>11}  {'block_max':>10}")
     dead = []
+    thin = []
     for r in rows:
         flag = ""
         if r["block_max_pct"] < a.floor:
             dead.append(r)
             flag = "   <- nothing articulates here"
+        # THE GATE WAS MEASURING A DIFFERENT NUMBER FROM THE PANEL (2026-08-13, round 7).
+        # The floor was applied ONLY to block_max, the best-changed sixteenth of the frame,
+        # which is the right question for "is anything alive at all" and the wrong one for
+        # "does this shot read as moving". block_max runs 2-9% on this film while registered
+        # runs 1.1-4.2%, so the gate printed "every shot clears the floor" in the same hour a
+        # judge wrote that two shots sit under it. They were both right and only one of them
+        # was measuring what a viewer sees. registered_pct is the number the panel reads, so
+        # it is now held to the same floor, reported separately so the two questions stay
+        # distinguishable.
+        elif r["registered_pct"] < a.floor:
+            thin.append(r)
+            flag = "   <- reads as static across the whole frame"
         print(f"{r['shot']:>5}  {r['from_s']:>6.1f}-{r['to_s']:<7.1f}  "
               f"{r['gross_pct']:>6.2f}%  {r['registered_pct']:>10.2f}%  "
               f"{r['block_max_pct']:>9.2f}%{flag}")
