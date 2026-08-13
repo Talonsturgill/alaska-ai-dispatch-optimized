@@ -11,10 +11,21 @@ run invented a new sentence:
   2026-07-31  "remaining defects are cosmetic, ship it"  -> closed by ship_gate.py
   2026-07-31  "I can't reach the bar, failed run"        -> closed by prompt text only
   2026-08-01  "I ran out of session, banked the work"    -> closed by prompt text only
+  2026-08-13  "below bar, zero blockers, low on context,
+               so I'll hand off and notify the status"   -> closed HERE, in code
 
 The two closed by code have not recurred. The two closed by prose have. That is the whole
 argument for this file: a sentence a run writes to itself is negotiable, and an exit code
 is not.
+
+2026-08-13 proved it again and cost the owner an intervention. The run had a graded cut at
+a 6.77 median with ZERO hard blockers on all three cards, ran low on context, and wrote
+itself a defensible-sounding ending: worklog, PR update, push notification, "not shipped,
+correct for a run under the bar." Every sentence in it was true. It was still an empty run,
+and the owner had to say "ship it" for a video to exist. The specific mechanism of the
+failure is worth naming, because it is not laziness and it will recur in this shape: the
+run reported STATUS when it owed a DECISION. A status report asks for nothing, so nothing
+happens. The fix is below, in the refusal text, and it is the owner_release path.
 
 WHAT IT DOES, AND THE ONE THING IT MUST NEVER DO
 ------------------------------------------------
@@ -334,6 +345,22 @@ def cmd_check(blocker: str) -> int:
         print("  Renders are minutes. Measure one before you reason about how many are left,", file=sys.stderr)
         print("  and never assert a number you did not measure. 'More rounds than the run", file=sys.stderr)
         print("  had' is not a measurement, it is the out-of-runway hatch in new clothes.", file=sys.stderr)
+        print("", file=sys.stderr)
+        # 2026-08-13: the excuse of the day was "median below bar, zero hard blockers, and I am
+        # low on context, so I will write a WORKLOG, update the PR and notify the owner of the
+        # status." Every clause true, and the sum of it is still an empty run. The owner had to
+        # come back and say ship it. What made it possible is that the run never told them a
+        # DECISION was available -- it sent a status report, which asks for nothing, instead of
+        # the one question only the owner can answer. There is a designed path for this and the
+        # run did not offer it, so the hatch is named here and the path is printed.
+        print("  IF YOU GENUINELY CANNOT CONTINUE (context or wall-clock, never quality),", file=sys.stderr)
+        print("  YOU STILL MAY NOT DECLARE THE RUN OVER. A handoff is not an outcome and a", file=sys.stderr)
+        print("  status notification is not a decision. Ask the owner the only question they", file=sys.stderr)
+        print("  can answer -- SHIP AT THIS MEDIAN, OR KEEP GOING -- and say what the cut is:", file=sys.stderr)
+        print("  its median, its hard-blocker count, and what is measurably fixed.", file=sys.stderr)
+        print("  If they release it, config/owner_release.json carries {run_date, floor,", file=sys.stderr)
+        print("  instruction verbatim} for that ONE run and ship_gate honours it without", file=sys.stderr)
+        print("  waiving any other check. That file is the exit. A worklog is not.", file=sys.stderr)
         if blocker:
             print(f"\n  you claimed a hard blocker: {blocker}", file=sys.stderr)
             print("  quality is never a blocker and time is never a blocker.", file=sys.stderr)
