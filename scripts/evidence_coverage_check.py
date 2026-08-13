@@ -68,6 +68,24 @@ def main():
     sb = json.load(open(os.path.join(OUT, "storyboard.json")))
     beats = sb.get("beats") or []
 
+    # THE MANIFEST IS NOT THE PACK (2026-08-13). This check read motion.json and never
+    # asked whether the strips it names are on disk, so it passed a pack whose strips had
+    # been destroyed and a judge graded four of thirty-seven. The cause was mundane and will
+    # recur: `build_evidence.py | head -6` sends SIGPIPE partway through, the build dies
+    # after writing a few strips, and motion.json from the previous complete run is still
+    # sitting there describing files that no longer exist. Same class as the stale filmstrip
+    # anchors, a per-run artifact read by path that looked plausible and described something
+    # else. A judge reporting motion absent from evidence that was never written is the most
+    # expensive possible way to find this.
+    missing_on_disk = [n for n in strips if not os.path.exists(os.path.join(EV, f"filmstrip_{n}.jpg"))]
+    if missing_on_disk:
+        problems.append(
+            f"{len(missing_on_disk)} of {len(strips)} filmstrips named in motion.json are NOT ON DISK "
+            f"({', '.join(sorted(missing_on_disk)[:6])}{' ...' if len(missing_on_disk) > 6 else ''}). "
+            f"motion.json is describing a build whose files are gone, which usually means "
+            f"build_evidence.py was interrupted (a `| head` on its output is enough). "
+            f"Re-run scripts/build_evidence.py and re-check BEFORE convening a panel.")
+
     samples = sorted([s["centre_s"] for s in strips.values()] + contact_times())
     problems, notes = [], []
 

@@ -7,7 +7,7 @@ import {tones, FormGradient, RimLight, ContactShadow, DayGrade, INK} from './lib
 import {entrance, POP, SNAP, SETTLE} from './lib/motion';
 import {
   RatingPlate, FieldGenset, BatteryCabinet, ProbeResponse, CoupledRinging,
-  PowerhouseBG, FilingDrawer, Unknown, VIOLET, ID, ihash,
+  PowerhouseBG, FilingDrawer, Unknown, ShippedCrate, VIOLET, ID, ihash,
 } from './lib/identify';
 
 // ============================================================================
@@ -153,6 +153,8 @@ const S1: React.FC<SceneProps & {dur: number}> = (p) => {
   return (
     <Stage f={f} dur={p.dur} drift={0.5} zoom={1.10}>
       <PowerhouseBG f={f} parallax={0.2} />
+      {/* the genset behind the plate, so the shot is never pixel-frozen between events */}
+      <g opacity={0.9}><FieldGenset f={f} x={210} y={1030} s={0.66} spin={1} burning={0.7} groundY={300} /></g>
       <g transform={`translate(0 ${land.dy})`} opacity={land.o}>
         <RatingPlate f={f} x={540} y={880} s={1.02} kw="365 kW" columns={1} written={0} />
       </g>
@@ -178,6 +180,7 @@ const S2: React.FC<SceneProps & {dur: number}> = (p) => {
   return (
     <Stage f={f} dur={p.dur} drift={0.4} zoom={1.34}>
       <PowerhouseBG f={f} parallax={0.4} door={0.6} />
+      <g opacity={0.85}><FieldGenset f={f} x={190} y={1060} s={0.6} spin={1} burning={0.6} groundY={300} phase={2.1} /></g>
       <RatingPlate f={f} x={540} y={900} s={1.0} kw="365 kW" columns={1} written={0} drift={open} />
       <g opacity={open * 0.9}>
         <Unknown f={f} seed={4} label="how it behaves, not recorded"
@@ -311,7 +314,7 @@ const S6: React.FC<SceneProps & {dur: number}> = (p) => {
       <FieldGenset f={f} x={330} y={880} s={0.82} spin={back.o} burning={back.o} groundY={310} />
       <BatteryCabinet f={f} x={790} y={900} s={0.80} charge={0.8} groundY={280} />
       {/* the packed case by the door that cannot leave */}
-      <g transform={`translate(120 1120) rotate(${watch * 0.4})`}>
+      <g transform={`translate(196 1046) scale(1.7) rotate(${watch * 0.4})`}>
         <ContactShadow cx={0} cy={92} rx={82} ry={12} opacity={0.26} />
         <rect x={-74} y={-32} width={148} height={124} rx={9} fill="#7A5A3E" stroke={INK} strokeWidth={4} />
         <path d="M -74 12 H 74" stroke={INK} strokeWidth={3} opacity={0.4} />
@@ -330,8 +333,8 @@ const S7: React.FC<SceneProps & {dur: number}> = (p) => {
   const f = useCurrentFrame();
   const un = ent(f, 2, SNAP);
   const collapse = interpolate(f, [at(p, 7, 4.2), at(p, 7, 6.6)], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
-  const dOpen = interpolate(f, [at(p, 7, 7.4), at(p, 7, 9.4)], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
-  const card = interpolate(f, [at(p, 7, 8.6), at(p, 7, 10.0)], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const dOpen = interpolate(f, [at(p, 7, 4.6), at(p, 7, 6.4)], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const card = interpolate(f, [at(p, 7, 6.2), at(p, 7, 7.6)], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const spread = 60 + collapse * 340;
   return (
     <Stage f={f} dur={p.dur} drift={0.8} zoom={0.96}>
@@ -354,8 +357,8 @@ const S7: React.FC<SceneProps & {dur: number}> = (p) => {
       <Plate x={540} y={1010} text={collapse > 0.5 ? 'A HUNDRED MILES APART' : 'WIRED TOO CLOSE FOR THAT'} size={26} />
       {dOpen > 0 && (
         <g opacity={dOpen}>
-          <FilingDrawer f={f} x={760} y={1090} s={0.52} open={dOpen} card={card} />
-          {card > 0.6 && <Plate x={430} y={1206} text="usually unavailable" size={26} bg="#3A3020" />}
+          <FilingDrawer f={f} x={742} y={980} s={0.78} open={dOpen} card={card} />
+          
         </g>
       )}
       <DayGrade f={f} amount={0.55} floor={0.3} haze={0.16} sunX={0.06} sunY={0.2} />
@@ -432,7 +435,7 @@ const S10: React.FC<SceneProps & {dur: number}> = (p) => {
   const f = useCurrentFrame();
   const n = Math.min(5, Math.floor(interpolate(f, [4, 66], [0, 5.4], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})));
   const seat = ent(f, at(p, 10, 3.8), SNAP, 44);
-  const shut = interpolate(f, [at(p, 10, 4.4), at(p, 10, 6.2)], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const shut = interpolate(f, [at(p, 10, 2.6), at(p, 10, 5.0)], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   return (
     <Stage f={f} dur={p.dur} drift={0.6} zoom={1.02}>
       <PowerhouseBG f={f} parallax={0.3} door={0.5} />
@@ -453,8 +456,8 @@ const S10: React.FC<SceneProps & {dur: number}> = (p) => {
         </g>
       )}
       {/* the drawer closes on its own behind them, because nobody needs it any more */}
-      <g opacity={0.55}>
-        <FilingDrawer f={f} x={930} y={1030} s={0.34} open={shut} card={shut} />
+      <g opacity={0.9}>
+        <FilingDrawer f={f} x={872} y={1000} s={0.6} open={shut} card={shut} />
       </g>
       <DayGrade f={f} amount={0.5} floor={0.3} haze={0.14} sunX={0.06} sunY={0.22} />
     </Stage>
@@ -471,16 +474,8 @@ const S11: React.FC<SceneProps & {dur: number}> = (p) => {
     <Stage f={f} dur={p.dur} drift={0.8} zoom={0.98}>
       <PowerhouseBG f={f} parallax={0.5} door={1} />
       <g opacity={land.o} transform={`translate(0 ${land.dy})`}>
-        <ContactShadow cx={470} cy={1146} rx={280} ry={22} opacity={0.3} />
-        <rect x={210} y={790} width={520} height={356} rx={6} fill="#9A8564" stroke={INK} strokeWidth={4.5} />
-        {[0, 1].map((i) => <path key={i} d={`M ${300 + i * 260} 790 v 356`} stroke={INK} strokeWidth={5} opacity={0.5} />)}
-        <path d="M 210 900 H 730" stroke={INK} strokeWidth={4} opacity={0.4} />
-        <RimLight d="M 220 792 H 720" w={4} opacity={0.55} />
-        {/* the panel coming off under gloved hands */}
-        <g transform={`translate(${panel * 210} ${panel * 60}) rotate(${panel * 9} 470 968)`}>
-          <rect x={318} y={880} width={300} height={190} rx={4} fill="#B0A184" stroke={INK} strokeWidth={3.5} />
-        </g>
-        {panel > 0.1 && <Hand f={f} x={640} y={1010} s={0.7} rot={-24} />}
+        <ShippedCrate f={f} x={520} y={940} s={0.94} open={panel} />
+        {panel > 0.1 && <Hand f={f} x={742} y={1002} s={0.78} rot={-24} />}
       </g>
       <Plate x={540} y={1120} text="ST. MARY'S  ·  1 MW / 1 MWh  ·  2023" size={24} />
       {rec.o > 0 && (
