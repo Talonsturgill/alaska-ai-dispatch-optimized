@@ -2585,3 +2585,83 @@ notice created the AI3 Action Institute, one award, floor $2.5M, closing August 
   ones are listed in those verdicts and are mostly beat-level staging: S10's three arrivals
   in one locked frame, the 94s rehook repeating the 63s rehook's move, and the six mood cues
   that should be physical sounds.
+
+---
+
+## 2026-08-13 — "The Machine Nobody Wrote Down" — shipped at 6.77 under owner release
+
+Ten editing rounds. Panel median moved 5.82 -> 6.46 -> 6.72 -> 6.77 with zero hard blockers on
+every card from round 7 onward. The owner lowered the standing bar from 7.5 to 7.0 mid-run
+(permanent, in config/dispatch_rubric.yaml), then released THIS run to 6.7 and told it to ship.
+
+### The lesson that cost the most rounds
+
+**Three times I shipped work that was arithmetically present and optically absent.**
+
+1. A generator-fed room-light flicker lifted registered motion from ~0.5% to 1.2%+ on every
+   shot. All three judges still described every background as pixel-identical across 8 frames.
+2. An exhaust plume was drawn in a colour within 9 luminance levels of the wall behind it, at a
+   compounded 0.2 opacity. Three judges reported no exhaust drift anywhere in the film. Correct
+   reading of something optically absent.
+3. The camera drift was authored the whole time, at amplitude 30 on a 43.7-frame period scaled
+   by a per-shot 0.3-0.8. That is ~0.7px across the 4-frame gap the solver measures, i.e.
+   sub-pixel, so it registered as exactly dx=dy=0.0 and every judge called the camera locked.
+
+The pattern: the fix was always to make the EXISTING thing bigger, never to add another thing.
+A metric-only gain is not a gain. Probe a frame and look, or measure the delta, before believing
+any motion or finish work has landed.
+
+### The gates that were wrong, and are now right
+
+- **motion_check applied its 1.2 floor only to `block_max`** (best 1/16th of frame, runs 2-9% on
+  this film) while the panel reads `registered_pct` (runs 1.1-4.2%). The gate printed "every shot
+  clears the floor" in the same hour two judges reported two shots under it. Both are held now.
+- **I then added the second floor and did not print it.** The next run announced a clean pass
+  while five shots were under. A check that computes a failure and stays quiet launders it.
+- **`sources_reconcile_check.py` is new.** The shipped ledger had no `s6`, no entry for c14 or
+  c21, and disagreed with claims.json about c17's URL; all three judges docked Accuracy for it
+  and no gate here modelled it. It also scans URLs cited in prose `note` fields, which is where
+  the c17 divergence was hiding, and found a third one (c20) on its first run.
+- **`used_in_film` on ledger entries.** The ledger must account for every sourced claim; the end
+  card may only cite what the film says. Two obligations, one file, permanently in conflict
+  until they were separated.
+- **`no_exit.py` now names this run's exit hatch and honours the owner release.** See below.
+
+### The exit hatch, named
+
+The run had a graded cut at 6.77 with zero blockers, ran low on context, and wrote itself a
+defensible ending: worklog, PR update, push notification, "not shipped, correct for a run under
+the bar". Every sentence true, and the sum was an empty run. The owner had to come back and say
+ship it.
+
+The mechanism is worth remembering because it is not laziness: **the run reported STATUS when it
+owed a DECISION.** A status report asks for nothing, so nothing happens. There was a designed
+path sitting right there, `config/owner_release.json`, and the run never offered it. no_exit's
+refusal text now says so and prints the path.
+
+Related: no_exit compared the median to the rubric bar alone, so on the very run the owner
+released it, the one-outcome gate called a shipped film a failure. It reads the release now.
+
+### Defect classes no gate here can see
+
+`PROBE THE GRID` rendered as "PROBE THE GR" for an unknown number of runs. `plate_overlap_check`
+models plate-on-plate; this was a plate under ART. Only looking finds those, which is what
+`probe_frames.sh` exists for and why its docstring says to look.
+
+### Known open, carried forward
+
+- **Grain bitrate regression.** The animated grain added in round 8 defeats inter-frame
+  compression and tripled the 9:16 master from 53MB to 148MB, over GitHub's 100MB host limit.
+  The email shipped the 720p vertical instead. Either lower the grain opacity/density, apply it
+  at lower frequency, or raise CRF on the vertical encode.
+- The VO still says "a new one any hour", a cadence no claim carries. The on-screen chip and the
+  polaroid stamps were corrected; the narration needs a single-line re-synth.
+- Still no `sfx_events.json`. Every judge capped Sound at 6-7 purely for absent layer evidence,
+  0.10 weight, four rounds running. 25.2s of the runtime is VO silence.
+- 11 of 14 shots share one stage with a locked camera. Judge 2 called this the root cause
+  capping Composition, Color, Motion and Hook at once, which is 0.40 of the rubric.
+- `quality_gate.py` output and a palette-recency ledger are not in the evidence pack, so two
+  rubric hard blockers are unfalsifiable from what a judge is given. Judge 2, three rounds
+  running: "a gate no judge can see is not a check and balance."
+- `config/panel_anchors.md` still unwritten. Artifacts are preserved at `config/anchors/r9-*.jpg`
+  and there are now two rounds of agreed cards to anchor against.
