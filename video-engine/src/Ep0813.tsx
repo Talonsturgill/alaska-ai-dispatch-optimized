@@ -7,7 +7,7 @@ import {tones, FormGradient, RimLight, ContactShadow, DayGrade, INK} from './lib
 import {entrance, POP, SNAP, SETTLE} from './lib/motion';
 import {
   RatingPlate, FieldGenset, BatteryCabinet, ProbeResponse, CoupledRinging,
-  PowerhouseBG, FilingDrawer, Unknown, ShippedCrate, VIOLET, ID, ihash,
+  PowerhouseBG, VillageDockBG, FilingDrawer, Unknown, ShippedCrate, VIOLET, ID, ihash,
 } from './lib/identify';
 
 // ============================================================================
@@ -698,7 +698,10 @@ const S11: React.FC<SceneProps & {dur: number}> = (p) => {
   const rec = ent(f, at(p, 11, 4.3), SETTLE, 40);
   return (
     <Stage f={f} dur={p.dur} drift={0.8} zoom={0.98}>
-      <PowerhouseBG f={f} parallax={0.5} door={1} />
+      {/* THE ONE SHOT THAT GOES OUTSIDE. St. Mary's is the film's only Alaska place and it was
+          staged on the same interior wall as the other thirteen shots; all three judges marked
+          it, on Alaska authenticity and on Illustration both. */}
+      <VillageDockBG f={f} parallax={0.5} />
       <g opacity={land.o} transform={`translate(0 ${land.dy})`}>
         <ShippedCrate f={f} x={520} y={880} s={0.94} open={panel} />
         {/* the bolt, backing out under a turning glove before the panel will move at all */}
@@ -718,10 +721,13 @@ const S11: React.FC<SceneProps & {dur: number}> = (p) => {
                 left, straight over the crate's own "1 MW / 1 MWh" and "THIS WAY UP"
                 stencils, cutting both mid-glyph -- my own fix creating the very occlusion
                 class it was meant to clear. */}
-            <rect x={556} y={738} width={232} height={222} rx={4} fill="#B49B76"
+            {/* seated in the crate's BLANK middle band, between the "1 MW / 1 MWh" stencil
+                above it and "THIS WAY UP" below, so removing it never crosses either. Two
+                previous placements crossed one or the other. */}
+            <rect x={400} y={806} width={380} height={196} rx={4} fill="#B49B76"
                   stroke={INK} strokeWidth={4} />
             {[0, 1, 2].map((i) => (
-              <path key={i} d={`M 556 ${790 + i * 56} H 788`} stroke={INK} strokeWidth={2.5} opacity={0.35} />
+              <path key={i} d={`M 400 ${854 + i * 48} H 780`} stroke={INK} strokeWidth={2.5} opacity={0.35} />
             ))}
           </g>
         )}
