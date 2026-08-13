@@ -1,6 +1,25 @@
 # WORKLOG — Dispatch 2026-08-13, "THE MACHINE NOBODY WROTE DOWN"
 
-## Status: UNSHIPPED. Panel median 6.46 against a 7.5 ship floor. Round 8 rendered, awaiting panel.
+## Status: UNSHIPPED. Panel median 6.46 (round 7). Round 9 rendered, panel grading now.
+
+Rounds 8, 8b and 8c all landed since the round-7 panel; the median below is the last GRADED one.
+Commits: `1b3aaf6` (object motion), `a6612a3` (gate reporting + shaft/plate), `eaa05e9` (PROBE
+chip occlusion, probe cycling, photo sway).
+
+Motion floor progress across those three rounds, on registered_pct against a 1.2 floor:
+  round 7 delivered: S1 1.27 S2 1.28 S8 1.14 S9 1.13 S14 1.30  (2 under)
+  after 8:          S1 1.14 S2 1.14 S8 1.17 S9 1.19 S14 1.17   (5 under - the shaft/plate work
+                    had not landed yet and the grain/vignette cost a little contrast)
+  after 8b:         S8 1.19 S9 1.18                            (2 under)
+  after 8c:         S8 1.15                                    (1 under)  film mean 1.75
+S8 is the last one. The probe now cycles for the length of the shot but the travelling head is a
+small area; the lever that works there is the door shaft (S8 passes door={0.5}, try 0.8) and the
+ProbeResponse amp (46, try 68). Not worth a 13-minute render on its own - fold it into the next.
+
+ANCHOR ARTIFACTS PRESERVED at config/anchors/r9-*.jpg (529KB, downscaled). These are the round-9
+delivered cut: the contact sheet plus the land / tap / loopback / switchoff strips, chosen because
+Motion, Illustration and Hook are the axes judges disagree on most. Once round 9's three cards
+land, config/panel_anchors.md can finally be written against a pack that still exists.
 
 ### Round 8 shipped these (commit `1b3aaf6`), all from the round-7 cards
 - tap rebuilt as a 4-part strike over 44 frames (was a 3.75/sec sine that aliased to "frozen")
