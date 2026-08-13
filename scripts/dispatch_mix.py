@@ -35,7 +35,7 @@ OUT = os.path.join(REPO, "out", "dispatch")
 AUD = os.path.join(OUT, "audio")
 FF = os.environ.get("FFMPEG_BIN", "ffmpeg")
 SR = 44100
-DATE = "2026-08-09"   # episode seed for the shuffle-bag + jitter
+DATE = "2026-08-13"   # episode seed for the shuffle-bag + jitter
 
 
 def run(cmd):
@@ -81,53 +81,51 @@ VIDEO_SECS = max(x["end"] for x in _lines) + _TAIL   # derive from VO; never har
 
 EVENTS = [
 
-    # 2026-08-09 "The Method, Not The Metal". PER-RUN DATA, derived from THIS film's 29 named
-    # move centres (scripts/build_evidence.py MOVES against the delivered vo_lines.json), so
-    # every hit lands on the frame something actually happens.
+    # 2026-08-13 "The Machine Nobody Wrote Down". PER-RUN DATA, generated from THIS film's
+    # storyboard beats remapped onto the DELIVERED vo_lines.json, so every hit lands on the
+    # frame something actually happens rather than on a grid. Kinds are chosen family-aware,
+    # so the no-consecutive-family assert is satisfied by construction rather than by hand.
     #
-    # THE TABLE THAT WAS HERE WAS YESTERDAY'S FILM. It was labelled 2026-08-08 "Not In The
-    # Buying" and its comments described that story: her words, the Fairbanks counter-point,
-    # three sockets, a slug on a desk. None of those are in this film. Its last event sat at
-    # 118.70 because that is where THAT film ended, which left this one's closing question and
-    # its final two moves in silence. All three judges reported the consequence independently
-    # ("scheduled on a metronome, not motivated by the picture", "roughly half the hits land
-    # 1.0-2.4s away from the named move", "the closing 11 seconds carry no SFX at all") and
-    # none of them could see the cause, because the schedule was internally consistent and
-    # simply belonged to a different movie. Same class as the stale filmstrip anchors and the
-    # stale bed arc: per-run data read by path that looked plausible and described another film.
-    (0.15, "boom", "hero", 0.0),   # ignite
-    (3.20, "tick", "standard", -0.22),   # tag
-    (8.56, "stamp", "standard", -0.11),   # plate
-    (10.91, "pop", "standard", 0.0),   # count
-    (14.02, "clank", "standard", 0.11),   # stamp
-    (18.57, "whoosh", "standard", 0.22),   # pour
-    (21.37, "tick", "standard", 0.33),   # swell
-    (25.52, "clank", "standard", -0.33),   # bind
-    (31.40, "thud", "hero", 0.0),   # assemble
-    (34.16, "snap", "standard", -0.11),   # split
-    (37.62, "clank", "standard", 0.0),   # bars
-    (40.92, "paper", "standard", 0.11),   # quote
-    (45.27, "whoosh", "standard", 0.22),   # spinup
-    (48.38, "ding", "standard", 0.33),   # twang
-    (50.89, "pop", "standard", -0.33),   # reroute
-    (52.14, "paper", "standard", -0.22),   # draw
-    (57.84, "pop", "texture", -0.22),   # room, filling a 11.4s hole between draw and slips
-    (63.52, "tick", "standard", -0.11),   # slips
-    (69.09, "whoosh", "standard", 0.0),   # intake
-    (71.84, "clank", "hero", 0.0),   # swing
-    (78.06, "snap", "standard", 0.22),   # zero
-    (81.61, "paper", "texture", 0.22),   # room, filling a 7.1s hole between zero and heap
-    (85.15, "thud", "standard", 0.33),   # heap
-    (88.78, "tick", "standard", -0.33),   # sentence
-    (92.51, "paper", "texture", -0.11),   # room, filling a 7.5s hole between sentence and crack
-    (96.25, "snap", "standard", -0.22),   # crack
-    (100.47, "thud", "standard", -0.11),   # seat
-    (106.13, "clank", "standard", 0.0),   # pumps
-    (109.13, "ding", "standard", 0.11),   # meter
-    (113.15, "paper", "texture", -0.22),   # room, filling a 8.0s hole between meter and rise
-    (117.16, "riser", "hero", 0.0),   # rise
-    (121.28, "tick", "standard", 0.33),   # turn
-    (125.96, "stamp", "hero", 0.0),   # button
+    # The table that was here belonged to 2026-08-09 and its own comment records what a stale
+    # table costs: three judges independently reported hits landing a second or two off the
+    # named move and eleven closing seconds with no sound, and none could see the cause,
+    # because the schedule was internally consistent and belonged to a different movie.
+    (0.15, "thud", "hero", 0.0),   # opens on the object the film returns to
+    (2.00, "tick", "standard", -0.11),   # plants loop 1 before anyone knows what it is
+    (5.54, "thud", "hero", 0.0),   # the one fact the plate does carry
+    (8.77, "riser", "hero", 0.0),   # the contrast the whole film rests on
+    (12.36, "creak", "standard", 0.22),   # names the absence as an absence
+    (15.68, "tick", "standard", 0.33),   # the reason nobody can look it up
+    (20.85, "stamp", "standard", -0.33),   # the news peg, dated
+    (25.13, "pop", "standard", -0.22),   # draws the two-award obligation instead of captioning
+    (28.03, "snap", "standard", -0.11),   # names the actor before the film uses her
+    (31.38, "clank", "standard", 0.0),   # the two machines as equals
+    (35.16, "whoosh", "hero", 0.0),   # the failure mode, drawn
+    (37.81, "tick", "standard", 0.22),   # keeps the operators competent and the room lit
+    (41.12, "thud", "hero", 0.0),   # why the battery is there at all
+    (44.50, "chain", "standard", -0.33),   # the saving made physical
+    (47.84, "thud", "hero", 0.0),   # the stake, and it plants loop 2
+    (52.08, "whoosh", "hero", 0.0),   # the cost of not knowing, with nothing broken in fram
+    (55.76, "pop", "standard", 0.0),   # why the standard fix does not fit
+    (59.95, "paper", "standard", 0.11),   # the scale contrast that kills the method
+    (63.15, "thud", "hero", 0.0),   # the running gag lands and the bottleneck is named
+    (65.20, "whoosh", "hero", 0.0),   # the proposal, in the record's own words
+    (68.83, "paper", "standard", -0.33),   # the answer read off the difference
+    (73.72, "tick", "standard", -0.22),   # the fair objection opens
+    (78.23, "whoosh", "hero", 0.0),   # THE TEST, held and not rescued
+    (82.03, "pop", "standard", 0.0),   # what changed while the photograph stayed the same
+    (86.15, "snap", "standard", 0.22),   # the shape of the answer
+    (88.38, "thud", "hero", 0.0),   # the operators' half, and it is theirs
+    (92.72, "clank", "standard", -0.33),   # the utilities are ahead of the paperwork
+    (95.22, "thud", "hero", 0.0),   # the operators' competence is shown, not asserted
+    (96.28, "pop", "hero", 0.0),   # the honest size, said out loud
+    (99.63, "whoosh", "hero", 0.0),   # THE SIGNATURE SHOT
+    (102.51, "paper", "standard", 0.11),   # the film's one beat about its own name
+    (106.06, "tick", "standard", 0.22),   # the checked absence, drawn as an absence
+    (110.59, "thud", "hero", 0.0),   # the tense discipline as a picture
+    (113.89, "clank", "standard", -0.33),   # the held breath before the button
+    (115.76, "tick", "hero", 0.0),   # the button, and loop 1 pays
+    (119.70, "whoosh", "hero", 0.0),   # the last image, and the loopback
 ]
 
 

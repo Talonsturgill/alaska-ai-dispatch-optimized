@@ -439,6 +439,49 @@ export const PowerhouseBG: React.FC<{f: number; parallax?: number; door?: number
         })}
       </g>
     )}
+    {/* SET DRESSING. A powerhouse is a WORKED room, and an empty wall is a stretch of film
+        where a viewer is given nothing to look at. These are real objects that belong here:
+        a breaker panel, conduit runs, a bench with a vise, a coiled cable on a hook. They are
+        subjects, not texture, which is the distinction dead_space_check actually measures. */}
+    <g>
+      {/* breaker panel high on the back wall */}
+      <rect x={70} y={300} width={190} height={280} rx={5} fill="#7E888E" stroke={INK} strokeWidth={4} />
+      <rect x={86} y={318} width={158} height={244} rx={3} fill="#5F696F" stroke={INK} strokeWidth={2.5} />
+      {Array.from({length: 8}, (_, i) => (
+        <rect key={i} x={96 + (i % 2) * 76} y={330 + Math.floor(i / 2) * 58} width={62} height={40} rx={2}
+              fill="#AEB6BA" stroke={INK} strokeWidth={2} />
+      ))}
+      {/* conduit runs, bending down the wall */}
+      {[0, 1, 2].map((i) => (
+        <path key={i} d={`M ${170 + i * 26} 580 V ${760 + i * 40} q 0 40 40 40 H ${900 - i * 30}`}
+              fill="none" stroke="#6E787E" strokeWidth={13} strokeLinecap="round" />
+      ))}
+      {[0, 1, 2].map((i) => (
+        <path key={i} d={`M ${170 + i * 26} 580 V ${760 + i * 40} q 0 40 40 40 H ${900 - i * 30}`}
+              fill="none" stroke="#8A949A" strokeWidth={7} strokeLinecap="round" />
+      ))}
+      {/* the bench, with a vise and a tool row */}
+      <g>
+        <ContactShadow cx={1010} cy={1188} rx={210} ry={16} opacity={0.3} />
+        <rect x={800} y={980} width={420} height={40} rx={4} fill="#9A8564" stroke={INK} strokeWidth={4} />
+        <rect x={830} y={1020} width={26} height={168} fill="#6E787E" stroke={INK} strokeWidth={3} />
+        <rect x={1150} y={1020} width={26} height={168} fill="#6E787E" stroke={INK} strokeWidth={3} />
+        <rect x={860} y={922} width={96} height={60} rx={4} fill="#5F696F" stroke={INK} strokeWidth={3.5} />
+        <rect x={880} y={900} width={54} height={26} rx={3} fill="#7E888E" stroke={INK} strokeWidth={3} />
+        {Array.from({length: 5}, (_, i) => (
+          <rect key={i} x={1000 + i * 40} y={{0: 936, 1: 944, 2: 930, 3: 948, 4: 938}[i as 0 | 1 | 2 | 3 | 4]}
+                width={12} height={46} rx={3} fill="#8A949A" stroke={INK} strokeWidth={2.5} />
+        ))}
+      </g>
+      {/* coiled cable on a hook */}
+      <g transform="translate(700 470)">
+        <path d="M 0 -18 v 26" stroke={INK} strokeWidth={5} />
+        {[0, 1, 2].map((i) => (
+          <ellipse key={i} cx={0} cy={40 + i * 14} rx={52 - i * 4} ry={26}
+                   fill="none" stroke="#4A5257" strokeWidth={11} />
+        ))}
+      </g>
+    </g>
     {/* NEAR PLANE: cable tray in the low foreground, below the square crop line */}
     <path d="M -400 1660 H 1500 V 1720 H -400 Z" fill="#6E787E" stroke={INK} strokeWidth={4} />
     {Array.from({length: 16}, (_, i) => (
