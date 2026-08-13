@@ -32,6 +32,7 @@ assets/sfx/real/<kind>*.wav (logged in assets/sfx/MANIFEST.md) win over the
 synth bank in scripts/sfx_bank.py. Multiple real takes per kind join the
 shuffle-bag alongside nothing else — real replaces synth per kind, wholesale.
 """
+import json
 import os
 import zlib
 import numpy as np
@@ -394,6 +395,46 @@ def main():
         rows.append((kind, durs))
         print(f"  {kind:8} {VARIANTS} takes  {min(durs):4.2f}-{max(durs):4.2f}s")
     man = os.path.join(BANK, "MANIFEST.md")
+
+    # THE REAL-RECORDINGS SECTION IS REGENERATED, NEVER PRESERVED BY LUCK (2026-08-13).
+    # This function opens MANIFEST.md with "w", and its template only ever described the
+    # SYNTH bank. assets/sfx/real/ holds 30 committed CC0 recordings whose licence and
+    # provenance were documented in a hand-written section of this same file, so every run
+    # that rebuilt the bank silently DELETED the attribution trail for material that stays
+    # on disk. The files kept working and the licence record disappeared, which is the worst
+    # shape a documentation bug can take. Rather than ask a future run to remember to
+    # restore it, the section is now DERIVED from assets/sfx/real/manifest.json, which
+    # carries author, licence, pack, source URL and sha256 per file. Regenerated output
+    # cannot drift from the files it describes, and a rebuild can no longer lose it.
+    def _real_section():
+        rp = os.path.join(BANK, "real", "manifest.json")
+        if not os.path.exists(rp):
+            return ""
+        try:
+            recs = json.load(open(rp)).get("files", [])
+        except Exception:
+            return ""
+        if not recs:
+            return ""
+        by = {}
+        for r in recs:
+            key = (r.get("kind", "?"), r.get("pack", "?"), r.get("author", "?"), r.get("license", "?"))
+            by.setdefault(key, []).append(r.get("filename", ""))
+        lic = sorted({r.get("license", "?") for r in recs})
+        auth = sorted({r.get("author", "?") for r in recs})
+        out = ["\n## Real recordings (assets/sfx/real/ — win over synth, per kind)\n\n"]
+        out.append(f"{len(recs)} file(s), regenerated from real/manifest.json, which carries the\n"
+                   f"source URL, pack, sha256 and retrieval date for each one.\n\n")
+        out.append(f"Licence: {', '.join(lic)}. Author: {', '.join(auth)}.\n")
+        out.append("CC0 requires no attribution; credit is given anyway. Committing CC0 material\n"
+                   "here is clean.\n\n")
+        for (kind, pack, _a, _l), files in sorted(by.items()):
+            out.append(f"- `{kind}_*` — {len(files)} take(s) — {pack}\n")
+        out.append("\nDo NOT add Sonniss/Pixabay/Mixkit files here (commercial use OK, but\n"
+                   "redistribution, which is what committing is, is prohibited). BBC RemArc is\n"
+                   "non-commercial: never use it. CC0-only in this directory.\n")
+        return "".join(out)
+
     with open(man, "w") as f:
         f.write("# SFX bank — designed foley with variants (scripts/build_sfx_library.py)\n\n")
         f.write("Deterministic numpy sound design (crc32-seeded), 44.1k/16-bit stereo, -6 dBFS\n")
@@ -409,6 +450,7 @@ def main():
         f.write("instead of the synth ones, automatically.\n\n")
         for kind, durs in rows:
             f.write(f"- `{kind}_v1..v{VARIANTS}.wav` — {min(durs):.2f}-{max(durs):.2f}s — designed synth — no attribution needed\n")
+        f.write(_real_section())
     print(f"bank: {len(rows)} kinds x {VARIANTS} takes -> {BANK}")
 
 
