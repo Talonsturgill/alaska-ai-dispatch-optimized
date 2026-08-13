@@ -534,7 +534,15 @@ def main():
           f":measured_I={a['input_i']}:measured_TP={a['input_tp']}"
           f":measured_LRA={a['input_lra']}:measured_thresh={a['input_thresh']}"
           f":offset={a['target_offset']}:print_format=summary")
-    run([FF, "-y", "-i", premix, "-af", f"{ln},alimiter=limit=0.89:level=false",
+    # A SAMPLE-PEAK CEILING IS NOT A TRUE-PEAK CEILING (2026-08-13). This limited to 0.89,
+    # which is -1.01 dBFS of SAMPLE peak, and the gate measures TRUE peak -- the inter-sample
+    # reconstruction, which is always higher and is higher again after a lossy encode. So the
+    # ceiling sat exactly on the limit it was supposed to protect, with no margin, and the run
+    # came out at -0.89 dBTP against a -1.0 ceiling: a hard blocker on a mix nobody had
+    # changed. Earlier runs measuring -1.67 were not safer, they were luckier.
+    # 0.78 is -2.16 dBFS of sample peak, which leaves better than a decibel of headroom for
+    # inter-sample overshoot and still clears -14 LUFS comfortably.
+    run([FF, "-y", "-i", premix, "-af", f"{ln},alimiter=limit=0.78:level=false",
          "-ar", str(SR), "-ac", "2", master])
     os.remove(premix)
     print("wrote", master)
