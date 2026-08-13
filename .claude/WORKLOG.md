@@ -1,25 +1,54 @@
 # WORKLOG — Dispatch 2026-08-13, "THE MACHINE NOBODY WROTE DOWN"
 
-## Status: UNSHIPPED. Panel median 6.46 (round 7). Round 9 rendered, panel grading now.
+## Status: UNSHIPPED. Panel median 6.72 (round 9). SHIP BAR IS NOW 7.0. Round 10 rendering.
 
-Rounds 8, 8b and 8c all landed since the round-7 panel; the median below is the last GRADED one.
-Commits: `1b3aaf6` (object motion), `a6612a3` (gate reporting + shaft/plate), `eaa05e9` (PROBE
-chip occlusion, probe cycling, photo sway).
+**The owner lowered the ship gate from 7.5 to 7.0 on 2026-08-13, permanently**, verbatim: "move
+the ship gate down from 7.5, down to 7.0 permanently". It lives in `config/dispatch_rubric.yaml`;
+`ship_gate.py` reads it, never hardcodes it. The run in flight was at 6.72 and did NOT clear the
+new bar either — recorded so nobody later reads that edit as a gate moved to fit a number.
 
-Motion floor progress across those three rounds, on registered_pct against a 1.2 floor:
-  round 7 delivered: S1 1.27 S2 1.28 S8 1.14 S9 1.13 S14 1.30  (2 under)
-  after 8:          S1 1.14 S2 1.14 S8 1.17 S9 1.19 S14 1.17   (5 under - the shaft/plate work
-                    had not landed yet and the grain/vignette cost a little contrast)
-  after 8b:         S8 1.19 S9 1.18                            (2 under)
-  after 8c:         S8 1.15                                    (1 under)  film mean 1.75
-S8 is the last one. The probe now cycles for the length of the shot but the travelling head is a
-small area; the lever that works there is the door shaft (S8 passes door={0.5}, try 0.8) and the
-ProbeResponse amp (46, try 68). Not worth a 13-minute render on its own - fold it into the next.
+GAP TO SHIP IS NOW 0.28.
 
-ANCHOR ARTIFACTS PRESERVED at config/anchors/r9-*.jpg (529KB, downscaled). These are the round-9
-delivered cut: the contact sheet plus the land / tap / loopback / switchoff strips, chosen because
-Motion, Illustration and Hook are the axes judges disagree on most. Once round 9's three cards
-land, config/panel_anchors.md can finally be written against a pack that still exists.
+## Panel trajectory (median)
+
+| round | judges | median | note |
+|---|---|---|---|
+| 6 | 5.76 / 5.82 / 5.98 | 5.82 | |
+| 7 | 6.46 / 6.56 / 6.26 | 6.46 | +0.64, zero hard blockers |
+| 9 | 6.72 / 6.90 / 6.70 | **6.72** | +0.26. Accuracy reached 9 on two cards |
+
+Round-9 axes (j1 / j2 / j3):
+Hook 6/6/6 · **Illustration 7/7/6** · Motion 6/6/6 · Composition 6/6/6 · Color 7/6/7 ·
+Typography 7/7/6 · Sound 6/7/7 · VO-sync 7/7/7 · Accuracy 8/9/9 · Alaska 7/8/7 · Writing 8/8/8
+
+## THE ROOT CAUSE, named by judge 2 and worth more than everything else combined
+
+> "Composition & staging is the ROOT CAUSE: one background plate and one locked camera across
+> all 14 shots is simultaneously capping Composition, Color, Motion and Hook, which together
+> carry 0.40 of the rubric."
+
+All three judges say some version of this. 14 shots share one warehouse plate; `motion_registered`
+shows k=1.0 and dx=dy=0.0 in every sample but one. **This is the next thing to do and it is worth
+0.28 on its own.** Concretely, judges asked for at least: a macro on the plate stamping, a low
+angle on the genset, one true wide establishing the room, and a second exterior beat.
+
+Two ways to get there, and the SAFE one is listed first:
+1. **Restage content, not the camera.** Draw the subject much larger/smaller and reposition it in
+   authored space. This stays inside what `caption_band_check` and `crop_safety` already model,
+   which is how S9's photograph was enlarged in round 7b without breaking a gate. A macro on the
+   plate = `RatingPlate` at s~2.4 positioned so the blank rows fill frame.
+2. **Add a focus origin to `Stage`** (`translate(540+dx,960+dy) scale(k) translate(-ox,-oy)`) so a
+   shot can zoom about a point other than frame centre. More expressive, but the geometry gates
+   model a FIXED transform and would be wrong for any shot using it. If you do this, teach
+   `caption_band_check` and `crop_safety` about it in the SAME commit.
+
+## THE MEASURED LESSON OF ROUND 7 — do not repeat it
+
+I lifted registered motion from ~0.5% to 1.2%+ with a global room-light flicker. The metric moved.
+**All three judges still described every background as pixel-identical across 8 frames.** A
+large-area luma breath satisfies `motion_check` and does not read as motion to a human. Fix motion
+with OBJECT DISPLACEMENT, and treat any metric-only gain as unearned until a strip shows something
+actually moving.
 
 ### Round 8 shipped these (commit `1b3aaf6`), all from the round-7 cards
 - tap rebuilt as a 4-part strike over 44 frames (was a 3.75/sec sine that aliased to "frozen")
@@ -34,22 +63,31 @@ land, config/panel_anchors.md can finally be written against a pack that still e
 - St. Mary's: rounded hazed hills, willow scrub, sun bloom (kept low relief on purpose, see below)
 - `motion_check` now holds registered_pct to the floor too, not just block_max
 
-### STILL OPEN after round 8 - do these next
-- **SFX. There is still no `sfx_events.json`.** Every judge caps Sound at 6-7 purely for absent
-  layer evidence, 0.10 weight. 25.2s of silence across 24 gaps. This is the largest single
-  untouched lever and it does NOT require a re-render, only a re-mix + re-encode + evidence.
-- **Hook, 0.12, sitting at 5-6.** Judges want S1 cut from 12.37s (a quarter of the runtime) and
-  the eight longest VO gaps (1.26-1.58s) pulled back. Needs `vo_patch_lines.py` + re-align.
-- **Kinetic type, 0.06.** No caption or chip changes across any 8-frame window. `Plate` has no
-  entrance animation and cannot get one without being told its own start frame; callers gate on
-  frame thresholds already, so pass `from` at the call sites.
-- **Shot-size variety.** Still 11 of 14 on the same eye-level wide. Judges want a real close-up,
-  a low angle, one true wide. Stage would need a focus-point origin, which the geometry gates
-  currently model as fixed - check `caption_band_check`/`crop_safety` if you add one.
-- **`PROBE THE GRID` occluded at t=72.6s**, reads "PROBE THE GR". Not yet fixed.
-- **ILLUSTRATIVE badge** still sub-legible per judge 3. Not yet fixed.
-- **`config/panel_anchors.md`** still absent. Round 7 gave three agreed cards on one pack; that
-  is the anchor set. PRESERVE a copy of `out/evidence/` first - `build_evidence.py` overwrites it.
+### STILL OPEN after round 9 — ranked by weighted points available
+- [ ] **BREAK THE SINGLE STAGE.** See the root-cause section above. 0.40 of the rubric.
+- [ ] **SFX. There is still no `sfx_events.json`.** Every judge caps Sound at 6-7 purely for
+      absent layer evidence, 0.10 weight, and two have now flagged it twice. 25.2s of silence
+      across 24 gaps. Does NOT need a re-render, only re-mix + re-encode + evidence.
+- [ ] **Runtime.** 130.8s with 25.2s of VO silence; judges want ~90-110s. S1 alone is 12.37s.
+      Needs `vo_patch_lines.py` + re-align + re-mix.
+- [ ] **S8 registered_pct 1.15** against a 1.2 floor — the last shot under. S14 sits exactly on
+      1.20. Try `door={0.8}` (it passes 0.5) and `ProbeResponse amp` 46 -> 68.
+- [ ] **Put a person in the film.** All three judges: the only human presence in 131s is a
+      disembodied hand, and it caps BOTH Alaska (0.06) and entertainment inside VO-sync (0.08).
+- [ ] **Kinetic type**, 0.06. Chips slide and sit; nothing animates on its cue.
+- [ ] **Ship `quality_gate.py` output inside the evidence pack.** Judge 2 has now been unable to
+      verify the objective pre-gate for two rounds running: "a gate no judge can see is not a
+      check and balance." Same for a palette-recency ledger, which makes one rubric hard blocker
+      unfalsifiable from the pack.
+- [ ] **`config/panel_anchors.md`** — artifacts are preserved at `config/anchors/r9-*.jpg` and
+      round 9 produced three agreed cards. It can finally be written.
+
+### FIXED in round 9/10 (do not re-fix)
+- sources ledger complete + contiguous + URLs agree, incl. URLs cited in prose `note` fields
+- the AVEC url divergence: `www.avec.org/st-marys-...` 301s to `avec.org/about/projects/...`
+- post.txt no longer leans on c21 (the claim the film itself dropped)
+- the drawer's "usually unavailable" is legible and IS c8's licensed string, not a misquote
+- `PROBE THE GRID` occlusion, Shirazi title break, back-wall corrugation/seams/stains
 
 ### On the St. Mary's geography note - do not "fix" this without checking
 Round-7 judge 3 called the skyline an imported mountain range on a real Yup'ik community. I
