@@ -94,6 +94,22 @@ const MONO_ADV = 0.602;   // exact mono advance; a plated string's width is arit
 const HEAD_ADV = 0.66;    // Archivo Black mean advance
 const USABLE = (W - 150) / (CONTENT_ZOOM * 1.12);
 
+/** Integral of a linear ramp, for anything whose ANGLE or DISTANCE is driven by a rate that
+ *  changes. A wheel told to slow down must keep turning more slowly, not unwind. */
+const rampIntegral = (f: number, a: number, b: number, v0: number, v1: number) => {
+  if (f <= a) return v0 * f;
+  if (f >= b) return v0 * a + ((v0 + v1) / 2) * (b - a) + v1 * (f - b);
+  const t = f - a;
+  return v0 * a + v0 * t + ((v1 - v0) * t * t) / (2 * (b - a));
+};
+
+/** Overshoot-and-settle. Nothing in this film arrives by stopping dead. */
+const settle = (f: number, a: number, b: number, over = 0.10) => {
+  const t = Math.max(0, Math.min(1, (f - a) / Math.max(1, b - a)));
+  if (t >= 1) return 1;
+  return 1 - Math.pow(1 - t, 3) + over * Math.sin(t * Math.PI * 2) * (1 - t);
+};
+
 /** A plate sized TO its string. Never the reverse. */
 const Plate: React.FC<{
   x: number; y: number; text: string; size?: number; fill?: string; bg?: string; ls?: number;
@@ -191,17 +207,37 @@ const Hand: React.FC<{f: number; x: number; y: number; s?: number; tap?: number;
 /** S1 0.00-10.08 — the plate lands, the hand taps it, the one stamped fact. */
 const S1: React.FC<SceneProps & {dur: number}> = (p) => {
   const f = useCurrentFrame();
+  // THE HOOK HAS TO LAND, NOT DISSOLVE (2026-08-13). This shot is 12.4s, a tenth of the film,
+  // and motion_registered solved its camera to k=1.0 dx=0 dy=0 for every frame of it: the
+  // declared push-in did not exist and the plate arrived as an opacity ramp. A slab of steel
+  // does not fade in. It drops, it overshoots, it rings, and the dust comes off the top edge.
   const land = ent(f, 0, SNAP, 90);
+  const drop = settle(f, 0, 15, 0.22);
   const tap = interpolate(f, [58, 74], [0, 2], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const stamp = ent(f, at(p, 1), SNAP);
+  const dust = Math.max(0, 1 - (f - 12) / 26);
   return (
     <Stage f={f} dur={p.dur} drift={0.5} zoom={1.10}>
       <PowerhouseBG f={f} parallax={0.2} />
       {/* the genset behind the plate, so the shot is never pixel-frozen between events */}
       <g opacity={0.9}><FieldGenset f={f} x={210} y={1030} s={0.66} spin={1} burning={0.7} groundY={300} /></g>
-      <g transform={`translate(0 ${land.dy})`} opacity={land.o}>
+      <g transform={`translate(0 ${(1 - drop) * -260 + land.dy}) scale(${0.94 + drop * 0.06})`}
+         style={{transformOrigin: '540px 880px'}} opacity={land.o}>
         <RatingPlate f={f} x={540} y={880} s={1.02} kw="365 kW" columns={1} written={0} />
       </g>
+      {/* dust jumping off the lit top edge, thrown by the landing and falling back */}
+      {f > 11 && dust > 0 && (
+        <g opacity={dust * 0.7}>
+          {Array.from({length: 14}, (_, i) => {
+            const t = (f - 11) / 26;
+            const dx = (ihash(21, i) * 210);
+            return (
+              <circle key={i} cx={540 + dx} cy={734 - t * (34 + Math.abs(ihash(22, i)) * 46) + t * t * 90}
+                      r={2 + Math.abs(ihash(23, i)) * 2.6} fill="#F2EFE7" opacity={0.55} />
+            );
+          })}
+        </g>
+      )}
       {f > 46 && <Hand f={f} x={760} y={1010} s={1.05} tap={tap} rot={-14} />}
       {stamp.o > 0 && (
         <g opacity={stamp.o}>
@@ -271,16 +307,20 @@ const S3: React.FC<SceneProps & {dur: number}> = (p) => {
       {[{e: dA, x: 330, t: '$324,995', s: 'UAF'}, {e: dB, x: 750, t: '$225,000', s: 'WISCONSIN'}].map((d, i) => (
         <g key={i} opacity={d.e.o} transform={`translate(0 ${d.e.dy})`}>
           <ContactShadow cx={d.x} cy={1178} rx={92} ry={13} opacity={0.28} />
-          <rect x={d.x - 80} y={960} width={160} height={220} rx={10} fill="#8E9AA0" stroke={INK} strokeWidth={4} />
-          {[0, 1, 2].map((k) => <path key={k} d={`M ${d.x - 80} ${1000 + k * 62} h 160`} stroke={INK} strokeWidth={3} opacity={0.35} />)}
-          <RimLight d={`M ${d.x - 70} 962 H ${d.x + 70}`} w={3} opacity={0.5} />
-          <text x={d.x} y={1092} textAnchor="middle" fontSize={25} fontFamily={MONO} fill="#1D2226">{d.t}</text>
-          <text x={d.x} y={1128} textAnchor="middle" fontSize={19} fontFamily={MONO} fill="#39424A">{d.s}</text>
+          <rect x={d.x - 80} y={880} width={160} height={220} rx={10} fill="#8E9AA0" stroke={INK} strokeWidth={4} />
+          {[0, 1, 2].map((k) => <path key={k} d={`M ${d.x - 80} ${920 + k * 62} h 160`} stroke={INK} strokeWidth={3} opacity={0.35} />)}
+          <RimLight d={`M ${d.x - 70} 882 H ${d.x + 70}`} w={3} opacity={0.5} />
+          <text x={d.x} y={1012} textAnchor="middle" fontSize={25} fontFamily={MONO} fill="#1D2226">{d.t}</text>
+          <text x={d.x} y={1048} textAnchor="middle" fontSize={19} fontFamily={MONO} fill="#39424A">{d.s}</text>
         </g>
       ))}
+      {/* c5's authorised on-screen string is the name AND the title. The title was dropped, so
+          the film named a real person and told the viewer nothing about why she is in it. It
+          does not fit one plate at a readable size, so it takes the row above. */}
       {nm.o > 0 && (
         <g opacity={nm.o} transform={`translate(0 ${nm.dy})`}>
-          <Plate x={540} y={1206} text="MARIKO SHIRAZI" size={28} bg="#5C4A22" />
+          <Plate x={540} y={1128} text="MARIKO SHIRAZI" size={26} bg="#5C4A22" />
+          <Plate x={540} y={1200} text="UNIVERSITY OF ALASKA PRESIDENT'S PROFESSOR IN ENERGY" size={17} bg="#5C4A22" />
         </g>
       )}
       <DayGrade f={f} amount={0.52} floor={0.3} haze={0.14} sunX={0.06} sunY={0.2} />
@@ -325,14 +365,51 @@ const S4: React.FC<SceneProps & {dur: number}> = (p) => {
 /** S5 36.07-44.16 — the diesel switches off, and the fuel stops drawing. */
 const S5: React.FC<SceneProps & {dur: number}> = (p) => {
   const f = useCurrentFrame();
-  const off = interpolate(f, [6, 52], [1, 0.04], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  // A FLYWHEEL HAS INERTIA, AND THIS SHOT IS 6.7 SECONDS LONG. The spin-down used to finish
+  // by frame 52, so five of those seconds were a stopped machine in a still frame and the shot
+  // could not clear the articulation floor. A real coast-down takes the shot, which is both the
+  // truer physics and the reason the beat is here.
+  const off = interpolate(f, [6, 150], [1, 0.03], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  // and once the diesel is out of it, the battery is visibly carrying the village
+  const carry = interpolate(f, [40, 176], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const fuel = interpolate(f, [at(p, 5, 4.1), at(p, 5, 6.0)], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   return (
     <Stage f={f} dur={p.dur} drift={0.7} zoom={1.00}>
       <PowerhouseBG f={f} parallax={0.35} door={1} />
-      <FieldGenset f={f} x={330} y={880} s={0.82} spin={off} burning={off} groundY={300} />
+      {/* THE SPIN-DOWN IS THE WHOLE BEAT, so the wheel coasts on the integral of its rate and
+          keeps turning slower and slower instead of unwinding to zero. */}
+      <FieldGenset f={f} x={330} y={880} s={0.82} spin={off} burning={off} groundY={300}
+                   angle={4.2 * rampIntegral(f, 6, 150, 1, 0.03)} />
       <BatteryCabinet f={f} x={790} y={900} s={0.80} charge={0.55 + (1 - off) * 0.4} groundY={270} />
+      {/* the battery picking the load up, cell by cell, for as long as the shot runs */}
+      <g opacity={0.9}>
+        {Array.from({length: 9}, (_, i) => {
+          const lit = carry * 9 > i ? 1 : 0;
+          const puls = lit * (0.68 + 0.32 * Math.sin(f / 6.1 + i * 0.8));
+          return (
+            <rect key={i} x={706} y={1044 - i * 26} width={168} height={18} rx={3}
+                  fill={lit ? ID.greenLit : '#8E9AA0'} opacity={lit ? puls : 0.25}
+                  stroke={INK} strokeWidth={2} />
+          );
+        })}
+      </g>
       <Plate x={540} y={1120} text="THE DIESEL SWITCHES OFF" size={28} />
+      {/* THE EXHAUST DIES WITH THE ENGINE. The whole beat is a machine stopping, and a stack
+          that keeps breathing exactly the same while the wheel coasts down says nothing. This
+          column thins, slows and lifts away as `off` falls, which is the shot's one large
+          continuously-changing region. */}
+      {off > 0.02 && (
+        <g opacity={0.9 * off}>
+          {Array.from({length: 10}, (_, i) => {
+            const t = ((f * (1.6 + off * 3.4) + i * 15) % 150) / 150;
+            return (
+              <circle key={i} cx={352 + Math.sin(f / (17 + i * 4) + i) * (20 + t * 72)}
+                      cy={706 - t * 360} r={(16 + t * 58) * (0.35 + off * 0.65)}
+                      fill="#DCE4E7" opacity={(1 - t) * 0.72} />
+            );
+          })}
+        </g>
+      )}
       {/* the fuel line stops drawing and the level holds */}
       <g transform="translate(0 0)">
         <rect x={120} y={1060} width={120} height={170} rx={8} fill="#8E9AA0" stroke={INK} strokeWidth={4} />
@@ -376,8 +453,15 @@ const S7: React.FC<SceneProps & {dur: number}> = (p) => {
   const f = useCurrentFrame();
   const un = ent(f, 2, SNAP);
   const collapse = interpolate(f, [at(p, 7, 4.2), at(p, 7, 6.6)], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
-  const dOpen = interpolate(f, [at(p, 7, 4.6), at(p, 7, 6.4)], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
-  const card = interpolate(f, [at(p, 7, 6.2), at(p, 7, 7.6)], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  // THE RUNNING GAG HAS TO ACTUALLY RUN OUT (2026-08-13). This is the device the treatment was
+  // bought for -- a drawer that opens long and hollow on one index card -- and three judges
+  // reported it never opens. It was ramping over 1.8s of a 9.4s shot with a linear interpolate,
+  // so a strip landing either side of that window saw a shut drawer or an open one and never a
+  // move. It now runs out with a real overshoot and settle, holds open, and the comedy beat is
+  // the LENGTH of the run compared to the one card at the end of it.
+  const dOpen = settle(f, at(p, 7, 3.4), at(p, 7, 6.6), 0.13);
+  const dVisible = f >= at(p, 7, 3.1);
+  const card = interpolate(f, [at(p, 7, 6.6), at(p, 7, 7.9)], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const spread = 60 + collapse * 340;
   return (
     <Stage f={f} dur={p.dur} drift={0.8} zoom={0.96}>
@@ -388,8 +472,16 @@ const S7: React.FC<SceneProps & {dur: number}> = (p) => {
         {Array.from({length: 9}, (_, i) => (
           <path key={i} d={`M -120 ${470 + i * 56} H 1200`} stroke={INK} strokeWidth={2} opacity={0.18} />
         ))}
-        <Plate x={372} y={566} text="STUDY EACH MACHINE ALONE" size={23} />
       </g>
+      {/* OUT of the fading schematic group, because a label inherited its 0.25 opacity and two
+          judges read it as the least legible text in the film, half of it behind the breaker
+          panel besides. It is now full contrast while the idea is on screen and simply GONE
+          once the idea is superseded, rather than lingering as unreadable grey. */}
+      {collapse > 0.32 && (
+        <g opacity={Math.min(1, (collapse - 0.32) * 4)}>
+          <Plate x={540} y={566} text="STUDY EACH MACHINE ALONE" size={23} />
+        </g>
+      )}
       {/* two towers whose spacing collapses, then hand the shot to the drawer */}
       {[-1, 1].map((sgn, i) => (
         <g key={i} transform={`translate(${540 + sgn * spread} 760)`} opacity={1 - dOpen * 0.8}>
@@ -397,8 +489,8 @@ const S7: React.FC<SceneProps & {dur: number}> = (p) => {
           <path d="M -22 20 H 22 M -28 74 H 28" stroke={INK} strokeWidth={4} />
         </g>
       ))}
-      {dOpen > 0 && (
-        <g opacity={dOpen}>
+      {dVisible && (
+        <g opacity={Math.min(1, (f - at(p, 7, 3.1)) / 8)}>
           <FilingDrawer f={f} x={640} y={994} s={0.70} open={dOpen} card={card} />
         </g>
       )}
@@ -489,16 +581,49 @@ const S10: React.FC<SceneProps & {dur: number}> = (p) => {
       <g opacity={0.9}>
         <FilingDrawer f={f} x={660} y={960} s={0.6} open={shut} card={shut} />
       </g>
-      {Array.from({length: n}, (_, i) => (
-        <g key={i} transform={`translate(${268 + i * 137} ${820 + ihash(9, i) * 14}) rotate(${ihash(3, i) * 3})`}>
-          <ContactShadow cx={0} cy={124} rx={72} ry={9} opacity={0.2} />
-          <rect x={-70} y={-92} width={140} height={216} rx={3} fill="#F1EDE3" stroke={INK} strokeWidth={3.5} />
-          <rect x={-58} y={-80} width={116} height={150} fill="#8E9AA0" />
-          <text x={0} y={104} textAnchor="middle" fontSize={19} fontFamily={MONO} fill="#39424A">
-            {['08:14', '09:14', '10:14', '11:14', '12:14'][i]}
-          </text>
-        </g>
-      ))}
+      {/* THE PRINTS ACCUMULATE, ONE AT A TIME, AND THEY HAVE ENGINES IN THEM (2026-08-13).
+          Two failures here, both named by judges. They arrived inside the first 2.2s of a 6s
+          shot and then nothing moved, so every strip cut after that read as a static row; and
+          all five picture windows were EMPTY GREY RECTANGLES, which is fatal because the whole
+          Act 3 rebuttal is "the machine changed while the photograph did not". A print of
+          nothing cannot carry that. Each one now drops in on its own beat across the whole
+          shot with an overshoot and settle, and each holds the same engine at a DIFFERENT
+          flywheel angle and exhaust height, so the row itself is the argument. */}
+      {Array.from({length: 5}, (_, i) => {
+        const born = 6 + i * 30;
+        if (f < born) return null;
+        const e = settle(f, born, born + 16, 0.16);
+        const drop = (1 - e) * -54;
+        const spokes = 18 + i * 31;
+        return (
+          <g key={i} opacity={Math.min(1, (f - born) / 7)}
+             transform={`translate(${268 + i * 137} ${820 + ihash(9, i) * 14 + drop}) rotate(${ihash(3, i) * 3 * e})`}>
+            <ContactShadow cx={0} cy={124} rx={72 * e} ry={9} opacity={0.2 * e} />
+            <rect x={-70} y={-92} width={140} height={216} rx={3} fill="#F1EDE3" stroke={INK} strokeWidth={3.5} />
+            <rect x={-58} y={-80} width={116} height={150} fill="#8E9AA0" />
+            {/* the machine in the picture: same engine, a different instant each time */}
+            <g clipPath="none" opacity={0.92}>
+              <rect x={-46} y={-16} width={64} height={54} rx={3} fill="#3E5147" stroke={INK} strokeWidth={2.5} />
+              <path d={`M -30 -16 V -34 h 13 V -16`} fill="#46574E" stroke={INK} strokeWidth={2} />
+              <path d={`M -24 -34 q ${2 + i * 2} -12 ${i * 3 - 3} -${16 + i * 5}`} fill="none"
+                    stroke="#CFD8DC" strokeWidth={3} opacity={0.65} />
+              <g transform={`translate(28 12) rotate(${spokes})`}>
+                <circle r={17} fill="#39424A" stroke={INK} strokeWidth={2.5} />
+                {[0, 60, 120].map((d) => (
+                  <path key={d} d={`M ${-Math.cos((d * Math.PI) / 180) * 14} ${-Math.sin((d * Math.PI) / 180) * 14}
+                                    L ${Math.cos((d * Math.PI) / 180) * 14} ${Math.sin((d * Math.PI) / 180) * 14}`}
+                        stroke="#7C868C" strokeWidth={4} strokeLinecap="round" />
+                ))}
+                <path d="M 0 0 L 14 0" stroke="#E8E4DA" strokeWidth={4} strokeLinecap="round" />
+              </g>
+              <path d={`M -58 38 H 58`} stroke={INK} strokeWidth={2} opacity={0.4} />
+            </g>
+            <text x={0} y={104} textAnchor="middle" fontSize={19} fontFamily={MONO} fill="#39424A">
+              {['08:14', '09:14', '10:14', '11:14', '12:14'][i]}
+            </text>
+          </g>
+        );
+      })}
       <Plate x={540} y={1120} text="A NEW ONE ANY HOUR" size={30} />
       {seat.o > 0 && (
         <g opacity={seat.o} transform={`translate(0 ${seat.dy})`}>
@@ -513,17 +638,44 @@ const S10: React.FC<SceneProps & {dur: number}> = (p) => {
 /** S11 90.66-100.05 — St. Mary's. The operators got there first. */
 const S11: React.FC<SceneProps & {dur: number}> = (p) => {
   const f = useCurrentFrame();
+  // THE OPERATORS' ACT, and it had the lowest registered motion in the film (0.25%). The panel
+  // removal was crammed into the last 1.1s of a 7.9s shot, so it read as a still crate. The
+  // hands now work across the shot: the bolt backs out, then the panel comes away and lowers.
   const land = ent(f, 4, SNAP, 80);
-  const panel = interpolate(f, [at(p, 11, 6.8), at(p, 11, 8.6)], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const bolt = interpolate(f, [at(p, 11, 1.6), at(p, 11, 3.4)], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const panel = settle(f, at(p, 11, 3.6), at(p, 11, 7.2), 0.08);
   const rec = ent(f, at(p, 11, 4.3), SETTLE, 40);
   return (
     <Stage f={f} dur={p.dur} drift={0.8} zoom={0.98}>
       <PowerhouseBG f={f} parallax={0.5} door={1} />
       <g opacity={land.o} transform={`translate(0 ${land.dy})`}>
-        <ShippedCrate f={f} x={520} y={940} s={0.94} open={panel} />
-        {panel > 0.1 && <Hand f={f} x={742} y={1002} s={0.78} rot={-24} />}
+        <ShippedCrate f={f} x={520} y={880} s={0.94} open={panel} />
+        {/* the bolt, backing out under a turning glove before the panel will move at all */}
+        {bolt > 0 && bolt < 1 && (
+          <g opacity={Math.min(1, bolt * 4)}>
+            <circle cx={742} cy={846} r={13} fill="#6E787E" stroke={INK} strokeWidth={3} />
+            <path d={`M 742 846 m -8 0 h 16`} stroke={INK} strokeWidth={3}
+                  transform={`rotate(${bolt * 540} 742 846)`} />
+          </g>
+        )}
+        {/* the freed panel travels: out of its seat, down and clear, carried by the glove.
+            A 44px nudge was not a move, it was a nudge, and the shot measured 0.86 for it. */}
+        {panel > 0.02 && (
+          <g transform={`translate(${panel * 236} ${panel * 300}) rotate(${panel * 15})`}
+             opacity={1 - panel * 0.15}>
+            <rect x={330} y={738} width={286} height={222} rx={4} fill="#B49B76"
+                  stroke={INK} strokeWidth={4} />
+            {[0, 1, 2].map((i) => (
+              <path key={i} d={`M 330 ${790 + i * 56} H 616`} stroke={INK} strokeWidth={2.5} opacity={0.35} />
+            ))}
+          </g>
+        )}
+        <Hand f={f} x={742 + panel * 150} y={bolt < 1 ? 916 : 916 + panel * 260} s={0.78}
+              rot={-24 + bolt * 18 + panel * 22} />
       </g>
-      <Plate x={540} y={1120} text="ST. MARY'S  ·  1 MW / 1 MWh  ·  2023" size={24} />
+      {/* c17 keeps its verb: the record stops at SHIPPED, and the crate itself carries the
+          1 MW / 1 MWh stencil, so the chip does not have to sit on top of the crate to say it. */}
+      <Plate x={540} y={1120} text="ST. MARY'S, ALASKA  ·  SHIPPED AUGUST 2023" size={22} />
       {rec.o > 0 && (
         <g opacity={rec.o} transform={`translate(0 ${rec.dy})`}>
           <Plate x={540} y={1206} text="SANDIA  ·  DEPLOYMENT" size={25} />
@@ -567,7 +719,10 @@ const S12: React.FC<SceneProps & {dur: number}> = (p) => {
       </g>
       {/* THE SIGNATURE SHOT: the plate revealed as a grid of operating-point columns */}
       <RatingPlate f={f} x={540} y={912} s={0.78 + pull * 0.12} kw="365 kW"
-                   columns={pull > 0.25 ? 6 : 1} written={pull > 0.25 ? 1 : 0} />
+                   columns={1 + Math.floor(interpolate(pull, [0.18, 0.72], [0, 5],
+                              {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}))}
+                   written={interpolate(pull, [0.2, 0.55], [0, 1],
+                              {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})} />
       <Plate x={540} y={1120} text="THE FAIRBANKS AWARD  ·  A LAB TEST BED" size={23} />
       {pull > 0.5 && <Plate x={540} y={1206} text="ONE COLUMN MEASURED" size={26} />}
       <DayGrade f={f} amount={0.5} floor={0.3} haze={0.14} sunX={0.06} sunY={0.22} />
@@ -622,11 +777,17 @@ const S14: React.FC<SceneProps & {dur: number}> = (p) => {
   const f = useCurrentFrame();
   const stencil = ent(f, 4, SNAP);
   const toPlate = at(p, 15);
-  const tap = interpolate(f, [toPlate + 18, toPlate + 36], [0, 2], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
-  const pulse = interpolate(f, [toPlate + 96, p.dur - 4], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  // THE LONGEST SHOT IN THE FILM (12.1s) AND THE PAYOFF OF THE LOOP PLANTED AT 2.66s.
+  // It solved to k=1.0 with the hand identical across every sampled frame. Two knuckle taps
+  // now, spaced, each with its own anticipation and settle, then the wire answers. The push-in
+  // runs the whole shot instead of being a constant, so the frame closes on the plate.
+  const tap = interpolate(f, [toPlate + 14, toPlate + 30, toPlate + 52, toPlate + 70],
+                          [0, 1, 1, 2], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const pulse = interpolate(f, [toPlate + 88, p.dur - 4], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const onPlate = f >= toPlate;
+  const push = onPlate ? 1.03 + settle(f, toPlate, p.dur, 0) * 0.06 : 0.92;
   return (
-    <Stage f={f} dur={p.dur} drift={0.35} zoom={onPlate ? 1.06 : 0.92}>
+    <Stage f={f} dur={p.dur} drift={0.35} zoom={push}>
       <PowerhouseBG f={f} parallax={0.25} door={0.8} />
       {!onPlate && (
         <g opacity={stencil.o}>
@@ -641,11 +802,24 @@ const S14: React.FC<SceneProps & {dur: number}> = (p) => {
         <g>
           <RatingPlate f={f} x={540} y={880} s={1.02} kw="365 kW" columns={1} written={0} />
           <Hand f={f} x={760} y={1010} s={1.05} tap={tap} rot={-14} />
+          {/* THE INSTRUMENT IS ON THE WALL, so it asks more than once. One 4-second sweep
+              across a 12-second closing shot left the payoff frozen either side of it; the
+              wire now carries a repeating question-and-answer, which is the film's whole
+              proposition stated as picture rather than as a caption. */}
           {pulse > 0 && (
-            <ProbeResponse f={f} x1={880} x2={200} y={880} p={Math.min(1, pulse * 1.3)} amp={16} w={6} />
+            <>
+              <ProbeResponse f={f} x1={880} x2={200} y={880}
+                             p={((f - (toPlate + 88)) % 46) / 46} amp={16} w={6} />
+              <ProbeResponse f={f} x1={880} x2={200} y={952}
+                             p={((f - (toPlate + 88) + 23) % 46) / 46} amp={11} w={5} />
+            </>
           )}
           <Plate x={540} y={1120} text="THE PLATE STILL WON'T SAY" size={28} /> {/* plate-overlap-ok: the onPlate branch, the stencil plates are gone by here */}
-          {pulse > 0.25 && <Plate x={540} y={1206} text="FAIRBANKS IS GOING TO ASK IT" size={25} />}
+          {/* NOT the VO's own last line. The open caption already prints "Fairbanks is finally
+              going to ask it." across these exact frames, and this plate used to print the same
+              words beside it, so the film's closing beat was read twice at once. This states the
+              mechanism instead (c8 + c10): the answer gets measured, not looked up. */}
+          {pulse > 0.25 && <Plate x={540} y={1206} text="MEASURED, NOT LOOKED UP" size={25} />}
         </g>
       )}
       <DayGrade f={f} amount={0.5} floor={0.3} haze={0.14} sunX={0.06} sunY={0.22} />

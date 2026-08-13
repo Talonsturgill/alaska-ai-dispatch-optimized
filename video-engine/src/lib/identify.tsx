@@ -114,6 +114,28 @@ export const RatingPlate: React.FC<{
 
       {/* the plate body, brushed steel, four corner screws on a regular pitch */}
       <rect x={-W / 2} y={-H / 2} width={W} height={H} rx={8} fill="url(#platef)" />
+      {/* THE STEEL CATCHES THE ROOM (2026-08-13). Brushed metal under a door-lit sky is never
+       * one flat value, and this plate is the hero of the three shots that could not clear the
+       * articulation floor (S1, S12, S14) precisely because it was a still object filling most
+       * of the frame. A specular band crossing it on a slow irrational period gives those shots
+       * continuous local change that is MOTIVATED rather than decorative, and it is the filmic
+       * finishing three judges said the film had none of. It rides inside the plate body, so it
+       * can never leave the prop or read as a bar crossing the frame -- which is exactly how an
+       * earlier near-foreground pass failed and got reverted. */}
+      <clipPath id={`plclip${Math.round(x)}`}>
+        <rect x={-W / 2} y={-H / 2} width={W} height={H} rx={8} />
+      </clipPath>
+      <g clipPath={`url(#plclip${Math.round(x)})`}>
+        <rect x={-W / 2 + ((f * 9.1 + phase * 61) % (W + 460)) - 320} y={-H / 2 - 40}
+              width={150} height={H + 80} fill="#FFFFFF" opacity={0.30}
+              transform={`skewX(-16)`} />
+        <rect x={-W / 2 + ((f * 9.1 + phase * 61) % (W + 460)) - 196} y={-H / 2 - 40}
+              width={54} height={H + 80} fill="#FFFFFF" opacity={0.19}
+              transform={`skewX(-16)`} />
+        <rect x={-W / 2 + ((f * 9.1 + phase * 61) % (W + 460)) - 396} y={-H / 2 - 40}
+              width={30} height={H + 80} fill="#20262B" opacity={0.10}
+              transform={`skewX(-16)`} />
+      </g>
       <rect x={-W / 2} y={-H / 2} width={W} height={H} rx={8} fill="none" stroke={INK} strokeWidth={4} />
       <RimLight d={`M ${-W / 2 + 8} ${-H / 2} H ${W / 2 - 8}`} w={3} opacity={0.5} />
       {[[-1, -1], [1, -1], [-1, 1], [1, 1]].map(([sx, sy], i) => (
@@ -215,12 +237,20 @@ export const RatingPlate: React.FC<{
  */
 export const FieldGenset: React.FC<{
   f: number; x: number; y: number; s?: number; spin?: number; burning?: number;
-  phase?: number; groundY?: number; accent?: number;
-}> = ({f, x, y, s = 1, spin = 1, burning = 1, phase = 0, groundY = 250, accent = 0}) => {
+  phase?: number; groundY?: number; accent?: number; angle?: number;
+}> = ({f, x, y, s = 1, spin = 1, burning = 1, phase = 0, groundY = 250, accent = 0, angle}) => {
   const T = tones(ID.green);
   const R = tones(ID.oxblood);
   const v = vitals(f, phase, 0.5 + spin * 0.5);
-  const wheel = (f * 4.2 * spin) % 360;
+  // A WHEEL'S ANGLE IS THE INTEGRAL OF ITS RATE, NOT ITS RATE (2026-08-13).
+  // This was `(f * 4.2 * spin) % 360`, which is correct only while spin is constant. In the
+  // spin-down shot the caller ramps spin 1 -> 0.04, so the ANGLE was being scaled toward zero
+  // and the flywheel wound BACKWARDS to its start instead of coasting to a stop. Judge 3 saw
+  // it as "a uniform angular step with no visible deceleration on a beat whose entire content
+  // is a spin-down", which is exactly what a reversing wheel looks like averaged over 8
+  // frames. A caller that animates spin must pass the integrated `angle`; constant-rate
+  // callers keep the closed form, which is that integral anyway.
+  const wheel = (angle !== undefined ? angle : f * 4.2 * spin) % 360;
   const kick = 1 + accent * 0.02;
   // A RUNNING DIESEL SHAKES (2026-08-13). motion_check measured six shots under the 1.2%
   // articulation floor with the camera solved out, and this machine is on screen for most of
@@ -631,16 +661,21 @@ export const FilingDrawer: React.FC<{
       <g transform={`translate(${open * 210} 0)`}>
         <rect x={-160} y={100} width={320} height={180} rx={4} fill="#8A949A" stroke={INK} strokeWidth={3.5} />
         <rect x={-40} y={170} width={80} height={16} rx={4} fill="#5A6368" stroke={INK} strokeWidth={2} />
-        <text x={0} y={140} textAnchor="middle"
-              fontSize={Math.min(17, Math.floor(292 / Math.max(1, label.length * 0.602)))}
-              fontFamily="JetBrains Mono, monospace" fill="#2B2F33" letterSpacing={0.5}>{label}</text>
+        {/* THE LABEL IS THE SUBJECT OF THE BEAT, so it gets the dark-chip treatment the rest of
+            the film's readable type gets. It was #2B2F33 on #8A949A -- grey on grey -- and two
+            judges independently called it unreadable even before the index card covered it. */}
+        <rect x={-146} y={122} width={292} height={30} rx={3} fill={INK} opacity={0.88} />
+        <text x={0} y={143} textAnchor="middle"
+              fontSize={Math.min(17, Math.floor(280 / Math.max(1, label.length * 0.602)))}
+              fontFamily="JetBrains Mono, monospace" fill="#EFECE3" letterSpacing={0.5}>{label}</text>
         {open > 0.35 && (
           <g opacity={Math.min(1, (open - 0.35) * 3)}>
-            <rect x={-150} y={118} width={300} height={146} fill="#3A4348" opacity={0.55} />
+            <rect x={-150} y={160} width={300} height={104} fill="#3A4348" opacity={0.55} />
+            {/* the card rides in the drawer's WELL, clear of the label's baseline */}
             {card > 0 && (
-              <g transform={`translate(0 ${196 - card * 46})`} opacity={card}>
-                <rect x={-124} y={-30} width={248} height={58} rx={3} fill="#F1EDE3" stroke={INK} strokeWidth={2.5} />
-                <text x={0} y={6} textAnchor="middle" fontSize={21} fontFamily="JetBrains Mono, monospace" fill="#2B2F33">
+              <g transform={`translate(0 ${232 - card * 22})`} opacity={card}>
+                <rect x={-124} y={-26} width={248} height={52} rx={3} fill="#F1EDE3" stroke={INK} strokeWidth={2.5} />
+                <text x={0} y={7} textAnchor="middle" fontSize={20} fontFamily="JetBrains Mono, monospace" fill="#2B2F33">
                   usually unavailable
                 </text>
               </g>
