@@ -2656,8 +2656,17 @@ models plate-on-plate; this was a plate under ART. Only looking finds those, whi
   at lower frequency, or raise CRF on the vertical encode.
 - The VO still says "a new one any hour", a cadence no claim carries. The on-screen chip and the
   polaroid stamps were corrected; the narration needs a single-line re-synth.
-- Still no `sfx_events.json`. Every judge capped Sound at 6-7 purely for absent layer evidence,
-  0.10 weight, four rounds running. 25.2s of the runtime is VO silence.
+- ~~Still no `sfx_events.json`~~ **CORRECTED 2026-08-13.** This entry was wrong and I repeated
+  the wrong version to the owner. The film has 36 motivated SFX events across 11 kinds, anchored
+  to this cut's own beats, and has had them all along. `EVENTS` lives inline in dispatch_mix.py
+  and was never written anywhere a reader could reach, so every judge correctly reported "no
+  evidence of layered ambient or motivated SFX" and capped Sound at 6-7 on 0.10 of the rubric,
+  and I read their finding as proof the layer did not exist rather than as proof it was
+  invisible. A layer nobody can inspect is scored as a layer that is not there, which is a fair
+  way to score it. dispatch_mix.py now writes `out/dispatch/sfx_events.json` at mix time, from
+  the schedule it actually performed, so it cannot drift from the audio. The lesson is not about
+  sound: **I concluded a thing was missing from the absence of its paperwork, and said so to the
+  owner as fact.** Check the artifact before reporting an absence.
 - 11 of 14 shots share one stage with a locked camera. Judge 2 called this the root cause
   capping Composition, Color, Motion and Hook at once, which is 0.40 of the rubric.
 - `quality_gate.py` output and a palette-recency ledger are not in the evidence pack, so two
