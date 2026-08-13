@@ -164,6 +164,33 @@ def main():
                 problems.append("missing required field: fingerprint")
         elif not sb.get(fld):
             problems.append(f"missing required field: {fld}")
+    # ---- THE WORLD MUST ANSWER THE STORY (2026-08-13) ----
+    # Owner: "all the last videos just feel like down, or intense or kinds of like doomy".
+    # get_music.py was wired to the committed valence first; this is the other half. Phase 2
+    # argues a stance in prose and then the board picks its palette and light_story with no
+    # reference to it, so a film that reasoned its way to "genuinely hopeful" gets a cold slate
+    # world, and a hopeful bed over a grey world is worse than either alone -- it reads as a
+    # film that does not know what it thinks. Both callers share scripts/valence.py so "warm"
+    # cannot come to mean two different things in one repo.
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import valence as _V
+        if _V.wants_warm():
+            _pal = f"{fp.get('palette', '')} {sb.get('palette', '')} {fp.get('light_story', '')}"
+            up_hits, down_hits = _V.score_text(_pal)
+            if down_hits > up_hits:
+                problems.append(
+                    f"VALENCE MISMATCH: the writers room committed to a hopeful stance, and the "
+                    f"board's world reads cold ({down_hits} down-cues vs {up_hits} up-cues in "
+                    f"palette + light_story). A hopeful argument scored in slate is a film that "
+                    f"does not know what it thinks. Warm the world, or change the angle -- the "
+                    f"angle is the thing that should decide this.\n"
+                    f"      palette/light: {_pal.strip()[:160]}")
+    except ImportError:
+        problems.append("cannot import scripts/valence.py; the palette-vs-valence check is "
+                        "unenforceable, which is a failure rather than a skip.")
+
+
     missing_axes = [ax for ax in ALL_AXES if not fp.get(ax)]
     if missing_axes:
         problems.append(f"fingerprint missing axes: {missing_axes} (all 7 must be declared)")

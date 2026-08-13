@@ -51,24 +51,17 @@ _HERE = os.path.dirname(os.path.abspath(__file__))
 _REPO = os.path.abspath(os.path.join(_HERE, ".."))
 _POOL = os.path.join(_REPO, "config", "music_sources.yaml")
 
-DOWN_MOODS = {"cold", "glacial", "somber", "dark", "ominous", "tense", "urgent", "vast",
-              "reflective", "pondering", "deep", "ambient"}
-UP_MOODS = {"warm", "upbeat", "hopeful", "friendly", "gentle", "celebratory", "uplifting",
-            "playful", "bouncy", "light", "wonder", "inspired"}
-# "driving" was in UP_MOODS for about four minutes and the first thing it did was pick
-# "Volatile Reaction" (driving, urgent, tense, newsy) for a hopeful film -- i.e. it answered the
-# owner's "doomy" note with "intense", which was the other half of the same complaint. A track
-# is only a warm choice if it carries NO harsh tag at all.
-HARSH_MOODS = {"tense", "urgent", "dark", "ominous", "somber", "cold", "glacial", "deep"}
+# ONE DEFINITION OF WARM, SHARED WITH THE BOARD (2026-08-13). These vocabularies and the
+# negation handling used to live here, and the palette gate was about to get a second copy.
+# Two copies of "what counts as hopeful" is how a film ends up with a bright bed over a slate
+# world, which is worse than either alone. scripts/valence.py is the single source.
+sys.path.insert(0, _HERE)
+import valence as _V
+DOWN_MOODS, UP_MOODS, HARSH_MOODS = _V.DOWN, _V.UP, _V.HARSH
 
 
 def committed_valence():
-    """The stance Phase 2 already argued for, in its own words. Empty if there is no angle."""
-    try:
-        a = json.load(open(os.path.join(_REPO, "out", "dispatch", "angle.json")))
-        return " ".join(str(a.get(k, "")) for k in ("valence", "stance")).lower()
-    except Exception:
-        return ""
+    return _V.raw()
 
 
 def recent_bed_moods(n=5):
@@ -77,8 +70,7 @@ def recent_bed_moods(n=5):
         import yaml
         st = yaml.safe_load(open(os.path.join(_REPO, "config", "state.yaml"))) or {}
         hist = (st.get("dispatch_history") or [])[-n:]
-        pool = {t["title"]: t.get("mood", []) for t in
-                yaml.safe_load(open(_POOL))["tracks"]}
+        pool = {t["title"]: t.get("mood", []) for t in yaml.safe_load(open(_POOL))["tracks"]}
         out = []
         for e in hist:
             for title, moods in pool.items():
@@ -96,10 +88,8 @@ def tone_advice():
     # ... Not caution, because no Alaska outage is in the record". A bare keyword match reads
     # "caution" there and scores a hopeful film as a warning, which inverts the tone on exactly
     # the runs that reasoned most carefully about it. Strip the negated phrases first.
-    val = re.sub(r"\bnot\s+[a-z]+", " ", committed_valence())
-    wants_up = any(w in val for w in ("hopeful", "celebrat", "warm", "upbeat", "optimis",
-                                      "curious", "wonder", "playful"))
-    wants_down = any(w in val for w in ("caution", "somber", "grim", "warning", "loss", "danger"))
+    up, down, had = _V.stance()
+    val, wants_up, wants_down = (_V.raw() if had else ""), up, down
     rec = recent_bed_moods()
     down_share = (sum(1 for m in rec if m in DOWN_MOODS) / len(rec)) if rec else 0.0
     if val:
@@ -128,9 +118,7 @@ def pool_pick(mood):
               f"angle, which is the thing that should decide this.")
         mood = ""
     if not mood and wants_up:
-        up = [t for t in pool
-              if (UP_MOODS & {x.lower() for x in t.get("mood", [])})
-              and not (HARSH_MOODS & {x.lower() for x in t.get("mood", [])})]
+        up = [t for t in pool if _V.is_warm_tagset(t.get("mood", []))]
         if up:
             return random.choice(up)
     if mood:
