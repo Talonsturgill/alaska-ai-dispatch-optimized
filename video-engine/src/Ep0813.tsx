@@ -151,7 +151,7 @@ const S1: React.FC<SceneProps & {dur: number}> = (p) => {
   const tap = interpolate(f, [58, 74], [0, 2], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const stamp = ent(f, at(p, 1), SNAP);
   return (
-    <Stage f={f} dur={p.dur} drift={0.5} zoom={1.06}>
+    <Stage f={f} dur={p.dur} drift={0.5} zoom={1.30}>
       <PowerhouseBG f={f} parallax={0.2} />
       <g transform={`translate(0 ${land.dy})`} opacity={land.o}>
         <RatingPlate f={f} x={540} y={880} s={1.02} kw="365 kW" columns={1} written={0} />
@@ -163,7 +163,7 @@ const S1: React.FC<SceneProps & {dur: number}> = (p) => {
         </g>
       )}
       {f > at(p, 1) + 26 && (
-        <Plate x={540} y={1268} text="kW  ·  STAMPED" size={28} fill="#F2EFE7" />
+        <Plate x={540} y={1150} text="kW  ·  STAMPED" size={28} fill="#F2EFE7" />
       )}
       <DayGrade f={f} amount={0.5} floor={0.28} haze={0.16} sunX={0.06} sunY={0.22} />
     </Stage>
@@ -176,20 +176,20 @@ const S2: React.FC<SceneProps & {dur: number}> = (p) => {
   const open = interpolate(f, [4, 34], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const form = ent(f, at(p, 2, 3.3), SETTLE, 40);
   return (
-    <Stage f={f} dur={p.dur} drift={0.4} zoom={1.42}>
+    <Stage f={f} dur={p.dur} drift={0.4} zoom={1.60}>
       <PowerhouseBG f={f} parallax={0.4} door={0.6} />
       <RatingPlate f={f} x={540} y={900} s={1.0} kw="365 kW" columns={1} written={0} drift={open} />
       <g opacity={open * 0.9}>
         <Unknown f={f} seed={4} label="how it behaves, not recorded"
                  d="M 260 900 h 560 v 210 h -560 Z" opacity={0.55} />
       </g>
-      <Plate x={540} y={1216} text="HOW IT BEHAVES  ·  NOT RECORDED" size={26} />
+      <Plate x={540} y={1120} text="HOW IT BEHAVES  ·  NOT RECORDED" size={26} />
       {form.o > 0 && (
         <g opacity={form.o} transform={`translate(0 ${form.dy})`}>
           <rect x={702} y={1030} width={230} height={150} rx={4} fill="#F1EDE3" stroke={INK} strokeWidth={3.5}
                 transform="rotate(-7 817 1105)" />
           <Hand f={f} x={840} y={1060} s={0.78} rot={22} />
-          <Plate x={540} y={1290} text="NOBODY WROTE IT DOWN" size={26} />
+          <Plate x={540} y={1212} text="NOBODY WROTE IT DOWN" size={26} />
         </g>
       )}
       <DayGrade f={f} amount={0.5} floor={0.28} haze={0.14} sunX={0.06} sunY={0.22} />
@@ -206,7 +206,7 @@ const S3: React.FC<SceneProps & {dur: number}> = (p) => {
   const nm = ent(f, at(p, 3, 6.4), SETTLE, 34);
   const T = tones('#C9C3B4');
   return (
-    <Stage f={f} dur={p.dur} drift={0.6} zoom={1.0}>
+    <Stage f={f} dur={p.dur} drift={0.6} zoom={1.22}>
       <PowerhouseBG f={f} parallax={0.1} door={0.85} />
       <defs><FormGradient id="recf" t={T} softness={1.1} /></defs>
       <g opacity={rec.o} transform={`translate(0 ${rec.dy})`}>
@@ -220,7 +220,7 @@ const S3: React.FC<SceneProps & {dur: number}> = (p) => {
           <text x={640} y={712} textAnchor="middle" fontSize={26} fontFamily={MONO} fill={P.oxblood}>AUG 10 2026</text>
         </g>
       </g>
-      <Plate x={540} y={848} text="NSF 2626692  ·  AUGUST 10TH 2026" size={26} />
+      <Plate x={540} y={900} text="NSF 2626692  ·  AUGUST 10TH 2026" size={26} />
       {/* two drums, apart, never poured into one tank */}
       {[{e: dA, x: 330, t: '$324,995', s: 'UAF'}, {e: dB, x: 750, t: '$225,000', s: 'WISCONSIN'}].map((d, i) => (
         <g key={i} opacity={d.e.o} transform={`translate(0 ${d.e.dy})`}>
@@ -234,7 +234,7 @@ const S3: React.FC<SceneProps & {dur: number}> = (p) => {
       ))}
       {nm.o > 0 && (
         <g opacity={nm.o} transform={`translate(0 ${nm.dy})`}>
-          <Plate x={540} y={1268} text="MARIKO SHIRAZI" size={28} bg="#5C4A22" />
+          <Plate x={540} y={1212} text="MARIKO SHIRAZI" size={28} bg="#5C4A22" />
         </g>
       )}
       <DayGrade f={f} amount={0.52} floor={0.3} haze={0.14} sunX={0.06} sunY={0.2} />
@@ -250,21 +250,21 @@ const S4: React.FC<SceneProps & {dur: number}> = (p) => {
   const nod = Math.sin(f / 7.4) * grow * 9;
   const clip = ent(f, at(p, 4, 7.2), SNAP, 50);
   return (
-    <Stage f={f} dur={p.dur} drift={0.9} zoom={0.82}>
+    <Stage f={f} dur={p.dur} drift={0.9} zoom={1.24}>
       <PowerhouseBG f={f} parallax={0.6} door={1} />
       <g transform={`translate(0 ${nod})`}>
-        <FieldGenset f={f} x={300} y={860} s={0.92} spin={1} burning={1} groundY={310} />
+        <FieldGenset f={f} x={300} y={860} s={1.16} spin={1} burning={1} groundY={310} />
       </g>
       <g transform={`translate(0 ${-nod})`}>
-        <BatteryCabinet f={f} x={824} y={880} s={0.88} charge={0.75} groundY={280} />
+        <BatteryCabinet f={f} x={824} y={880} s={1.06} charge={0.75} groundY={280} />
       </g>
       {/* the one conductor between them */}
       <CoupledRinging f={f} x1={430} y={1128} x2={700} grow={grow} />
       <g opacity={reveal.o}>
-        <Plate x={540} y={1236} text="CO-LOCATED  ·  COMMENSURATE IN SIZE" size={24} />
+        <Plate x={540} y={1120} text="CO-LOCATED  ·  COMMENSURATE IN SIZE" size={24} />
       </g>
       {grow > 0.35 && (
-        <Plate x={540} y={1296} text="SUSTAINED OSCILLATIONS" size={26} bg="#5A2A22" />
+        <Plate x={540} y={1212} text="SUSTAINED OSCILLATIONS" size={26} bg="#5A2A22" />
       )}
       {clip.o > 0 && (
         <g opacity={clip.o} transform={`translate(0 ${clip.dy})`}>
@@ -282,11 +282,11 @@ const S5: React.FC<SceneProps & {dur: number}> = (p) => {
   const off = interpolate(f, [6, 52], [1, 0.04], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const fuel = interpolate(f, [at(p, 5, 4.1), at(p, 5, 6.0)], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   return (
-    <Stage f={f} dur={p.dur} drift={0.7} zoom={0.95}>
+    <Stage f={f} dur={p.dur} drift={0.7} zoom={1.16}>
       <PowerhouseBG f={f} parallax={0.35} door={1} />
-      <FieldGenset f={f} x={370} y={880} s={0.98} spin={off} burning={off} groundY={300} />
-      <BatteryCabinet f={f} x={880} y={900} s={0.8} charge={0.55 + (1 - off) * 0.4} groundY={270} />
-      <Plate x={540} y={1218} text="THE DIESEL SWITCHES OFF" size={28} />
+      <FieldGenset f={f} x={370} y={880} s={1.18} spin={off} burning={off} groundY={300} />
+      <BatteryCabinet f={f} x={880} y={900} s={0.98} charge={0.55 + (1 - off) * 0.4} groundY={270} />
+      <Plate x={540} y={1120} text="THE DIESEL SWITCHES OFF" size={28} />
       {/* the fuel line stops drawing and the level holds */}
       <g transform="translate(0 0)">
         <rect x={120} y={1060} width={120} height={170} rx={8} fill="#8E9AA0" stroke={INK} strokeWidth={4} />
@@ -294,7 +294,7 @@ const S5: React.FC<SceneProps & {dur: number}> = (p) => {
               height={150 * (0.55 + (1 - fuel) * 0.0)} fill={P.oxblood} opacity={0.55} />
         <path d={`M 240 1120 h ${60 * fuel}`} stroke="#4A5257" strokeWidth={9} opacity={fuel} />
       </g>
-      {fuel < 0.4 && <Plate x={540} y={1292} text="THIS IS WHERE THE SAVING COMES FROM" size={23} />}
+      {fuel < 0.4 && <Plate x={540} y={1212} text="THIS IS WHERE THE SAVING COMES FROM" size={23} />}
       <DayGrade f={f} amount={0.55} floor={0.32} haze={0.15} sunX={0.05} sunY={0.2} />
     </Stage>
   );
@@ -306,10 +306,10 @@ const S6: React.FC<SceneProps & {dur: number}> = (p) => {
   const back = ent(f, 2, SNAP);
   const watch = Math.sin(f / 11.3) * 5;
   return (
-    <Stage f={f} dur={p.dur} drift={1.1} zoom={0.74}>
+    <Stage f={f} dur={p.dur} drift={1.1} zoom={0.94}>
       <PowerhouseBG f={f} parallax={0.8} door={1} />
-      <FieldGenset f={f} x={330} y={880} s={0.86} spin={back.o} burning={back.o} groundY={310} />
-      <BatteryCabinet f={f} x={840} y={900} s={0.78} charge={0.8} groundY={280} />
+      <FieldGenset f={f} x={330} y={880} s={1.06} spin={back.o} burning={back.o} groundY={310} />
+      <BatteryCabinet f={f} x={840} y={900} s={0.94} charge={0.8} groundY={280} />
       {/* the packed case by the door that cannot leave */}
       <g transform={`translate(120 1120) rotate(${watch * 0.4})`}>
         <ContactShadow cx={0} cy={92} rx={82} ry={12} opacity={0.26} />
@@ -318,8 +318,8 @@ const S6: React.FC<SceneProps & {dur: number}> = (p) => {
         <path d={`M -24 -32 q 24 ${-34 + watch} 48 0`} fill="none" stroke={INK} strokeWidth={6} />
         <rect x={-20} y={28} width={40} height={24} rx={3} fill="#C9A98C" stroke={INK} strokeWidth={2.5} />
       </g>
-      <Plate x={540} y={1232} text="IT KEEPS RUNNING" size={30} />
-      <Plate x={540} y={1296} text="THE SAVING NEVER ARRIVES" size={26} bg="#5A2A22" />
+      <Plate x={540} y={1120} text="IT KEEPS RUNNING" size={30} />
+      <Plate x={540} y={1212} text="THE SAVING NEVER ARRIVES" size={26} bg="#5A2A22" />
       <DayGrade f={f} amount={0.58} floor={0.32} haze={0.2} sunX={0.05} sunY={0.18} />
     </Stage>
   );
@@ -334,15 +334,15 @@ const S7: React.FC<SceneProps & {dur: number}> = (p) => {
   const card = interpolate(f, [at(p, 7, 8.6), at(p, 7, 10.0)], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const spread = 60 + collapse * 340;
   return (
-    <Stage f={f} dur={p.dur} drift={0.8} zoom={0.86}>
+    <Stage f={f} dur={p.dur} drift={0.8} zoom={1.06}>
       <PowerhouseBG f={f} parallax={0.5} door={0.7} />
       {/* the oversized schematic, hanging off both walls */}
       <g opacity={un.o * (0.25 + collapse * 0.75)}>
-        <rect x={-140} y={430} width={1360} height={520} fill="#E4E0D4" stroke={INK} strokeWidth={4} opacity={0.9} />
+        <rect x={-40} y={452} width={1160} height={476} fill="#E4E0D4" stroke={INK} strokeWidth={4} opacity={0.9} />
         {Array.from({length: 9}, (_, i) => (
           <path key={i} d={`M -120 ${470 + i * 56} H 1200`} stroke={INK} strokeWidth={2} opacity={0.18} />
         ))}
-        <Plate x={540} y={470} text="STUDY EACH MACHINE ALONE" size={24} />
+        <Plate x={540} y={512} text="STUDY EACH MACHINE ALONE" size={24} />
       </g>
       {/* two towers whose spacing collapses */}
       {[-1, 1].map((sgn, i) => (
@@ -351,11 +351,11 @@ const S7: React.FC<SceneProps & {dur: number}> = (p) => {
           <path d="M -22 20 H 22 M -28 74 H 28" stroke={INK} strokeWidth={4} />
         </g>
       ))}
-      <Plate x={540} y={996} text={collapse > 0.5 ? 'A HUNDRED MILES APART' : 'WIRED TOO CLOSE FOR THAT'} size={26} />
+      <Plate x={540} y={1010} text={collapse > 0.5 ? 'A HUNDRED MILES APART' : 'WIRED TOO CLOSE FOR THAT'} size={26} />
       {dOpen > 0 && (
         <g opacity={dOpen}>
           <FilingDrawer f={f} x={760} y={1090} s={0.52} open={dOpen} card={card} />
-          {card > 0.6 && <Plate x={430} y={1288} text="usually unavailable" size={26} bg="#3A3020" />}
+          {card > 0.6 && <Plate x={430} y={1212} text="usually unavailable" size={26} bg="#3A3020" />}
         </g>
       )}
       <DayGrade f={f} amount={0.55} floor={0.3} haze={0.16} sunX={0.06} sunY={0.2} />
@@ -369,13 +369,13 @@ const S8: React.FC<SceneProps & {dur: number}> = (p) => {
   const trip = interpolate(f, [10, 92], [0, 2], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const curve = interpolate(f, [at(p, 8, 4.2), at(p, 8, 7.4)], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   return (
-    <Stage f={f} dur={p.dur} drift={0.5} zoom={0.9}>
+    <Stage f={f} dur={p.dur} drift={0.5} zoom={1.12}>
       <PowerhouseBG f={f} parallax={0.3} door={0.5} />
-      <FieldGenset f={f} x={280} y={900} s={0.82} spin={1} burning={0.5} groundY={300} />
-      <BatteryCabinet f={f} x={848} y={906} s={0.82} charge={0.85} groundY={276} />
+      <FieldGenset f={f} x={280} y={900} s={1.04} spin={1} burning={0.5} groundY={300} />
+      <BatteryCabinet f={f} x={848} y={906} s={1.0} charge={0.85} groundY={276} />
       <path d="M 400 1150 H 720" stroke={INK} strokeWidth={8} />
       <ProbeResponse f={f} x1={700} x2={410} y={1150} p={trip} amp={30} w={7} />
-      <Plate x={540} y={1236} text="PROBE THE GRID" size={30} />
+      <Plate x={540} y={1120} text="PROBE THE GRID" size={30} />
       {curve > 0 && (
         <g opacity={curve}>
           {/* the transfer curve drawing itself from out minus back */}
@@ -386,7 +386,7 @@ const S8: React.FC<SceneProps & {dur: number}> = (p) => {
             return `${720 + t * 240},${1100 - Math.sin(t * 4.2) * 46 * Math.exp(-t * 1.1)}`;
           }).filter(Boolean).map((s, i) => (i === 0 ? `M ${s}` : `L ${s}`)).join(' ')}
                 fill="none" stroke={VIOLET} strokeWidth={5} strokeLinecap="round" />
-          <Plate x={540} y={1298} text="LEARN HOW IT ANSWERS" size={26} />
+          <Plate x={540} y={1212} text="LEARN HOW IT ANSWERS" size={26} />
         </g>
       )}
       <DayGrade f={f} amount={0.5} floor={0.3} haze={0.14} sunX={0.06} sunY={0.22} />
@@ -401,11 +401,11 @@ const S9: React.FC<SceneProps & {dur: number}> = (p) => {
   const pin = ent(f, at(p, 9, 4.5), SETTLE, 26);
   const drift = interpolate(f, [at(p, 9, 5.0), p.dur], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   return (
-    <Stage f={f} dur={p.dur} drift={0.35} zoom={1.02}>
+    <Stage f={f} dur={p.dur} drift={0.35} zoom={1.24}>
       <PowerhouseBG f={f} parallax={0.2} door={0.45} />
       {/* the real machine, changing behind the photograph */}
       <g transform={`translate(${drift * 26} ${drift * -12})`}>
-        <FieldGenset f={f} x={430} y={940} s={0.7} spin={1} burning={0.35} groundY={300} phase={0.6} />
+        <FieldGenset f={f} x={430} y={940} s={0.86} spin={1} burning={0.35} groundY={300} phase={0.6} />
       </g>
       {/* the pinned photograph: sharp, correct, and frozen */}
       {pin.o > 0 && (
@@ -420,8 +420,8 @@ const S9: React.FC<SceneProps & {dur: number}> = (p) => {
           <circle cx={700} cy={712} r={9} fill="#B44A3A" stroke={INK} strokeWidth={2.5} />
         </g>
       )}
-      <Plate x={540} y={1216} text="A MEASUREMENT IS THE MOMENT" size={26} />
-      {drift > 0.35 && <Plate x={540} y={1284} text="LOAD SWINGS  ·  FORTY BELOW" size={24} />}
+      <Plate x={540} y={1120} text="A MEASUREMENT IS THE MOMENT" size={26} />
+      {drift > 0.35 && <Plate x={540} y={1212} text="LOAD SWINGS  ·  FORTY BELOW" size={24} />}
       <DayGrade f={f} amount={0.48} floor={0.3} haze={0.13} sunX={0.06} sunY={0.22} />
     </Stage>
   );
@@ -434,7 +434,7 @@ const S10: React.FC<SceneProps & {dur: number}> = (p) => {
   const seat = ent(f, at(p, 10, 3.8), SNAP, 44);
   const shut = interpolate(f, [at(p, 10, 4.4), at(p, 10, 6.2)], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   return (
-    <Stage f={f} dur={p.dur} drift={0.6} zoom={0.96}>
+    <Stage f={f} dur={p.dur} drift={0.6} zoom={1.18}>
       <PowerhouseBG f={f} parallax={0.3} door={0.5} />
       {Array.from({length: n}, (_, i) => (
         <g key={i} transform={`translate(${180 + i * 172} ${820 + ihash(9, i) * 14}) rotate(${ihash(3, i) * 3})`}>
@@ -446,10 +446,10 @@ const S10: React.FC<SceneProps & {dur: number}> = (p) => {
           </text>
         </g>
       ))}
-      <Plate x={540} y={1180} text="A NEW ONE ANY HOUR" size={30} />
+      <Plate x={540} y={1120} text="A NEW ONE ANY HOUR" size={30} />
       {seat.o > 0 && (
         <g opacity={seat.o} transform={`translate(0 ${seat.dy})`}>
-          <Plate x={540} y={1258} text="ON HARDWARE ALREADY ON THE WALL" size={24} />
+          <Plate x={540} y={1212} text="ON HARDWARE ALREADY ON THE WALL" size={24} />
         </g>
       )}
       {/* the drawer closes on its own behind them, because nobody needs it any more */}
@@ -468,7 +468,7 @@ const S11: React.FC<SceneProps & {dur: number}> = (p) => {
   const panel = interpolate(f, [at(p, 11, 6.8), at(p, 11, 8.6)], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const rec = ent(f, at(p, 11, 4.3), SETTLE, 40);
   return (
-    <Stage f={f} dur={p.dur} drift={0.8} zoom={0.9}>
+    <Stage f={f} dur={p.dur} drift={0.8} zoom={1.12}>
       <PowerhouseBG f={f} parallax={0.5} door={1} />
       <g opacity={land.o} transform={`translate(0 ${land.dy})`}>
         <ContactShadow cx={470} cy={1146} rx={280} ry={22} opacity={0.3} />
@@ -482,10 +482,10 @@ const S11: React.FC<SceneProps & {dur: number}> = (p) => {
         </g>
         {panel > 0.1 && <Hand f={f} x={640} y={1010} s={0.7} rot={-24} />}
       </g>
-      <Plate x={540} y={1214} text="ST. MARY'S  ·  1 MW / 1 MWh  ·  2023" size={24} />
+      <Plate x={540} y={1120} text="ST. MARY'S  ·  1 MW / 1 MWh  ·  2023" size={24} />
       {rec.o > 0 && (
         <g opacity={rec.o} transform={`translate(0 ${rec.dy})`}>
-          <Plate x={540} y={1284} text="SANDIA  ·  DESIGN AND DEPLOYMENT" size={23} />
+          <Plate x={540} y={1212} text="SANDIA  ·  DESIGN AND DEPLOYMENT" size={23} />
         </g>
       )}
       <DayGrade f={f} amount={0.56} floor={0.32} haze={0.18} sunX={0.05} sunY={0.2} />
@@ -505,7 +505,7 @@ const S12: React.FC<SceneProps & {dur: number}> = (p) => {
       <PowerhouseBG f={f} parallax={0.3} door={0.9} />
       {/* the dashed laboratory boundary, with the powerhouse floor beyond it, never entered */}
       <g opacity={bound}>
-        <rect x={150} y={620} width={790} height={720} rx={8} fill="none" stroke={INK}
+        <rect x={150} y={620} width={790} height={600} rx={8} fill="none" stroke={INK}
               strokeWidth={5} strokeDasharray="26 18" strokeDashoffset={-f * 0.5} opacity={0.75} />
         <Plate x={280} y={620} text="LABORATORY" size={22} />
       </g>
@@ -516,8 +516,8 @@ const S12: React.FC<SceneProps & {dur: number}> = (p) => {
       {/* THE SIGNATURE SHOT: the plate revealed as a grid of operating-point columns */}
       <RatingPlate f={f} x={540} y={912} s={0.78 + pull * 0.12} kw="365 kW"
                    columns={pull > 0.25 ? 6 : 1} written={pull > 0.25 ? 1 : 0} />
-      <Plate x={540} y={1226} text="THE FAIRBANKS AWARD  ·  A LAB TEST BED" size={23} />
-      {pull > 0.5 && <Plate x={540} y={1292} text="ONE COLUMN MEASURED" size={26} />}
+      <Plate x={540} y={1120} text="THE FAIRBANKS AWARD  ·  A LAB TEST BED" size={23} />
+      {pull > 0.5 && <Plate x={540} y={1212} text="ONE COLUMN MEASURED" size={26} />}
       <DayGrade f={f} amount={0.5} floor={0.3} haze={0.14} sunX={0.06} sunY={0.22} />
     </Stage>
   );
@@ -531,15 +531,15 @@ const S13: React.FC<SceneProps & {dur: number}> = (p) => {
   const tick = Math.floor(interpolate(f, [at(p, 13, 4.6), at(p, 13, 7.2)], [0, 3.4], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}));
   const T = tones('#D8D3C4');
   return (
-    <Stage f={f} dur={p.dur} drift={0.3} zoom={1.04}>
+    <Stage f={f} dur={p.dur} drift={0.3} zoom={1.26}>
       <PowerhouseBG f={f} parallax={0.15} door={0.4} />
       <defs><FormGradient id="mlf" t={T} softness={1.1} /></defs>
       {/* the methods list, which never changes */}
       <g>
         <ContactShadow cx={540} cy={1082} rx={330} ry={14} opacity={0.24} />
-        <rect x={210} y={640} width={660} height={440} rx={5} fill="url(#mlf)" stroke={INK} strokeWidth={4} />
+        <rect x={252} y={648} width={576} height={404} rx={5} fill="url(#mlf)" stroke={INK} strokeWidth={4} />
         {['TRANSFER FUNCTIONS', 'STABILITY SPECIFICATIONS', 'ACTIVE DAMPING'].map((s, i) => (
-          <text key={i} x={252} y={760 + i * 96} fontSize={30} fontFamily={MONO} fill="#242A2E">{s}</text>
+          <text key={i} x={288} y={766 + i * 96} fontSize={26} fontFamily={MONO} fill="#242A2E">{s}</text>
         ))}
         {tick > 0 && (
           <g>
@@ -554,12 +554,12 @@ const S13: React.FC<SceneProps & {dur: number}> = (p) => {
       {/* the cover sheet with the bigger word, sliding on and then off */}
       <g transform={`translate(${on + off} 0)`} opacity={off > 700 ? 0 : 1}>
         <ContactShadow cx={540} cy={1010} rx={300} ry={16} opacity={0.26} />
-        <rect x={240} y={600} width={600} height={400} rx={5} fill="#E9E4D6" stroke={INK} strokeWidth={4.5} />
-        <text x={540} y={830} textAnchor="middle" fontSize={72} fontFamily={BOLD} fontWeight={900}
+        <rect x={286} y={620} width={508} height={360} rx={5} fill="#E9E4D6" stroke={INK} strokeWidth={4.5} />
+        <text x={540} y={830} textAnchor="middle" fontSize={62} fontFamily={BOLD} fontWeight={900}
               fill="#242A2E" stroke={INK} strokeWidth={5} paintOrder="stroke">A.I.</text>
       </g>
-      <Plate x={540} y={1188} text="NO AI  ·  NO MACHINE LEARNING" size={26} />
-      {tick >= 3 && <Plate x={540} y={1258} text="IT SAYS DATA DRIVEN" size={28} bg="#2B2456" />}
+      <Plate x={540} y={1074} text="NO AI  ·  NO MACHINE LEARNING" size={26} />
+      {tick >= 3 && <Plate x={540} y={1160} text="IT SAYS DATA DRIVEN" size={28} bg="#2B2456" />}
       <DayGrade f={f} amount={0.48} floor={0.3} haze={0.12} sunX={0.06} sunY={0.22} />
     </Stage>
   );
@@ -582,7 +582,7 @@ const S14: React.FC<SceneProps & {dur: number}> = (p) => {
           <rect x={150} y={1000} width={790} height={220} fill="none" stroke={INK}
                 strokeWidth={5} strokeDasharray="26 18" strokeDashoffset={-f * 0.5} opacity={0.6} />
           <Plate x={540} y={1108} text="STARTS AUGUST 15TH 2026" size={30} />
-          <Plate x={540} y={1264} text="NOT YET" size={26} />
+          <Plate x={540} y={1212} text="NOT YET" size={26} /> {/* plate-overlap-ok: never shares a frame with the button plates */}
         </g>
       )}
       {onPlate && (
@@ -592,8 +592,8 @@ const S14: React.FC<SceneProps & {dur: number}> = (p) => {
           {pulse > 0 && (
             <ProbeResponse f={f} x1={880} x2={200} y={880} p={Math.min(1, pulse * 1.3)} amp={16} w={6} />
           )}
-          <Plate x={540} y={1206} text="THE PLATE STILL WON'T SAY" size={28} />
-          {pulse > 0.25 && <Plate x={540} y={1276} text="FAIRBANKS IS GOING TO ASK IT" size={25} />}
+          <Plate x={540} y={1120} text="THE PLATE STILL WON'T SAY" size={28} /> {/* plate-overlap-ok: the onPlate branch, the stencil plates are gone by here */}
+          {pulse > 0.25 && <Plate x={540} y={1212} text="FAIRBANKS IS GOING TO ASK IT" size={25} />}
         </g>
       )}
       <DayGrade f={f} amount={0.5} floor={0.3} haze={0.14} sunX={0.06} sunY={0.22} />
