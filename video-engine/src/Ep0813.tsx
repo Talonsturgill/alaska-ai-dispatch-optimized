@@ -353,8 +353,8 @@ const S3: React.FC<SceneProps & {dur: number}> = (p) => {
       {nm.o > 0 && (
         <g opacity={nm.o} transform={`translate(0 ${nm.dy})`}>
           <Plate x={540} y={1064} text="MARIKO SHIRAZI" size={26} bg="#5C4A22" />
-          <Plate x={540} y={1136} text="UNIVERSITY OF ALASKA" size={22} bg="#5C4A22" />
-          <Plate x={540} y={1206} text="PRESIDENT'S PROFESSOR IN ENERGY" size={22} bg="#5C4A22" />
+          <Plate x={540} y={1136} text="UNIVERSITY OF ALASKA PRESIDENT'S" size={22} bg="#5C4A22" />
+          <Plate x={540} y={1206} text="PROFESSOR IN ENERGY" size={22} bg="#5C4A22" />
         </g>
       )}
       <DayGrade f={f} amount={0.52} floor={0.3} haze={0.14} sunX={0.06} sunY={0.2} />
@@ -675,7 +675,12 @@ const S10: React.FC<SceneProps & {dur: number}> = (p) => {
           </g>
         );
       })}
-      <Plate x={540} y={1120} text="A NEW ONE ANY HOUR" size={30} />
+      {/* c4 IS THE FILE'S SELF-DECLARED MOST IMPORTANT OBLIGATION, and this chip broke it.
+          "A NEW ONE ANY HOUR" beside "ALREADY ON THE WALL" reads as a capability that exists,
+          two days before the work starts. The hardware genuinely is already on the wall (c17,
+          shipped 2023); the METHOD is what has not happened. "THE AIM" is c9's own licensed
+          framing and marks the whole pair prospective. Judge 3 raised this twice. */}
+      <Plate x={540} y={1120} text="THE AIM  ·  A NEW ONE ANY HOUR" size={27} />
       {seat.o > 0 && (
         <g opacity={seat.o} transform={`translate(0 ${seat.dy})`}>
           <Plate x={540} y={1206} text="ALREADY ON THE WALL" size={26} />
@@ -785,7 +790,9 @@ const S12: React.FC<SceneProps & {dur: number}> = (p) => {
                    written={interpolate(pull, [0.2, 0.55], [0, 1],
                               {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})} />
       <Plate x={540} y={1120} text="THE FAIRBANKS AWARD  ·  A LAB TEST BED" size={23} />
-      {pull > 0.5 && <Plate x={540} y={1206} text="ONE COLUMN MEASURED" size={26} />}
+      {/* prospective, not a result: the column is what asking WOULD write, and the film is
+          two days ahead of the first measurement. */}
+      {pull > 0.5 && <Plate x={540} y={1206} text="ONE COLUMN, ONCE IT ASKS" size={25} />}
       <DayGrade f={f} amount={0.5} floor={0.3} haze={0.14} sunX={0.06} sunY={0.22} />
     </Stage>
   );

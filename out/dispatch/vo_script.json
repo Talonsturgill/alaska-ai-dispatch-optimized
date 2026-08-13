@@ -1,7 +1,7 @@
 {
  "run_date": "2026-08-13",
  "title": "THE MACHINE NOBODY WROTE DOWN",
- "note": "NSF award 2626692, made 2026-08-10 to UAF, PI Mariko Shirazi. Every verb about the award's work is FUTURE TENSE (period of performance begins 2026-08-15). The film says data-driven and never says AI. Gate 0E passed on round 3 (ship:true) after two rejections: round 1 killed the stake leap and the unanchored money referent, round 2 killed the surviving partitive and caught that nothing in the script established that anything LEARNS, which made the artificial-intelligence beat rebut a label the film had never earned. All three are fixed in this text. Spoken figure is 'just under three hundred twenty five thousand dollars', an explicit approximation of $324,995, which the film prints exactly on screen at 28.6s. Line 12 was re-cut in place by scripts/vo_patch_lines.py after the panel caught it stated as an identity; no later line moved.",
+ "note": "NSF award 2626692, made 2026-08-10 to UAF, PI Mariko Shirazi. Every verb about the award's work is FUTURE TENSE (period of performance begins 2026-08-15). The film says data-driven and never says AI. Gate 0E passed on round 3 (ship:true) after two rejections: round 1 killed the stake leap and the unanchored money referent, round 2 killed the surviving partitive and caught that nothing in the script established that anything LEARNS, which made the artificial-intelligence beat rebut a label the film had never earned. All three are fixed in this text. Spoken figure is 'just under three hundred twenty five thousand dollars', an explicit approximation of $324,995, which the film prints exactly on screen at 28.6s. Line 12 was re-cut in place by scripts/vo_patch_lines.py after the panel caught it stated as an identity; no later line moved. Line 10 re-cut 2026-08-13 (panel round 5): 'You can take a new one any hour' asserted a present-tense capability two days before the period of performance begins, which is exactly what c4 forbids and what c10's requires spells out ('Keep it future tense: this is a proposed approach, not a working one'). 'The aim is' is c9's own licensed framing. The on-screen chips moved with it.",
  "caption_fixups": {
   "N S F": "NSF",
   "twenty twenty three": "2023"
@@ -75,7 +75,7 @@
   },
   {
    "idx": 10,
-   "text": "You can take a new one any hour though, on hardware already on the wall.",
+   "text": "The aim is a new one any hour, on hardware already on the wall.",
    "claims": [
     "c9",
     "c10"
