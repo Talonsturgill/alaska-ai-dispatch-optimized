@@ -74,6 +74,9 @@ BANNED = [
 QUANT = re.compile(
     r"\b(hundred|thousand|million|billion|percent|per cent|twice|three times|four times|"
     r"half|most|fewest|largest|smallest|only one|not one|exactly once|every|all of)\b", re.I)
+MIN_CLAIMS_PER_MIN = 7.0    # a 2-minute film owes ~14 facts, not 13
+MIN_CLAIM_COVERAGE = 0.70   # >=70% of what was verified must actually reach the narration
+
 DATEISH = re.compile(r"\b(august|june|july|september|friday|monday|year one)\b", re.I)
 
 # 3. UNSOURCED CADENCE (2026-08-13). QUANT catches numbers, proportions and superlatives, and a
@@ -178,6 +181,47 @@ def main():
               f"{sum(1 for l in script['lines'] if l.get('claims'))} carry a claim id")
 
     problems = list(dict.fromkeys(problems))
+    # ---- STORY DENSITY (2026-08-13, owner: "ever since we went to 2 mins, it feels like ur
+    # stretching a story instead of telling more of it").
+    #
+    # Measured on the 08-13 film and the number settles the question. 21 claims researched and
+    # verified. The narration used 13. Eight verified facts were left on the floor, including the
+    # companion award, the PI's title and four sourced ACEP items. The film ran 135.6s carrying
+    # 5.8 claims a minute with 14 percent of its runtime in silence.
+    #
+    # So it was not that the plan was thin and not that edit rounds mangled the flow. It is that
+    # NOTHING TIED RUNTIME TO STORY CONTENT. A run could research 21 facts, write 13 into the
+    # narration, spread them over two minutes, and pass every gate in the repo. Length was free.
+    # It is not free any more: a longer film has to EARN its length in facts, or be shorter.
+    total_claims = len(claims)
+    used = set()
+    for ln in script["lines"]:
+        used.update(c for c in (ln.get("claims") or []) if c in claims)
+    # NOT a bare except. A silent swallow here is how this very check sat dead on its first
+    # run: it referenced a name this module does not define, raised, and the handler hid it.
+    secs = 0.0
+    _vl = os.path.join(REPO, "out", "dispatch", "vo_lines.json")
+    try:
+        secs = max(x["end"] for x in json.load(open(_vl))["lines"])
+    except (OSError, ValueError, KeyError) as _e:
+        problems.append(f"STORY DENSITY: cannot measure runtime from {_vl} ({_e}). The density "
+                        f"floor is unenforceable without it, so this is a failure, not a skip.")
+    if secs > 0 and used:
+        per_min = len(used) / secs * 60.0
+        coverage = len(used) / total_claims
+        if per_min < MIN_CLAIMS_PER_MIN:
+            problems.append(
+                f"STORY DENSITY: {len(used)} claims across {secs:.0f}s is {per_min:.1f} per minute, "
+                f"under the {MIN_CLAIMS_PER_MIN} floor. This is the signature of a stretched film: "
+                f"the runtime grew and the story did not. Either put more of the record on screen "
+                f"or make the film shorter.")
+        if coverage < MIN_CLAIM_COVERAGE:
+            unused = sorted(set(claims) - used, key=lambda x: int(re.sub(r"\D", "", x) or 0))
+            problems.append(
+                f"STORY DENSITY: the narration uses {len(used)} of {total_claims} verified claims "
+                f"({coverage:.0%}, floor {MIN_CLAIM_COVERAGE:.0%}). Unused: {', '.join(unused)}. "
+                f"Research that never reaches the film is a film telling less than it knows.")
+
     if problems:
         print("FAIL [vo_claims_check] the narration violates the fact-check-safe set.")
         for p in problems:

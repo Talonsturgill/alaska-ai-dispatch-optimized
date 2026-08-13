@@ -366,7 +366,42 @@ def check_schedule(events):
     if len(risers) > 1:
         raise SystemExit(f"SFX SCHEDULE: {len(risers)} risers — reserve the riser "
                          f"for exactly one moment per episode.")
-    print(f"sfx schedule OK: {len(events)} events, no consecutive family repeats")
+    # CONCENTRATION, NOT JUST ADJACENCY (2026-08-13, owner: "it seems in the last few videos
+    # you just keep on re-using the same sounds and they're not very unique").
+    #
+    # The adjacency rule above is necessary and nowhere near sufficient. Measured on the 08-13
+    # schedule, which passed it clean: 36 events, and the top four kinds carried 24 of them, 67
+    # percent. thud 8, tick 6, whoosh 6, pop 4. Six of the seventeen kinds in the bank were never
+    # used at all. Alternating thud/tick/thud/whoosh satisfies "no consecutive family" on every
+    # pair and still sounds like four sounds on a loop, which is exactly what the owner heard.
+    #
+    # So the schedule is now held to its PALETTE as well as its ordering: no single kind may
+    # dominate, and a schedule must actually reach into the bank it has.
+    from collections import Counter as _C
+    n = len(events)
+    kinds = _C(e[1] for e in events)
+    if n >= 12:
+        want_distinct = max(8, round(n * 0.30))
+        if len(kinds) < want_distinct:
+            raise SystemExit(
+                f"SFX SCHEDULE: only {len(kinds)} distinct kinds across {n} events; need >= "
+                f"{want_distinct}. Unused in the bank: "
+                f"{sorted(set(FAMILY) - set(kinds))}. A small palette read on a long film is the "
+                f"'same sounds again' note.")
+        top, c = kinds.most_common(1)[0]
+        if c / n > 0.18:
+            raise SystemExit(
+                f"SFX SCHEDULE: '{top}' is {c} of {n} events ({c/n:.0%}), over the 18% ceiling. "
+                f"No single kind may carry a film. Recast some of them; the bank has "
+                f"{len(FAMILY)} kinds and six takes each.")
+        heavy = sum(c for _, c in kinds.most_common(4))
+        if heavy / n > 0.55:
+            raise SystemExit(
+                f"SFX SCHEDULE: the top four kinds carry {heavy} of {n} events ({heavy/n:.0%}), "
+                f"over the 55% ceiling (08-13 ran 67% and passed every assert). Spread the "
+                f"schedule across the bank.")
+    print(f"sfx schedule OK: {n} events, {len(kinds)} distinct kinds, "
+          f"heaviest {kinds.most_common(1)[0][1]}/{n}, no consecutive family repeats")
 
 
 def main():
