@@ -232,6 +232,30 @@ def main():
         centre = start[line] + off
         t0 = max(0.0, centre - 0.13)          # 8 frames at 30fps spans ~0.27s
         straddled = next((b for b in bounds if t0 < b < t0 + WIN), None)
+        if straddled is None:
+            # A CUT IS NOT ALWAYS A SHOT BOUNDARY (2026-08-13, round 4). All three judges
+            # caught the same row: filmstrip_pulse visibly cuts between frames 4 and 5 while
+            # this file marked it straddled_cut false, because that cut is a BEAT change
+            # inside S14 (the threshold card giving way to the plate) and the scene table
+            # knows nothing about it. So the boundary list is not the authority any more --
+            # the PIXELS are. Cut a cheap probe pair either side of each interior frame and
+            # slide off whichever gap is a cut. Empirical beats declarative here, because the
+            # thing being measured is exactly "did the picture change wholesale".
+            probe = os.path.join(EV, f"_p_{name}_%d.jpg")
+            subprocess.run(["ffmpeg", "-y", "-ss", f"{t0:.3f}", "-i", a.video, "-frames:v", "8",
+                            "-vsync", "0", "-q:v", "6", "-vf", "scale=120:-1", probe,
+                            "-v", "error"], check=False)
+            pg = sorted(glob.glob(os.path.join(EV, f"_p_{name}_*.jpg")),
+                        key=lambda q: int(q.rsplit("_", 1)[1].split(".")[0]))
+            ims = [Image.open(q).convert("L") for q in pg]
+            for k in range(len(ims) - 1):
+                d = ImageChops.difference(ims[k], ims[k + 1]).histogram()
+                px = ims[k].size[0] * ims[k].size[1]
+                if 100.0 * sum(d[40:]) / px > 22.0:          # a wholesale picture change
+                    straddled = t0 + (k + 1) / 30.0
+                    break
+            for q in pg:
+                os.remove(q)
         if straddled is not None:
             # keep the shot the CENTRE belongs to, and sit clear of the cut by one frame
             t0 = straddled + 1 / 30.0 if centre >= straddled else max(0.0, straddled - WIN - 1 / 30.0)

@@ -457,7 +457,9 @@ export const ProbeResponse: React.FC<{
 export const CoupledRinging: React.FC<{
   f: number; x1: number; x2: number; y: number; grow: number; caught?: number; color?: string;
 }> = ({f, x1, x2, y, grow, caught = 0, color = INK}) => {
-  const a = grow * 44 * (1 - caught);
+  // 44 was too small to read at phone size once the plate row was clear of it; the
+  // oscillation is the failure mode the entire film is about, so it gets amplitude.
+  const a = grow * 78 * (1 - caught);
   const n = 90;
   const pts = Array.from({length: n}, (_, i) => {
     const t = i / (n - 1);
