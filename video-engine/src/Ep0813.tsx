@@ -161,7 +161,6 @@ const S1: React.FC<SceneProps & {dur: number}> = (p) => {
       {f > 46 && <Hand f={f} x={760} y={1010} s={1.05} tap={tap} rot={-14} />}
       {stamp.o > 0 && (
         <g opacity={stamp.o}>
-          <Plate x={540} y={1180 + stamp.dy} text="RATING PLATE" size={34} />
         </g>
       )}
       {f > at(p, 1) + 26 && (
@@ -345,7 +344,7 @@ const S7: React.FC<SceneProps & {dur: number}> = (p) => {
         {Array.from({length: 9}, (_, i) => (
           <path key={i} d={`M -120 ${470 + i * 56} H 1200`} stroke={INK} strokeWidth={2} opacity={0.18} />
         ))}
-        <Plate x={540} y={512} text="STUDY EACH MACHINE ALONE" size={24} />
+        <Plate x={372} y={566} text="STUDY EACH MACHINE ALONE" size={23} />
       </g>
       {/* two towers whose spacing collapses */}
       {[-1, 1].map((sgn, i) => (
@@ -354,7 +353,7 @@ const S7: React.FC<SceneProps & {dur: number}> = (p) => {
           <path d="M -22 20 H 22 M -28 74 H 28" stroke={INK} strokeWidth={4} />
         </g>
       ))}
-      <Plate x={540} y={1010} text={collapse > 0.5 ? 'A HUNDRED MILES APART' : 'WIRED TOO CLOSE FOR THAT'} size={26} />
+      <Plate x={540} y={1010} text={collapse > 0.5 ? 'A HUNDRED MILES APART' : 'WIRED TOO CLOSE'} size={26} />
       {dOpen > 0 && (
         <g opacity={dOpen}>
           <FilingDrawer f={f} x={742} y={980} s={0.78} open={dOpen} card={card} />

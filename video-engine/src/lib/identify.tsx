@@ -491,40 +491,18 @@ export const PowerhouseBG: React.FC<{f: number; parallax?: number; door?: number
         ))}
       </g>
     </g>
-    {/* NEAR PLANE. The 9:16 master has canvas below the square crop line that the square
-        never sees, and DISPATCH_STANDARD section 3 says to stage the vertical with it rather
-        than let it be padding. Three judges measured the bottom 25 to 40 percent of every
-        frame as flat empty grey, so this plane is now a real near foreground: a raised cable
-        tray with conduit dropping into it, a coiled lead, and a toolbox, all dark against the
-        lit floor so they read as foreground and never compete with the hero. */}
+    {/* NEAR PLANE, deliberately simple. An earlier pass put conduit drops, a toolbox and a
+        coiled lead down here to fill the dead lower third, and they read as bars crossing the
+        composition rather than as depth, which is worse than the grey they replaced. Scope-down
+        rung 5, fewer depth planes: one dark floor band plus the tray, which separates near from
+        far and competes with nothing. */}
     <g>
-      <path d="M -400 1470 H 1500 V 1520 H -400 Z" fill="#5A646A" stroke={INK} strokeWidth={4} data-band="ok" />
+      <path d="M -400 1508 H 1500 V 1560 H -400 Z" fill="#5A646A" stroke={INK} strokeWidth={4} data-band="ok" />
       {Array.from({length: 18}, (_, i) => (
-        <path key={i} d={`M ${-380 + i * 110} 1470 v 50`} stroke={INK} strokeWidth={3} opacity={0.45} />
+        <path key={i} d={`M ${-380 + i * 110} 1508 v 52`} stroke={INK} strokeWidth={3} opacity={0.4} />
       ))}
-      {[0, 1, 2, 3].map((i) => (
-        <path key={i} d={`M ${60 + i * 300} 1230 V 1470`} stroke="#4A5257" strokeWidth={17} strokeLinecap="round" />
-      ))}
-      {[0, 1, 2, 3].map((i) => (
-        <path key={i} d={`M ${60 + i * 300} 1230 V 1470`} stroke="#6E787E" strokeWidth={9} strokeLinecap="round" />
-      ))}
-      <path d="M -400 1520 H 1500 V 1920 H -400 Z" fill="#7C858A" data-band="ok" />
-      <path d="M -400 1520 H 1500" stroke={INK} strokeWidth={5} />
-      {/* toolbox, low right, dark and simple so it reads as near foreground */}
-      <g transform="translate(880 1660)">
-        <ContactShadow cx={0} cy={132} rx={190} ry={18} opacity={0.34} />
-        <rect x={-170} y={-40} width={340} height={172} rx={8} fill="#4E5A5F" stroke={INK} strokeWidth={5} />
-        <path d="M -170 34 H 170" stroke={INK} strokeWidth={4} opacity={0.5} />
-        <path d="M -56 -40 q 56 -56 112 0" fill="none" stroke={INK} strokeWidth={8} />
-        <rect x={-40} y={62} width={80} height={30} rx={4} fill="#6E787E" stroke={INK} strokeWidth={4} />
-      </g>
-      {/* a coiled lead on the floor, low left */}
-      <g transform="translate(200 1720)">
-        {[0, 1, 2].map((i) => (
-          <ellipse key={i} cx={0} cy={i * 18} rx={128 - i * 16} ry={44 - i * 6}
-                   fill="none" stroke="#3E484D" strokeWidth={15} />
-        ))}
-      </g>
+      <path d="M -400 1560 H 1500 V 1920 H -400 Z" fill="#78828A" data-band="ok" />
+      <path d="M -400 1560 H 1500" stroke={INK} strokeWidth={5} />
     </g>
   </g>
 );
