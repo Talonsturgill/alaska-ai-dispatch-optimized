@@ -39,7 +39,10 @@ MOVES = [
     # delivered vo_lines.json first, so board and strips are finally on one clock. One strip
     # per beat, thirty-seven of them, across all fourteen shots.
     ("land",  0,  0.00),  # opens on the object the film returns to
-    ("tap",  0,  2.66),  # plants loop 1 before anyone knows what it is
+    ("tap",  0,  2.15),  # plants loop 1 before anyone knows what it is
+    # 2.66 -> 2.15: the knuckle taps run f58-74, i.e. 1.93-2.47s, so a window centred
+    # at 2.66 opened AFTER the move ended and three judges reported the hand frozen
+    # across all 8 frames. They were right about the strip and wrong about the film.
     ("stamp",  1,  0.00),  # the one fact the plate does carry
     ("blanks",  1,  3.73),  # the contrast the whole film rests on
     ("form",  2,  0.00),  # names the absence as an absence

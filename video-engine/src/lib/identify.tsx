@@ -601,6 +601,67 @@ export const PowerhouseBG: React.FC<{f: number; parallax?: number; door?: number
         })}
       </g>
     )}
+    {/* THE ROOM HAD NO LIGHT IN IT (2026-08-13, round 7). Every judge marked the top quarter of
+        the frame dead in nearly every shot, and looking at 78.0s myself the reason was plainer
+        than "not enough dressing": there was no ceiling, no roof, and no lamp. A room lit by a
+        door alone, with its light source off screen, has nothing to put at the top of a 9:16
+        frame. Purlins give the wall somewhere to stop; the two caged work lamps give the top
+        band a subject, motivate the flicker the whole film now breathes on, and drop pools that
+        fill the floor the same judges called empty. They sway on different periods, so the two
+        biggest bright shapes in the room are never in the same place twice. */}
+    <g>
+      {/* roof: purlins running back to the vanishing point, and the ridge beam */}
+      <path d="M -400 168 H 1500 V 214 H -400 Z" fill="#5A646A" stroke={INK} strokeWidth={4} />
+      {Array.from({length: 7}, (_, i) => (
+        <path key={`pl${i}`} d={`M ${-300 + i * 250} 214 L ${540 + (-300 + i * 250 - 540) * 0.42} 372`}
+              stroke="#6E787E" strokeWidth={9} opacity={0.75} />
+      ))}
+      <path d="M -400 372 H 1500" stroke="#6E787E" strokeWidth={11} opacity={0.6} />
+      <path d="M -400 366 H 1500" stroke="#98A2A7" strokeWidth={3} opacity={0.4} />
+      {/* lamp 2 sits at 628, not 856: at 856 its flex dropped straight through the louvred vent
+          at 800 and it read as a bulb hanging out of an air duct. */}
+      {[{x: 250, p: 53.7, d: 210}, {x: 628, p: 67.1, d: 156}].map((L, i) => {
+        const sw = Math.sin(f / L.p + i * 2.1) * 2.3;          // degrees, about the roof mount
+        const lx = L.x + Math.sin((sw * Math.PI) / 180) * L.d; // where the shade actually hangs
+        return (
+          <g key={`lamp${i}`}>
+            {/* the cone of light, and the pool it lays on the floor, both following the shade */}
+            <path d={`M ${lx - 46} ${214 + L.d} L ${lx - 300} 1180 L ${lx + 300} 1180 L ${lx + 46} ${214 + L.d} Z`}
+                  fill={ID.glare} opacity={0.09} />
+            <ellipse cx={lx} cy={1250} rx={300} ry={64} fill={ID.glare} opacity={0.08} />
+            <ellipse cx={lx} cy={214 + L.d + 30} rx={150} ry={54} fill={ID.glare} opacity={0.07} />
+            {/* flex and shade */}
+            <g transform={`rotate(${sw} ${L.x} 214)`}>
+              <path d={`M ${L.x} 214 V ${214 + L.d}`} stroke={INK} strokeWidth={5} />
+              <path d={`M ${L.x - 46} ${214 + L.d} L ${L.x + 46} ${214 + L.d} L ${L.x + 30} ${214 + L.d + 46}
+                        L ${L.x - 30} ${214 + L.d + 46} Z`}
+                    fill="#7E888E" stroke={INK} strokeWidth={4} strokeLinejoin="round" />
+              <ellipse cx={L.x} cy={214 + L.d + 46} rx={30} ry={11} fill="#FFF3DA" stroke={INK} strokeWidth={3} />
+              {/* the guard cage, which is what makes it a work lamp and not a pendant */}
+              {[-22, 0, 22].map((o) => (
+                <path key={o} d={`M ${L.x + o} ${214 + L.d + 44} q ${o * 0.5} 26 0 34`} fill="none"
+                      stroke={INK} strokeWidth={3} opacity={0.8} />
+              ))}
+              <path d={`M ${L.x - 26} ${214 + L.d + 62} q 26 12 52 0`} fill="none" stroke={INK} strokeWidth={3} />
+            </g>
+          </g>
+        );
+      })}
+      {/* louvred wall vent, high right, where nothing was staged and nothing competes */}
+      {/* x=800, not 892. Stage's push runs -0.05..+0.13, so the visible authored band closes
+          from x[66,1014] to x[142,938] over a shot and the drift moves it another 30 either
+          way. Anything staged past ~900 is on screen when the shot starts and cropped by the
+          time it ends, which is the worst of both. */}
+      <g transform="translate(800 250)">
+        <rect x={-96} y={0} width={192} height={132} rx={5} fill="#6E787E" stroke={INK} strokeWidth={4} />
+        {Array.from({length: 5}, (_, i) => (
+          <path key={i} d={`M -84 ${16 + i * 24} H 84`} stroke={INK} strokeWidth={7} opacity={0.55} />
+        ))}
+        {Array.from({length: 5}, (_, i) => (
+          <path key={`h${i}`} d={`M -84 ${12 + i * 24} H 84`} stroke="#AEB6BA" strokeWidth={3} opacity={0.4} />
+        ))}
+      </g>
+    </g>
     {/* SET DRESSING. A powerhouse is a WORKED room, and an empty wall is a stretch of film
         where a viewer is given nothing to look at. These are real objects that belong here:
         a breaker panel, conduit runs, a bench with a vise, a coiled cable on a hook. They are
@@ -693,18 +754,35 @@ export const FilingDrawer: React.FC<{
         {/* THE LABEL IS THE SUBJECT OF THE BEAT, so it gets the dark-chip treatment the rest of
             the film's readable type gets. It was #2B2F33 on #8A949A -- grey on grey -- and two
             judges independently called it unreadable even before the index card covered it. */}
-        <rect x={-146} y={122} width={292} height={30} rx={3} fill={INK} opacity={0.88} />
-        <text x={0} y={143} textAnchor="middle"
-              fontSize={Math.min(17, Math.floor(280 / Math.max(1, label.length * 0.602)))}
-              fontFamily="JetBrains Mono, monospace" fill="#EFECE3" letterSpacing={0.5}>{label}</text>
+        {/* ONE LINE FORCED IT TO 17px (2026-08-13, round 7). Fitting a 25-character label to a
+            292-wide chip on ONE line caps the type at 17 authored px, which is about 20px on a
+            1080 frame -- invisible on a phone, and this label IS the running gag. Two lines
+            doubles it to 25 without widening the drawer, which is a real filing cabinet size. */}
+        {(() => {
+          const w = label.split(' ');
+          const l1 = w.length > 1 ? w.slice(0, -1).join(' ') : label;
+          const l2 = w.length > 1 ? w[w.length - 1] : '';
+          const sz = Math.min(26, Math.floor(280 / Math.max(1, Math.max(l1.length, l2.length) * 0.602)));
+          return (
+            <g>
+              <rect x={-146} y={106} width={292} height={l2 ? 58 : 34} rx={3} fill={INK} opacity={0.88} />
+              <text x={0} y={l2 ? 127 : 130} textAnchor="middle" fontSize={sz}
+                    fontFamily="JetBrains Mono, monospace" fill="#EFECE3" letterSpacing={0.5}>{l1}</text>
+              {l2 && (
+                <text x={0} y={154} textAnchor="middle" fontSize={sz}
+                      fontFamily="JetBrains Mono, monospace" fill="#EFECE3" letterSpacing={0.5}>{l2}</text>
+              )}
+            </g>
+          );
+        })()}
         {open > 0.35 && (
           <g opacity={Math.min(1, (open - 0.35) * 3)}>
-            <rect x={-150} y={160} width={300} height={104} fill="#3A4348" opacity={0.55} />
+            <rect x={-150} y={170} width={300} height={100} fill="#3A4348" opacity={0.55} />
             {/* the card rides in the drawer's WELL, clear of the label's baseline */}
             {card > 0 && (
               <g transform={`translate(0 ${232 - card * 22})`} opacity={card}>
-                <rect x={-124} y={-26} width={248} height={52} rx={3} fill="#F1EDE3" stroke={INK} strokeWidth={2.5} />
-                <text x={0} y={7} textAnchor="middle" fontSize={20} fontFamily="JetBrains Mono, monospace" fill="#2B2F33">
+                <rect x={-150} y={-28} width={300} height={56} rx={3} fill="#F1EDE3" stroke={INK} strokeWidth={2.5} />
+                <text x={0} y={8} textAnchor="middle" fontSize={26} fontFamily="JetBrains Mono, monospace" fill="#2B2F33">
                   usually unavailable
                 </text>
               </g>

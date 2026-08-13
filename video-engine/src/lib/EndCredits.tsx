@@ -74,7 +74,17 @@ export const EndCredits: React.FC<{data: CreditsData; durationInFrames: number}>
 
   const siteLine = `VISIT US AT ${data.site.toUpperCase()}`;
   const siteSize = fitSize(siteLine, MAXW, 40);
-  const musicSize = fitSize(data.music.toUpperCase(), MAXW, 19);
+  // A LICENCE CONDITION SET IN 19px IS NOT "UNMISSABLE" (2026-08-13, round 7). The comment
+  // below this block says the credit is drawn last and unmissable, and then it fit a 74
+  // character string to one line, which caps it at 19px in DIM -- the smallest, faintest type
+  // in the whole film, on the one line CC BY 4.0 actually obliges us to make readable. Split
+  // at the licence clause it doubles, because each half fits on its own line.
+  const musicRaw = data.music.toUpperCase();
+  const mSplit = musicRaw.lastIndexOf(', LICENSED');
+  const musicLines = mSplit > 0
+    ? [musicRaw.slice(0, mSplit), musicRaw.slice(mSplit + 2)]
+    : [musicRaw];
+  const musicSize = musicLines.reduce((acc, l) => Math.min(acc, fitSize(l, MAXW, 32)), 32);
 
   // sources are laid one per line, each shrunk to fit rather than truncated: a source you
   // cannot read is the same as a source you did not cite
@@ -120,9 +130,11 @@ export const EndCredits: React.FC<{data: CreditsData; durationInFrames: number}>
         ))}
 
         {/* the licence condition, last and unmissable */}
-        <text x={W / 2} y={srcTop + 96 + data.sources.length * lineH} textAnchor="middle"
-              fontFamily={MONO} fontSize={musicSize} fontWeight={700} fill={DIM}
-              letterSpacing={0.6}>{data.music.toUpperCase()}</text>
+        {musicLines.map((l, i) => (
+          <text key={i} x={W / 2} y={srcTop + 96 + data.sources.length * lineH + i * (musicSize * 1.5)}
+                textAnchor="middle" fontFamily={MONO} fontSize={musicSize} fontWeight={700}
+                fill={BONE} letterSpacing={0.6}>{l}</text>
+        ))}
         </g>
       </svg>
     </AbsoluteFill>
