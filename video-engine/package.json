@@ -5,7 +5,10 @@
   "description": "Alaska.Ai dispatch 2.5D infographic video engine (Remotion)",
   "scripts": {
     "start": "remotion studio",
-    "render": "python ../scripts/run_guard.py require-composition --composition DispatchDaily && python ../scripts/render_contract.py prepare && remotion render src/index.ts DispatchDaily ../out/dispatch/render/video_mute.mp4 --props=../out/dispatch/episode_props.json --codec=h264 --muted --crf=19 && python ../scripts/render_contract.py record"
+    "render": "python ../scripts/run_guard.py require-composition --composition DispatchDaily && python ../scripts/render_contract.py prepare && remotion render src/index.ts DispatchDaily ../out/dispatch/render/video_mute.mp4 --props=../out/dispatch/episode_props.json --codec=h264 --muted --crf=19 && python ../scripts/render_contract.py record",
+    "typecheck": "tsc --noEmit",
+    "compositions": "remotion compositions src/index.ts",
+    "smoke:parametric": "npm run typecheck && npm run compositions"
   },
   "dependencies": {
     "@remotion/cli": "4.0.399",

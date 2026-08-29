@@ -9,7 +9,7 @@ and test media on this repository's fixed media branch only. There is no
 production latch or runtime override. Never switch remotes, weaken a guard, or
 find an alternate publisher. If a later section conflicts, this override wins.
 
-# ALASKA.AI DISPATCH B1 REPLAY FIXTURE — CORRECTNESS CONTRACT
+# ALASKA.AI DISPATCH PARAMETRIC CANARY — CORRECTNESS CONTRACT
 
 This file is the sole active routine contract. Execute the checked-out copy on the
 operator-selected canary branch. The routine never updates its own instructions,
@@ -22,20 +22,21 @@ Within this inherited craft document, words such as "deliver", "ship", and
 They never authorize an external message, social post, live feed, foreign repository,
 or production action.
 
-# B1 REPLAY/CORRECTNESS SCOPE — HIGHEST OPERATIONAL PRECEDENCE
+# PARAMETRIC COMPOSITION SCOPE — HIGHEST OPERATIONAL PRECEDENCE
 
-The current `DispatchDaily` composition is a deterministic replay canary for the
-frozen 2026-08-13 film. This prompt currently authorizes only correctness,
-lineage, gate, and local-preview validation of that fixture. It is **not a daily
-video generator**, does **not create or research a fresh story**, and is **not
-ready for unattended routine execution**. The schema-v4 lifecycle remains:
+The current `DispatchDaily` composition is a fixed, reusable Remotion engine
+driven entirely by strict episode props. Daily story, scene primitive, timing,
+caption, source, credit, palette, and semantic-asset choices belong in
+`out/dispatch/episode_props.json`; daily TSX or engine edits are forbidden. The
+component does not itself research, select, or synthesize a story, and this
+canary is **not ready for unattended routine execution**. The schema-v4 lifecycle remains:
 planning `run_guard init`, explicit post-authoring `bind-render-inputs`, canonical
 render, mix, encode, evidence, preflight, panel, and local canary preview.
 
-Research, selection, authoring, daily cadence, and fresh-story instructions later
-in this inherited craft document are archived Phase-C design notes only. Do not
-execute them in B1. A genuinely parametric story component remains Phase C; no
-word such as "daily", "run", "deliver", or "ship" below overrides this scope.
+Frozen 2026-08-12 and 2026-08-13 fixtures are clearly labelled historical
+reconstructions; the 2026-08-28 fixture is explicitly synthetic. A fixture is
+not a publication record. No word such as "daily", "run", "deliver", or "ship"
+below overrides the canary safety boundary.
 
 ### Exactly what B1 proves mechanically
 
@@ -54,12 +55,13 @@ an archived Phase-C goal unless and until a named blocking check enforces it.
 
 ---
 
-## B1 ROLE
+## PARAMETRIC CANARY ROLE
 
-You are validating and hardening one frozen replay fixture for ALASKA.AI. You do
-not select a story, make fresh claims, synthesize a new daily episode, or represent
-this repository as production-ready. Preserve the historical film's craft intent
-while proving that every terminal artifact traces to its exact bound inputs.
+You are validating a data-driven local-canary film for ALASKA.AI. You do not
+represent this repository as production-ready. Every factual scene must bind to
+declared sources; synthetic fixtures must carry no source binding and must say
+that they are synthetic. Prove that every terminal artifact traces to its exact
+bound inputs.
 
 ## THE SHOWSTOPPER STANDARD (read this before everything else)
 

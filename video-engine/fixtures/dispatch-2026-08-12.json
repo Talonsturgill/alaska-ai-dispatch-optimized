@@ -1,0 +1,203 @@
+{
+  "schemaVersion": 2,
+  "episode": {
+    "id": "dispatch-2026-08-12-reconstruction",
+    "date": "2026-08-12",
+    "title": "The Smallest Door",
+    "subtitle": "A source-bound parametric reconstruction of the checked-in August 12 story",
+    "provenance": {
+      "kind": "historical_reconstruction",
+      "notice": "Historical reconstruction from checked-in 2026-08-12 records; not the published cut"
+    },
+    "motion": "reduced"
+  },
+  "fps": 30,
+  "total": 3600,
+  "safeZones": {
+    "squareTop": 420,
+    "squareBottom": 1500,
+    "actionLeft": 72,
+    "actionRight": 1008,
+    "captionTop": 1328,
+    "captionBottom": 1484
+  },
+  "palette": {
+    "ink": "#24262A",
+    "paper": "#F0E9DA",
+    "accent": "#D05A3A",
+    "signal": "#345F73"
+  },
+  "assets": [
+    {"id": "notice", "kind": "symbol", "glyph": "document", "alt": "A Federal Register notice"},
+    {"id": "door", "kind": "symbol", "glyph": "pin", "alt": "An Alaska-specific funding door"},
+    {"id": "people", "kind": "symbol", "glyph": "people", "alt": "Alaska organizations seeking funding"},
+    {"id": "clock", "kind": "symbol", "glyph": "clock", "alt": "A dated grant opportunity"}
+  ],
+  "sources": [
+    {
+      "id": "s1",
+      "label": "Federal Register 91 FR 47241",
+      "url": "https://www.federalregister.gov/documents/2026/07/28/2026-15150/notice-of-final-issuance-on-the-adoption-of-administration-for-native-americans-program-policies-and",
+      "claimIds": ["c1", "c2", "c3", "c4", "c5", "c10", "c11", "c12", "c13", "c14"]
+    },
+    {
+      "id": "s2",
+      "label": "Grants.gov — AI3 Action Institute",
+      "url": "https://simpler.grants.gov/opportunity/8b106d7a-a5ec-4226-b3d4-90bc8c3eade1",
+      "claimIds": ["c6"]
+    },
+    {
+      "id": "s3",
+      "label": "Grants.gov — EAGLE",
+      "url": "https://simpler.grants.gov/opportunity/bb965470-bd8d-4529-b30b-39efe6f81147",
+      "claimIds": ["c7"]
+    },
+    {
+      "id": "s4",
+      "label": "Grants.gov — SEDS Alaska FY2025",
+      "url": "https://simpler.grants.gov/opportunity/fd13f1bb-9657-495a-a053-e36348181662",
+      "claimIds": ["c8", "c9"]
+    },
+    {
+      "id": "s6",
+      "label": "UAA RAISE mini-grant awardees",
+      "url": "https://coeng.uaa.alaska.edu/AI/raise-mini-grant-awardee-announcement-25-26/",
+      "claimIds": ["c16", "c17", "c18"]
+    }
+  ],
+  "scenes": [
+    {
+      "id": "notice",
+      "from": 0,
+      "dur": 390,
+      "primitive": "document",
+      "eyebrow": "The notice",
+      "title": "A federal program map changed",
+      "body": "The July 28 Federal Register notice records final ANA program policies and the comments the agency considered.",
+      "primaryValue": "91 FR 47241",
+      "labels": ["final issuance", "July 28", "32 submissions"],
+      "sourceIds": ["s1"],
+      "assetId": "notice"
+    },
+    {
+      "id": "ai3",
+      "from": 390,
+      "dur": 390,
+      "primitive": "metric",
+      "eyebrow": "One national award",
+      "title": "AI3 was a nationwide opportunity",
+      "body": "The checked-in Grants.gov record listed one expected award for the AI3 Action Institute opportunity.",
+      "primaryValue": "1 AWARD",
+      "secondaryValue": "Nationwide",
+      "labels": ["AI3", "national"],
+      "sourceIds": ["s2"],
+      "assetId": "clock"
+    },
+    {
+      "id": "eagle",
+      "from": 780,
+      "dur": 390,
+      "primitive": "metric",
+      "eyebrow": "The larger lane",
+      "title": "EAGLE listed 31 expected awards",
+      "body": "The checked-in opportunity record listed 24 million dollars in total program funding and required cost sharing.",
+      "primaryValue": "31 AWARDS",
+      "secondaryValue": "$24 million total program funding",
+      "labels": ["EAGLE", "cost share"],
+      "sourceIds": ["s3"]
+    },
+    {
+      "id": "seds",
+      "from": 1170,
+      "dur": 390,
+      "primitive": "comparison",
+      "eyebrow": "The Alaska-specific lane",
+      "title": "SEDS Alaska had its own smaller door",
+      "body": "The FY2025 Alaska-specific opportunity listed two million dollars and three expected awards.",
+      "primaryValue": "$2M",
+      "secondaryValue": "3 AWARDS",
+      "labels": ["funding", "awards"],
+      "sourceIds": ["s4"],
+      "assetId": "door"
+    },
+    {
+      "id": "distinction",
+      "from": 1560,
+      "dur": 390,
+      "primitive": "quote",
+      "eyebrow": "The record's distinction",
+      "title": "Complement does not mean replace",
+      "body": "The agency said the AI3 institute would complement, not replace, broader social and economic development efforts.",
+      "primaryValue": "COMPLEMENT",
+      "secondaryValue": "not replace",
+      "labels": ["agency response"],
+      "sourceIds": ["s1"]
+    },
+    {
+      "id": "concerns",
+      "from": 1950,
+      "dur": 390,
+      "primitive": "process",
+      "eyebrow": "Attributed concerns",
+      "title": "Commenters named what could be lost",
+      "body": "The notice attributes concerns about an Alaska-specific opportunity and new barriers to commenters, not the agency.",
+      "labels": ["Alaska lane", "new notice", "barriers"],
+      "sourceIds": ["s1"],
+      "assetId": "people"
+    },
+    {
+      "id": "local",
+      "from": 2340,
+      "dur": 435,
+      "primitive": "location",
+      "eyebrow": "Another Alaska lane",
+      "title": "Local AI projects were already being funded",
+      "body": "UAA's checked-in page lists community-partnered RAISE projects, including Nome and Alakanuk partners.",
+      "labels": ["Nome", "Alakanuk", "UAA"],
+      "sourceIds": ["s6"],
+      "assetId": "people"
+    },
+    {
+      "id": "close",
+      "from": 2775,
+      "dur": 435,
+      "primitive": "closing",
+      "eyebrow": "The narrow question",
+      "title": "Which door can an Alaska applicant use?",
+      "body": "The reconstructed story keeps the policy lanes separate and leaves the answer attached to the dated records.",
+      "primaryValue": "WHICH DOOR?",
+      "labels": ["record first"],
+      "sourceIds": ["s1", "s2", "s3", "s4"],
+      "assetId": "door"
+    }
+  ],
+  "captions": [
+    {"t": 1.0, "d": 4.0, "text": "A federal program map changed."},
+    {"t": 14.0, "d": 4.0, "text": "AI3 listed one nationwide award."},
+    {"t": 27.0, "d": 4.0, "text": "EAGLE listed thirty one expected awards."},
+    {"t": 40.0, "d": 4.0, "text": "SEDS Alaska had its own smaller door."},
+    {"t": 53.0, "d": 4.0, "text": "Complement does not mean replace."},
+    {"t": 66.0, "d": 4.0, "text": "The concerns belong to the commenters."},
+    {"t": 79.0, "d": 4.0, "text": "Local projects were already being funded."},
+    {"t": 93.5, "d": 4.0, "text": "The question is which door Alaska can use."}
+  ],
+  "wordTimings": [
+    {"word": "federal", "start": 1.0, "end": 1.4, "lineId": "line-1"},
+    {"word": "notice", "start": 1.5, "end": 1.9, "lineId": "line-1"},
+    {"word": "AI3", "start": 14.0, "end": 14.3, "lineId": "line-2"},
+    {"word": "EAGLE", "start": 27.0, "end": 27.4, "lineId": "line-3"},
+    {"word": "Alaska", "start": 40.0, "end": 40.4, "lineId": "line-4"},
+    {"word": "complement", "start": 53.0, "end": 53.6, "lineId": "line-5"},
+    {"word": "commenters", "start": 66.0, "end": 66.6, "lineId": "line-6"},
+    {"word": "local", "start": 79.0, "end": 79.3, "lineId": "line-7"},
+    {"word": "door", "start": 93.5, "end": 93.9, "lineId": "line-8"}
+  ],
+  "credits": {
+    "frames": 390,
+    "seconds": 13,
+    "music": "\"Long Note Two\" Kevin MacLeod (incompetech.com), licensed under CC BY 4.0",
+    "sources": ["FEDERALREGISTER.GOV", "SIMPLER.GRANTS.GOV", "COENG.UAA.ALASKA.EDU"],
+    "sourceIds": ["s1", "s2", "s3", "s4", "s6"],
+    "site": "alaskaaihq.com"
+  }
+}

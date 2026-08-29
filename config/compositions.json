@@ -5,22 +5,31 @@
     "video-engine/package.json",
     "video-engine/package-lock.json",
     "video-engine/remotion.config.ts",
-    "video-engine/tsconfig.json"
+    "video-engine/tsconfig.json",
+    "config/episode_props.schema.json",
+    "video-engine/fixtures/dispatch-2026-08-12.json",
+    "video-engine/fixtures/dispatch-2026-08-13.json",
+    "video-engine/fixtures/dispatch-2026-08-28.json"
   ],
   "compositions": {
     "DispatchDaily": {
       "status": "active",
       "component": "DispatchDaily",
       "source": "video-engine/src/DispatchDaily.tsx",
-      "source_dependencies": ["video-engine/src/Ep0813.tsx"],
+      "source_dependencies": ["video-engine/src/DispatchDailyComposition.tsx"],
       "props": "out/dispatch/episode_props.json",
-      "template_kind": "canary_replay_fixture",
-      "fixture_id": "2026-08-13-replay",
-      "generic_daily_template": false,
+      "props_schema": "config/episode_props.schema.json",
+      "template_kind": "parametric_dispatch_daily",
+      "generic_daily_template": true,
+      "frozen_fixtures": [
+        "video-engine/fixtures/dispatch-2026-08-12.json",
+        "video-engine/fixtures/dispatch-2026-08-13.json",
+        "video-engine/fixtures/dispatch-2026-08-28.json"
+      ],
       "width": 1080,
       "height": 1920,
       "fps": 30,
-      "default_duration_in_frames": 3900,
+      "default_duration_in_frames": 3600,
       "mute_render_path": "out/dispatch/render/video_mute.mp4",
       "render_receipt_path": "out/dispatch/render/render_receipt.json"
     },

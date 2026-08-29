@@ -48,7 +48,7 @@ The setup script deliberately installs no post-commit or automatic-push hook.
 - `video-engine/` contains the Remotion engine.
 - `CANARY_SAFETY.md` documents the boundary and failure behavior.
 - `docs/CORRECTNESS_FOUNDATION.md` documents run identity, manifested bytes,
-  and the deliberately limited `DispatchDaily` replay fixture.
+  and the strict, reusable `DispatchDaily` parametric composition.
 
 Production deployment must be reviewed and implemented separately in the
 production repositories. Do not weaken this lab to turn a canary into a release.

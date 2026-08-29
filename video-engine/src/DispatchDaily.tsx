@@ -1,24 +1,36 @@
 import React from 'react';
-import {z} from 'zod';
-import {Ep0813, ep0813Schema} from './Ep0813';
+import fixture0812 from '../fixtures/dispatch-2026-08-12.json';
+import fixture0813 from '../fixtures/dispatch-2026-08-13.json';
+import fixture0828 from '../fixtures/dispatch-2026-08-28.json';
+import {DispatchDailyComposition} from './DispatchDailyComposition';
+import {
+  dispatchDailyMetadata,
+  dispatchDailyInputSchema,
+  dispatchDailySchema,
+  type DispatchDailyProps,
+  validateDispatchDailyProps,
+} from './DispatchDailySchema';
 
 /**
- * Correctness-canary replay fixture.
+ * Fixed parametric Dispatch engine.
  *
- * This is deliberately not presented as a generic story template. Phase B1
- * needs one stable active identity so renders, props and deliverables can be
- * hash-bound while the later template phase is built. Until that replacement
- * lands, DispatchDaily replays the frozen 2026-08-13 authored film and requires
- * an explicit fixtureId in its props/defaults.
+ * Daily work changes only episode_props.json. All accepted story, timing,
+ * source, credit, palette and visual choices are declared in that JSON and
+ * parsed again inside this component. Unknown or inconsistent data throws
+ * before a frame can render.
  */
-export const DISPATCH_DAILY_FIXTURE = '2026-08-13-replay' as const;
+export const DISPATCH_DAILY_FIXTURES = {
+  '2026-08-12': validateDispatchDailyProps(fixture0812),
+  '2026-08-13': validateDispatchDailyProps(fixture0813),
+  '2026-08-28': validateDispatchDailyProps(fixture0828),
+} as const;
 
-export const dispatchDailySchema = ep0813Schema.extend({
-  fixtureId: z.literal(DISPATCH_DAILY_FIXTURE),
-});
+export const dispatchDailyDefaultProps: DispatchDailyProps = DISPATCH_DAILY_FIXTURES['2026-08-13'];
 
-export type DispatchDailyProps = z.infer<typeof dispatchDailySchema>;
+export {dispatchDailyInputSchema, dispatchDailyMetadata, dispatchDailySchema};
+export type {DispatchDailyProps};
 
-export const DispatchDaily: React.FC<DispatchDailyProps> = ({fixtureId: _fixtureId, ...props}) => {
-  return <Ep0813 {...props} />;
+export const DispatchDaily: React.FC<DispatchDailyProps> = (rawProps) => {
+  const props = validateDispatchDailyProps(rawProps);
+  return <DispatchDailyComposition {...props}/>;
 };

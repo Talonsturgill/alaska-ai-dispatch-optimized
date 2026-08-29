@@ -2496,10 +2496,10 @@ class StaticContractTests(unittest.TestCase):
     def test_replay_prompt_closed_judge_pack_and_canonical_quality_preflight(self):
         prompt = (REPO / "prompts" / "dispatch_routine.md").read_text(encoding="utf-8")
         normalized_prompt = " ".join(prompt.split())
-        self.assertIn("B1 REPLAY/CORRECTNESS SCOPE", prompt)
-        self.assertIn("not a daily video generator", normalized_prompt)
-        self.assertIn("does **not create or research a fresh story**", normalized_prompt)
-        self.assertIn("A genuinely parametric story component remains Phase C", prompt)
+        self.assertIn("PARAMETRIC COMPOSITION SCOPE", prompt)
+        self.assertIn("fixed, reusable Remotion engine", normalized_prompt)
+        self.assertIn("daily TSX or engine edits are forbidden", normalized_prompt)
+        self.assertIn("2026-08-28 fixture is explicitly synthetic", normalized_prompt)
         self.assertIn("Exactly what B1 proves mechanically", prompt)
         for required_name in (
             "schema-v4 delivery bytes", "transactional mastering/audio lineage",
