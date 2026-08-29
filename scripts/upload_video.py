@@ -24,13 +24,15 @@ from urllib.request import Request, urlopen
 from canary_guard import require_action, require_canary_origin
 from deliverable_contract import (
     DeliverableContractError,
+    publication_name,
     record_publication,
     sha256_file,
     validate_upload,
 )
+from ship_gate import GateInputError, require_ship_verdict
 
 MEDIA_BRANCH = "dispatch-media"
-MEDIA_NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$")
+MEDIA_NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,254}$")
 
 def sh(cmd, **kw): return subprocess.run(cmd, capture_output=True, text=True, **kw)
 
@@ -46,7 +48,7 @@ def media_email():
 
 
 def via_github(file, name):
-    """git-push the file to the dispatch-media branch; return its permanent raw URL."""
+    """Publish immutable bytes and return (commit-SHA URL, commit SHA, media name)."""
     if "DISPATCH_MEDIA_BRANCH" in os.environ:
         raise RuntimeError(
             "DISPATCH_MEDIA_BRANCH overrides are forbidden; the canary branch is fixed"
@@ -70,20 +72,34 @@ def via_github(file, name):
         else:
             sh(["git", "-C", wt, "checkout", "--orphan", branch]); sh(["git", "-C", wt, "rm", "-rf", "."])
         os.makedirs(os.path.join(wt, "media"), exist_ok=True)
-        shutil.copyfile(file, os.path.join(wt, "media", name))
-        sh(["git", "-C", wt, "add", "media/" + name])
+        destination = os.path.join(wt, "media", name)
+        existing = os.path.isfile(destination)
+        if existing and sha256_file(Path(destination)) != sha256_file(Path(file)):
+            raise RuntimeError(
+                f"immutable media name collision: media/{name} already contains different bytes"
+            )
+        if not existing:
+            shutil.copyfile(file, destination)
+            sh(["git", "-C", wt, "add", "media/" + name])
         # THE OWNER'S IDENTITY, NOT THE ASSISTANT'S. CLAUDE.md is explicit and permanent:
         # never set a commit author or committer to Claude or any Anthropic identity, in any
         # commit in this repo. This line had noreply@anthropic.com hardcoded, so every media
         # commit on dispatch-media has been authored by an Anthropic address. Read from git
         # config rather than hardcoding again, so the identity lives in one place.
-        c = sh(["git", "-C", wt, "-c", f"user.email={media_email()}", "-c", "user.name=Alaska.Ai routine",
-                "commit", "-m", f"dispatch media: {name}"])
-        if c.returncode != 0 and "nothing to commit" not in (c.stdout + c.stderr):
-            raise RuntimeError("git commit failed: " + (c.stderr or c.stdout)[-300:])
-        p = sh(["git", "-C", wt, "push", "-u", "origin", branch])
-        if p.returncode != 0: raise RuntimeError("git push failed: " + p.stderr[-300:])
-        return f"https://raw.githubusercontent.com/{owner}/{repo}/{branch}/media/{name}"
+        if existing:
+            commit_sha = sh(["git", "-C", wt, "log", "-1", "--format=%H", "--", "media/" + name]).stdout.strip()
+            if not re.fullmatch(r"[0-9a-f]{40}|[0-9a-f]{64}", commit_sha):
+                raise RuntimeError("existing immutable media has no attributable commit SHA")
+        else:
+            c = sh(["git", "-C", wt, "-c", f"user.email={media_email()}", "-c", "user.name=Alaska.Ai routine",
+                    "commit", "-m", f"dispatch media: {name}"])
+            if c.returncode != 0:
+                raise RuntimeError("git commit failed: " + (c.stderr or c.stdout)[-300:])
+            commit_sha = sh(["git", "-C", wt, "rev-parse", "HEAD"]).stdout.strip()
+            p = sh(["git", "-C", wt, "push", "-u", "origin", branch])
+            if p.returncode != 0: raise RuntimeError("git push failed: " + p.stderr[-300:])
+        url = f"https://raw.githubusercontent.com/{owner}/{repo}/{commit_sha}/media/{name}"
+        return url, commit_sha, name
     finally:
         sh(["git", "-C", root, "worktree", "remove", "--force", wt])
 
@@ -110,7 +126,7 @@ def media_name(name, file):
         name = name + ext
     if not MEDIA_NAME_RE.fullmatch(name):
         raise ValueError(
-            "media name must be 1 to 128 ASCII letters, numbers, dots, underscores, or hyphens"
+            "media name must be 1 to 255 ASCII letters, numbers, dots, underscores, or hyphens"
         )
     return name
 
@@ -160,21 +176,37 @@ def main():
     ap.add_argument("--no-github", action="store_true",
                     help="disable the sole canary publisher and keep the file local")
     a = ap.parse_args()
-    try:
-        name = media_name(a.name or os.path.basename(a.file), a.file)
-    except ValueError as exc:
-        print(f"REFUSING MEDIA NAME: {exc}", file=sys.stderr)
-        return 2
+    supplied_name = None
+    if a.name is not None:
+        try:
+            supplied_name = media_name(a.name, a.file)
+        except ValueError as exc:
+            print(f"REFUSING MEDIA NAME: {exc}", file=sys.stderr)
+            return 2
     if a.no_github:
         print("CANARY: upload disabled by --no-github; file remains local", file=sys.stderr)
         return 1
     try:
-        _manifest, role, _entry = validate_upload(a.file, role=a.role)
+        manifest, role, _entry = validate_upload(a.file, role=a.role)
     except DeliverableContractError as exc:
         print(f"REFUSING UNMANIFESTED MEDIA: {exc}", file=sys.stderr)
         return 1
     try:
-        url, kind = via_github(a.file, name), "permanent"
+        require_ship_verdict(verify_blankness=True)
+    except GateInputError as exc:
+        print(f"REFUSING UNGRADED MEDIA: current-run ship verdict is invalid: {exc}", file=sys.stderr)
+        return 1
+    canonical_name = publication_name(manifest, role)
+    if supplied_name is not None:
+        if supplied_name != canonical_name:
+            print(
+                f"REFUSING MEDIA NAME: immutable name for {role} is {canonical_name}",
+                file=sys.stderr,
+            )
+            return 2
+    try:
+        url, media_commit_sha, published_name = via_github(a.file, canonical_name)
+        kind = "permanent"
     except Exception as exc:
         print(f"ERROR: canary GitHub upload failed; no fallback was attempted:\n  {exc}",
               file=sys.stderr)
@@ -185,7 +217,13 @@ def main():
         print(f"WARNING: link is not a valid, openable media URL - do NOT put it in the draft. {detail}",
               file=sys.stderr); return 3
     try:
-        record_publication(role, url, remote_bytes=remote_bytes, remote_sha256=remote_sha)
+        record_publication(
+            role, url,
+            remote_bytes=remote_bytes,
+            remote_sha256=remote_sha,
+            media_name=published_name,
+            media_commit_sha=media_commit_sha,
+        )
     except DeliverableContractError as exc:
         print(f"ERROR: publication receipt refused: {exc}", file=sys.stderr)
         return 3

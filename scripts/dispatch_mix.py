@@ -35,7 +35,17 @@ OUT = os.path.join(REPO, "out", "dispatch")
 AUD = os.path.join(OUT, "audio")
 FF = os.environ.get("FFMPEG_BIN", "ffmpeg")
 SR = 44100
-DATE = "2026-08-13"   # episode seed for the shuffle-bag + jitter
+sys.path.insert(0, HERE)
+from episode_contract import episode_facts
+from run_guard import load_stamp
+from sfx_contract import write_sidecar
+
+_STAMP = load_stamp(REPO)
+if not isinstance(_STAMP, dict):
+    raise SystemExit("dispatch_mix: current run stamp is missing or unreadable")
+DATE = _STAMP["date"]
+_EPISODE = episode_facts(root=REPO)
+VIDEO_SECS = _EPISODE["duration_seconds"]
 
 
 def run(cmd):
@@ -55,41 +65,8 @@ def file_sha256(path):
 
 
 def write_bound_sfx_sidecar(master):
-    """Atomically bind the performed schedule to the exact audio master it describes."""
-    target = os.path.join(OUT, "sfx_events.json")
-    payload = {
-        "run_date": DATE,
-        "video_seconds": VIDEO_SECS,
-        "count": len(EVENTS),
-        "kinds": sorted({kind for _, kind, _, _ in EVENTS}),
-        "note": ("written by dispatch_mix.py after the audio master completed; one entry per "
-                 "motivated hit, hash-bound to the exact master.wav bytes"),
-        "audio": {
-            "path": "out/dispatch/audio/master.wav",
-            "bytes": os.path.getsize(master),
-            "sha256": file_sha256(master),
-        },
-        "events": [
-            {"t": event_time, "kind": kind, "class": event_class, "pan": pan}
-            for event_time, kind, event_class, pan in EVENTS
-        ],
-    }
-    fd, temporary = tempfile.mkstemp(prefix="sfx_events.json.", suffix=".tmp", dir=OUT)
-    try:
-        with os.fdopen(fd, "w", encoding="utf-8", newline="\n") as handle:
-            json.dump(payload, handle, ensure_ascii=False, indent=2, sort_keys=True)
-            handle.write("\n")
-            handle.flush()
-            os.fsync(handle.fileno())
-        os.replace(temporary, target)
-        master_ns = os.stat(master).st_mtime_ns
-        sidecar_ns = max(time.time_ns(), master_ns + 1)
-        os.utime(target, ns=(sidecar_ns, sidecar_ns))
-    finally:
-        try:
-            os.unlink(temporary)
-        except FileNotFoundError:
-            pass
+    """Bind the performed schedule to exact props timing and audio bytes."""
+    return write_sidecar(master, EVENTS, root=REPO)
 
 
 # --- sound families (spectral neighborhoods, for the repetition assert + jitter)
@@ -122,9 +99,6 @@ def jit(idx, salt, lo, hi):
 # [-1,1], scaled by 0.35 in the graph.
 _lines = json.load(open(os.path.join(OUT, "vo_lines.json")))["lines"]
 L = {x["idx"]: x["start"] for x in _lines}
-_TAIL = 2.6   # matches scripts/build_scenes.py TAIL (hold after the last word)
-VIDEO_SECS = max(x["end"] for x in _lines) + _TAIL   # derive from VO; never hardcode
-
 EVENTS = [
 
     # 2026-08-13 "The Machine Nobody Wrote Down". PER-RUN DATA, generated from THIS film's
@@ -254,7 +228,7 @@ BED_ARC = [
 # hundred and ten bare. A room that is visibly a working plant should hum for its whole runtime,
 # so the bed now runs the full film at a lower level, where it reads as air rather than as an
 # event. Still synthesised, still deterministic, still no attribution owed.
-AMB_IN, AMB_OUT = 0.0, 129.9
+AMB_IN, AMB_OUT = 0.0, max(0.0, VIDEO_SECS - 0.1)
 AMB_LEVEL = 0.055
 
 
@@ -466,23 +440,8 @@ def main():
     # artifact that did not exist, including me, and I repeated the wrong conclusion to the
     # owner. A layer nobody can inspect is scored as a layer that is not there.
     #
-    # This writes the schedule the mix ACTUALLY performed, at the moment it performs it, so the
-    # file cannot drift from the audio the way a hand-maintained table would.
-    try:
-        _sfx_out = os.path.join(OUT, "sfx_events.json")
-        json.dump({
-            "run_date": DATE,
-            "video_seconds": VIDEO_SECS,
-            "count": len(EVENTS),
-            "kinds": sorted({k for _, k, _, _ in EVENTS}),
-            "note": ("written by dispatch_mix.py at mix time from the schedule it performed. "
-                     "One entry per motivated hit: t seconds, kind, loudness class, stereo pan."),
-            "events": [{"t": t, "kind": k, "class": c, "pan": p} for t, k, c, p in EVENTS],
-        }, open(_sfx_out, "w"), indent=1)
-        print(f"sfx_events.json written: {len(EVENTS)} events, {len(set(k for _, k, _, _ in EVENTS))} kinds")
-    except Exception as _e:
-        print(f"WARNING: could not write sfx_events.json ({_e}); the mix is unaffected but the "
-              f"panel and ship_gate will not be able to see the sound design.")
+    # The root sidecar is deliberately written only after master.wav succeeds. A crashed
+    # mix leaves no plausible-but-unbound current-run SFX evidence behind.
 
     os.makedirs(os.path.join(AUD, "sfx"), exist_ok=True)
 

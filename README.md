@@ -29,8 +29,10 @@ The setup script deliberately installs no post-commit or automatic-push hook.
 - Rendered artifacts stay under `out/` unless deliberately committed.
 - `scripts/upload_video.py` can publish test media only to this repository's
   `dispatch-media` branch. It has no external-host fallback.
-- `scripts/dispatch_email.py --local-only --out-html <path>` creates an HTML
-  preview without emitting a Gmail connector payload.
+- `scripts/dispatch_email.py --pre-panel-preview --local-only --out-html <nonterminal-path>`
+  creates a visibly non-terminal review preview. The canonical
+  `out/dispatch/dispatch-preview.html` path is reserved for a fully validated,
+  verdict-bound delivery preview.
 - `scripts/publish_feed.py`, Gmail receipts, Gmail and GitHub connectors,
   production repositories, the live site feed, social publishing, Cloudflare,
   databases, schedules, and secrets are blocked.
@@ -50,3 +52,7 @@ The setup script deliberately installs no post-commit or automatic-push hook.
 
 Production deployment must be reviewed and implemented separately in the
 production repositories. Do not weaken this lab to turn a canary into a release.
+
+The Bash/FFmpeg media pipeline is supported on Linux or WSL. Cross-platform
+Python contract tests and Windows-safe verification commands are documented in
+`docs/CORRECTNESS_FOUNDATION.md`.

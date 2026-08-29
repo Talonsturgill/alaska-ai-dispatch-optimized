@@ -22,9 +22,12 @@ SAMPLES THE 9:16 MASTER, because that is the cut config/panel_protocol.md conven
 on. It sampled the square until 2026-08-09, when all three judges independently reported they
 could not see the frame they had been asked to grade.
 """
-import argparse, glob, json, os, subprocess, sys
+import argparse, glob, hashlib, json, os, subprocess, sys
 
 from deliverable_contract import DeliverableContractError, require_manifest
+from episode_contract import EpisodeContractError, episode_facts
+from evidence_contract import EvidenceContractError, build_evidence_manifest
+from strict_json import canonical_bytes
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 OUT = os.path.join(REPO, "out", "dispatch")
@@ -91,7 +94,8 @@ def main():
 
     try:
         manifest = require_manifest(root=REPO)
-    except DeliverableContractError as exc:
+        episode = episode_facts(root=REPO)
+    except (DeliverableContractError, EpisodeContractError) as exc:
         sys.exit(f"build_evidence: deliverables manifest rejected: {exc}")
     canonical_video = os.path.realpath(
         os.path.join(REPO, *manifest["artifacts"]["vertical_hosted"]["path"].split("/"))
@@ -111,7 +115,8 @@ def main():
     # sampled stills" and every one of them was right about the pack. Sample the whole film.
     import json as _j
     _props = _j.load(open(os.path.join(OUT, "episode_props.json")))
-    end = max(max(L["end"] for L in lines), _props["total"] / 30.0)
+    fps = episode["fps"]
+    end = max(max(L["end"] for L in lines), episode["duration_seconds"])
 
     os.makedirs(EV, exist_ok=True)
     for f in glob.glob(os.path.join(EV, "*.jpg")):
@@ -143,7 +148,7 @@ def main():
     _sweep = [round(end * (i + 0.5) / a.frames, 2) for i in range(a.frames)]
     _settle = []
     for _sc in _props.get("scenes", []):
-        _s_end = (_sc["from"] + _sc["dur"]) / 30.0
+        _s_end = (_sc["from"] + _sc["dur"]) / fps
         _t = round(min(end - 0.1, _s_end - 0.5), 2)      # half a second before the cut
         if _t > 0.2:
             _settle.append(_t)
@@ -217,11 +222,11 @@ def main():
     bounds = []
     try:
         _sc = json.load(open(os.path.join(OUT, "episode_props.json"))).get("scenes") or []
-        bounds = sorted({round(s["from"] / 30.0, 3) for s in _sc if s.get("from")})
+        bounds = sorted({round(s["from"] / fps, 3) for s in _sc if s.get("from")})
     except Exception as _e:
         print(f"  (no scene boundaries available, strips not de-straddled: {_e})")
 
-    WIN = 8 / 30.0
+    WIN = 8 / fps
     motion = {}
     for name, line, off in MOVES:
         if line not in start:
@@ -250,7 +255,7 @@ def main():
                 d = ImageChops.difference(ims[k], ims[k + 1]).histogram()
                 px = ims[k].size[0] * ims[k].size[1]
                 if 100.0 * sum(d[40:]) / px > 22.0:          # a wholesale picture change
-                    straddled = t0 + (k + 1) / 30.0
+                    straddled = t0 + (k + 1) / fps
                     break
             for q in pg:
                 os.remove(q)
@@ -262,8 +267,8 @@ def main():
             # so the button strip showed only the OUTGOING shot and a judge correctly reported
             # "the plate has not returned" for a beat where the plate returns exactly on its line.
             # A tie must resolve FORWARD, into the shot the beat is about.
-            t0 = (straddled + 1 / 30.0 if centre >= straddled - 1e-6
-                  else max(0.0, straddled - WIN - 1 / 30.0))
+            t0 = (straddled + 1 / fps if centre >= straddled - 1e-6
+                  else max(0.0, straddled - WIN - 1 / fps))
             print(f"  filmstrip {name}: window straddled the cut at {straddled:.2f}s, "
                   f"slid to {t0:.2f}s so the measurement is within-shot")
         subprocess.run(["ffmpeg", "-y", "-ss", f"{t0:.3f}", "-i", a.video, "-frames:v", "8",
@@ -338,17 +343,19 @@ def main():
     # docked Sound for it; the card was on screen the whole time, at 127.5s, and the pack
     # simply stopped at 125.0. Attribution is a licence condition, so "the evidence cannot
     # show it" is not an acceptable resting place. Grab a frame from the last two seconds.
-    try:
-        _dur = float(_sp.run(["ffprobe", "-v", "error", "-show_entries", "format=duration",
-                              "-of", "csv=p=0", a.video], capture_output=True,
-                             text=True).stdout.strip())
-        _t = max(0.0, _dur - 2.0)
-        _sp.run(["ffmpeg", "-v", "error", "-ss", f"{_t:.2f}", "-i", a.video, "-vframes", "1",
-                 "-q:v", "3", "-y", os.path.join(EV, f"f{_t:05.1f}.jpg")],
-                capture_output=True, text=True)
-        print(f"  credits card sampled at {_t:.1f}s")
-    except Exception as _e:
-        print(f"  !! could not sample the credits card: {_e}")
+    _t = max(0.0, episode["duration_seconds"] - 2.0)
+    _credits_path = os.path.join(EV, f"f{_t:05.1f}.jpg")
+    _credits = _sp.run(
+        ["ffmpeg", "-v", "error", "-ss", f"{_t:.2f}", "-i", a.video,
+         "-vframes", "1", "-q:v", "3", "-y", _credits_path],
+        capture_output=True, text=True,
+    )
+    if _credits.returncode != 0 or not os.path.isfile(_credits_path):
+        sys.exit(
+            "build_evidence: credits-card sample failed: "
+            + (_credits.stderr or _credits.stdout or "no decoded frame").strip()[-300:]
+        )
+    print(f"  credits card sampled at {_t:.1f}s")
 
     # THE AUDIO REPORT IS PART OF THE PACK, SO THIS BUILDS IT (2026-08-12).
     # It used to be whatever audio_report.py last happened to write, whenever that was. On
@@ -367,10 +374,33 @@ def main():
     if _r.returncode == 0:
         print("  audio_report.json rebuilt from the delivered cut")
     else:
-        # Loud, and not fatal: the rest of the pack is still worth having, but nobody should
-        # be able to read past this and assume the report describes this film.
-        print("  !! audio_report.json COULD NOT BE REBUILT and may describe a different cut:")
-        print("     " + (_r.stderr or _r.stdout).strip()[-300:])
+        sys.exit(
+            "build_evidence: audio_report.json could not be rebuilt from the delivered cut: "
+            + (_r.stderr or _r.stdout).strip()[-300:]
+        )
+
+    try:
+        evidence_manifest = build_evidence_manifest(
+            root=REPO,
+            delivery_manifest=manifest,
+            parameters={
+                "video_role": "vertical_hosted",
+                "video_path": manifest["artifacts"]["vertical_hosted"]["path"],
+                "frames": a.frames,
+                "episode_total_frames": episode["total_frames"],
+                "episode_fps": episode["fps"],
+                "episode_duration_seconds": episode["duration_seconds"],
+                "moves_sha256": hashlib.sha256(canonical_bytes(MOVES)).hexdigest(),
+                "filmstrip_frames": 8,
+                "contact_sampling": "even-plus-scene-settle",
+            },
+        )
+    except EvidenceContractError as exc:
+        sys.exit(f"build_evidence: evidence manifest rejected: {exc}")
+    print(
+        f"  evidence_manifest.json bound {len(evidence_manifest['artifacts'])} files to "
+        f"vertical sha256={evidence_manifest['vertical_hosted']['sha256'][:16]}"
+    )
 
 
 if __name__ == "__main__":

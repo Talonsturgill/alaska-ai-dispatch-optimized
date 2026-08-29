@@ -91,13 +91,14 @@ recurred. Two were closed by PROSE and both did. So this law has a gate now:
 **RUN `check` BEFORE YOU WRITE ANY STOP-SHAPED ARTIFACT** — a queue file, a handoff note, or
 a status record that explains what is unfinished — and before
 ending the run for any reason other than a hard blocker. It exits 1, prints this law, and tells
-you the next action, until two real cuts exist with real video and audio in them.
+you the next action until all five manifest-bound deliverables, a fully valid current-run ship
+verdict, and the verdict-bound terminal preview exist.
 
 It is ASYMMETRIC ON PURPOSE. It can only ever refuse a STOP. It can never refuse a SHIP, because
 nothing in the delivery path calls it. Do not add it to the delivery path — ship_gate.py decides
-whether bytes are good enough to leave, no_exit.py only decides whether the ABSENCE of bytes is
-an acceptable way to finish. It has no opinion about quality: a run at a FAILING ship gate still
-passes this one, because that run has a film and an instruction, which is not an empty run.
+whether bytes are good enough to leave, and no_exit.py reuses that exact decision plus the
+terminal-preview receipt only to decide whether stopping is valid. A failing or stale ship
+verdict never passes the stop gate.
 
 `--blocker "<what>"` still exits 1. It exists so your claim is recorded in your own words next to
 the evidence that no film exists.
@@ -1388,11 +1389,11 @@ Restarting on top of a live orphan just adds a third writer.
 
 ### WAITING ON A FILE THAT ALREADY EXISTS IS NOT WAITING (2026-08-06)
 
-`until [ -s out/dispatch/render_mute.mp4 ]; do sleep 25; done` looks like it waits for a
+`until [ -s out/dispatch/render/video_mute.mp4 ]; do sleep 25; done` looks like it waits for a
 render. It does not, because the PREVIOUS render's output is still sitting there when the
-new one starts. render_parallel.sh deletes it early and deliberately, but there is a window
-of a second or two between launching the render and that `rm -f`, and a waiter started in
-that window returns instantly.
+new one starts. Every final-render entry point now calls `render_contract.py prepare`, which
+removes the old canonical output and receipt before Remotion, but a caller must still not
+invent a second, weaker completion protocol around it.
 
 What that cost: the waiter fired immediately, chained the encode, and produced a full set
 of deliverables — master, square, 720, all asserts passing, log reading clean — from the
@@ -1400,10 +1401,11 @@ PREVIOUS cut. Twelve fixes were missing from bytes that looked completely health
 failed. `preflight.deliverables_are_fresh()` is what would have caught it downstream, which
 is exactly one step too late to be comfortable.
 
-Wait on the render's own COMPLETION MARKER instead, which is written only after the frame
-count assert passes:
+Capture and wait on the exact child PID, then require the render receipt, which is written
+only after the frame/duration/stream/hash checks pass:
 
-    until grep -q "^  OK  .*render_mute.mp4" out/dispatch/render_final.log; do sleep 20; done
+    wait "$render_pid"
+    python3 scripts/render_contract.py check
 
 That string cannot exist until the render finished AND counted its frames. Same principle
 as the pkill note below: name the thing that can only be true when you are actually done,
@@ -1422,8 +1424,8 @@ the waiting shell's own command line matches the pattern it is polling for. That
 as "the render is taking forever" and costs however long you believe it.
 
   - kill by PID, captured when you launch the thing
-  - or wait on an ARTIFACT (`until [ -s out/dispatch/render_mute.mp4 ]`), never on a
-    process name
+  - never wait on mere file existence; require `render_contract.py check` after the exact
+    child PID exits
   - if you must pattern-match, exclude the shell wrappers (`| grep -v shell-snapshots`)
     and read what you are about to kill before killing it
 
@@ -1598,8 +1600,9 @@ preview step.
    the point at which a below-bar cut stops being deliverable, and A RUN CANNOT OVERRIDE IT.
 
    The one exception is not yours to invoke. The OWNER, who set the bar, may release a
-   single run to a lower floor by writing `config/owner_release.json` (run_date, floor,
-   and their verbatim instruction). The gate reads it, applies it only on that date, prints
+   single run to a lower floor by writing `config/owner_release.json` (schema_version 1,
+   status active, exact run_id and run_date, floor, and their verbatim instruction). The gate
+   reads it, applies it only to that exact run, prints
    it, and the local preview must carry it. YOU MAY NOT WRITE THAT FILE ON YOUR OWN INITIATIVE, and
    noticing that the loop is slow is not an owner instruction. If the owner has not said so
    in this run, in their own words, the bar is the bar and the answer is another round.
@@ -1633,21 +1636,24 @@ preview step.
    Time is never a blocker (2026-08-01). If you find yourself writing a sentence that explains why
    a below-bar film is acceptable this once, OR a sentence that explains why no film this once,
    delete the sentence and go build. `python3 scripts/no_exit.py check` is the mechanical version
-   of that instruction and it exits 1 until two real cuts exist. Note it is NOT part of this
+   of that instruction and it exits 1 until all five manifested files, a fully valid ship
+   verdict, and the verdict-bound terminal preview exist. Note it is NOT part of this
    delivery sequence and must never be added to it — it refuses stops, ship_gate refuses ships.
 
-1. Encode 9:16 master + 1:1 SQUARE center-crop (H.264 High, faststart, AAC 48k, -14 LUFS, each
+1. Run `bash scripts/encode_deliverables.sh` to encode the canonical hosted 9:16 + 1:1
+   SQUARE center-crop (H.264 High, faststart, AAC 48k, -14 LUFS, each
    < 100 MB); ffprobe-assert 1080x1920 and 1080x1080 so a wrong-ratio cut can never ship.
    The square crop is `crop=1080:1080:0:420` off the 1080x1920 master (centred vertically).
    A 1080x1350 cut is NOT the LinkedIn deliverable and must never be labelled as the main-feed
    cut; see the PLATFORMS section for the evidence and for why that error survived one fix.
-   ALSO encode the MOBILE FEED RENDITION from the 9:16 master -- the alaskaaihq.com/videos
+   It also encodes the MOBILE FEED RENDITION from the hosted 9:16 bytes -- the
+   alaskaaihq.com/videos
    feed serves this to phones (the 1080p master is 15MB+; phones need ~3-6MB to feel
-   TikTok-smooth):
-     ffmpeg -i master_9x16.mp4 -vf scale=720:1280 -c:v libx264 -profile:v main -crf 26 \
-       -maxrate 1400k -bufsize 2800k -pix_fmt yuv420p -movflags +faststart \
-       -c:a aac -b:a 96k -ar 48000 master_9x16_720.mp4
-   plus a vertical poster thumb from the hosted 9:16 cut: 540x960 at
+   TikTok-smooth).
+   The encoder derives the mobile rendition from the exact hosted bytes and then builds and
+   validates `out/dispatch/deliverables_manifest.json`; do not recreate this with an ad-hoc
+   ffmpeg command.
+   It also writes a vertical poster thumb from the hosted 9:16 cut: 540x960 at
    `out/dispatch/poster_thumb_vertical.jpg`. The square poster remains 1080x1080.
    ffprobe-assert 720x1280 on the rendition and check the thumb is < 100 KB.
 2. Store the two full cuts + poster + 720p rendition + poster thumb only on this
@@ -1655,11 +1661,14 @@ preview step.
    validates both origin URLs before creating a worktree or writing media. There is no
    rclone, temporary-host, foreign-repository, or production fallback. If the
    canary upload fails, keep the files local and report the failure.
-3. Build the operator-facing preview with
+3. After the strict ship verdict passes and immutable publication receipts exist, build the
+   operator-facing terminal preview with
    `scripts/dispatch_email.py --local-only --out-html out/dispatch/dispatch-preview.html`.
    Include the post text, local/canary download links, source and license credits,
    voice report, panel scorecard, illustrative-number note, and actual upgrades.
-   Do not emit or hand off a connector-ready messaging payload, and do not create a delivery receipt.
+   Do not emit or hand off a connector-ready messaging payload. This command must create and
+   validate the terminal delivery-preview receipt. Any earlier review HTML must use
+   `--pre-panel-preview` and a different path; it is visibly labeled NOT TERMINAL.
 4. Do not invoke `scripts/publish_feed.py`; the live site-feed publisher is
    permanently blocked in this repository. Do not clone or write the core site.
 5. Commit the scenes, storyboard, caption, art direction, artifacts, stills,

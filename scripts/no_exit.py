@@ -39,9 +39,9 @@ draft, the merge, or any render is a REGRESSION -- ship_gate.py is the gate that
 whether bytes are good enough to leave, and this one only decides whether the absence of
 bytes is an acceptable way to finish.
 
-It deliberately does NOT judge quality. A run standing at a passing ship_gate has a video.
-A run standing at a failing ship_gate has a video and an instruction to go improve it.
-Neither is an empty run, and this script has no opinion about which one you are.
+It does not invent a second quality policy. It reuses ship_gate's fully validated current-run
+decision and also requires the verdict-bound terminal preview. A failing or stale ship verdict
+is not a completed delivery, even if plausible media files exist on disk.
 
 USAGE (from prompts/dispatch_routine.md, THE ONE OUTCOME LAW)
 -------------------------------------------------------------
@@ -61,13 +61,13 @@ difficulty, quality and remaining scope are not blockers, and naming one here do
 make it one.
 """
 import argparse
-import json
 import sys
 import time
 from pathlib import Path
 
-from deliverable_contract import DeliverableContractError, require_manifest
-from run_guard import check_path
+from delivery_preview import DeliveryPreviewError, require_delivery_preview
+from ship_gate import GateInputError, require_ship_verdict
+from strict_json import StrictJSONError, load_path
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "out" / "dispatch"
@@ -111,10 +111,15 @@ def video_state():
             lines.append(f"  BAD      retired output alias exists: {alias}")
             delivered = False
     try:
-        manifest = require_manifest(root=ROOT)
-    except DeliverableContractError as exc:
-        lines.append(f"  BAD      deliverables manifest: {exc}")
+        ship_state = require_ship_verdict(verify_blankness=True)
+        manifest = ship_state["manifest"]
+        lines.append(
+            f"  OK       current ship verdict median {ship_state['median']} >= {ship_state['threshold']}"
+        )
+    except GateInputError as exc:
+        lines.append(f"  BAD      current ship verdict: {exc}")
         manifest = None
+        ship_state = None
         delivered = False
     if manifest is not None:
         for role, entry in manifest["artifacts"].items():
@@ -124,13 +129,12 @@ def video_state():
                 f"  OK       {role} [{entry['path']}] ({detail}{entry['bytes']/1e6:.1f} MB, "
                 f"sha256={entry['sha256'][:12]})"
             )
-    preview = OUT / LOCAL_PREVIEW
-    ok, reason = check_path(preview, ROOT)
-    if not ok:
-        lines.append(f"  MISSING  canary local preview ({reason})")
+    try:
+        require_delivery_preview(root=ROOT, ship_state=ship_state)
+        lines.append(f"  OK       terminal canary preview [{LOCAL_PREVIEW}] is verdict-bound")
+    except DeliveryPreviewError as exc:
+        lines.append(f"  MISSING  terminal canary preview ({exc})")
         delivered = False
-    else:
-        lines.append(f"  OK       canary local preview [{preview.name}]")
 
     return delivered, lines
 
@@ -138,8 +142,9 @@ def elapsed_note():
     if not STAMP.exists():
         return "run not stamped (run_guard.py init was never called)"
     try:
-        started = float(json.loads(STAMP.read_text())["started_at"])
-    except (ValueError, KeyError, OSError):
+        value = load_path(STAMP, label="run stamp")
+        started = float(value["started_at"])
+    except (StrictJSONError, TypeError, ValueError, KeyError, OSError):
         return "run stamp unreadable"
     mins = (time.time() - started) / 60.0
     return f"{mins:.0f} min since the run was stamped"
@@ -213,65 +218,18 @@ present, real VO, zero polish -- so the film's absence stops being invisible.
 # whether anything may SHIP -- ship_gate.py owns that and this file must never be
 # added to the delivery path. All this does is make "I graded it, it failed, and I
 # stopped" cost exactly as much as "I never built it".
-def _bar_from_rubric(default=7.5):
-    """THE BAR IS READ, NEVER TYPED. This file used to say BAR_DEFAULT = 9.0, copied out of
-    a stale line in the routine prompt while config/dispatch_rubric.yaml had said 7.5 since
-    2026-07-31. A guard that refuses stops using the wrong bar refuses the wrong stops."""
-    try:
-        import yaml
-        cfg = yaml.safe_load((ROOT / "config" / "dispatch_rubric.yaml").read_text())
-        for key in ("ship_threshold", "threshold"):
-            if key in cfg:
-                return float(cfg[key])
-            for v in cfg.values():
-                if isinstance(v, dict) and key in v:
-                    return float(v[key])
-    except Exception:
-        pass
-    return default
-
-
-BAR_DEFAULT = _bar_from_rubric()
 PANEL_VERDICT = OUT / "panel_verdict.json"
 
 
 def panel_state():
     """(has_verdict, passing, median, bar, note). Never raises."""
-    if not PANEL_VERDICT.exists():
-        return False, None, None, None, "no panel verdict recorded yet"
     try:
-        v = json.loads(PANEL_VERDICT.read_text())
-    except Exception as e:
-        return True, False, None, None, f"panel_verdict.json exists but does not parse ({e})"
-    med = v.get("median")
-    bar = v.get("bar", BAR_DEFAULT)
-    if not isinstance(med, (int, float)):
-        js = [j.get("overall") for j in (v.get("judges") or [])
-              if isinstance(j.get("overall"), (int, float))]
-        med = sorted(js)[len(js) // 2] if js else None
-    if med is None:
-        return True, False, None, bar, "a panel verdict exists but records no median"
-    # HONOUR THE OWNER RELEASE, OR THIS GATE CALLS A LEGITIMATE SHIP A FAILURE (2026-08-13).
-    # ship_gate already reads config/owner_release.json and passes a released cut. This one did
-    # not, so on the very run where the owner said "ship it" it printed BYTES EXIST AND THE PANEL
-    # FAILED THEM over a film that was uploaded, drafted and merged. A gate that is wrong about a
-    # good outcome is how a run learns to stop reading it, which is the exact failure the
-    # DELIVERABLES list already cost this file once. The release is read here for the SAME run
-    # date and never invents one: no file, wrong date, or missing field means no release.
-    rel_floor, rel_note = None, ""
-    try:
-        relp = ROOT / "config" / "owner_release.json"
-        if relp.exists():
-            r = json.loads(relp.read_text())
-            stamp = json.loads(STAMP.read_text()).get("run_date") if STAMP.exists() else None
-            same_day = (not stamp) or str(r.get("run_date")) == str(stamp)
-            if same_day and all(r.get(k) for k in ("run_date", "instruction", "floor")):
-                rel_floor = float(r["floor"])
-                rel_note = f", released by the owner to {rel_floor} for {r['run_date']}"
-    except Exception:
-        rel_floor = None
-    effective = rel_floor if (rel_floor is not None and rel_floor < bar) else bar
-    return True, med >= effective, med, bar, f"median {med} against a {bar} bar{rel_note}"
+        state = require_ship_verdict(verify_blankness=True)
+        return True, True, state["median"], state["threshold"], (
+            f"fully validated current-run median {state['median']} against {state['threshold']}"
+        )
+    except GateInputError as exc:
+        return PANEL_VERDICT.exists(), False, None, None, str(exc)
 
 def cmd_status() -> int:
     delivered, lines = video_state()

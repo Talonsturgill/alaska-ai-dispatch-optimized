@@ -5,7 +5,11 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 OUT=out/dispatch
-MUTE="${1:-$OUT/render_mute.mp4}"
+MUTE="$OUT/render/video_mute.mp4"
+if [ -n "${1:-}" ] && [ "${1}" != "$MUTE" ] && [ "${1}" != "$PWD/$MUTE" ]; then
+  echo "encode_deliverables: mute input must be the canonical $MUTE" >&2
+  exit 2
+fi
 WAV="${2:-$OUT/audio/master.wav}"
 MASTERING="$OUT/dispatch_mastering_source.mp4"  # internal only; never upload/email/feed
 HOSTED="$OUT/dispatch_master_hosted.mp4"        # canonical shipped 9:16 bytes
@@ -33,6 +37,7 @@ done
 
 python3 scripts/run_guard.py bind-inputs
 python3 scripts/run_guard.py require-composition --composition DispatchDaily
+python3 scripts/render_contract.py check
 
 if [ "$WAV" -ot "$OUT/audio/vo.wav" ]; then
   echo "encode_deliverables: STALE MIX: $WAV is older than the current VO" >&2

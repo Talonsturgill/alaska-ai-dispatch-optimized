@@ -1,6 +1,12 @@
 {
   "schema_version": 1,
   "active_composition": "DispatchDaily",
+  "render_inputs": [
+    "video-engine/package.json",
+    "video-engine/package-lock.json",
+    "video-engine/remotion.config.ts",
+    "video-engine/tsconfig.json"
+  ],
   "compositions": {
     "DispatchDaily": {
       "status": "active",
@@ -14,7 +20,9 @@
       "width": 1080,
       "height": 1920,
       "fps": 30,
-      "default_duration_in_frames": 3900
+      "default_duration_in_frames": 3900,
+      "mute_render_path": "out/dispatch/render/video_mute.mp4",
+      "render_receipt_path": "out/dispatch/render/render_receipt.json"
     },
     "Dispatch0729": {"status": "legacy", "component": "Ep0729", "source": "video-engine/src/Ep0729.tsx"},
     "Dispatch0730": {"status": "legacy", "component": "Ep0730", "source": "video-engine/src/Ep0730.tsx"},

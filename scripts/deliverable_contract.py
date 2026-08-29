@@ -20,8 +20,12 @@ import tempfile
 import time
 from pathlib import Path, PurePosixPath
 from typing import Any, Callable, Iterable
+from urllib.error import HTTPError, URLError
+from urllib.request import Request, urlopen
 
 from run_guard import ACTIVE_COMPOSITION, check_identity, load_stamp, stamp_digest
+from episode_contract import EpisodeContractError, episode_facts
+from render_contract import RenderContractError, probe_render, require_render
 from strict_json import StrictJSONError, canonical_bytes, load_path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -43,8 +47,9 @@ EXPECTED_SPECS = {
     ),
 }
 EXPECTED_MANIFEST_PATH = "out/dispatch/deliverables_manifest.json"
-MANIFEST_SCHEMA_VERSION = 1
+MANIFEST_SCHEMA_VERSION = 2
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
+GIT_OID_RE = re.compile(r"^(?:[0-9a-f]{40}|[0-9a-f]{64})$")
 SAFE_PATH_RE = re.compile(r"^[A-Za-z0-9._/-]+$")
 
 
@@ -173,6 +178,14 @@ def load_config(
             raise DeliverableContractError(f"duration_seconds.{key} must be finite")
     if float(duration["minimum"]) <= 0 or float(duration["maximum"]) < float(duration["minimum"]):
         raise DeliverableContractError("duration_seconds range is invalid")
+    if (
+        duration.get("derived_from") != "out/dispatch/episode_props.json#total/fps"
+        or duration.get("includes_credits") is not True
+        or duration.get("maximum_frame_error") != 1
+    ):
+        raise DeliverableContractError(
+            "duration_seconds must derive from episode_props total/fps including credits with one-frame tolerance"
+        )
     return value
 
 
@@ -268,6 +281,7 @@ def _entry_problems(
     started_at: float,
     forbidden: set[tuple[int, int]],
     duration: dict[str, Any],
+    episode: dict[str, Any],
 ) -> list[str]:
     problems: list[str] = []
     expected_static = {
@@ -310,6 +324,12 @@ def _entry_problems(
             low, high = float(duration["minimum"]), float(duration["maximum"])
             if not low <= float(seconds) <= high:
                 problems.append(f"{role} duration {seconds:.3f}s is outside {low:.1f}..{high:.1f}s")
+            exact_tolerance = 1.0 / int(episode["fps"]) + 0.01
+            if abs(float(seconds) - float(episode["duration_seconds"])) > exact_tolerance:
+                problems.append(
+                    f"{role} duration {seconds:.3f}s does not match hash-bound episode "
+                    f"duration {episode['duration_seconds']:.3f}s including credits"
+                )
             recorded = entry.get("duration_seconds")
             if not isinstance(recorded, (int, float)) or abs(float(recorded) - float(seconds)) > 0.01:
                 problems.append(f"{role} duration changed after manifest creation")
@@ -322,11 +342,17 @@ def build_manifest(
     *,
     root: str | Path = ROOT,
     probe: Callable[[str | Path], dict[str, Any]] = probe_media,
+    render_probe: Callable[[str | Path], dict[str, Any]] = probe_render,
     config_path: str | Path | None = None,
 ) -> dict[str, Any]:
     base = Path(root).resolve()
     cfg = load_config(root=base, config_path=config_path)
     identity = _identity(base)
+    try:
+        episode = episode_facts(root=base)
+        render = require_render(root=base, probe=render_probe)
+    except (EpisodeContractError, RenderContractError) as exc:
+        raise DeliverableContractError(str(exc)) from None
     stamp = load_stamp(base)
     assert stamp is not None
     artifacts: dict[str, Any] = {}
@@ -360,6 +386,7 @@ def build_manifest(
             _entry_problems(
                 role, spec, entry, facts, path, started_at=float(stamp["started_at"]),
                 forbidden=forbidden, duration=cfg["duration_seconds"],
+                episode=episode,
             )
         )
         if spec["media_type"] == "video" and isinstance(facts.get("duration_seconds"), (int, float)):
@@ -373,6 +400,8 @@ def build_manifest(
     manifest = {
         "schema_version": MANIFEST_SCHEMA_VERSION,
         "identity": identity,
+        "episode": episode,
+        "render": render,
         "artifacts": artifacts,
         "publications": {},
     }
@@ -384,9 +413,30 @@ def contract_digest(manifest: dict[str, Any]) -> str:
     immutable = {
         "schema_version": manifest.get("schema_version"),
         "identity": manifest.get("identity"),
+        "episode": manifest.get("episode"),
+        "render": manifest.get("render"),
         "artifacts": manifest.get("artifacts"),
     }
     return hashlib.sha256(canonical_bytes(immutable)).hexdigest()
+
+
+def publication_name(manifest: dict[str, Any], role: str) -> str:
+    if role not in EXPECTED_ROLES:
+        raise DeliverableContractError(f"unknown publication role {role}")
+    run_id = manifest.get("identity", {}).get("run_id")
+    if (
+        not isinstance(run_id, str) or not run_id.isascii()
+        or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,63}", run_id)
+    ):
+        raise DeliverableContractError("run_id is not safe for an immutable media name")
+    entry = manifest["artifacts"][role]
+    suffix = Path(entry["path"]).suffix.lower()
+    # Keep the complete artifact digest in the object name.  A shortened digest
+    # is convenient, but it is not an unambiguous identity for immutable media.
+    name = f"dispatch-{run_id}-{role}-{entry['sha256']}{suffix}"
+    if len(name) > 255:
+        raise DeliverableContractError("immutable media name exceeds 255 characters")
+    return name
 
 
 def validate_manifest(
@@ -394,6 +444,7 @@ def validate_manifest(
     root: str | Path = ROOT,
     path: str | Path | None = None,
     probe: Callable[[str | Path], dict[str, Any]] | None = None,
+    render_probe: Callable[[str | Path], dict[str, Any]] = probe_render,
     require_publications: Iterable[str] = (),
     config_path: str | Path | None = None,
 ) -> tuple[dict[str, Any] | None, list[str]]:
@@ -426,6 +477,19 @@ def validate_manifest(
             problems.append("manifest run identity does not match the current stamp")
     except DeliverableContractError as exc:
         problems.append(str(exc))
+    try:
+        expected_episode = episode_facts(root=base)
+        expected_render = require_render(root=base, probe=render_probe)
+        if raw.get("episode") != expected_episode:
+            problems.append("manifest episode timing does not match hash-bound props")
+        if raw.get("render") != expected_render:
+            problems.append("manifest render receipt does not match the canonical mute render")
+    except (EpisodeContractError, RenderContractError) as exc:
+        problems.append(str(exc))
+        expected_episode = {"fps": 30, "duration_seconds": float("nan")}
+    expected_manifest_fields = {"schema_version", "identity", "episode", "render", "artifacts", "publications"}
+    if set(raw) != expected_manifest_fields:
+        problems.append("manifest fields are not canonical")
     artifacts = raw.get("artifacts")
     if not isinstance(artifacts, dict) or set(artifacts) != set(EXPECTED_ROLES) or len(artifacts) != 5:
         problems.append("manifest must contain exactly the five canonical artifact roles")
@@ -466,6 +530,7 @@ def validate_manifest(
             _entry_problems(
                 role, cfg["roles"][role], entry, facts, path_obj, started_at=started_at,
                 forbidden=forbidden, duration=cfg["duration_seconds"],
+                episode=expected_episode,
             )
         )
         if cfg["roles"][role]["media_type"] == "video" and isinstance(facts.get("duration_seconds"), (int, float)):
@@ -480,6 +545,8 @@ def validate_manifest(
     unknown_publications = set(publications) - set(EXPECTED_ROLES)
     if unknown_publications:
         problems.append("manifest has unknown publication roles: " + ", ".join(sorted(unknown_publications)))
+    seen_names: dict[str, str] = {}
+    seen_urls: dict[str, str] = {}
     for role, receipt in publications.items():
         if role not in EXPECTED_ROLES:
             continue
@@ -487,10 +554,49 @@ def validate_manifest(
         if not isinstance(receipt, dict):
             problems.append(f"publication receipt for {role} must be an object")
             continue
-        if receipt.get("bytes") != entry.get("bytes") or receipt.get("sha256") != entry.get("sha256"):
-            problems.append(f"published {role} bytes do not match the manifest artifact")
-        if not isinstance(receipt.get("url"), str) or not receipt["url"].startswith("https://"):
-            problems.append(f"publication receipt for {role} has no HTTPS URL")
+        try:
+            expected_name = publication_name(raw, role)
+        except DeliverableContractError as exc:
+            problems.append(str(exc))
+            expected_name = None
+        commit = receipt.get("media_commit_sha")
+        repository = raw.get("identity", {}).get("repository")
+        expected_url = (
+            f"https://raw.githubusercontent.com/{repository}/{commit}/media/{expected_name}"
+            if expected_name and isinstance(commit, str) and isinstance(repository, str) else None
+        )
+        expected_receipt = {
+            "schema_version": 1,
+            "role": role,
+            "run_id": raw.get("identity", {}).get("run_id"),
+            "composition": raw.get("identity", {}).get("composition"),
+            "manifest_digest": contract_digest(raw),
+            "artifact": {
+                "path": entry.get("path"), "bytes": entry.get("bytes"), "sha256": entry.get("sha256")
+            },
+            "media_name": expected_name,
+            "media_commit_sha": commit,
+            "url": expected_url,
+            "verified_bytes": entry.get("bytes"),
+            "verified_sha256": entry.get("sha256"),
+        }
+        for key, wanted in expected_receipt.items():
+            if receipt.get(key) != wanted:
+                problems.append(f"publication receipt for {role}.{key} is not immutable/current")
+        if set(receipt) != set(expected_receipt) | {"verified_at"}:
+            problems.append(f"publication receipt fields for {role} are not canonical")
+        if not isinstance(commit, str) or not GIT_OID_RE.fullmatch(commit):
+            problems.append(f"publication receipt for {role} has invalid media commit SHA")
+        name = receipt.get("media_name")
+        url = receipt.get("url")
+        if isinstance(name, str):
+            if name in seen_names and seen_names[name] != role:
+                problems.append(f"publication media name collides across {seen_names[name]} and {role}")
+            seen_names[name] = role
+        if isinstance(url, str):
+            if url in seen_urls and seen_urls[url] != role:
+                problems.append(f"publication URL collides across {seen_urls[url]} and {role}")
+            seen_urls[url] = role
     for role in require_publications:
         if role not in EXPECTED_ROLES:
             problems.append(f"unknown required publication role {role}")
@@ -504,11 +610,13 @@ def validate_manifest(
 def require_manifest(
     *, root: str | Path = ROOT, require_publications: Iterable[str] = (),
     probe: Callable[[str | Path], dict[str, Any]] | None = None,
+    render_probe: Callable[[str | Path], dict[str, Any]] = probe_render,
 ) -> dict[str, Any]:
     manifest, problems = validate_manifest(
         root=root,
         require_publications=require_publications,
         probe=probe,
+        render_probe=render_probe,
     )
     if problems or manifest is None:
         raise DeliverableContractError("; ".join(problems or ["manifest is unavailable"]))
@@ -549,11 +657,14 @@ def record_publication(
     *,
     remote_bytes: int,
     remote_sha256: str,
+    media_name: str,
+    media_commit_sha: str,
     root: str | Path = ROOT,
     probe: Callable[[str | Path], dict[str, Any]] | None = None,
+    render_probe: Callable[[str | Path], dict[str, Any]] = probe_render,
 ) -> None:
     base = Path(root).resolve()
-    manifest = require_manifest(root=base, probe=probe)
+    manifest = require_manifest(root=base, probe=probe, render_probe=render_probe)
     if role not in EXPECTED_ROLES:
         raise DeliverableContractError(f"unknown publication role {role}")
     entry = manifest["artifacts"][role]
@@ -561,25 +672,110 @@ def record_publication(
         raise DeliverableContractError(f"published bytes for {role} do not match the local manifest")
     if not isinstance(url, str) or not url.startswith("https://"):
         raise DeliverableContractError("published URL must use HTTPS")
+    expected_name = publication_name(manifest, role)
+    if media_name != expected_name:
+        raise DeliverableContractError(f"publication name must be immutable canonical name {expected_name}")
+    if not isinstance(media_commit_sha, str) or not GIT_OID_RE.fullmatch(media_commit_sha):
+        raise DeliverableContractError("media commit SHA must be a full lowercase Git object ID")
+    repository = manifest["identity"]["repository"]
+    expected_url = (
+        f"https://raw.githubusercontent.com/{repository}/{media_commit_sha}/media/{expected_name}"
+    )
+    if url != expected_url:
+        raise DeliverableContractError("published URL must use the immutable media commit SHA")
     publications = manifest.setdefault("publications", {})
-    publications[role] = {
+    for other_role, receipt in publications.items():
+        if other_role != role and isinstance(receipt, dict) and (
+            receipt.get("media_name") == media_name or receipt.get("url") == url
+        ):
+            raise DeliverableContractError(
+                f"publication name/URL collision between roles {other_role} and {role}"
+            )
+    new_receipt = {
+        "schema_version": 1,
+        "role": role,
+        "run_id": manifest["identity"]["run_id"],
+        "composition": manifest["identity"]["composition"],
+        "manifest_digest": contract_digest(manifest),
+        "artifact": {"path": entry["path"], "bytes": entry["bytes"], "sha256": entry["sha256"]},
+        "media_name": media_name,
+        "media_commit_sha": media_commit_sha,
         "url": url,
-        "bytes": remote_bytes,
-        "sha256": remote_sha256,
+        "verified_bytes": remote_bytes,
+        "verified_sha256": remote_sha256,
         "verified_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
     }
+    existing = publications.get(role)
+    if isinstance(existing, dict):
+        existing_immutable = {key: value for key, value in existing.items() if key != "verified_at"}
+        new_immutable = {key: value for key, value in new_receipt.items() if key != "verified_at"}
+        if existing_immutable != new_immutable:
+            raise DeliverableContractError(
+                f"publication receipt for {role} is immutable and already names different media"
+            )
+        return
+    publications[role] = new_receipt
     _atomic_json(manifest_path(root=base), manifest)
 
 
 def require_publication_url(
     role: str, url: str, *, root: str | Path = ROOT,
     probe: Callable[[str | Path], dict[str, Any]] | None = None,
+    render_probe: Callable[[str | Path], dict[str, Any]] = probe_render,
+    verify_remote: bool = True,
+    opener: Callable[..., Any] = urlopen,
 ) -> dict[str, Any]:
-    manifest = require_manifest(root=root, require_publications=[role], probe=probe)
+    manifest = require_manifest(
+        root=root, require_publications=[role], probe=probe, render_probe=render_probe
+    )
     receipt = manifest["publications"][role]
     if receipt.get("url") != url:
         raise DeliverableContractError(f"URL for {role} is not the exact verified publication")
+    if verify_remote:
+        verify_publication_bytes(role, url, root=root, manifest=manifest, opener=opener)
     return receipt
+
+
+def verify_publication_bytes(
+    role: str,
+    url: str,
+    *,
+    root: str | Path = ROOT,
+    manifest: dict[str, Any] | None = None,
+    opener: Callable[..., Any] = urlopen,
+) -> dict[str, Any]:
+    """Re-fetch and hash the complete immutable object before any preview consumes it."""
+    current = manifest or require_manifest(root=root, require_publications=[role])
+    if role not in EXPECTED_ROLES:
+        raise DeliverableContractError(f"unknown publication role {role}")
+    receipt = current.get("publications", {}).get(role)
+    if not isinstance(receipt, dict) or receipt.get("url") != url:
+        raise DeliverableContractError(f"publication receipt for {role} is missing or URL-mismatched")
+    entry = current["artifacts"][role]
+    digest = hashlib.sha256()
+    total = 0
+    try:
+        request = Request(url, headers={"User-Agent": "Alaska-AI-Dispatch-canary-verifier/2"})
+        with opener(request, timeout=180) as response:
+            status = getattr(response, "status", 200)
+            if status != 200:
+                raise DeliverableContractError(f"published {role} returned HTTP {status}")
+            content_type = response.headers.get("Content-Type", "")
+            if content_type.lower().startswith("text/html"):
+                raise DeliverableContractError(f"published {role} was served as text/html")
+            for chunk in iter(lambda: response.read(1024 * 1024), b""):
+                total += len(chunk)
+                digest.update(chunk)
+    except DeliverableContractError:
+        raise
+    except (HTTPError, URLError, TimeoutError, OSError) as exc:
+        raise DeliverableContractError(f"published {role} full-byte verification failed: {exc}") from None
+    remote_sha = digest.hexdigest()
+    if total != entry["bytes"] or remote_sha != entry["sha256"]:
+        raise DeliverableContractError(
+            f"published {role} bytes/hash do not match the manifest artifact"
+        )
+    return {"bytes": total, "sha256": remote_sha}
 
 
 def _main() -> int:

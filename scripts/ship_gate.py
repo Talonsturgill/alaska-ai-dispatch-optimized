@@ -57,13 +57,14 @@ don't. That is the exact thing the 2026-07-31 directive forbade.
 Usage
 -----
   # after the FINAL render, rebuild evidence from it, then have the panel grade THAT
-  python3 scripts/ship_gate.py record --median 8.7 --judges 8.5,8.7,8.9 \
+  python3 scripts/ship_gate.py record --judges 8.5,8.7,8.9 \
       --notes "what the panel said"
 
   # before upload / email / merge. exit 0 = you may ship. exit 1 = you may not.
   python3 scripts/ship_gate.py check
 """
 import argparse, hashlib, json, math, os, re, subprocess, sys, tempfile, time
+import statistics
 from pathlib import Path
 
 from deliverable_contract import (
@@ -72,6 +73,12 @@ from deliverable_contract import (
     require_manifest,
 )
 from run_guard import ACTIVE_COMPOSITION, check_identity, load_stamp
+from sfx_contract import sidecar_facts as contract_sfx_facts
+from evidence_contract import (
+    EvidenceContractError,
+    evidence_manifest_sha,
+    require_evidence_manifest,
+)
 from strict_json import StrictJSONError, load_path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -130,27 +137,35 @@ def sha(p: Path) -> str:
     return h.hexdigest()
 
 
-def ship_threshold() -> float:
-    """Read the bar from the rubric. Never hardcode it here, so raising the bar in the
-    rubric raises it everywhere."""
+def rubric_facts() -> dict:
+    """Return the exact immutable rubric bytes and threshold, or fail closed."""
+    if not RUBRIC.is_file() or RUBRIC.is_symlink():
+        raise GateInputError("dispatch rubric is missing or unsafe")
     try:
         import yaml
-        cfg = yaml.safe_load(RUBRIC.read_text())
-        for key in ("ship_threshold", "threshold"):
-            if key in cfg:
-                return float(cfg[key])
-            for v in cfg.values():
-                if isinstance(v, dict) and key in v:
-                    return float(v[key])
-    except Exception:
-        pass
-    return 8.6
+        cfg = yaml.safe_load(RUBRIC.read_text(encoding="utf-8"))
+    except Exception as exc:
+        raise GateInputError(f"dispatch rubric cannot be parsed: {exc}") from None
+    if not isinstance(cfg, dict) or not isinstance(cfg.get("rubric"), dict):
+        raise GateInputError("dispatch rubric must contain a rubric object")
+    threshold = cfg["rubric"].get("ship_threshold")
+    if (
+        isinstance(threshold, bool) or not isinstance(threshold, (int, float))
+        or not math.isfinite(float(threshold)) or not 0 <= float(threshold) <= 10
+    ):
+        raise GateInputError("dispatch rubric ship_threshold must be finite in 0..10")
+    return {
+        "path": "config/dispatch_rubric.yaml",
+        "bytes": RUBRIC.stat().st_size,
+        "sha256": sha(RUBRIC),
+        "ship_threshold": float(threshold),
+    }
 
 
 RELEASE = ROOT / "config" / "owner_release.json"
 
 
-def owner_release(run_date: str):
+def owner_release(run_date: str, run_id: str | None = None):
     """The owner's decision to accept a lower bar for ONE run, or None.
 
     Requires, in config/owner_release.json: run_date matching this run, the verbatim
@@ -163,26 +178,34 @@ def owner_release(run_date: str):
         d = load_path(RELEASE, label="owner release")
         if not isinstance(d, dict):
             raise StrictJSONError("owner release must be a JSON object")
-    except (StrictJSONError, OSError) as e:
-        print(f"ship_gate: owner_release.json is unreadable ({e}); ignoring it.")
+    except (StrictJSONError, OSError) as exc:
+        raise GateInputError(f"owner release is unreadable: {exc}") from None
+    if d.get("schema_version") != 1 or d.get("status") not in ("inactive", "active"):
+        raise GateInputError("owner release must be schema_version 1 with active/inactive status")
+    if d["status"] == "inactive":
         return None
-    for k in ("run_date", "instruction", "floor"):
-        if not d.get(k):
-            print(f"ship_gate: owner_release.json has no {k}; ignoring it.")
-            return None
-    if str(d["run_date"]) != run_date:
-        print(f"ship_gate: owner release is for {d['run_date']}, this run is {run_date}; "
-              f"it does not apply.")
-        return None
-    return d
-
-
-def run_date() -> str:
-    """The date this run is shipping under, from the run stamp, never from the clock."""
-    stamp = load_stamp(ROOT)
-    if not isinstance(stamp, dict) or not isinstance(stamp.get("date"), str):
-        raise GateInputError("run stamp has no canonical date")
-    return stamp["date"]
+    for key in ("run_id", "run_date", "instruction", "floor"):
+        if key not in d or d[key] in (None, ""):
+            raise GateInputError(f"active owner release is missing {key}")
+    if str(d["run_date"]) != run_date or (run_id is not None and str(d["run_id"]) != run_id):
+        raise GateInputError(
+            "active owner release belongs to a different run; stale releases hard-fail"
+        )
+    floor = d["floor"]
+    if (
+        isinstance(floor, bool) or not isinstance(floor, (int, float))
+        or not math.isfinite(float(floor)) or not 0 <= float(floor) <= 10
+    ):
+        raise GateInputError("active owner release floor must be finite in 0..10")
+    return {
+        "path": "config/owner_release.json",
+        "bytes": RELEASE.stat().st_size,
+        "sha256": sha(RELEASE),
+        "run_id": str(d["run_id"]),
+        "run_date": str(d["run_date"]),
+        "floor": float(floor),
+        "instruction": str(d["instruction"]),
+    }
 
 
 def check_render_is_current():
@@ -205,22 +228,27 @@ def artifact_state():
     except DeliverableContractError as exc:
         fail([f"deliverable manifest is invalid: {exc}"])
     arts = {role: entry["sha256"] for role, entry in manifest["artifacts"].items()}
-    evidence_hashes = {}
-    if REVIEW.exists():
-        # build_evidence.py writes the contact sheet, the stills and the filmstrips as
-        # JPEG. Globbing only *.png found nothing, so the gate reported that the panel
-        # "cannot have looked at anything" while a full evidence pack sat beside it.
-        # Third instance of the same drift in this file: the gate was written against an
-        # older pipeline and never re-pointed when the pipeline changed.
-        evidence_files = (
-            list(REVIEW.glob("*.png")) + list(REVIEW.glob("*.jpg"))
-            + list(REVIEW.glob("*.json"))
-        )
-        for p in sorted(evidence_files):
-            if p.is_symlink():
-                fail([f"review evidence may not be a symlink: {p.name}"])
-            evidence_hashes[p.name] = sha(p)
+    try:
+        evidence_manifest = require_evidence_manifest(root=ROOT, delivery_manifest=manifest)
+    except EvidenceContractError as exc:
+        fail([f"evidence manifest is invalid: {exc}"])
+    evidence_hashes = {
+        relative: entry["sha256"]
+        for relative, entry in evidence_manifest["artifacts"].items()
+    }
     return arts, evidence_hashes, manifest
+
+
+def evidence_binding(manifest):
+    evidence_manifest = require_evidence_manifest(root=ROOT, delivery_manifest=manifest)
+    return {
+        "path": "out/evidence/evidence_manifest.json",
+        "sha256": evidence_manifest_sha(root=ROOT),
+        "delivery_manifest_digest": evidence_manifest["delivery_manifest_digest"],
+        "vertical_hosted": evidence_manifest["vertical_hosted"],
+        "generator": evidence_manifest["generator"],
+        "artifacts": evidence_manifest["artifacts"],
+    }
 
 
 def log_attempt(reasons, median=None):
@@ -266,214 +294,165 @@ BLANK_LOW_INFO = 0.85   # a frame this featureless is not a shot, it is an absen
 
 
 def check_not_blank(n=28):
-    """Is there actually a FILM in the file?
+    """Return the immutable blankness attestation for the current delivered bytes."""
+    return blankness_facts(n=n)
 
-    Added 2026-07-31 after this run rendered the wrong Remotion composition. Root.tsx keeps
-    every past episode registered under its own id, and the generic id "Dispatch" still
-    pointed at the July 26 film, so the render produced 93.3 seconds of the WRONG episode:
-    correct length, correct dimensions, correct captions burned over the top, and thirty
-    seconds of blank grey at the end where that episode had simply run out of scenes.
 
-    Every existing check passed. The hashes matched because the bytes were consistent. The
-    freshness check passed because the file was new. The mux verified because there was
-    audio. ffprobe passed because the frame size was right. They all answer "is this
-    deliverable current and well-formed", and not one of them answers "is this a movie".
+def blankness_facts(n=28):
+    """Decode exactly `n` samples and fail closed on every probe/decode anomaly."""
+    import shutil
+    import subprocess as sp
+    import tempfile as tempmod
 
-    So: sample frames across the whole duration and measure local structure. A frame that is
-    almost entirely flat is not a composition choice, it is a missing scene. Named by
-    timestamp so the failure points at where to look rather than just asserting badness.
-    """
-    import glob, shutil, subprocess as sp, tempfile
-    import numpy as np
-    from PIL import Image
-
-    vid = RENDER / "dispatch_master_hosted.mp4"
-    if not vid.exists():
-        return
-    tmp = tempfile.mkdtemp(prefix="shipgate_blank_")
     try:
-        dur = float(sp.run(["ffprobe", "-v", "error", "-show_entries", "format=duration",
-                            "-of", "csv=p=0", str(vid)], capture_output=True, text=True
-                           ).stdout.strip() or 0)
-        if dur <= 0:
-            return
-        for i in range(n):
-            t = dur * (i + 0.5) / n
-            sp.run(["ffmpeg", "-v", "error", "-ss", f"{t:.3f}", "-i", str(vid),
-                    "-frames:v", "1", "-vf", "scale=360:-1", f"{tmp}/f{i:03d}.png"],
-                   capture_output=True)
-        blank = []
-        for i, p in enumerate(sorted(glob.glob(f"{tmp}/*.png"))):
-            a = np.asarray(Image.open(p).convert("L"), dtype=np.float32)
-            k = 17
-            def box(x, ax):
-                c = np.cumsum(np.pad(x, [(k // 2 + 1, k // 2) if d == ax else (0, 0)
-                                         for d in (0, 1)]), axis=ax)
-                return (np.take(c, range(k, c.shape[ax]), axis=ax)
-                        - np.take(c, range(0, c.shape[ax] - k), axis=ax)) / k
-            m = box(box(a, 0), 1)
-            m2 = box(box(a * a, 0), 1)
-            sd = np.sqrt(np.maximum(0.0, m2 - m * m))
-            frac = float((sd < 5.0).mean())
-            if frac > BLANK_LOW_INFO:
-                blank.append((i * dur / n, frac))
+        manifest = require_manifest(root=ROOT)
+    except DeliverableContractError as exc:
+        raise GateInputError(f"blankness check cannot validate deliverables: {exc}") from None
+    entry = manifest["artifacts"]["vertical_hosted"]
+    video = ROOT.joinpath(*entry["path"].split("/"))
+    if not video.is_file() or video.is_symlink():
+        raise GateInputError("blankness check vertical_hosted is missing or unsafe")
+    try:
+        probe = sp.run(
+            ["ffprobe", "-v", "error", "-show_entries", "format=duration",
+             "-of", "csv=p=0", str(video)],
+            capture_output=True, text=True, timeout=90,
+        )
+    except (FileNotFoundError, OSError, sp.TimeoutExpired) as exc:
+        raise GateInputError(f"blankness ffprobe failed to run: {exc}") from None
+    if probe.returncode != 0:
+        detail = (probe.stderr or probe.stdout).strip().splitlines()
+        raise GateInputError(
+            f"blankness ffprobe rejected vertical_hosted: {detail[-1] if detail else 'unknown error'}"
+        )
+    try:
+        duration = float(probe.stdout.strip())
+    except (TypeError, ValueError, OverflowError):
+        raise GateInputError("blankness ffprobe returned an invalid duration") from None
+    if not math.isfinite(duration) or duration <= 0:
+        raise GateInputError("blankness ffprobe returned a non-finite/non-positive duration")
+    expected = float(entry["duration_seconds"])
+    if abs(duration - expected) > 0.05:
+        raise GateInputError("blankness duration does not match the manifested vertical bytes")
+    if isinstance(n, bool) or not isinstance(n, int) or n <= 0:
+        raise GateInputError("blankness sample count must be a positive integer")
+
+    directory = Path(tempmod.mkdtemp(prefix="shipgate_blank_"))
+    try:
+        for index in range(n):
+            at = duration * (index + 0.5) / n
+            output = directory / f"f{index:03d}.png"
+            try:
+                decoded = sp.run(
+                    ["ffmpeg", "-v", "error", "-ss", f"{at:.6f}", "-i", str(video),
+                     "-frames:v", "1", "-vf", "scale=360:-1", str(output)],
+                    capture_output=True, text=True, timeout=90,
+                )
+            except (FileNotFoundError, OSError, sp.TimeoutExpired) as exc:
+                raise GateInputError(f"blankness ffmpeg sample {index} failed to run: {exc}") from None
+            if decoded.returncode != 0 or not output.is_file() or output.stat().st_size == 0:
+                detail = (decoded.stderr or decoded.stdout).strip().splitlines()
+                raise GateInputError(
+                    f"blankness ffmpeg sample {index} failed: "
+                    f"{detail[-1] if detail else 'no decoded frame'}"
+                )
+        paths = sorted(directory.glob("f*.png"))
+        if len(paths) != n:
+            raise GateInputError(f"blankness decoded {len(paths)} samples, expected exactly {n}")
+        try:
+            import numpy as np
+            from PIL import Image
+        except (ImportError, OSError) as exc:
+            raise GateInputError(f"blankness image-analysis dependency is unavailable: {exc}") from None
+        blank: list[tuple[float, float]] = []
+        fractions: list[float] = []
+        for index, path in enumerate(paths):
+            try:
+                pixels = np.asarray(Image.open(path).convert("L"), dtype=np.float32)
+            except Exception as exc:
+                raise GateInputError(f"blankness sample {index} cannot be decoded: {exc}") from None
+            kernel = 17
+
+            def box(values, axis):
+                pad = [(kernel // 2 + 1, kernel // 2) if dimension == axis else (0, 0)
+                       for dimension in (0, 1)]
+                cumulative = np.cumsum(np.pad(values, pad), axis=axis)
+                return (
+                    np.take(cumulative, range(kernel, cumulative.shape[axis]), axis=axis)
+                    - np.take(cumulative, range(0, cumulative.shape[axis] - kernel), axis=axis)
+                ) / kernel
+
+            mean = box(box(pixels, 0), 1)
+            mean2 = box(box(pixels * pixels, 0), 1)
+            deviation = np.sqrt(np.maximum(0.0, mean2 - mean * mean))
+            fraction = float((deviation < 5.0).mean())
+            if not math.isfinite(fraction):
+                raise GateInputError(f"blankness sample {index} produced a non-finite metric")
+            fractions.append(fraction)
+            if fraction > BLANK_LOW_INFO:
+                blank.append((duration * (index + 0.5) / n, fraction))
         if blank:
-            fail([f"{len(blank)} of {n} sampled frames are effectively BLANK "
-                  f"(over {BLANK_LOW_INFO * 100:.0f}% of the frame carries no structure).",
-                  "First few: " + ", ".join(f"{t:.1f}s ({f * 100:.0f}%)" for t, f in blank[:6]),
-                  "A deliverable of the right length and the right dimensions is not the same "
-                  "thing as the right film. Check that render.sh was given THIS run's "
-                  "composition id (out/dispatch/.run_stamp.json > composition) and that every "
-                  "scene in episode_props.json has a component behind it."])
+            raise GateInputError(
+                f"{len(blank)} of {n} sampled frames are effectively blank; first: "
+                + ", ".join(f"{at:.1f}s ({fraction * 100:.0f}%)" for at, fraction in blank[:6])
+            )
+        return {
+            "algorithm": "local-structure-v2",
+            "vertical_sha256": entry["sha256"],
+            "duration_seconds": duration,
+            "sample_count": n,
+            "threshold": BLANK_LOW_INFO,
+            "maximum_low_information_fraction": max(fractions),
+        }
     finally:
-        shutil.rmtree(tmp, ignore_errors=True)
+        shutil.rmtree(directory, ignore_errors=True)
 
 
 def sfx_facts(
     path: Path | None = None, *, duration_seconds: float | None = None,
     root: Path = ROOT,
 ):
-    """Return hash-bound SFX facts plus actionable validation problems."""
-    path = path or (root / "out" / "dispatch" / "sfx_events.json")
-    problems = []
-    root = Path(root).resolve()
-    stamp = load_stamp(root)
-    started_at = None
-    if (
-        isinstance(stamp, dict) and isinstance(stamp.get("started_at"), (int, float))
-        and not isinstance(stamp.get("started_at"), bool)
-        and math.isfinite(float(stamp["started_at"]))
-    ):
-        started_at = float(stamp["started_at"])
-    try:
-        resolved_path = path.resolve()
-        resolved_path.relative_to(root)
-    except (OSError, ValueError):
-        return None, ["sfx_events.json path escapes the repository"]
-    if path.is_symlink():
-        return None, ["sfx_events.json may not be a symlink"]
-    path = resolved_path
-    if not path.is_file():
-        return None, ["no out/dispatch/sfx_events.json"]
-    if started_at is None:
-        problems.append("run stamp is missing a valid started_at")
-    elif path.stat().st_mtime <= started_at:
-        problems.append("sfx_events.json does not postdate the current run stamp")
-    try:
-        raw = load_path(path, label="sfx_events.json")
-    except (StrictJSONError, OSError) as exc:
-        return None, problems + [str(exc)]
-    if not isinstance(raw, dict):
-        return None, problems + ["sfx_events.json must be an object with an events list"]
-    events = raw.get("events")
-    if not isinstance(events, list):
-        return None, problems + ["sfx_events.json.events must be a list"]
-    if len(events) < 6:
-        problems.append(f"sfx_events.json carries {len(events)} event(s); at least 6 are required")
-    if "count" not in raw:
-        problems.append("sfx_events.json count is required")
-    elif isinstance(raw["count"], bool) or not isinstance(raw["count"], int) or raw["count"] != len(events):
-        problems.append("sfx_events.json count does not match events")
-    if "video_seconds" not in raw:
-        problems.append("sfx_events.json video_seconds is required")
-    else:
-        declared = raw["video_seconds"]
-        if isinstance(declared, bool) or not isinstance(declared, (int, float)) or not math.isfinite(float(declared)):
-            problems.append("sfx_events.json video_seconds must be finite")
-        elif duration_seconds is not None and abs(float(declared) - duration_seconds) > 0.25:
-            problems.append("sfx_events.json video_seconds does not match the delivered duration")
-    normalized = []
-    kinds = set()
-    for index, event in enumerate(events):
-        if not isinstance(event, dict):
-            problems.append(f"sfx event {index} must be an object")
-            continue
-        when = event.get("t")
-        kind = event.get("kind")
-        if isinstance(when, bool) or not isinstance(when, (int, float)) or not math.isfinite(float(when)):
-            problems.append(f"sfx event {index}.t must be a finite number")
-        elif float(when) < 0:
-            problems.append(f"sfx event {index}.t may not be negative")
-        elif duration_seconds is not None and float(when) > duration_seconds:
-            problems.append(f"sfx event {index}.t is beyond the delivered duration")
-        if not isinstance(kind, str) or not kind.isascii() or not re.fullmatch(r"[a-z0-9][a-z0-9_-]{0,63}", kind):
-            problems.append(f"sfx event {index}.kind must be a lowercase ASCII identifier")
-        else:
-            kinds.add(kind)
-        if isinstance(when, (int, float)) and not isinstance(when, bool) and math.isfinite(float(when)) and isinstance(kind, str):
-            normalized.append({"t": float(when), "kind": kind})
-    listed_kinds = raw.get("kinds")
-    if (
-        not isinstance(listed_kinds, list) or any(not isinstance(item, str) for item in listed_kinds)
-        or listed_kinds != sorted(kinds)
-    ):
-        problems.append("sfx_events.json kinds must exactly match the sorted event kinds")
-
-    audio_rel = "out/dispatch/audio/master.wav"
-    audio_path = root.joinpath(*audio_rel.split("/"))
-    audio_facts = raw.get("audio")
-    if not audio_path.is_file() or audio_path.is_symlink():
-        problems.append("current audio master is missing or a symlink")
-        current_audio = None
-    else:
-        current_audio = {
-            "path": audio_rel,
-            "bytes": audio_path.stat().st_size,
-            "sha256": sha(audio_path),
-        }
-        if started_at is not None and audio_path.stat().st_mtime <= started_at:
-            problems.append("audio master does not postdate the current run stamp")
-        if path.stat().st_mtime <= audio_path.stat().st_mtime:
-            problems.append("sfx_events.json does not postdate the audio master it describes")
-    if not isinstance(audio_facts, dict) or audio_facts != current_audio:
-        problems.append("sfx_events.json audio facts do not match the current audio master")
-
-    facts = {
-        "path": "out/dispatch/sfx_events.json",
-        "sha256": sha(path),
-        "count": len(events),
-        "kinds": sorted(kinds),
-        "first_seconds": min((item["t"] for item in normalized), default=None),
-        "last_seconds": max((item["t"] for item in normalized), default=None),
-        "audio": current_audio,
-    }
-    return facts, problems
+    """Return exact hash-bound SFX/audio facts plus actionable validation problems."""
+    # duration_seconds is retained only for narrow caller compatibility.  The
+    # authority is the current hash-bound episode_props total/fps.
+    return contract_sfx_facts(path, root=root)
 
 
 def cmd_record(a):
     check_render_is_current()
-    check_not_blank()
+    blankness = check_not_blank()
     arts, evidence_hashes, manifest = artifact_state()
     if not evidence_hashes:
         fail([f"no review evidence in {REVIEW} — the panel cannot have looked at anything. "
               f"Run scripts/make_review_sheets.py on frames extracted from THIS render."])
 
+    parts = a.judges.split(",") if isinstance(a.judges, str) else []
+    if len(parts) != 3 or any(not part.strip() for part in parts):
+        fail(["judge scores must be exactly 3 comma-separated finite numbers"])
     try:
-        judges = [float(x) for x in a.judges.split(",") if x.strip()] if a.judges else []
+        judges = [float(part.strip()) for part in parts]
     except ValueError:
         fail(["judge scores must be comma-separated finite numbers"])
-    if len(judges) != 3 or any(not math.isfinite(score) for score in judges):
+    if len(judges) != 3 or any(not math.isfinite(score) or not 0 <= score <= 10 for score in judges):
         fail([f"a 3-judge panel means THREE judges. Got {len(judges)}: {judges}. "
               f"The panel was skipped on 2026-07-29 and 2026-07-30 and that is exactly "
               f"how a failing cut reaches the owner."])
 
-    median = a.median
-    if median is None:
-        s = sorted(judges)
-        median = s[len(s) // 2] if len(s) % 2 else (s[len(s) // 2 - 1] + s[len(s) // 2]) / 2
-    if not math.isfinite(median):
-        fail(["panel median must be finite"])
+    median = float(statistics.median(judges))
 
-    # The frames the judges saw must be NEWER than the render they claim to describe.
-    # If a sheet predates the video, it was made from a different cut.
-    vertical = ROOT / manifest["artifacts"]["vertical_hosted"]["path"]
-    vid_mtime = vertical.stat().st_mtime
-    stale = [n for n in evidence_hashes if (REVIEW / n).stat().st_mtime <= vid_mtime]
-    if stale:
-        fail([f"review evidence is OLDER than the render it is supposed to describe: "
-              f"{', '.join(sorted(stale)[:6])}{' ...' if len(stale) > 6 else ''}",
-              "This is the 2026-07-31 failure exactly: the panel graded render #1 and the "
-              "run shipped render #3. Rebuild the sheets from the current render."])
+    try:
+        evidence_manifest_facts = evidence_binding(manifest)
+        rubric = rubric_facts()
+        stamp = load_stamp(ROOT)
+        if not isinstance(stamp, dict):
+            raise GateInputError("run stamp is missing or unreadable")
+        release = owner_release(stamp["date"], stamp["run_id"])
+    except (EvidenceContractError, GateInputError) as exc:
+        fail([str(exc)])
+    effective_threshold = (
+        min(rubric["ship_threshold"], release["floor"])
+        if release is not None else rubric["ship_threshold"]
+    )
 
     duration = float(manifest["artifacts"]["vertical_hosted"]["duration_seconds"])
     sfx, sfx_problems = sfx_facts(duration_seconds=duration)
@@ -490,18 +469,25 @@ def cmd_record(a):
     }
     atomic_json(VERDICT, {
         "recorded_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "run_id": stamp["run_id"],
+        "run_date": stamp["date"],
+        "composition": stamp["composition"],
         "median": median,
         "judges": judges,
-        "threshold": ship_threshold(),
+        "rubric": rubric,
+        "owner_release": release,
+        "effective_threshold": effective_threshold,
         "notes": a.notes or "",
         "artifacts": arts,
         "evidence": evidence_hashes,
+        "evidence_manifest": evidence_manifest_facts,
         "manifest_digest": contract_digest(manifest),
         "media_facts": media_facts,
         "sfx": sfx,
+        "blankness": blankness,
     })
     print(f"ship_gate: verdict recorded. median={median} judges={judges} "
-          f"threshold={ship_threshold()}")
+          f"threshold={effective_threshold}")
     print(f"  bound to {len(arts)} deliverables, {len(evidence_hashes)} evidence files and {sfx['count']} SFX events")
     print(f"  -> {VERDICT}")
 
@@ -546,89 +532,98 @@ def check_beats_delivered():
         print(f"  beat delivery (ADVISORY): could not run ({e}); beats not delivery-checked")
 
 
-def cmd_check(a):
-    check_render_is_current()
-    check_not_blank()
-    check_beats_delivered()
+def validate_ship_verdict(*, verify_blankness=True):
+    """Pure current-run verdict validation shared by ship, previews, and no_exit."""
     problems = []
-    if not VERDICT.exists():
-        fail([f"no {VERDICT.name}. The 3-judge panel has not graded this cut. "
-              f"A Dispatch may not ship ungraded."])
-
+    ok, reason = check_identity(
+        root=ROOT, expected_composition=ACTIVE_COMPOSITION, require_props=True
+    )
+    if not ok:
+        problems.append(f"run identity is invalid: {reason}")
     try:
-        v = load_path(VERDICT, label="panel verdict")
+        manifest = require_manifest(root=ROOT)
+    except DeliverableContractError as exc:
+        return None, problems + [f"deliverable manifest is invalid: {exc}"]
+    if not VERDICT.is_file() or VERDICT.is_symlink():
+        return None, problems + ["current-run panel verdict is missing or unsafe"]
+    try:
+        verdict = load_path(VERDICT, label="panel verdict")
     except (StrictJSONError, OSError) as exc:
-        fail([str(exc)])
-    if not isinstance(v, dict):
-        fail(["panel verdict must be a JSON object"])
-    arts, evidence_hashes, manifest = artifact_state()
-    thr = ship_threshold()
-
-    # ---- 1. DID IT PASS? No self-granted exceptions, no 'style-register' carve-out. ----
-    try:
-        median = float(v.get("median"))
-        if not math.isfinite(median):
-            raise ValueError
-    except (TypeError, ValueError):
-        median = 0.0
-        problems.append("verdict median must be a finite number")
-    try:
-        rel = owner_release(run_date())
-    except GateInputError as exc:
-        rel = None
-        problems.append(str(exc))
-    effective = thr
-    if rel and float(rel["floor"]) < thr:
-        effective = float(rel["floor"])
-    if median < effective:
-        problems.append(
-            f"PANEL MEDIAN {median} IS BELOW THE {effective} SHIP BAR. This is a hard stop. "
-            f"The routine's old 'deliver with the scorecard disclosed' clause was DELETED "
-            f"on 2026-07-31 because a run used it to ship a 6.98. Disclosure is not a "
-            f"substitute for fixing. Fix the defects, re-render, re-grade.")
-    elif effective < thr:
-        print("=" * 72)
-        print(f"SHIPPING UNDER AN OWNER RELEASE — the rubric bar is {thr}, this cut scored "
-              f"{median}.")
-        print(f"  released to: {effective}   on: {rel['run_date']}")
-        print(f"  owner said: {rel['instruction']}")
-        print("  Every other check below still applies and none of them were waived.")
-        print("=" * 72)
-    judges = v.get("judges")
-    if not isinstance(judges, list) or len(judges) != 3 or any(
-        isinstance(score, bool) or not isinstance(score, (int, float)) or not math.isfinite(float(score))
-        for score in (judges if isinstance(judges, list) else [])
+        return None, problems + [str(exc)]
+    if not isinstance(verdict, dict):
+        return None, problems + ["panel verdict must be a JSON object"]
+    expected_fields = {
+        "recorded_at", "run_id", "run_date", "composition", "median", "judges",
+        "rubric", "owner_release", "effective_threshold", "notes", "artifacts",
+        "evidence", "evidence_manifest", "manifest_digest", "media_facts", "sfx",
+        "blankness",
+    }
+    if set(verdict) != expected_fields:
+        problems.append("panel verdict fields are not canonical")
+    stamp = load_stamp(ROOT)
+    if not isinstance(stamp, dict):
+        return verdict, problems + ["run stamp is missing or unreadable"]
+    for key, wanted in (
+        ("run_id", stamp["run_id"]),
+        ("run_date", stamp["date"]),
+        ("composition", stamp["composition"]),
     ):
-        problems.append("verdict must record exactly 3 finite numeric judge scores")
-        judges = judges if isinstance(judges, list) else []
+        if verdict.get(key) != wanted:
+            problems.append(f"verdict {key} does not match the current run")
 
-    # ---- 2. DID THEY GRADE WHAT IS ABOUT TO SHIP? ----
-    graded_artifacts = v.get("artifacts")
-    if not isinstance(graded_artifacts, dict):
-        problems.append("verdict artifacts must be an object")
-        graded_artifacts = {}
-    for name, want in graded_artifacts.items():
-        if not isinstance(want, str) or not re.fullmatch(r"[0-9a-f]{64}", want):
-            problems.append(f"graded hash for {name} is invalid")
-            continue
-        got = arts.get(name)
-        if got is None:
-            problems.append(f"{name} was graded but is no longer present.")
-        elif got != want:
+    judges = verdict.get("judges")
+    if (
+        not isinstance(judges, list) or len(judges) != 3
+        or any(
+            isinstance(score, bool) or not isinstance(score, (int, float))
+            or not math.isfinite(float(score)) or not 0 <= float(score) <= 10
+            for score in (judges if isinstance(judges, list) else [])
+        )
+    ):
+        problems.append("verdict must record exactly 3 finite judge scores in 0..10")
+        computed_median = None
+    else:
+        computed_median = float(statistics.median(float(score) for score in judges))
+    recorded_median = verdict.get("median")
+    if (
+        computed_median is None or isinstance(recorded_median, bool)
+        or not isinstance(recorded_median, (int, float))
+        or not math.isfinite(float(recorded_median))
+        or abs(float(recorded_median) - computed_median) > 1e-9
+    ):
+        problems.append("verdict median is not the internally computed median of its 3 judges")
+
+    try:
+        current_rubric = rubric_facts()
+        current_release = owner_release(stamp["date"], stamp["run_id"])
+    except GateInputError as exc:
+        problems.append(str(exc))
+        current_rubric = None
+        current_release = None
+    if verdict.get("rubric") != current_rubric:
+        problems.append("verdict rubric hash/threshold changed after grading")
+    if verdict.get("owner_release") != current_release:
+        problems.append("verdict owner release does not match the immutable current-run decision")
+    if current_rubric is not None:
+        effective = (
+            min(current_rubric["ship_threshold"], current_release["floor"])
+            if current_release is not None else current_rubric["ship_threshold"]
+        )
+        if verdict.get("effective_threshold") != effective:
+            problems.append("verdict effective threshold is not the bound rubric/release threshold")
+        if computed_median is not None and computed_median < effective:
             problems.append(
-                f"{name} HAS CHANGED SINCE IT WAS GRADED.\n"
-                f"          graded: {want[:16]}...\n"
-                f"          on disk: {got[:16]}...\n"
-                f"        The panel's verdict describes a file that is not the file you are "
-                f"about to ship. Re-cut the evidence, re-grade, re-record.")
-    for name in arts:
-        if name not in graded_artifacts:
-            problems.append(f"{name} is a deliverable but was never graded.")
+                f"panel median {computed_median} is below the immutable {effective} ship threshold"
+            )
+    else:
+        effective = None
 
-    # The immutable manifest projection and probed audio facts must be the ones recorded.
-    if v.get("manifest_digest") != contract_digest(manifest):
+    artifacts = {role: entry["sha256"] for role, entry in manifest["artifacts"].items()}
+    if verdict.get("artifacts") != artifacts:
+        problems.append("deliverable artifact hashes changed after grading")
+    if verdict.get("manifest_digest") != contract_digest(manifest):
         problems.append("deliverable manifest changed after grading")
-    current_media_facts = {
+    media_facts = {
         role: {
             "sha256": entry["sha256"],
             "bytes": entry["bytes"],
@@ -637,76 +632,81 @@ def cmd_check(a):
         }
         for role, entry in manifest["artifacts"].items()
     }
-    if v.get("media_facts") != current_media_facts:
+    if verdict.get("media_facts") != media_facts:
         problems.append("delivered media/audio facts changed after grading")
+    try:
+        bound_evidence = evidence_binding(manifest)
+        evidence_hashes = {
+            relative: entry["sha256"] for relative, entry in bound_evidence["artifacts"].items()
+        }
+        if verdict.get("evidence") != evidence_hashes:
+            problems.append("review evidence hashes changed after grading")
+        if verdict.get("evidence_manifest") != bound_evidence:
+            problems.append("evidence manifest changed after grading")
+    except EvidenceContractError as exc:
+        problems.append(f"evidence manifest is invalid: {exc}")
 
-    duration = float(manifest["artifacts"]["vertical_hosted"]["duration_seconds"])
-    current_sfx, sfx_problems = sfx_facts(duration_seconds=duration)
+    current_sfx, sfx_problems = sfx_facts(root=ROOT)
     problems.extend(sfx_problems)
-    if current_sfx is not None and v.get("sfx") != current_sfx:
-        problems.append("sfx_events.json changed after grading")
+    if current_sfx is None or verdict.get("sfx") != current_sfx:
+        problems.append("sfx/audio evidence changed after grading")
+    if verify_blankness:
+        try:
+            current_blankness = blankness_facts()
+            if verdict.get("blankness") != current_blankness:
+                problems.append("blankness attestation changed after grading")
+        except GateInputError as exc:
+            problems.append(str(exc))
+    else:
+        recorded_blankness = verdict.get("blankness")
+        vertical_sha = manifest["artifacts"]["vertical_hosted"]["sha256"]
+        if not isinstance(recorded_blankness, dict) or recorded_blankness.get("vertical_sha256") != vertical_sha:
+            problems.append("blankness attestation is missing or bound to different vertical bytes")
 
-    # ---- 3. WAS THE EVIDENCE DERIVED FROM THOSE BYTES? ----
-    graded_ev = v.get("evidence")
-    if not isinstance(graded_ev, dict):
-        problems.append("verdict evidence must be an object")
-        graded_ev = {}
-    if not graded_ev:
-        problems.append("the verdict records no review evidence — nobody looked at a frame.")
-    for name, want in graded_ev.items():
-        got = evidence_hashes.get(name)
-        if got is None:
-            problems.append(f"review evidence {name} is gone.")
-        elif got != want:
-            problems.append(f"review evidence {name} changed after grading.")
-    for name in evidence_hashes:
-        if name not in graded_ev:
-            problems.append(f"review evidence {name} was added after grading")
+    return {
+        "verdict": verdict,
+        "manifest": manifest,
+        "median": computed_median,
+        "threshold": effective,
+        "judges": judges,
+    }, problems
 
-    if problems:
-        fail(problems, median=median)
 
-    # A PASS IS A STOP ORDER, NOT A CHECKPOINT (2026-08-09, owner's instruction after this
-    # routine passed at 7.61, kept editing, and never cleared the bar again in five further
-    # rounds costing nine hours). The run that day had a shippable cut, found a real defect,
-    # fixed it, and destroyed the passing verdict to do so, because any source edit forces a
-    # re-render and a re-grade. The defect was genuine; fixing it THEN was the error.
-    #
-    # So the pass now leaves a lock on disk and render_parallel.sh refuses to start while it
-    # exists. Continuing to polish after a pass is no longer a judgement call a run gets to
-    # make on its own: it has to delete a file whose name says what it is doing.
+def require_ship_verdict(*, verify_blankness=True):
+    state, problems = validate_ship_verdict(verify_blankness=verify_blankness)
+    if state is None or problems:
+        raise GateInputError("; ".join(problems or ["ship verdict is unavailable"]))
+    return state
+
+
+def cmd_check(a):
+    check_beats_delivered()
+    state, strict_problems = validate_ship_verdict(verify_blankness=True)
+    if state is None or strict_problems:
+        fail(strict_problems or ["ship verdict is unavailable"])
+    median = state["median"]
+    effective = state["threshold"]
+    judges = state["judges"]
+    arts = state["verdict"]["artifacts"]
+    graded_ev = state["verdict"]["evidence"]
     SHIP_NOW = RENDER / "SHIP_NOW"
     SHIP_NOW.write_text(
-        f"median {median} cleared {effective} at {time.strftime('%H:%M:%S')}.\n"
-        "SHIP THESE BYTES. Do not edit, do not re-render, do not improve.\n"
-        "Every further fix is next run's work. Delete this file only if you are deliberately\n"
-        "abandoning a passing cut, and say so out loud when you do.\n")
+        f"median {median} cleared {effective}.\n"
+        "SHIP THESE BYTES. Do not edit, re-render, or improve this run.\n",
+        encoding="utf-8",
+    )
     print("=" * 72)
     print("SHIP GATE: PASS  ->  SHIP NOW, DO NOT KEEP EDITING")
     print("=" * 72)
-    # print the EFFECTIVE bar, not the rubric one. The first version of this line printed
-    # "7.2 >= 7.5" under a release, which is a false statement in the pass banner of the gate
-    # whose entire job is to not let false statements through.
-    print(f"  panel median {median} >= {effective} (rubric bar {thr})   judges={judges}"
-          if effective != thr else
-          f"  panel median {median} >= {thr}   judges={judges}")
+    print(f"  panel median {median} >= {effective}   judges={judges}")
     print(f"  {len(arts)} deliverables hash-match the graded cut")
-    print(f"  {len(graded_ev)} pieces of review evidence hash-match")
-    if ATTEMPTS.exists():
-        try:
-            n = len(json.loads(ATTEMPTS.read_text()))
-            print(f"  cleared after {n} blocked round(s) in the editing loop")
-        except Exception:
-            pass
-    print("  these bytes may be retained locally or published only to the canary media branch.")
-
-
+    print(f"  {len(graded_ev)} evidence artifacts hash-match the evidence manifest")
+    return state
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
     r = sub.add_parser("record", help="bind a passing panel verdict to the current bytes")
-    r.add_argument("--median", type=float, default=None)
     r.add_argument("--judges", type=str, default="", help="comma-separated, need 3")
     r.add_argument("--notes", type=str, default="")
     r.set_defaults(fn=cmd_record)

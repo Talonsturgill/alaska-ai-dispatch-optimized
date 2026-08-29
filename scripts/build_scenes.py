@@ -470,6 +470,36 @@ def _credits():
             "seconds": CREDITS_S, "frames": round(CREDITS_S * FPS)}
 
 
+def derive_episode_timing(lines, scene_start_line, credits):
+    """Derive the one timeline used by props, render, mix, and delivery.
+
+    `story_frames` ends after the post-VO tail. Credits are then appended and
+    included in `total`. Keeping this arithmetic in one pure helper gives the
+    cross-file contract tests the same function the real builder uses.
+    """
+    if not lines:
+        raise ValueError("build_scenes: vo_lines.json has no lines")
+    starts = {line["idx"]: float(line["start"]) for line in lines}
+    last_end = max(float(line["end"]) for line in lines)
+    story_seconds = last_end + TAIL
+    story_frames = round(story_seconds * FPS)
+    bounds = [round(starts[index] * FPS) for index in scene_start_line]
+    scenes = []
+    for position, bound in enumerate(bounds):
+        end = bounds[position + 1] if position + 1 < len(bounds) else story_frames
+        if end <= bound:
+            raise ValueError(f"build_scenes: scene {position + 1} has non-positive duration")
+        scenes.append({"from": bound, "dur": end - bound})
+    credits_frames = int(credits["frames"]) if credits else 0
+    return {
+        "scenes": scenes,
+        "story_frames": story_frames,
+        "credits_frames": credits_frames,
+        "total": story_frames + credits_frames,
+        "fps": FPS,
+    }
+
+
 def main():
     lines = json.load(open(os.path.join(OUT, "vo_lines.json")))["lines"]
     # FIXUPS RUN LAST, NOT FIRST (2026-08-12). They used to run only on the way IN, and
@@ -483,17 +513,6 @@ def main():
     # on corrected text.
     caps = _rebalance_cues(_apply_caption_fixups(json.load(open(os.path.join(OUT, "captions.json")))))
     caps = _apply_caption_fixups(caps)
-    start = {L["idx"]: L["start"] for L in lines}
-    last_end = max(L["end"] for L in lines)
-    total_s = last_end + TAIL
-    total_f = round(total_s * FPS)
-
-    bounds = [round(start[si] * FPS) for si in SCENE_START_LINE]
-    scenes = []
-    for i, b in enumerate(bounds):
-        end = bounds[i + 1] if i + 1 < len(bounds) else total_f
-        scenes.append({"from": b, "dur": end - b})
-
     # THE VO LINE START TABLE, and it is not a convenience (2026-08-02).
     # Scenes used to hardcode beat times as ABSOLUTE seconds copied off the storyboard. That
     # silently rots the moment the VO is re-synthesized, because a new take shifts every line
@@ -507,8 +526,9 @@ def main():
     # run that finds itself over the runtime ceiling takes the time out of the SCRIPT, never
     # out of the card people are supposed to read.
     cred = _credits()
-    if cred:
-        total_f += cred["frames"]
+    timing = derive_episode_timing(lines, SCENE_START_LINE, cred)
+    scenes = timing["scenes"]
+    total_f = timing["total"]
 
     # THE CAPTION CONTRACT IS {t, d, text} AND IT IS NOT THE SHAPE captions.json USES
     # (2026-08-12, found by a panel judge, not by any gate).
@@ -536,7 +556,7 @@ def main():
         raise SystemExit(f"build_scenes: {len(bad)} caption cue(s) have a non-positive duration "
                          f"and would never display: {bad[:3]}")
 
-    props = {"captions": caps, "scenes": scenes, "total": total_f,
+    props = {"captions": caps, "scenes": scenes, "total": total_f, "fps": FPS,
              "lines": [round(L["start"], 3) for L in sorted(lines, key=lambda x: x["idx"])]}
     # voice-acting data (scripts/vo_envelope.py): per-frame mouth envelope + the
     # vo-director's emphasis accents, for lib/voice.tsx. Optional, additive.
@@ -551,7 +571,8 @@ def main():
         print(f"credits: {len(cred['sources'])} source label(s), {cred['seconds']}s tail "
               f"-> {cred['sources']}")
     json.dump(props, open(os.path.join(OUT, "episode_props.json"), "w"))
-    print(f"total={total_f}f ({total_s:.2f}s)  mouth={'y' if 'mouth' in props else 'n'} accents={len(props.get('accents', []))}")
+    print(f"total={total_f}f ({total_f / FPS:.2f}s, including {timing['credits_frames']}f credits)  "
+          f"mouth={'y' if 'mouth' in props else 'n'} accents={len(props.get('accents', []))}")
     for i, s in enumerate(scenes):
         print(f"  S{i+1}: from={s['from']} dur={s['dur']} ({s['dur']/FPS:.2f}s)")
 

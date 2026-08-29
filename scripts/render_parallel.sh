@@ -88,8 +88,12 @@ fi
 # drift means the finished bytes no longer belong to the stamped run. Even a comment-only edit
 # requires a new stamp; identity is intentionally exact rather than based on semantic guesses.
 _src_fingerprint() {
-  find video-engine/src -name '*.tsx' -o -name '*.ts' 2>/dev/null \
-    | sort | xargs stat -c '%n %Y %s' 2>/dev/null | sha256sum | cut -c1-16
+  { find video-engine/src -type f \( -name '*.tsx' -o -name '*.ts' \) -print0 2>/dev/null \
+      | sort -z | xargs -0 sha256sum 2>/dev/null; \
+    sha256sum video-engine/package.json video-engine/package-lock.json \
+      video-engine/remotion.config.ts video-engine/tsconfig.json \
+      out/dispatch/episode_props.json 2>/dev/null; \
+  } | sha256sum | cut -c1-16
 }
 SRC_BEFORE="$(_src_fingerprint)"
 
@@ -133,7 +137,11 @@ if [ -f out/dispatch/SHIP_NOW ]; then
   exit 5
 fi
 
-OUT="${2:-out/dispatch/render_mute.mp4}"
+OUT="out/dispatch/render/video_mute.mp4"
+if [ -n "${2:-}" ] && [ "${2}" != "$OUT" ] && [ "${2}" != "$PWD/$OUT" ]; then
+  echo "render_parallel.sh: final renders may only write $OUT" >&2
+  exit 2
+fi
 PROPS="out/dispatch/episode_props.json"
 # MORE CHUNKS THAN SLOTS, ON PURPOSE (2026-08-04). The first version cut the film into
 # exactly one chunk per slot, which is only optimal when every frame costs the same. It
@@ -162,9 +170,10 @@ CHUNK_TIMEOUT="${CHUNK_TIMEOUT:-420}"
 TRIES="${TRIES:-3}"
 
 # total frames: from episode_props.json unless the caller states it
-TOTAL="${3:-}"
-if [ -z "$TOTAL" ]; then
-  TOTAL="$(python3 -c "import json;print(json.load(open('$PROPS'))['total'])")"
+TOTAL="$(python3 scripts/render_contract.py episode total_frames)"
+if [ -n "${3:-}" ] && [ "${3}" != "$TOTAL" ]; then
+  echo "render_parallel.sh: supplied total ${3} does not match hash-bound episode total $TOTAL" >&2
+  exit 2
 fi
 
 case "$OUT" in /*) ABS_OUT="$OUT";; *) ABS_OUT="$PWD/$OUT";; esac
@@ -200,7 +209,7 @@ echo "parallel render: $COMP  $TOTAL frames  $CHUNKS chunks, $SLOTS at a time"
 # not contain the fixes the run just made. It cost a full panel round to notice, by
 # checking a timestamp by hand. A failed render must leave NO output, so that everything
 # after it fails loudly instead of quietly succeeding on the wrong bytes.
-rm -f "$ABS_OUT"
+python3 scripts/render_contract.py prepare
 
 # Render one chunk, surviving the post-bundle hang described above. A chunk that produces
 # no output file inside CHUNK_TIMEOUT is killed and retried from scratch. Success is
@@ -287,4 +296,5 @@ if ! python3 scripts/run_guard.py require-composition --composition DispatchDail
   rm -f "$ABS_OUT"
   exit 6
 fi
+python3 scripts/render_contract.py record
 echo "  OK  $ABS_OUT  $GOT frames  $(du -h "$ABS_OUT" | cut -f1)"

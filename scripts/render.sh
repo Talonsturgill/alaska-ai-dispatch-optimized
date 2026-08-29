@@ -72,10 +72,17 @@ case "$MODE" in
       --scale=0.5 --crf=30 --every-nth-frame=1
     ;;
   final)
-    COMP="${2:-$RUN_COMP}"; assert_comp "$COMP"; OUT="$REPO_ROOT/out/dispatch/render/video_mute.mp4"; [[ -n "${3:-}" ]] && OUT="$(resolve_out "$3")"
+    COMP="${2:-$RUN_COMP}"; assert_comp "$COMP"; OUT="$REPO_ROOT/out/dispatch/render/video_mute.mp4"
+    if [[ -n "${3:-}" && "$(resolve_out "$3")" != "$OUT" ]]; then
+      echo "render.sh: final renders may only write $OUT" >&2
+      exit 2
+    fi
+    python3 scripts/render_contract.py prepare
     cd "$REPO_ROOT/video-engine"
-    exec npx remotion render src/index.ts "$COMP" "$OUT" \
+    npx remotion render src/index.ts "$COMP" "$OUT" \
       --props="$PROPS" --codec=h264 --muted --concurrency=4 --crf=19
+    cd "$REPO_ROOT"
+    exec python3 scripts/render_contract.py record
     ;;
   still)
     FRAME="${2:?frame number}"; COMP="${3:-$RUN_COMP}"; assert_comp "$COMP"

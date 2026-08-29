@@ -29,7 +29,7 @@ DRAFT_TO = "docket@alaskaaihq.com"
 # for the 07-18/07-19 stale-artifact incidents this prevents). Import from the
 # sibling scripts/ dir regardless of the caller's cwd.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from run_guard import fresh, StaleArtifactError  # noqa: E402
+from run_guard import fresh, load_stamp, StaleArtifactError  # noqa: E402
 from caption_check import lint as caption_lint  # noqa: E402
 from canary_guard import CanarySafetyError, require_action  # noqa: E402
 from deliverable_contract import (  # noqa: E402
@@ -38,6 +38,12 @@ from deliverable_contract import (  # noqa: E402
     require_publication_url,
     role_for_path,
 )
+from delivery_preview import (  # noqa: E402
+    PREVIEW_REL,
+    DeliveryPreviewError,
+    record_delivery_preview,
+)
+from ship_gate import GateInputError, require_ship_verdict  # noqa: E402
 
 
 def refuse_unless_links_are_live(urls, allow_temporary=False):
@@ -225,7 +231,7 @@ ALASKAIHQ_LI = ('<li><b>Every Alaska + AI decision and update we track, in one p
 
 
 def render(post, poster_html, vids, voice, music, sources, score, note, temporary, date_str, title, upgrades,
-           sourcing_note=""):
+           sourcing_note="", pre_panel=False):
     def esc(x):
         return (x or "").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
     src = "\n".join(
@@ -295,9 +301,16 @@ def render(post, poster_html, vids, voice, music, sources, score, note, temporar
                          for ln in (upgrades or "").splitlines() if ln.strip())
     upgrades_html = (f'<h2>Upgrades shipped this run</h2><ul class="upg">{up_items}</ul>'
                      if up_items else "")
+    phase_banner = (
+        '<div class="warn" style="font-size:22px;background:#fff0f0;border-color:#d22;color:#8b0000;">'
+        '<b>PRE-PANEL REVIEW ONLY — NOT A DELIVERY, NOT APPROVED, NOT TERMINAL</b></div>'
+        if pre_panel else ""
+    )
+    heading = "Dispatch pre-panel review" if pre_panel else "Dispatch ready"
     return f"""<!doctype html><html><head><meta charset="utf-8"><style>{CSS}</style></head><body>
 <div class="wrap">
-  <h1>ALASKA.AI &middot; Dispatch ready{(' &middot; ' + title) if title else ''}</h1>
+  {phase_banner}
+  <h1>ALASKA.AI &middot; {heading}{(' &middot; ' + title) if title else ''}</h1>
   <div class="sub">{date_str} &middot; LinkedIn (primary) + TikTok &middot; review, then post</div>
 
   <h2>The video</h2>
@@ -356,11 +369,15 @@ def main():
                          "suggestions -- changes committed this run). Rendered as the 'Upgrades "
                          "shipped this run' section so the owner sees what self-improved.")
     ap.add_argument("--temporary", action="store_true", help="flag download links as temporary (~1h)")
-    ap.add_argument("--date", default=dt.date.today().isoformat()); ap.add_argument("--title", default="")
+    ap.add_argument("--date", default=None); ap.add_argument("--title", default="")
     ap.add_argument("--to", default=DRAFT_TO); ap.add_argument("--out-html", default="")
     ap.add_argument("--local-only", action="store_true",
                     help="write --out-html but suppress the connector-ready Gmail payload "
                          "(required for normal canary runs)")
+    ap.add_argument(
+        "--pre-panel-preview", action="store_true",
+        help="build a visibly non-terminal review preview; may not use the canonical delivery path",
+    )
     ap.add_argument("--no-freshness-check", action="store_true",
                     help="bypass the run-freshness guard (deliberate manual/standalone use only; "
                          "the routine must NEVER pass this -- it is how a previous run's scratch ships)")
@@ -374,6 +391,29 @@ def main():
             require_action("gmail_draft", a.to)
         except CanarySafetyError as exc:
             sys.exit(f"dispatch_email: {exc}\nUse --local-only --out-html <path> for a canary preview.")
+    stamp = load_stamp(Path(__file__).resolve().parent.parent)
+    if not isinstance(stamp, dict) or not isinstance(stamp.get("date"), str):
+        sys.exit("REFUSING TO BUILD PREVIEW: current run stamp/date is missing")
+    if a.date is not None and a.date != stamp["date"]:
+        sys.exit(
+            f"REFUSING TO BUILD PREVIEW: --date {a.date} does not match run_date {stamp['date']}"
+        )
+    a.date = stamp["date"]
+    canonical_preview = Path(__file__).resolve().parent.parent / PREVIEW_REL
+    supplied_preview = Path(a.out_html).resolve() if a.out_html else None
+    ship_state = None
+    if a.pre_panel_preview:
+        if supplied_preview == canonical_preview:
+            sys.exit(
+                "REFUSING PRE-PANEL PREVIEW: canonical dispatch-preview.html is terminal-only"
+            )
+    else:
+        if supplied_preview != canonical_preview:
+            sys.exit(f"REFUSING DELIVERY PREVIEW: --out-html must be {PREVIEW_REL}")
+        try:
+            ship_state = require_ship_verdict(verify_blankness=True)
+        except GateInputError as exc:
+            sys.exit(f"REFUSING DELIVERY PREVIEW: ship verdict is not fully valid.\n  {exc}")
     try:
         require_manifest()
         require_publication_url("vertical_hosted", a.video_url_vertical)
@@ -424,9 +464,15 @@ def main():
                  "must list every source inline (no 'see the repo' pointers). Fix sources.json.")
     html = render(post, poster_html, {"vertical": a.video_url_vertical, "square": a.video_url_square},
                   a.voice or "(unset)", a.music or "(unset)", sources, a.score, a.note, a.temporary, a.date, a.title,
-                  a.upgrades, sourcing_note)
+                  a.upgrades, sourcing_note, pre_panel=a.pre_panel_preview)
     if a.out_html:
         Path(a.out_html).write_text(html, encoding="utf-8"); print("wrote", a.out_html)
+        if not a.pre_panel_preview:
+            try:
+                record_delivery_preview(a.out_html, ship_state=ship_state)
+            except DeliveryPreviewError as exc:
+                Path(a.out_html).unlink(missing_ok=True)
+                sys.exit(f"REFUSING DELIVERY PREVIEW RECEIPT: {exc}")
     if a.local_only:
         print(f"CANARY LOCAL ONLY: Gmail payload suppressed; preview={a.out_html}")
         return

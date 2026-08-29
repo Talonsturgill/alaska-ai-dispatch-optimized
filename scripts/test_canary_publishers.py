@@ -48,6 +48,14 @@ class PublisherBoundaryTests(unittest.TestCase):
         tempdir.assert_not_called()
         write_text.assert_not_called()
 
+    def test_feed_gate_reuses_strict_current_run_verdict(self):
+        with mock.patch.object(
+            publish_feed, "require_ship_verdict",
+            side_effect=publish_feed.GateInputError("evidence manifest changed"),
+        ):
+            with self.assertRaisesRegex(SystemExit, "evidence manifest changed"):
+                publish_feed.require_ship_gate()
+
     def test_dispatch_email_refusal_precedes_reads_network_write_and_payload(self):
         argv = [
             "dispatch_email.py", "--post", "missing.txt",
@@ -131,6 +139,25 @@ class PublisherBoundaryTests(unittest.TestCase):
             self.assertEqual(upload_video.main(), 1)
         network.assert_not_called()
 
+    def test_upload_requires_current_strict_ship_verdict_before_publisher(self):
+        argv = ["upload_video.py", "--file", "manifested.mp4", "--role", "vertical_hosted"]
+        manifest = {
+            "identity": {"run_id": "fixture"},
+            "artifacts": {"vertical_hosted": {"path": "out/dispatch/fixture.mp4", "sha256": "a" * 64}},
+        }
+        with mock.patch.object(sys, "argv", argv), \
+             mock.patch.object(
+                 upload_video, "validate_upload",
+                 return_value=(manifest, "vertical_hosted", manifest["artifacts"]["vertical_hosted"]),
+             ), \
+             mock.patch.object(
+                 upload_video, "require_ship_verdict",
+                 side_effect=upload_video.GateInputError("panel verdict missing"),
+             ), \
+             mock.patch.object(upload_video, "via_github") as publisher:
+            self.assertEqual(upload_video.main(), 1)
+        publisher.assert_not_called()
+
     def test_media_branch_override_is_rejected_before_guard_or_io(self):
         with mock.patch.dict(os.environ, {"DISPATCH_MEDIA_BRANCH": "anything"}), \
              mock.patch.object(upload_video, "require_canary_origin") as origin, \
@@ -160,7 +187,7 @@ class PublisherBoundaryTests(unittest.TestCase):
             "control\nname.mp4",
             "\x00name.mp4",
             "Qargiŋ.mp4",
-            "a" * 129 + ".mp4",
+            "a" * 256 + ".mp4",
             "",
             ".",
             "..",
@@ -209,12 +236,17 @@ class PublisherBoundaryTests(unittest.TestCase):
                 "--video-url-vertical", "https://example.invalid/canary.mp4",
                 "--video-url-square", "https://example.invalid/canary-square.mp4",
                 "--sources", str(sources), "--local-only", "--out-html", str(output),
+                "--pre-panel-preview",
             ]
             stdout = io.StringIO()
             with mock.patch.object(sys, "argv", argv), \
                  mock.patch.object(dispatch_email, "fresh", side_effect=lambda path, check=True: path), \
                  mock.patch.object(dispatch_email, "refuse_unless_copy_is_clean"), \
                  mock.patch.object(dispatch_email, "refuse_unless_links_are_live"), \
+                 mock.patch.object(
+                     dispatch_email, "load_stamp",
+                     return_value={"date": "2026-08-29"},
+                 ), \
                  mock.patch.object(dispatch_email, "require_manifest"), \
                  mock.patch.object(dispatch_email, "require_publication_url"), \
                  contextlib.redirect_stdout(stdout):
@@ -222,7 +254,30 @@ class PublisherBoundaryTests(unittest.TestCase):
             rendered = output.read_bytes().decode("utf-8")
         self.assertIn(alaska_text, rendered)
         self.assertIn("Łingít source", rendered)
+        self.assertIn("NOT TERMINAL", rendered)
         self.assertNotIn('"html_body"', stdout.getvalue())
+
+    def test_dispatch_preview_rejects_clock_date_mismatch_before_consuming_media(self):
+        argv = [
+            "dispatch_email.py", "--post", "unused.txt",
+            "--video-url-vertical", "https://example.invalid/canary.mp4",
+            "--video-url-square", "https://example.invalid/canary-square.mp4",
+            "--sources", "unused.json", "--date", "2026-08-28",
+            "--local-only", "--out-html", "unused-preview.html",
+            "--pre-panel-preview",
+        ]
+        with mock.patch.object(sys, "argv", argv), \
+             mock.patch.object(dispatch_email, "require_action"), \
+             mock.patch.object(
+                 dispatch_email, "load_stamp",
+                 return_value={"date": "2026-08-29"},
+             ), \
+             mock.patch.object(dispatch_email, "require_manifest") as manifest, \
+             mock.patch.object(dispatch_email, "require_publication_url") as publication:
+            with self.assertRaisesRegex(SystemExit, "does not match run_date"):
+                dispatch_email.main()
+        manifest.assert_not_called()
+        publication.assert_not_called()
 
     def test_weekly_preview_round_trips_utf8_alaska_text(self):
         alaska_text = "Qargiŋ and Łingít voices stay intact in the local preview."

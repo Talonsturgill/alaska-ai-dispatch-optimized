@@ -30,7 +30,7 @@ STAMP_REL = "out/dispatch/.run_stamp.json"
 REGISTRY_REL = "config/compositions.json"
 ROOT_SOURCE_REL = "video-engine/src/Root.tsx"
 POLICY_REL = "config/execution_policy.json"
-STAMP_SCHEMA_VERSION = 2
+STAMP_SCHEMA_VERSION = 3
 ACTIVE_COMPOSITION = "DispatchDaily"
 COMPOSITION_RE = re.compile(r"^[A-Za-z][A-Za-z0-9]*$")
 SAFE_PATH_RE = re.compile(r"^[A-Za-z0-9._/-]+$")
@@ -90,6 +90,23 @@ def _engine_sources_sha(root: Path) -> str:
     return digest.hexdigest()
 
 
+def _render_inputs(root: Path, registry: dict[str, Any]) -> dict[str, str]:
+    """Hash non-source files that can change how identical source/props render."""
+    values = registry.get("render_inputs")
+    if not isinstance(values, list) or not values or any(not isinstance(v, str) for v in values):
+        raise RunIdentityError("composition registry render_inputs must be a non-empty path list")
+    canonical = [_safe_rel(value, label="render input") for value in values]
+    if len(canonical) != len(set(canonical)):
+        raise RunIdentityError("composition registry render_inputs may not contain duplicates")
+    facts: dict[str, str] = {}
+    for relative in canonical:
+        path = _resolve_inside(root, relative, label=f"render input {relative}")
+        if not path.is_file() or path.is_symlink():
+            raise RunIdentityError(f"render input {relative} must be a regular file")
+        facts[relative] = _sha(path)
+    return facts
+
+
 def _atomic_json(path: Path, value: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     fd, name = tempfile.mkstemp(prefix=path.name + ".", suffix=".tmp", dir=path.parent)
@@ -115,6 +132,21 @@ def _git(root: Path, *args: str) -> str:
         detail = (result.stderr or result.stdout).strip().splitlines()
         raise RunIdentityError(f"git {' '.join(args)} failed: {detail[-1] if detail else 'unknown error'}")
     return result.stdout.strip()
+
+
+def _is_ancestor(root: Path, ancestor: str, descendant: str) -> bool:
+    result = subprocess.run(
+        ["git", "-C", str(root), "merge-base", "--is-ancestor", ancestor, descendant],
+        capture_output=True, text=True, timeout=20,
+    )
+    if result.returncode == 0:
+        return True
+    if result.returncode == 1:
+        return False
+    detail = (result.stderr or result.stdout).strip().splitlines()
+    raise RunIdentityError(
+        f"git ancestry check failed: {detail[-1] if detail else 'unknown error'}"
+    )
 
 
 def _origin_identity(root: Path) -> str:
@@ -201,6 +233,7 @@ def _registry(root: Path) -> tuple[dict[str, Any], Path]:
     for name in compositions:
         if not isinstance(name, str) or not name.isascii() or not COMPOSITION_RE.fullmatch(name):
             raise RunIdentityError("every registered composition key must be an ASCII identifier")
+    _render_inputs(root, value)
     return value, path
 
 
@@ -289,6 +322,7 @@ def init(
         raise RunIdentityError(f"composition {composition} has no component")
     _root_registration(base, composition, component)
     registry_path = _resolve_inside(base, REGISTRY_REL, label="composition registry")
+    registry, _ = _registry(base)
     root_source = _resolve_inside(base, ROOT_SOURCE_REL, label="Root.tsx")
     source_rel = _safe_rel(record["source"], label="composition source")
     source_path = _resolve_inside(base, source_rel, label="composition source")
@@ -334,6 +368,7 @@ def init(
         "source_sha256": _sha(source_path),
         "source_dependencies": dependency_hashes,
         "engine_sources_sha256": _engine_sources_sha(base),
+        "render_inputs": _render_inputs(base, registry),
         "props_path": props_rel,
         # Scratch may survive from an older run. Presence at init is not provenance, so an
         # existing props file is deliberately left unbound until `bind-inputs` is called after
@@ -366,6 +401,7 @@ def _identity_problems(
         "registry_sha256", "root_source_path", "root_source_sha256", "source_path",
         "source_sha256", "source_dependencies", "props_path", "props_sha256",
         "engine_sources_sha256",
+        "render_inputs",
     }
     missing = sorted(required - set(stamp))
     if missing:
@@ -417,7 +453,6 @@ def _identity_problems(
     checks = (
         ("origin", lambda: _origin_identity(root)),
         ("branch", lambda: _git(root, "branch", "--show-current")),
-        ("git_head", lambda: _git(root, "rev-parse", "HEAD")),
     )
     for field, current in checks:
         try:
@@ -425,6 +460,13 @@ def _identity_problems(
                 problems.append(f"{field} changed since run init")
         except RunIdentityError as exc:
             problems.append(str(exc))
+    try:
+        current_head = _git(root, "rev-parse", "HEAD")
+        stamped_head = str(stamp.get("git_head", ""))
+        if current_head != stamped_head and not _is_ancestor(root, stamped_head, current_head):
+            problems.append("current HEAD is not equal to or a descendant of stamped git_head")
+    except RunIdentityError as exc:
+        problems.append(str(exc))
     dependencies = stamp.get("source_dependencies")
     if not isinstance(dependencies, dict):
         problems.append("run stamp source_dependencies must be an object")
@@ -475,6 +517,17 @@ def _identity_problems(
             problems.append("engine source tree changed since run init")
     except RunIdentityError as exc:
         problems.append(str(exc))
+    render_inputs = stamp.get("render_inputs")
+    if not isinstance(render_inputs, dict):
+        problems.append("run stamp render_inputs must be an object")
+    else:
+        try:
+            registry, _ = _registry(root)
+            current_render_inputs = _render_inputs(root, registry)
+            if render_inputs != current_render_inputs:
+                problems.append("bound render inputs changed since run init")
+        except RunIdentityError as exc:
+            problems.append(str(exc))
     try:
         props_path = _resolve_inside(root, str(stamp.get("props_path", "")), label="props", must_exist=False)
         want = stamp.get("props_sha256")

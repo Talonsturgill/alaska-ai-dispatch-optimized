@@ -1,7 +1,14 @@
 {
   "schema_version": 1,
   "manifest_path": "out/dispatch/deliverables_manifest.json",
-  "duration_seconds": {"minimum": 84.0, "maximum": 150.0, "match_tolerance": 0.25},
+  "duration_seconds": {
+    "derived_from": "out/dispatch/episode_props.json#total/fps",
+    "includes_credits": true,
+    "minimum": 84.0,
+    "maximum": 150.0,
+    "match_tolerance": 0.25,
+    "maximum_frame_error": 1
+  },
   "forbidden_dimensions": [[1080, 1350]],
   "roles": {
     "vertical_hosted": {
