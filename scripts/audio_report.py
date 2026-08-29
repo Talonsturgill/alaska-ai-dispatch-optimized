@@ -93,7 +93,7 @@ def main():
     # instead of hashed. The question a judge actually has is "do the numbers I am being
     # shown describe the file I am grading", and the way to answer it is to measure that
     # file too.
-    master = os.path.join(OUT, "dispatch_master.mp4")
+    master = os.path.join(OUT, "dispatch_master_hosted.mp4")
     if os.path.exists(master) and os.path.abspath(master) != os.path.abspath(a.delivered):
         mm = loudnorm(master)
         d_i = abs((mm.get("i") or 0) - (m.get("i") or 0))
@@ -111,7 +111,7 @@ def main():
         master_metrics = {"i": mm.get("i"), "tp": mm.get("tp"), "lra": mm.get("lra")}
     else:
         same, master_metrics = None, None
-        same_note = "dispatch_master.mp4 not present, cross measurement not performed"
+        same_note = "dispatch_master_hosted.mp4 not present, cross measurement not performed"
 
     rep = {
         "measured_on": os.path.basename(a.delivered),

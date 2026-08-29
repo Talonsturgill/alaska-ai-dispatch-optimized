@@ -127,7 +127,7 @@ def structured_fraction(img, y):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--master", default=os.path.join(REPO, "out", "dispatch", "dispatch_master.mp4"))
+    ap.add_argument("--master", default=os.path.join(REPO, "out", "dispatch", "dispatch_master_hosted.mp4"))
     ap.add_argument("--every", type=float, default=2.0, help="seconds between samples")
     ap.add_argument("--max-structured", type=float, default=MAX_STRUCTURED)
     a = ap.parse_args()

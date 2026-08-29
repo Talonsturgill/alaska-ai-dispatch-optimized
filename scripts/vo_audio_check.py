@@ -48,7 +48,7 @@ sys.path.insert(0, os.path.join(REPO, "scripts"))
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--video", default=os.path.join(OUT, "dispatch_master.mp4"))
+    ap.add_argument("--video", default=os.path.join(OUT, "dispatch_master_hosted.mp4"))
     ap.add_argument("--model", default="base")
     ap.add_argument("--write-words", action="store_true")
     a = ap.parse_args()

@@ -32,6 +32,12 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from run_guard import fresh, StaleArtifactError  # noqa: E402
 from caption_check import lint as caption_lint  # noqa: E402
 from canary_guard import CanarySafetyError, require_action  # noqa: E402
+from deliverable_contract import (  # noqa: E402
+    DeliverableContractError,
+    require_manifest,
+    require_publication_url,
+    role_for_path,
+)
 
 
 def refuse_unless_links_are_live(urls, allow_temporary=False):
@@ -319,8 +325,8 @@ def render(post, poster_html, vids, voice, music, sources, score, note, temporar
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--post", required=True)
-    ap.add_argument("--video-url-vertical", required=True, help="9:16 1080x1920 TikTok cut (dispatch_master.mp4)")
-    ap.add_argument("--video-url-square", default="",
+    ap.add_argument("--video-url-vertical", required=True, help="canonical 9:16 hosted cut (dispatch_master_hosted.mp4)")
+    ap.add_argument("--video-url-square", required=True,
                     help="1:1 1080x1080 LinkedIn MAIN FEED cut (dispatch_square.mp4). ALWAYS pass this — it is the primary LinkedIn deliverable; without it the draft only offers the 9:16, which LinkedIn routes to the swipe-only Video tab. CORRECTED 2026-08-05: this help string still said 4:5 1080x1350 long after the 08-03 correction, and prompts/dispatch_routine.md names exactly this as the reason the error survived one fix: the claim lives in three places that each read as authoritative alone, and only encode_deliverables.sh fails loudly. This was the third place."
                          "primary LinkedIn deliverable; without it the draft only offers the 9:16, which LinkedIn "
                          "routes to the Video tab instead of the main feed.")
@@ -368,6 +374,16 @@ def main():
             require_action("gmail_draft", a.to)
         except CanarySafetyError as exc:
             sys.exit(f"dispatch_email: {exc}\nUse --local-only --out-html <path> for a canary preview.")
+    try:
+        require_manifest()
+        require_publication_url("vertical_hosted", a.video_url_vertical)
+        require_publication_url("square", a.video_url_square)
+        if a.poster_url:
+            require_publication_url("poster_square", a.poster_url)
+        if a.poster and role_for_path(a.poster) != "poster_square":
+            raise DeliverableContractError("--poster is not the canonical poster_square artifact")
+    except DeliverableContractError as exc:
+        sys.exit(f"REFUSING TO BUILD PREVIEW: deliverable manifest/publication mismatch.\n  {exc}")
     chk = not a.no_freshness_check
     try:
         post = Path(fresh(a.post, check=chk)).read_text(encoding="utf-8").strip()

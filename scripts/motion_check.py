@@ -144,7 +144,7 @@ def block_max(resid, n=4):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--video", default=os.path.join(OUT, "dispatch_master.mp4"))
+    ap.add_argument("--video", default=os.path.join(OUT, "dispatch_master_hosted.mp4"))
     ap.add_argument("--props", default=os.path.join(OUT, "episode_props.json"))
     ap.add_argument("--pairs", type=int, default=3, help="sample pairs per shot")
     ap.add_argument("--gap", type=int, default=4, help="frames between the two samples")

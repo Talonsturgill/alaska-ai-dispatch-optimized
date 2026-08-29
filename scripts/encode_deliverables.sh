@@ -1,178 +1,92 @@
 #!/usr/bin/env bash
-# ============================================================================
-# ENCODE THE DELIVERABLES, WITH THE ASPECT ASSERTED.
-#
-# WHY THIS EXISTS (2026-08-03). The LinkedIn deliverable was 4:5 1080x1350 for
-# months on the belief that 4:5 lands in the main home feed. It does not.
-# LinkedIn routes ANY video TALLER THAN SQUARE into the swipe-only Video tab,
-# and 1080x1350 is 0.8 aspect. The owner supplied a video that does land in the
-# main feed and it probes 1080x1080. The symptom they had already noticed was
-# engagement rate up and impressions down, which is what a smaller, more
-# committed Video-tab audience looks like.
-#
-# The reason the earlier attempt at this fix did not stick is that the claim
-# lived in three places that each read as authoritative alone: the routine doc,
-# the email button labels, and the ad-hoc ffmpeg command a run typed each time.
-# The first two are prose and prose does not fail. THIS SCRIPT IS THE THIRD ONE,
-# and it ASSERTS, so a wrong-ratio cut cannot leave the machine quietly.
-#
-# Usage: scripts/encode_deliverables.sh [master_mute.mp4] [master.wav]
-# ============================================================================
+# Encode the one non-shipped mastering source into exactly five manifested
+# distribution artifacts. No 4:5 or historical output alias is accepted.
 set -euo pipefail
 cd "$(dirname "$0")/.."
+
 OUT=out/dispatch
 MUTE="${1:-$OUT/render_mute.mp4}"
 WAV="${2:-$OUT/audio/master.wav}"
+MASTERING="$OUT/dispatch_mastering_source.mp4"  # internal only; never upload/email/feed
+HOSTED="$OUT/dispatch_master_hosted.mp4"        # canonical shipped 9:16 bytes
+SQUARE="$OUT/dispatch_square.mp4"
+MOBILE="$OUT/dispatch_master_720.mp4"
+POSTER="$OUT/poster.png"
+THUMB="$OUT/poster_thumb_vertical.jpg"
 
-# THE CONTRACT. Change these and you change the deliverable; the asserts below
-# will hold you to whatever you write here.
-SQUARE_W=1080; SQUARE_H=1080          # LinkedIn MAIN FEED. Must not be taller than wide.
-VERT_W=1080;   VERT_H=1920            # TikTok / LinkedIn Video tab.
-SQUARE_CROP_Y=$(( (VERT_H - SQUARE_H) / 2 ))   # 420, centred
+for retired in \
+  "$OUT/dispatch_master.mp4" \
+  "$OUT/dispatch_4x5.mp4" \
+  "$OUT/poster_thumb.jpg" \
+  "$OUT/render/master_9x16.mp4" \
+  "$OUT/render/master_4x5.mp4"; do
+  if [ -e "$retired" ]; then
+    echo "encode_deliverables: REFUSING retired output alias: $retired" >&2
+    echo "Remove this stale scratch artifact explicitly before encoding; it is not a deliverable." >&2
+    exit 2
+  fi
+done
 
-# STALE-MIX GUARD (2026-08-04). vo_patch_lines.py rewrites audio/vo.wav in place and
-# nothing downstream rebuilds the mix, so a run that fixes a factual line in the voice and
-# goes straight to encode ships the OLD voice under the NEW captions. That is the rubric's
-# "captions out of sync" hard blocker, arrived at by doing the right thing. This run hit it:
-# master.wav was 12 hours older than the vo.wav it was supposed to contain.
+[ -f "$MUTE" ] || { echo "encode_deliverables: missing mute render $MUTE" >&2; exit 1; }
+[ -f "$WAV" ] || { echo "encode_deliverables: missing audio master $WAV" >&2; exit 1; }
+[ -f "$OUT/audio/vo.wav" ] || { echo "encode_deliverables: missing current VO $OUT/audio/vo.wav" >&2; exit 1; }
+
+python3 scripts/run_guard.py bind-inputs
+python3 scripts/run_guard.py require-composition --composition DispatchDaily
+
 if [ "$WAV" -ot "$OUT/audio/vo.wav" ]; then
-  echo "STALE MIX: $WAV is older than $OUT/audio/vo.wav" >&2
-  echo "  The voice track changed after the mix was built. Run scripts/dispatch_mix.py" >&2
-  echo "  before encoding, or the film ships the previous take under the new captions." >&2
+  echo "encode_deliverables: STALE MIX: $WAV is older than the current VO" >&2
   exit 1
 fi
 
-bash scripts/mux_and_verify.sh "$MUTE" "$WAV" "$OUT/dispatch_master.mp4"
+bash scripts/mux_and_verify.sh "$MUTE" "$WAV" "$MASTERING"
 
-# AUDIO IS COPIED, NEVER RE-ENCODED (2026-08-13). Both panel judges independently failed this
-# run on the rubric's audio hard blocker: the square delivered true peak -0.7 dBTP against a
-# -1.0 ceiling while the 9:16 master measured -1.7. The master was never the problem. This
-# line was: `-c:a aac -b:a 192k` decoded the master's AAC and re-encoded it, and a lossy
-# re-encode of a signal already sitting near the ceiling reconstructs inter-sample peaks
-# ABOVE it. Measured on this film with ebur128 peak=true, per channel: master -1.7/-1.7,
-# re-encoded square -1.5/-0.7. One transcode cost 1.0 dB on the right channel alone.
-#
-# It also made this script's own audit dishonest. audio_report.json asserts "the square is a
-# video-only crop of the master, so the two carry the same mix and every figure describes
-# both" -- which was false for as long as this line transcoded, and a judge caught the
-# contradiction by noticing a video crop cannot move true peak by a decibel.
-#
-# The master's audio is already AAC 48k stereo straight out of mux_and_verify.sh, so there is
-# nothing to convert. Copy it, and the claim becomes true by construction rather than by
-# assertion. If a future rendition genuinely needs a different codec, it must re-measure and
-# report its OWN audio figures instead of inheriting the master's.
-ffmpeg -y -i "$OUT/dispatch_master.mp4" \
-  -vf "crop=${SQUARE_W}:${SQUARE_H}:0:${SQUARE_CROP_Y}" \
-  -c:v libx264 -profile:v high -crf 20 -pix_fmt yuv420p -movflags +faststart \
-  -c:a copy "$OUT/dispatch_square.mp4" -v error
-
-ffmpeg -y -i "$OUT/dispatch_master.mp4" -vf scale=720:1280 \
-  -c:v libx264 -profile:v main -crf 26 -maxrate 1400k -bufsize 2800k \
-  -pix_fmt yuv420p -movflags +faststart -c:a copy \
-  "$OUT/dispatch_master_720.mp4" -v error
-
-# ============================================================================
-# THE HOSTED CUT MUST FIT THE HOST, AT FULL RESOLUTION (2026-08-13).
-#
-# WHY THIS EXISTS. The 08-13 run rendered a 155MB 9:16 master, GitHub hard-limits hosted files
-# at 100MB, and the run's answer was to put the 720p rendition in the owner's email and call the
-# real fix "logged for the next run". That is shipping a degraded deliverable and deferring the
-# work, and the owner's response was one word: unacceptable. Prior runs hosted 9:16 at 35.7MB,
-# so 155MB was the anomaly, not the ceiling: the same picture re-encoded at CRF 22 is 59.3MB at
-# a full 1080x1920. There was never a reason to downscale.
-#
-# THE RULE. Resolution is NOT negotiable, bitrate is. This finds the first CRF in the ladder that
-# fits the host limit and keeps 1080x1920. Downscaling to make a file fit is now impossible here,
-# and if even the last rung will not fit, this FAILS the encode rather than quietly shipping
-# something smaller than the deliverable.
-# ============================================================================
-HOST_MAX_MB="${HOST_MAX_MB:-95}"
-HOSTED="$OUT/dispatch_master_hosted.mp4"
+# Resolution is fixed; bitrate may step down to fit GitHub's 99 MiB hard path.
+HOST_MAX_BYTES="${HOST_MAX_BYTES:-99614720}"
 hosted_ok=0
 for crf in 20 22 24 26; do
-  ffmpeg -y -i "$OUT/dispatch_master.mp4" \
+  ffmpeg -y -i "$MASTERING" \
     -c:v libx264 -profile:v high -crf "$crf" -pix_fmt yuv420p -movflags +faststart \
     -c:a copy "$HOSTED" -v error
-  mb=$(( $(stat -c%s "$HOSTED") / 1048576 ))
-  wh="$(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=p=0 "$HOSTED")"
-  if [ "$wh" != "${VERT_W},${VERT_H}," ] && [ "$wh" != "${VERT_W},${VERT_H}" ]; then
-    echo "  FAIL hosted 9:16 is ${wh}, not ${VERT_W}x${VERT_H}. Resolution is not negotiable." >&2
-    exit 1
+  bytes="$(stat -c%s "$HOSTED")"
+  if [ "$bytes" -le "$HOST_MAX_BYTES" ]; then
+    echo "encode_deliverables: hosted 1080x1920 CRF=$crf bytes=$bytes"
+    hosted_ok=1
+    break
   fi
-  if [ "$mb" -le "$HOST_MAX_MB" ]; then
-    echo "  OK  hosted 9:16 ${VERT_W}x${VERT_H} at CRF ${crf}, ${mb}MB (host limit ${HOST_MAX_MB}MB)"
-    hosted_ok=1; break
-  fi
-  echo "  ..  CRF ${crf} gives ${mb}MB, over the ${HOST_MAX_MB}MB host limit; trying the next rung"
 done
-if [ "$hosted_ok" != "1" ]; then
-  echo "  FAIL no CRF in the ladder fits ${HOST_MAX_MB}MB at full resolution." >&2
-  echo "       Do NOT substitute the 720p rendition -- that is shipping a degraded deliverable." >&2
-  echo "       Something in the picture is defeating inter-frame compression (on 08-13 it was an" >&2
-  echo "       animated grain field, 53MB -> 155MB for the same runtime). Fix the CAUSE." >&2
+if [ "$hosted_ok" != 1 ]; then
+  echo "encode_deliverables: no full-resolution encode fits the host ceiling" >&2
   exit 1
 fi
 
-# THE POSTER IS THE SCROLL-STOP, SO DO NOT GRAB FRAME 0 (2026-08-08). Two panel judges
-# independently called this out: `-ss 0` yields whatever the film opens on, and this film
-# opens on an empty records room with the hero slug still mid-flight, no headline and no
-# number. That frame is the pre-roll thumbnail a feed actually shows, so the single image
-# doing the most work to earn a view was the one image nobody had chosen.
-#
-# POSTER_AT is overridable per run and defaults to the moment the hero figure has landed
-# under its headline. A run that restructures its opening should set it deliberately:
-#     POSTER_AT=59.4 scripts/encode_deliverables.sh ...
+# Every derivative begins with the canonical hosted bytes, never the internal master.
+ffmpeg -y -i "$HOSTED" -vf "crop=1080:1080:0:420" \
+  -c:v libx264 -profile:v high -crf 20 -pix_fmt yuv420p -movflags +faststart \
+  -c:a copy "$SQUARE" -v error
+
+ffmpeg -y -i "$HOSTED" -vf scale=720:1280 \
+  -c:v libx264 -profile:v main -crf 26 -maxrate 1400k -bufsize 2800k \
+  -pix_fmt yuv420p -movflags +faststart -c:a copy "$MOBILE" -v error
+
 POSTER_AT="${POSTER_AT:-9.2}"
-ffmpeg -y -ss "$POSTER_AT" -i "$OUT/dispatch_square.mp4" -frames:v 1 "$OUT/poster.png" -v error
-echo "  poster grabbed at t=${POSTER_AT}s (override with POSTER_AT=<seconds>)"
-ffmpeg -y -i "$OUT/poster.png" -vf scale=540:540 -q:v 5 "$OUT/poster_thumb.jpg" -v error
+ffmpeg -y -ss "$POSTER_AT" -i "$SQUARE" -frames:v 1 "$POSTER" -v error
+ffmpeg -y -ss "$POSTER_AT" -i "$HOSTED" -frames:v 1 -vf scale=540:960 -q:v 5 "$THUMB" -v error
 
-# ffprobe csv=p=0 emits "1080,1920," so split on the comma and drop the trailing empty
-# field. Deleting the comma instead concatenates the two numbers into "10801920".
-# ffprobe csv=p=0 emits "1080,1920," with a TRAILING comma, so naive shell splitting
-# leaves an empty third field and the parameter expansions pick up the wrong halves.
-# Ask ffprobe for one dimension at a time; unambiguous and no parsing at all.
-vdim () { ffprobe -v error -select_streams v:0 -show_entries "stream=$2" -of "default=nw=1:nk=1" "$1" | head -1; }
-
-assert_dim () {
-  local f="$1" want_w="$2" want_h="$3" label="$4"
-  local gw gh; gw="$(vdim "$f" width)"; gh="$(vdim "$f" height)"
-  if [ "$gw" != "$want_w" ] || [ "$gh" != "$want_h" ]; then
-    echo "ASPECT ASSERT FAILED: $label is ${gw}x${gh}, expected ${want_w}x${want_h} ($f)" >&2
-    exit 1
-  fi
-  echo "  OK  $label ${gw}x${gh}  $(du -h "$f" | cut -f1)"
-}
-
-echo "aspect asserts:"
-assert_dim "$OUT/dispatch_master.mp4"     "$VERT_W"   "$VERT_H"   "9:16 master (TikTok / Video tab)"
-assert_dim "$OUT/dispatch_square.mp4"     "$SQUARE_W" "$SQUARE_H" "1:1 square (LinkedIn MAIN FEED)"
-assert_dim "$OUT/dispatch_master_720.mp4" 720         1280        "720p mobile feed rendition"
-
-# DELIVERED AUDIO, MEASURED ON THE CUT THAT SHIPS. Nothing asserted this before, so the
-# audio gate was only ever checked on the master. The square cut re-encodes audio to AAC and
-# that transcode lifted true peak from -1.12 to -0.94 dBTP, past the -1.0 ceiling the rubric
-# fails a dispatch on, and it would have shipped silently.
-echo "audio asserts (delivered square cut):"
-AJ="$(ffmpeg -i "$OUT/dispatch_square.mp4" -af loudnorm=I=-14:TP=-1.0:LRA=11:print_format=json -f null - 2>&1 | tail -20)"
-A_I="$(printf '%s' "$AJ" | sed -n 's/.*"input_i"[^"]*"\([^"]*\)".*/\1/p' | head -1)"
-A_TP="$(printf '%s' "$AJ" | sed -n 's/.*"input_tp"[^"]*"\([^"]*\)".*/\1/p' | head -1)"
-if [ -z "$A_I" ] || [ -z "$A_TP" ]; then
-  echo "AUDIO ASSERT FAILED: could not measure the delivered cut" >&2; exit 1
-fi
-awk -v i="$A_I" -v tp="$A_TP" 'BEGIN{
-  ok=1
-  if (i < -15.0 || i > -13.0) {printf "AUDIO ASSERT FAILED: %s LUFS is outside -15.0..-13.0\n", i > "/dev/stderr"; ok=0}
-  if (tp > -1.0) {printf "AUDIO ASSERT FAILED: true peak %s dBTP is above the -1.0 ceiling\n", tp > "/dev/stderr"; ok=0}
-  if (ok) printf "  OK  delivered %s LUFS, true peak %s dBTP\n", i, tp
-  exit ok?0:1
-}' || exit 1
-
-# THE LOAD-BEARING ONE. A LinkedIn cut taller than it is wide goes to the Video tab.
-if [ "$SQUARE_H" -gt "$SQUARE_W" ]; then
-  echo "ASPECT ASSERT FAILED: the LinkedIn cut is ${SQUARE_W}x${SQUARE_H}, which is TALLER THAN WIDE." >&2
-  echo "  LinkedIn routes anything taller than square into the swipe-only Video tab." >&2
-  echo "  That is the 2026-08-03 regression. The main-feed cut must be square or wider." >&2
+# Measure the actual delivered square after its encode. Its audio is stream-copied,
+# but this hard gate keeps loudness/true-peak claims attached to delivered bytes.
+audio_json="$(ffmpeg -i "$SQUARE" -af loudnorm=I=-14:TP=-1.0:LRA=11:print_format=json -f null - 2>&1 | tail -20)"
+audio_i="$(printf '%s' "$audio_json" | sed -n 's/.*"input_i"[^\"]*"\([^\"]*\)".*/\1/p' | head -1)"
+audio_tp="$(printf '%s' "$audio_json" | sed -n 's/.*"input_tp"[^\"]*"\([^\"]*\)".*/\1/p' | head -1)"
+if [ -z "$audio_i" ] || [ -z "$audio_tp" ]; then
+  echo "encode_deliverables: could not measure delivered audio" >&2
   exit 1
 fi
-echo "  OK  the LinkedIn cut is not taller than wide, so it stays in the main feed"
+awk -v i="$audio_i" -v tp="$audio_tp" 'BEGIN {
+  if (i < -15.0 || i > -13.0) {printf "encode_deliverables: loudness %.2f LUFS outside -15..-13\n", i > "/dev/stderr"; exit 1}
+  if (tp > -1.0) {printf "encode_deliverables: true peak %.2f dBTP above -1.0\n", tp > "/dev/stderr"; exit 1}
+}'
+
+python3 scripts/deliverable_contract.py build
+python3 scripts/deliverable_contract.py check
+echo "encode_deliverables: PASS: one internal master + five exact manifested deliverables"

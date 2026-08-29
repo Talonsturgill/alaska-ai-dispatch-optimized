@@ -52,7 +52,7 @@ every run and would be turned off within a week. Judging whether a shot has a SU
 still the panel's job, and the storyboard's.
 
   python3 scripts/dead_space_check.py                          # the square cut, gated
-  python3 scripts/dead_space_check.py --video out/dispatch/dispatch_master.mp4
+  python3 scripts/dead_space_check.py --video out/dispatch/dispatch_master_hosted.mp4
   python3 scripts/dead_space_check.py --frames out/dispatch/frames   # legacy PNG path
 """
 import argparse, glob, json, os, shutil, subprocess, tempfile

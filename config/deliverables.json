@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "manifest_path": "out/dispatch/deliverables_manifest.json",
+  "duration_seconds": {"minimum": 84.0, "maximum": 150.0, "match_tolerance": 0.25},
+  "forbidden_dimensions": [[1080, 1350]],
+  "roles": {
+    "vertical_hosted": {
+      "path": "out/dispatch/dispatch_master_hosted.mp4",
+      "media_type": "video",
+      "width": 1080,
+      "height": 1920,
+      "video_streams": 1,
+      "audio_streams": 1,
+      "minimum_bytes": 200000,
+      "maximum_bytes": 103809024
+    },
+    "square": {
+      "path": "out/dispatch/dispatch_square.mp4",
+      "media_type": "video",
+      "width": 1080,
+      "height": 1080,
+      "video_streams": 1,
+      "audio_streams": 1,
+      "minimum_bytes": 200000,
+      "maximum_bytes": 103809024
+    },
+    "mobile": {
+      "path": "out/dispatch/dispatch_master_720.mp4",
+      "media_type": "video",
+      "width": 720,
+      "height": 1280,
+      "video_streams": 1,
+      "audio_streams": 1,
+      "minimum_bytes": 100000,
+      "maximum_bytes": 103809024
+    },
+    "poster_square": {
+      "path": "out/dispatch/poster.png",
+      "media_type": "image",
+      "width": 1080,
+      "height": 1080,
+      "video_streams": 1,
+      "audio_streams": 0,
+      "minimum_bytes": 1000,
+      "maximum_bytes": 20971520
+    },
+    "poster_thumb_vertical": {
+      "path": "out/dispatch/poster_thumb_vertical.jpg",
+      "media_type": "image",
+      "width": 540,
+      "height": 960,
+      "video_streams": 1,
+      "audio_streams": 0,
+      "minimum_bytes": 500,
+      "maximum_bytes": 102400
+    }
+  }
+}

@@ -16,13 +16,15 @@ rather than a doctrine note. Filmstrip centres are now computed from vo_lines.js
 a named offset INTO the line, so re-synthesising the voice moves the evidence with the
 picture exactly as it moves the scenes.
 
-Usage: python3 scripts/build_evidence.py [--video out/dispatch/dispatch_master.mp4]
+Usage: python3 scripts/build_evidence.py [--video out/dispatch/dispatch_master_hosted.mp4]
 
 SAMPLES THE 9:16 MASTER, because that is the cut config/panel_protocol.md convenes the panel
 on. It sampled the square until 2026-08-09, when all three judges independently reported they
 could not see the frame they had been asked to grade.
 """
-import argparse, glob, json, os, subprocess, sys, time
+import argparse, glob, json, os, subprocess, sys
+
+from deliverable_contract import DeliverableContractError, require_manifest
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 OUT = os.path.join(REPO, "out", "dispatch")
@@ -83,9 +85,22 @@ MOVES = [
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--video", default=os.path.join(OUT, "dispatch_master.mp4"))
+    ap.add_argument("--video", default=os.path.join(OUT, "dispatch_master_hosted.mp4"))
     ap.add_argument("--frames", type=int, default=14)
     a = ap.parse_args()
+
+    try:
+        manifest = require_manifest(root=REPO)
+    except DeliverableContractError as exc:
+        sys.exit(f"build_evidence: deliverables manifest rejected: {exc}")
+    canonical_video = os.path.realpath(
+        os.path.join(REPO, *manifest["artifacts"]["vertical_hosted"]["path"].split("/"))
+    )
+    if os.path.realpath(a.video) != canonical_video:
+        sys.exit(
+            "build_evidence: --video must be the manifest-bound vertical_hosted artifact "
+            f"({manifest['artifacts']['vertical_hosted']['path']})"
+        )
 
     lines = json.load(open(os.path.join(OUT, "vo_lines.json")))["lines"]
     start = {L["idx"]: L["start"] for L in lines}
@@ -102,36 +117,16 @@ def main():
     for f in glob.glob(os.path.join(EV, "*.jpg")):
         os.remove(f)
 
-    # ---- FRESHNESS GATE (added 2026-08-07, after it cost a whole panel round) ----
+    # ---- FRESHNESS GATE (added 2026-08-07, hardened to identity+hash in B1) ----
     # The 2026-08-07 run rendered a fix pass, built the pack while the encode was still
     # running, and graded the PREVIOUS cut. motion.json came back byte-identical to the
     # prior round, three judges wrote "the claimed fix did not land", and the run nearly
     # spent a fourth render chasing a defect that was already fixed. Nothing objected,
     # because every artifact existed and only their ORDER was wrong.
-    # A pack is evidence about a FILM. If the file it samples is older than the engine that
-    # drew it, it is evidence about a different film, so refuse rather than mislead a panel.
-    _eng = os.path.join(REPO, "video-engine", "src")
-    _newest_src, _newest_p = 0.0, ""
-    for _root, _dirs, _files in os.walk(_eng):
-        for _f in _files:
-            if _f.endswith((".tsx", ".ts")):
-                _fp = os.path.join(_root, _f)
-                _m = os.path.getmtime(_fp)
-                if _m > _newest_src:
-                    _newest_src, _newest_p = _m, _fp
-    if not os.path.exists(a.video):
-        sys.exit(f"build_evidence: {a.video} does not exist. Encode before building a pack.")
-    _vid_m = os.path.getmtime(a.video)
-    if _newest_src and _vid_m < _newest_src:
-        sys.exit(
-            "build_evidence: REFUSING TO BUILD A STALE PACK.\n"
-            f"  video : {a.video}\n          modified {time.strftime('%H:%M:%S', time.localtime(_vid_m))}\n"
-            f"  engine: {os.path.relpath(_newest_p, REPO)}\n          modified "
-            f"{time.strftime('%H:%M:%S', time.localtime(_newest_src))}\n"
-            "  The cut is OLDER than the engine that draws it, so this pack would describe a\n"
-            "  film that no longer exists. Judges would report fixes as not landing and the\n"
-            "  run would re-fix things that are already fixed. Re-render and re-encode first.\n"
-            "  (Waiting on encode_deliverables.sh to FINISH is usually the missing step.)")
+    # A pack is evidence about exact bytes, not whichever engine file has the newest wall-clock
+    # timestamp. require_manifest() above revalidates the run stamp, registered source/dependency
+    # hashes, props hash, path, media facts, byte count and SHA-256 for all five deliverables.
+    # That makes copied files and same-size/mtime-preserving edits fail deterministically.
 
     from PIL import Image, ImageChops, ImageDraw
 

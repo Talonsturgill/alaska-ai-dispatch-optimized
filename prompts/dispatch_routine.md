@@ -284,7 +284,7 @@ longer a second thing to have opinions about. Both cuts still get the aspect and
 asserts in encode_deliverables.sh, which are cheap and catch the wrong-ratio class of error
 that this file has been burned by before.
 
-WHEN THE JUDGE PROMPTS ARE WRITTEN, point them at dispatch_master.mp4 and say plainly that
+WHEN THE JUDGE PROMPTS ARE WRITTEN, point them at dispatch_master_hosted.mp4 and say plainly that
 the square is derived and out of scope. A judge given both WILL grade both.
 - THE 1:1 SQUARE IS THE LINKEDIN DELIVERABLE (CORRECTED 2026-08-03 on owner evidence).
   LinkedIn routes ANY video TALLER THAN SQUARE into the swipe-only Video tab. Square lands in the
@@ -573,7 +573,7 @@ number restated in a second place is a number that will be wrong in one of them.
    This bit TWO runs — 07-18 (stale `shots.json` from 07-17) and 07-19 (a whole different story's
    `post.txt`/`sources.json`/`shots.json`/`vo_script.json`). The FIRST thing this run does, before
    producing any artifact:
-       python3 scripts/run_guard.py init --run-id <date>
+       python3 scripts/run_guard.py init --run-id <date> --composition DispatchDaily
    This records the run's start instant. From then on, consumers that route reads through
    `run_guard.fresh()` (dispatch_email.py already does, for --post and --sources) HARD-FAIL on any
    `out/dispatch/*` file older than this run — a stale artifact fails the run loudly instead of
@@ -1647,7 +1647,8 @@ preview step.
      ffmpeg -i master_9x16.mp4 -vf scale=720:1280 -c:v libx264 -profile:v main -crf 26 \
        -maxrate 1400k -bufsize 2800k -pix_fmt yuv420p -movflags +faststart \
        -c:a aac -b:a 96k -ar 48000 master_9x16_720.mp4
-   plus a poster thumb: ffmpeg -i poster.png -vf scale=540:960 -q:v 5 poster_thumb.jpg
+   plus a vertical poster thumb from the hosted 9:16 cut: 540x960 at
+   `out/dispatch/poster_thumb_vertical.jpg`. The square poster remains 1080x1080.
    ffprobe-assert 720x1280 on the rendition and check the thumb is < 100 KB.
 2. Store the two full cuts + poster + 720p rendition + poster thumb only on this
    repository's `dispatch-media` branch via `scripts/upload_video.py`. The guard

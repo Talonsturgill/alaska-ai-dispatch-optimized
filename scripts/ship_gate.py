@@ -63,8 +63,16 @@ Usage
   # before upload / email / merge. exit 0 = you may ship. exit 1 = you may not.
   python3 scripts/ship_gate.py check
 """
-import argparse, hashlib, json, os, subprocess, sys, time
+import argparse, hashlib, json, math, os, re, subprocess, sys, tempfile, time
 from pathlib import Path
+
+from deliverable_contract import (
+    DeliverableContractError,
+    contract_digest,
+    require_manifest,
+)
+from run_guard import ACTIVE_COMPOSITION, check_identity, load_stamp
+from strict_json import StrictJSONError, load_path
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "out" / "dispatch"
@@ -90,13 +98,28 @@ VERDICT = OUT / "panel_verdict.json"
 ATTEMPTS = OUT / "gate_attempts.json"
 RUBRIC = ROOT / "config" / "dispatch_rubric.yaml"
 
-# every artifact a viewer could actually receive
-DELIVERABLES = ["dispatch_master.mp4", "dispatch_square.mp4", "dispatch_master_720.mp4"]
+SFX_PATH = OUT / "sfx_events.json"
 
-# Everything whose contents can change what a frame looks like. If any of it is NEWER than
-# the deliverables, the deliverables were rendered from code that no longer exists.
-SOURCE_GLOBS = ["video-engine/src/**/*.tsx", "video-engine/src/**/*.ts",
-                "scripts/dispatch_mix.py", "scripts/build_scenes.py"]
+
+class GateInputError(RuntimeError):
+    pass
+
+
+def atomic_json(path: Path, value):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fd, name = tempfile.mkstemp(prefix=path.name + ".", suffix=".tmp", dir=path.parent)
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8", newline="\n") as handle:
+            json.dump(value, handle, indent=2, ensure_ascii=False, sort_keys=True)
+            handle.write("\n")
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(name, path)
+    finally:
+        try:
+            os.unlink(name)
+        except FileNotFoundError:
+            pass
 
 
 def sha(p: Path) -> str:
@@ -137,8 +160,10 @@ def owner_release(run_date: str):
     if not RELEASE.exists():
         return None
     try:
-        d = json.loads(RELEASE.read_text())
-    except Exception as e:
+        d = load_path(RELEASE, label="owner release")
+        if not isinstance(d, dict):
+            raise StrictJSONError("owner release must be a JSON object")
+    except (StrictJSONError, OSError) as e:
         print(f"ship_gate: owner_release.json is unreadable ({e}); ignoring it.")
         return None
     for k in ("run_date", "instruction", "floor"):
@@ -154,79 +179,48 @@ def owner_release(run_date: str):
 
 def run_date() -> str:
     """The date this run is shipping under, from the run stamp, never from the clock."""
-    stamp = OUT / ".run_stamp.json"
-    if stamp.exists():
-        try:
-            d = json.loads(stamp.read_text())
-            for k in ("run_id", "date", "run_date", "episode_date"):
-                if d.get(k):
-                    return str(d[k])
-        except Exception:
-            pass
-    return time.strftime("%Y-%m-%d")
-
-
-def newest_source():
-    """(mtime, path) of the newest file that can change a rendered frame."""
-    import glob
-    newest = (0.0, None)
-    for g in SOURCE_GLOBS:
-        for f in glob.glob(str(ROOT / g), recursive=True):
-            m = os.path.getmtime(f)
-            if m > newest[0]:
-                newest = (m, os.path.relpath(f, ROOT))
-    return newest
+    stamp = load_stamp(ROOT)
+    if not isinstance(stamp, dict) or not isinstance(stamp.get("date"), str):
+        raise GateInputError("run stamp has no canonical date")
+    return stamp["date"]
 
 
 def check_render_is_current():
-    """THE GAP THIS CLOSES (2026-07-31, found the hard way on the fourth editing round).
-
-    ship_gate binds the panel's verdict to the DELIVERABLE's bytes and the evidence to those
-    same bytes. That is airtight against grading one cut and shipping another. It is
-    completely blind to a third failure: a deliverable rendered from SOURCE THAT HAS SINCE
-    CHANGED.
-
-    That is exactly what happened. A render command silently did not run, I read the tail of
-    a stale log as proof it had, and then muxed and graded a video that predated half an hour
-    of fixes. Every hash matched perfectly, because the evidence really was cut from the
-    deliverable -- the deliverable was just thirty minutes behind the code. A judge caught it
-    by noticing that a shot the run described did not exist in the frames, which cost the
-    panel a whole round.
-
-    A timestamp check is cheap and it makes that mistake impossible to repeat."""
-    mtime, path = newest_source()
-    if path is None:
-        return
-    stale = []
-    for n in DELIVERABLES:
-        f = RENDER / n
-        if f.exists() and f.stat().st_mtime < mtime - 1:
-            stale.append(f"{n} ({time.strftime('%H:%M:%S', time.localtime(f.stat().st_mtime))})")
-    if stale:
-        fail([f"DELIVERABLE IS OLDER THAN THE SOURCE IT CLAIMS TO BE A RENDER OF.",
-              f"  newest source: {path} at {time.strftime('%H:%M:%S', time.localtime(mtime))}",
-              f"  stale output:  {', '.join(stale)}",
-              "Every hash in this gate can match while the video is still a render of code "
-              "that no longer exists. Re-render, re-cut the evidence from the new render, "
-              "and re-grade. Do not trust a log tail as proof a render ran -- check the file."])
+    """Validate hash-bound run inputs and all five manifested files."""
+    ok, reason = check_identity(
+        root=ROOT, expected_composition=ACTIVE_COMPOSITION, require_props=True
+    )
+    if not ok:
+        fail([f"run identity is invalid: {reason}"])
+    try:
+        require_manifest(root=ROOT)
+    except DeliverableContractError as exc:
+        fail([f"deliverable manifest is invalid: {exc}"])
 
 
 def artifact_state():
     """sha256 of every deliverable plus every piece of review evidence."""
-    missing = [n for n in DELIVERABLES if not (RENDER / n).exists()]
-    if missing:
-        fail([f"deliverable(s) missing from {RENDER}: {', '.join(missing)}"])
-    arts = {n: sha(RENDER / n) for n in DELIVERABLES}
-    ev = {}
+    try:
+        manifest = require_manifest(root=ROOT)
+    except DeliverableContractError as exc:
+        fail([f"deliverable manifest is invalid: {exc}"])
+    arts = {role: entry["sha256"] for role, entry in manifest["artifacts"].items()}
+    evidence_hashes = {}
     if REVIEW.exists():
         # build_evidence.py writes the contact sheet, the stills and the filmstrips as
         # JPEG. Globbing only *.png found nothing, so the gate reported that the panel
         # "cannot have looked at anything" while a full evidence pack sat beside it.
         # Third instance of the same drift in this file: the gate was written against an
         # older pipeline and never re-pointed when the pipeline changed.
-        for p in sorted(list(REVIEW.glob("*.png")) + list(REVIEW.glob("*.jpg"))):
-            ev[p.name] = sha(p)
-    return arts, ev
+        evidence_files = (
+            list(REVIEW.glob("*.png")) + list(REVIEW.glob("*.jpg"))
+            + list(REVIEW.glob("*.json"))
+        )
+        for p in sorted(evidence_files):
+            if p.is_symlink():
+                fail([f"review evidence may not be a symlink: {p.name}"])
+            evidence_hashes[p.name] = sha(p)
+    return arts, evidence_hashes, manifest
 
 
 def log_attempt(reasons, median=None):
@@ -236,12 +230,16 @@ def log_attempt(reasons, median=None):
     hist = []
     if ATTEMPTS.exists():
         try:
-            hist = json.loads(ATTEMPTS.read_text())
-        except Exception:
+            value = load_path(ATTEMPTS, label="gate attempts")
+            hist = value if isinstance(value, list) else []
+        except (StrictJSONError, OSError):
             hist = []
     hist.append({"at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                  "attempt": len(hist) + 1, "median": median, "reasons": reasons})
-    ATTEMPTS.write_text(json.dumps(hist, indent=2))
+    try:
+        atomic_json(ATTEMPTS, hist)
+    except OSError:
+        pass
     return len(hist)
 
 
@@ -289,7 +287,7 @@ def check_not_blank(n=28):
     import numpy as np
     from PIL import Image
 
-    vid = RENDER / "dispatch_master.mp4"
+    vid = RENDER / "dispatch_master_hosted.mp4"
     if not vid.exists():
         return
     tmp = tempfile.mkdtemp(prefix="shipgate_blank_")
@@ -331,16 +329,130 @@ def check_not_blank(n=28):
         shutil.rmtree(tmp, ignore_errors=True)
 
 
+def sfx_facts(
+    path: Path | None = None, *, duration_seconds: float | None = None,
+    root: Path = ROOT,
+):
+    """Return hash-bound SFX facts plus actionable validation problems."""
+    path = path or (root / "out" / "dispatch" / "sfx_events.json")
+    problems = []
+    root = Path(root).resolve()
+    stamp = load_stamp(root)
+    started_at = None
+    if (
+        isinstance(stamp, dict) and isinstance(stamp.get("started_at"), (int, float))
+        and not isinstance(stamp.get("started_at"), bool)
+        and math.isfinite(float(stamp["started_at"]))
+    ):
+        started_at = float(stamp["started_at"])
+    try:
+        resolved_path = path.resolve()
+        resolved_path.relative_to(root)
+    except (OSError, ValueError):
+        return None, ["sfx_events.json path escapes the repository"]
+    if path.is_symlink():
+        return None, ["sfx_events.json may not be a symlink"]
+    path = resolved_path
+    if not path.is_file():
+        return None, ["no out/dispatch/sfx_events.json"]
+    if started_at is None:
+        problems.append("run stamp is missing a valid started_at")
+    elif path.stat().st_mtime <= started_at:
+        problems.append("sfx_events.json does not postdate the current run stamp")
+    try:
+        raw = load_path(path, label="sfx_events.json")
+    except (StrictJSONError, OSError) as exc:
+        return None, problems + [str(exc)]
+    if not isinstance(raw, dict):
+        return None, problems + ["sfx_events.json must be an object with an events list"]
+    events = raw.get("events")
+    if not isinstance(events, list):
+        return None, problems + ["sfx_events.json.events must be a list"]
+    if len(events) < 6:
+        problems.append(f"sfx_events.json carries {len(events)} event(s); at least 6 are required")
+    if "count" not in raw:
+        problems.append("sfx_events.json count is required")
+    elif isinstance(raw["count"], bool) or not isinstance(raw["count"], int) or raw["count"] != len(events):
+        problems.append("sfx_events.json count does not match events")
+    if "video_seconds" not in raw:
+        problems.append("sfx_events.json video_seconds is required")
+    else:
+        declared = raw["video_seconds"]
+        if isinstance(declared, bool) or not isinstance(declared, (int, float)) or not math.isfinite(float(declared)):
+            problems.append("sfx_events.json video_seconds must be finite")
+        elif duration_seconds is not None and abs(float(declared) - duration_seconds) > 0.25:
+            problems.append("sfx_events.json video_seconds does not match the delivered duration")
+    normalized = []
+    kinds = set()
+    for index, event in enumerate(events):
+        if not isinstance(event, dict):
+            problems.append(f"sfx event {index} must be an object")
+            continue
+        when = event.get("t")
+        kind = event.get("kind")
+        if isinstance(when, bool) or not isinstance(when, (int, float)) or not math.isfinite(float(when)):
+            problems.append(f"sfx event {index}.t must be a finite number")
+        elif float(when) < 0:
+            problems.append(f"sfx event {index}.t may not be negative")
+        elif duration_seconds is not None and float(when) > duration_seconds:
+            problems.append(f"sfx event {index}.t is beyond the delivered duration")
+        if not isinstance(kind, str) or not kind.isascii() or not re.fullmatch(r"[a-z0-9][a-z0-9_-]{0,63}", kind):
+            problems.append(f"sfx event {index}.kind must be a lowercase ASCII identifier")
+        else:
+            kinds.add(kind)
+        if isinstance(when, (int, float)) and not isinstance(when, bool) and math.isfinite(float(when)) and isinstance(kind, str):
+            normalized.append({"t": float(when), "kind": kind})
+    listed_kinds = raw.get("kinds")
+    if (
+        not isinstance(listed_kinds, list) or any(not isinstance(item, str) for item in listed_kinds)
+        or listed_kinds != sorted(kinds)
+    ):
+        problems.append("sfx_events.json kinds must exactly match the sorted event kinds")
+
+    audio_rel = "out/dispatch/audio/master.wav"
+    audio_path = root.joinpath(*audio_rel.split("/"))
+    audio_facts = raw.get("audio")
+    if not audio_path.is_file() or audio_path.is_symlink():
+        problems.append("current audio master is missing or a symlink")
+        current_audio = None
+    else:
+        current_audio = {
+            "path": audio_rel,
+            "bytes": audio_path.stat().st_size,
+            "sha256": sha(audio_path),
+        }
+        if started_at is not None and audio_path.stat().st_mtime <= started_at:
+            problems.append("audio master does not postdate the current run stamp")
+        if path.stat().st_mtime <= audio_path.stat().st_mtime:
+            problems.append("sfx_events.json does not postdate the audio master it describes")
+    if not isinstance(audio_facts, dict) or audio_facts != current_audio:
+        problems.append("sfx_events.json audio facts do not match the current audio master")
+
+    facts = {
+        "path": "out/dispatch/sfx_events.json",
+        "sha256": sha(path),
+        "count": len(events),
+        "kinds": sorted(kinds),
+        "first_seconds": min((item["t"] for item in normalized), default=None),
+        "last_seconds": max((item["t"] for item in normalized), default=None),
+        "audio": current_audio,
+    }
+    return facts, problems
+
+
 def cmd_record(a):
     check_render_is_current()
     check_not_blank()
-    arts, ev = artifact_state()
-    if not ev:
+    arts, evidence_hashes, manifest = artifact_state()
+    if not evidence_hashes:
         fail([f"no review evidence in {REVIEW} — the panel cannot have looked at anything. "
               f"Run scripts/make_review_sheets.py on frames extracted from THIS render."])
 
-    judges = [float(x) for x in a.judges.split(",") if x.strip()] if a.judges else []
-    if len(judges) < 3:
+    try:
+        judges = [float(x) for x in a.judges.split(",") if x.strip()] if a.judges else []
+    except ValueError:
+        fail(["judge scores must be comma-separated finite numbers"])
+    if len(judges) != 3 or any(not math.isfinite(score) for score in judges):
         fail([f"a 3-judge panel means THREE judges. Got {len(judges)}: {judges}. "
               f"The panel was skipped on 2026-07-29 and 2026-07-30 and that is exactly "
               f"how a failing cut reaches the owner."])
@@ -349,29 +461,48 @@ def cmd_record(a):
     if median is None:
         s = sorted(judges)
         median = s[len(s) // 2] if len(s) % 2 else (s[len(s) // 2 - 1] + s[len(s) // 2]) / 2
+    if not math.isfinite(median):
+        fail(["panel median must be finite"])
 
     # The frames the judges saw must be NEWER than the render they claim to describe.
     # If a sheet predates the video, it was made from a different cut.
-    vid_mtime = max((RENDER / n).stat().st_mtime for n in DELIVERABLES)
-    stale = [n for n in ev if (REVIEW / n).stat().st_mtime < vid_mtime - 1]
+    vertical = ROOT / manifest["artifacts"]["vertical_hosted"]["path"]
+    vid_mtime = vertical.stat().st_mtime
+    stale = [n for n in evidence_hashes if (REVIEW / n).stat().st_mtime <= vid_mtime]
     if stale:
         fail([f"review evidence is OLDER than the render it is supposed to describe: "
               f"{', '.join(sorted(stale)[:6])}{' ...' if len(stale) > 6 else ''}",
               "This is the 2026-07-31 failure exactly: the panel graded render #1 and the "
               "run shipped render #3. Rebuild the sheets from the current render."])
 
-    VERDICT.write_text(json.dumps({
+    duration = float(manifest["artifacts"]["vertical_hosted"]["duration_seconds"])
+    sfx, sfx_problems = sfx_facts(duration_seconds=duration)
+    if sfx_problems or sfx is None:
+        fail(sfx_problems or ["sfx evidence is unavailable"])
+    media_facts = {
+        role: {
+            "sha256": entry["sha256"],
+            "bytes": entry["bytes"],
+            "duration_seconds": entry["duration_seconds"],
+            "streams": entry["streams"],
+        }
+        for role, entry in manifest["artifacts"].items()
+    }
+    atomic_json(VERDICT, {
         "recorded_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "median": median,
         "judges": judges,
         "threshold": ship_threshold(),
         "notes": a.notes or "",
         "artifacts": arts,
-        "evidence": ev,
-    }, indent=2))
+        "evidence": evidence_hashes,
+        "manifest_digest": contract_digest(manifest),
+        "media_facts": media_facts,
+        "sfx": sfx,
+    })
     print(f"ship_gate: verdict recorded. median={median} judges={judges} "
           f"threshold={ship_threshold()}")
-    print(f"  bound to {len(arts)} deliverables and {len(ev)} pieces of review evidence")
+    print(f"  bound to {len(arts)} deliverables, {len(evidence_hashes)} evidence files and {sfx['count']} SFX events")
     print(f"  -> {VERDICT}")
 
 
@@ -402,14 +533,8 @@ def check_beats_delivered():
     try:
         sys.path.insert(0, str(ROOT / "scripts"))
         import beat_delivery as _bd
-        import glob as _g
-        frames = _g.glob(str(OUT / "frames" / "frame_*.png"))
-        if frames:
-            r = _bd.analyze(str(OUT / "frames"), str(OUT / "storyboard.json"),
-                            caption_top=_bd.episode_caption_top())
-        else:
-            r = _bd.analyze_cut(str(OUT / "dispatch_master.mp4"),
-                                str(OUT / "storyboard.json"))
+        r = _bd.analyze_cut(str(OUT / "dispatch_master_hosted.mp4"),
+                            str(OUT / "storyboard.json"))
         print(f"  beat delivery (ADVISORY): {r['delivered']}/{r['beats']} beats draw a "
               f"visible event ({r['share']*100:.0f}%), caption band from "
               f"y={_bd.episode_caption_top()}")
@@ -430,13 +555,28 @@ def cmd_check(a):
         fail([f"no {VERDICT.name}. The 3-judge panel has not graded this cut. "
               f"A Dispatch may not ship ungraded."])
 
-    v = json.loads(VERDICT.read_text())
-    arts, ev = artifact_state()
+    try:
+        v = load_path(VERDICT, label="panel verdict")
+    except (StrictJSONError, OSError) as exc:
+        fail([str(exc)])
+    if not isinstance(v, dict):
+        fail(["panel verdict must be a JSON object"])
+    arts, evidence_hashes, manifest = artifact_state()
     thr = ship_threshold()
 
     # ---- 1. DID IT PASS? No self-granted exceptions, no 'style-register' carve-out. ----
-    median = float(v.get("median", 0))
-    rel = owner_release(run_date())
+    try:
+        median = float(v.get("median"))
+        if not math.isfinite(median):
+            raise ValueError
+    except (TypeError, ValueError):
+        median = 0.0
+        problems.append("verdict median must be a finite number")
+    try:
+        rel = owner_release(run_date())
+    except GateInputError as exc:
+        rel = None
+        problems.append(str(exc))
     effective = thr
     if rel and float(rel["floor"]) < thr:
         effective = float(rel["floor"])
@@ -454,12 +594,23 @@ def cmd_check(a):
         print(f"  owner said: {rel['instruction']}")
         print("  Every other check below still applies and none of them were waived.")
         print("=" * 72)
-    judges = v.get("judges") or []
-    if len(judges) < 3:
-        problems.append(f"verdict records {len(judges)} judges, not 3.")
+    judges = v.get("judges")
+    if not isinstance(judges, list) or len(judges) != 3 or any(
+        isinstance(score, bool) or not isinstance(score, (int, float)) or not math.isfinite(float(score))
+        for score in (judges if isinstance(judges, list) else [])
+    ):
+        problems.append("verdict must record exactly 3 finite numeric judge scores")
+        judges = judges if isinstance(judges, list) else []
 
     # ---- 2. DID THEY GRADE WHAT IS ABOUT TO SHIP? ----
-    for name, want in (v.get("artifacts") or {}).items():
+    graded_artifacts = v.get("artifacts")
+    if not isinstance(graded_artifacts, dict):
+        problems.append("verdict artifacts must be an object")
+        graded_artifacts = {}
+    for name, want in graded_artifacts.items():
+        if not isinstance(want, str) or not re.fullmatch(r"[0-9a-f]{64}", want):
+            problems.append(f"graded hash for {name} is invalid")
+            continue
         got = arts.get(name)
         if got is None:
             problems.append(f"{name} was graded but is no longer present.")
@@ -471,46 +622,46 @@ def cmd_check(a):
                 f"        The panel's verdict describes a file that is not the file you are "
                 f"about to ship. Re-cut the evidence, re-grade, re-record.")
     for name in arts:
-        if name not in (v.get("artifacts") or {}):
+        if name not in graded_artifacts:
             problems.append(f"{name} is a deliverable but was never graded.")
 
-    # ---- 2b. IS THERE A SOUND DESIGN AT ALL? (2026-08-13) ----
-    # Every judge on every round capped Sound at 6 or 7 with the same sentence: the mix passes
-    # its loudness metrics and the pack shows no evidence of a single layer beyond VO and music.
-    # 25.2s of the 08-13 runtime was VO silence over a near-static picture. Four consecutive
-    # rounds reported it, the run wrote "still no sfx_events.json" into a retro each time, and
-    # shipped anyway, because nothing here was asking. Sound carries 0.10 of the rubric and a
-    # film about a machine had no machine in its ears.
-    #
-    # This asks the crude question only: does a sound-design layer EXIST. It does not grade it.
-    sfx = OUT / "sfx_events.json"
-    if not sfx.exists():
-        problems.append(
-            "no out/dispatch/sfx_events.json. The film has no sound design layer, only VO and a "
-            "music bed. scripts/sfx_bank.py and scripts/build_sfx_library.py exist for this. A "
-            "Dispatch about a physical machine may not ship silent.")
-    else:
-        try:
-            ev = json.loads(sfx.read_text())
-            ev = ev.get("events", ev) if isinstance(ev, dict) else ev
-            if not isinstance(ev, list) or len(ev) < 6:
-                problems.append(
-                    f"sfx_events.json carries {len(ev) if isinstance(ev, list) else 0} event(s). "
-                    f"That is a placeholder, not a sound design. Every judge has capped Sound at "
-                    f"6-7 for exactly this.")
-        except Exception as e:
-            problems.append(f"sfx_events.json does not parse ({e}).")
+    # The immutable manifest projection and probed audio facts must be the ones recorded.
+    if v.get("manifest_digest") != contract_digest(manifest):
+        problems.append("deliverable manifest changed after grading")
+    current_media_facts = {
+        role: {
+            "sha256": entry["sha256"],
+            "bytes": entry["bytes"],
+            "duration_seconds": entry["duration_seconds"],
+            "streams": entry["streams"],
+        }
+        for role, entry in manifest["artifacts"].items()
+    }
+    if v.get("media_facts") != current_media_facts:
+        problems.append("delivered media/audio facts changed after grading")
+
+    duration = float(manifest["artifacts"]["vertical_hosted"]["duration_seconds"])
+    current_sfx, sfx_problems = sfx_facts(duration_seconds=duration)
+    problems.extend(sfx_problems)
+    if current_sfx is not None and v.get("sfx") != current_sfx:
+        problems.append("sfx_events.json changed after grading")
 
     # ---- 3. WAS THE EVIDENCE DERIVED FROM THOSE BYTES? ----
-    graded_ev = v.get("evidence") or {}
+    graded_ev = v.get("evidence")
+    if not isinstance(graded_ev, dict):
+        problems.append("verdict evidence must be an object")
+        graded_ev = {}
     if not graded_ev:
         problems.append("the verdict records no review evidence — nobody looked at a frame.")
     for name, want in graded_ev.items():
-        got = ev.get(name)
+        got = evidence_hashes.get(name)
         if got is None:
             problems.append(f"review evidence {name} is gone.")
         elif got != want:
             problems.append(f"review evidence {name} changed after grading.")
+    for name in evidence_hashes:
+        if name not in graded_ev:
+            problems.append(f"review evidence {name} was added after grading")
 
     if problems:
         fail(problems, median=median)
@@ -547,7 +698,7 @@ def cmd_check(a):
             print(f"  cleared after {n} blocked round(s) in the editing loop")
         except Exception:
             pass
-    print("  you may upload, email and merge.")
+    print("  these bytes may be retained locally or published only to the canary media branch.")
 
 
 def main():
@@ -562,7 +713,10 @@ def main():
     c = sub.add_parser("check", help="the hard gate. run before upload/email/merge")
     c.set_defaults(fn=cmd_check)
     a = ap.parse_args()
-    a.fn(a)
+    try:
+        a.fn(a)
+    except (GateInputError, DeliverableContractError, StrictJSONError, OSError, ValueError) as exc:
+        fail([str(exc)])
 
 
 if __name__ == "__main__":

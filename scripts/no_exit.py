@@ -62,10 +62,12 @@ make it one.
 """
 import argparse
 import json
-import subprocess
 import sys
 import time
 from pathlib import Path
+
+from deliverable_contract import DeliverableContractError, require_manifest
+from run_guard import check_path
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "out" / "dispatch"
@@ -86,110 +88,49 @@ ROUGHCUT = OUT / "roughcut.mp4"
 # was unfinished plus a "did not ship" notification, without ever invoking this check.
 #
 # Each entry is a list of ACCEPTED PATHS, relative to out/dispatch/, newest naming first.
-DELIVERABLES = [
-    ("9:16 master", ["dispatch_master.mp4", "render/master_9x16.mp4"]),
-    # dispatch_4x5.mp4 USED TO BE LISTED HERE AS AN ALIAS AND THAT WAS A HOLE (2026-08-04).
-    # 4:5 is the aspect this routine deliberately moved AWAY from, because LinkedIn routes
-    # anything taller than square into the swipe-only Video tab, so accepting a 1080x1350
-    # file as proof of "the 1:1 square cut" let the gate be satisfied by the exact mistake
-    # the encode script exists to prevent. Worse, a judge found a stale 4:5 from the PREVIOUS
-    # DAY still sitting in out/dispatch carrying the old VO ("paid" where the record says
-    # obligated), a PI name missing its middle initial, plates that no longer exist in the
-    # film and text clipped at both frame edges. That file satisfied this gate.
-    ("1:1 square LinkedIn cut", ["dispatch_square.mp4", "render/master_4x5.mp4"]),
-]
+RETIRED_ALIASES = (
+    "dispatch_master.mp4",
+    "dispatch_4x5.mp4",
+    "poster_thumb.jpg",
+    "render/master_9x16.mp4",
+    "render/master_4x5.mp4",
+)
 
-# A FILM ON DISK IS NOT A DELIVERED FILM. The second half of the hole: even with the
-# paths corrected this gate only ever asked whether BYTES existed, so a run could encode
-# both cuts, look at them, and still stop without the draft that puts the film in front
-# of the owner. Delivery is what the routine promises, so delivery is what this checks.
-# scripts/dispatch_email.py writes this receipt after the Gmail connector accepts a draft.
-DRAFT_RECEIPT = "gmail_draft_receipt.json"
-
-# A deliverable OLDER than the mute render is a leftover from a previous cut, not this run's
-# film. This is how a day-old 4:5 with the wrong voice track sat in the run directory for a
-# whole session looking like a finished artifact.
-FRESHNESS_REFERENCE = "render_mute.mp4"
-
-MIN_BYTES = 200_000          # anything smaller is a stub, not a film
-MIN_SECONDS = 30.0           # the format band is 84-96s; 30 is a generous floor for "a film"
-
-
-def probe(path: Path):
-    """Return (seconds, has_video, has_audio) or None if ffprobe can't read it."""
-    try:
-        r = subprocess.run(
-            ["ffprobe", "-v", "error", "-print_format", "json",
-             "-show_format", "-show_streams", str(path)],
-            capture_output=True, text=True, timeout=60,
-        )
-        if r.returncode != 0:
-            return None
-        d = json.loads(r.stdout)
-        secs = float(d.get("format", {}).get("duration", 0.0))
-        kinds = {s.get("codec_type") for s in d.get("streams", [])}
-        return secs, "video" in kinds, "audio" in kinds
-    except (OSError, ValueError, subprocess.SubprocessError):
-        return None
+# A FILM ON DISK IS NOT A DELIVERED CANARY RESULT. The preview is local by policy, but it
+# must still exist and be post-stamp so a run cannot stop after encoding without handing the
+# owner the review surface the canary promises.
+LOCAL_PREVIEW = "dispatch-preview.html"
 
 
 def video_state():
     """The honest state of this run's film. Returns (delivered: bool, lines: list[str])."""
     lines = []
     delivered = True
-    for label, candidates in DELIVERABLES:
-        p = next((OUT / c for c in candidates if (OUT / c).exists()), None)
-        if p is None:
-            lines.append(f"  MISSING  {label} (looked for {', '.join(candidates)})")
+    for alias in RETIRED_ALIASES:
+        if (OUT / alias).exists():
+            lines.append(f"  BAD      retired output alias exists: {alias}")
             delivered = False
-            continue
-        name = f"{label} [{p.name}]"
-        size = p.stat().st_size
-        info = probe(p)
-        if info is None:
-            lines.append(f"  UNREADABLE  {name} ({size} bytes, ffprobe failed)")
-            delivered = False
-            continue
-        secs, has_v, has_a = info
-        problems = []
-        # STALE-DELIVERABLE GUARD. A cut older than the render it is supposed to come from is
-        # a leftover, and a leftover looks exactly like a finished artifact from the outside.
-        ref = OUT / FRESHNESS_REFERENCE
-        if ref.exists() and p.stat().st_mtime + 1 < ref.stat().st_mtime:
-            problems.append(f"older than {FRESHNESS_REFERENCE}, so it is a previous cut")
-        if size < MIN_BYTES:
-            problems.append(f"{size} bytes is a stub")
-        if secs < MIN_SECONDS:
-            problems.append(f"{secs:.1f}s is not a film")
-        if not has_v:
-            problems.append("no video stream")
-        if not has_a:
-            problems.append("no audio stream")
-        if problems:
-            lines.append(f"  BAD      {name} ({', '.join(problems)})")
-            delivered = False
-        else:
-            lines.append(f"  OK       {name} ({secs:.1f}s, {size/1e6:.1f} MB, video+audio)")
-    # ---- THE DELIVERY LEG. Bytes on disk are not a delivered film. -------------
-    # This is the half of the hole that survived the path fix: with the paths correct
-    # the gate said "this run may end" while no draft existed anywhere, which is exactly
-    # the state the 2026-08-03 run stopped in. The routine promises the owner a draft in
-    # their inbox, so the gate asks for the receipt, not for the encode.
-    receipt = OUT / DRAFT_RECEIPT
-    if not receipt.exists():
-        lines.append(f"  MISSING  the Gmail draft. Both cuts encode, and nobody has been")
-        lines.append(f"           handed the film. Run scripts/dispatch_email.py and hand")
-        lines.append(f"           the payload to the Gmail connector, then write")
-        lines.append(f"           out/dispatch/{DRAFT_RECEIPT}.")
+    try:
+        manifest = require_manifest(root=ROOT)
+    except DeliverableContractError as exc:
+        lines.append(f"  BAD      deliverables manifest: {exc}")
+        manifest = None
+        delivered = False
+    if manifest is not None:
+        for role, entry in manifest["artifacts"].items():
+            duration = entry.get("duration_seconds")
+            detail = f"{duration:.1f}s, " if isinstance(duration, (int, float)) else ""
+            lines.append(
+                f"  OK       {role} [{entry['path']}] ({detail}{entry['bytes']/1e6:.1f} MB, "
+                f"sha256={entry['sha256'][:12]})"
+            )
+    preview = OUT / LOCAL_PREVIEW
+    ok, reason = check_path(preview, ROOT)
+    if not ok:
+        lines.append(f"  MISSING  canary local preview ({reason})")
         delivered = False
     else:
-        try:
-            r = json.loads(receipt.read_text())
-            lines.append(f"  OK       Gmail draft {r.get('draft_id', '(no id)')} "
-                         f"to {r.get('to', '?')} at {r.get('created_at', '?')}")
-        except (OSError, ValueError) as e:
-            lines.append(f"  UNREADABLE  {DRAFT_RECEIPT} ({e})")
-            delivered = False
+        lines.append(f"  OK       canary local preview [{preview.name}]")
 
     return delivered, lines
 

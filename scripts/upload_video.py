@@ -16,10 +16,18 @@ Usage:
   python scripts/upload_video.py --file out/dispatch/dispatch.mp4 --name dispatch-2026-06-27.mp4
   # --name may omit the extension; it is appended from --file automatically.
 """
-import argparse, os, subprocess, sys, tempfile, re, shutil
+import argparse, hashlib, os, subprocess, sys, tempfile, re, shutil
 from pathlib import Path
+from urllib.error import HTTPError, URLError
+from urllib.request import Request, urlopen
 
 from canary_guard import require_action, require_canary_origin
+from deliverable_contract import (
+    DeliverableContractError,
+    record_publication,
+    sha256_file,
+    validate_upload,
+)
 
 MEDIA_BRANCH = "dispatch-media"
 MEDIA_NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$")
@@ -106,7 +114,7 @@ def media_name(name, file):
         )
     return name
 
-def verify(url, file):
+def verify_exact(url, file):
     """A link is only 'good' if it will actually OPEN as the media file, which HTTP 200 alone does
     not prove. Check three things off the response headers: (1) 200, (2) the URL path ends with the
     source file's extension (so it downloads/plays as .mp4/.png, not an extensionless blob), and
@@ -114,26 +122,41 @@ def verify(url, file):
     is not a small HTML error page). Returns (ok, detail)."""
     ext = os.path.splitext(file)[1].lower()
     if ext and not url.lower().split("?")[0].endswith(ext):
-        return False, f"URL does not end with '{ext}' (would download as an unopenable file): {url}"
-    r = sh(["curl", "-sSLI", "--max-time", "180", url])
-    if r.returncode != 0:
-        return False, "HEAD request failed: " + (r.stderr or "")[-200:]
-    head = r.stdout
-    codes = re.findall(r"HTTP/\d(?:\.\d)?\s+(\d{3})", head)
-    if not codes or codes[-1] != "200":
-        return False, f"HTTP status {codes[-1] if codes else '?'} (expected 200)"
-    if re.search(r"(?im)^content-type:\s*text/html", head):
-        return False, "served as text/html (looks like an error page, not the media file)"
-    m = re.search(r"(?im)^content-length:\s*(\d+)", head)
-    if m:
-        remote, local = int(m.group(1)), os.path.getsize(file)
-        if remote != local:
-            return False, f"content-length {remote} != local file size {local} (truncated/wrong upload)"
-    return True, "ok"
+        return False, f"URL does not end with '{ext}' (would download as an unopenable file): {url}", 0, ""
+    digest = hashlib.sha256()
+    total = 0
+    try:
+        request = Request(url, headers={"User-Agent": "Alaska-AI-Dispatch-canary-verifier/1"})
+        with urlopen(request, timeout=180) as response:
+            status = getattr(response, "status", 200)
+            if status != 200:
+                return False, f"HTTP status {status} (expected 200)", 0, ""
+            content_type = response.headers.get("Content-Type", "")
+            if content_type.lower().startswith("text/html"):
+                return False, "served as text/html, not media", 0, ""
+            for chunk in iter(lambda: response.read(1024 * 1024), b""):
+                total += len(chunk)
+                digest.update(chunk)
+    except (HTTPError, URLError, TimeoutError, OSError) as exc:
+        return False, f"GET verification failed: {exc}", 0, ""
+    remote_sha = digest.hexdigest()
+    local_size = os.path.getsize(file)
+    local_sha = sha256_file(Path(file))
+    if total != local_size:
+        return False, f"published byte count {total} != local {local_size}", total, remote_sha
+    if remote_sha != local_sha:
+        return False, "published SHA-256 does not match the local file", total, remote_sha
+    return True, "exact bytes and SHA-256 match", total, remote_sha
+
+
+def verify(url, file):
+    ok, detail, _remote_bytes, _remote_sha = verify_exact(url, file)
+    return ok, detail
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--file", required=True); ap.add_argument("--name", default=None)
+    ap.add_argument("--role", choices=("vertical_hosted", "square", "mobile", "poster_square", "poster_thumb_vertical"))
     ap.add_argument("--no-github", action="store_true",
                     help="disable the sole canary publisher and keep the file local")
     a = ap.parse_args()
@@ -146,16 +169,26 @@ def main():
         print("CANARY: upload disabled by --no-github; file remains local", file=sys.stderr)
         return 1
     try:
+        _manifest, role, _entry = validate_upload(a.file, role=a.role)
+    except DeliverableContractError as exc:
+        print(f"REFUSING UNMANIFESTED MEDIA: {exc}", file=sys.stderr)
+        return 1
+    try:
         url, kind = via_github(a.file, name), "permanent"
     except Exception as exc:
         print(f"ERROR: canary GitHub upload failed; no fallback was attempted:\n  {exc}",
               file=sys.stderr)
         return 1
-    ok, detail = verify(url, a.file)
+    ok, detail, remote_bytes, remote_sha = verify_exact(url, a.file)
     print(f"HOST={kind} VERIFIED={'ok' if ok else 'FAILED'} ({detail})", file=sys.stderr)
     if not ok:
         print(f"WARNING: link is not a valid, openable media URL - do NOT put it in the draft. {detail}",
-              file=sys.stderr); sys.exit(3)
+              file=sys.stderr); return 3
+    try:
+        record_publication(role, url, remote_bytes=remote_bytes, remote_sha256=remote_sha)
+    except DeliverableContractError as exc:
+        print(f"ERROR: publication receipt refused: {exc}", file=sys.stderr)
+        return 3
     print(url)   # LAST line = the URL the routine captures
 
 if __name__ == "__main__":

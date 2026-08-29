@@ -27,7 +27,7 @@ data center dispatch). Episode-local: this file is rewritten per run with
 EVENTS matched to THIS story's beats/storyboard; the doctrine above and the
 machinery below CARRY OVER unchanged.
 """
-import json, os, re, subprocess, sys, math, zlib
+import hashlib, json, os, re, subprocess, sys, math, tempfile, time, zlib
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, ".."))
@@ -44,6 +44,52 @@ def run(cmd):
         sys.stderr.write(r.stderr[-2000:])
         raise SystemExit(f"ffmpeg failed: {' '.join(cmd[:6])}...")
     return r
+
+
+def file_sha256(path):
+    digest = hashlib.sha256()
+    with open(path, "rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def write_bound_sfx_sidecar(master):
+    """Atomically bind the performed schedule to the exact audio master it describes."""
+    target = os.path.join(OUT, "sfx_events.json")
+    payload = {
+        "run_date": DATE,
+        "video_seconds": VIDEO_SECS,
+        "count": len(EVENTS),
+        "kinds": sorted({kind for _, kind, _, _ in EVENTS}),
+        "note": ("written by dispatch_mix.py after the audio master completed; one entry per "
+                 "motivated hit, hash-bound to the exact master.wav bytes"),
+        "audio": {
+            "path": "out/dispatch/audio/master.wav",
+            "bytes": os.path.getsize(master),
+            "sha256": file_sha256(master),
+        },
+        "events": [
+            {"t": event_time, "kind": kind, "class": event_class, "pan": pan}
+            for event_time, kind, event_class, pan in EVENTS
+        ],
+    }
+    fd, temporary = tempfile.mkstemp(prefix="sfx_events.json.", suffix=".tmp", dir=OUT)
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8", newline="\n") as handle:
+            json.dump(payload, handle, ensure_ascii=False, indent=2, sort_keys=True)
+            handle.write("\n")
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary, target)
+        master_ns = os.stat(master).st_mtime_ns
+        sidecar_ns = max(time.time_ns(), master_ns + 1)
+        os.utime(target, ns=(sidecar_ns, sidecar_ns))
+    finally:
+        try:
+            os.unlink(temporary)
+        except FileNotFoundError:
+            pass
 
 
 # --- sound families (spectral neighborhoods, for the repetition assert + jitter)
@@ -610,6 +656,12 @@ def main():
          "-ar", str(SR), "-ac", "2", master])
     os.remove(premix)
     print("wrote", master)
+
+    # Rewrite the early human-readable schedule only after master.wav exists. A crashed mix
+    # deliberately leaves the unbound preliminary sidecar, which ship_gate rejects instead of
+    # mistaking it for proof about an audio file the run never completed.
+    write_bound_sfx_sidecar(master)
+    print("sfx_events.json bound to", file_sha256(master)[:12], os.path.getsize(master), "bytes")
 
     # write sfx_events.json for the gate (schema: t/kind as before, + performance)
     json.dump({"events": [

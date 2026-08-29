@@ -29,6 +29,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 from canary_guard import CanarySafetyError, require_action
+from deliverable_contract import DeliverableContractError, require_manifest, require_publication_url
 
 REPO = "https://github.com/Talonsturgill/alaskaaicarousels.git"
 MANIFEST = "docs/videos/videos.json"
@@ -139,6 +140,18 @@ def main():
         require_action("site_feed_publish", a.repo)
     except CanarySafetyError as exc:
         sys.exit(f"publish_feed: {exc}")
+
+    try:
+        require_manifest()
+        require_publication_url("vertical_hosted", a.video_url)
+        if a.poster_url:
+            require_publication_url("poster_square", a.poster_url)
+        if a.video_mobile_url:
+            require_publication_url("mobile", a.video_mobile_url)
+        if a.poster_thumb_url:
+            require_publication_url("poster_thumb_vertical", a.poster_thumb_url)
+    except DeliverableContractError as exc:
+        sys.exit(f"publish_feed: deliverable manifest/publication mismatch: {exc}")
 
     # BEFORE anything is written or pushed anywhere. See require_ship_gate.
     require_ship_gate()

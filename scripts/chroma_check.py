@@ -48,7 +48,7 @@ _HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(_HERE, ".."))
 sys.path.insert(0, _HERE)
 
-DEFAULT_VIDEO = os.path.join(REPO, "out", "dispatch", "dispatch_master.mp4")
+DEFAULT_VIDEO = os.path.join(REPO, "out", "dispatch", "dispatch_master_hosted.mp4")
 
 # THRESHOLDS, CALIBRATED BY MEASUREMENT AND NOT BY GUESS.
 #

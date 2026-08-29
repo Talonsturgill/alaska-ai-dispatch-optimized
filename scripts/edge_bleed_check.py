@@ -37,7 +37,7 @@ VALIDATED AGAINST THE DEFECT IT WAS WRITTEN FOR. Run against the master that shi
 bug, it reports "right edge 62.0-65.0s", which is the drawer window all three judges cited,
 and it does not report the many seconds where the breaker panel is merely staged half out.
 
-  python3 scripts/edge_bleed_check.py [--video out/dispatch/dispatch_master.mp4]
+  python3 scripts/edge_bleed_check.py [--video out/dispatch/dispatch_master_hosted.mp4]
                                       [--every 0.5] [--margin 54] [--json]
 """
 import argparse, json, os, subprocess, sys, tempfile
@@ -99,7 +99,7 @@ def _has_cut_type(img, x0, x1):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--video", default=os.path.join(REPO, "out", "dispatch", "dispatch_master.mp4"))
+    ap.add_argument("--video", default=os.path.join(REPO, "out", "dispatch", "dispatch_master_hosted.mp4"))
     ap.add_argument("--every", type=float, default=0.5)
     ap.add_argument("--margin", type=int, default=54)
     ap.add_argument("--json", action="store_true")

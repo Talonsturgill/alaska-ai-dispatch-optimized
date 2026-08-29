@@ -43,7 +43,7 @@ Exit 0 = captions are on screen. Exit 1 = they are not, and the film is not ship
 
 Usage:
   python3 scripts/caption_render_check.py
-  python3 scripts/caption_render_check.py --video out/dispatch/dispatch_master.mp4 \
+  python3 scripts/caption_render_check.py --video out/dispatch/dispatch_master_hosted.mp4 \
       --props out/dispatch/episode_props.json --samples 8
 """
 import argparse
@@ -153,7 +153,7 @@ def crop_band(video, t, dest):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--video", default=os.path.join(REPO, "out/dispatch/dispatch_master.mp4"))
+    ap.add_argument("--video", default=os.path.join(REPO, "out/dispatch/dispatch_master_hosted.mp4"))
     ap.add_argument("--props", default=os.path.join(REPO, "out/dispatch/episode_props.json"))
     ap.add_argument("--samples", type=int, default=8)
     a = ap.parse_args()
