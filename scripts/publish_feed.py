@@ -28,6 +28,8 @@ import argparse, json, re, subprocess, sys, tempfile, time
 from pathlib import Path
 from urllib.parse import urlparse
 
+from canary_guard import CanarySafetyError, require_action
+
 REPO = "https://github.com/Talonsturgill/alaskaaicarousels.git"
 MANIFEST = "docs/videos/videos.json"
 
@@ -130,6 +132,13 @@ def main():
     ap.add_argument("--repo", default=REPO)
     ap.add_argument("--branch", default="main")
     a = ap.parse_args()
+
+    # This inherited publisher targets the production website repository. The
+    # optimization lab must fail before the ship gate, clone, write, or push.
+    try:
+        require_action("site_feed_publish", a.repo)
+    except CanarySafetyError as exc:
+        sys.exit(f"publish_feed: {exc}")
 
     # BEFORE anything is written or pushed anywhere. See require_ship_gate.
     require_ship_gate()

@@ -31,6 +31,7 @@ DRAFT_TO = "docket@alaskaaihq.com"
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from run_guard import fresh, StaleArtifactError  # noqa: E402
 from caption_check import lint as caption_lint  # noqa: E402
+from canary_guard import CanarySafetyError, require_action  # noqa: E402
 
 
 def refuse_unless_links_are_live(urls, allow_temporary=False):
@@ -351,6 +352,9 @@ def main():
     ap.add_argument("--temporary", action="store_true", help="flag download links as temporary (~1h)")
     ap.add_argument("--date", default=dt.date.today().isoformat()); ap.add_argument("--title", default="")
     ap.add_argument("--to", default=DRAFT_TO); ap.add_argument("--out-html", default="")
+    ap.add_argument("--local-only", action="store_true",
+                    help="write --out-html but suppress the connector-ready Gmail payload "
+                         "(required for normal canary runs)")
     ap.add_argument("--no-freshness-check", action="store_true",
                     help="bypass the run-freshness guard (deliberate manual/standalone use only; "
                          "the routine must NEVER pass this -- it is how a previous run's scratch ships)")
@@ -396,6 +400,15 @@ def main():
                   a.upgrades, sourcing_note)
     if a.out_html:
         Path(a.out_html).write_text(html); print("wrote", a.out_html)
+    if a.local_only:
+        if not a.out_html:
+            sys.exit("REFUSING LOCAL-ONLY DRAFT: --out-html is required so the preview is retained")
+        print(f"CANARY LOCAL ONLY: Gmail payload suppressed; preview={a.out_html}")
+        return
+    try:
+        require_action("gmail_draft", a.to)
+    except CanarySafetyError as exc:
+        sys.exit(f"dispatch_email: {exc}\nUse --local-only --out-html <path> for a canary preview.")
     payload = {"subject": f"ALASKA.AI · Dispatch ready · {a.date}", "to": a.to, "html_body": html}
     print(json.dumps(payload))   # LAST line = the draft payload for Gmail create_draft
 

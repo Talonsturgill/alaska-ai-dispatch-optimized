@@ -25,6 +25,8 @@ import datetime as dt
 import json
 from pathlib import Path
 
+from canary_guard import CanarySafetyError, require_action
+
 # THE MAILBOX IS docket@alaskaaihq.com AND IT IS THE SAME ONE EVERY TIME (owner, 2026-07-31).
 # It used to say "me", an account-relative alias, on the theory that a repoint should be a
 # connector change and not a code change. In practice the Gmail connector rejects "me" outright
@@ -95,6 +97,10 @@ def main():
     ap.add_argument("--score",   required=True)
     ap.add_argument("--date",    required=True)
     ap.add_argument("--branch",  required=True)
+    ap.add_argument("--out-html", default="")
+    ap.add_argument("--local-only", action="store_true",
+                    help="write --out-html but suppress the connector-ready Gmail payload "
+                         "(required for normal canary runs)")
     args = ap.parse_args()
 
     post_text = Path(args.post_md).read_text()
@@ -102,10 +108,27 @@ def main():
     sources = json.loads(Path(args.sources).read_text())
     score = json.loads(Path(args.score).read_text())
 
+    html = render(post_text, image_b64, sources, score, args.date, args.branch)
+    if args.out_html:
+        Path(args.out_html).write_text(html, encoding="utf-8")
+        print("wrote", args.out_html)
+    if args.local_only:
+        if not args.out_html:
+            raise SystemExit(
+                "REFUSING LOCAL-ONLY DRAFT: --out-html is required so the preview is retained"
+            )
+        print(f"CANARY LOCAL ONLY: Gmail payload suppressed; preview={args.out_html}")
+        return
+    try:
+        require_action("gmail_draft", DRAFT_TO)
+    except CanarySafetyError as exc:
+        raise SystemExit(
+            f"gmail_draft: {exc}\nUse --local-only --out-html <path> for a canary preview."
+        ) from exc
     payload = {
         "subject": f"Alaska.Ai — Weekly Recap Draft — {args.date}",
         "to": DRAFT_TO,
-        "html_body": render(post_text, image_b64, sources, score, args.date, args.branch),
+        "html_body": html,
     }
     print(json.dumps(payload))
 

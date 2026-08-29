@@ -19,6 +19,9 @@ Usage:
   # --name may omit the extension; it is appended from --file automatically.
 """
 import argparse, base64, os, subprocess, sys, tempfile, re, json, shutil
+from pathlib import Path
+
+from canary_guard import require_action, require_canary_origin
 
 def sh(cmd, **kw): return subprocess.run(cmd, capture_output=True, text=True, **kw)
 def have_rclone(): return sh(["which", "rclone"]).returncode == 0
@@ -40,6 +43,7 @@ def to_direct(url):
 def via_rclone(file, name):
     ensure_config()
     remote = os.environ.get("DISPATCH_REMOTE", "dispatch:"); dest = f"{remote}{name}"
+    require_action("external_media_upload", dest)
     up = sh(["rclone", "copyto", file, dest, "--no-traverse"])
     if up.returncode != 0: raise RuntimeError("rclone upload failed: " + up.stderr[-400:])
     pub = os.environ.get("DISPATCH_PUBLIC_BASE")
@@ -69,6 +73,8 @@ def via_github(file, name):
     m = re.search(r"[:/]([^/]+)/([^/]+?)(?:\.git)?$", origin)
     if not m: raise RuntimeError("cannot parse owner/repo from origin: " + origin)
     owner, repo = m.group(1), m.group(2)
+    require_canary_origin(Path(root))
+    require_action("github_media_publish", f"{owner}/{repo}")
     branch = os.environ.get("DISPATCH_MEDIA_BRANCH", "dispatch-media")
     wt = tempfile.mkdtemp(prefix="media_wt_")
     try:
@@ -98,6 +104,7 @@ def via_github(file, name):
         sh(["git", "-C", root, "worktree", "remove", "--force", wt])
 
 def via_tmpfiles(file):
+    require_action("external_media_upload", "https://tmpfiles.org")
     r = sh(["curl", "-sS", "--max-time", "300", "-F", f"file=@{file}", "https://tmpfiles.org/api/v1/upload"])
     if r.returncode != 0: raise RuntimeError("tmpfiles curl failed: " + (r.stderr or "")[-300:])
     try: u = json.loads(r.stdout)["data"]["url"]
