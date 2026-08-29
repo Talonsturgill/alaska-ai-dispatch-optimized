@@ -12,7 +12,7 @@ import os
 import shutil
 import tempfile
 import time
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any
 
 from deliverable_contract import (
@@ -22,16 +22,34 @@ from deliverable_contract import (
     sha256_file,
 )
 from strict_json import StrictJSONError, canonical_bytes, load_path
+from run_guard import stamp_digest
 
 ROOT = Path(__file__).resolve().parent.parent
 EVIDENCE_REL = "out/evidence"
 MANIFEST_REL = "out/evidence/evidence_manifest.json"
-SCHEMA_VERSION = 2
-GENERATOR_VERSION = "dispatch-evidence-v2"
+SCHEMA_VERSION = 3
+GENERATOR_VERSION = "dispatch-evidence-v3"
 PRODUCER_SPECS = {
     "visual": ("scripts/build_evidence.py", GENERATOR_VERSION),
-    "audio_report": ("scripts/audio_report.py", "dispatch-audio-report-v2"),
-    "audio_card": ("scripts/audio_evidence.py", "dispatch-audio-evidence-v2"),
+    "audio_report": ("scripts/audio_report.py", "dispatch-audio-report-v3"),
+    "audio_card": ("scripts/audio_evidence.py", "dispatch-audio-evidence-v3"),
+}
+PRODUCER_INPUTS = {
+    "visual": (
+        "out/dispatch/dispatch_master_hosted.mp4",
+        "out/dispatch/vo_lines.json",
+        "out/dispatch/episode_props.json",
+    ),
+    "audio_report": (
+        "out/dispatch/dispatch_square.mp4",
+        "out/dispatch/dispatch_master_hosted.mp4",
+        "out/dispatch/audio/words.json",
+    ),
+    "audio_card": (
+        "out/dispatch/audio/master.wav",
+        "out/dispatch/audio/vo.wav",
+        "out/dispatch/sfx_events.json",
+    ),
 }
 ALLOWED_EXTENSIONS = {".jpg", ".png", ".json"}
 
@@ -104,6 +122,60 @@ def _canonical_relative(value: Any, *, label: str) -> str:
     return value
 
 
+def _canonical_input(value: Any, *, label: str) -> str:
+    if (
+        not isinstance(value, str) or not value or not value.isascii()
+        or "\\" in value or PurePosixPath(value).is_absolute()
+        or any(part in {"", ".", ".."} for part in value.split("/"))
+        or PurePosixPath(value).as_posix() != value
+    ):
+        raise EvidenceContractError(f"{label} must be a canonical repo-relative POSIX path")
+    return value
+
+
+def _input_facts(
+    base: Path, relative: str, *, authority: dict[str, Any], label: str,
+) -> dict[str, Any]:
+    relative = _canonical_input(relative, label=label)
+    logical = base.joinpath(*relative.split("/"))
+    current = base
+    for part in relative.split("/"):
+        current = current / part
+        if current.is_symlink():
+            raise EvidenceContractError(f"{label} path may not contain symlinks")
+    try:
+        logical.resolve(strict=True).relative_to(base)
+    except (OSError, ValueError) as exc:
+        raise EvidenceContractError(f"{label} is missing or escapes the repository: {exc}") from None
+    if not logical.is_file() or logical.is_symlink():
+        raise EvidenceContractError(f"{label} is missing or unsafe")
+    return {
+        "path": relative,
+        "bytes": logical.stat().st_size,
+        "sha256": sha256_file(logical),
+        "authority": authority,
+    }
+
+
+def _input_authority(
+    relative: str, delivery: dict[str, Any], *, root: Path,
+) -> dict[str, Any]:
+    delivery_digest = contract_digest(delivery)
+    for role, entry in delivery.get("artifacts", {}).items():
+        if isinstance(entry, dict) and entry.get("path") == relative:
+            return {"type": "delivery_manifest", "digest": delivery_digest, "role": role}
+    mastering = delivery.get("mastering")
+    if relative in {"out/dispatch/audio/master.wav", "out/dispatch/sfx_events.json"}:
+        if not isinstance(mastering, dict):
+            raise EvidenceContractError("delivery manifest has no mastering lineage")
+        return {
+            "type": "mastering_receipt",
+            "path": mastering.get("path"),
+            "sha256": mastering.get("sha256"),
+        }
+    return {"type": "run_stamp", "sha256": stamp_digest(root)}
+
+
 def _evidence_files(base: Path) -> list[Path]:
     directory = _evidence_directory(base)
     files: list[Path] = []
@@ -174,6 +246,7 @@ def _schema_problems(base: Path, artifacts: dict[str, Any]) -> list[str]:
 
 def _producer_map(
     base: Path, producers: dict[str, Any], artifacts: dict[str, Any],
+    delivery: dict[str, Any],
 ) -> tuple[dict[str, Any], list[str]]:
     problems: list[str] = []
     if not isinstance(producers, dict) or set(producers) != set(PRODUCER_SPECS):
@@ -211,11 +284,23 @@ def _producer_map(
             source_hash = None
         else:
             source_hash = sha256_file(source)
+        inputs: dict[str, Any] = {}
+        for input_rel in PRODUCER_INPUTS[name]:
+            try:
+                inputs[input_rel] = _input_facts(
+                    base,
+                    input_rel,
+                    authority=_input_authority(input_rel, delivery, root=base),
+                    label=f"evidence producer {name} input",
+                )
+            except EvidenceContractError as exc:
+                problems.append(str(exc))
         normalized[name] = {
             "path": source_rel,
             "version": version,
             "sha256": source_hash,
             "parameters": parameters,
+            "inputs": inputs,
             "outputs": clean_outputs,
         }
     if len(owned) != len(set(owned)):
@@ -244,7 +329,7 @@ def build_evidence_manifest(
     if set(expected) != set(artifacts):
         raise EvidenceContractError("evidence directory does not exactly match the expected artifact set")
     problems = _schema_problems(base, artifacts)
-    normalized_producers, producer_problems = _producer_map(base, producers, artifacts)
+    normalized_producers, producer_problems = _producer_map(base, producers, artifacts, delivery)
     problems.extend(producer_problems)
     if problems:
         raise EvidenceContractError("; ".join(problems))
@@ -325,7 +410,7 @@ def validate_evidence_manifest(
         owned: list[str] = []
         for name, (path_rel, version) in PRODUCER_SPECS.items():
             entry = producers.get(name)
-            fields = {"path", "version", "sha256", "parameters", "outputs"}
+            fields = {"path", "version", "sha256", "parameters", "inputs", "outputs"}
             if not isinstance(entry, dict) or set(entry) != fields:
                 problems.append(f"evidence producer {name} receipt fields are not canonical")
                 continue
@@ -345,6 +430,20 @@ def validate_evidence_manifest(
                 problems.append(f"evidence producer {name} outputs are missing")
             else:
                 owned.extend(outputs)
+        if isinstance(producers, dict):
+            supplied = {
+                name: {
+                    "parameters": producers.get(name, {}).get("parameters"),
+                    "outputs": producers.get(name, {}).get("outputs"),
+                }
+                for name in PRODUCER_SPECS
+            }
+            current, current_problems = _producer_map(base, supplied, artifacts, delivery)
+            problems.extend(current_problems)
+            if current != producers:
+                problems.append(
+                    "evidence producer source/input bytes, hashes, authority, version, or parameters changed"
+                )
         if len(owned) != len(set(owned)) or set(owned) != set(artifacts):
             problems.append("evidence producer outputs do not exactly own the artifact set")
     if not isinstance(raw.get("generated_at"), str) or not raw["generated_at"]:

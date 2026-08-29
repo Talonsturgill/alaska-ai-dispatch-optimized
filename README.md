@@ -43,8 +43,8 @@ The setup script deliberately installs no post-commit or automatic-push hook.
 - `config/compositions.json` defines the one active composition identity.
 - `config/deliverables.json` defines the five-file distribution contract.
 - `scripts/canary_guard.py` enforces it.
-- `prompts/dispatch_routine.md` governs the canary routine until the optimized
-  controller replaces it.
+- `prompts/dispatch_routine.md` currently governs only the frozen B1
+  replay/correctness fixture. Fresh-story daily generation remains Phase C.
 - `video-engine/` contains the Remotion engine.
 - `CANARY_SAFETY.md` documents the boundary and failure behavior.
 - `docs/CORRECTNESS_FOUNDATION.md` documents run identity, manifested bytes,

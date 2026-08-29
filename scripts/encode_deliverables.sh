@@ -10,7 +10,11 @@ if [ -n "${1:-}" ] && [ "${1}" != "$MUTE" ] && [ "${1}" != "$PWD/$MUTE" ]; then
   echo "encode_deliverables: mute input must be the canonical $MUTE" >&2
   exit 2
 fi
-WAV="${2:-$OUT/audio/master.wav}"
+WAV="$OUT/audio/master.wav"
+if [ -n "${2:-}" ] && [ "${2}" != "$WAV" ] && [ "${2}" != "$PWD/$WAV" ]; then
+  echo "encode_deliverables: audio input must be the canonical $WAV" >&2
+  exit 2
+fi
 MASTERING="$OUT/dispatch_mastering_source.mp4"  # internal only; never upload/email/feed
 HOSTED="$OUT/dispatch_master_hosted.mp4"        # canonical shipped 9:16 bytes
 SQUARE="$OUT/dispatch_square.mp4"
@@ -91,6 +95,8 @@ awk -v i="$audio_i" -v tp="$audio_tp" 'BEGIN {
   if (tp > -1.0) {printf "encode_deliverables: true peak %.2f dBTP above -1.0\n", tp > "/dev/stderr"; exit 1}
 }'
 
+python3 scripts/mastering_contract.py record
+python3 scripts/mastering_contract.py check
 python3 scripts/deliverable_contract.py build
 python3 scripts/deliverable_contract.py check
 echo "encode_deliverables: PASS: one internal master + five exact manifested deliverables"

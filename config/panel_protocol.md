@@ -4,9 +4,11 @@
 
 A panel may be convened only after `python3 scripts/build_evidence.py` has
 recreated `out/evidence/`, invoked every terminal producer, and written the
-producer/source/version/parameter-bound `evidence_manifest.json`. Then
-`python3 scripts/preflight.py` must exit 0 against that exact manifest and the
-current delivery manifest. `scripts/make_review_sheets.py` produces early-look
+producer/source/version/input/hash-bound schema-v3 `evidence_manifest.json`. Then
+`python3 scripts/preflight.py` must exit 0 and atomically write the current-run
+`out/dispatch/preflight_receipt.json` against that exact evidence manifest,
+schema-v4 delivery manifest, mastering receipt, and SFX-v3 ledger.
+`scripts/make_review_sheets.py` produces early-look
 material only; its output is never panel evidence and cannot support a verdict.
 
 Judges receive only the artifact set named and hash-bound by the current evidence

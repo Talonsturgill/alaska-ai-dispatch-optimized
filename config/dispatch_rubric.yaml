@@ -33,21 +33,19 @@ rubric:
       / 3D / higher-fidelity than the brand" are out of scope and MUST NOT cap any score.
       Concrete within-style flaws (an unshaded flat fill, a frozen held figure, a character whose
       finish lags the props in the same frame, a missing motion cycle) absolutely still count.
-  # OBJECTIVE pre-gate — the machine checks-and-balances. quality_gate.py MUST exit 0 BEFORE this
-  # rubric is even scored. It catches the regressions a human used to flag (blur, illegible HUD,
-  # dead pacing, caption desync) numerically, so they never reach the inbox. Floors are enforced in
-  # the script; mirrored here for the reviewer.
+  # OBJECTIVE pre-gate — the canonical lineage check. quality_gate.py MUST exit 0
+  # BEFORE this rubric is scored. It validates the exact five delivered artifacts,
+  # codecs, mastering/audio lineage, evidence-v3 pack, and sole SFX-v3 ledger.
   objective_gate:
     script: ".claude/skills/alaska-dispatch/quality_gate.py"
     must_pass_first: true
     checks:
-      sharpness:     "median variance-of-Laplacian >= 14     (guards 'looks blurry')"
-      hud_text:      "chart-card glyph-edge energy p90 >= 3.2 (guards 'chart letters illegible')"
-      caption_text:  "caption glyph-edge energy p90 >= 3.2    (guards 'captions generic / hard to read')"
-      event_cadence: "no on-screen-dead window > 5.0s         (guards 'boring / too slow')"
-      caption_sync:  "captions built from the TTS word-timings (guards 'voice != captions')"
+      delivery_manifest: "schema-v4 exact five roles, dimensions, streams, frames, duration, codecs, bytes, and hashes"
+      mastering_lineage: "render receipt + mute SHA + master.wav + SFX-v3 audio + five output hashes agree"
+      evidence_manifest: "schema-v3 exact artifact set and producer source/input provenance all revalidate"
+      sfx_ledger: "sole schema-v3 enriched ledger is bound to the exact mastered audio"
   hard_blockers:               # ANY of these = automatic fail regardless of score
-    - "quality_gate.py fails: blurry, illegible HUD/chart text, a >5s on-screen-dead window, or captions not voice-synced"
+    - "quality_gate.py or the current-run preflight receipt fails canonical delivery/evidence/audio lineage"
     - "a factual error or an unverifiable load-bearing claim"
     - "a typo or wrong number anywhere on screen"
     - "audio gate fails (LUFS/TP/clipping) or music inaudible/uncredited"

@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import contextlib
 import io
+import importlib.util
 import json
 import os
 import shutil
@@ -26,6 +27,8 @@ import delivery_preview
 import dispatch_email
 import episode_contract
 import evidence_contract
+import mastering_contract
+import mix_json_contract
 import no_exit
 import preflight
 import render_contract
@@ -153,7 +156,7 @@ def make_artifacts(root: Path, stamp: dict) -> dict[str, dict]:
             "height": spec["height"],
             "duration_seconds": 100.0 if spec["media_type"] == "video" else None,
             "streams": {"video": spec["video_streams"], "audio": spec["audio_streams"]},
-            "video_codecs": ["h264"] if spec["media_type"] == "video" else ["png"],
+            "video_codecs": list(spec["allowed_video_codecs"]),
             "audio_codecs": ["aac"] if spec["audio_streams"] else [],
             "fps": 30.0 if spec["media_type"] == "video" else 25.0,
             "frame_count": 3000 if spec["media_type"] == "video" else 1,
@@ -199,6 +202,25 @@ def make_sfx_events(root: Path, *, count: int = 6, spacing: float = 10.0) -> lis
             "gain_db": -9.5,
         })
     return events
+
+
+def make_mastering(root: Path, stamp: dict, render_probe) -> dict:
+    """Create the canonical audio/SFX lineage and bind the already-made five files."""
+    audio = root.joinpath(*sfx_contract.AUDIO_REL.split("/"))
+    audio.parent.mkdir(parents=True, exist_ok=True)
+    audio.write_bytes(b"audio-master" * 200)
+    os.utime(audio, (stamp["started_at"] + 1, stamp["started_at"] + 1))
+    sfx_contract.write_sidecar(audio, make_sfx_events(root), root=root)
+    return mastering_contract.record_mastering(root=root, render_probe=render_probe)
+
+
+def load_quality_gate_module():
+    path = REPO / ".claude" / "skills" / "alaska-dispatch" / "quality_gate.py"
+    spec = importlib.util.spec_from_file_location("canonical_quality_gate", path)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
 
 
 class StrictJSONTests(unittest.TestCase):
@@ -253,6 +275,31 @@ class StrictJSONTests(unittest.TestCase):
                 )
                 self.assertNotEqual(result.returncode, 0)
                 self.assertNotIn("Traceback", result.stderr + result.stdout)
+
+    def test_dispatch_mix_required_json_rejects_duplicate_nonobject_and_bad_timing(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            words = root / "words.json"
+            lines = root / "vo_lines.json"
+            bad_words = (
+                '{"words":[],"words":[]}',
+                "[]",
+                '{"words":[{"s":1.0,"e":0.5}]}',
+            )
+            for payload in bad_words:
+                with self.subTest(words=payload):
+                    words.write_text(payload + "\n", encoding="utf-8")
+                    with self.assertRaises(mix_json_contract.MixInputError) as caught:
+                        mix_json_contract.load_words(words)
+                    self.assertNotIn("Traceback", str(caught.exception))
+            for payload in ('{"lines":[],"lines":[]}', "[]"):
+                with self.subTest(lines=payload):
+                    lines.write_text(payload + "\n", encoding="utf-8")
+                    with self.assertRaises(mix_json_contract.MixInputError) as caught:
+                        mix_json_contract.load_vo_lines(lines)
+                    self.assertNotIn("Traceback", str(caught.exception))
+            with self.assertRaises(mix_json_contract.MixInputError):
+                mix_json_contract.load_loudnorm('{"input_i":"-14","input_i":"-13"}')
 
 
 class RunGuardTests(unittest.TestCase):
@@ -500,6 +547,7 @@ class EpisodeRenderIntegrationTests(unittest.TestCase):
                     facts["duration_seconds"] = 101.0
                     facts["frame_count"] = timing["total"]
             probe = lambda path: dict(artifact_facts[str(Path(path).resolve())])
+            mastering_contract.record_mastering(root=root, render_probe=render_probe)
             manifest = dc.build_manifest(root=root, probe=probe, render_probe=render_probe)
             self.assertEqual(manifest["episode"]["duration_seconds"], 101.0)
             facts, problems = sfx_contract.sidecar_facts(root=root)
@@ -598,6 +646,7 @@ class DeliverableContractTests(unittest.TestCase):
         render_probe = make_render(root, stamp)
         facts = make_artifacts(root, stamp)
         probe = lambda path: dict(facts[str(Path(path).resolve())])
+        make_mastering(root, stamp, render_probe)
         return root, stamp, facts, probe, render_probe
 
     def test_exact_five_roles_and_both_poster_sizes_pass(self):
@@ -652,6 +701,7 @@ class DeliverableContractTests(unittest.TestCase):
             ("duration", "mobile", {"duration_seconds": 12.0}, "duration"),
             ("fps", "mobile", {"fps": 29.97}, "required 30 fps"),
             ("frames", "square", {"frame_count": 2990}, "frame count"),
+            ("codec", "square", {"video_codecs": ["hevc"]}, "video codecs"),
         )
         for label, role, override, expected in cases:
             with self.subTest(label=label), tempfile.TemporaryDirectory() as td:
@@ -662,6 +712,27 @@ class DeliverableContractTests(unittest.TestCase):
                 probe = lambda target: dict(facts[str(Path(target).resolve())])
                 with self.assertRaisesRegex(dc.DeliverableContractError, expected):
                     dc.build_manifest(root=root, probe=probe, render_probe=render_probe)
+
+    def test_post_encode_master_audio_and_sfx_replacement_break_mastering_lineage(self):
+        for relative, expected in (
+            (sfx_contract.AUDIO_REL, "audio"),
+            (sfx_contract.SIDECAR_REL, "SFX|sfx|ledger"),
+        ):
+            with self.subTest(relative=relative), tempfile.TemporaryDirectory() as td:
+                root, _stamp, _facts, probe, render_probe = self.prepared(Path(td))
+                dc.build_manifest(root=root, probe=probe, render_probe=render_probe)
+                target = root.joinpath(*relative.split("/"))
+                stat = target.stat()
+                payload = bytearray(target.read_bytes())
+                payload[len(payload) // 2] ^= 1
+                target.write_bytes(payload)
+                os.utime(target, ns=(stat.st_atime_ns, stat.st_mtime_ns))
+                _manifest, problems = dc.validate_manifest(
+                    root=root, probe=probe, render_probe=render_probe,
+                )
+                message = "; ".join(problems)
+                self.assertRegex(message, expected)
+                self.assertNotIn("Traceback", message)
 
     def test_config_cannot_redefine_exact_role_dimensions_or_paths(self):
         with tempfile.TemporaryDirectory() as td:
@@ -702,6 +773,7 @@ class DeliverableContractTests(unittest.TestCase):
                     "fps": 30.0 if spec["media_type"] == "video" else 25.0,
                     "frame_count": 3000 if spec["media_type"] == "video" else 1,
                 }
+            make_mastering(root, stamp, render_probe)
             with self.assertRaisesRegex(dc.DeliverableContractError, "does not postdate"):
                 dc.build_manifest(
                     root=root,
@@ -942,7 +1014,17 @@ class EvidenceAndPreviewContractTests(unittest.TestCase):
         render_probe = make_render(root, stamp)
         facts = make_artifacts(root, stamp)
         probe = lambda path: dict(facts[str(Path(path).resolve())])
+        make_mastering(root, stamp, render_probe)
         manifest = dc.build_manifest(root=root, probe=probe, render_probe=render_probe)
+        write_json(
+            root / "out" / "dispatch" / "vo_lines.json",
+            {"lines": [{"idx": 0, "start": 0.0, "end": 90.0, "text": "fixture"}]},
+        )
+        write_json(
+            root / "out" / "dispatch" / "audio" / "words.json",
+            {"words": [{"word": "fixture", "start": 0.0, "end": 0.5}]},
+        )
+        (root / "out" / "dispatch" / "audio" / "vo.wav").write_bytes(b"fixture-vo")
         return root, stamp, manifest, probe, render_probe
 
     def test_evidence_manifest_binds_exact_vertical_delivery_generator_and_every_file(self):
@@ -1007,6 +1089,19 @@ class EvidenceAndPreviewContractTests(unittest.TestCase):
             )
             self.assertIsNotNone(checked)
             self.assertEqual(problems, [])
+            authored = root / "out" / "dispatch" / "vo_lines.json"
+            authored_stat = authored.stat()
+            authored_original = authored.read_bytes()
+            authored_mutated = authored_original.replace(b"fixture", b"fixturE")
+            self.assertEqual(len(authored_mutated), len(authored_original))
+            authored.write_bytes(authored_mutated)
+            os.utime(authored, ns=(authored_stat.st_atime_ns, authored_stat.st_mtime_ns))
+            _checked, problems = evidence_contract.validate_evidence_manifest(
+                root=root, delivery_manifest=manifest,
+            )
+            self.assertIn("producer source/input bytes", "; ".join(problems))
+            authored.write_bytes(authored_original)
+            os.utime(authored, ns=(authored_stat.st_atime_ns, authored_stat.st_mtime_ns))
             stale = evidence / "stale.png"
             stale.write_bytes(b"stale-allowed-extension")
             _checked, problems = evidence_contract.validate_evidence_manifest(
@@ -1163,6 +1258,90 @@ class GateBlocked(Exception):
         super().__init__("; ".join(str(reason) for reason in reasons))
 
 
+class ObjectivePreflightContractTests(unittest.TestCase):
+    def test_quality_gate_accepts_only_canonical_manifest_evidence_mastering_and_sfx(self):
+        gate = load_quality_gate_module()
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            evidence_path = root / "out" / "evidence" / "evidence_manifest.json"
+            write_json(evidence_path, {"fixture": True})
+            audio = {"path": sfx_contract.AUDIO_REL, "bytes": 12, "sha256": "a" * 64}
+            mastering = {
+                "path": mastering_contract.RECEIPT_REL, "bytes": 100, "sha256": "b" * 64,
+                "identity": {"run_id": "fixture"}, "audio_master": audio,
+                "sfx": {"path": sfx_contract.SIDECAR_REL, "sha256": "c" * 64, "audio": audio},
+                "artifacts": {},
+            }
+            delivery = {
+                "schema_version": dc.MANIFEST_SCHEMA_VERSION,
+                "identity": {"run_id": "fixture"}, "episode": {}, "render": {},
+                "mastering": mastering,
+                "artifacts": {role: {} for role in dc.EXPECTED_ROLES}, "publications": {},
+            }
+            evidence = {
+                "schema_version": evidence_contract.SCHEMA_VERSION,
+                "identity": {"run_id": "fixture", "run_date": "2026-08-29", "composition": "DispatchDaily"},
+                "artifacts": {"out/evidence/contact.jpg": {"bytes": 1, "sha256": "d" * 64}},
+            }
+            sfx = {"path": sfx_contract.SIDECAR_REL, "sha256": "c" * 64, "audio": audio}
+            report = gate.evaluate(
+                root=root,
+                manifest_loader=lambda **_kwargs: delivery,
+                evidence_loader=lambda **_kwargs: evidence,
+                mastering_loader=lambda **_kwargs: mastering,
+                sfx_loader=lambda **_kwargs: (sfx, []),
+            )
+            self.assertEqual(report["status"], "pass")
+            self.assertEqual(
+                [item["id"] for item in report["checks"]],
+                ["delivery_manifest_v4", "mastering_audio_lineage_v1",
+                 "evidence_manifest_v3", "sole_sfx_ledger_v3"],
+            )
+            with self.assertRaisesRegex(gate.QualityGateError, "does not match"):
+                gate.evaluate(
+                    root=root,
+                    manifest_loader=lambda **_kwargs: delivery,
+                    evidence_loader=lambda **_kwargs: evidence,
+                    mastering_loader=lambda **_kwargs: mastering,
+                    sfx_loader=lambda **_kwargs: ({**sfx, "audio": {"sha256": "e" * 64}}, []),
+                )
+
+    def test_preflight_receipt_is_atomic_exact_and_hash_drift_invalidates_it(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            state = (
+                {"run_id": "fixture", "delivery_manifest_digest": "a" * 64},
+                {"input": {"path": "input", "bytes": 1, "sha256": "b" * 64}},
+                {"tool": {"path": "tool", "bytes": 1, "sha256": "c" * 64}},
+            )
+            results = [
+                {
+                    "id": spec["id"], "label": spec["label"], "exit_code": 0,
+                    "stdout_sha256": "d" * 64, "stderr_sha256": "e" * 64,
+                }
+                for spec in preflight.required_check_specs()
+            ]
+            with mock.patch.object(preflight, "_current_contract_state", return_value=state):
+                receipt = preflight.record_preflight_receipt(results, root=root)
+                self.assertEqual(receipt["binding"], state[0])
+                self.assertTrue(all(item["result"] == "pass" for item in receipt["required_checks"]))
+                checked, problems = preflight.validate_preflight_receipt(root=root)
+                self.assertIsNotNone(checked)
+                self.assertEqual(problems, [])
+            drifted = ({**state[0], "delivery_manifest_digest": "f" * 64}, state[1], state[2])
+            with mock.patch.object(preflight, "_current_contract_state", return_value=drifted):
+                _checked, problems = preflight.validate_preflight_receipt(root=root)
+            self.assertIn("binding changed", "; ".join(problems))
+
+            (root / preflight.RECEIPT_REL).unlink()
+            failed = json.loads(json.dumps(results))
+            failed[0]["exit_code"] = 1
+            with mock.patch.object(preflight, "_current_contract_state", return_value=state), \
+                 self.assertRaises(preflight.PreflightContractError):
+                preflight.record_preflight_receipt(failed, root=root)
+            self.assertFalse((root / preflight.RECEIPT_REL).exists())
+
+
 def manifest_fixture() -> dict:
     artifacts = {}
     dimensions = {
@@ -1177,18 +1356,21 @@ def manifest_fixture() -> dict:
             "path": f"out/dispatch/{role}.bin", "media_type": "video" if duration else "image",
             "width": width, "height": height, "duration_seconds": duration,
             "streams": {"video": video, "audio": audio}, "bytes": index * 1000,
-            "sha256": f"{index:064x}", "video_codecs": [], "audio_codecs": [],
+            "sha256": f"{index:064x}",
+            "video_codecs": ["h264"] if duration else (["png"] if role == "poster_square" else ["mjpeg"]),
+            "audio_codecs": ["aac"] if audio else [],
             "fps": 30.0 if duration else 25.0,
             "frame_count": 3000 if duration else 1,
         }
     return {
-        "schema_version": 3,
+        "schema_version": dc.MANIFEST_SCHEMA_VERSION,
         "identity": {
             "run_id": "fixture", "date": "2026-08-29",
             "composition": "DispatchDaily", "repository": "TestOwner/test-repo",
         },
         "episode": {"total_frames": 3000, "fps": 30, "duration_seconds": 100.0},
         "render": {"artifact": {"sha256": "9" * 64}},
+        "mastering": {"path": mastering_contract.RECEIPT_REL, "sha256": "8" * 64},
         "artifacts": artifacts,
         "publications": {},
     }
@@ -1298,6 +1480,7 @@ class ShipGateTests(unittest.TestCase):
     def run_check(
         self, directory: Path, *, evidence_now=None, sfx_now=None,
         verdict_mutator=None, raw_verdict=None, release_error=None, write_verdict=True,
+        preflight_error=None,
     ):
         manifest = manifest_fixture()
         artifacts = {role: entry["sha256"] for role, entry in manifest["artifacts"].items()}
@@ -1332,6 +1515,12 @@ class ShipGateTests(unittest.TestCase):
                    "fps": entry["fps"], "frame_count": entry["frame_count"]}
             for role, entry in manifest["artifacts"].items()
         }
+        preflight_facts = {
+            "path": "out/dispatch/preflight_receipt.json", "bytes": 100,
+            "sha256": "9" * 64,
+            "binding": {"run_id": "fixture", "delivery_manifest_digest": dc.contract_digest(manifest)},
+            "required_checks": [], "tool_sources": {},
+        }
         verdict = {
             "recorded_at": "2026-08-29T00:00:00Z",
             "run_id": "fixture", "run_date": "2026-08-29",
@@ -1350,6 +1539,7 @@ class ShipGateTests(unittest.TestCase):
                 "duration_seconds": 100.0, "sample_count": 28,
                 "threshold": 0.995, "maximum_low_information_fraction": 0.4,
             },
+            "preflight": preflight_facts,
         }
         if verdict_mutator:
             verdict_mutator(verdict)
@@ -1376,6 +1566,14 @@ class ShipGateTests(unittest.TestCase):
             stack.enter_context(mock.patch.object(ship_gate, "check_beats_delivered"))
             stack.enter_context(mock.patch.object(ship_gate, "check_identity", return_value=(True, "ok")))
             stack.enter_context(mock.patch.object(ship_gate, "require_manifest", return_value=manifest))
+            if preflight_error is None:
+                stack.enter_context(mock.patch.object(
+                    ship_gate, "require_preflight_receipt", return_value=preflight_facts,
+                ))
+            else:
+                stack.enter_context(mock.patch.object(
+                    ship_gate, "require_preflight_receipt", side_effect=preflight_error,
+                ))
             stack.enter_context(mock.patch.object(
                 ship_gate, "load_stamp",
                 return_value={"run_id": "fixture", "date": "2026-08-29", "composition": "DispatchDaily"},
@@ -1403,6 +1601,24 @@ class ShipGateTests(unittest.TestCase):
             self.assertEqual(marker["schema_version"], 1)
             self.assertEqual(marker["run_id"], "fixture")
 
+    def test_failed_or_missing_preflight_blocks_record_check_and_ship_marker(self):
+        error = preflight.PreflightContractError("required quality gate failed")
+        with mock.patch.object(ship_gate, "require_preflight_receipt", side_effect=error), \
+             mock.patch.object(ship_gate, "check_render_is_current") as render_check, \
+             mock.patch.object(
+                 ship_gate, "fail",
+                 side_effect=lambda reasons, median=None: (_ for _ in ()).throw(GateBlocked(reasons)),
+             ), \
+             self.assertRaisesRegex(GateBlocked, "objective preflight"):
+            ship_gate.cmd_record(mock.Mock(judges="9,9,9", notes=""))
+        render_check.assert_not_called()
+
+        with tempfile.TemporaryDirectory() as td, \
+             self.assertRaisesRegex(GateBlocked, "objective preflight"):
+            root = Path(td)
+            self.run_check(root, preflight_error=error)
+        self.assertFalse((root / "out" / "dispatch" / "SHIP_NOW").exists())
+
     def test_ship_marker_rejects_stale_verdict_and_new_init_removes_it(self):
         with tempfile.TemporaryDirectory() as td:
             root = make_identity_repo(Path(td))
@@ -1416,10 +1632,13 @@ class ShipGateTests(unittest.TestCase):
                 ship_marker.validate_ship_marker(root=root, ship_state=state)[1], [],
             )
             write_json(out / "panel_verdict.json", {"run_id": "2026-08-29-test", "median": 8.0})
+            write_json(out / "preflight_receipt.json", {"schema_version": 1})
             _marker, problems = ship_marker.validate_ship_marker(root=root, ship_state=state)
             self.assertIn("verdict", "; ".join(problems))
             run_guard.init("2026-08-30-test", "DispatchDaily", root=root)
             self.assertFalse((out / "SHIP_NOW").exists())
+            self.assertFalse((out / "panel_verdict.json").exists())
+            self.assertFalse((out / "preflight_receipt.json").exists())
 
     def test_post_panel_sfx_and_evidence_mutations_fail_by_hash(self):
         cases = (
@@ -1489,6 +1708,10 @@ class ShipGateTests(unittest.TestCase):
         rubric = {"path": "config/dispatch_rubric.yaml", "bytes": 10,
                   "sha256": "7" * 64, "ship_threshold": 7.0}
         with mock.patch.object(ship_gate, "check_render_is_current"), \
+             mock.patch.object(ship_gate, "require_preflight_receipt", return_value={
+                 "path": "out/dispatch/preflight_receipt.json", "bytes": 100,
+                 "sha256": "9" * 64, "binding": {}, "required_checks": [], "tool_sources": {},
+             }), \
              mock.patch.object(ship_gate, "check_not_blank", return_value={"vertical_sha256": "1".zfill(64)}), \
              mock.patch.object(ship_gate, "artifact_state", return_value=(artifacts, {"contact": "a" * 64}, manifest)), \
              mock.patch.object(ship_gate, "evidence_binding", return_value=evidence_binding), \
@@ -1536,6 +1759,42 @@ class ShipGateTests(unittest.TestCase):
 
 
 class StaticContractTests(unittest.TestCase):
+    def test_replay_prompt_closed_judge_pack_and_canonical_quality_preflight(self):
+        prompt = (REPO / "prompts" / "dispatch_routine.md").read_text(encoding="utf-8")
+        normalized_prompt = " ".join(prompt.split())
+        self.assertIn("B1 REPLAY/CORRECTNESS SCOPE", prompt)
+        self.assertIn("not a daily video generator", normalized_prompt)
+        self.assertIn("does **not create or research a fresh story**", normalized_prompt)
+        self.assertIn("A genuinely parametric story component remains Phase C", prompt)
+        self.assertNotIn("Each run you create ONE finished", prompt)
+        self.assertNotIn("automation outputs a SHOWSTOPPER every run", prompt)
+
+        scorer = (REPO / ".claude" / "agents" / "scorer.md").read_text(encoding="utf-8")
+        flow = (REPO / ".claude" / "agents" / "flow-critic.md").read_text(encoding="utf-8")
+        for name, text in (("scorer", scorer), ("flow", flow)):
+            self.assertIn("out/evidence/evidence_manifest.json", text, name)
+            self.assertIn("config/dispatch_rubric.yaml", text, name)
+            self.assertIn("expected_artifacts", text, name)
+            self.assertIn("Do not open", text, name)
+            self.assertIn("NON-TERMINAL", text, name)
+        quality = (
+            REPO / ".claude" / "skills" / "alaska-dispatch" / "quality_gate.py"
+        ).read_text(encoding="utf-8")
+        self.assertIn("MANIFEST_SCHEMA_VERSION", quality)
+        self.assertIn("EVIDENCE_SCHEMA_VERSION", quality)
+        self.assertIn("SFX_SCHEMA_VERSION", quality)
+        self.assertIn("mastering_binding", quality)
+        self.assertNotIn("out/dispatch/review", quality)
+        self.assertNotIn("frames_v3/", quality)
+        preflight_text = (REPO / "scripts" / "preflight.py").read_text(encoding="utf-8")
+        self.assertIn(".claude/skills/alaska-dispatch/quality_gate.py", preflight_text)
+        self.assertIn("record_preflight_receipt", preflight_text)
+        self.assertIn("require_preflight_receipt", preflight_text)
+
+        mix = (REPO / "scripts" / "dispatch_mix.py").read_text(encoding="utf-8")
+        self.assertNotIn("json.load", mix)
+        self.assertNotIn("gap-lift SKIPPED", mix)
+
     def test_one_active_registration_no_generic_fallback_and_explicit_package_props(self):
         root = (REPO / "video-engine" / "src" / "Root.tsx").read_text(encoding="utf-8")
         self.assertEqual(root.count('id="DispatchDaily"'), 1)

@@ -37,7 +37,13 @@ SAFE_PATH_RE = re.compile(r"^[A-Za-z0-9._/-]+$")
 DATE_RE = re.compile(r"^(\d{4}-\d{2}-\d{2})(?:$|[-_])")
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 GIT_HEAD_RE = re.compile(r"^(?:[0-9a-f]{40}|[0-9a-f]{64})$")
-SHIP_MARKER_RELS = ("out/dispatch/SHIP_NOW", "out/dispatch/SHIP_NOW.json")
+SHIP_MARKER_RELS = (
+    "out/dispatch/SHIP_NOW",
+    "out/dispatch/SHIP_NOW.json",
+    "out/dispatch/panel_verdict.json",
+    "out/dispatch/preflight_receipt.json",
+    "out/dispatch/delivery_preview_receipt.json",
+)
 
 
 class StaleArtifactError(RuntimeError):
@@ -327,7 +333,7 @@ def render_binding_digest(stamp: dict[str, Any]) -> str:
 
 
 def _clear_ship_markers(root: Path) -> None:
-    """A marker from an earlier identity must never control a newly planned run."""
+    """Earlier identity receipts must never control a newly planned run."""
     for relative in SHIP_MARKER_RELS:
         target = root.joinpath(*relative.split("/"))
         try:

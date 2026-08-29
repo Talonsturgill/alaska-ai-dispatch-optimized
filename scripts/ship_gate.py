@@ -80,6 +80,7 @@ from evidence_contract import (
     require_evidence_manifest,
 )
 from strict_json import StrictJSONError, load_path
+from preflight import PreflightContractError, require_preflight_receipt
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "out" / "dispatch"
@@ -420,6 +421,10 @@ def sfx_facts(
 
 
 def cmd_record(a):
+    try:
+        preflight_receipt = require_preflight_receipt(root=ROOT)
+    except PreflightContractError as exc:
+        fail([f"current-run objective preflight is missing or stale: {exc}"])
     check_render_is_current()
     blankness = check_not_blank()
     arts, evidence_hashes, manifest = artifact_state()
@@ -488,6 +493,7 @@ def cmd_record(a):
         "media_facts": media_facts,
         "sfx": sfx,
         "blankness": blankness,
+        "preflight": preflight_receipt,
     })
     print(f"ship_gate: verdict recorded. median={median} judges={judges} "
           f"threshold={effective_threshold}")
@@ -538,6 +544,11 @@ def check_beats_delivered():
 def validate_ship_verdict(*, verify_blankness=True):
     """Pure current-run verdict validation shared by ship, previews, and no_exit."""
     problems = []
+    try:
+        current_preflight = require_preflight_receipt(root=ROOT)
+    except PreflightContractError as exc:
+        current_preflight = None
+        problems.append(f"current-run objective preflight is missing or stale: {exc}")
     ok, reason = check_identity(
         root=ROOT, expected_composition=ACTIVE_COMPOSITION, require_props=True
     )
@@ -559,7 +570,7 @@ def validate_ship_verdict(*, verify_blankness=True):
         "recorded_at", "run_id", "run_date", "composition", "median", "judges",
         "rubric", "owner_release", "effective_threshold", "notes", "artifacts",
         "evidence", "evidence_manifest", "manifest_digest", "media_facts", "sfx",
-        "blankness",
+        "blankness", "preflight",
     }
     if set(verdict) != expected_fields:
         problems.append("panel verdict fields are not canonical")
@@ -626,6 +637,8 @@ def validate_ship_verdict(*, verify_blankness=True):
         problems.append("deliverable artifact hashes changed after grading")
     if verdict.get("manifest_digest") != contract_digest(manifest):
         problems.append("deliverable manifest changed after grading")
+    if verdict.get("preflight") != current_preflight:
+        problems.append("objective preflight receipt changed after grading")
     media_facts = {
         role: {
             "sha256": entry["sha256"],

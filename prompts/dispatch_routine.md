@@ -9,7 +9,7 @@ and test media on this repository's fixed media branch only. There is no
 production latch or runtime override. Never switch remotes, weaken a guard, or
 find an alternate publisher. If a later section conflicts, this override wins.
 
-# ALASKA.AI DISPATCH ROUTINE — MASTER PROMPT v2 (SOURCE OF TRUTH)
+# ALASKA.AI DISPATCH B1 REPLAY FIXTURE — CORRECTNESS CONTRACT
 
 This file is the sole active routine contract. Execute the checked-out copy on the
 operator-selected canary branch. The routine never updates its own instructions,
@@ -22,16 +22,29 @@ Within this inherited craft document, words such as "deliver", "ship", and
 They never authorize an external message, social post, live feed, foreign repository,
 or production action.
 
+# B1 REPLAY/CORRECTNESS SCOPE — HIGHEST OPERATIONAL PRECEDENCE
+
+The current `DispatchDaily` composition is a deterministic replay canary for the
+frozen 2026-08-13 film. This prompt currently authorizes only correctness,
+lineage, gate, and local-preview validation of that fixture. It is **not a daily
+video generator**, does **not create or research a fresh story**, and is **not
+ready for unattended routine execution**. The schema-v4 lifecycle remains:
+planning `run_guard init`, explicit post-authoring `bind-render-inputs`, canonical
+render, mix, encode, evidence, preflight, panel, and local canary preview.
+
+Research, selection, authoring, daily cadence, and fresh-story instructions later
+in this inherited craft document are archived Phase-C design notes only. Do not
+execute them in B1. A genuinely parametric story component remains Phase C; no
+word such as "daily", "run", "deliver", or "ship" below overrides this scope.
+
 ---
 
-## ROLE
+## B1 ROLE
 
-You are the whole studio for ALASKA.AI: showrunner, writers room, director, illustrator,
-animator, editor, sound designer, and producer. Each run you create ONE finished ~2-minute,
-vertical, narrated, 2.5D INFOGRAPHIC Dispatch (The Infographics Show register) that ties a
-recent, verifiable Alaska story to an HONEST AI / robotics / ML angle, plus the matching
-LinkedIn post and a local HTML preview for owner review. The routine performs no
-external delivery. Your job is that the automation outputs a SHOWSTOPPER every run.
+You are validating and hardening one frozen replay fixture for ALASKA.AI. You do
+not select a story, make fresh claims, synthesize a new daily episode, or represent
+this repository as production-ready. Preserve the historical film's craft intent
+while proving that every terminal artifact traces to its exact bound inputs.
 
 ## THE SHOWSTOPPER STANDARD (read this before everything else)
 
@@ -1487,9 +1500,12 @@ watched it work.
   render, but its output is never terminal evidence and cannot support a verdict.
 - Build the terminal pack only with `python3 scripts/build_evidence.py`. It recreates the
   run-scoped evidence directory, invokes every evidence producer, and writes the exact-byte,
-  source/version/parameter-bound `out/evidence/evidence_manifest.json`.
+  source/version/input/hash-bound schema-v3 `out/evidence/evidence_manifest.json`.
 - Run `python3 scripts/preflight.py` and require exit 0 after that build. Preflight validates
-  the evidence manifest as a blocking check. Only then may editor, flow-critic, or judges run.
+  the canonical quality gate and evidence manifest as blocking checks, then atomically writes
+  `out/dispatch/preflight_receipt.json` bound to the current run, render, delivery, evidence,
+  tool sources, required results, and current input hashes. Only then may editor, flow-critic,
+  or judges run; `ship_gate.py record` rejects any missing or stale receipt.
 - GATE B: editor + flow-critic (POST) + a 3-JUDGE SCORER PANEL vs config/dispatch_rubric.yaml.
   Judges grade motion from the filmstrips (never "unverifiable from stills"). PANEL MEDIAN
   decides. On ANY failure: one dispatch-fixer agent per named failure, patch the root cause,

@@ -36,10 +36,11 @@ is the brand signature. Pairs with `docs/VIDEO_PRODUCTION_STANDARD.md` (craft bi
 - `vo60.py` — 60s edge-tts VO that ALSO captures per-phrase word-timings → `audio/words60.json`
   (captions are built from these, so they always match the voice). Emits `timing60.json`.
 - `audio_v3.py` — the 60s mix + single-pass loudnorm + the audio gate (prints PASS).
-- `quality_gate.py` — **the OBJECTIVE ship/fail gate.** Measures sharpness, HUD/caption text
-  legibility, the ≤5s event cadence, and caption sync; exits non-zero + writes `quality_report.json`.
-  This is the checks-and-balances that catches blur / illegible text / dead pacing / desync so a
-  human never has to. MUST pass before encoding (see ROUTINE_SPEC Phase 6, Gate A).
+- `quality_gate.py` — the current B1 objective pre-panel gate. It consumes only
+  the schema-v4 delivery manifest, schema-v3 evidence manifest, mastering
+  receipt, and sole SFX-v3 ledger; it writes `out/dispatch/quality_report.json`
+  and is a required preflight check. Historical frame-folder metrics below are
+  archived craft context, not an alternate gate.
 
 ## How to use (per run — VARY THE CONCEPT)
 1. This engine is a REFERENCE, not a stamp. Each Dispatch must use a different visual
@@ -49,8 +50,9 @@ is the brand signature. Pairs with `docs/VIDEO_PRODUCTION_STANDARD.md` (craft bi
 2. For ~60s: set the frame count to 1800 (NF) and re-time the VO segments, caption windows,
    beat frames, and the music window to 60s. ~130–150 VO words.
 3. Render in the BACKGROUND, in parallel chunks (e.g. 3×600), never blocking the run.
-4. Before muxing/delivering: run `quality_gate.py` (objective Gate A — MUST exit 0) AND the audio
-   gate, THEN a visual contact sheet for taste. Never encode a render that fails the quality gate.
+4. Historical sequence only. The active B1 order is canonical render -> mix ->
+   encode/mastering receipt -> delivery manifest -> `build_evidence.py` ->
+   `preflight.py`; judges receive only evidence-manifest-declared artifacts.
 5. Historical delivery guidance is retired. In this canary, test media may go
    only to its own media branch and email output is a local HTML preview.
 

@@ -92,19 +92,25 @@ cache miss, and every chunk is rechecked before concatenation.
 
 `config/deliverables.json` defines exactly five shipped roles:
 
-| Role | Canonical path | Dimensions | Streams |
+| Role | Canonical path | Dimensions | Streams/codecs |
 |---|---|---:|---:|
-| `vertical_hosted` | `out/dispatch/dispatch_master_hosted.mp4` | 1080x1920 | 1 video, 1 audio |
-| `square` | `out/dispatch/dispatch_square.mp4` | 1080x1080 | 1 video, 1 audio |
-| `mobile` | `out/dispatch/dispatch_master_720.mp4` | 720x1280 | 1 video, 1 audio |
-| `poster_square` | `out/dispatch/poster.png` | 1080x1080 | 1 image stream |
-| `poster_thumb_vertical` | `out/dispatch/poster_thumb_vertical.jpg` | 540x960 | 1 image stream |
+| `vertical_hosted` | `out/dispatch/dispatch_master_hosted.mp4` | 1080x1920 | H.264 + AAC |
+| `square` | `out/dispatch/dispatch_square.mp4` | 1080x1080 | H.264 + AAC |
+| `mobile` | `out/dispatch/dispatch_master_720.mp4` | 720x1280 | H.264 + AAC |
+| `poster_square` | `out/dispatch/poster.png` | 1080x1080 | PNG image stream |
+| `poster_thumb_vertical` | `out/dispatch/poster_thumb_vertical.jpg` | 540x960 | MJPEG image stream |
 
 `dispatch_mastering_source.mp4` is an explicitly non-shipped muxing source.
 `dispatch_master.mp4`, 4:5/1080x1350 output, the old square thumb, old mute
 paths, and `dispatch_loop.sh` are retired and hard-fail.
 
-The manifest re-probes dimensions, exact credits-inclusive duration, codecs,
+Before the manifest is written, `mastering_contract.py` records an atomic receipt
+binding the render receipt and mute SHA, canonical `audio/master.wav` bytes/hash,
+the sole SFX-v3 ledger and its audio facts, and the exact resulting five output
+hashes. The manifest embeds and revalidates that receipt, so replacing audio,
+the SFX ledger, or any encoded file after encode invalidates the release lineage.
+
+The schema-v4 manifest re-probes dimensions, exact credits-inclusive duration, codecs,
 stream counts, 30fps rate, and counted video frames. Video frame count must be
 within the configured one-frame probe tolerance of the hash-bound episode total.
 It recomputes byte count and SHA-256 for all five files. Paths
@@ -116,10 +122,11 @@ mtime-preserving mutations therefore fail.
 
 `build_evidence.py` first recreates the run-scoped evidence directory, then
 invokes every terminal producer, including the audio report and audio card. Its
-schema-v2 evidence manifest is bound to the exact `vertical_hosted` bytes and
+schema-v3 evidence manifest is bound to the exact `vertical_hosted` bytes and
 immutable delivery-manifest digest. It records the source path/version/hash and
-parameters for every producer, exact output ownership, and bytes/SHA-256 of the
-closed artifact set. Missing or unexpected files, nested paths, stale
+parameters for every producer; every input's canonical path, bytes, SHA-256,
+and run-stamp/delivery/mastering authority; exact output ownership; and
+bytes/SHA-256 of the closed artifact set. Missing or unexpected files, nested paths, stale
 allowed-extension leftovers, producer drift, or changed evidence invalidates
 the verdict. `make_review_sheets.py` is explicitly an early-look helper and its
 output is never terminal panel evidence; preflight requires the producer-bound
@@ -133,6 +140,13 @@ family, pitch, and gain. Events must be a canonical list with finite
 nonnegative in-duration values and lowercase ASCII identifiers. Resolved takes
 are re-hashed at validation. The split `audio/sfx_events.json` ledger is retired;
 its presence is a hard failure rather than an alternate source of truth.
+
+`preflight.py` first runs the canonical quality gate and all required mechanical
+checks, then atomically writes a receipt bound to the current run/stamp/render,
+delivery and evidence digests/hashes, exact required check identities/results/
+exit codes, tool source hashes, and every current input/artifact hash. Both
+`ship_gate.py record` and `check` recompute those bindings and reject a missing,
+stale, mutated, or forged-shape receipt; there is no direct-record bypass.
 
 `ship_gate.py record` accepts exactly three finite scores in 0..10 and computes
 the median internally. There is no supplied-median argument. The verdict binds

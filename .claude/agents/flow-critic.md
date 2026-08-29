@@ -53,17 +53,20 @@ has already passed the machine rules; you judge what a script cannot:
    Dispatch schedule ONE world event near the 2/3 mark? Flag every beat that would render as one
    ticker over a frozen frame.
 
-## MODE = POST (on the rendered piece)
-Read: out/dispatch/review/sheet_*.png (stills) AND out/dispatch/review/strip_*.png (8 consecutive
-frames, 1/15s apart, at the key moves — judge MOTION from these: easing, overshoot/settle, blur,
-follow-through; never from lone stills) + a few full-res frames the orchestrator
-names, out/dispatch/quality_report.json (EVENT_CADENCE / BEAT_DENSITY / SCENE_STRUCTURE / SFX_EVENTS) + the LIVING_SCREEN
-result (layered disjoint-motion windows),
-out/dispatch/sfx_events.json (the single enriched ledger bound to audio/master.wav),
-out/dispatch/shots.json. The retired audio/sfx_events.json alias is never evidence. Judge:
+## MODE = POST (on the rendered replay fixture)
+Read `out/evidence/evidence_manifest.json` first and refuse POST unless the current
+preflight receipt passes. Then consume only files listed in that manifest's
+`expected_artifacts`; each must match the declared bytes and SHA-256. Read
+`config/dispatch_rubric.yaml` and use only its named axes/descriptors. Do not open
+`out/dispatch/review/`, caller-selected full-resolution frames, `shots.json`, or a
+raw SFX ledger as judge evidence. Motion is judged from the declared motion
+filmstrips; sound is judged from the declared `audio_report.json` and
+`audio_card.png`, whose producer inputs bind the canonical SFX-v3 ledger and
+master.wav. The quality/preflight receipts are control preconditions, not extra
+judge-pack media. Judge:
 1. Does the picture VISIBLY change across the sampled frames every few seconds, or are there stretches
    that look static / like the same frame relabeled?
-2. Is every shot sonified (sfx_events has >=1 per shot) and do the events line up with visible moments?
+2. Does the declared audio evidence prove that sampled visible moments are sonified and aligned?
 3. Any beat the plan promised that the render did not deliver (a reveal that is not there, a counter that
    does not move)?
 
@@ -82,6 +85,9 @@ out/dispatch/shots.json. The retired audio/sfx_events.json alias is never eviden
 Default to ship:false unless the piece genuinely never lets the eye or the ear rest on the story. Be
 concrete: quote the sentence, name the beat time, say what sound is missing. Paper fixes are nearly
 free; rendered fixes are not, so in PRE mode be demanding.
+
+`scripts/make_review_sheets.py` output is NON-TERMINAL early-look material. In that
+mode return notes only; never return `ship`, a score, or a verdict.
 
 In POST, ALSO verify the choreography doctrine on the evidence: arrivals show anticipation +
 overshoot + settle (grade from the strips, never lone stills); primaries visibly provoke reactions;

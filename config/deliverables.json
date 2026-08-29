@@ -1,6 +1,7 @@
 {
   "schema_version": 1,
   "manifest_path": "out/dispatch/deliverables_manifest.json",
+  "mastering_receipt_path": "out/dispatch/mastering_receipt.json",
   "video_fps": 30,
   "terminal_preview_required_roles": ["vertical_hosted", "square"],
   "duration_seconds": {
@@ -20,6 +21,8 @@
       "height": 1920,
       "video_streams": 1,
       "audio_streams": 1,
+      "allowed_video_codecs": ["h264"],
+      "allowed_audio_codecs": ["aac"],
       "minimum_bytes": 200000,
       "maximum_bytes": 103809024
     },
@@ -30,6 +33,8 @@
       "height": 1080,
       "video_streams": 1,
       "audio_streams": 1,
+      "allowed_video_codecs": ["h264"],
+      "allowed_audio_codecs": ["aac"],
       "minimum_bytes": 200000,
       "maximum_bytes": 103809024
     },
@@ -40,6 +45,8 @@
       "height": 1280,
       "video_streams": 1,
       "audio_streams": 1,
+      "allowed_video_codecs": ["h264"],
+      "allowed_audio_codecs": ["aac"],
       "minimum_bytes": 100000,
       "maximum_bytes": 103809024
     },
@@ -50,6 +57,8 @@
       "height": 1080,
       "video_streams": 1,
       "audio_streams": 0,
+      "allowed_video_codecs": ["png"],
+      "allowed_audio_codecs": [],
       "minimum_bytes": 1000,
       "maximum_bytes": 20971520
     },
@@ -60,6 +69,8 @@
       "height": 960,
       "video_streams": 1,
       "audio_streams": 0,
+      "allowed_video_codecs": ["mjpeg"],
+      "allowed_audio_codecs": [],
       "minimum_bytes": 500,
       "maximum_bytes": 102400
     }

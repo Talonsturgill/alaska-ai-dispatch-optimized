@@ -25,6 +25,7 @@ from urllib.request import Request, urlopen
 
 from run_guard import ACTIVE_COMPOSITION, check_identity, load_stamp, stamp_digest
 from episode_contract import EpisodeContractError, episode_facts
+from mastering_contract import MasteringContractError, mastering_binding
 from render_contract import RenderContractError, probe_render, require_render
 from strict_json import StrictJSONError, canonical_bytes, load_path, loads
 
@@ -46,8 +47,16 @@ EXPECTED_SPECS = {
         "out/dispatch/poster_thumb_vertical.jpg", "image", 540, 960, 1, 0,
     ),
 }
+EXPECTED_CODECS = {
+    "vertical_hosted": (["h264"], ["aac"]),
+    "square": (["h264"], ["aac"]),
+    "mobile": (["h264"], ["aac"]),
+    "poster_square": (["png"], []),
+    "poster_thumb_vertical": (["mjpeg"], []),
+}
 EXPECTED_MANIFEST_PATH = "out/dispatch/deliverables_manifest.json"
-MANIFEST_SCHEMA_VERSION = 3
+EXPECTED_MASTERING_RECEIPT_PATH = "out/dispatch/mastering_receipt.json"
+MANIFEST_SCHEMA_VERSION = 4
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 GIT_OID_RE = re.compile(r"^(?:[0-9a-f]{40}|[0-9a-f]{64})$")
 SAFE_PATH_RE = re.compile(r"^[A-Za-z0-9._/-]+$")
@@ -162,11 +171,27 @@ def load_config(
                 f"role {role} must be {expected[0]} {expected[2]}x{expected[3]} "
                 f"with video={expected[4]} audio={expected[5]}"
             )
+        expected_video, expected_audio = EXPECTED_CODECS[role]
+        if spec.get("allowed_video_codecs") != expected_video:
+            raise DeliverableContractError(
+                f"role {role}.allowed_video_codecs must be exactly {expected_video}"
+            )
+        if spec.get("allowed_audio_codecs") != expected_audio:
+            raise DeliverableContractError(
+                f"role {role}.allowed_audio_codecs must be exactly {expected_audio}"
+            )
     manifest_rel = safe_relative(value.get("manifest_path"), label="manifest path")
     if manifest_rel != EXPECTED_MANIFEST_PATH:
         raise DeliverableContractError(f"manifest path must be {EXPECTED_MANIFEST_PATH}")
     if manifest_rel in paths:
         raise DeliverableContractError("manifest path collides with a deliverable")
+    mastering_rel = safe_relative(value.get("mastering_receipt_path"), label="mastering receipt path")
+    if mastering_rel != EXPECTED_MASTERING_RECEIPT_PATH:
+        raise DeliverableContractError(
+            f"mastering receipt path must be {EXPECTED_MASTERING_RECEIPT_PATH}"
+        )
+    if mastering_rel in paths or mastering_rel == manifest_rel:
+        raise DeliverableContractError("mastering receipt path collides with an artifact or manifest")
     forbidden = value.get("forbidden_dimensions")
     if not isinstance(forbidden, list) or [1080, 1350] not in forbidden:
         raise DeliverableContractError("deliverable config must explicitly forbid 1080x1350")
@@ -356,6 +381,20 @@ def _entry_problems(
             f"{role} streams are video={facts['streams']['video']} audio={facts['streams']['audio']}, "
             f"expected video={spec['video_streams']} audio={spec['audio_streams']}"
         )
+    expected_video_codecs = spec["allowed_video_codecs"]
+    expected_audio_codecs = spec["allowed_audio_codecs"]
+    if facts.get("video_codecs") != expected_video_codecs:
+        problems.append(
+            f"{role} video codecs {facts.get('video_codecs')} are not canonical {expected_video_codecs}"
+        )
+    if facts.get("audio_codecs") != expected_audio_codecs:
+        problems.append(
+            f"{role} audio codecs {facts.get('audio_codecs')} are not canonical {expected_audio_codecs}"
+        )
+    if entry.get("video_codecs") != facts.get("video_codecs"):
+        problems.append(f"{role} video codecs changed after manifest creation")
+    if entry.get("audio_codecs") != facts.get("audio_codecs"):
+        problems.append(f"{role} audio codecs changed after manifest creation")
     size = path.stat().st_size
     if not spec["minimum_bytes"] <= size <= spec["maximum_bytes"]:
         problems.append(f"{role} byte size {size} is outside its allowed range")
@@ -423,7 +462,8 @@ def build_manifest(
     try:
         episode = episode_facts(root=base)
         render = require_render(root=base, probe=render_probe)
-    except (EpisodeContractError, RenderContractError) as exc:
+        mastering = mastering_binding(root=base, render_probe=render_probe)
+    except (EpisodeContractError, RenderContractError, MasteringContractError) as exc:
         raise DeliverableContractError(str(exc)) from None
     stamp = load_stamp(base)
     assert stamp is not None
@@ -476,6 +516,7 @@ def build_manifest(
         "identity": identity,
         "episode": episode,
         "render": render,
+        "mastering": mastering,
         "artifacts": artifacts,
         "publications": {},
     }
@@ -489,6 +530,7 @@ def contract_digest(manifest: dict[str, Any]) -> str:
         "identity": manifest.get("identity"),
         "episode": manifest.get("episode"),
         "render": manifest.get("render"),
+        "mastering": manifest.get("mastering"),
         "artifacts": manifest.get("artifacts"),
     }
     return hashlib.sha256(canonical_bytes(immutable)).hexdigest()
@@ -560,8 +602,17 @@ def validate_manifest(
             problems.append("manifest render receipt does not match the canonical mute render")
     except (EpisodeContractError, RenderContractError) as exc:
         problems.append(str(exc))
-        expected_episode = {"fps": 30, "duration_seconds": float("nan")}
-    expected_manifest_fields = {"schema_version", "identity", "episode", "render", "artifacts", "publications"}
+        expected_episode = {"fps": 30, "duration_seconds": float("nan"), "total_frames": 0}
+    try:
+        expected_mastering = mastering_binding(root=base, render_probe=render_probe)
+        if raw.get("mastering") != expected_mastering:
+            problems.append("manifest mastering receipt does not match encoded audio/artifact lineage")
+    except MasteringContractError as exc:
+        problems.append(str(exc))
+    expected_manifest_fields = {
+        "schema_version", "identity", "episode", "render", "mastering",
+        "artifacts", "publications",
+    }
     if set(raw) != expected_manifest_fields:
         problems.append("manifest fields are not canonical")
     artifacts = raw.get("artifacts")

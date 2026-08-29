@@ -27,7 +27,7 @@ data center dispatch). Episode-local: this file is rewritten per run with
 EVENTS matched to THIS story's beats/storyboard; the doctrine above and the
 machinery below CARRY OVER unchanged.
 """
-import hashlib, json, os, re, subprocess, sys, math, tempfile, time, zlib
+import hashlib, os, re, subprocess, sys, math, tempfile, time, zlib
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, ".."))
@@ -39,6 +39,7 @@ sys.path.insert(0, HERE)
 from episode_contract import episode_facts
 from run_guard import load_stamp
 from sfx_contract import write_sidecar
+from mix_json_contract import MixInputError, load_loudnorm, load_vo_lines, load_words
 
 _STAMP = load_stamp(REPO)
 if not isinstance(_STAMP, dict):
@@ -97,7 +98,10 @@ def jit(idx, salt, lo, hi):
 # (out/dispatch/episode_props.json > scenes[], scripts/build_scenes.py). Each event:
 # (time, kind, class, pan) — pan is the prop's approximate storyboard x mapped to
 # [-1,1], scaled by 0.35 in the graph.
-_lines = json.load(open(os.path.join(OUT, "vo_lines.json")))["lines"]
+try:
+    _lines = load_vo_lines(os.path.join(OUT, "vo_lines.json"))
+except MixInputError as exc:
+    raise SystemExit(f"dispatch_mix: {exc}") from None
 L = {x["idx"]: x["start"] for x in _lines}
 EVENTS = [
 
@@ -503,14 +507,14 @@ def main():
     # steps, applied downstream of the duck where it is a clean level move.
     gap_lift = [(0.0, 1.0)]
     try:
-        _w = json.load(open(os.path.join(AUD, "words.json")))["words"]
-        _gaps = [(a["e"], b["s"]) for a, b in zip(_w, _w[1:]) if b["s"] - a["e"] >= 0.5]
-        for a, b in _gaps:
-            gap_lift += [(a + 0.05, 1.0), (a + 0.22, 2.05), (b - 0.22, 2.05), (b - 0.05, 1.0)]
-        print(f"bed opens into {len(_gaps)} gaps of 0.5s or longer "
-              f"({sum(b - a for a, b in _gaps):.1f}s of room)")
-    except Exception as e:
-        print(f"bed gap-lift SKIPPED ({e}); the mix will be flatter than it should be")
+        _w = load_words(os.path.join(AUD, "words.json"))
+    except MixInputError as exc:
+        raise SystemExit(f"dispatch_mix: required aligned words rejected: {exc}") from None
+    _gaps = [(a["e"], b["s"]) for a, b in zip(_w, _w[1:]) if b["s"] - a["e"] >= 0.5]
+    for a, b in _gaps:
+        gap_lift += [(a + 0.05, 1.0), (a + 0.22, 2.05), (b - 0.22, 2.05), (b - 0.05, 1.0)]
+    print(f"bed opens into {len(_gaps)} gaps of 0.5s or longer "
+          f"({sum(b - a for a, b in _gaps):.1f}s of room)")
     gap_expr = pw_expr(sorted(gap_lift))
     fc.append(
         f"[1:a]aformat=sample_rates={SR}:channel_layouts=stereo,aloop=loop=-1:size={int(SR*200)},"
@@ -610,7 +614,10 @@ def main():
     m = re.search(r"\{[^{}]*input_i[^{}]*\}", p.stderr, re.S)
     if not m:
         raise SystemExit("dispatch_mix: loudnorm analysis pass produced no JSON")
-    a = json.loads(m.group(0))
+    try:
+        a = load_loudnorm(m.group(0))
+    except MixInputError as exc:
+        raise SystemExit(f"dispatch_mix: {exc}") from None
     print(f"premix measured: {a['input_i']} LUFS  TP {a['input_tp']}  LRA {a['input_lra']}")
     ln = (f"loudnorm=I=-14:TP=-2.0:LRA=11:linear=true"
           f":measured_I={a['input_i']}:measured_TP={a['input_tp']}"

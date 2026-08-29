@@ -2,7 +2,8 @@
 # =================================================================================
 # Governs the MICRO cadence (a story-advancing on-screen change at least every ~5s), say-it-show-it
 # VO coverage, and sound-paired-to-picture. Read by scripts/flow_check.py (back-test + Gate 0A flow
-# block) and .claude/skills/alaska-dispatch/quality_gate.py (the SFX_EVENTS check). Full doctrine +
+# block). The B1 quality gate validates the resulting canonical SFX/audio lineage rather than
+# maintaining a second event-cadence implementation. Full doctrine +
 # rationale: docs/craft/VISUAL_FLOW.md. Numbers are the CEILING/target, calibrated against back-tests.
 
 beats:

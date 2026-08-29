@@ -478,6 +478,7 @@ def main():
             "audio_card": {
                 "parameters": {
                     "master_path": "out/dispatch/audio/master.wav",
+                    "vo_path": "out/dispatch/audio/vo.wav",
                     "sfx_ledger_path": "out/dispatch/sfx_events.json",
                     "output": "out/evidence/audio_card.png",
                 },

@@ -27,7 +27,7 @@ from strict_json import StrictJSONError, load_path, loads
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 OUT = os.path.join(REPO, "out", "dispatch")
 EV = os.path.join(REPO, "out", "evidence")
-GENERATOR_VERSION = "dispatch-audio-report-v2"
+GENERATOR_VERSION = "dispatch-audio-report-v3"
 
 
 def loudnorm(path):

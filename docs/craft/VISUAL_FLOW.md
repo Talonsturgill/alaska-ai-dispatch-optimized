@@ -213,10 +213,11 @@ GATE 0B TASTE + a NEW `flow-critic` agent (no-spawn):
   does something story-advancing change at least every 5s? does each beat name a motivated sound? It
   runs again in post on the rendered montage: does the picture actually flow, or does it stall?
 
-GATE A OBJECTIVE (quality_gate.py) keeps EVENT_CADENCE + BEAT_DENSITY + SCENE_STRUCTURE and adds:
-- SFX_EVENTS: validate `out/dispatch/sfx_events.json` (emitted after the master), and confirm each
-  performed event produced a measurable level lift in those exact master bytes, with >= 1 event per shot. A silent
-  picture (events planned, none audible) FAILS.
+GATE A OBJECTIVE is split deliberately. `flow_check.py` owns authored beat cadence
+and say-it-show-it checks. The B1 `quality_gate.py` owns terminal lineage: it
+validates the sole `out/dispatch/sfx_events.json` schema-v3 ledger against exact
+master.wav bytes, mastering receipt, schema-v4 delivery manifest, and schema-v3
+evidence pack. There is no second frame-folder or split-ledger implementation.
 
 None of these thresholds get relaxed to pass. If the plan or the render misses the flow bar, you
 redesign or re-render, exactly as with the divergence and oner gates.

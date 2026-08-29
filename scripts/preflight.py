@@ -19,15 +19,30 @@ It deliberately does NOT judge quality. Everything here is a fact check: does th
 fit, do the bytes match, is the report measured rather than typed. Taste is the panel's
 job and this file has no opinion about it.
 """
+import hashlib
+import json
 import os
 import subprocess
 import sys
+import tempfile
+import time
+from pathlib import Path
+
+from strict_json import StrictJSONError, load_path
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+RECEIPT_REL = "out/dispatch/preflight_receipt.json"
+RECEIPT_SCHEMA_VERSION = 1
+
+
+class PreflightContractError(RuntimeError):
+    pass
 
 # (label, argv, required). A non-required check that fails is reported and does not block,
 # because it is advisory rather than a fact about correctness.
 CHECKS = [
+    ("canonical objective delivery/evidence/audio lineage gate",
+     [sys.executable, ".claude/skills/alaska-dispatch/quality_gate.py"], True),
     ("typecheck the engine",
      ["npx", "tsc", "--noEmit", "-p", "video-engine/tsconfig.json"], True),
     ("plated strings fit their plates",
@@ -117,6 +132,297 @@ CHECKS = [
 ]
 
 
+def _sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _sha256_text(value: str) -> str:
+    return hashlib.sha256(value.encode("utf-8", errors="replace")).hexdigest()
+
+
+def _atomic_json(path: Path, value: dict) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fd, temporary = tempfile.mkstemp(prefix=path.name + ".", suffix=".tmp", dir=path.parent)
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8", newline="\n") as handle:
+            json.dump(value, handle, ensure_ascii=False, indent=2, sort_keys=True, allow_nan=False)
+            handle.write("\n")
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary, path)
+    finally:
+        try:
+            os.unlink(temporary)
+        except FileNotFoundError:
+            pass
+
+
+def _check_id(argv):
+    if argv and argv[0] == "npx":
+        return "typescript_engine"
+    if argv:
+        stem = Path(argv[1] if argv[0] == sys.executable and len(argv) > 1 else argv[0]).stem
+        return stem.replace("-", "_")
+    raise PreflightContractError("required check has no executable")
+
+
+def required_check_specs():
+    core = [
+        {"id": "git_identity", "label": "git identity is the owner's", "argv": []},
+        {"id": "deliverables_manifest", "label": "deliverables are fresh", "argv": []},
+        {"id": "evidence_manifest", "label": "terminal evidence is current", "argv": []},
+    ]
+    return core + [
+        {"id": _check_id(argv), "label": label, "argv": list(argv)}
+        for label, argv, required in CHECKS if required
+    ]
+
+
+def _safe_file_facts(base: Path, relative: str) -> dict:
+    if (
+        not isinstance(relative, str) or not relative or not relative.isascii()
+        or "\\" in relative or relative.startswith("/")
+        or any(part in {"", ".", ".."} for part in relative.split("/"))
+    ):
+        raise PreflightContractError(f"preflight input path is not canonical: {relative!r}")
+    logical = base.joinpath(*relative.split("/"))
+    current = base
+    for part in relative.split("/"):
+        current = current / part
+        if current.is_symlink():
+            raise PreflightContractError(f"preflight input path may not contain symlinks: {relative}")
+    try:
+        logical.resolve(strict=True).relative_to(base)
+    except (OSError, ValueError) as exc:
+        raise PreflightContractError(f"preflight input is missing or unsafe: {relative}: {exc}") from None
+    if not logical.is_file():
+        raise PreflightContractError(f"preflight input is not a file: {relative}")
+    return {"path": relative, "bytes": logical.stat().st_size, "sha256": _sha256_file(logical)}
+
+
+def _current_contract_state(root=REPO):
+    from deliverable_contract import contract_digest, require_manifest
+    from evidence_contract import evidence_manifest_sha, require_evidence_manifest
+    from run_guard import load_stamp, stamp_digest
+
+    base = Path(root).resolve()
+    delivery = require_manifest(root=base)
+    evidence = require_evidence_manifest(root=base, delivery_manifest=delivery)
+    stamp = load_stamp(base)
+    if not isinstance(stamp, dict):
+        raise PreflightContractError("run stamp is missing or unreadable")
+    evidence_path = base / "out" / "evidence" / "evidence_manifest.json"
+    quality_path = base / "out" / "dispatch" / "quality_report.json"
+    try:
+        quality = load_path(quality_path, label="quality report")
+    except (StrictJSONError, OSError) as exc:
+        raise PreflightContractError(str(exc)) from None
+    expected_quality_checks = [
+        {"id": "delivery_manifest_v4", "exit_code": 0, "result": "pass"},
+        {"id": "mastering_audio_lineage_v1", "exit_code": 0, "result": "pass"},
+        {"id": "evidence_manifest_v3", "exit_code": 0, "result": "pass"},
+        {"id": "sole_sfx_ledger_v3", "exit_code": 0, "result": "pass"},
+    ]
+    quality_delivery = quality.get("delivery") if isinstance(quality, dict) else None
+    quality_evidence = quality.get("evidence") if isinstance(quality, dict) else None
+    quality_sfx = quality.get("sfx") if isinstance(quality, dict) else None
+    mastering_sfx = delivery.get("mastering", {}).get("sfx")
+    if (
+        not isinstance(quality, dict)
+        or not isinstance(quality_delivery, dict)
+        or not isinstance(quality_evidence, dict)
+        or not isinstance(quality_sfx, dict)
+        or not isinstance(mastering_sfx, dict)
+        or quality.get("schema_version") != 2
+        or quality.get("status") != "pass"
+        or quality_delivery.get("digest") != contract_digest(delivery)
+        or quality.get("mastering") != delivery.get("mastering")
+        or quality_evidence.get("sha256") != evidence_manifest_sha(root=base)
+        or quality_sfx.get("sha256") != mastering_sfx.get("sha256")
+        or quality.get("checks") != expected_quality_checks
+    ):
+        raise PreflightContractError("quality report is not canonical or bound to current contracts")
+    input_paths = {
+        "out/dispatch/.run_stamp.json",
+        "out/dispatch/render/render_receipt.json",
+        "out/dispatch/mastering_receipt.json",
+        "out/dispatch/deliverables_manifest.json",
+        "out/evidence/evidence_manifest.json",
+        "out/dispatch/sfx_events.json",
+        "out/dispatch/episode_props.json",
+        "config/compositions.json",
+        "config/deliverables.json",
+        "config/dispatch_rubric.yaml",
+        ".claude/skills/alaska-dispatch/quality_gate.py",
+        "out/dispatch/quality_report.json",
+    }
+    for entry in delivery["artifacts"].values():
+        input_paths.add(entry["path"])
+    for relative in evidence["artifacts"]:
+        input_paths.add(relative)
+    for producer in evidence["producers"].values():
+        input_paths.add(producer["path"])
+        for relative in producer["inputs"]:
+            input_paths.add(relative)
+    for field in ("registry_path", "root_source_path", "source_path", "props_path"):
+        relative = stamp.get(field)
+        if isinstance(relative, str) and relative:
+            input_paths.add(relative)
+    for field in ("source_dependencies", "render_inputs"):
+        values = stamp.get(field)
+        if isinstance(values, dict):
+            input_paths.update(path for path in values if isinstance(path, str))
+    engine_root = base / "video-engine" / "src"
+    if not engine_root.is_dir() or engine_root.is_symlink():
+        raise PreflightContractError("video-engine/src is missing or unsafe")
+    for candidate in engine_root.rglob("*"):
+        if candidate.is_file() and candidate.suffix in {".ts", ".tsx"}:
+            input_paths.add(candidate.resolve().relative_to(base).as_posix())
+    inputs = {relative: _safe_file_facts(base, relative) for relative in sorted(input_paths)}
+
+    tool_paths = {
+        "scripts/preflight.py",
+        "scripts/deliverable_contract.py",
+        "scripts/evidence_contract.py",
+        "scripts/mastering_contract.py",
+        "scripts/render_contract.py",
+        "scripts/run_guard.py",
+        "scripts/sfx_contract.py",
+        "scripts/strict_json.py",
+        ".claude/skills/alaska-dispatch/quality_gate.py",
+    }
+    for _label, argv, required in CHECKS:
+        if not required:
+            continue
+        for value in argv:
+            if isinstance(value, str) and value.endswith(".py") and not Path(value).is_absolute():
+                tool_paths.add(value.replace("\\", "/"))
+    tools = {relative: _safe_file_facts(base, relative) for relative in sorted(tool_paths)}
+    binding = {
+        "run_id": stamp["run_id"],
+        "run_date": stamp["date"],
+        "composition": stamp["composition"],
+        "stamp_sha256": stamp_digest(base),
+        "render_binding_sha256": delivery["render"]["render_binding_sha256"],
+        "delivery_manifest_digest": contract_digest(delivery),
+        "evidence_manifest_digest": evidence["delivery_manifest_digest"],
+        "evidence_manifest_bytes": evidence_path.stat().st_size,
+        "evidence_manifest_sha256": evidence_manifest_sha(root=base),
+    }
+    return binding, inputs, tools
+
+
+def record_preflight_receipt(results, *, root=REPO):
+    expected = required_check_specs()
+    if not isinstance(results, list) or len(results) != len(expected):
+        raise PreflightContractError("preflight did not return the exact required check list")
+    normalized = []
+    for spec, result in zip(expected, results):
+        if not isinstance(result, dict):
+            raise PreflightContractError(f"preflight result for {spec['id']} is invalid")
+        canonical = {
+            "id": spec["id"], "label": spec["label"], "argv": spec["argv"],
+            "result": "pass" if result.get("exit_code") == 0 else "fail",
+            "exit_code": result.get("exit_code"),
+            "stdout_sha256": result.get("stdout_sha256"),
+            "stderr_sha256": result.get("stderr_sha256"),
+        }
+        if result.get("id") != spec["id"] or result.get("label") != spec["label"]:
+            raise PreflightContractError(f"preflight result order/identity changed at {spec['id']}")
+        if canonical["exit_code"] != 0:
+            raise PreflightContractError(f"required preflight check failed: {spec['label']}")
+        for key in ("stdout_sha256", "stderr_sha256"):
+            if not isinstance(canonical[key], str) or len(canonical[key]) != 64:
+                raise PreflightContractError(f"preflight result {spec['id']}.{key} is invalid")
+        normalized.append(canonical)
+    try:
+        binding, inputs, tools = _current_contract_state(root)
+    except PreflightContractError:
+        raise
+    except Exception as exc:
+        raise PreflightContractError(f"preflight contract state cannot be recorded: {exc}") from None
+    receipt = {
+        "schema_version": RECEIPT_SCHEMA_VERSION,
+        "binding": binding,
+        "required_checks": normalized,
+        "inputs": inputs,
+        "tool_sources": tools,
+        "recorded_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+    }
+    target = Path(root).resolve().joinpath(*RECEIPT_REL.split("/"))
+    _atomic_json(target, receipt)
+    return receipt
+
+
+def validate_preflight_receipt(*, root=REPO):
+    base = Path(root).resolve()
+    target = base.joinpath(*RECEIPT_REL.split("/"))
+    try:
+        receipt = load_path(target, label="preflight receipt")
+    except (StrictJSONError, OSError) as exc:
+        return None, [str(exc)]
+    if not isinstance(receipt, dict):
+        return None, ["preflight receipt must be a JSON object"]
+    problems = []
+    fields = {"schema_version", "binding", "required_checks", "inputs", "tool_sources", "recorded_at"}
+    if set(receipt) != fields or receipt.get("schema_version") != RECEIPT_SCHEMA_VERSION:
+        problems.append("preflight receipt fields/schema are not canonical")
+    try:
+        binding, inputs, tools = _current_contract_state(base)
+    except Exception as exc:
+        return receipt, problems + [f"preflight current contract state is invalid: {exc}"]
+    if receipt.get("binding") != binding:
+        problems.append("preflight receipt run/render/delivery/evidence binding changed")
+    if receipt.get("inputs") != inputs:
+        problems.append("preflight input bytes or hashes changed after checks")
+    if receipt.get("tool_sources") != tools:
+        problems.append("preflight tool source bytes or hashes changed after checks")
+    checks = receipt.get("required_checks")
+    expected_specs = required_check_specs()
+    if not isinstance(checks, list) or len(checks) != len(expected_specs):
+        problems.append("preflight receipt does not contain the exact required check list")
+    else:
+        for index, (spec, result) in enumerate(zip(expected_specs, checks)):
+            wanted = {"id": spec["id"], "label": spec["label"], "argv": spec["argv"]}
+            if not isinstance(result, dict) or set(result) != set(wanted) | {
+                "result", "exit_code", "stdout_sha256", "stderr_sha256",
+            }:
+                problems.append(f"preflight check {index} result fields are not canonical")
+                continue
+            if any(result.get(key) != value for key, value in wanted.items()):
+                problems.append(f"preflight required check identity changed at {index}")
+            if result.get("exit_code") != 0:
+                problems.append(f"preflight required check did not pass: {spec['label']}")
+            if result.get("result") != "pass":
+                problems.append(f"preflight required check result is not pass: {spec['label']}")
+            for key in ("stdout_sha256", "stderr_sha256"):
+                value = result.get(key)
+                if not isinstance(value, str) or len(value) != 64:
+                    problems.append(f"preflight check {spec['id']}.{key} is invalid")
+    if not isinstance(receipt.get("recorded_at"), str) or not receipt["recorded_at"]:
+        problems.append("preflight receipt recorded_at is missing")
+    return receipt, problems
+
+
+def require_preflight_receipt(*, root=REPO):
+    receipt, problems = validate_preflight_receipt(root=root)
+    if receipt is None or problems:
+        raise PreflightContractError("; ".join(problems or ["preflight receipt is unavailable"]))
+    target = Path(root).resolve().joinpath(*RECEIPT_REL.split("/"))
+    return {
+        "path": RECEIPT_REL,
+        "bytes": target.stat().st_size,
+        "sha256": _sha256_file(target),
+        "binding": receipt["binding"],
+        "required_checks": receipt["required_checks"],
+        "tool_sources": receipt["tool_sources"],
+    }
+
+
 def deliverables_are_fresh():
     """Re-probe and hash-check all five files against the exact run inputs."""
     from deliverable_contract import contract_digest, validate_manifest
@@ -177,27 +483,48 @@ def git_identity_is_the_owners():
 def main():
     os.chdir(REPO)
     failures, advisories = [], []
+    required_results = []
+    receipt_target = Path(REPO).joinpath(*RECEIPT_REL.split("/"))
+    try:
+        receipt_target.unlink()
+    except FileNotFoundError:
+        pass
+
+    def capture(identifier, label, exit_code, stdout="", stderr=""):
+        required_results.append({
+            "id": identifier,
+            "label": label,
+            "exit_code": int(exit_code),
+            "stdout_sha256": _sha256_text(stdout),
+            "stderr_sha256": _sha256_text(stderr),
+        })
 
     ok, msg = git_identity_is_the_owners()
     if ok is False:
         failures.append(("git identity is the owner's", msg))
         print(f"  FAIL  git identity is the owner's: {msg}")
+        capture("git_identity", "git identity is the owner's", 1, stderr=msg)
     elif ok:
         print(f"  OK    git identity is the owner's: {msg}")
+        capture("git_identity", "git identity is the owner's", 0, stdout=msg)
 
     ok, msg = deliverables_are_fresh()
     if ok is False:
         failures.append(("deliverables are fresh", msg))
         print(f"  FAIL  deliverables are fresh: {msg}")
+        capture("deliverables_manifest", "deliverables are fresh", 1, stderr=msg)
     else:
         print(f"  OK    deliverables are fresh: {msg}")
+        capture("deliverables_manifest", "deliverables are fresh", 0, stdout=msg)
 
     ok, msg = evidence_is_current()
     if ok is False:
         failures.append(("terminal evidence is current", msg))
         print(f"  FAIL  terminal evidence is current: {msg}")
+        capture("evidence_manifest", "terminal evidence is current", 1, stderr=msg)
     else:
         print(f"  OK    terminal evidence is current: {msg}")
+        capture("evidence_manifest", "terminal evidence is current", 0, stdout=msg)
 
     for label, argv, required in CHECKS:
         p = subprocess.run(argv, capture_output=True, text=True)
@@ -211,6 +538,14 @@ def main():
         else:
             advisories.append((label, tail))
             print(f"  NOTE  {label}: {tail}")
+        if required:
+            required_results.append({
+                "id": _check_id(argv),
+                "label": label,
+                "exit_code": p.returncode,
+                "stdout_sha256": _sha256_text(p.stdout or ""),
+                "stderr_sha256": _sha256_text(p.stderr or ""),
+            })
 
     print()
     if advisories:
@@ -224,8 +559,17 @@ def main():
               "attention is the most expensive thing in this loop and must not be spent "
               "on arithmetic.")
         return 1
+    try:
+        receipt = record_preflight_receipt(required_results)
+    except PreflightContractError as exc:
+        print(f"preflight: BLOCKED: receipt could not be recorded: {exc}")
+        return 1
     print("preflight: clear. The mechanical checks have nothing left to say; "
           "what remains is taste, which is what the panel is for.")
+    print(
+        "preflight: receipt bound to "
+        f"{receipt['binding']['delivery_manifest_digest'][:16]} -> {RECEIPT_REL}"
+    )
     return 0
 
 

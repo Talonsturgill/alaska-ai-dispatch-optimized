@@ -36,7 +36,7 @@ from strict_json import StrictJSONError, load_path, loads
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 OUT = os.path.join(REPO, "out", "dispatch")
 AUD = os.path.join(OUT, "audio")
-GENERATOR_VERSION = "dispatch-audio-evidence-v2"
+GENERATOR_VERSION = "dispatch-audio-evidence-v3"
 
 FAMILY_COLOR = {
     "thud": "#c0392b", "boom": "#c0392b", "stamp": "#a93226",
