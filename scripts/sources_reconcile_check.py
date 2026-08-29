@@ -21,20 +21,26 @@ Exit 1 on a real divergence. Advisory notes do not fail.
 """
 import json, os, sys
 
+from strict_json import StrictJSONError, load_path
+
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(REPO, "out", "dispatch")
 
 
 def main() -> int:
     try:
-        claims_doc = json.load(open(os.path.join(OUT, "claims.json")))
-        ledger = json.load(open(os.path.join(OUT, "sources.json")))
-    except FileNotFoundError as e:
-        print(f"sources_reconcile_check: cannot read {e.filename}")
+        claims_doc = load_path(os.path.join(OUT, "claims.json"), label="claims")
+        ledger = load_path(os.path.join(OUT, "sources.json"), label="sources ledger")
+    except StrictJSONError as e:
+        print(f"sources_reconcile_check: {e}")
         return 1
-
-    cl = claims_doc.get("claims", claims_doc) if isinstance(claims_doc, dict) else claims_doc
-    claims = cl if isinstance(cl, list) else list(cl.values())
+    if not isinstance(claims_doc, dict) or not isinstance(claims_doc.get("claims"), list):
+        print("sources_reconcile_check: claims must be a JSON object with a claims list")
+        return 1
+    if not isinstance(ledger, dict) or not isinstance(ledger.get("sources"), list):
+        print("sources_reconcile_check: sources ledger must be an object with a sources list")
+        return 1
+    claims = claims_doc["claims"]
     by_id = {str(c["id"]): c for c in claims if c.get("id")}
     entries = ledger.get("sources", [])
 
@@ -116,4 +122,7 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    try:
+        sys.exit(main())
+    except (StrictJSONError, OSError, TypeError, ValueError, KeyError) as exc:
+        raise SystemExit(f"sources_reconcile_check: {exc}") from None

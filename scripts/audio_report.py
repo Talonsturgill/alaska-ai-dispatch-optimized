@@ -22,9 +22,12 @@ import os
 import re
 import subprocess
 
+from strict_json import StrictJSONError, load_path, loads
+
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 OUT = os.path.join(REPO, "out", "dispatch")
 EV = os.path.join(REPO, "out", "evidence")
+GENERATOR_VERSION = "dispatch-audio-report-v2"
 
 
 def loudnorm(path):
@@ -33,15 +36,21 @@ def loudnorm(path):
          "-af", "loudnorm=I=-14:TP=-1.5:LRA=11:print_format=json", "-f", "null", "-"],
         capture_output=True, text=True)
     m = re.search(r"\{[^{}]*input_i[^{}]*\}", p.stderr, re.S)
-    if not m:
-        return {}
-    d = json.loads(m.group(0))
+    if p.returncode != 0 or not m:
+        detail = (p.stderr or p.stdout or "no loudness JSON").strip()[-300:]
+        raise RuntimeError(f"ffmpeg loudness measurement failed: {detail}")
+    d = loads(m.group(0), label="ffmpeg loudness report")
+    if not isinstance(d, dict):
+        raise RuntimeError("ffmpeg loudness report must be a JSON object")
     return {"i": float(d["input_i"]), "tp": float(d["input_tp"]),
             "lra": float(d["input_lra"])}
 
 
 def gaps_from_words(words_path, min_gap=0.35):
-    w = json.load(open(words_path))["words"]
+    raw = load_path(words_path, label="aligned words")
+    if not isinstance(raw, dict) or not isinstance(raw.get("words"), list):
+        raise RuntimeError("aligned words must be an object with a words list")
+    w = raw["words"]
     out = []
     for a, b in zip(w, w[1:]):
         g = b["s"] - a["e"]
@@ -136,11 +145,16 @@ def main():
         "diagnosis": diagnosis,
     }
     os.makedirs(EV, exist_ok=True)
-    json.dump(rep, open(a.out, "w"), indent=1)
+    with open(a.out, "w", encoding="utf-8", newline="\n") as handle:
+        json.dump(rep, handle, indent=1, allow_nan=False)
+        handle.write("\n")
     print(f"audio_report: I={rep['delivered_i']} TP={rep['delivered_tp']} LRA={lra}")
     print(f"  {len(gaps)} gaps >=0.35s, {len(long_gaps)} >=0.50s, {silence}s of silence")
     print(f"  -> {a.out}")
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except (StrictJSONError, RuntimeError, OSError, TypeError, ValueError) as exc:
+        raise SystemExit(f"audio_report: {exc}") from None

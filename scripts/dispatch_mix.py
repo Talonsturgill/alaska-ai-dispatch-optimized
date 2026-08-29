@@ -64,9 +64,9 @@ def file_sha256(path):
     return digest.hexdigest()
 
 
-def write_bound_sfx_sidecar(master):
+def write_bound_sfx_sidecar(master, performed_events):
     """Bind the performed schedule to exact props timing and audio bytes."""
-    return write_sidecar(master, EVENTS, root=REPO)
+    return write_sidecar(master, performed_events, root=REPO)
 
 
 # --- sound families (spectral neighborhoods, for the repetition assert + jitter)
@@ -542,6 +542,7 @@ def main():
 
     # SFX: per-event performance — pitch/volume/timing jitter, class gain, pan
     sfx_labels = []
+    performed_events = []
     for i, (t, kind, cls, pan) in enumerate(EVENTS):
         idx = 2 + i
         fam = FAMILY[kind]
@@ -562,6 +563,18 @@ def main():
         lbl = f"s{i}"
         fc.append(",".join(chain) + f"[{lbl}]")
         sfx_labels.append(f"[{lbl}]")
+        performed_events.append({
+            "t": t_actual,
+            "planned_t": float(t),
+            "kind": kind,
+            "class": cls,
+            "pan": p,
+            "take": os.path.relpath(takes[i], REPO).replace(os.sep, "/"),
+            "take_sha256": file_sha256(takes[i]),
+            "family": fam,
+            "pitch_cents": cents,
+            "gain_db": gain_db,
+        })
 
     # WIND for the north block: brown noise, lowpassed to a distant hiss, gusting on a
     # 9.5s cycle that is deliberately prime to nothing else in the mix so it never lines up
@@ -616,19 +629,11 @@ def main():
     os.remove(premix)
     print("wrote", master)
 
-    # Rewrite the early human-readable schedule only after master.wav exists. A crashed mix
-    # deliberately leaves the unbound preliminary sidecar, which ship_gate rejects instead of
-    # mistaking it for proof about an audio file the run never completed.
-    write_bound_sfx_sidecar(master)
+    # Emit exactly one ledger, only after take resolution, performance construction, and
+    # master.wav completion.  It binds the performed timing/take/gain/pitch facts to the
+    # exact master bytes; the retired audio/sfx_events.json alias is removed by the writer.
+    write_bound_sfx_sidecar(master, performed_events)
     print("sfx_events.json bound to", file_sha256(master)[:12], os.path.getsize(master), "bytes")
-
-    # write sfx_events.json for the gate (schema: t/kind as before, + performance)
-    json.dump({"events": [
-                   {"t": t, "kind": k, "class": c, "pan": p,
-                    "take": os.path.basename(takes[i]), "family": FAMILY[k]}
-                   for i, (t, k, c, p) in enumerate(EVENTS)],
-               "silence_dip_at": SILENCE_DIP_AT, "count": len(EVENTS)},
-              open(os.path.join(AUD, "sfx_events.json"), "w"), indent=2)
 
 
 if __name__ == "__main__":

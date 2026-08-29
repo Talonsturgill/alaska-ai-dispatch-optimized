@@ -46,7 +46,6 @@ resolve_out() {   # abs path -> unchanged; relative path -> resolved against the
 # So the run's composition id is now recorded in out/dispatch/.run_stamp.json and this
 # wrapper refuses to render anything else. A stale id from an old command line, an old doc,
 # or a habit stops here instead of at the panel.
-python3 scripts/run_guard.py bind-inputs
 python3 scripts/run_guard.py require-composition --composition DispatchDaily
 RUN_COMP="$(python3 -c 'import sys;sys.path.insert(0,"scripts");from run_guard import load_stamp;print(load_stamp()["composition"])')"
 assert_comp() {

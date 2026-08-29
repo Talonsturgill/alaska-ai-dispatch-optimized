@@ -39,6 +39,8 @@ It reads the SCRIPT, so it runs BEFORE a second of TTS is spent, which is the wh
 """
 import json, re, sys, os
 
+from strict_json import StrictJSONError, load_path
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, ".."))
 OUT = os.path.join(REPO, "out", "dispatch")
@@ -114,8 +116,12 @@ def _claim_span(lines, cid):
 
 def main():
     show = "--list" in sys.argv
-    script = json.load(open(os.path.join(OUT, "vo_script.json")))
-    claims_doc = json.load(open(os.path.join(OUT, "claims.json")))
+    script = load_path(os.path.join(OUT, "vo_script.json"), label="VO script")
+    claims_doc = load_path(os.path.join(OUT, "claims.json"), label="claims")
+    if not isinstance(script, dict) or not isinstance(script.get("lines"), list):
+        raise StrictJSONError("VO script must be a JSON object with a lines list")
+    if not isinstance(claims_doc, dict) or not isinstance(claims_doc.get("claims"), list):
+        raise StrictJSONError("claims must be a JSON object with a claims list")
     claims = {c["id"]: c for c in claims_doc["claims"]}
 
     problems, notes = [], []
@@ -202,8 +208,11 @@ def main():
     secs = 0.0
     _vl = os.path.join(REPO, "out", "dispatch", "vo_lines.json")
     try:
-        secs = max(x["end"] for x in json.load(open(_vl))["lines"])
-    except (OSError, ValueError, KeyError) as _e:
+        line_data = load_path(_vl, label="VO lines")
+        if not isinstance(line_data, dict) or not isinstance(line_data.get("lines"), list):
+            raise StrictJSONError("VO lines must be a JSON object with a lines list")
+        secs = max(x["end"] for x in line_data["lines"])
+    except (StrictJSONError, OSError, ValueError, KeyError, TypeError) as _e:
         problems.append(f"STORY DENSITY: cannot measure runtime from {_vl} ({_e}). The density "
                         f"floor is unenforceable without it, so this is a failure, not a skip.")
     if secs > 0 and used:
@@ -237,4 +246,7 @@ def main():
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    try:
+        sys.exit(main())
+    except (StrictJSONError, OSError, TypeError, ValueError, KeyError) as exc:
+        raise SystemExit(f"vo_claims_check: {exc}") from None

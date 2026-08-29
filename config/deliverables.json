@@ -1,6 +1,8 @@
 {
   "schema_version": 1,
   "manifest_path": "out/dispatch/deliverables_manifest.json",
+  "video_fps": 30,
+  "terminal_preview_required_roles": ["vertical_hosted", "square"],
   "duration_seconds": {
     "derived_from": "out/dispatch/episode_props.json#total/fps",
     "includes_credits": true,

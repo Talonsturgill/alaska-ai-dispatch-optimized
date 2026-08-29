@@ -149,9 +149,10 @@ MIX HIERARCHY (VO always wins):
 - EQ the music (and any SFX) to duck the 2 to 4 kHz speech-intelligibility band while the VO speaks.
 - Program loudness -14 LUFS, true peak <= -1.0 dBTP (already the audio gate).
 
-Our engine already builds a dedicated SFX stem cut to the shot boundaries. The upgrade (§9): the audio
-script EMITS its event list to audio/sfx_events.json, and the gate VERIFIES those events actually
-landed in the master (a measurable level lift at each event time, >= 1 event per shot).
+Our engine already builds a dedicated SFX stem cut to the shot boundaries. The upgrade (§9): after
+take resolution and master completion, the audio script EMITS one enriched ledger at
+`out/dispatch/sfx_events.json`. It binds every performed take/timing/gain/pitch fact to the exact
+`master.wav` bytes. The retired `audio/sfx_events.json` split ledger is a hard failure.
 
 ---
 
@@ -213,8 +214,8 @@ GATE 0B TASTE + a NEW `flow-critic` agent (no-spawn):
   runs again in post on the rendered montage: does the picture actually flow, or does it stall?
 
 GATE A OBJECTIVE (quality_gate.py) keeps EVENT_CADENCE + BEAT_DENSITY + SCENE_STRUCTURE and adds:
-- SFX_EVENTS: read audio/sfx_events.json (emitted by the audio script), and confirm each planned event
-  produced a measurable level lift in the master at its timestamp, with >= 1 event per shot. A silent
+- SFX_EVENTS: validate `out/dispatch/sfx_events.json` (emitted after the master), and confirm each
+  performed event produced a measurable level lift in those exact master bytes, with >= 1 event per shot. A silent
   picture (events planned, none audible) FAILS.
 
 None of these thresholds get relaxed to pass. If the plan or the render misses the flow bar, you

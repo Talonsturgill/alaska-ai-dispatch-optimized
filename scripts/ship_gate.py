@@ -246,7 +246,8 @@ def evidence_binding(manifest):
         "sha256": evidence_manifest_sha(root=ROOT),
         "delivery_manifest_digest": evidence_manifest["delivery_manifest_digest"],
         "vertical_hosted": evidence_manifest["vertical_hosted"],
-        "generator": evidence_manifest["generator"],
+        "producers": evidence_manifest["producers"],
+        "expected_artifacts": evidence_manifest["expected_artifacts"],
         "artifacts": evidence_manifest["artifacts"],
     }
 
@@ -424,7 +425,7 @@ def cmd_record(a):
     arts, evidence_hashes, manifest = artifact_state()
     if not evidence_hashes:
         fail([f"no review evidence in {REVIEW} — the panel cannot have looked at anything. "
-              f"Run scripts/make_review_sheets.py on frames extracted from THIS render."])
+              f"Run scripts/build_evidence.py against THIS delivered cut."])
 
     parts = a.judges.split(",") if isinstance(a.judges, str) else []
     if len(parts) != 3 or any(not part.strip() for part in parts):
@@ -464,6 +465,8 @@ def cmd_record(a):
             "bytes": entry["bytes"],
             "duration_seconds": entry["duration_seconds"],
             "streams": entry["streams"],
+            "fps": entry["fps"],
+            "frame_count": entry["frame_count"],
         }
         for role, entry in manifest["artifacts"].items()
     }
@@ -629,6 +632,8 @@ def validate_ship_verdict(*, verify_blankness=True):
             "bytes": entry["bytes"],
             "duration_seconds": entry["duration_seconds"],
             "streams": entry["streams"],
+            "fps": entry["fps"],
+            "frame_count": entry["frame_count"],
         }
         for role, entry in manifest["artifacts"].items()
     }
@@ -689,12 +694,8 @@ def cmd_check(a):
     judges = state["judges"]
     arts = state["verdict"]["artifacts"]
     graded_ev = state["verdict"]["evidence"]
-    SHIP_NOW = RENDER / "SHIP_NOW"
-    SHIP_NOW.write_text(
-        f"median {median} cleared {effective}.\n"
-        "SHIP THESE BYTES. Do not edit, re-render, or improve this run.\n",
-        encoding="utf-8",
-    )
+    from ship_marker import record_ship_marker
+    record_ship_marker(state, root=ROOT)
     print("=" * 72)
     print("SHIP GATE: PASS  ->  SHIP NOW, DO NOT KEEP EDITING")
     print("=" * 72)

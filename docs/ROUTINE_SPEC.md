@@ -1,6 +1,15 @@
-# ALASKA.AI Dispatch Routine (master prompt, paste-into-routine)
+# ARCHIVED ROUTINE SPEC — DO NOT EXECUTE
 
-This IS the routine prompt. It runs autonomously on Claude Code cloud (no mid-run
+This file preserves a retired engine generation for incident history only. It
+is not a routine prompt, not an active consumer contract, and must never be
+pasted into or used to operate the optimization canary. The sole operational
+contract is `prompts/dispatch_routine.md` under `CANARY_SAFETY.md`; its
+composition registry, canonical SFX ledger, deliverable manifest, terminal
+evidence, and publication receipts override every path and instruction below.
+
+# ALASKA.AI Dispatch Routine (historical text)
+
+Historical claim only: this was once the routine prompt. It ran autonomously on Claude Code cloud (no mid-run
 approvals). It pairs with `docs/VIDEO_PRODUCTION_STANDARD.md` (craft), the
 `.claude/skills/alaska-dispatch/` engine, `config/voices.yaml`, and
 `config/scoring_rubric.yaml`. Where this file and older docs disagree, THIS file wins.

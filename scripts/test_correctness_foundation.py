@@ -20,15 +20,19 @@ if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
 import deliverable_contract as dc
+import build_evidence
 import build_scenes
 import delivery_preview
+import dispatch_email
 import episode_contract
 import evidence_contract
 import no_exit
+import preflight
 import render_contract
 import run_guard
 import sfx_contract
 import ship_gate
+import ship_marker
 import upload_video
 from strict_json import StrictJSONError, canonical_bytes, load_path, loads
 
@@ -127,7 +131,7 @@ def init_identity(root: Path) -> dict:
     run_guard.init(
         "2026-08-29-test", "DispatchDaily", root=root,
     )
-    return run_guard.bind_inputs(root=root)
+    return run_guard.bind_render_inputs(root=root)
 
 
 def copy_delivery_config(root: Path) -> None:
@@ -151,6 +155,8 @@ def make_artifacts(root: Path, stamp: dict) -> dict[str, dict]:
             "streams": {"video": spec["video_streams"], "audio": spec["audio_streams"]},
             "video_codecs": ["h264"] if spec["media_type"] == "video" else ["png"],
             "audio_codecs": ["aac"] if spec["audio_streams"] else [],
+            "fps": 30.0 if spec["media_type"] == "video" else 25.0,
+            "frame_count": 3000 if spec["media_type"] == "video" else 1,
         }
     return facts
 
@@ -172,6 +178,29 @@ def make_render(root: Path, stamp: dict):
     return probe
 
 
+def make_sfx_events(root: Path, *, count: int = 6, spacing: float = 10.0) -> list[dict]:
+    events = []
+    for index in range(count):
+        relative = f"assets/sfx/hit_{index}_v1.wav"
+        take = root.joinpath(*relative.split("/"))
+        take.parent.mkdir(parents=True, exist_ok=True)
+        take.write_bytes((f"take-{index}".encode("ascii")) * 200)
+        planned = float(index * spacing)
+        events.append({
+            "t": planned + 0.005,
+            "planned_t": planned,
+            "kind": f"hit_{index}",
+            "class": "standard",
+            "pan": 0.1,
+            "take": relative,
+            "take_sha256": sfx_contract.sha256_file(take),
+            "family": "impact",
+            "pitch_cents": 12.5,
+            "gain_db": -9.5,
+        })
+    return events
+
+
 class StrictJSONTests(unittest.TestCase):
     def test_nonfinite_overflow_recursion_unicode_and_canonical_nan_fail_concisely(self):
         for payload in ("1e999", "[" * 2000 + "0" + "]" * 2000, "9" * 5000):
@@ -187,6 +216,43 @@ class StrictJSONTests(unittest.TestCase):
             with self.assertRaises(StrictJSONError) as caught:
                 load_path(target, label="fixture")
             self.assertIn("cannot be read", str(caught.exception))
+
+    def test_build_evidence_email_and_claim_boundaries_reject_duplicate_or_non_object(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            out = root / "out"
+            out.mkdir()
+            write_json(out / "episode_props.json", {})
+            (out / "vo_lines.json").write_text(
+                '{"lines":[],"lines":[]}\n', encoding="utf-8",
+            )
+            with self.assertRaisesRegex(StrictJSONError, "duplicate"):
+                build_evidence.load_run_inputs(out)
+            (out / "vo_lines.json").write_text("[]\n", encoding="utf-8")
+            with self.assertRaisesRegex(StrictJSONError, "object"):
+                build_evidence.load_run_inputs(out)
+            sources = root / "sources.json"
+            sources.write_text("[]\n", encoding="utf-8")
+            with self.assertRaisesRegex(StrictJSONError, "object"):
+                dispatch_email.load_sources(sources)
+            sources.write_text('{"sources":[],"sources":[]}\n', encoding="utf-8")
+            with self.assertRaisesRegex(StrictJSONError, "duplicate"):
+                dispatch_email.load_sources(sources)
+
+            engine = root / "Engine.tsx"
+            voice = root / "vo.txt"
+            engine.write_text("export {};\n", encoding="utf-8")
+            voice.write_text("voice\n", encoding="utf-8")
+            for payload in ('{"claims":[],"claims":[]}', "[]"):
+                claims = root / "claims.json"
+                claims.write_text(payload + "\n", encoding="utf-8")
+                result = subprocess.run(
+                    [sys.executable, str(REPO / "scripts" / "claims_contract_check.py"),
+                     "--claims", str(claims), "--vo", str(voice), "--engine", str(engine)],
+                    capture_output=True, text=True,
+                )
+                self.assertNotEqual(result.returncode, 0)
+                self.assertNotIn("Traceback", result.stderr + result.stdout)
 
 
 class RunGuardTests(unittest.TestCase):
@@ -218,13 +284,48 @@ class RunGuardTests(unittest.TestCase):
             stamp = init_identity(root)
             expected = {
                 "schema_version", "run_id", "date", "composition", "mode", "repository",
-                "origin", "worktree_root", "branch", "git_head", "props_path", "props_sha256",
-                "source_path", "source_sha256", "source_dependencies", "registry_sha256",
-                "root_source_sha256", "engine_sources_sha256", "render_inputs",
+                "origin", "worktree_root", "branch", "planning_git_head", "git_head",
+                "started_at", "binding_state", "bound_at", "props_path", "props_sha256",
+                "registry_path", "source_path", "source_sha256", "source_dependencies",
+                "registry_sha256", "root_source_path", "root_source_sha256",
+                "engine_sources_sha256", "render_inputs", "render_binding_sha256",
             }
             self.assertTrue(expected <= set(stamp))
             ok, reason = run_guard.check_identity(root=root, expected_composition="DispatchDaily")
             self.assertTrue(ok, reason)
+
+    def test_planning_then_explicit_bind_allows_authoring_only_before_boundary(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = make_identity_repo(Path(td))
+            planning = run_guard.init("2026-08-29-plan", "DispatchDaily", root=root)
+            self.assertEqual(planning["binding_state"], "planning")
+            ok, reason = run_guard.check_identity(root=root)
+            self.assertFalse(ok)
+            self.assertIn("bind-render-inputs", reason)
+            ok, reason = run_guard.check_identity(root=root, require_props=False)
+            self.assertTrue(ok, reason)
+
+            source = root / "video-engine" / "src" / "DispatchDaily.tsx"
+            props = root / "out" / "dispatch" / "episode_props.json"
+            source.write_text("export const DispatchDaily = () => 'authored';\n", encoding="utf-8")
+            authored = json.loads(props.read_text(encoding="utf-8"))
+            authored["captions"] = []
+            write_json(props, authored)
+            git(root, "add", "video-engine/src/DispatchDaily.tsx")
+            git(root, "-c", "user.name=Test Owner", "-c", "user.email=test@example.com",
+                "commit", "-m", "author replay inputs")
+            ok, reason = run_guard.check_identity(root=root, require_props=False)
+            self.assertTrue(ok, reason)
+            bound = run_guard.bind_render_inputs(root=root)
+            self.assertEqual(bound["binding_state"], "render_bound")
+            self.assertRegex(bound["render_binding_sha256"], r"^[0-9a-f]{64}$")
+
+            props.write_text(props.read_text(encoding="utf-8") + " ", encoding="utf-8")
+            ok, reason = run_guard.check_identity(root=root)
+            self.assertFalse(ok)
+            self.assertIn("props changed", reason)
+            with self.assertRaisesRegex(run_guard.RunIdentityError, "retired"):
+                run_guard.bind_inputs(root=root)
 
     def test_copied_stamp_branch_props_registry_root_render_and_dependency_drift_fail(self):
         mutations = {
@@ -369,7 +470,7 @@ class EpisodeRenderIntegrationTests(unittest.TestCase):
                 "credits": credits,
             }
             write_json(root / "out" / "dispatch" / "episode_props.json", props)
-            stamp = run_guard.bind_inputs(root=root)
+            stamp = run_guard.bind_render_inputs(root=root)
             episode = episode_contract.episode_facts(root=root)
             self.assertEqual(episode["credits_frames"], 300)
             self.assertEqual(episode["duration_seconds"], 101.0)
@@ -378,10 +479,7 @@ class EpisodeRenderIntegrationTests(unittest.TestCase):
             audio.parent.mkdir(parents=True, exist_ok=True)
             audio.write_bytes(b"audio-master" * 200)
             os.utime(audio, (stamp["started_at"] + 1, stamp["started_at"] + 1))
-            events = [
-                {"t": float(index * 10), "kind": f"hit{index}"}
-                for index in range(6)
-            ]
+            events = make_sfx_events(root)
             sidecar = sfx_contract.write_sidecar(audio, events, root=root)
             self.assertEqual(sidecar["video_seconds"], 101.0)
 
@@ -400,6 +498,7 @@ class EpisodeRenderIntegrationTests(unittest.TestCase):
             for facts in artifact_facts.values():
                 if facts["duration_seconds"] is not None:
                     facts["duration_seconds"] = 101.0
+                    facts["frame_count"] = timing["total"]
             probe = lambda path: dict(artifact_facts[str(Path(path).resolve())])
             manifest = dc.build_manifest(root=root, probe=probe, render_probe=render_probe)
             self.assertEqual(manifest["episode"]["duration_seconds"], 101.0)
@@ -450,6 +549,45 @@ class EpisodeRenderIntegrationTests(unittest.TestCase):
                 render_contract.prepare_render(root=root)
             self.assertTrue(target.exists())
             self.assertTrue(receipt.exists())
+
+    def test_chunk_receipt_binds_full_render_digest_exact_range_and_bytes(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = make_identity_repo(Path(td))
+            init_identity(root)
+            chunk = root / "out" / "dispatch" / "chunk.mp4"
+            receipt = root / "out" / "dispatch" / "chunk.json"
+            chunk.write_bytes(b"chunk-bytes" * 100)
+            facts = {
+                "width": 1080, "height": 1920, "frames": 100,
+                "duration_seconds": 100 / 30,
+                "streams": {"video": 1, "audio": 0},
+            }
+            probe = lambda _path: dict(facts)
+            recorded = render_contract.record_chunk(
+                chunk, receipt, index=0, start=0, end=99, total=3000,
+                root=root, probe=probe,
+            )
+            self.assertRegex(recorded["render_binding_sha256"], r"^[0-9a-f]{64}$")
+            checked = render_contract.require_chunk(
+                chunk, receipt, index=0, start=0, end=99, total=3000,
+                root=root, probe=probe,
+            )
+            self.assertEqual(checked["chunk"], {"index": 0, "start": 0, "end": 99, "total": 3000})
+            with self.assertRaisesRegex(render_contract.RenderContractError, "chunk"):
+                render_contract.require_chunk(
+                    chunk, receipt, index=0, start=1, end=100, total=3000,
+                    root=root, probe=probe,
+                )
+            stat = chunk.stat()
+            changed = bytearray(chunk.read_bytes())
+            changed[0] ^= 1
+            chunk.write_bytes(changed)
+            os.utime(chunk, ns=(stat.st_atime_ns, stat.st_mtime_ns))
+            with self.assertRaisesRegex(render_contract.RenderContractError, "artifact"):
+                render_contract.require_chunk(
+                    chunk, receipt, index=0, start=0, end=99, total=3000,
+                    root=root, probe=probe,
+                )
 
 
 class DeliverableContractTests(unittest.TestCase):
@@ -512,6 +650,8 @@ class DeliverableContractTests(unittest.TestCase):
             ("forbidden", "vertical_hosted", {"width": 1080, "height": 1350}, "forbidden dimensions"),
             ("streams", "square", {"streams": {"video": 1, "audio": 0}}, "streams are"),
             ("duration", "mobile", {"duration_seconds": 12.0}, "duration"),
+            ("fps", "mobile", {"fps": 29.97}, "required 30 fps"),
+            ("frames", "square", {"frame_count": 2990}, "frame count"),
         )
         for label, role, override, expected in cases:
             with self.subTest(label=label), tempfile.TemporaryDirectory() as td:
@@ -559,6 +699,8 @@ class DeliverableContractTests(unittest.TestCase):
                     "duration_seconds": 100.0 if spec["media_type"] == "video" else None,
                     "streams": {"video": spec["video_streams"], "audio": spec["audio_streams"]},
                     "video_codecs": [], "audio_codecs": [],
+                    "fps": 30.0 if spec["media_type"] == "video" else 25.0,
+                    "frame_count": 3000 if spec["media_type"] == "video" else 1,
                 }
             with self.assertRaisesRegex(dc.DeliverableContractError, "does not postdate"):
                 dc.build_manifest(
@@ -773,7 +915,7 @@ class DeliverableContractTests(unittest.TestCase):
             target = Path(td) / "tiny.mp4"
             result = subprocess.run(
                 [
-                    ffmpeg, "-y", "-f", "lavfi", "-i", "color=c=navy:s=64x64:d=0.5:r=10",
+                    ffmpeg, "-y", "-f", "lavfi", "-i", "color=c=navy:s=64x64:d=0.5:r=30",
                     "-f", "lavfi", "-i", "sine=frequency=440:duration=0.5", "-shortest",
                     "-c:v", "libx264", "-pix_fmt", "yuv420p", "-c:a", "aac", str(target),
                     "-loglevel", "error",
@@ -788,6 +930,8 @@ class DeliverableContractTests(unittest.TestCase):
             self.assertEqual((facts["width"], facts["height"]), (64, 64))
             self.assertEqual(facts["streams"], {"video": 1, "audio": 1})
             self.assertGreater(facts["duration_seconds"], 0)
+            self.assertAlmostEqual(facts["fps"], 30.0)
+            self.assertIn(facts["frame_count"], (15, 16))
 
 
 class EvidenceAndPreviewContractTests(unittest.TestCase):
@@ -804,25 +948,49 @@ class EvidenceAndPreviewContractTests(unittest.TestCase):
     def test_evidence_manifest_binds_exact_vertical_delivery_generator_and_every_file(self):
         with tempfile.TemporaryDirectory() as td:
             root, _stamp, manifest, _probe, _render_probe = self.prepared(Path(td))
-            generator = root / "scripts" / "build_evidence.py"
-            generator.parent.mkdir(parents=True)
-            shutil.copyfile(REPO / "scripts" / "build_evidence.py", generator)
+            scripts = root / "scripts"
+            scripts.mkdir(parents=True)
+            for name in ("build_evidence.py", "audio_report.py", "audio_evidence.py"):
+                shutil.copyfile(REPO / "scripts" / name, scripts / name)
             evidence = root / "out" / "evidence"
             evidence.mkdir(parents=True)
             (evidence / "contact.jpg").write_bytes(b"jpeg-evidence")
-            write_json(evidence / "motion.json", {"frames": [0, 30, 60]})
+            write_json(evidence / "motion.json", {"note": "measured", "strips": {}})
+            (evidence / "audio_card.png").write_bytes(b"png-evidence")
+            write_json(evidence / "audio_report.json", {
+                "measured_on": "square.mp4", "also_covers_master": True,
+                "master_measured": {}, "master_identity": "bound", "tool": "fixture",
+                "delivered_i": -14.0, "delivered_tp": -2.0, "delivered_lra": 7.0,
+                "targets": {}, "pass": {}, "vo_gaps_ge_0_35s": 1,
+                "vo_gaps_ge_0_50s": 1, "vo_silence_in_gaps_s": 1.0,
+                "last_word_ends_s": 90.0, "longest_gaps": [], "diagnosis": "fixture",
+            })
+            outputs = {
+                "visual": ["out/evidence/contact.jpg", "out/evidence/motion.json"],
+                "audio_report": ["out/evidence/audio_report.json"],
+                "audio_card": ["out/evidence/audio_card.png"],
+            }
+            producers = {
+                name: {"parameters": {"fixture": True}, "outputs": role_outputs}
+                for name, role_outputs in outputs.items()
+            }
+            expected = sorted(path for values in outputs.values() for path in values)
             with self.assertRaisesRegex(
                 evidence_contract.EvidenceContractError,
                 "parameters are invalid",
             ):
+                bad_producers = json.loads(json.dumps(producers))
+                bad_producers["visual"]["parameters"] = {"contact_frames": float("nan")}
                 evidence_contract.build_evidence_manifest(
                     root=root,
-                    parameters={"contact_frames": float("nan")},
+                    producers=bad_producers,
+                    expected_artifacts=expected,
                     delivery_manifest=manifest,
                 )
             built = evidence_contract.build_evidence_manifest(
                 root=root,
-                parameters={"contact_frames": 14, "filmstrip_frames": 7},
+                producers=producers,
+                expected_artifacts=expected,
                 delivery_manifest=manifest,
             )
             self.assertEqual(
@@ -832,13 +1000,20 @@ class EvidenceAndPreviewContractTests(unittest.TestCase):
             self.assertEqual(built["delivery_manifest_digest"], dc.contract_digest(manifest))
             self.assertEqual(
                 set(built["artifacts"]),
-                {"out/evidence/contact.jpg", "out/evidence/motion.json"},
+                set(expected),
             )
             checked, problems = evidence_contract.validate_evidence_manifest(
                 root=root, delivery_manifest=manifest,
             )
             self.assertIsNotNone(checked)
             self.assertEqual(problems, [])
+            stale = evidence / "stale.png"
+            stale.write_bytes(b"stale-allowed-extension")
+            _checked, problems = evidence_contract.validate_evidence_manifest(
+                root=root, delivery_manifest=manifest,
+            )
+            self.assertIn("artifact set", "; ".join(problems))
+            stale.unlink()
             target = evidence / "contact.jpg"
             stat = target.stat()
             payload = bytearray(target.read_bytes())
@@ -849,22 +1024,93 @@ class EvidenceAndPreviewContractTests(unittest.TestCase):
                 root=root, delivery_manifest=manifest,
             )
             self.assertIn("hashes changed", "; ".join(problems))
+            evidence_manifest_path = root.joinpath(*evidence_contract.MANIFEST_REL.split("/"))
+            evidence_manifest_path.write_text(
+                '{"schema_version":2,"schema_version":2}\n', encoding="utf-8",
+            )
+            checked, problems = evidence_contract.validate_evidence_manifest(
+                root=root, delivery_manifest=manifest,
+            )
+            self.assertIsNone(checked)
+            self.assertIn("duplicate", "; ".join(problems))
+            evidence_manifest_path.write_text("[]\n", encoding="utf-8")
+            checked, problems = evidence_contract.validate_evidence_manifest(
+                root=root, delivery_manifest=manifest,
+            )
+            self.assertIsNone(checked)
+            self.assertIn("object", "; ".join(problems))
+
+    def test_evidence_recreate_removes_stale_files_and_manifest_rejects_new_leftovers(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            stale = root / "out" / "evidence"
+            stale.mkdir(parents=True)
+            (stale / "old.png").write_bytes(b"stale")
+            recreated = evidence_contract.recreate_evidence_directory(root=root)
+            self.assertEqual(list(recreated.iterdir()), [])
+
+    def test_preflight_blocks_until_exact_terminal_evidence_is_current(self):
+        delivery = {"identity": {"run_id": "2026-08-29-test"}}
+        evidence = {
+            "identity": {"run_id": "2026-08-29-test"},
+            "artifacts": {"out/evidence/contact.jpg": {}},
+        }
+        with mock.patch(
+            "deliverable_contract.require_manifest", return_value=delivery,
+        ), mock.patch(
+            "evidence_contract.require_evidence_manifest", return_value=evidence,
+        ):
+            ok, message = preflight.evidence_is_current()
+        self.assertTrue(ok, message)
+        self.assertIn("producer-bound manifest", message)
+
+        with mock.patch(
+            "deliverable_contract.require_manifest", return_value=delivery,
+        ), mock.patch(
+            "evidence_contract.require_evidence_manifest",
+            side_effect=evidence_contract.EvidenceContractError("terminal evidence is stale"),
+        ):
+            ok, message = preflight.evidence_is_current()
+        self.assertFalse(ok)
+        self.assertEqual(message, "terminal evidence is stale")
 
     def test_terminal_preview_requires_current_verdict_and_hash_binds_html(self):
         with tempfile.TemporaryDirectory() as td:
             root, stamp, manifest, _probe, _render_probe = self.prepared(Path(td))
             preview = root.joinpath(*delivery_preview.PREVIEW_REL.split("/"))
             preview.parent.mkdir(parents=True, exist_ok=True)
-            preview.write_text("<html>terminal</html>", encoding="utf-8")
+            commit = "a" * 40
+            vertical_url = f"https://example.test/{commit}/vertical.mp4"
+            square_url = f"https://example.test/{commit}/square.mp4"
+            manifest["publications"] = {
+                "vertical_hosted": {"url": vertical_url, "media_commit_sha": commit},
+                "square": {"url": square_url, "media_commit_sha": commit},
+            }
+            preview.write_text("<html>arbitrary text only</html>", encoding="utf-8")
             verdict = root / "out" / "dispatch" / "panel_verdict.json"
             write_json(verdict, {"run_id": stamp["run_id"], "median": 9.0})
             ship_state = {"manifest": manifest, "median": 9.0, "threshold": 7.0}
+            verified = []
+            verifier = lambda role, url: verified.append((role, url)) or {"url": url}
+            with self.assertRaisesRegex(
+                delivery_preview.DeliveryPreviewError, "exact vertical_hosted URL",
+            ):
+                delivery_preview.record_delivery_preview(
+                    preview, ship_state=ship_state, root=root,
+                    publication_verifier=verifier,
+                )
+            preview.write_text(
+                f'<html><a href="{vertical_url}">vertical</a>'
+                f'<a href="{square_url}">square</a><span>terminal</span></html>',
+                encoding="utf-8",
+            )
             receipt = delivery_preview.record_delivery_preview(
                 preview, ship_state=ship_state, root=root,
+                publication_verifier=verifier,
             )
             self.assertEqual(receipt["run_date"], stamp["date"])
             checked, problems = delivery_preview.validate_delivery_preview(
-                root=root, ship_state=ship_state,
+                root=root, ship_state=ship_state, publication_verifier=verifier,
             )
             self.assertIsNotNone(checked)
             self.assertEqual(problems, [])
@@ -873,9 +1119,11 @@ class EvidenceAndPreviewContractTests(unittest.TestCase):
             preview.write_text(changed, encoding="utf-8")
             os.utime(preview, ns=(stat.st_atime_ns, stat.st_mtime_ns))
             _checked, problems = delivery_preview.validate_delivery_preview(
-                root=root, ship_state=ship_state,
+                root=root, ship_state=ship_state, publication_verifier=verifier,
             )
             self.assertIn("preview", "; ".join(problems))
+            self.assertGreaterEqual(verified.count(("vertical_hosted", vertical_url)), 3)
+            self.assertGreaterEqual(verified.count(("square", square_url)), 3)
             verdict.unlink()
             _checked, problems = delivery_preview.validate_delivery_preview(
                 root=root, ship_state=ship_state,
@@ -930,9 +1178,11 @@ def manifest_fixture() -> dict:
             "width": width, "height": height, "duration_seconds": duration,
             "streams": {"video": video, "audio": audio}, "bytes": index * 1000,
             "sha256": f"{index:064x}", "video_codecs": [], "audio_codecs": [],
+            "fps": 30.0 if duration else 25.0,
+            "frame_count": 3000 if duration else 1,
         }
     return {
-        "schema_version": 2,
+        "schema_version": 3,
         "identity": {
             "run_id": "fixture", "date": "2026-08-29",
             "composition": "DispatchDaily", "repository": "TestOwner/test-repo",
@@ -953,7 +1203,7 @@ class ShipGateTests(unittest.TestCase):
         audio.write_bytes(b"current-audio-master")
         os.utime(audio, (stamp["started_at"] + 1, stamp["started_at"] + 1))
         path = root / "out" / "dispatch" / "sfx_events.json"
-        events = [{"t": float(index + 1), "kind": f"hit_{index}"} for index in range(6)]
+        events = make_sfx_events(root, spacing=1.0)
         payload = sfx_contract.write_sidecar(audio, events, root=root)
         return root, stamp, path, events, payload
 
@@ -1011,7 +1261,7 @@ class ShipGateTests(unittest.TestCase):
             write_json(path, malformed)
             os.utime(path, ns=(future_ns, future_ns))
             _facts, problems = ship_gate.sfx_facts(path, duration_seconds=100.0, root=root)
-            self.assertIn("must be a finite number", ";".join(problems))
+            self.assertIn("must be finite", ";".join(problems))
             self.assertNotIn("Traceback", ";".join(problems))
             path.unlink()
             _facts, problems = ship_gate.sfx_facts(path, duration_seconds=100.0, root=root)
@@ -1029,6 +1279,22 @@ class ShipGateTests(unittest.TestCase):
             _facts, problems = ship_gate.sfx_facts(path, duration_seconds=100.0, root=root)
             self.assertIn("audio facts do not match", ";".join(problems))
 
+    def test_take_mutation_and_legacy_split_ledger_are_rejected(self):
+        with tempfile.TemporaryDirectory() as td:
+            root, _stamp, path, events, _payload = self.make_sfx_repo(Path(td))
+            take = root.joinpath(*events[0]["take"].split("/"))
+            stat = take.stat()
+            changed = bytearray(take.read_bytes())
+            changed[0] ^= 1
+            take.write_bytes(changed)
+            os.utime(take, ns=(stat.st_atime_ns, stat.st_mtime_ns))
+            _facts, problems = ship_gate.sfx_facts(path, root=root)
+            self.assertIn("resolved take", "; ".join(problems))
+            legacy = root.joinpath(*sfx_contract.LEGACY_SIDECAR_REL.split("/"))
+            legacy.write_text('{"events":[]}\n', encoding="utf-8")
+            _facts, problems = ship_gate.sfx_facts(path, root=root)
+            self.assertIn("legacy", "; ".join(problems))
+
     def run_check(
         self, directory: Path, *, evidence_now=None, sfx_now=None,
         verdict_mutator=None, raw_verdict=None, release_error=None, write_verdict=True,
@@ -1044,10 +1310,8 @@ class ShipGateTests(unittest.TestCase):
                 "bytes": manifest["artifacts"]["vertical_hosted"]["bytes"],
                 "sha256": manifest["artifacts"]["vertical_hosted"]["sha256"],
             },
-            "generator": {
-                "path": "scripts/build_evidence.py", "version": "dispatch-evidence-v1",
-                "sha256": "f" * 64, "parameters": {"frames": 14},
-            },
+            "producers": {"visual": {"sha256": "f" * 64}},
+            "expected_artifacts": ["out/evidence/contact.jpg"],
             "artifacts": {
                 "out/evidence/contact.jpg": {"bytes": 10, "sha256": "a" * 64},
             },
@@ -1064,7 +1328,8 @@ class ShipGateTests(unittest.TestCase):
                          "sha256": "e" * 64}}
         media_facts = {
             role: {"sha256": entry["sha256"], "bytes": entry["bytes"],
-                   "duration_seconds": entry["duration_seconds"], "streams": entry["streams"]}
+                   "duration_seconds": entry["duration_seconds"], "streams": entry["streams"],
+                   "fps": entry["fps"], "frame_count": entry["frame_count"]}
             for role, entry in manifest["artifacts"].items()
         }
         verdict = {
@@ -1088,14 +1353,18 @@ class ShipGateTests(unittest.TestCase):
         }
         if verdict_mutator:
             verdict_mutator(verdict)
-        verdict_path = directory / "panel_verdict.json"
+        render = directory / "out" / "dispatch"
+        render.mkdir(parents=True)
+        write_json(
+            render / ".run_stamp.json",
+            {"run_id": "fixture", "date": "2026-08-29", "composition": "DispatchDaily"},
+        )
+        verdict_path = render / "panel_verdict.json"
         if write_verdict:
             if raw_verdict is None:
                 write_json(verdict_path, verdict)
             else:
                 verdict_path.write_text(raw_verdict, encoding="utf-8")
-        render = directory / "render"
-        render.mkdir()
         current_binding = evidence_now if evidence_now is not None else evidence_binding
         current_sfx = sfx_now if sfx_now is not None else sfx
         with contextlib.ExitStack() as stack:
@@ -1130,6 +1399,27 @@ class ShipGateTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td, contextlib.redirect_stdout(io.StringIO()):
             render = self.run_check(Path(td))
             self.assertTrue((render / "SHIP_NOW").is_file())
+            marker = load_path(render / "SHIP_NOW", label="SHIP_NOW marker")
+            self.assertEqual(marker["schema_version"], 1)
+            self.assertEqual(marker["run_id"], "fixture")
+
+    def test_ship_marker_rejects_stale_verdict_and_new_init_removes_it(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = make_identity_repo(Path(td))
+            init_identity(root)
+            out = root / "out" / "dispatch"
+            verdict = {"run_id": "2026-08-29-test", "median": 9.0}
+            write_json(out / "panel_verdict.json", verdict)
+            state = {"verdict": verdict, "manifest": manifest_fixture()}
+            ship_marker.record_ship_marker(state, root=root)
+            self.assertEqual(
+                ship_marker.validate_ship_marker(root=root, ship_state=state)[1], [],
+            )
+            write_json(out / "panel_verdict.json", {"run_id": "2026-08-29-test", "median": 8.0})
+            _marker, problems = ship_marker.validate_ship_marker(root=root, ship_state=state)
+            self.assertIn("verdict", "; ".join(problems))
+            run_guard.init("2026-08-30-test", "DispatchDaily", root=root)
+            self.assertFalse((out / "SHIP_NOW").exists())
 
     def test_post_panel_sfx_and_evidence_mutations_fail_by_hash(self):
         cases = (
@@ -1140,8 +1430,8 @@ class ShipGateTests(unittest.TestCase):
                     "path": "out/dispatch/vertical_hosted.bin", "bytes": 1000,
                     "sha256": "1".zfill(64),
                 },
-                "generator": {"path": "scripts/build_evidence.py", "version": "dispatch-evidence-v1",
-                              "sha256": "f" * 64, "parameters": {"frames": 14}},
+                "producers": {"visual": {"sha256": "f" * 64}},
+                "expected_artifacts": ["out/evidence/contact.jpg"],
                 "artifacts": {"out/evidence/contact.jpg": {"bytes": 10, "sha256": "c" * 64}},
              }, None, "review evidence hashes changed"),
             (None, {"path": "out/dispatch/sfx_events.json", "sha256": "d" * 64,
@@ -1190,7 +1480,8 @@ class ShipGateTests(unittest.TestCase):
         evidence_binding = {
             "path": "out/evidence/evidence_manifest.json", "sha256": "d" * 64,
             "delivery_manifest_digest": dc.contract_digest(manifest),
-            "vertical_hosted": {}, "generator": {},
+            "vertical_hosted": {}, "producers": {},
+            "expected_artifacts": ["out/evidence/contact.jpg"],
             "artifacts": {"out/evidence/contact.jpg": {"bytes": 1, "sha256": "a" * 64}},
         }
         sfx = {"path": "out/dispatch/sfx_events.json", "sha256": "b" * 64, "count": 6}
@@ -1265,6 +1556,13 @@ class StaticContractTests(unittest.TestCase):
             text = (REPO / "scripts" / name).read_text(encoding="utf-8")
             self.assertIn("render_contract.py prepare", text)
             self.assertIn("render_contract.py record", text)
+        parallel = (REPO / "scripts" / "render_parallel.sh").read_text(encoding="utf-8")
+        self.assertIn("render_contract.py binding-digest", parallel)
+        self.assertIn("render_contract.py chunk-record", parallel)
+        self.assertIn("render_contract.py chunk-check", parallel)
+        self.assertNotIn("cut -c1-16", parallel)
+        self.assertIn("ship_marker.py check", parallel)
+        self.assertNotIn("[ -f out/dispatch/SHIP_NOW", parallel)
         final_entrypoints = {
             "render.sh": (REPO / "scripts" / "render.sh").read_text(encoding="utf-8"),
             "render_parallel.sh": (REPO / "scripts" / "render_parallel.sh").read_text(encoding="utf-8"),
@@ -1291,6 +1589,27 @@ class StaticContractTests(unittest.TestCase):
         loop = (REPO / "scripts" / "dispatch_loop.sh").read_text(encoding="utf-8")
         self.assertIn("RETIRED", loop)
         self.assertIn("exit 2", loop)
+
+        prompt = (REPO / "prompts" / "dispatch_routine.md").read_text(encoding="utf-8")
+        build_index = prompt.index("python3 scripts/build_evidence.py")
+        judge_index = prompt.index("GATE B: editor")
+        self.assertLess(build_index, judge_index)
+        self.assertIn("NON-TERMINAL early-look", prompt)
+        self.assertNotIn("--no-freshness-check", prompt)
+        panel = (REPO / "config" / "panel_protocol.md").read_text(encoding="utf-8")
+        self.assertIn("build_evidence.py", panel)
+        self.assertIn("evidence_manifest.json", panel)
+        self.assertIn("make_review_sheets.py", panel)
+
+        for name in (
+            "dispatch_mix.py", "audio_evidence.py", "audio_report.py",
+            "build_evidence.py", "flow_check.py", "ship_gate.py",
+        ):
+            text = (REPO / "scripts" / name).read_text(encoding="utf-8")
+            if name in {"flow_check.py", "ship_gate.py", "dispatch_mix.py"}:
+                # These files name the legacy location only to remove or reject it.
+                self.assertNotIn('open(os.path.join(AUD, "sfx_events.json"', text, name)
+            self.assertNotIn('"audio/sfx_events.json"', text, name)
 
 
 if __name__ == "__main__":

@@ -16,11 +16,16 @@ from episode_contract import EpisodeContractError, episode_facts
 from run_guard import load_stamp
 from strict_json import StrictJSONError, load_path
 
-SCHEMA_VERSION = 2
+SCHEMA_VERSION = 3
 SIDECAR_REL = "out/dispatch/sfx_events.json"
+LEGACY_SIDECAR_REL = "out/dispatch/audio/sfx_events.json"
 AUDIO_REL = "out/dispatch/audio/master.wav"
 KIND_RE = re.compile(r"^[a-z0-9][a-z0-9_-]{0,63}$")
-EVENT_FIELDS = {"t", "kind", "class", "pan", "take", "family"}
+SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
+EVENT_FIELDS = {
+    "t", "planned_t", "kind", "class", "pan", "take", "take_sha256",
+    "family", "pitch_cents", "gain_db",
+}
 
 
 class SFXContractError(RuntimeError):
@@ -67,23 +72,59 @@ def _atomic_json(path: Path, value: dict[str, Any]) -> None:
             pass
 
 
-def _normalize_events(events: Iterable[Any], duration: float) -> tuple[list[dict[str, Any]], list[str]]:
+def _number(
+    event: dict[str, Any], field: str, index: int, problems: list[str],
+    *, minimum: float, maximum: float, description: str,
+) -> float | None:
+    value = event.get(field)
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        problems.append(f"sfx event {index}.{field} must be {description}")
+        return None
+    try:
+        result = float(value)
+    except (TypeError, ValueError, OverflowError):
+        problems.append(f"sfx event {index}.{field} must be {description}")
+        return None
+    if not math.isfinite(result) or not minimum <= result <= maximum:
+        problems.append(f"sfx event {index}.{field} must be {description}")
+        return None
+    return result
+
+
+def _take_path(base: Path, relative: Any, *, index: int) -> tuple[Path | None, str | None]:
+    label = f"sfx event {index}.take"
+    if (
+        not isinstance(relative, str)
+        or not relative
+        or not relative.isascii()
+        or "\\" in relative
+        or relative.startswith("/")
+        or re.match(r"^[A-Za-z]:", relative)
+        or any(part in {"", ".", ".."} for part in relative.split("/"))
+        or not relative.startswith("assets/sfx/")
+    ):
+        return None, f"{label} must be a canonical repo-relative POSIX assets/sfx path"
+    try:
+        path = _canonical_path(base, relative, label=label)
+    except SFXContractError as exc:
+        return None, str(exc)
+    if not path.is_file() or path.is_symlink():
+        return None, f"{label} is missing or unsafe"
+    return path, None
+
+
+def _normalize_events(
+    events: Iterable[Any], duration: float, *, base: Path,
+) -> tuple[list[dict[str, Any]], list[str]]:
     normalized: list[dict[str, Any]] = []
     problems: list[str] = []
     for index, raw in enumerate(events):
-        if isinstance(raw, dict):
-            event = dict(raw)
-        elif isinstance(raw, (tuple, list)) and 2 <= len(raw) <= 4:
-            event = {"t": raw[0], "kind": raw[1]}
-            if len(raw) > 2:
-                event["class"] = raw[2]
-            if len(raw) > 3:
-                event["pan"] = raw[3]
-        else:
-            problems.append(f"sfx event {index} must be an object or a 2-to-4-field event tuple")
+        if not isinstance(raw, dict):
+            problems.append(f"sfx event {index} must be an enriched event object")
             continue
+        event = dict(raw)
         unknown = set(event) - EVENT_FIELDS
-        missing = {"t", "kind"} - set(event)
+        missing = EVENT_FIELDS - set(event)
         if unknown or missing:
             problems.append(
                 f"sfx event {index} fields are not canonical"
@@ -92,49 +133,59 @@ def _normalize_events(events: Iterable[Any], duration: float) -> tuple[list[dict
             )
         when = event.get("t")
         kind = event.get("kind")
-        numeric_when: float | None = None
-        if isinstance(when, bool) or not isinstance(when, (int, float)):
-            problems.append(f"sfx event {index}.t must be a finite number")
-        else:
-            try:
-                numeric_when = float(when)
-            except (TypeError, ValueError, OverflowError):
-                problems.append(f"sfx event {index}.t must be a finite number")
-            else:
-                if not math.isfinite(numeric_when):
-                    problems.append(f"sfx event {index}.t must be a finite number")
-                elif numeric_when < 0 or numeric_when >= duration:
-                    problems.append(f"sfx event {index}.t must be within the delivered duration")
+        numeric_when = _number(
+            event, "t", index, problems, minimum=0.0,
+            maximum=math.nextafter(duration, -math.inf),
+            description="finite and within the delivered duration",
+        )
+        planned_when = _number(
+            event, "planned_t", index, problems, minimum=0.0,
+            maximum=math.nextafter(duration, -math.inf),
+            description="finite and within the delivered duration",
+        )
         if not isinstance(kind, str) or not kind.isascii() or not KIND_RE.fullmatch(kind):
             problems.append(f"sfx event {index}.kind must be a lowercase ASCII identifier")
         event_class = event.get("class")
-        if event_class is not None and (
+        if (
             not isinstance(event_class, str)
             or event_class not in {"hero", "standard", "texture"}
         ):
             problems.append(f"sfx event {index}.class is not canonical")
-        pan = event.get("pan")
-        if pan is not None:
-            try:
-                numeric_pan = float(pan)
-            except (TypeError, ValueError, OverflowError):
-                numeric_pan = float("nan")
-            if (
-                isinstance(pan, bool) or not isinstance(pan, (int, float))
-                or not math.isfinite(numeric_pan) or not -1 <= numeric_pan <= 1
-            ):
-                problems.append(f"sfx event {index}.pan must be finite in -1..1")
-        for field in ("take", "family"):
-            value = event.get(field)
-            if value is not None and (
-                not isinstance(value, str) or not value or not value.isascii()
-                or any(ord(char) < 0x20 or ord(char) == 0x7F for char in value)
-            ):
-                problems.append(f"sfx event {index}.{field} must be non-empty printable ASCII")
-        clean = {"t": numeric_when if numeric_when is not None else when, "kind": kind}
-        for optional in ("class", "pan", "take", "family"):
-            if optional in event:
-                clean[optional] = event[optional]
+        numeric_pan = _number(
+            event, "pan", index, problems, minimum=-1.0, maximum=1.0,
+            description="finite in -1..1",
+        )
+        pitch_cents = _number(
+            event, "pitch_cents", index, problems, minimum=-1200.0, maximum=1200.0,
+            description="finite in -1200..1200",
+        )
+        gain_db = _number(
+            event, "gain_db", index, problems, minimum=-96.0, maximum=24.0,
+            description="finite in -96..24",
+        )
+        family = event.get("family")
+        if not isinstance(family, str) or not family.isascii() or not KIND_RE.fullmatch(family):
+            problems.append(f"sfx event {index}.family must be a lowercase ASCII identifier")
+        take, take_problem = _take_path(base, event.get("take"), index=index)
+        if take_problem:
+            problems.append(take_problem)
+        take_sha = event.get("take_sha256")
+        if not isinstance(take_sha, str) or not SHA256_RE.fullmatch(take_sha):
+            problems.append(f"sfx event {index}.take_sha256 must be a lowercase SHA-256")
+        elif take is not None and sha256_file(take) != take_sha:
+            problems.append(f"sfx event {index}.take_sha256 does not match the resolved take")
+        clean = {
+            "t": numeric_when if numeric_when is not None else when,
+            "planned_t": planned_when if planned_when is not None else event.get("planned_t"),
+            "kind": kind,
+            "class": event_class,
+            "pan": numeric_pan if numeric_pan is not None else event.get("pan"),
+            "take": event.get("take"),
+            "take_sha256": take_sha,
+            "family": family,
+            "pitch_cents": pitch_cents if pitch_cents is not None else event.get("pitch_cents"),
+            "gain_db": gain_db if gain_db is not None else event.get("gain_db"),
+        }
         normalized.append(clean)
     return normalized, problems
 
@@ -146,6 +197,11 @@ def write_sidecar(
     root: str | Path,
 ) -> dict[str, Any]:
     base = Path(root).resolve()
+    legacy = _canonical_path(base, LEGACY_SIDECAR_REL, label="legacy sfx sidecar")
+    if legacy.exists():
+        if legacy.is_symlink() or not legacy.is_file():
+            raise SFXContractError(f"legacy {LEGACY_SIDECAR_REL} is unsafe; remove it")
+        legacy.unlink()
     stamp = load_stamp(base)
     if not isinstance(stamp, dict):
         raise SFXContractError("run stamp is missing or unreadable")
@@ -163,7 +219,7 @@ def write_sidecar(
         raise SFXContractError("audio master is missing or unsafe")
     if audio.stat().st_mtime <= float(stamp["started_at"]):
         raise SFXContractError("audio master does not postdate the run stamp")
-    normalized, problems = _normalize_events(events, episode["duration_seconds"])
+    normalized, problems = _normalize_events(events, episode["duration_seconds"], base=base)
     if len(normalized) < 6:
         problems.append(f"sfx schedule carries {len(normalized)} event(s); at least 6 are required")
     if problems:
@@ -216,6 +272,14 @@ def sidecar_facts(
     target = canonical
     problems: list[str] = []
     try:
+        legacy = _canonical_path(base, LEGACY_SIDECAR_REL, label="legacy sfx sidecar")
+    except SFXContractError as exc:
+        return None, [str(exc)]
+    if legacy.exists():
+        problems.append(
+            f"legacy {LEGACY_SIDECAR_REL} is forbidden; only {SIDECAR_REL} is canonical"
+        )
+    try:
         target.relative_to(base)
     except ValueError:
         return None, ["sfx_events.json path escapes the repository"]
@@ -254,7 +318,9 @@ def sidecar_facts(
     events = raw.get("events")
     if not isinstance(events, list):
         return None, problems + ["sfx_events.json.events must be a list"]
-    normalized, event_problems = _normalize_events(events, episode["duration_seconds"])
+    normalized, event_problems = _normalize_events(
+        events, episode["duration_seconds"], base=base,
+    )
     problems.extend(event_problems)
     if len(events) < 6:
         problems.append(f"sfx_events.json carries {len(events)} event(s); at least 6 are required")
@@ -293,8 +359,14 @@ def sidecar_facts(
         "episode": episode,
         "count": len(events),
         "kinds": kinds,
-        "first_seconds": min((event["t"] for event in normalized if isinstance(event.get("t"), float)), default=None),
-        "last_seconds": max((event["t"] for event in normalized if isinstance(event.get("t"), float)), default=None),
+        "first_seconds": min(
+            (event["t"] for event in normalized if isinstance(event.get("t"), float)),
+            default=None,
+        ),
+        "last_seconds": max(
+            (event["t"] for event in normalized if isinstance(event.get("t"), float)),
+            default=None,
+        ),
         "audio": current_audio,
     }
     return facts, problems

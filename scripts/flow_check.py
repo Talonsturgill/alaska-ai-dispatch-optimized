@@ -2,7 +2,8 @@
 """flow_check.py, the VISUAL FLOW analyzer (never-rest cadence + say-it-show-it + sound-paired).
 
 Scores a Dispatch's PLAN (out/dispatch/storyboard.json > beats[]) and, when present, its rendered
-audio (out/dispatch/audio/sfx_events.json + words60.json/timing60.json) against config/visual_flow.yaml.
+audio (out/dispatch/sfx_events.json + audio/words60.json/timing60.json) against
+config/visual_flow.yaml. The legacy audio/sfx_events.json split ledger is a hard failure.
 Doctrine: docs/craft/VISUAL_FLOW.md.
 
 Two roles:
@@ -17,6 +18,9 @@ numpy-free; stdlib + pyyaml only.
 import sys, os, json, argparse, re, math
 from pathlib import Path
 import yaml
+
+from sfx_contract import LEGACY_SIDECAR_REL, sidecar_facts
+from strict_json import StrictJSONError, load_path
 
 ROOT = Path(__file__).resolve().parent.parent
 CFG = yaml.safe_load((ROOT / "config" / "visual_flow.yaml").read_text())
@@ -114,7 +118,9 @@ def load_beats(sb):
 
 def analyze(dirp):
     d = Path(dirp)
-    sb = json.loads((d / "storyboard.json").read_text())
+    sb = load_path(d / "storyboard.json", label="storyboard")
+    if not isinstance(sb, dict):
+        raise StrictJSONError("storyboard must be a JSON object")
     beats, fmt = load_beats(sb)
     bc = CFG["beats"]; cov = CFG["coverage"]; sc = CFG["sfx"]
     R = {"beat_format": fmt, "n_beats": len(beats), "problems": [], "warnings": [], "metrics": {}}
@@ -321,8 +327,9 @@ def analyze(dirp):
     speech_end = None
     if len(timed) >= 2 and tim_p.exists():
         try:
-            speech_end = json.loads(tim_p.read_text() or "{}").get("speech_end")
-        except (json.JSONDecodeError, ValueError):
+            timing = load_path(tim_p, label="audio timing")
+            speech_end = timing.get("speech_end") if isinstance(timing, dict) else None
+        except StrictJSONError:
             speech_end = None
         if speech_end:
             starts = sorted(b["t0"] for b in timed)
@@ -339,10 +346,10 @@ def analyze(dirp):
         eng = CFG.get("engagement") or {}
         if speech_end and eng.get("wpm_warn") and wp.exists():
             try:
-                wdata = json.loads(wp.read_text() or "[]")
+                wdata = load_path(wp, label="aligned words")
                 words = wdata.get("words", wdata) if isinstance(wdata, dict) else wdata
                 n_words = len(words)
-            except (json.JSONDecodeError, ValueError):
+            except (StrictJSONError, TypeError):
                 n_words = 0
             if n_words and speech_end > 10:
                 wpm = round(n_words / (speech_end / 60.0))
@@ -353,10 +360,26 @@ def analyze(dirp):
                                          f"target 150-175 for this format (ENGAGEMENT.md §6)")
 
     # ---- SFX events (sound-paired-to-picture), if the mix emitted them ----
+    legacy_p = d / Path(LEGACY_SIDECAR_REL).relative_to("out/dispatch")
+    if legacy_p.exists():
+        R["problems"].append(
+            "legacy audio/sfx_events.json is forbidden; use the single canonical sfx_events.json"
+        )
     ev_p = d / sc["events_json"]
     if ev_p.exists() and (ev_p.read_text().strip()):
-        ev = json.loads(ev_p.read_text())
-        events = ev.get("events", ev) if isinstance(ev, dict) else ev
+        canonical_dir = (ROOT / "out" / "dispatch").resolve()
+        if d.resolve() == canonical_dir:
+            _facts, contract_problems = sidecar_facts(ev_p, root=ROOT)
+            R["problems"].extend(contract_problems)
+        try:
+            ev = load_path(ev_p, label="canonical SFX ledger")
+        except StrictJSONError as exc:
+            R["problems"].append(str(exc))
+            ev = None
+        events = ev.get("events") if isinstance(ev, dict) else None
+        if not isinstance(events, list):
+            R["problems"].append("canonical SFX ledger must be an object with an events list")
+            events = []
         R["metrics"]["sfx_events"] = len(events)
         if len(events) < sc["min_events_total"]:
             R["problems"].append(f"sfx_min_total: only {len(events)} sfx events (< {sc['min_events_total']}); "
@@ -385,7 +408,10 @@ def main():
     ap.add_argument("--dir", default="out/dispatch")
     ap.add_argument("--report", action="store_true", help="print metrics and never exit non-zero (back-test mode)")
     a = ap.parse_args()
-    R = analyze(a.dir)
+    try:
+        R = analyze(a.dir)
+    except (StrictJSONError, OSError, TypeError, ValueError) as exc:
+        raise SystemExit(f"flow_check: {exc}") from None
     print("=== VISUAL FLOW CHECK ===")
     print(f"beats: {R['n_beats']} ({R['beat_format']} format)   metrics: {json.dumps(R['metrics'])}")
     for p in R["problems"]:

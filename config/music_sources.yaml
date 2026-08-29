@@ -1,7 +1,7 @@
 # BACKUP music pool for the Dispatch routine.
 #
 # PRIMARY behavior is NOT this file: every run, the routine RESEARCHES a FRESH track that fits the
-# specific story (see ROUTINE_SPEC Phase 4 MUSIC) and downloads it with scripts/get_music.py.
+# specific story (see prompts/dispatch_routine.md Phase 4 MUSIC) and downloads it with scripts/get_music.py.
 # This pool is used ONLY when that live search genuinely fails. Every entry is verified: a real
 # direct-download URL, a clear free-to-use license, and a creditable composer. Expand it freely.
 #

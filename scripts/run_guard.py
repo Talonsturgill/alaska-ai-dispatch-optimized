@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Hash-bound run identity and freshness guard for DispatchDaily.
+"""Two-stage, hash-bound run identity and freshness guard for DispatchDaily.
 
-`init` is deliberately explicit: a run is not valid until its case-sensitive,
-ASCII composition is registered and the repository, worktree, branch, HEAD,
-registry, Root.tsx, source and expected props path are recorded. Consumers call
-`require-identity` / `require-composition` before rendering and `fresh()` before
-reading scratch. There are no clock, newest-file, generic-Dispatch or copied-
-stamp fallbacks.
+`init` creates a planning identity before story/source authoring.  It deliberately
+does not bless mutable render inputs.  `bind-render-inputs` is the explicit
+post-authoring boundary that binds registry, Root, every engine source and render
+input, props, branch and HEAD.  Render, artifact, evidence and delivery consumers
+require that bound state.  There are no clock, newest-file, generic-Dispatch or
+copied-stamp fallbacks.
 """
 from __future__ import annotations
 
@@ -30,13 +30,14 @@ STAMP_REL = "out/dispatch/.run_stamp.json"
 REGISTRY_REL = "config/compositions.json"
 ROOT_SOURCE_REL = "video-engine/src/Root.tsx"
 POLICY_REL = "config/execution_policy.json"
-STAMP_SCHEMA_VERSION = 3
+STAMP_SCHEMA_VERSION = 4
 ACTIVE_COMPOSITION = "DispatchDaily"
 COMPOSITION_RE = re.compile(r"^[A-Za-z][A-Za-z0-9]*$")
 SAFE_PATH_RE = re.compile(r"^[A-Za-z0-9._/-]+$")
 DATE_RE = re.compile(r"^(\d{4}-\d{2}-\d{2})(?:$|[-_])")
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 GIT_HEAD_RE = re.compile(r"^(?:[0-9a-f]{40}|[0-9a-f]{64})$")
+SHIP_MARKER_RELS = ("out/dispatch/SHIP_NOW", "out/dispatch/SHIP_NOW.json")
 
 
 class StaleArtifactError(RuntimeError):
@@ -304,6 +305,39 @@ def _date_for(run_id: str, run_date: str | None) -> str:
     return value
 
 
+def render_binding_digest(stamp: dict[str, Any]) -> str:
+    """Digest only pixel-affecting bound inputs, never wall-clock or run metadata."""
+    if not isinstance(stamp, dict) or stamp.get("binding_state") != "render_bound":
+        raise RunIdentityError("render inputs are not bound")
+    value = {
+        "composition": stamp.get("composition"),
+        "registry": {"path": stamp.get("registry_path"), "sha256": stamp.get("registry_sha256")},
+        "root": {"path": stamp.get("root_source_path"), "sha256": stamp.get("root_source_sha256")},
+        "source": {"path": stamp.get("source_path"), "sha256": stamp.get("source_sha256")},
+        "source_dependencies": stamp.get("source_dependencies"),
+        "engine_sources_sha256": stamp.get("engine_sources_sha256"),
+        "render_inputs": stamp.get("render_inputs"),
+        "props": {"path": stamp.get("props_path"), "sha256": stamp.get("props_sha256")},
+    }
+    try:
+        digest = hashlib.sha256(canonical_bytes(value)).hexdigest()
+    except StrictJSONError as exc:
+        raise RunIdentityError(f"render binding cannot be represented canonically: {exc}") from None
+    return digest
+
+
+def _clear_ship_markers(root: Path) -> None:
+    """A marker from an earlier identity must never control a newly planned run."""
+    for relative in SHIP_MARKER_RELS:
+        target = root.joinpath(*relative.split("/"))
+        try:
+            target.unlink()
+        except FileNotFoundError:
+            pass
+        except IsADirectoryError:
+            raise RunIdentityError(f"stale ship marker path is a directory: {relative}") from None
+
+
 def init(
     run_id: str,
     composition: str,
@@ -312,7 +346,7 @@ def init(
     props: str | None = None,
     root: str | Path | None = None,
 ) -> dict[str, Any]:
-    """Create a new atomic stamp for this exact checkout and registered composition."""
+    """Create a planning stamp; render inputs remain deliberately unbound."""
     base = _base(root)
     record = composition_record(composition, base)
     if composition != ACTIVE_COMPOSITION:
@@ -321,18 +355,11 @@ def init(
     if not isinstance(component, str) or not component:
         raise RunIdentityError(f"composition {composition} has no component")
     _root_registration(base, composition, component)
-    registry_path = _resolve_inside(base, REGISTRY_REL, label="composition registry")
-    registry, _ = _registry(base)
-    root_source = _resolve_inside(base, ROOT_SOURCE_REL, label="Root.tsx")
+    _resolve_inside(base, REGISTRY_REL, label="composition registry")
+    _registry(base)
+    _resolve_inside(base, ROOT_SOURCE_REL, label="Root.tsx")
     source_rel = _safe_rel(record["source"], label="composition source")
-    source_path = _resolve_inside(base, source_rel, label="composition source")
-    dependency_hashes: dict[str, str] = {}
-    dependencies = record.get("source_dependencies", [])
-    for item in dependencies:
-        relative = _safe_rel(item, label="composition dependency")
-        dependency_hashes[relative] = _sha(
-            _resolve_inside(base, relative, label="composition dependency")
-        )
+    _resolve_inside(base, source_rel, label="composition source")
     registered_props = _safe_rel(record.get("props", ""), label="registered props")
     props_rel = _safe_rel(props, label="props") if props is not None else registered_props
     if props_rel != registered_props:
@@ -348,6 +375,7 @@ def init(
     branch = _git(base, "branch", "--show-current")
     if not branch:
         raise RunIdentityError("detached HEAD is not a valid run identity")
+    planning_head = _git(base, "rev-parse", "HEAD")
     stamp: dict[str, Any] = {
         "schema_version": STAMP_SCHEMA_VERSION,
         "run_id": run_id,
@@ -358,23 +386,25 @@ def init(
         "origin": origin,
         "worktree_root": str(base),
         "branch": branch,
-        "git_head": _git(base, "rev-parse", "HEAD"),
+        "planning_git_head": planning_head,
+        "git_head": planning_head,
         "started_at": time.time(),
+        "binding_state": "planning",
+        "bound_at": None,
         "registry_path": REGISTRY_REL,
-        "registry_sha256": _sha(registry_path),
+        "registry_sha256": None,
         "root_source_path": ROOT_SOURCE_REL,
-        "root_source_sha256": _sha(root_source),
+        "root_source_sha256": None,
         "source_path": source_rel,
-        "source_sha256": _sha(source_path),
-        "source_dependencies": dependency_hashes,
-        "engine_sources_sha256": _engine_sources_sha(base),
-        "render_inputs": _render_inputs(base, registry),
+        "source_sha256": None,
+        "source_dependencies": {},
+        "engine_sources_sha256": None,
+        "render_inputs": {},
         "props_path": props_rel,
-        # Scratch may survive from an older run. Presence at init is not provenance, so an
-        # existing props file is deliberately left unbound until `bind-inputs` is called after
-        # the current run writes or deliberately selects it.
         "props_sha256": None,
+        "render_binding_sha256": None,
     }
+    _clear_ship_markers(base)
     _atomic_json(_stamp_path(base), stamp)
     return stamp
 
@@ -392,16 +422,16 @@ def load_stamp(root: str | Path | None = None) -> dict[str, Any] | None:
 
 def _identity_problems(
     root: Path, stamp: dict[str, Any], *, expected_composition: str | None = None,
-    require_props: bool = True,
+    require_bound: bool = True,
 ) -> list[str]:
     problems: list[str] = []
     required = {
         "schema_version", "run_id", "date", "composition", "mode", "repository", "origin",
-        "worktree_root", "branch", "git_head", "started_at", "registry_path",
+        "worktree_root", "branch", "planning_git_head", "git_head", "started_at",
+        "binding_state", "bound_at", "registry_path",
         "registry_sha256", "root_source_path", "root_source_sha256", "source_path",
         "source_sha256", "source_dependencies", "props_path", "props_sha256",
-        "engine_sources_sha256",
-        "render_inputs",
+        "engine_sources_sha256", "render_inputs", "render_binding_sha256",
     }
     missing = sorted(required - set(stamp))
     if missing:
@@ -411,26 +441,52 @@ def _identity_problems(
         problems.append("run stamp has unknown fields: " + ", ".join(unknown))
     for field in (
         "run_id", "date", "composition", "mode", "repository", "origin", "worktree_root",
-        "branch", "git_head", "registry_path", "root_source_path", "source_path", "props_path",
+        "branch", "planning_git_head", "git_head", "registry_path", "root_source_path",
+        "source_path", "props_path",
     ):
         if not isinstance(stamp.get(field), str) or not stamp[field]:
             problems.append(f"run stamp {field} must be a non-empty string")
-    started_at = stamp.get("started_at")
-    if (
-        isinstance(started_at, bool) or not isinstance(started_at, (int, float))
-        or not math.isfinite(float(started_at)) or float(started_at) <= 0
-    ):
+
+    def positive_number(value: Any) -> bool:
+        if isinstance(value, bool) or not isinstance(value, (int, float)):
+            return False
+        try:
+            return math.isfinite(float(value)) and float(value) > 0
+        except (TypeError, ValueError, OverflowError):
+            return False
+
+    if not positive_number(stamp.get("started_at")):
         problems.append("run stamp started_at must be a finite positive number")
-    if not isinstance(stamp.get("git_head"), str) or not GIT_HEAD_RE.fullmatch(stamp["git_head"]):
-        problems.append("run stamp git_head must be a full lowercase Git object ID")
-    for field in (
-        "registry_sha256", "root_source_sha256", "source_sha256", "engine_sources_sha256",
-    ):
-        if not isinstance(stamp.get(field), str) or not SHA256_RE.fullmatch(stamp[field]):
-            problems.append(f"run stamp {field} must be a lowercase SHA-256")
-    props_hash = stamp.get("props_sha256")
-    if props_hash is not None and (not isinstance(props_hash, str) or not SHA256_RE.fullmatch(props_hash)):
-        problems.append("run stamp props_sha256 must be null or a lowercase SHA-256")
+    for field in ("planning_git_head", "git_head"):
+        if not isinstance(stamp.get(field), str) or not GIT_HEAD_RE.fullmatch(stamp[field]):
+            problems.append(f"run stamp {field} must be a full lowercase Git object ID")
+    state = stamp.get("binding_state")
+    if state not in ("planning", "render_bound"):
+        problems.append("run stamp binding_state must be planning or render_bound")
+    if require_bound and state != "render_bound":
+        problems.append("render inputs are not bound; run bind-render-inputs after authoring")
+    hash_fields = (
+        "registry_sha256", "root_source_sha256", "source_sha256",
+        "engine_sources_sha256", "props_sha256", "render_binding_sha256",
+    )
+    if state == "planning":
+        if stamp.get("git_head") != stamp.get("planning_git_head"):
+            problems.append("planning stamp git_head must equal planning_git_head")
+        if stamp.get("bound_at") is not None:
+            problems.append("planning stamp bound_at must be null")
+        for field in hash_fields:
+            if stamp.get(field) is not None:
+                problems.append(f"planning stamp {field} must be null until bind-render-inputs")
+        if stamp.get("source_dependencies") != {}:
+            problems.append("planning stamp source_dependencies must be empty")
+        if stamp.get("render_inputs") != {}:
+            problems.append("planning stamp render_inputs must be empty")
+    elif state == "render_bound":
+        if not positive_number(stamp.get("bound_at")):
+            problems.append("render-bound stamp bound_at must be a finite positive number")
+        for field in hash_fields:
+            if not isinstance(stamp.get(field), str) or not SHA256_RE.fullmatch(stamp[field]):
+                problems.append(f"run stamp {field} must be a lowercase SHA-256")
     try:
         _date_for(str(stamp.get("run_id", "")), str(stamp.get("date", "")))
     except RunIdentityError as exc:
@@ -462,7 +518,9 @@ def _identity_problems(
             problems.append(str(exc))
     try:
         current_head = _git(root, "rev-parse", "HEAD")
-        stamped_head = str(stamp.get("git_head", ""))
+        stamped_head = str(
+            stamp.get("git_head" if state == "render_bound" else "planning_git_head", "")
+        )
         if current_head != stamped_head and not _is_ancestor(root, stamped_head, current_head):
             problems.append("current HEAD is not equal to or a descendant of stamped git_head")
     except RunIdentityError as exc:
@@ -470,7 +528,7 @@ def _identity_problems(
     dependencies = stamp.get("source_dependencies")
     if not isinstance(dependencies, dict):
         problems.append("run stamp source_dependencies must be an object")
-    else:
+    elif state == "render_bound":
         expected_dependencies = record.get("source_dependencies", []) if isinstance(record, dict) else []
         if not isinstance(expected_dependencies, list) or set(dependencies) != set(expected_dependencies):
             problems.append("run stamp composition dependency set does not match the registry")
@@ -481,7 +539,7 @@ def _identity_problems(
             try:
                 path = _resolve_inside(root, str(relative), label="composition dependency")
                 if _sha(path) != expected_hash:
-                    problems.append(f"composition dependency {relative} changed since run init")
+                    problems.append(f"composition dependency {relative} changed since render binding")
             except RunIdentityError as exc:
                 problems.append(str(exc))
     try:
@@ -492,17 +550,18 @@ def _identity_problems(
             problems.append("repository identity changed since run init")
     except (RunIdentityError, StrictJSONError) as exc:
         problems.append(str(exc))
-    for path_field, hash_field, label in (
-        ("registry_path", "registry_sha256", "composition registry"),
-        ("root_source_path", "root_source_sha256", "Root.tsx"),
-        ("source_path", "source_sha256", "composition source"),
-    ):
-        try:
-            path = _resolve_inside(root, str(stamp.get(path_field, "")), label=label)
-            if _sha(path) != stamp.get(hash_field):
-                problems.append(f"{label} changed since run init")
-        except RunIdentityError as exc:
-            problems.append(str(exc))
+    if state == "render_bound":
+        for path_field, hash_field, label in (
+            ("registry_path", "registry_sha256", "composition registry"),
+            ("root_source_path", "root_source_sha256", "Root.tsx"),
+            ("source_path", "source_sha256", "composition source"),
+        ):
+            try:
+                path = _resolve_inside(root, str(stamp.get(path_field, "")), label=label)
+                if _sha(path) != stamp.get(hash_field):
+                    problems.append(f"{label} changed since render binding")
+            except RunIdentityError as exc:
+                problems.append(str(exc))
     if stamp.get("registry_path") != REGISTRY_REL:
         problems.append("run stamp registry_path is not canonical")
     if stamp.get("root_source_path") != ROOT_SOURCE_REL:
@@ -512,35 +571,40 @@ def _identity_problems(
             problems.append("run stamp source_path does not match the registry")
         if stamp.get("props_path") != record.get("props"):
             problems.append("run stamp props_path does not match the registry")
-    try:
-        if _engine_sources_sha(root) != stamp.get("engine_sources_sha256"):
-            problems.append("engine source tree changed since run init")
-    except RunIdentityError as exc:
-        problems.append(str(exc))
+    if state == "render_bound":
+        try:
+            if _engine_sources_sha(root) != stamp.get("engine_sources_sha256"):
+                problems.append("engine source tree changed since render binding")
+        except RunIdentityError as exc:
+            problems.append(str(exc))
     render_inputs = stamp.get("render_inputs")
     if not isinstance(render_inputs, dict):
         problems.append("run stamp render_inputs must be an object")
-    else:
+    elif state == "render_bound":
         try:
             registry, _ = _registry(root)
             current_render_inputs = _render_inputs(root, registry)
             if render_inputs != current_render_inputs:
-                problems.append("bound render inputs changed since run init")
+                problems.append("bound render inputs changed since render binding")
         except RunIdentityError as exc:
             problems.append(str(exc))
-    try:
-        props_path = _resolve_inside(root, str(stamp.get("props_path", "")), label="props", must_exist=False)
-        want = stamp.get("props_sha256")
-        if require_props and not props_path.is_file():
-            problems.append("props file is missing")
-        elif props_path.is_file() and want is None and require_props:
-            problems.append("props exist but are not hash-bound; run bind-inputs")
-        elif props_path.is_file() and want is not None and _sha(props_path) != want:
-            problems.append("props changed since they were bound to the run")
-        elif not props_path.is_file() and want is not None:
-            problems.append("hash-bound props file is missing")
-    except RunIdentityError as exc:
-        problems.append(str(exc))
+    if state == "render_bound":
+        try:
+            props_path = _resolve_inside(
+                root, str(stamp.get("props_path", "")), label="props", must_exist=False
+            )
+            want = stamp.get("props_sha256")
+            if not props_path.is_file():
+                problems.append("hash-bound props file is missing")
+            elif _sha(props_path) != want:
+                problems.append("props changed since render binding")
+        except RunIdentityError as exc:
+            problems.append(str(exc))
+        try:
+            if stamp.get("render_binding_sha256") != render_binding_digest(stamp):
+                problems.append("render binding digest does not match the stamped inputs")
+        except RunIdentityError as exc:
+            problems.append(str(exc))
     return problems
 
 
@@ -558,28 +622,69 @@ def check_identity(
         return False, str(exc)
     if not isinstance(raw, dict):
         return False, "run stamp must be a JSON object"
-    problems = _identity_problems(base, raw, expected_composition=expected_composition,
-                                  require_props=require_props)
-    return (False, "; ".join(problems)) if problems else (True, "run identity matches checkout and inputs")
+    problems = _identity_problems(
+        base, raw, expected_composition=expected_composition, require_bound=require_props
+    )
+    message = (
+        "run identity and render binding match checkout and inputs"
+        if require_props else "planning identity matches checkout"
+    )
+    return (False, "; ".join(problems)) if problems else (True, message)
 
 
-def bind_inputs(*, root: str | Path | None = None) -> dict[str, Any]:
-    """Hash props exactly once after Phase 0 creates them; later drift is refused."""
+def bind_render_inputs(*, root: str | Path | None = None) -> dict[str, Any]:
+    """Atomically bind every pixel-affecting input after authoring is complete."""
     base = _base(root)
     path = _stamp_path(base)
     raw = load_path(path, label="run stamp")
     if not isinstance(raw, dict):
         raise RunIdentityError("run stamp must be a JSON object")
-    problems = _identity_problems(base, raw, require_props=False)
+    problems = _identity_problems(base, raw, require_bound=False)
     if problems:
         raise RunIdentityError("; ".join(problems))
+    if raw.get("binding_state") == "render_bound":
+        return raw
+    record = composition_record(str(raw["composition"]), base)
+    _root_registration(base, str(raw["composition"]), str(record.get("component", "")))
+    registry, registry_path = _registry(base)
+    root_source = _resolve_inside(base, ROOT_SOURCE_REL, label="Root.tsx")
+    source_rel = _safe_rel(record.get("source", ""), label="composition source")
+    source = _resolve_inside(base, source_rel, label="composition source")
+    dependencies: dict[str, str] = {}
+    for item in record.get("source_dependencies", []):
+        relative = _safe_rel(item, label="composition dependency")
+        dependencies[relative] = _sha(
+            _resolve_inside(base, relative, label="composition dependency")
+        )
     props = _resolve_inside(base, str(raw["props_path"]), label="props")
-    current = _sha(props)
-    if raw.get("props_sha256") not in (None, current):
-        raise RunIdentityError("props changed after they were bound; start a new run stamp")
-    raw["props_sha256"] = current
+    raw.update(
+        {
+            "binding_state": "render_bound",
+            "bound_at": time.time(),
+            "git_head": _git(base, "rev-parse", "HEAD"),
+            "registry_sha256": _sha(registry_path),
+            "root_source_sha256": _sha(root_source),
+            "source_path": source_rel,
+            "source_sha256": _sha(source),
+            "source_dependencies": dependencies,
+            "engine_sources_sha256": _engine_sources_sha(base),
+            "render_inputs": _render_inputs(base, registry),
+            "props_path": _safe_rel(record.get("props", ""), label="registered props"),
+            "props_sha256": _sha(props),
+            "render_binding_sha256": None,
+        }
+    )
+    raw["render_binding_sha256"] = render_binding_digest(raw)
+    final_problems = _identity_problems(base, raw, require_bound=True)
+    if final_problems:
+        raise RunIdentityError("; ".join(final_problems))
     _atomic_json(path, raw)
     return raw
+
+
+def bind_inputs(*, root: str | Path | None = None) -> dict[str, Any]:
+    """Retired ambiguous boundary; callers must name the post-authoring transition."""
+    raise RunIdentityError("bind-inputs is retired; use bind-render-inputs after authoring")
 
 
 def _artifact_path(path: str | Path, root: Path) -> Path:
@@ -603,7 +708,7 @@ def _artifact_path(path: str | Path, root: Path) -> Path:
 def check_path(path: str | Path, root: str | Path | None = None) -> tuple[bool, str]:
     """Check a current-run artifact, resolving relative paths against `root` only."""
     base = _base(root)
-    ok, reason = check_identity(root=base, require_props=False)
+    ok, reason = check_identity(root=base, require_props=True)
     if not ok:
         return False, reason
     stamp = load_stamp(base)
@@ -642,7 +747,7 @@ def stamp_digest(root: str | Path | None = None) -> str:
 def _main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     sub = parser.add_subparsers(dest="cmd", required=True)
-    init_parser = sub.add_parser("init", help="stamp an explicit registered composition")
+    init_parser = sub.add_parser("init", help="create a planning identity before authoring")
     init_parser.add_argument("--run-id", required=True)
     init_parser.add_argument("--date")
     init_parser.add_argument("--composition", required=True)
@@ -650,24 +755,38 @@ def _main() -> int:
     check_parser = sub.add_parser("check", help="check one current-run artifact")
     check_parser.add_argument("path")
     identity_parser = sub.add_parser("require-identity", help="validate checkout and bound inputs")
-    identity_parser.add_argument("--allow-unbound-props", action="store_true")
+    identity_parser.add_argument(
+        "--allow-planning", action="store_true",
+        help="validate only the pre-authoring planning identity",
+    )
     composition_parser = sub.add_parser("require-composition", help="validate exact composition and inputs")
     composition_parser.add_argument("--composition", required=True)
-    sub.add_parser("bind-inputs", help="hash props once after they are created")
+    sub.add_parser("bind-render-inputs", help="bind source, engine, config and props after authoring")
+    sub.add_parser("bind-inputs", help="retired; use bind-render-inputs")
     args = parser.parse_args()
     try:
         if args.cmd == "init":
             stamp = init(args.run_id, args.composition, run_date=args.date, props=args.props)
-            print(f"run stamped: run_id={stamp['run_id']} composition={stamp['composition']} head={stamp['git_head'][:12]} -> {STAMP_REL}")
+            print(
+                f"planning run stamped: run_id={stamp['run_id']} "
+                f"composition={stamp['composition']} head={stamp['planning_git_head'][:12]} "
+                f"state=planning -> {STAMP_REL}"
+            )
+            return 0
+        if args.cmd == "bind-render-inputs":
+            stamp = bind_render_inputs()
+            print(
+                "render inputs bound: "
+                f"composition={stamp['composition']} "
+                f"binding={stamp['render_binding_sha256']}"
+            )
             return 0
         if args.cmd == "bind-inputs":
-            stamp = bind_inputs()
-            print(f"run inputs bound: composition={stamp['composition']} props_sha256={stamp['props_sha256'][:12]}")
-            return 0
+            raise RunIdentityError("bind-inputs is retired; use bind-render-inputs after authoring")
         if args.cmd == "check":
             ok, reason = check_path(args.path)
         elif args.cmd == "require-identity":
-            ok, reason = check_identity(require_props=not args.allow_unbound_props)
+            ok, reason = check_identity(require_props=not args.allow_planning)
         else:
             ok, reason = check_identity(expected_composition=args.composition, require_props=True)
         print(("OK: " if ok else "FAIL: ") + reason, file=sys.stdout if ok else sys.stderr)

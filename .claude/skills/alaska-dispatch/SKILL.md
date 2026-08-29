@@ -1,6 +1,6 @@
 ---
 name: alaska-dispatch
-description: Reference engine + helpers for producing an Alaska.Ai video "Dispatch" — a ~60s, 1080x1350, narrated cinematic video tying a recent verifiable Alaska story to an honest AI/ML angle. Use when the routine (see docs/ROUTINE_SPEC.md) needs to build a Dispatch video to the locked production standard (docs/VIDEO_PRODUCTION_STANDARD.md). Provides a proven, hand-coded PIL/numpy renderer, an edge-tts VO + sound-design + loudnorm-gated mix, cinematic finishing, and open captions. This is a STARTING POINT TO ADAPT per story, not a rigid template — vary the visual concept every time.
+description: Archived historical engine reference only. Never use it as an operational route; the optimization canary is governed exclusively by CANARY_SAFETY.md and prompts/dispatch_routine.md.
 ---
 
 # ARCHIVED ENGINE REFERENCE — NOT AN OPERATIONAL ROUTE

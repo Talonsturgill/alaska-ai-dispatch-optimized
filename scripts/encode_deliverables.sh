@@ -35,7 +35,6 @@ done
 [ -f "$WAV" ] || { echo "encode_deliverables: missing audio master $WAV" >&2; exit 1; }
 [ -f "$OUT/audio/vo.wav" ] || { echo "encode_deliverables: missing current VO $OUT/audio/vo.wav" >&2; exit 1; }
 
-python3 scripts/run_guard.py bind-inputs
 python3 scripts/run_guard.py require-composition --composition DispatchDaily
 python3 scripts/render_contract.py check
 

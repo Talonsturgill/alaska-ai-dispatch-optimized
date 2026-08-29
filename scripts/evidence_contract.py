@@ -1,10 +1,15 @@
 #!/usr/bin/env python3
-"""Hash-bind every panel evidence artifact to the delivered vertical bytes."""
+"""Build and validate the exact run-scoped panel evidence pack.
+
+Evidence is terminal only when this manifest was built from an empty directory,
+every expected artifact is owned by a named producer, and all producer sources,
+parameters, delivery bytes, schemas, and artifact hashes still match.
+"""
 from __future__ import annotations
 
-import hashlib
 import json
 import os
+import shutil
 import tempfile
 import time
 from pathlib import Path
@@ -21,8 +26,14 @@ from strict_json import StrictJSONError, canonical_bytes, load_path
 ROOT = Path(__file__).resolve().parent.parent
 EVIDENCE_REL = "out/evidence"
 MANIFEST_REL = "out/evidence/evidence_manifest.json"
-SCHEMA_VERSION = 1
-GENERATOR_VERSION = "dispatch-evidence-v1"
+SCHEMA_VERSION = 2
+GENERATOR_VERSION = "dispatch-evidence-v2"
+PRODUCER_SPECS = {
+    "visual": ("scripts/build_evidence.py", GENERATOR_VERSION),
+    "audio_report": ("scripts/audio_report.py", "dispatch-audio-report-v2"),
+    "audio_card": ("scripts/audio_evidence.py", "dispatch-audio-evidence-v2"),
+}
+ALLOWED_EXTENSIONS = {".jpg", ".png", ".json"}
 
 
 class EvidenceContractError(RuntimeError):
@@ -46,21 +57,51 @@ def _atomic_json(path: Path, value: dict[str, Any]) -> None:
             pass
 
 
-def _evidence_directory(base: Path) -> Path:
-    logical = base.joinpath(*EVIDENCE_REL.split("/"))
+def _logical_directory(base: Path) -> Path:
     current = base
     for part in EVIDENCE_REL.split("/"):
         current = current / part
         if current.is_symlink():
             raise EvidenceContractError("evidence directory path may not contain symlinks")
+    logical = base.joinpath(*EVIDENCE_REL.split("/"))
     try:
-        directory = logical.resolve(strict=True)
-        directory.relative_to(base)
+        logical.resolve(strict=False).relative_to(base)
     except (OSError, ValueError):
-        raise EvidenceContractError("evidence directory escapes the repository or is missing") from None
+        raise EvidenceContractError("evidence directory escapes the repository") from None
+    return logical
+
+
+def recreate_evidence_directory(*, root: str | Path = ROOT) -> Path:
+    """Remove only the validated evidence directory, then recreate it empty."""
+    base = Path(root).resolve()
+    directory = _logical_directory(base)
+    if directory.exists():
+        if not directory.is_dir():
+            raise EvidenceContractError("evidence path exists but is not a directory")
+        shutil.rmtree(directory)
+    directory.mkdir(parents=True, exist_ok=False)
+    return directory
+
+
+def _evidence_directory(base: Path) -> Path:
+    directory = _logical_directory(base)
     if not directory.is_dir():
         raise EvidenceContractError("evidence directory is missing or unsafe")
     return directory
+
+
+def _canonical_relative(value: Any, *, label: str) -> str:
+    if (
+        not isinstance(value, str)
+        or not value.startswith(EVIDENCE_REL + "/")
+        or "\\" in value
+        or value.startswith("/")
+        or any(part in {"", ".", ".."} for part in value.split("/"))
+    ):
+        raise EvidenceContractError(f"{label} must be a canonical evidence-relative POSIX path")
+    if Path(value).suffix.lower() not in ALLOWED_EXTENSIONS:
+        raise EvidenceContractError(f"{label} has an unsupported evidence extension")
+    return value
 
 
 def _evidence_files(base: Path) -> list[Path]:
@@ -73,8 +114,10 @@ def _evidence_files(base: Path) -> list[Path]:
             raise EvidenceContractError(f"evidence may not be a symlink: {candidate.name}")
         if candidate.is_dir():
             raise EvidenceContractError(f"evidence directory may not contain subdirectories: {candidate.name}")
-        if candidate.suffix.lower() not in (".jpg", ".png", ".json"):
+        if candidate.suffix.lower() not in ALLOWED_EXTENSIONS:
             raise EvidenceContractError(f"unexpected evidence file type: {candidate.name}")
+        if candidate.stat().st_size <= 0:
+            raise EvidenceContractError(f"evidence artifact is empty: {candidate.name}")
         files.append(candidate)
     if not files:
         raise EvidenceContractError("evidence directory contains no review artifacts")
@@ -91,27 +134,121 @@ def _artifact_map(base: Path) -> dict[str, dict[str, Any]]:
     return artifacts
 
 
+def _schema_problems(base: Path, artifacts: dict[str, Any]) -> list[str]:
+    problems: list[str] = []
+    for relative in artifacts:
+        if not relative.endswith(".json"):
+            continue
+        try:
+            value = load_path(base.joinpath(*relative.split("/")), label=relative)
+        except StrictJSONError as exc:
+            problems.append(str(exc))
+            continue
+        if not isinstance(value, dict):
+            problems.append(f"{relative} must be a JSON object")
+            continue
+        if relative.endswith("/caption_cues.json"):
+            if set(value) != {"note", "count", "cues"} or not isinstance(value.get("cues"), list):
+                problems.append("caption_cues.json schema is not canonical")
+            elif isinstance(value.get("count"), bool) or value.get("count") != len(value["cues"]):
+                problems.append("caption_cues.json count does not match cues")
+            else:
+                for index, cue in enumerate(value["cues"]):
+                    if not isinstance(cue, dict) or set(cue) != {"start", "end", "text"}:
+                        problems.append(f"caption_cues.json cue {index} schema is not canonical")
+                        break
+        elif relative.endswith("/motion.json"):
+            if set(value) != {"note", "strips"} or not isinstance(value.get("strips"), dict):
+                problems.append("motion.json schema is not canonical")
+        elif relative.endswith("/audio_report.json"):
+            required = {
+                "measured_on", "also_covers_master", "master_measured", "master_identity",
+                "tool", "delivered_i", "delivered_tp", "delivered_lra", "targets", "pass",
+                "vo_gaps_ge_0_35s", "vo_gaps_ge_0_50s", "vo_silence_in_gaps_s",
+                "last_word_ends_s", "longest_gaps", "diagnosis",
+            }
+            if set(value) != required:
+                problems.append("audio_report.json schema is not canonical")
+    return problems
+
+
+def _producer_map(
+    base: Path, producers: dict[str, Any], artifacts: dict[str, Any],
+) -> tuple[dict[str, Any], list[str]]:
+    problems: list[str] = []
+    if not isinstance(producers, dict) or set(producers) != set(PRODUCER_SPECS):
+        return {}, ["evidence producers must exactly name visual, audio_report, and audio_card"]
+    normalized: dict[str, Any] = {}
+    owned: list[str] = []
+    for name, (source_rel, version) in PRODUCER_SPECS.items():
+        supplied = producers.get(name)
+        if not isinstance(supplied, dict) or set(supplied) != {"parameters", "outputs"}:
+            problems.append(f"evidence producer {name} fields are not canonical")
+            continue
+        parameters = supplied.get("parameters")
+        outputs = supplied.get("outputs")
+        try:
+            canonical_bytes(parameters)
+        except StrictJSONError as exc:
+            problems.append(f"evidence producer {name} parameters are invalid: {exc}")
+        if not isinstance(parameters, dict) or not parameters:
+            problems.append(f"evidence producer {name} parameters must be a non-empty object")
+        if not isinstance(outputs, list) or not outputs:
+            problems.append(f"evidence producer {name} outputs must be a non-empty list")
+            outputs = []
+        clean_outputs: list[str] = []
+        for output in outputs:
+            try:
+                clean = _canonical_relative(output, label=f"evidence producer {name} output")
+            except EvidenceContractError as exc:
+                problems.append(str(exc))
+                continue
+            clean_outputs.append(clean)
+            owned.append(clean)
+        source = base.joinpath(*source_rel.split("/"))
+        if not source.is_file() or source.is_symlink():
+            problems.append(f"evidence producer {name} source is missing or unsafe")
+            source_hash = None
+        else:
+            source_hash = sha256_file(source)
+        normalized[name] = {
+            "path": source_rel,
+            "version": version,
+            "sha256": source_hash,
+            "parameters": parameters,
+            "outputs": clean_outputs,
+        }
+    if len(owned) != len(set(owned)):
+        problems.append("evidence artifacts may be owned by exactly one producer")
+    if set(owned) != set(artifacts):
+        problems.append("evidence producer outputs do not exactly cover the artifact set")
+    return normalized, problems
+
+
 def build_evidence_manifest(
-    *,
-    root: str | Path = ROOT,
-    parameters: dict[str, Any],
+    *, root: str | Path = ROOT, producers: dict[str, Any], expected_artifacts: list[str],
     delivery_manifest: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     base = Path(root).resolve()
     try:
         delivery = delivery_manifest or require_manifest(root=base)
-    except DeliverableContractError as exc:
+        artifacts = _artifact_map(base)
+    except (DeliverableContractError, EvidenceContractError) as exc:
         raise EvidenceContractError(str(exc)) from None
-    if not isinstance(parameters, dict) or not parameters:
-        raise EvidenceContractError("evidence generator parameters must be a non-empty object")
     try:
-        canonical_bytes(parameters)
-    except StrictJSONError as exc:
-        raise EvidenceContractError(f"evidence generator parameters are invalid: {exc}") from None
+        expected = [_canonical_relative(value, label="expected evidence artifact") for value in expected_artifacts]
+    except (TypeError, EvidenceContractError) as exc:
+        raise EvidenceContractError(str(exc)) from None
+    if expected != sorted(set(expected)):
+        raise EvidenceContractError("expected evidence artifacts must be sorted and unique")
+    if set(expected) != set(artifacts):
+        raise EvidenceContractError("evidence directory does not exactly match the expected artifact set")
+    problems = _schema_problems(base, artifacts)
+    normalized_producers, producer_problems = _producer_map(base, producers, artifacts)
+    problems.extend(producer_problems)
+    if problems:
+        raise EvidenceContractError("; ".join(problems))
     vertical = delivery["artifacts"]["vertical_hosted"]
-    generator_path = base / "scripts" / "build_evidence.py"
-    if not generator_path.is_file() or generator_path.is_symlink():
-        raise EvidenceContractError("evidence generator source is missing or unsafe")
     manifest = {
         "schema_version": SCHEMA_VERSION,
         "identity": {
@@ -121,17 +258,11 @@ def build_evidence_manifest(
         },
         "delivery_manifest_digest": contract_digest(delivery),
         "vertical_hosted": {
-            "path": vertical["path"],
-            "bytes": vertical["bytes"],
-            "sha256": vertical["sha256"],
+            "path": vertical["path"], "bytes": vertical["bytes"], "sha256": vertical["sha256"],
         },
-        "generator": {
-            "path": "scripts/build_evidence.py",
-            "version": GENERATOR_VERSION,
-            "sha256": sha256_file(generator_path),
-            "parameters": parameters,
-        },
-        "artifacts": _artifact_map(base),
+        "producers": normalized_producers,
+        "expected_artifacts": expected,
+        "artifacts": artifacts,
         "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
     }
     _atomic_json(base.joinpath(*MANIFEST_REL.split("/")), manifest)
@@ -139,24 +270,22 @@ def build_evidence_manifest(
 
 
 def validate_evidence_manifest(
-    *,
-    root: str | Path = ROOT,
-    delivery_manifest: dict[str, Any] | None = None,
+    *, root: str | Path = ROOT, delivery_manifest: dict[str, Any] | None = None,
 ) -> tuple[dict[str, Any] | None, list[str]]:
     base = Path(root).resolve()
     problems: list[str] = []
     try:
         delivery = delivery_manifest or require_manifest(root=base)
         raw = load_path(base.joinpath(*MANIFEST_REL.split("/")), label="evidence manifest")
-    except (DeliverableContractError, EvidenceContractError, StrictJSONError, OSError) as exc:
+    except (DeliverableContractError, StrictJSONError, OSError) as exc:
         return None, [str(exc)]
     if not isinstance(raw, dict):
         return None, ["evidence manifest must be a JSON object"]
-    expected_fields = {
+    fields = {
         "schema_version", "identity", "delivery_manifest_digest", "vertical_hosted",
-        "generator", "artifacts", "generated_at",
+        "producers", "expected_artifacts", "artifacts", "generated_at",
     }
-    if set(raw) != expected_fields or raw.get("schema_version") != SCHEMA_VERSION:
+    if set(raw) != fields or raw.get("schema_version") != SCHEMA_VERSION:
         problems.append("evidence manifest fields/schema are not canonical")
     expected_identity = {
         "run_id": delivery["identity"]["run_id"],
@@ -169,32 +298,55 @@ def validate_evidence_manifest(
         problems.append("evidence manifest delivery digest does not match current deliverables")
     vertical = delivery["artifacts"]["vertical_hosted"]
     expected_vertical = {
-        "path": vertical["path"], "bytes": vertical["bytes"], "sha256": vertical["sha256"]
+        "path": vertical["path"], "bytes": vertical["bytes"], "sha256": vertical["sha256"],
     }
     if raw.get("vertical_hosted") != expected_vertical:
         problems.append("evidence manifest vertical_hosted facts do not match exact delivered bytes")
-    generator = raw.get("generator")
-    generator_path = base / "scripts" / "build_evidence.py"
-    if not isinstance(generator, dict):
-        problems.append("evidence manifest generator must be an object")
-    else:
-        if set(generator) != {"path", "version", "sha256", "parameters"}:
-            problems.append("evidence manifest generator fields are not canonical")
-        if generator.get("path") != "scripts/build_evidence.py":
-            problems.append("evidence generator path is not canonical")
-        if generator.get("version") != GENERATOR_VERSION:
-            problems.append("evidence generator version changed")
-        if not generator_path.is_file() or generator.get("sha256") != sha256_file(generator_path):
-            problems.append("evidence generator source hash changed")
-        if not isinstance(generator.get("parameters"), dict) or not generator["parameters"]:
-            problems.append("evidence generator parameters are missing")
     try:
         current_artifacts = _artifact_map(base)
     except EvidenceContractError as exc:
         problems.append(str(exc))
         current_artifacts = {}
-    if raw.get("artifacts") != current_artifacts:
+    artifacts = raw.get("artifacts")
+    expected = raw.get("expected_artifacts")
+    if not isinstance(artifacts, dict):
+        problems.append("evidence manifest artifacts must be an object")
+        artifacts = {}
+    if not isinstance(expected, list) or expected != sorted(set(expected)):
+        problems.append("evidence manifest expected_artifacts must be a sorted unique list")
+        expected = []
+    if set(expected) != set(artifacts) or artifacts != current_artifacts:
         problems.append("evidence artifact set/bytes/hashes changed after manifest creation")
+    problems.extend(_schema_problems(base, current_artifacts))
+    producers = raw.get("producers")
+    if not isinstance(producers, dict) or set(producers) != set(PRODUCER_SPECS):
+        problems.append("evidence manifest producers are not canonical")
+    else:
+        owned: list[str] = []
+        for name, (path_rel, version) in PRODUCER_SPECS.items():
+            entry = producers.get(name)
+            fields = {"path", "version", "sha256", "parameters", "outputs"}
+            if not isinstance(entry, dict) or set(entry) != fields:
+                problems.append(f"evidence producer {name} receipt fields are not canonical")
+                continue
+            source = base.joinpath(*path_rel.split("/"))
+            if entry.get("path") != path_rel or entry.get("version") != version:
+                problems.append(f"evidence producer {name} identity changed")
+            if not source.is_file() or source.is_symlink() or entry.get("sha256") != sha256_file(source):
+                problems.append(f"evidence producer {name} source hash changed")
+            try:
+                canonical_bytes(entry.get("parameters"))
+            except StrictJSONError as exc:
+                problems.append(f"evidence producer {name} parameters are invalid: {exc}")
+            if not isinstance(entry.get("parameters"), dict) or not entry["parameters"]:
+                problems.append(f"evidence producer {name} parameters are missing")
+            outputs = entry.get("outputs")
+            if not isinstance(outputs, list) or not outputs:
+                problems.append(f"evidence producer {name} outputs are missing")
+            else:
+                owned.extend(outputs)
+        if len(owned) != len(set(owned)) or set(owned) != set(artifacts):
+            problems.append("evidence producer outputs do not exactly own the artifact set")
     if not isinstance(raw.get("generated_at"), str) or not raw["generated_at"]:
         problems.append("evidence manifest generated_at is missing")
     return raw, problems

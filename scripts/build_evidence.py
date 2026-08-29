@@ -23,11 +23,16 @@ on. It sampled the square until 2026-08-09, when all three judges independently 
 could not see the frame they had been asked to grade.
 """
 import argparse, glob, hashlib, json, os, subprocess, sys
+from pathlib import Path
 
 from deliverable_contract import DeliverableContractError, require_manifest
 from episode_contract import EpisodeContractError, episode_facts
-from evidence_contract import EvidenceContractError, build_evidence_manifest
-from strict_json import canonical_bytes
+from evidence_contract import (
+    EvidenceContractError,
+    build_evidence_manifest,
+    recreate_evidence_directory,
+)
+from strict_json import StrictJSONError, canonical_bytes, load_path
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 OUT = os.path.join(REPO, "out", "dispatch")
@@ -86,6 +91,19 @@ MOVES = [
 ]
 
 
+def load_run_inputs(out_dir=OUT):
+    """Strict JSON boundary for the two authored inputs that define evidence timing."""
+    vo_lines = load_path(os.path.join(out_dir, "vo_lines.json"), label="VO lines")
+    props = load_path(os.path.join(out_dir, "episode_props.json"), label="episode props")
+    if not isinstance(vo_lines, dict) or not isinstance(vo_lines.get("lines"), list):
+        raise StrictJSONError("VO lines must be an object with a lines list")
+    if not isinstance(props, dict):
+        raise StrictJSONError("episode props must be a JSON object")
+    if any(not isinstance(line, dict) for line in vo_lines["lines"]):
+        raise StrictJSONError("every VO line must be a JSON object")
+    return vo_lines["lines"], props
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--video", default=os.path.join(OUT, "dispatch_master_hosted.mp4"))
@@ -106,21 +124,35 @@ def main():
             f"({manifest['artifacts']['vertical_hosted']['path']})"
         )
 
-    lines = json.load(open(os.path.join(OUT, "vo_lines.json")))["lines"]
+    try:
+        lines, _props = load_run_inputs(OUT)
+    except StrictJSONError as exc:
+        sys.exit(f"build_evidence: {exc}")
     start = {L["idx"]: L["start"] for L in lines}
+    missing_moves = [name for name, line, _off in MOVES if line not in start]
+    if missing_moves:
+        sys.exit(
+            "build_evidence: every configured move must resolve to a VO line; missing "
+            + ", ".join(missing_moves)
+        )
     # THE FILM, NOT THE NARRATION. `end` was the last VO line's end (122.84s), so the
     # contact sheet stopped there and never photographed the final 2.6 seconds — which is
     # exactly where the sign-off plate and the music credit live. Five judges across three
     # rounds wrote "no composer credit is verifiable / the sign-off falls outside the
     # sampled stills" and every one of them was right about the pack. Sample the whole film.
-    import json as _j
-    _props = _j.load(open(os.path.join(OUT, "episode_props.json")))
     fps = episode["fps"]
     end = max(max(L["end"] for L in lines), episode["duration_seconds"])
 
-    os.makedirs(EV, exist_ok=True)
-    for f in glob.glob(os.path.join(EV, "*.jpg")):
-        os.remove(f)
+    try:
+        recreate_evidence_directory(root=REPO)
+    except EvidenceContractError as exc:
+        sys.exit(f"build_evidence: cannot recreate evidence directory: {exc}")
+    visual_outputs = set()
+
+    def record_visual(path):
+        relative = Path(path).resolve().relative_to(Path(REPO).resolve()).as_posix()
+        visual_outputs.add(relative)
+        return path
 
     # ---- FRESHNESS GATE (added 2026-08-07, hardened to identity+hash in B1) ----
     # The 2026-08-07 run rendered a fix pass, built the pack while the encode was still
@@ -161,6 +193,7 @@ def main():
         p = os.path.join(EV, f"f{t:05.1f}.jpg")
         subprocess.run(["ffmpeg", "-y", "-ss", str(t), "-i", a.video, "-frames:v", "1",
                         "-q:v", "3", p, "-v", "error"], check=True)
+        record_visual(p)
         paths.append((t, p))
     ims = [(t, Image.open(p).convert("RGB")) for t, p in paths]
     w, h = ims[0][1].size
@@ -173,7 +206,9 @@ def main():
         x, y = (i % cols) * tw, (i // cols) * (th + 18)
         sheet.paste(im.resize((tw, th)), (x, y))
         d.text((x + 4, y + th + 3), f"t={t:.1f}s", fill="black")
-    sheet.save(os.path.join(EV, "contact_square.jpg"), quality=90)
+    contact_path = os.path.join(EV, "contact_square.jpg")
+    sheet.save(contact_path, quality=90)
+    record_visual(contact_path)
     print(f"contact sheet: {len(ims)} frames across {end:.1f}s ->", sheet.size)
 
     # ---- the caption cue list, so caption claims are gradeable at all ----
@@ -194,12 +229,16 @@ def main():
 
     _cues = [{"start": s, "end": e, "text": c["text"]}
              for c in _props.get("captions", []) for s, e in [_se(c)]]
-    _j.dump({"note": "every open-caption cue in the delivered cut, in order, as built into "
+    caption_path = os.path.join(EV, "caption_cues.json")
+    with open(caption_path, "w", encoding="utf-8", newline="\n") as handle:
+        json.dump({"note": "every open-caption cue in the delivered cut, in order, as built into "
                      "episode_props.json and rendered by the episode. Times are seconds from "
                      "the first frame. Grade caption text against THIS, not against the 14 "
                      "contact stills, which sample only a fraction of the runtime.",
              "count": len(_cues), "cues": _cues},
-            open(os.path.join(EV, "caption_cues.json"), "w"), indent=1)
+            handle, indent=1, allow_nan=False)
+        handle.write("\n")
+    record_visual(caption_path)
     print(f"caption cues: {len(_cues)} written to evidence")
 
     # ---- motion filmstrips, CENTRED ON THE REAL MOVE ----
@@ -219,19 +258,12 @@ def main():
     # So the window is now slid off the boundary into whichever shot the centre belongs to,
     # and every entry records whether it had to move. changed_pct now means WITHIN-SHOT
     # motion in every row, which is the only thing it was ever supposed to mean.
-    bounds = []
-    try:
-        _sc = json.load(open(os.path.join(OUT, "episode_props.json"))).get("scenes") or []
-        bounds = sorted({round(s["from"] / fps, 3) for s in _sc if s.get("from")})
-    except Exception as _e:
-        print(f"  (no scene boundaries available, strips not de-straddled: {_e})")
+    _sc = _props.get("scenes") or []
+    bounds = sorted({round(s["from"] / fps, 3) for s in _sc if s.get("from")})
 
     WIN = 8 / fps
     motion = {}
     for name, line, off in MOVES:
-        if line not in start:
-            print(f"  SKIP {name}: vo line {line} missing")
-            continue
         centre = start[line] + off
         t0 = max(0.0, centre - 0.13)          # 8 frames at 30fps spans ~0.27s
         straddled = next((b for b in bounds if t0 < b < t0 + WIN), None)
@@ -247,9 +279,13 @@ def main():
             probe = os.path.join(EV, f"_p_{name}_%d.jpg")
             subprocess.run(["ffmpeg", "-y", "-ss", f"{t0:.3f}", "-i", a.video, "-frames:v", "8",
                             "-vsync", "0", "-q:v", "6", "-vf", "scale=120:-1", probe,
-                            "-v", "error"], check=False)
+                            "-v", "error"], check=True)
             pg = sorted(glob.glob(os.path.join(EV, f"_p_{name}_*.jpg")),
                         key=lambda q: int(q.rsplit("_", 1)[1].split(".")[0]))
+            if len(pg) != 8:
+                sys.exit(
+                    f"build_evidence: probe strip {name} decoded {len(pg)} frames, expected 8"
+                )
             ims = [Image.open(q).convert("L") for q in pg]
             for k in range(len(ims) - 1):
                 d = ImageChops.difference(ims[k], ims[k + 1]).histogram()
@@ -276,6 +312,8 @@ def main():
                         os.path.join(EV, f"s_{name}_%d.jpg"), "-v", "error"], check=True)
         g = sorted(glob.glob(os.path.join(EV, f"s_{name}_*.jpg")),
                    key=lambda q: int(q.rsplit("_", 1)[1].split(".")[0]))
+        if len(g) != 8:
+            sys.exit(f"build_evidence: filmstrip {name} decoded {len(g)} frames, expected 8")
         xs = [Image.open(q).convert("RGB") for q in g]
 
         # ------------------------------------------------------------------
@@ -316,13 +354,17 @@ def main():
                         f"frame 1 vs frame 8: {changed:.1f}% of pixels changed "
                         f"(peak delta {peak}/255)  <- MEASURED, not asserted",
                 fill="black")
-        st.save(os.path.join(EV, f"filmstrip_{name}.jpg"), quality=92)
+        strip_path = os.path.join(EV, f"filmstrip_{name}.jpg")
+        st.save(strip_path, quality=92)
+        record_visual(strip_path)
         for q in g:
             os.remove(q)
         print(f"  filmstrip {name}: vo line {line} +{off}s -> centred {centre:.2f}s, "
               f"strip starts {t0:.2f}s, motion {changed:.1f}% peak {peak}")
 
-    json.dump({"note": "frame 1 vs frame 8 of each filmstrip window, measured on the "
+    motion_path = os.path.join(EV, "motion.json")
+    with open(motion_path, "w", encoding="utf-8", newline="\n") as handle:
+        json.dump({"note": "frame 1 vs frame 8 of each filmstrip window, measured on the "
                        "delivered cut. changed_pct is the share of pixels differing by "
                        "more than 12/255. A judge who cannot SEE motion in a strip should "
                        "read this before recording that the beat is frozen. EVERY WINDOW "
@@ -333,7 +375,9 @@ def main():
                        "are shot changes, not motion. Cross-check against "
                        "motion_registered.json, which solves the camera out per shot.",
                "strips": motion},
-              open(os.path.join(EV, "motion.json"), "w"), indent=2)
+              handle, indent=2, allow_nan=False)
+        handle.write("\n")
+    record_visual(motion_path)
     print("  motion.json written:", {k: v["changed_pct"] for k, v in motion.items()})
 
     import subprocess as _sp
@@ -355,6 +399,7 @@ def main():
             "build_evidence: credits-card sample failed: "
             + (_credits.stderr or _credits.stdout or "no decoded frame").strip()[-300:]
         )
+    record_visual(_credits_path)
     print(f"  credits card sampled at {_t:.1f}s")
 
     # THE AUDIO REPORT IS PART OF THE PACK, SO THIS BUILDS IT (2026-08-12).
@@ -370,7 +415,15 @@ def main():
     # script here. A stale number in an evidence pack is worse than a missing one: a missing
     # file is obviously missing, and a stale file is quietly believed.
     _ar = os.path.join(os.path.dirname(os.path.abspath(__file__)), "audio_report.py")
-    _r = _sp.run([sys.executable, _ar], capture_output=True, text=True)
+    square = os.path.join(
+        REPO, *manifest["artifacts"]["square"]["path"].split("/")
+    )
+    words = os.path.join(OUT, "audio", "words.json")
+    audio_report_path = os.path.join(EV, "audio_report.json")
+    _r = _sp.run(
+        [sys.executable, _ar, "--delivered", square, "--words", words,
+         "--out", audio_report_path], capture_output=True, text=True,
+    )
     if _r.returncode == 0:
         print("  audio_report.json rebuilt from the delivered cut")
     else:
@@ -379,21 +432,66 @@ def main():
             + (_r.stderr or _r.stdout).strip()[-300:]
         )
 
+    audio_card_script = os.path.join(os.path.dirname(os.path.abspath(__file__)), "audio_evidence.py")
+    audio_master = os.path.join(OUT, "audio", "master.wav")
+    vo_path = os.path.join(OUT, "audio", "vo.wav")
+    sfx_ledger = os.path.join(OUT, "sfx_events.json")
+    audio_card_path = os.path.join(EV, "audio_card.png")
+    _card = _sp.run(
+        [sys.executable, audio_card_script, "--master", audio_master, "--vo", vo_path,
+         "--events", sfx_ledger, "--out", audio_card_path],
+        capture_output=True, text=True,
+    )
+    if _card.returncode != 0 or not os.path.isfile(audio_card_path):
+        sys.exit(
+            "build_evidence: audio evidence card could not be rebuilt: "
+            + (_card.stderr or _card.stdout or "no output").strip()[-300:]
+        )
+    print("  audio_card.png rebuilt from the canonical master and SFX ledger")
+
     try:
+        visual_parameters = {
+            "video_role": "vertical_hosted",
+            "video_path": manifest["artifacts"]["vertical_hosted"]["path"],
+            "frames": a.frames,
+            "episode_total_frames": episode["total_frames"],
+            "episode_fps": episode["fps"],
+            "episode_duration_seconds": episode["duration_seconds"],
+            "moves_sha256": hashlib.sha256(canonical_bytes(MOVES)).hexdigest(),
+            "filmstrip_frames": 8,
+            "contact_sampling": "even-plus-scene-settle",
+        }
+        producer_outputs = {
+            "visual": sorted(visual_outputs),
+            "audio_report": ["out/evidence/audio_report.json"],
+            "audio_card": ["out/evidence/audio_card.png"],
+        }
+        producers = {
+            "visual": {"parameters": visual_parameters, "outputs": producer_outputs["visual"]},
+            "audio_report": {
+                "parameters": {
+                    "delivered_role": "square", "words_path": "out/dispatch/audio/words.json",
+                    "output": "out/evidence/audio_report.json",
+                },
+                "outputs": producer_outputs["audio_report"],
+            },
+            "audio_card": {
+                "parameters": {
+                    "master_path": "out/dispatch/audio/master.wav",
+                    "sfx_ledger_path": "out/dispatch/sfx_events.json",
+                    "output": "out/evidence/audio_card.png",
+                },
+                "outputs": producer_outputs["audio_card"],
+            },
+        }
+        expected_artifacts = sorted(
+            output for outputs in producer_outputs.values() for output in outputs
+        )
         evidence_manifest = build_evidence_manifest(
             root=REPO,
             delivery_manifest=manifest,
-            parameters={
-                "video_role": "vertical_hosted",
-                "video_path": manifest["artifacts"]["vertical_hosted"]["path"],
-                "frames": a.frames,
-                "episode_total_frames": episode["total_frames"],
-                "episode_fps": episode["fps"],
-                "episode_duration_seconds": episode["duration_seconds"],
-                "moves_sha256": hashlib.sha256(canonical_bytes(MOVES)).hexdigest(),
-                "filmstrip_frames": 8,
-                "contact_sampling": "even-plus-scene-settle",
-            },
+            producers=producers,
+            expected_artifacts=expected_artifacts,
         )
     except EvidenceContractError as exc:
         sys.exit(f"build_evidence: evidence manifest rejected: {exc}")
@@ -404,4 +502,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except (subprocess.CalledProcessError, OSError, TypeError, ValueError, KeyError, IndexError) as exc:
+        raise SystemExit(f"build_evidence: producer failed: {exc}") from None

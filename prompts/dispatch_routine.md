@@ -517,7 +517,8 @@ enforced in code by DEDUPE_WINDOW_DAYS in scripts/dedupe.py, so `list` and `chec
   scripts/upload_video.py (this repository's fixed `dispatch-media` branch only);
   scripts/dispatch_email.py (`--local-only` HTML preview only);
   scripts/caption_check.py + config/linkedin_caption_rubric.yaml;
-  scripts/make_review_sheets.py (contact sheets + motion filmstrips; any frames dir);
+  scripts/make_review_sheets.py (NON-TERMINAL early-look sheets only; never panel evidence);
+  scripts/build_evidence.py (the only terminal, exact-byte, producer-bound panel pack);
   scripts/storyboard_check.py (Gate 0A; accepts engine: infographic-2.5d);
   scripts/no_exit.py (THE ONE OUTCOME GATE — `check` before any stop-shaped artifact or any
   end-of-run that is not a hard blocker; refuses stops only, never ships).
@@ -575,7 +576,10 @@ number restated in a second place is a number that will be wrong in one of them.
    `post.txt`/`sources.json`/`shots.json`/`vo_script.json`). The FIRST thing this run does, before
    producing any artifact:
        python3 scripts/run_guard.py init --run-id <date> --composition DispatchDaily
-   This records the run's start instant. From then on, consumers that route reads through
+   This creates a PLANNING stamp before story authoring. It deliberately does not bind source
+   or props yet. After episode props and the replay source inputs are final, Phase 5 performs
+   the explicit `bind-render-inputs` transition; renders and gates reject a planning stamp.
+   From then on, consumers that route reads through
    `run_guard.fresh()` (dispatch_email.py already does, for --post and --sources) HARD-FAIL on any
    `out/dispatch/*` file older than this run — a stale artifact fails the run loudly instead of
    shipping. This is the enforcing mechanism; it does NOT depend on you remembering to clean up.
@@ -1214,6 +1218,15 @@ worlds, no flat single-tone fills, no glyphs that read as broken assets.
    mouth_track.json (per-frame 0..1 voice amplitude) + accents.json (the vo-director's emphasis
    words located at exact frames). build_scenes.py folds all of it into episode_props.json.
 
+   AFTER source authoring and `episode_props.json` are final, and BEFORE any render, bind the
+   exact inputs once:
+
+       python3 scripts/run_guard.py bind-render-inputs
+
+   This transition is explicit and atomic. Any props, registered Root/component, dependency,
+   engine config, or render-input mutation after it invalidates every render and gate. Never
+   re-bind merely to bless a drifted file; start a new planning run when authoring must change.
+
    **THE END CREDITS ARE AUTOMATIC. DO NOT HAND-PLACE THEM, AND DO NOT LEAVE THEM OUT**
    (owner, 2026-08-09). build_scenes.py derives an `episode_props.credits` block from
    `out/dispatch/music_credit.json` and `out/dispatch/sources.json`, and `lib/EndCredits.tsx`
@@ -1470,8 +1483,13 @@ watched it work.
   word), beat/scene structure matches the storyboard, first-frame poster grade (bold ink
   present at frame 0), audio gate (-14 LUFS, TP <= -1.0, VO dominant, tail audible, real
   pre-button silence dip >= 6dB).
-- Evidence pack: scripts/make_review_sheets.py (contact sheets + motion filmstrips at the key
-  moves) on the FINAL frames; verify frame freshness by mtime before packing.
+- `scripts/make_review_sheets.py` is an early-look tool only. It is useful during a partial
+  render, but its output is never terminal evidence and cannot support a verdict.
+- Build the terminal pack only with `python3 scripts/build_evidence.py`. It recreates the
+  run-scoped evidence directory, invokes every evidence producer, and writes the exact-byte,
+  source/version/parameter-bound `out/evidence/evidence_manifest.json`.
+- Run `python3 scripts/preflight.py` and require exit 0 after that build. Preflight validates
+  the evidence manifest as a blocking check. Only then may editor, flow-critic, or judges run.
 - GATE B: editor + flow-critic (POST) + a 3-JUDGE SCORER PANEL vs config/dispatch_rubric.yaml.
   Judges grade motion from the filmstrips (never "unverifiable from stills"). PANEL MEDIAN
   decides. On ANY failure: one dispatch-fixer agent per named failure, patch the root cause,

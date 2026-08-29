@@ -23,9 +23,9 @@ coverage:
   head_start_s: 2.0            # first beat must start within this many seconds of t=0 (open on the stake)
 
 sfx:
-  # sound-paired-to-picture. The per-run audio script emits audio/sfx_events.json (a list of
-  # {t, kind, label}); quality_gate.py's SFX_EVENTS check verifies each produced a real level lift.
-  events_json: audio/sfx_events.json
+  # sound-paired-to-picture. The mix emits one enriched, hash-bound ledger only after
+  # resolving its takes and writing master.wav. audio/sfx_events.json is retired.
+  events_json: sfx_events.json
   min_events_per_shot: 1       # every shot has at least one motivated sound event
   min_events_total: 16         # a 120s piece with fewer than this is under-sonified (12 at 90s, 8 at 60s)
   kinds: [pop, whoosh, riser, hit, ambient, tick, boom, lock, pulse]   # the elemental grammar + our extensions

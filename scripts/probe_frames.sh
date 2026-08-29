@@ -41,7 +41,6 @@ if [ "$COMP" != "DispatchDaily" ]; then
   echo "probe_frames: only the active, case-sensitive DispatchDaily identity may be probed." >&2
   exit 2
 fi
-python3 scripts/run_guard.py bind-inputs
 python3 scripts/run_guard.py require-composition --composition DispatchDaily
 PROPS="out/dispatch/episode_props.json"
 OUTDIR="out/dispatch/probe"

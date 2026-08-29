@@ -51,6 +51,8 @@ import os
 import re
 import sys
 
+from strict_json import StrictJSONError, load_path
+
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 
@@ -122,8 +124,12 @@ def main():
         from caption_band_check import default_targets
         eng_path = default_targets()[0]
 
-    doc = json.load(open(a.claims))
-    claims = doc["claims"] if isinstance(doc, dict) and "claims" in doc else doc
+    doc = load_path(a.claims, label="claims")
+    if not isinstance(doc, dict) or not isinstance(doc.get("claims"), list):
+        raise StrictJSONError("claims must be a JSON object with a claims list")
+    claims = doc["claims"]
+    if any(not isinstance(claim, dict) for claim in claims):
+        raise StrictJSONError("every claim must be a JSON object")
     engine = engine_text(eng_path)
     vo = open(a.vo).read()
     by_id = {c["id"]: c for c in claims}
@@ -229,4 +235,7 @@ def main():
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    try:
+        sys.exit(main())
+    except (StrictJSONError, OSError, TypeError, ValueError, KeyError) as exc:
+        raise SystemExit(f"claims_contract_check: {exc}") from None

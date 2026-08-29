@@ -26,7 +26,7 @@ from urllib.request import Request, urlopen
 from run_guard import ACTIVE_COMPOSITION, check_identity, load_stamp, stamp_digest
 from episode_contract import EpisodeContractError, episode_facts
 from render_contract import RenderContractError, probe_render, require_render
-from strict_json import StrictJSONError, canonical_bytes, load_path
+from strict_json import StrictJSONError, canonical_bytes, load_path, loads
 
 ROOT = Path(__file__).resolve().parent.parent
 CONFIG_REL = "config/deliverables.json"
@@ -47,7 +47,7 @@ EXPECTED_SPECS = {
     ),
 }
 EXPECTED_MANIFEST_PATH = "out/dispatch/deliverables_manifest.json"
-MANIFEST_SCHEMA_VERSION = 2
+MANIFEST_SCHEMA_VERSION = 3
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 GIT_OID_RE = re.compile(r"^(?:[0-9a-f]{40}|[0-9a-f]{64})$")
 SAFE_PATH_RE = re.compile(r"^[A-Za-z0-9._/-]+$")
@@ -186,7 +186,23 @@ def load_config(
         raise DeliverableContractError(
             "duration_seconds must derive from episode_props total/fps including credits with one-frame tolerance"
         )
+    if value.get("video_fps") != 30:
+        raise DeliverableContractError("deliverable config video_fps must be exactly 30")
+    preview_roles = value.get("terminal_preview_required_roles")
+    if (
+        not isinstance(preview_roles, list)
+        or len(preview_roles) != len(set(preview_roles))
+        or not {"vertical_hosted", "square"}.issubset(preview_roles)
+        or any(role not in EXPECTED_ROLES for role in preview_roles)
+    ):
+        raise DeliverableContractError(
+            "terminal preview roles must be unique known roles including vertical_hosted and square"
+        )
     return value
+
+
+def terminal_preview_roles(*, root: str | Path = ROOT) -> tuple[str, ...]:
+    return tuple(load_config(root=root)["terminal_preview_required_roles"])
 
 
 def manifest_path(*, root: str | Path = ROOT, config: dict[str, Any] | None = None) -> Path:
@@ -201,7 +217,7 @@ def probe_media(path: str | Path) -> dict[str, Any]:
         result = subprocess.run(
             [
                 "ffprobe", "-v", "error", "-print_format", "json",
-                "-show_format", "-show_streams", str(target),
+                "-count_frames", "-show_format", "-show_streams", str(target),
             ],
             capture_output=True,
             text=True,
@@ -219,9 +235,9 @@ def probe_media(path: str | Path) -> dict[str, Any]:
             f"ffprobe rejected {target.name}: {detail[-1] if detail else 'unreadable media'}"
         )
     try:
-        raw = json.loads(result.stdout)
-    except json.JSONDecodeError:
-        raise DeliverableContractError(f"ffprobe returned malformed JSON for {target.name}") from None
+        raw = loads(result.stdout, label=f"ffprobe output for {target.name}")
+    except StrictJSONError as exc:
+        raise DeliverableContractError(str(exc)) from None
     if not isinstance(raw, dict) or not isinstance(raw.get("streams"), list):
         raise DeliverableContractError(f"ffprobe returned no stream list for {target.name}")
     streams = raw["streams"]
@@ -244,6 +260,32 @@ def probe_media(path: str | Path) -> dict[str, Any]:
         height = int(first_video.get("height", 0))
     except (TypeError, ValueError):
         raise DeliverableContractError(f"ffprobe returned invalid dimensions for {target.name}") from None
+    def parse_rate(value: Any) -> float | None:
+        if value in (None, "", "N/A", "0/0"):
+            return None
+        try:
+            numerator, denominator = str(value).split("/", 1)
+            rate = float(numerator) / float(denominator)
+        except (TypeError, ValueError, ZeroDivisionError, OverflowError):
+            raise DeliverableContractError(f"ffprobe returned invalid fps for {target.name}") from None
+        if not math.isfinite(rate) or rate <= 0:
+            raise DeliverableContractError(f"ffprobe returned invalid fps for {target.name}")
+        return round(rate, 9)
+
+    fps = parse_rate(first_video.get("avg_frame_rate"))
+    if fps is None:
+        fps = parse_rate(first_video.get("r_frame_rate"))
+    count_raw = first_video.get("nb_read_frames")
+    if count_raw in (None, "", "N/A"):
+        count_raw = first_video.get("nb_frames")
+    frame_count: int | None = None
+    if count_raw not in (None, "", "N/A"):
+        try:
+            frame_count = int(count_raw)
+        except (TypeError, ValueError, OverflowError):
+            raise DeliverableContractError(f"ffprobe returned invalid frame count for {target.name}") from None
+        if frame_count <= 0:
+            raise DeliverableContractError(f"ffprobe returned invalid frame count for {target.name}")
     return {
         "width": width,
         "height": height,
@@ -251,6 +293,8 @@ def probe_media(path: str | Path) -> dict[str, Any]:
         "streams": {"video": len(video), "audio": len(audio)},
         "video_codecs": [str(item.get("codec_name", "")) for item in video],
         "audio_codecs": [str(item.get("codec_name", "")) for item in audio],
+        "fps": fps,
+        "frame_count": frame_count,
     }
 
 
@@ -294,6 +338,12 @@ def _entry_problems(
     for key, wanted in expected_static.items():
         if entry.get(key) != wanted:
             problems.append(f"{role}.{key} does not match the canonical contract")
+    expected_fields = {
+        "path", "media_type", "width", "height", "duration_seconds", "streams",
+        "video_codecs", "audio_codecs", "fps", "frame_count", "bytes", "sha256",
+    }
+    if set(entry) != expected_fields:
+        problems.append(f"{role} manifest fields are not canonical")
     dimensions = (facts["width"], facts["height"])
     if dimensions in forbidden:
         problems.append(f"{role} uses forbidden dimensions {dimensions[0]}x{dimensions[1]}")
@@ -317,6 +367,23 @@ def _entry_problems(
     if path.stat().st_mtime <= started_at:
         problems.append(f"{role} does not postdate the current run stamp")
     if spec["media_type"] == "video":
+        fps = facts.get("fps")
+        if not isinstance(fps, (int, float)) or isinstance(fps, bool) or not math.isfinite(float(fps)):
+            problems.append(f"{role} has no measurable fps")
+        elif abs(float(fps) - 30.0) > 0.001:
+            problems.append(f"{role} fps {float(fps):.6f} is not the required 30 fps")
+        if entry.get("fps") != fps:
+            problems.append(f"{role} fps changed after manifest creation")
+        frame_count = facts.get("frame_count")
+        if isinstance(frame_count, bool) or not isinstance(frame_count, int):
+            problems.append(f"{role} has no measurable frame count")
+        elif abs(frame_count - int(episode["total_frames"])) > int(duration["maximum_frame_error"]):
+            problems.append(
+                f"{role} frame count {frame_count} does not match hash-bound episode total "
+                f"{episode['total_frames']}"
+            )
+        if entry.get("frame_count") != frame_count:
+            problems.append(f"{role} frame count changed after manifest creation")
         seconds = facts.get("duration_seconds")
         if not isinstance(seconds, (int, float)):
             problems.append(f"{role} has no measurable duration")
@@ -333,8 +400,13 @@ def _entry_problems(
             recorded = entry.get("duration_seconds")
             if not isinstance(recorded, (int, float)) or abs(float(recorded) - float(seconds)) > 0.01:
                 problems.append(f"{role} duration changed after manifest creation")
-    elif entry.get("duration_seconds") is not None:
-        problems.append(f"{role} image duration must be null")
+    else:
+        if entry.get("duration_seconds") is not None:
+            problems.append(f"{role} image duration must be null")
+        if entry.get("fps") != facts.get("fps"):
+            problems.append(f"{role} image fps changed after manifest creation")
+        if entry.get("frame_count") != facts.get("frame_count"):
+            problems.append(f"{role} image frame count changed after manifest creation")
     return problems
 
 
@@ -379,6 +451,8 @@ def build_manifest(
             "streams": {"video": spec["video_streams"], "audio": spec["audio_streams"]},
             "video_codecs": facts.get("video_codecs", []),
             "audio_codecs": facts.get("audio_codecs", []),
+            "fps": facts.get("fps"),
+            "frame_count": facts.get("frame_count"),
             "bytes": path.stat().st_size,
             "sha256": sha256_file(path),
         }

@@ -759,9 +759,10 @@ per the routine's stall rule (median plateaued with only illustration-craft styl
    precisely because scratch is gitignored, so git never rewrites its timestamps), so NO producer
    has to change — which matters because the bug was caused by pipeline DRIFT, and any fix that
    made every producer stamp/register its output would just re-break on the next pipeline change.
-   `dispatch_email.py` now routes `--post` and `--sources` through `run_guard.fresh()` and HARD-FAILS
-   (with both timestamps) on a stale or unstamped input, with an explicit `--no-freshness-check`
-   escape hatch for deliberate manual use. Net effect: a stale artifact now fails the run loudly at
+   The then-current `dispatch_email.py` routed `--post` and `--sources` through
+   `run_guard.fresh()` and hard-failed on stale input. Its historical manual
+   freshness bypass is retired and absent from the current terminal preview path.
+   Net effect at the time was that a stale artifact failed the run loudly at
    the delivery boundary instead of silently emailing the wrong story. Landed on a follow-up branch
    off main, not this run's branch.
 

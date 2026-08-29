@@ -50,7 +50,6 @@ if [ "$COMP" != "DispatchDaily" ]; then
   echo "render_parallel.sh: only the active, case-sensitive DispatchDaily identity may render." >&2
   exit 2
 fi
-python3 scripts/run_guard.py bind-inputs
 python3 scripts/run_guard.py require-composition --composition DispatchDaily
 # ONE RENDER AT A TIME (2026-08-08). Two instances were started minutes apart because the
 # first launch LOOKED like it had failed - the command that started it errored on an
@@ -88,12 +87,7 @@ fi
 # drift means the finished bytes no longer belong to the stamped run. Even a comment-only edit
 # requires a new stamp; identity is intentionally exact rather than based on semantic guesses.
 _src_fingerprint() {
-  { find video-engine/src -type f \( -name '*.tsx' -o -name '*.ts' \) -print0 2>/dev/null \
-      | sort -z | xargs -0 sha256sum 2>/dev/null; \
-    sha256sum video-engine/package.json video-engine/package-lock.json \
-      video-engine/remotion.config.ts video-engine/tsconfig.json \
-      out/dispatch/episode_props.json 2>/dev/null; \
-  } | sha256sum | cut -c1-16
+  python3 scripts/render_contract.py binding-digest
 }
 SRC_BEFORE="$(_src_fingerprint)"
 
@@ -125,15 +119,14 @@ if [ -d video-engine/node_modules/esbuild ]; then
   fi
 fi
 
-# A PASSING CUT IS FINISHED (2026-08-09, owner's instruction). ship_gate.py writes
-# out/dispatch/SHIP_NOW the moment a panel median clears the bar. While that file exists this
-# script will not start a render, because the only reason to render after a pass is to replace
-# a cut that was already good enough, and that is exactly what cost this routine nine hours and
-# five rounds on the day the rule was written.
-if [ -f out/dispatch/SHIP_NOW ]; then
+# A PASSING CUT IS FINISHED (2026-08-09, owner's instruction). ship_gate.py writes a
+# strict out/dispatch/SHIP_NOW receipt when a panel median clears the bar. Only a marker
+# whose run, verdict bytes/digest, and delivery-manifest digest all validate stops a new
+# render. Bare existence, malformed JSON, or a stale marker has no control authority.
+if python3 scripts/ship_marker.py check >/dev/null 2>&1; then
   echo "render_parallel.sh: REFUSING. A passing cut is waiting to ship." >&2
-  cat out/dispatch/SHIP_NOW >&2
-  echo "If you really mean to abandon it, delete out/dispatch/SHIP_NOW first." >&2
+  python3 scripts/ship_marker.py check >&2
+  echo "The marker is bound to this run's exact verdict and manifest." >&2
   exit 5
 fi
 
@@ -192,9 +185,11 @@ trap 'rm -rf "$WORK"' EXIT
 # Any edit anywhere changes the key, which makes a stale hit impossible rather than unlikely.
 # A run that changes one character gets a full re-render, which is the correct and safe cost.
 CACHE_ROOT="out/dispatch/chunkcache"
-CACHE_KEY="$( { echo "$COMP"; cat "$PROPS" 2>/dev/null; \
-                find video-engine/src -name '*.tsx' -o -name '*.ts' | sort | xargs cat 2>/dev/null; \
-              } | sha256sum | cut -c1-16 )"
+CACHE_KEY="$SRC_BEFORE"
+if ! [[ "$CACHE_KEY" =~ ^[0-9a-f]{64}$ ]]; then
+  echo "render_parallel.sh: render binding cache key is not a full SHA-256" >&2
+  exit 6
+fi
 CACHE="$CACHE_ROOT/$CACHE_KEY"
 mkdir -p "$CACHE"
 # keep only the newest few keys so this never becomes a disk leak on a long-lived box
@@ -217,9 +212,13 @@ python3 scripts/render_contract.py prepare
 # hang does not set one.
 render_chunk() {
   local i="$1" A="$2" B="$3" attempt=1
-  # a cached chunk is bytes rendered from THIS EXACT SOURCE, so reusing it is not a shortcut
-  if [ -s "$CACHE/c$i.mp4" ]; then
+  # A cache hit requires both exact bytes and a current-run, full-binding, exact-range receipt.
+  if [ -s "$CACHE/c$i.mp4" ] && [ -s "$CACHE/c$i.json" ] && \
+     python3 scripts/render_contract.py chunk-check \
+       --path "$CACHE/c$i.mp4" --receipt "$CACHE/c$i.json" \
+       --index "$i" --start "$A" --end "$B" --total "$TOTAL" >/dev/null; then
     cp "$CACHE/c$i.mp4" "$WORK/c$i.mp4"
+    cp "$CACHE/c$i.json" "$WORK/c$i.json"
     echo "  chunk $i reused from cache (same source, same props)" >&2
     return 0
   fi
@@ -228,8 +227,12 @@ render_chunk() {
         npx remotion render src/index.ts "$COMP" "$WORK/c$i.mp4" \
         --props="../$PROPS" --codec=h264 --muted --concurrency=1 --crf=19 \
         --frames="$A-$B" ) >"$WORK/c$i.attempt$attempt.log" 2>&1 || true
-    if [ -s "$WORK/c$i.mp4" ]; then
+    if [ -s "$WORK/c$i.mp4" ] && \
+       python3 scripts/render_contract.py chunk-record \
+         --path "$WORK/c$i.mp4" --receipt "$WORK/c$i.json" \
+         --index "$i" --start "$A" --end "$B" --total "$TOTAL"; then
       cp "$WORK/c$i.mp4" "$CACHE/c$i.mp4" 2>/dev/null || true
+      cp "$WORK/c$i.json" "$CACHE/c$i.json" 2>/dev/null || true
       cp "$WORK/c$i.attempt$attempt.log" "$WORK/c$i.log"
       [ "$attempt" -gt 1 ] && echo "  chunk $i recovered on attempt $attempt" >&2
       return 0
@@ -274,6 +277,17 @@ if [ "$FAIL" -ne 0 ]; then
   exit 1
 fi
 
+# Validate every range again after the queue has joined. A cache/file mutation between
+# reuse and concat therefore fails before it can become the canonical mute render.
+for i in $(seq 0 $((CHUNKS - 1))); do
+  A=$(( i * PER ))
+  B=$(( A + PER - 1 )); [ "$B" -ge "$TOTAL" ] && B=$(( TOTAL - 1 ))
+  [ "$A" -gt "$B" ] && continue
+  python3 scripts/render_contract.py chunk-check \
+    --path "$WORK/c$i.mp4" --receipt "$WORK/c$i.json" \
+    --index "$i" --start "$A" --end "$B" --total "$TOTAL"
+done
+
 ffmpeg -y -f concat -safe 0 -i "$LIST" -c copy "$ABS_OUT" -v error
 
 GOT="$(ffprobe -v error -select_streams v:0 -count_frames \
@@ -283,7 +297,11 @@ if [ "$GOT" != "$TOTAL" ]; then
   echo "  A short concat means a chunk boundary is wrong; do NOT ship this file." >&2
   exit 1
 fi
-SRC_AFTER="$(_src_fingerprint)"
+if ! SRC_AFTER="$(_src_fingerprint)"; then
+  echo "  FAIL  bound render identity drifted during this render." >&2
+  rm -f "$ABS_OUT"
+  exit 6
+fi
 if [ "$SRC_BEFORE" != "$SRC_AFTER" ]; then
   echo "  FAIL  engine source changed DURING this render ($SRC_BEFORE -> $SRC_AFTER)." >&2
   echo "  Chunks bundle when they start, so this file may be part old film and part new," >&2

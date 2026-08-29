@@ -59,7 +59,8 @@ frames, 1/15s apart, at the key moves — judge MOTION from these: easing, overs
 follow-through; never from lone stills) + a few full-res frames the orchestrator
 names, out/dispatch/quality_report.json (EVENT_CADENCE / BEAT_DENSITY / SCENE_STRUCTURE / SFX_EVENTS) + the LIVING_SCREEN
 result (layered disjoint-motion windows),
-out/dispatch/audio/sfx_events.json, out/dispatch/shots.json. Judge:
+out/dispatch/sfx_events.json (the single enriched ledger bound to audio/master.wav),
+out/dispatch/shots.json. The retired audio/sfx_events.json alias is never evidence. Judge:
 1. Does the picture VISIBLY change across the sampled frames every few seconds, or are there stretches
    that look static / like the same frame relabeled?
 2. Is every shot sonified (sfx_events has >=1 per shot) and do the events line up with visible moments?

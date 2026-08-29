@@ -127,6 +127,22 @@ def deliverables_are_fresh():
     return True, f"five exact artifacts match manifest {contract_digest(manifest)[:16]}"
 
 
+def evidence_is_current():
+    """Require the exact producer-bound terminal evidence pack before any judge runs."""
+    from deliverable_contract import DeliverableContractError, require_manifest
+    from evidence_contract import EvidenceContractError, require_evidence_manifest
+
+    try:
+        delivery = require_manifest(root=REPO)
+        evidence = require_evidence_manifest(root=REPO, delivery_manifest=delivery)
+    except (DeliverableContractError, EvidenceContractError) as exc:
+        return False, str(exc)
+    return True, (
+        f"{len(evidence['artifacts'])} exact artifacts match producer-bound manifest "
+        f"for {evidence['identity']['run_id']}"
+    )
+
+
 def git_identity_is_the_owners():
     """The PERMANENT media host is a git push, so git identity is a DELIVERY prerequisite.
 
@@ -175,6 +191,13 @@ def main():
         print(f"  FAIL  deliverables are fresh: {msg}")
     else:
         print(f"  OK    deliverables are fresh: {msg}")
+
+    ok, msg = evidence_is_current()
+    if ok is False:
+        failures.append(("terminal evidence is current", msg))
+        print(f"  FAIL  terminal evidence is current: {msg}")
+    else:
+        print(f"  OK    terminal evidence is current: {msg}")
 
     for label, argv, required in CHECKS:
         p = subprocess.run(argv, capture_output=True, text=True)

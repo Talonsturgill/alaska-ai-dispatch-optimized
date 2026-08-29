@@ -2,7 +2,7 @@
 # The producer picks a voice per Dispatch to fit the story's tone, and VARIES it
 # across runs (record the choice in state.yaml > dispatch_history). Model weights
 # are NOT committed (too big) — the routine env setup script installs the engine
-# and caches the voicepacks. See docs/ROUTINE_SPEC.md Phase 3.
+# and caches the voicepacks. See prompts/dispatch_routine.md Phase 3.
 
 engines:
   chatterbox:                   # PUBLISH PRIMARY — zero-shot clone of the OWNER'S OWN voice

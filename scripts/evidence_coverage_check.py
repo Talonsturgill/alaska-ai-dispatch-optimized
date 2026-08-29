@@ -35,6 +35,8 @@ import os
 import re
 import sys
 
+from strict_json import StrictJSONError, load_path
+
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 EV = os.path.join(REPO, "out", "evidence")
 OUT = os.path.join(REPO, "out", "dispatch")
@@ -62,11 +64,20 @@ def main():
     if not os.path.exists(mj):
         print("evidence_coverage_check: no motion.json; run build_evidence.py first")
         return 1
-    strips = json.load(open(mj))["strips"]
-    props = json.load(open(os.path.join(OUT, "episode_props.json")))
+    motion = load_path(mj, label="motion evidence")
+    props = load_path(os.path.join(OUT, "episode_props.json"), label="episode props")
+    sb = load_path(os.path.join(OUT, "storyboard.json"), label="storyboard")
+    if not isinstance(motion, dict) or not isinstance(motion.get("strips"), dict):
+        raise StrictJSONError("motion evidence must be an object with a strips object")
+    if not isinstance(props, dict) or not isinstance(props.get("scenes"), list):
+        raise StrictJSONError("episode props must be an object with a scenes list")
+    if not isinstance(sb, dict):
+        raise StrictJSONError("storyboard must be a JSON object")
+    strips = motion["strips"]
     scenes = props["scenes"]
-    sb = json.load(open(os.path.join(OUT, "storyboard.json")))
     beats = sb.get("beats") or []
+    if not isinstance(beats, list):
+        raise StrictJSONError("storyboard beats must be a list")
 
     # THE MANIFEST IS NOT THE PACK (2026-08-13). This check read motion.json and never
     # asked whether the strips it names are on disk, so it passed a pack whose strips had
@@ -141,4 +152,7 @@ def main():
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    try:
+        sys.exit(main())
+    except (StrictJSONError, OSError, TypeError, ValueError, KeyError) as exc:
+        raise SystemExit(f"evidence_coverage_check: {exc}") from None

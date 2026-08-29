@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
-"""Build the REVIEW EVIDENCE PACK for a rendered Dispatch — the standard input for the
-frame review and every Gate-B critic (editor / scorer / flow-critic).
+"""Build a NON-TERMINAL EARLY-LOOK pack for visual iteration.
+
+This output is never the Gate-B panel pack and never authorizes a verdict. Terminal
+judging requires scripts/build_evidence.py plus its validated evidence manifest.
 
 Two kinds of evidence, because two kinds of judgment:
   1. CONTACT SHEETS (sheet_0..5.png): 36 stills sampling the whole timeline ~every 1.7s.
@@ -29,6 +31,7 @@ import argparse, glob, os
 from PIL import Image
 
 def main():
+    print("EARLY LOOK ONLY: not terminal panel evidence; run scripts/build_evidence.py before judges")
     ap = argparse.ArgumentParser()
     ap.add_argument("--frames", default="out/dispatch/frames_v3")
     ap.add_argument("--out", default="out/dispatch/review")

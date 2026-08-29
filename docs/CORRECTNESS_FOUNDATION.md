@@ -30,8 +30,9 @@ python3 scripts/run_guard.py init \
   --run-id 2026-08-29-canary \
   --composition DispatchDaily
 
-# Produce out/dispatch/episode_props.json for this run, then bind it once.
-python3 scripts/run_guard.py bind-inputs
+# Author the run sources and out/dispatch/episode_props.json, then close the
+# render-input boundary exactly once before any render/probe/encode step.
+python3 scripts/run_guard.py bind-render-inputs
 python3 scripts/run_guard.py require-composition --composition DispatchDaily
 
 # Choose exactly one final-render entry point. All write the same canonical file.
@@ -47,11 +48,15 @@ python3 scripts/ship_gate.py record --judges 8.5,8.7,8.9 --notes "panel notes"
 python3 scripts/ship_gate.py check
 ```
 
-The atomic schema-v3 run stamp records run ID/date, exact composition, canary
-mode and repository, canonical origin/worktree, branch, full stamped Git HEAD,
-registry and Root hashes, active source/dependency hashes, the complete TS/TSX
-engine hash, render-input hashes, and the registered props path/hash. Existing
-scratch props are unbound at `init`; `bind-inputs` is the explicit boundary.
+The atomic schema-v4 run stamp starts in a planning state and records run
+ID/date, exact composition, canary mode and repository, canonical
+origin/worktree, branch, and planning Git HEAD. Planning initialization never
+guesses, copies, or hash-binds a previous run's authored inputs. After authoring,
+`bind-render-inputs` records the current full Git HEAD plus registry and Root
+hashes, active source/dependency hashes, the complete TS/TSX engine hash,
+render-input hashes, the registered props path/hash, and one full render-binding
+digest. Render, probe, mix, evidence, and delivery gates require that bound
+state. The old `bind-inputs` command is retired and fails closed.
 
 The current HEAD may equal the stamped HEAD or be its descendant. Descendant
 artifact/receipt commits are safe only while every bound registry, Root,
@@ -77,6 +82,12 @@ only the canonical old output and receipt, so a failed render cannot expose an
 older valid file. The receipt binds run/composition, full stamp digest, stamped
 HEAD, props path/hash, exact episode facts, media facts, bytes, and SHA-256.
 
+Parallel chunks use the complete 64-character render-binding digest as their
+cache namespace. Each cached chunk has a receipt binding the run, stamp,
+composition, full engine/input/props digest, exact inclusive frame range,
+media facts, bytes, and SHA-256. A missing, mismatched, or mutated receipt is a
+cache miss, and every chunk is rechecked before concatenation.
+
 ## Distribution bytes
 
 `config/deliverables.json` defines exactly five shipped roles:
@@ -93,24 +104,35 @@ HEAD, props path/hash, exact episode facts, media facts, bytes, and SHA-256.
 `dispatch_master.mp4`, 4:5/1080x1350 output, the old square thumb, old mute
 paths, and `dispatch_loop.sh` are retired and hard-fail.
 
-The manifest re-probes dimensions, exact credits-inclusive duration, codecs and
-stream counts, and recomputes byte count and SHA-256 for all five files. Paths
+The manifest re-probes dimensions, exact credits-inclusive duration, codecs,
+stream counts, 30fps rate, and counted video frames. Video frame count must be
+within the configured one-frame probe tolerance of the hash-bound episode total.
+It recomputes byte count and SHA-256 for all five files. Paths
 must be unique ASCII repository-relative POSIX paths with no drive, UNC,
 backslash, traversal, collision, or symlink escape. Same-size,
 mtime-preserving mutations therefore fail.
 
 ## Evidence, panel, and release policy
 
-`build_evidence.py` writes an evidence manifest bound to the exact
-`vertical_hosted` bytes and immutable delivery-manifest digest. It records its
-generator path/version/source hash/parameters and the bytes/SHA-256 of every
-review image and JSON report. Adding, deleting, or changing evidence invalidates
-the verdict.
+`build_evidence.py` first recreates the run-scoped evidence directory, then
+invokes every terminal producer, including the audio report and audio card. Its
+schema-v2 evidence manifest is bound to the exact `vertical_hosted` bytes and
+immutable delivery-manifest digest. It records the source path/version/hash and
+parameters for every producer, exact output ownership, and bytes/SHA-256 of the
+closed artifact set. Missing or unexpected files, nested paths, stale
+allowed-extension leftovers, producer drift, or changed evidence invalidates
+the verdict. `make_review_sheets.py` is explicitly an early-look helper and its
+output is never terminal panel evidence; preflight requires the producer-bound
+manifest before judges run.
 
-The root SFX sidecar binds current run/composition, exact episode duration,
-every event, and exact `master.wav` bytes. Events must be a canonical list,
-have finite nonnegative in-duration times and lowercase ASCII kinds, and the
-sidecar must postdate its audio master.
+The sole SFX ledger is `out/dispatch/sfx_events.json`, written only after take
+resolution and `master.wav` generation. It binds current run/composition,
+credits-inclusive episode duration, exact `master.wav` bytes/hash, and every
+performed event's planned/actual time, kind/class, pan, resolved take path/hash,
+family, pitch, and gain. Events must be a canonical list with finite
+nonnegative in-duration values and lowercase ASCII identifiers. Resolved takes
+are re-hashed at validation. The split `audio/sfx_events.json` ledger is retired;
+its presence is a hard failure rather than an alternate source of truth.
 
 `ship_gate.py record` accepts exactly three finite scores in 0..10 and computes
 the median internally. There is no supplied-median argument. The verdict binds
@@ -132,10 +154,20 @@ a HEAD response or mutable branch URL is insufficient.
 The uploader, feed publisher, terminal email preview, and no-exit check require
 a fully validated current-run ship verdict. The final local preview must be
 `out/dispatch/dispatch-preview.html` and has its own verdict/manifest/
-publication-bound receipt. `--pre-panel-preview` is visibly labeled
+publication-bound receipt. Configured mandatory publication roles include at
+least `vertical_hosted` and `square`; each full remote object is fetched and
+hashed, and the HTML parser proves the exact immutable URL appears once in the
+canonical `href`/`src` location for its role. Empty, arbitrary, stale, or
+mismatched HTML cannot become terminal. `--pre-panel-preview` is visibly labeled
 **PRE-PANEL / NOT TERMINAL** and is forbidden from that canonical path.
 `--date` may only equal the stamp's `date`; the wall clock never chooses the
 run date.
+
+A passing panel writes `out/dispatch/SHIP_NOW` as strict JSON, not as an
+existence flag. The marker binds the current run, exact verdict file bytes and
+canonical verdict digest, and delivery-manifest digest. Initialization removes
+old marker paths; render avoidance occurs only when the current marker fully
+validates, so stale, copied, malformed, or mutated state cannot control a run.
 
 ## Safe verification
 

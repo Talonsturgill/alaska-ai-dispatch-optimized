@@ -7,21 +7,41 @@ import json
 import os
 import tempfile
 import time
+from html.parser import HTMLParser
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
-from deliverable_contract import contract_digest
+from deliverable_contract import (
+    DeliverableContractError,
+    contract_digest,
+    require_publication_url,
+    terminal_preview_roles,
+)
 from run_guard import load_stamp
-from strict_json import StrictJSONError, canonical_bytes, load_path
+from strict_json import StrictJSONError, load_path
 
 ROOT = Path(__file__).resolve().parent.parent
 PREVIEW_REL = "out/dispatch/dispatch-preview.html"
 RECEIPT_REL = "out/dispatch/delivery_preview_receipt.json"
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 
 
 class DeliveryPreviewError(RuntimeError):
     pass
+
+
+class _LinkParser(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self.hrefs: list[str] = []
+        self.sources: list[str] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        values = dict(attrs)
+        if tag.lower() == "a" and isinstance(values.get("href"), str):
+            self.hrefs.append(values["href"])
+        if tag.lower() in {"img", "video", "source"} and isinstance(values.get("src"), str):
+            self.sources.append(values["src"])
 
 
 def _sha(path: Path) -> str:
@@ -58,11 +78,77 @@ def _paths(root: str | Path):
     )
 
 
+def _publication_state(
+    base: Path,
+    manifest: dict[str, Any],
+    verifier: Callable[[str, str], Any] | None,
+) -> tuple[dict[str, Any], tuple[str, ...]]:
+    try:
+        roles = terminal_preview_roles(root=base)
+    except (DeliverableContractError, StrictJSONError, OSError) as exc:
+        raise DeliveryPreviewError(f"terminal preview role config is invalid: {exc}") from None
+    publications = manifest.get("publications")
+    if not isinstance(publications, dict):
+        raise DeliveryPreviewError("deliverables manifest publications must be an object")
+    facts: dict[str, Any] = {}
+    for role in roles:
+        receipt = publications.get(role)
+        if not isinstance(receipt, dict) or not isinstance(receipt.get("url"), str):
+            raise DeliveryPreviewError(f"mandatory publication {role} is missing")
+        url = receipt["url"]
+        try:
+            verified = (
+                verifier(role, url) if verifier is not None
+                else require_publication_url(role, url, root=base)
+            )
+        except (DeliverableContractError, OSError, ValueError) as exc:
+            raise DeliveryPreviewError(f"mandatory publication {role} failed full-byte verification: {exc}") from None
+        if verified is None:
+            raise DeliveryPreviewError(f"mandatory publication {role} verifier returned no receipt")
+        artifact = manifest.get("artifacts", {}).get(role)
+        facts[role] = {
+            "url": url,
+            "artifact_sha256": artifact.get("sha256") if isinstance(artifact, dict) else None,
+            "media_commit_sha": receipt.get("media_commit_sha"),
+        }
+    return facts, roles
+
+
+def _html_bindings(path: Path, manifest: dict[str, Any], roles: tuple[str, ...]) -> dict[str, Any]:
+    try:
+        html = path.read_text(encoding="utf-8")
+    except (OSError, UnicodeError) as exc:
+        raise DeliveryPreviewError(f"terminal preview cannot be read: {exc}") from None
+    if not html.strip():
+        raise DeliveryPreviewError("terminal preview HTML is empty")
+    parser = _LinkParser()
+    try:
+        parser.feed(html)
+        parser.close()
+    except (TypeError, ValueError) as exc:
+        raise DeliveryPreviewError(f"terminal preview HTML cannot be parsed: {exc}") from None
+    bindings: dict[str, Any] = {}
+    for role in roles:
+        receipt = manifest["publications"][role]
+        url = receipt["url"]
+        media_type = manifest["artifacts"][role]["media_type"]
+        locations = parser.hrefs if media_type == "video" else parser.sources
+        count = locations.count(url)
+        if count != 1:
+            attribute = "a[href]" if media_type == "video" else "img/video/source[src]"
+            raise DeliveryPreviewError(
+                f"terminal preview must contain the exact {role} URL once in {attribute}; found {count}"
+            )
+        bindings[role] = {"url": url, "location": "href" if media_type == "video" else "src"}
+    return bindings
+
+
 def record_delivery_preview(
     path: str | Path,
     *,
     ship_state: dict[str, Any],
     root: str | Path = ROOT,
+    publication_verifier: Callable[[str, str], Any] | None = None,
 ) -> dict[str, Any]:
     base, canonical, receipt_path = _paths(root)
     supplied = Path(path).resolve()
@@ -77,7 +163,10 @@ def record_delivery_preview(
     if not verdict_path.is_file() or verdict_path.is_symlink():
         raise DeliveryPreviewError("ship verdict is missing or unsafe")
     manifest = ship_state["manifest"]
-    publications = manifest.get("publications", {})
+    publication_facts, required_roles = _publication_state(
+        base, manifest, publication_verifier,
+    )
+    html_bindings = _html_bindings(canonical, manifest, required_roles)
     payload = {
         "schema_version": SCHEMA_VERSION,
         "run_id": stamp["run_id"],
@@ -96,7 +185,8 @@ def record_delivery_preview(
             "threshold": ship_state["threshold"],
         },
         "manifest_digest": contract_digest(manifest),
-        "publications_sha256": hashlib.sha256(canonical_bytes(publications)).hexdigest(),
+        "mandatory_publications": publication_facts,
+        "html_bindings": html_bindings,
         "recorded_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
     }
     _atomic_json(receipt_path, payload)
@@ -107,13 +197,14 @@ def validate_delivery_preview(
     *,
     root: str | Path = ROOT,
     ship_state: dict[str, Any] | None = None,
+    publication_verifier: Callable[[str, str], Any] | None = None,
 ) -> tuple[dict[str, Any] | None, list[str]]:
     base, canonical, receipt_path = _paths(root)
     if ship_state is None:
         try:
-            from ship_gate import require_ship_verdict
+            from ship_gate import GateInputError, require_ship_verdict
             ship_state = require_ship_verdict(verify_blankness=True)
-        except Exception as exc:
+        except GateInputError as exc:
             return None, [f"ship verdict is not fully valid: {exc}"]
     try:
         raw = load_path(receipt_path, label="delivery preview receipt")
@@ -130,6 +221,13 @@ def validate_delivery_preview(
     if not verdict_path.is_file() or verdict_path.is_symlink():
         return raw, ["ship verdict is missing or unsafe"]
     manifest = ship_state["manifest"]
+    try:
+        publication_facts, required_roles = _publication_state(
+            base, manifest, publication_verifier,
+        )
+        html_bindings = _html_bindings(canonical, manifest, required_roles)
+    except DeliveryPreviewError as exc:
+        return raw, [str(exc)]
     expected = {
         "schema_version": SCHEMA_VERSION,
         "run_id": stamp["run_id"],
@@ -144,7 +242,8 @@ def validate_delivery_preview(
             "threshold": ship_state["threshold"],
         },
         "manifest_digest": contract_digest(manifest),
-        "publications_sha256": hashlib.sha256(canonical_bytes(manifest.get("publications", {}))).hexdigest(),
+        "mandatory_publications": publication_facts,
+        "html_bindings": html_bindings,
     }
     problems = [
         f"delivery preview receipt {key} does not match current ship state"

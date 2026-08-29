@@ -20,12 +20,14 @@ from run_guard import (
     check_identity,
     composition_record,
     load_stamp,
+    render_binding_digest,
     stamp_digest,
 )
 from strict_json import StrictJSONError, load_path, loads
 
 ROOT = Path(__file__).resolve().parent.parent
 RENDER_SCHEMA_VERSION = 1
+CHUNK_SCHEMA_VERSION = 1
 CANONICAL_RENDER_REL = "out/dispatch/render/video_mute.mp4"
 RECEIPT_REL = "out/dispatch/render/render_receipt.json"
 RETIRED_RENDER_PATHS = (
@@ -162,6 +164,121 @@ def _artifact_facts(path: Path, media: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def binding_digest(*, root: str | Path = ROOT) -> str:
+    """Return the complete bound render-input digest; never truncate it."""
+    stamp, _episode = _expected(Path(root).resolve())
+    digest = render_binding_digest(stamp)
+    if stamp.get("render_binding_sha256") != digest:
+        raise RenderContractError("run stamp render binding digest is invalid")
+    return digest
+
+
+def _chunk_range(index: int, start: int, end: int, total: int, episode: dict[str, Any]) -> None:
+    if any(isinstance(value, bool) or not isinstance(value, int) for value in (index, start, end, total)):
+        raise RenderContractError("chunk index/range/total must be integers")
+    if index < 0 or start < 0 or end < start or total != episode["total_frames"] or end >= total:
+        raise RenderContractError("chunk range is outside the hash-bound episode")
+
+
+def _chunk_media_problems(media: dict[str, Any], expected_frames: int) -> list[str]:
+    problems: list[str] = []
+    if (media.get("width"), media.get("height")) != (1080, 1920):
+        problems.append("render chunk must be exactly 1080x1920")
+    if media.get("streams") != {"video": 1, "audio": 0}:
+        problems.append("render chunk must contain one video stream and zero audio streams")
+    if media.get("frames") != expected_frames:
+        problems.append(f"render chunk has {media.get('frames')} frames, expected {expected_frames}")
+    return problems
+
+
+def record_chunk(
+    path: str | Path, receipt: str | Path, *, index: int, start: int, end: int, total: int,
+    root: str | Path = ROOT, probe: Callable[[str | Path], dict[str, Any]] = probe_render,
+) -> dict[str, Any]:
+    base = Path(root).resolve()
+    stamp, episode = _expected(base)
+    _chunk_range(index, start, end, total, episode)
+    target = Path(path).resolve()
+    receipt_target = Path(receipt).resolve()
+    if not target.is_file() or target.is_symlink():
+        raise RenderContractError(f"render chunk {index} is missing or unsafe")
+    if receipt_target.is_symlink():
+        raise RenderContractError(f"render chunk receipt {index} may not be a symlink")
+    media = probe(target)
+    problems = _chunk_media_problems(media, end - start + 1)
+    if problems:
+        raise RenderContractError("; ".join(problems))
+    value = {
+        "schema_version": CHUNK_SCHEMA_VERSION,
+        "run_id": stamp["run_id"],
+        "run_date": stamp["date"],
+        "composition": stamp["composition"],
+        "stamp_sha256": stamp_digest(base),
+        "render_binding_sha256": binding_digest(root=base),
+        "chunk": {"index": index, "start": start, "end": end, "total": total},
+        "artifact": {
+            "bytes": target.stat().st_size,
+            "sha256": sha256_file(target),
+            "media": media,
+        },
+        "recorded_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+    }
+    _atomic_json(receipt_target, value)
+    return value
+
+
+def validate_chunk(
+    path: str | Path, receipt: str | Path, *, index: int, start: int, end: int, total: int,
+    root: str | Path = ROOT, probe: Callable[[str | Path], dict[str, Any]] = probe_render,
+) -> tuple[dict[str, Any] | None, list[str]]:
+    base = Path(root).resolve()
+    target = Path(path).resolve()
+    receipt_target = Path(receipt).resolve()
+    try:
+        stamp, episode = _expected(base)
+        _chunk_range(index, start, end, total, episode)
+        value = load_path(receipt_target, label=f"render chunk {index} receipt")
+    except (RenderContractError, StrictJSONError, OSError) as exc:
+        return None, [str(exc)]
+    if not isinstance(value, dict):
+        return None, [f"render chunk {index} receipt must be a JSON object"]
+    if not target.is_file() or target.is_symlink() or receipt_target.is_symlink():
+        return value, [f"render chunk {index} or its receipt is missing/unsafe"]
+    try:
+        media = probe(target)
+        digest = binding_digest(root=base)
+    except RenderContractError as exc:
+        return value, [str(exc)]
+    problems = _chunk_media_problems(media, end - start + 1)
+    expected = {
+        "schema_version": CHUNK_SCHEMA_VERSION,
+        "run_id": stamp["run_id"],
+        "run_date": stamp["date"],
+        "composition": stamp["composition"],
+        "stamp_sha256": stamp_digest(base),
+        "render_binding_sha256": digest,
+        "chunk": {"index": index, "start": start, "end": end, "total": total},
+        "artifact": {
+            "bytes": target.stat().st_size,
+            "sha256": sha256_file(target),
+            "media": media,
+        },
+    }
+    for key, wanted in expected.items():
+        if value.get(key) != wanted:
+            problems.append(f"render chunk {index} receipt {key} does not match")
+    if set(value) != set(expected) | {"recorded_at"}:
+        problems.append(f"render chunk {index} receipt fields are not canonical")
+    return value, problems
+
+
+def require_chunk(*args, **kwargs) -> dict[str, Any]:
+    value, problems = validate_chunk(*args, **kwargs)
+    if value is None or problems:
+        raise RenderContractError("; ".join(problems or ["render chunk receipt is unavailable"]))
+    return value
+
+
 def _media_problems(media: dict[str, Any], episode: dict[str, Any]) -> list[str]:
     problems: list[str] = []
     if (media.get("width"), media.get("height")) != (1080, 1920):
@@ -227,6 +344,7 @@ def record_render(
         "stamped_git_head": stamp["git_head"],
         "props_path": stamp["props_path"],
         "props_sha256": stamp["props_sha256"],
+        "render_binding_sha256": binding_digest(root=base),
         "episode": episode,
         "artifact": _artifact_facts(target, media),
         "recorded_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
@@ -266,6 +384,7 @@ def validate_render(
         "stamped_git_head": stamp["git_head"],
         "props_path": stamp["props_path"],
         "props_sha256": stamp["props_sha256"],
+        "render_binding_sha256": binding_digest(root=base),
         "episode": episode,
         "artifact": _artifact_facts(target, media),
     }
@@ -295,6 +414,15 @@ def _main() -> int:
     sub.add_parser("prepare")
     sub.add_parser("record")
     sub.add_parser("check")
+    sub.add_parser("binding-digest")
+    for command in ("chunk-record", "chunk-check"):
+        chunk = sub.add_parser(command)
+        chunk.add_argument("--path", required=True)
+        chunk.add_argument("--receipt", required=True)
+        chunk.add_argument("--index", type=int, required=True)
+        chunk.add_argument("--start", type=int, required=True)
+        chunk.add_argument("--end", type=int, required=True)
+        chunk.add_argument("--total", type=int, required=True)
     facts = sub.add_parser("episode")
     facts.add_argument("field", choices=("total_frames", "fps", "duration_seconds"))
     args = parser.parse_args()
@@ -311,6 +439,18 @@ def _main() -> int:
         elif args.command == "check":
             receipt = require_render()
             print(f"render_contract: PASS {receipt['artifact']['sha256'][:16]}")
+        elif args.command == "binding-digest":
+            print(binding_digest())
+        elif args.command in ("chunk-record", "chunk-check"):
+            operation = record_chunk if args.command == "chunk-record" else require_chunk
+            receipt = operation(
+                args.path, args.receipt, index=args.index, start=args.start,
+                end=args.end, total=args.total,
+            )
+            print(
+                f"render_contract: chunk {receipt['chunk']['index']} PASS "
+                f"{receipt['artifact']['sha256'][:16]}"
+            )
         else:
             print(episode_facts(root=ROOT)[args.field])
         return 0

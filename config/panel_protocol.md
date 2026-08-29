@@ -1,5 +1,19 @@
 # PANEL PROTOCOL — how the 3-judge panel is convened, and why it is convened this way
 
+## Closed evidence precondition
+
+A panel may be convened only after `python3 scripts/build_evidence.py` has
+recreated `out/evidence/`, invoked every terminal producer, and written the
+producer/source/version/parameter-bound `evidence_manifest.json`. Then
+`python3 scripts/preflight.py` must exit 0 against that exact manifest and the
+current delivery manifest. `scripts/make_review_sheets.py` produces early-look
+material only; its output is never panel evidence and cannot support a verdict.
+
+Judges receive only the artifact set named and hash-bound by the current evidence
+manifest. A missing, extra, stale, mutated, or independently assembled file means
+the panel does not start. After any render, mix, encode, or evidence change, rebuild
+the pack and re-run preflight before asking a judge to score.
+
 Written 2026-07-31 after a run in which the panel's numbers drifted downward across
 re-grades of a film that was measurably improving. The owner named it: "it seemed like you
 started to get some judging drift."

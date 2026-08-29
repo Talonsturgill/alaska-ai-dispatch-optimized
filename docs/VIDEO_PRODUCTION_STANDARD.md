@@ -1,5 +1,11 @@
 # ALASKA.AI — Video Production Standard (v1)
 
+> **Craft reference, not an operational contract.** Preserve the visual and
+> editorial doctrine below, but ignore its historical engine paths, delivery
+> dimensions, SFX ledger locations, and release instructions. The active canary
+> contract is `prompts/dispatch_routine.md`, `CANARY_SAFETY.md`, and the canonical
+> registries/manifests described in `docs/CORRECTNESS_FOUNDATION.md`.
+
 The reusable pro playbook for Alaska.Ai "Dispatch" videos. Hand-coded Python
 (PIL + numpy) + ffmpeg, 30fps. Numbers are load-bearing defaults, not vibes.
 Derived from a 2026 research pass across motion design, color science, underwater

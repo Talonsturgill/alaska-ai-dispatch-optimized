@@ -44,6 +44,14 @@ from delivery_preview import (  # noqa: E402
     record_delivery_preview,
 )
 from ship_gate import GateInputError, require_ship_verdict  # noqa: E402
+from strict_json import StrictJSONError, load_path  # noqa: E402
+
+
+def load_sources(path):
+    value = load_path(path, label="sources")
+    if not isinstance(value, dict):
+        raise StrictJSONError("sources must be a JSON object")
+    return value
 
 
 def refuse_unless_links_are_live(urls, allow_temporary=False):
@@ -355,10 +363,18 @@ def main():
     # still wins.
     def _music_default():
         p = Path(__file__).resolve().parent.parent / "out" / "dispatch" / "music_credit.json"
-        try:
-            return json.loads(p.read_text(encoding="utf-8")).get("credit", "")
-        except Exception:
+        if not p.exists():
             return ""
+        try:
+            value = load_path(p, label="music credit")
+        except StrictJSONError as exc:
+            raise SystemExit(f"dispatch_email: {exc}") from None
+        if not isinstance(value, dict):
+            raise SystemExit("dispatch_email: music credit must be a JSON object")
+        credit = value.get("credit", "")
+        if not isinstance(credit, str):
+            raise SystemExit("dispatch_email: music credit.credit must be a string")
+        return credit
 
     ap.add_argument("--voice", default="")
     ap.add_argument("--music", default=_music_default())
@@ -378,9 +394,6 @@ def main():
         "--pre-panel-preview", action="store_true",
         help="build a visibly non-terminal review preview; may not use the canonical delivery path",
     )
-    ap.add_argument("--no-freshness-check", action="store_true",
-                    help="bypass the run-freshness guard (deliberate manual/standalone use only; "
-                         "the routine must NEVER pass this -- it is how a previous run's scratch ships)")
     a = ap.parse_args()
     if a.local_only:
         if not a.out_html:
@@ -424,9 +437,8 @@ def main():
             raise DeliverableContractError("--poster is not the canonical poster_square artifact")
     except DeliverableContractError as exc:
         sys.exit(f"REFUSING TO BUILD PREVIEW: deliverable manifest/publication mismatch.\n  {exc}")
-    chk = not a.no_freshness_check
     try:
-        post = Path(fresh(a.post, check=chk)).read_text(encoding="utf-8").strip()
+        post = Path(fresh(a.post, check=True)).read_text(encoding="utf-8").strip()
     except StaleArtifactError as e:
         sys.exit(f"REFUSING TO BUILD DRAFT: --post is not from this run.\n  {e}")
     # Lint the string, not a path. See refuse_unless_copy_is_clean for why that distinction
@@ -453,11 +465,11 @@ def main():
         sys.exit("REFUSING TO BUILD DRAFT: --sources is required and must point at this run's "
                  "sources.json (the email must carry every source inline).")
     try:
-        src_data = json.loads(
-            Path(fresh(a.sources, check=chk)).read_text(encoding="utf-8")
-        )
+        src_data = load_sources(fresh(a.sources, check=True))
     except StaleArtifactError as e:
         sys.exit(f"REFUSING TO BUILD DRAFT: --sources is not from this run.\n  {e}")
+    except StrictJSONError as e:
+        sys.exit(f"REFUSING TO BUILD DRAFT: --sources is invalid strict JSON.\n  {e}")
     sources, sourcing_note = parse_sources(src_data)
     if not sources:
         sys.exit("REFUSING TO BUILD DRAFT: no sources could be parsed from --sources — the email "

@@ -25,14 +25,18 @@ The card carries, all measured off the SAME master.wav that is muxed into the de
   - the planted silence dip, which is a deliberate mix move and reads as a defect if the
     judge does not know it is there
 
-Usage:  python3 scripts/audio_evidence.py [--out out/dispatch/review/audio_card.png]
+Usage:  python3 scripts/audio_evidence.py [--out out/evidence/audio_card.png]
 """
-import argparse, json, os, subprocess, re, sys
+import argparse, math, os, subprocess, re, sys
 import numpy as np
+
+from sfx_contract import AUDIO_REL, SIDECAR_REL, sidecar_facts
+from strict_json import StrictJSONError, load_path, loads
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 OUT = os.path.join(REPO, "out", "dispatch")
 AUD = os.path.join(OUT, "audio")
+GENERATOR_VERSION = "dispatch-audio-evidence-v2"
 
 FAMILY_COLOR = {
     "thud": "#c0392b", "boom": "#c0392b", "stamp": "#a93226",
@@ -50,19 +54,35 @@ def _loudness(path):
          "loudnorm=I=-14:TP=-1.0:LRA=11:print_format=json", "-f", "null", "-"],
         capture_output=True, text=True)
     m = re.search(r"\{[^{}]*input_i[^{}]*\}", p.stderr, re.S)
-    if not m:
-        return None
-    d = json.loads(m.group(0))
-    return {"lufs": float(d["input_i"]), "tp": float(d["input_tp"]), "lra": float(d["input_lra"])}
+    if p.returncode != 0 or not m:
+        detail = (p.stderr or p.stdout or "no loudness JSON").strip()[-300:]
+        raise RuntimeError(f"ffmpeg loudness measurement failed: {detail}")
+    try:
+        d = loads(m.group(0), label="ffmpeg loudness report")
+    except StrictJSONError as exc:
+        raise RuntimeError(str(exc)) from None
+    if not isinstance(d, dict):
+        raise RuntimeError("ffmpeg loudness report must be a JSON object")
+    measured = {"lufs": float(d["input_i"]), "tp": float(d["input_tp"]), "lra": float(d["input_lra"])}
+    if any(not math.isfinite(value) for value in measured.values()):
+        raise RuntimeError("ffmpeg loudness report contains non-finite measurements")
+    return measured
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--master", default=os.path.join(AUD, "master.wav"))
     ap.add_argument("--vo", default=os.path.join(AUD, "vo.wav"))
-    ap.add_argument("--events", default=os.path.join(AUD, "sfx_events.json"))
-    ap.add_argument("--out", default=os.path.join(OUT, "review", "audio_card.png"))
+    ap.add_argument("--events", default=os.path.join(REPO, *SIDECAR_REL.split("/")))
+    ap.add_argument("--out", default=os.path.join(REPO, "out", "evidence", "audio_card.png"))
     a = ap.parse_args()
+
+    canonical_master = os.path.join(REPO, *AUDIO_REL.split("/"))
+    if os.path.realpath(a.master) != os.path.realpath(canonical_master):
+        raise SystemExit(f"audio_evidence: --master must be {AUDIO_REL}")
+    facts, problems = sidecar_facts(a.events, root=REPO)
+    if problems or not facts:
+        raise SystemExit("audio_evidence: invalid canonical SFX ledger: " + "; ".join(problems))
 
     import matplotlib
     matplotlib.use("Agg")
@@ -87,10 +107,13 @@ def main():
         vo = np.array([v[i:i + win].mean() for i in range(0, len(v) - win, win)])
         vo_t = np.arange(len(vo)) * (win / vsr)
 
-    ev = []
-    if os.path.exists(a.events):
-        raw = json.load(open(a.events))
-        ev = raw.get("events", raw) if isinstance(raw, dict) else raw
+    try:
+        raw = load_path(a.events, label="canonical SFX ledger")
+    except StrictJSONError as exc:
+        raise SystemExit(f"audio_evidence: {exc}") from None
+    if not isinstance(raw, dict) or not isinstance(raw.get("events"), list):
+        raise SystemExit("audio_evidence: canonical SFX ledger must be an object with an events list")
+    ev = raw["events"]
 
     ld = _loudness(a.master)
 
@@ -164,4 +187,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except (StrictJSONError, RuntimeError, OSError, TypeError, ValueError, KeyError) as exc:
+        raise SystemExit(f"audio_evidence: {exc}") from None
