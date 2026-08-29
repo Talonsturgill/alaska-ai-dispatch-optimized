@@ -39,6 +39,9 @@ PRODUCER_INPUTS = {
         "out/dispatch/dispatch_master_hosted.mp4",
         "out/dispatch/vo_lines.json",
         "out/dispatch/episode_props.json",
+        "out/dispatch/claims.json",
+        "out/dispatch/sources.json",
+        "out/dispatch/vo_script.json",
     ),
     "audio_report": (
         "out/dispatch/dispatch_square.mp4",
@@ -241,6 +244,15 @@ def _schema_problems(base: Path, artifacts: dict[str, Any]) -> list[str]:
             }
             if set(value) != required:
                 problems.append("audio_report.json schema is not canonical")
+        elif relative.endswith("/story_claims_sources.json"):
+            if (
+                set(value) != {"schema_version", "claims", "sources", "vo_script"}
+                or value.get("schema_version") != 1
+                or not isinstance(value.get("claims"), dict)
+                or not isinstance(value.get("sources"), dict)
+                or not isinstance(value.get("vo_script"), dict)
+            ):
+                problems.append("story_claims_sources.json schema is not canonical")
     return problems
 
 

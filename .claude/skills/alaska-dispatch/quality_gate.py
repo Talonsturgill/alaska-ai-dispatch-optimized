@@ -173,7 +173,7 @@ def evaluate(
     evidence_path = base.joinpath(*EVIDENCE_MANIFEST_REL.split("/"))
     checks = [
         {"id": "delivery_manifest_v4", "exit_code": 0, "result": "pass"},
-        {"id": "mastering_audio_lineage_v2", "exit_code": 0, "result": "pass"},
+        {"id": "mastering_audio_lineage_v3", "exit_code": 0, "result": "pass"},
         {"id": "evidence_manifest_v3", "exit_code": 0, "result": "pass"},
         {"id": "sole_sfx_ledger_v3", "exit_code": 0, "result": "pass"},
         {"id": "delivered_audio_report_v1", "exit_code": 0, "result": "pass"},

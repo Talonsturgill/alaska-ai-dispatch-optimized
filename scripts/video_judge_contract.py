@@ -29,6 +29,19 @@ RENDER_RECEIPT_REL = "out/dispatch/render/render_receipt.json"
 CARD_SCHEMA_VERSION = 1
 JUDGE_ID_RE = re.compile(r"^[a-z0-9](?:[a-z0-9_-]{0,30}[a-z0-9])?$")
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
+AXIS_EVIDENCE_CAPABILITIES = {
+    "Hook & retention": {"visual", "timeline"},
+    "Illustration craft & detail": {"visual"},
+    "Motion & animation craft": {"visual", "motion"},
+    "Composition & staging": {"visual"},
+    "Color & grade": {"visual"},
+    "Typography & captions": {"visual", "captions"},
+    "Sound design & mix": {"audio"},
+    "VO–illustration sync & entertainment": {"visual", "audio", "timeline"},
+    "Accuracy & sourcing": {"source_claims"},
+    "Alaska authenticity & cultural respect": {"visual", "story"},
+    "Writing & story clarity": {"story"},
+}
 
 
 class VideoJudgeContractError(RuntimeError):
@@ -176,6 +189,10 @@ def rubric_contract(*, root: str | Path = ROOT) -> dict[str, Any]:
         raise VideoJudgeContractError(
             f"dispatch rubric axis weights must total 1.0, got {total_weight:.12g}"
         )
+    if {axis["name"] for axis in axes} != set(AXIS_EVIDENCE_CAPABILITIES):
+        raise VideoJudgeContractError(
+            "dispatch rubric axes do not match the closed video evidence capability map"
+        )
     return {
         "path": RUBRIC_REL,
         "bytes": path.stat().st_size,
@@ -248,6 +265,43 @@ def _evidence_list(value: Any, *, allowed: set[str], label: str) -> list[dict[st
     return normalized
 
 
+def _artifact_capabilities(path: str) -> set[str]:
+    name = PurePosixPath(path).name.lower()
+    suffix = PurePosixPath(path).suffix.lower()
+    capabilities: set[str] = set()
+    if name == "audio_report.json":
+        capabilities.update({"audio", "timeline"})
+    elif name == "audio_card.png":
+        capabilities.update({"audio", "timeline"})
+    elif name == "caption_cues.json":
+        capabilities.update({"captions", "timeline", "story"})
+    elif name == "motion.json":
+        capabilities.update({"visual", "motion", "timeline"})
+    elif name == "story_claims_sources.json":
+        capabilities.update({"story", "source_claims"})
+    elif suffix in {".jpg", ".jpeg", ".png"}:
+        capabilities.add("visual")
+        if "strip" in name:
+            capabilities.update({"motion", "timeline"})
+    return capabilities
+
+
+def _require_axis_evidence_capabilities(
+    axis_name: str, evidence: list[dict[str, str]], *, label: str,
+) -> None:
+    required = AXIS_EVIDENCE_CAPABILITIES.get(axis_name)
+    if required is None:
+        raise VideoJudgeContractError(f"{label} has no canonical evidence capability rule")
+    actual: set[str] = set()
+    for observation in evidence:
+        actual.update(_artifact_capabilities(observation["artifact"]))
+    missing = sorted(required - actual)
+    if missing:
+        raise VideoJudgeContractError(
+            f"{label} lacks required evidence capabilities: {', '.join(missing)}"
+        )
+
+
 def computed_total(axes: list[dict[str, Any]]) -> float:
     return round(sum(float(axis["score"]) * float(axis["weight"]) for axis in axes), 6)
 
@@ -305,14 +359,19 @@ def validate_card(
             raise VideoJudgeContractError(f"judge card {judge_id} has missing/extra/reordered rubric axes")
         if axis.get("weight") != expected["weight"]:
             raise VideoJudgeContractError(f"judge card {judge_id} axis {expected['name']} weight drifted")
+        normalized_evidence = _evidence_list(
+            axis.get("evidence"), allowed=allowed_evidence,
+            label=f"{judge_id}.{expected['name']} evidence",
+        )
+        _require_axis_evidence_capabilities(
+            expected["name"], normalized_evidence,
+            label=f"{judge_id}.{expected['name']} evidence",
+        )
         normalized_axes.append({
             "name": expected["name"],
             "weight": expected["weight"],
             "score": _finite_score(axis.get("score"), label=f"{judge_id}.{expected['name']} score"),
-            "evidence": _evidence_list(
-                axis.get("evidence"), allowed=allowed_evidence,
-                label=f"{judge_id}.{expected['name']} evidence",
-            ),
+            "evidence": normalized_evidence,
         })
     wanted_total = computed_total(normalized_axes)
     total = _finite_score(card.get("weighted_total"), label=f"{judge_id}.weighted_total")
@@ -331,8 +390,12 @@ def validate_card(
             raise VideoJudgeContractError(f"judge card {judge_id} blocker {index} has unknown axis")
         if not isinstance(blocker.get("what"), str) or not blocker["what"].strip():
             raise VideoJudgeContractError(f"judge card {judge_id} blocker {index} is empty")
-        _evidence_list(
+        blocker_evidence = _evidence_list(
             blocker.get("evidence"), allowed=allowed_evidence,
+            label=f"{judge_id}.hard_blockers[{index}].evidence",
+        )
+        _require_axis_evidence_capabilities(
+            blocker["axis"], blocker_evidence,
             label=f"{judge_id}.hard_blockers[{index}].evidence",
         )
     return card

@@ -77,9 +77,9 @@ rubric:
       4:  "Competing elements; unsafe crops."
     - name: "Color & grade"
       weight: 0.08
-      10: "A fresh color world that fits THIS story (not default blue, not a recent palette); cohesive; filmic finishing (grade/bloom/grain/vignette/dither)."
-      7:  "Pleasant but generic or slightly off-story."
-      4:  "Muddy, banded, or repeats a recent look."
+      10: "The delivered video uses a cohesive color world that fits this story, with intentional contrast and finishing (grade/bloom/grain/vignette/dither)."
+      7:  "Cohesive and readable, but generic or slightly off-story."
+      4:  "Muddy, banded, incoherent, or visually detached from the story."
     - name: "Typography & captions"
       weight: 0.06
       10: "Fraunces/JetBrains system used with intent; kinetic type; open captions legible muted at phone size, in sync."
@@ -105,8 +105,8 @@ rubric:
       10: "Reads true to Alaskans; pro-Alaska not savior; cultural subjects handled per the standard."
       7:  "Fine, slightly outsider in one spot."
       4:  "Tone-deaf or imported-feeling."
-    - name: "Writing & post quality"
+    - name: "Writing & story clarity"
       weight: 0.04
-      10: "VO + on-screen + post obey the writing rules; LinkedIn-tuned hook; real closing question."
-      7:  "Minor rule slip."
-      4:  "Multiple slips or off-voice."
+      10: "The hash-bound VO and on-screen copy are concise, specific, coherent, and land a real closing question."
+      7:  "The delivered story is clear with one minor writing or pacing slip."
+      4:  "The delivered story is confusing, generic, repetitive, or off-voice."

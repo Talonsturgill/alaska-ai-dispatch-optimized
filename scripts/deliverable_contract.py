@@ -454,6 +454,7 @@ def build_manifest(
     root: str | Path = ROOT,
     probe: Callable[[str | Path], dict[str, Any]] = probe_media,
     render_probe: Callable[[str | Path], dict[str, Any]] = probe_render,
+    mastering_audio_probe: Callable[..., dict[str, Any]] | None = None,
     config_path: str | Path | None = None,
 ) -> dict[str, Any]:
     base = Path(root).resolve()
@@ -462,7 +463,10 @@ def build_manifest(
     try:
         episode = episode_facts(root=base)
         render = require_render(root=base, probe=render_probe)
-        mastering = mastering_binding(root=base, render_probe=render_probe)
+        mastering_kwargs = {"root": base, "render_probe": render_probe}
+        if mastering_audio_probe is not None:
+            mastering_kwargs["audio_probe"] = mastering_audio_probe
+        mastering = mastering_binding(**mastering_kwargs)
     except (EpisodeContractError, RenderContractError, MasteringContractError) as exc:
         raise DeliverableContractError(str(exc)) from None
     stamp = load_stamp(base)
@@ -561,6 +565,7 @@ def validate_manifest(
     path: str | Path | None = None,
     probe: Callable[[str | Path], dict[str, Any]] | None = None,
     render_probe: Callable[[str | Path], dict[str, Any]] = probe_render,
+    mastering_audio_probe: Callable[..., dict[str, Any]] | None = None,
     require_publications: Iterable[str] = (),
     config_path: str | Path | None = None,
 ) -> tuple[dict[str, Any] | None, list[str]]:
@@ -604,7 +609,10 @@ def validate_manifest(
         problems.append(str(exc))
         expected_episode = {"fps": 30, "duration_seconds": float("nan"), "total_frames": 0}
     try:
-        expected_mastering = mastering_binding(root=base, render_probe=render_probe)
+        mastering_kwargs = {"root": base, "render_probe": render_probe}
+        if mastering_audio_probe is not None:
+            mastering_kwargs["audio_probe"] = mastering_audio_probe
+        expected_mastering = mastering_binding(**mastering_kwargs)
         if raw.get("mastering") != expected_mastering:
             problems.append("manifest mastering receipt does not match encoded audio/artifact lineage")
     except MasteringContractError as exc:
@@ -736,12 +744,14 @@ def require_manifest(
     *, root: str | Path = ROOT, require_publications: Iterable[str] = (),
     probe: Callable[[str | Path], dict[str, Any]] | None = None,
     render_probe: Callable[[str | Path], dict[str, Any]] = probe_render,
+    mastering_audio_probe: Callable[..., dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     manifest, problems = validate_manifest(
         root=root,
         require_publications=require_publications,
         probe=probe,
         render_probe=render_probe,
+        mastering_audio_probe=mastering_audio_probe,
     )
     if problems or manifest is None:
         raise DeliverableContractError("; ".join(problems or ["manifest is unavailable"]))
@@ -787,9 +797,13 @@ def record_publication(
     root: str | Path = ROOT,
     probe: Callable[[str | Path], dict[str, Any]] | None = None,
     render_probe: Callable[[str | Path], dict[str, Any]] = probe_render,
+    mastering_audio_probe: Callable[..., dict[str, Any]] | None = None,
 ) -> None:
     base = Path(root).resolve()
-    manifest = require_manifest(root=base, probe=probe, render_probe=render_probe)
+    manifest = require_manifest(
+        root=base, probe=probe, render_probe=render_probe,
+        mastering_audio_probe=mastering_audio_probe,
+    )
     if role not in EXPECTED_ROLES:
         raise DeliverableContractError(f"unknown publication role {role}")
     entry = manifest["artifacts"][role]
@@ -847,11 +861,13 @@ def require_publication_url(
     role: str, url: str, *, root: str | Path = ROOT,
     probe: Callable[[str | Path], dict[str, Any]] | None = None,
     render_probe: Callable[[str | Path], dict[str, Any]] = probe_render,
+    mastering_audio_probe: Callable[..., dict[str, Any]] | None = None,
     verify_remote: bool = True,
     opener: Callable[..., Any] = urlopen,
 ) -> dict[str, Any]:
     manifest = require_manifest(
-        root=root, require_publications=[role], probe=probe, render_probe=render_probe
+        root=root, require_publications=[role], probe=probe, render_probe=render_probe,
+        mastering_audio_probe=mastering_audio_probe,
     )
     receipt = manifest["publications"][role]
     if receipt.get("url") != url:

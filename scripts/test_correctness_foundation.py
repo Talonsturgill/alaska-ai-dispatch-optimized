@@ -5,6 +5,7 @@ import contextlib
 import copy
 import io
 import importlib.util
+import array
 import json
 import os
 import shutil
@@ -13,6 +14,7 @@ import sys
 import tempfile
 import time
 import unittest
+import wave
 from pathlib import Path
 from unittest import mock
 
@@ -24,6 +26,7 @@ if str(SCRIPT_DIR) not in sys.path:
 import deliverable_contract as dc
 import build_evidence
 import build_scenes
+import credits_contract
 import credits_check
 import delivery_preview
 import dispatch_email
@@ -218,26 +221,41 @@ def fake_tool_facts() -> dict:
 
 def fake_audio_lineage(_root: Path, source_relative: str, roles: dict[str, str]) -> dict:
     return {
-        "algorithm": "decoded-envelope-zcr-v2",
+        "algorithm": "aligned-pcm-spectral-cepstral-v3",
         "sample_rate": mastering_contract.AUDIO_SAMPLE_RATE,
         "block_samples": mastering_contract.AUDIO_BLOCK_SAMPLES,
+        "spectral": {
+            "window_samples": mastering_contract.AUDIO_SPECTRAL_WINDOW,
+            "bins": mastering_contract.AUDIO_SPECTRAL_BINS,
+            "windows": mastering_contract.AUDIO_SPECTRAL_WINDOWS,
+        },
+        "aac_packet_sha256": "b" * 64,
         "tolerances": {
-            "minimum_correlation": mastering_contract.AUDIO_MIN_CORRELATION,
-            "minimum_fingerprint_similarity": mastering_contract.AUDIO_MIN_FINGERPRINT_SIMILARITY,
+            "minimum_envelope_correlation": mastering_contract.AUDIO_MIN_ENVELOPE_CORRELATION,
+            "maximum_envelope_normalized_error": mastering_contract.AUDIO_MAX_ENVELOPE_NORMALIZED_ERROR,
+            "minimum_waveform_correlation": mastering_contract.AUDIO_MIN_WAVEFORM_CORRELATION,
+            "maximum_waveform_normalized_error": mastering_contract.AUDIO_MAX_WAVEFORM_NORMALIZED_ERROR,
+            "minimum_spectral_similarity": mastering_contract.AUDIO_MIN_SPECTRAL_SIMILARITY,
+            "maximum_cepstral_distance": mastering_contract.AUDIO_MAX_CEPSTRAL_DISTANCE,
             "maximum_duration_delta_seconds": mastering_contract.AUDIO_MAX_DURATION_DELTA_SECONDS,
             "maximum_lag_blocks": mastering_contract.AUDIO_MAX_LAG_BLOCKS,
         },
         "source": {
-            "path": source_relative, "decoded_pcm_sha256": "1" * 64,
-            "perceptual_fingerprint": "01" * 64, "sample_count": 800000,
+            "path": source_relative, "container_sha256": "0" * 64,
+            "decoded_pcm_sha256": "1" * 64,
+            "feature_fingerprint_sha256": "a" * 64, "sample_count": 1600000,
             "duration_seconds": 100.0,
         },
         "roles": {
             role: {
-                "path": relative, "decoded_pcm_sha256": f"{index + 2:x}" * 64,
-                "perceptual_fingerprint": "01" * 64, "sample_count": 800000,
-                "duration_seconds": 100.0, "correlation": 0.999,
-                "lag_blocks": 0, "fingerprint_similarity": 1.0,
+                "path": relative, "container_sha256": f"{index + 5:x}" * 64,
+                "decoded_pcm_sha256": f"{index + 2:x}" * 64,
+                "encoded_audio_packet_sha256": "b" * 64,
+                "feature_fingerprint_sha256": "a" * 64, "sample_count": 1600000,
+                "duration_seconds": 100.0, "envelope_correlation": 0.999,
+                "envelope_normalized_error": 0.01, "waveform_correlation": 0.999,
+                "waveform_normalized_error": 0.01, "spectral_similarity": 0.999,
+                "cepstral_distance": 0.01, "lag_samples": 0,
                 "duration_delta_seconds": 0.0,
             }
             for index, (role, relative) in enumerate(roles.items())
@@ -589,11 +607,14 @@ class CreditsContractTests(unittest.TestCase):
             "total": 3900,
             "credits": {
                 "frames": 369, "seconds": 12.3, "music": credit,
-                "sources": ["SOURCE 123456"], "site": "alaskaaihq.com",
+                "sources": ["NSF AWARD 123456"], "site": "alaskaaihq.com",
             },
         })
         write_json(out / "music_credit.json", {"credit": credit})
-        write_json(out / "sources.json", {"sources": [{"id": "123456"}]})
+        write_json(out / "sources.json", {"sources": [{
+            "id": "s1", "title": "National Science Foundation award 123456",
+            "url": "https://api.nsf.gov/services/v1/awards/123456.json",
+        }]})
         (out / "dispatch_master_hosted.mp4").write_bytes(b"fixture video")
         return out, source
 
@@ -617,12 +638,58 @@ class CreditsContractTests(unittest.TestCase):
                 (out / "sources.json").unlink()
                 with contextlib.redirect_stdout(io.StringIO()):
                     self.assertEqual(credits_check.main(), 1)
-                write_json(out / "sources.json", {"sources": [{"id": "123456"}]})
+                write_json(out / "sources.json", {"sources": [{
+                    "id": "s1", "title": "National Science Foundation award 123456",
+                    "url": "https://api.nsf.gov/services/v1/awards/123456.json",
+                }]})
                 with mock.patch.object(
                     credits_check, "_probe_duration",
                     side_effect=RuntimeError("named duration probe failure"),
                 ), self.assertRaisesRegex(RuntimeError, "named duration probe failure"):
                     credits_check.main()
+
+    def test_credits_require_exact_shared_labels_and_fail_closed_on_contract_errors(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            out, source = self.fixture(root)
+            props_path = out / "episode_props.json"
+            props = json.loads(props_path.read_text(encoding="utf-8"))
+            props["credits"]["sources"] = ["MADE UP SOURCE"]
+            write_json(props_path, props)
+            with mock.patch.object(credits_check, "OUT", str(out)), \
+                 mock.patch.object(credits_check, "REPO", str(root)), \
+                 mock.patch.object(credits_check, "registered_episode", return_value=str(source)), \
+                 contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(credits_check.main(), 1)
+
+            valid = {
+                "sources": [{
+                    "id": "s1", "title": "National Science Foundation award 123456",
+                    "url": "https://api.nsf.gov/services/v1/awards/123456.json",
+                }],
+            }
+            duplicate = copy.deepcopy(valid)
+            duplicate["sources"].append(copy.deepcopy(duplicate["sources"][0]))
+            with self.assertRaisesRegex(credits_contract.CreditsSourceError, "duplicate source id"):
+                credits_contract.derive_source_labels(duplicate)
+            wrong_type = copy.deepcopy(valid)
+            wrong_type["sources"][0]["used_in_film"] = "yes"
+            with self.assertRaisesRegex(credits_contract.CreditsSourceError, "must be boolean"):
+                credits_contract.derive_source_labels(wrong_type)
+            with self.assertRaisesRegex(credits_contract.CreditsSourceError, "must be an object"):
+                credits_contract.derive_source_labels({"sources": ["not-an-object"]})
+
+            with mock.patch.object(
+                credits_check.importlib, "import_module",
+                side_effect=ImportError("fixture missing contract"),
+            ), self.assertRaisesRegex(RuntimeError, "cannot be imported"):
+                credits_check.main()
+            incomplete = type("IncompleteCreditsContract", (), {
+                "CONTRACT_VERSION": 1, "CREDITS_MIN_S": 10.0, "CREDITS_TAIL_S": 2.3,
+            })()
+            with mock.patch.object(credits_check.importlib, "import_module", return_value=incomplete), \
+                 self.assertRaisesRegex(RuntimeError, "missing derive_source_labels"):
+                credits_check.main()
 
 
 class EpisodeRenderIntegrationTests(unittest.TestCase):
@@ -672,7 +739,8 @@ class EpisodeRenderIntegrationTests(unittest.TestCase):
                     facts["frame_count"] = timing["total"]
             probe = lambda path: dict(artifact_facts[str(Path(path).resolve())])
             make_mastering(root, stamp, render_probe)
-            manifest = dc.build_manifest(root=root, probe=probe, render_probe=render_probe)
+            manifest = dc.build_manifest(root=root, probe=probe, render_probe=render_probe,
+                                         mastering_audio_probe=fake_audio_lineage)
             self.assertEqual(manifest["episode"]["duration_seconds"], 101.0)
             facts, problems = sfx_contract.sidecar_facts(root=root)
             self.assertEqual(problems, [])
@@ -806,7 +874,7 @@ class MasteringTransactionTests(unittest.TestCase):
                     audio_probe=fake_audio_lineage,
                 )
 
-    def test_real_decoded_audio_fingerprint_accepts_master_and_rejects_wrong_mux(self):
+    def test_real_decoded_audio_identity_accepts_aac_and_rejects_timbre_and_track_attacks(self):
         ffmpeg = shutil.which("ffmpeg")
         if not ffmpeg:
             self.skipTest("local ffmpeg unavailable")
@@ -837,25 +905,76 @@ class MasteringTransactionTests(unittest.TestCase):
             lineage = mastering_contract.decoded_audio_lineage(root, sfx_contract.AUDIO_REL, roles)
             self.assertEqual(set(lineage["roles"]), set(mastering_contract.AUDIO_ROLES))
             self.assertTrue(all(
-                facts["correlation"] >= mastering_contract.AUDIO_MIN_CORRELATION
+                facts["waveform_correlation"] >= mastering_contract.AUDIO_MIN_WAVEFORM_CORRELATION
                 for facts in lineage["roles"].values()
             ))
-            wrong = root / "wrong.wav"
-            run(
-                "-f", "lavfi", "-i",
-                "aevalsrc=0.25*sin(2*PI*880*t)*(1+0.7*sin(2*PI*0.7*t)):d=4:s=48000",
-                str(wrong),
-            )
-            mobile = root.joinpath(*roles["mobile"].split("/"))
-            run(
-                "-f", "lavfi", "-i", "color=c=black:s=64x64:r=30:d=4",
-                "-i", str(wrong), "-shortest", "-c:v", "libx264", "-c:a", "aac",
-                str(mobile),
-            )
-            with self.assertRaisesRegex(
-                mastering_contract.MasteringContractError, "correlation|fingerprint|wrong audio",
+            correct_bytes = {
+                role: root.joinpath(*relative.split("/")).read_bytes()
+                for role, relative in roles.items()
+            }
+            attack_expressions = {
+                # Exact reviewer reproduction: same fundamental and AM envelope,
+                # but an audibly different square-wave timbre.
+                "square-440": (
+                    "0.25*sgn(sin(2*PI*440*t))*(1+0.7*sin(2*PI*0.7*t))"
+                ),
+                # The added third harmonic preserves every fundamental zero
+                # crossing and the exact slow envelope; envelope+ZCR cannot tell.
+                "same-envelope-zcr": (
+                    "0.18*(sin(2*PI*440*t)+0.45*sin(2*PI*1320*t))"
+                    "*(1+0.7*sin(2*PI*0.7*t))"
+                ),
+                "wrong-880-track": (
+                    "0.25*sin(2*PI*880*t)*(1+0.7*sin(2*PI*0.7*t))"
+                ),
+            }
+            attack_wavs = {}
+            for attack_name, expression in attack_expressions.items():
+                attack_wav = root / f"{attack_name}.wav"
+                attack_wavs[attack_name] = attack_wav
+                run("-f", "lavfi", "-i", f"aevalsrc={expression}:d=4:s=48000", str(attack_wav))
+
+            with wave.open(str(master), "rb") as source_wave:
+                params = source_wave.getparams()
+                pcm = array.array("h")
+                pcm.frombytes(source_wave.readframes(params.nframes))
+            block_samples = round(params.framerate * 0.05)
+            reversed_pcm = array.array("h", pcm)
+            phase_pcm = array.array("h", pcm)
+            for offset in range(0, len(pcm), block_samples):
+                reversed_pcm[offset:offset + block_samples] = array.array(
+                    "h", reversed_pcm[offset:offset + block_samples][::-1]
+                )
+                if (offset // block_samples) % 2:
+                    phase_pcm[offset:offset + block_samples] = array.array(
+                        "h", (-value for value in phase_pcm[offset:offset + block_samples])
+                    )
+            for attack_name, attack_pcm in (
+                ("reversed-each-50ms", reversed_pcm),
+                ("alternating-block-phase", phase_pcm),
             ):
-                mastering_contract.decoded_audio_lineage(root, sfx_contract.AUDIO_REL, roles)
+                attack_wav = root / f"{attack_name}.wav"
+                with wave.open(str(attack_wav), "wb") as target_wave:
+                    target_wave.setparams(params)
+                    target_wave.writeframes(attack_pcm.tobytes())
+                attack_wavs[attack_name] = attack_wav
+
+            for attack_name, attack_wav in attack_wavs.items():
+                attack_video = root / f"{attack_name}.mp4"
+                run(
+                    "-f", "lavfi", "-i", "color=c=black:s=64x64:r=30:d=4",
+                    "-i", str(attack_wav), "-shortest", "-c:v", "libx264", "-c:a", "aac",
+                    "-b:a", "192k", str(attack_video),
+                )
+                for role, relative in roles.items():
+                    target = root.joinpath(*relative.split("/"))
+                    target.write_bytes(attack_video.read_bytes())
+                    with self.subTest(attack=attack_name, role=role), self.assertRaisesRegex(
+                        mastering_contract.MasteringContractError,
+                        rf"{role}.*(waveform|spectral|cepstral|wrong audio)",
+                    ):
+                        mastering_contract.decoded_audio_lineage(root, sfx_contract.AUDIO_REL, roles)
+                    target.write_bytes(correct_bytes[role])
 
 
 class DeliverableContractTests(unittest.TestCase):
@@ -872,7 +991,8 @@ class DeliverableContractTests(unittest.TestCase):
     def test_exact_five_roles_and_both_poster_sizes_pass(self):
         with tempfile.TemporaryDirectory() as td:
             root, _stamp, _facts, probe, render_probe = self.prepared(Path(td))
-            manifest = dc.build_manifest(root=root, probe=probe, render_probe=render_probe)
+            manifest = dc.build_manifest(root=root, probe=probe, render_probe=render_probe,
+                                         mastering_audio_probe=fake_audio_lineage)
             self.assertEqual(set(manifest["artifacts"]), set(dc.EXPECTED_ROLES))
             self.assertEqual(
                 (manifest["artifacts"]["poster_square"]["width"], manifest["artifacts"]["poster_square"]["height"]),
@@ -882,35 +1002,40 @@ class DeliverableContractTests(unittest.TestCase):
                 (manifest["artifacts"]["poster_thumb_vertical"]["width"], manifest["artifacts"]["poster_thumb_vertical"]["height"]),
                 (540, 960),
             )
-            checked, problems = dc.validate_manifest(root=root, probe=probe, render_probe=render_probe)
+            checked, problems = dc.validate_manifest(root=root, probe=probe, render_probe=render_probe,
+                                                     mastering_audio_probe=fake_audio_lineage)
             self.assertIsNotNone(checked)
             self.assertEqual(problems, [])
 
     def test_same_size_mtime_preserving_mutation_fails_sha(self):
         with tempfile.TemporaryDirectory() as td:
             root, _stamp, _facts, probe, render_probe = self.prepared(Path(td))
-            dc.build_manifest(root=root, probe=probe, render_probe=render_probe)
+            dc.build_manifest(root=root, probe=probe, render_probe=render_probe,
+                              mastering_audio_probe=fake_audio_lineage)
             target = root / "out" / "dispatch" / "dispatch_square.mp4"
             stat = target.stat()
             data = bytearray(target.read_bytes())
             data[0] ^= 1
             target.write_bytes(data)
             os.utime(target, ns=(stat.st_atime_ns, stat.st_mtime_ns))
-            _manifest, problems = dc.validate_manifest(root=root, probe=probe, render_probe=render_probe)
+            _manifest, problems = dc.validate_manifest(root=root, probe=probe, render_probe=render_probe,
+                                                       mastering_audio_probe=fake_audio_lineage)
             self.assertTrue(any("square SHA-256 changed" in problem for problem in problems), problems)
 
     def test_each_of_five_artifact_mutations_fails(self):
         for role in dc.EXPECTED_ROLES:
             with self.subTest(role=role), tempfile.TemporaryDirectory() as td:
                 root, _stamp, _facts, probe, render_probe = self.prepared(Path(td))
-                manifest = dc.build_manifest(root=root, probe=probe, render_probe=render_probe)
+                manifest = dc.build_manifest(root=root, probe=probe, render_probe=render_probe,
+                                             mastering_audio_probe=fake_audio_lineage)
                 target = root.joinpath(*manifest["artifacts"][role]["path"].split("/"))
                 stat = target.stat()
                 payload = bytearray(target.read_bytes())
                 payload[-1] ^= 1
                 target.write_bytes(payload)
                 os.utime(target, ns=(stat.st_atime_ns, stat.st_mtime_ns))
-                _checked, problems = dc.validate_manifest(root=root, probe=probe, render_probe=render_probe)
+                _checked, problems = dc.validate_manifest(root=root, probe=probe, render_probe=render_probe,
+                                                          mastering_audio_probe=fake_audio_lineage)
                 self.assertTrue(any(role in problem and "SHA-256" in problem for problem in problems), problems)
 
     def test_wrong_dimensions_streams_duration_and_forbidden_4x5_fail_cleanly(self):
@@ -931,7 +1056,8 @@ class DeliverableContractTests(unittest.TestCase):
                 facts[str(path)].update(override)
                 probe = lambda target: dict(facts[str(Path(target).resolve())])
                 with self.assertRaisesRegex(dc.DeliverableContractError, expected):
-                    dc.build_manifest(root=root, probe=probe, render_probe=render_probe)
+                    dc.build_manifest(root=root, probe=probe, render_probe=render_probe,
+                                      mastering_audio_probe=fake_audio_lineage)
 
     def test_post_encode_master_audio_and_sfx_replacement_break_mastering_lineage(self):
         for relative, expected in (
@@ -940,7 +1066,8 @@ class DeliverableContractTests(unittest.TestCase):
         ):
             with self.subTest(relative=relative), tempfile.TemporaryDirectory() as td:
                 root, _stamp, _facts, probe, render_probe = self.prepared(Path(td))
-                dc.build_manifest(root=root, probe=probe, render_probe=render_probe)
+                dc.build_manifest(root=root, probe=probe, render_probe=render_probe,
+                                  mastering_audio_probe=fake_audio_lineage)
                 target = root.joinpath(*relative.split("/"))
                 stat = target.stat()
                 payload = bytearray(target.read_bytes())
@@ -949,6 +1076,7 @@ class DeliverableContractTests(unittest.TestCase):
                 os.utime(target, ns=(stat.st_atime_ns, stat.st_mtime_ns))
                 _manifest, problems = dc.validate_manifest(
                     root=root, probe=probe, render_probe=render_probe,
+                    mastering_audio_probe=fake_audio_lineage,
                 )
                 message = "; ".join(problems)
                 self.assertRegex(message, expected)
@@ -1005,6 +1133,7 @@ class DeliverableContractTests(unittest.TestCase):
                     root=root,
                     probe=lambda target: facts[str(Path(target).resolve())],
                     render_probe=render_probe,
+                    mastering_audio_probe=fake_audio_lineage,
                 )
 
     def test_config_rejects_duplicate_colliding_absolute_backslash_traversal_and_unicode_paths(self):
@@ -1038,7 +1167,8 @@ class DeliverableContractTests(unittest.TestCase):
     def test_publication_receipt_requires_exact_bytes(self):
         with tempfile.TemporaryDirectory() as td:
             root, _stamp, _facts, probe, render_probe = self.prepared(Path(td))
-            manifest = dc.build_manifest(root=root, probe=probe, render_probe=render_probe)
+            manifest = dc.build_manifest(root=root, probe=probe, render_probe=render_probe,
+                                         mastering_audio_probe=fake_audio_lineage)
             entry = manifest["artifacts"]["vertical_hosted"]
             commit = "c" * 40
             name = dc.publication_name(manifest, "vertical_hosted")
@@ -1052,16 +1182,19 @@ class DeliverableContractTests(unittest.TestCase):
                     remote_bytes=entry["bytes"], remote_sha256="0" * 64, root=root,
                     media_name=name, media_commit_sha=commit,
                     probe=probe, render_probe=render_probe,
+                    mastering_audio_probe=fake_audio_lineage,
                 )
             dc.record_publication(
                 "vertical_hosted", url,
                 remote_bytes=entry["bytes"], remote_sha256=entry["sha256"], root=root,
                 media_name=name, media_commit_sha=commit,
                 probe=probe, render_probe=render_probe,
+                mastering_audio_probe=fake_audio_lineage,
             )
             receipt = dc.require_publication_url(
                 "vertical_hosted", url, root=root, probe=probe,
-                render_probe=render_probe, verify_remote=False,
+                render_probe=render_probe, mastering_audio_probe=fake_audio_lineage,
+                verify_remote=False,
             )
             self.assertEqual(receipt["artifact"]["sha256"], entry["sha256"])
             self.assertEqual(receipt["media_name"], name)
@@ -1077,25 +1210,30 @@ class DeliverableContractTests(unittest.TestCase):
                     remote_bytes=entry["bytes"], remote_sha256=entry["sha256"], root=root,
                     media_name=name, media_commit_sha=other_commit,
                     probe=probe, render_probe=render_probe,
+                    mastering_audio_probe=fake_audio_lineage,
                 )
             manifest_path = root / dc.EXPECTED_MANIFEST_PATH
             tampered = json.loads(manifest_path.read_text(encoding="utf-8"))
             tampered["publications"]["vertical_hosted"]["verified_sha256"] = "f" * 64
             write_json(manifest_path, tampered)
-            _checked, problems = dc.validate_manifest(root=root, probe=probe, render_probe=render_probe)
+            _checked, problems = dc.validate_manifest(root=root, probe=probe, render_probe=render_probe,
+                                                       mastering_audio_probe=fake_audio_lineage)
             self.assertTrue(any("verified_sha256" in p for p in problems), problems)
 
     def test_manifest_duplicate_keys_and_non_object_fail_concisely(self):
         with tempfile.TemporaryDirectory() as td:
             root, _stamp, _facts, probe, render_probe = self.prepared(Path(td))
-            dc.build_manifest(root=root, probe=probe, render_probe=render_probe)
+            dc.build_manifest(root=root, probe=probe, render_probe=render_probe,
+                              mastering_audio_probe=fake_audio_lineage)
             target = root / dc.EXPECTED_MANIFEST_PATH
             target.write_text('{"schema_version":1,"schema_version":1}\n', encoding="utf-8")
-            _manifest, problems = dc.validate_manifest(root=root, probe=probe, render_probe=render_probe)
+            _manifest, problems = dc.validate_manifest(root=root, probe=probe, render_probe=render_probe,
+                                                       mastering_audio_probe=fake_audio_lineage)
             self.assertIn("duplicate", ";".join(problems))
             self.assertNotIn("Traceback", ";".join(problems))
             target.write_text("[]\n", encoding="utf-8")
-            _manifest, problems = dc.validate_manifest(root=root, probe=probe, render_probe=render_probe)
+            _manifest, problems = dc.validate_manifest(root=root, probe=probe, render_probe=render_probe,
+                                                       mastering_audio_probe=fake_audio_lineage)
             self.assertIn("JSON object", ";".join(problems))
 
     def test_remote_verifier_reads_and_hashes_exact_published_bytes(self):
@@ -1159,7 +1297,8 @@ class DeliverableContractTests(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as td:
             root, _stamp, _facts, probe, render_probe = self.prepared(Path(td))
-            manifest = dc.build_manifest(root=root, probe=probe, render_probe=render_probe)
+            manifest = dc.build_manifest(root=root, probe=probe, render_probe=render_probe,
+                                         mastering_audio_probe=fake_audio_lineage)
             commit = "d" * 40
             role = "vertical_hosted"
             entry = manifest["artifacts"][role]
@@ -1172,10 +1311,12 @@ class DeliverableContractTests(unittest.TestCase):
                 role, url, remote_bytes=entry["bytes"], remote_sha256=entry["sha256"],
                 media_name=name, media_commit_sha=commit, root=root,
                 probe=probe, render_probe=render_probe,
+                mastering_audio_probe=fake_audio_lineage,
             )
             payload = root.joinpath(*entry["path"].split("/")).read_bytes()
             receipt = dc.require_publication_url(
                 role, url, root=root, probe=probe, render_probe=render_probe,
+                mastering_audio_probe=fake_audio_lineage,
                 opener=lambda *_args, **_kwargs: Response(payload),
             )
             self.assertEqual(receipt["verified_sha256"], entry["sha256"])
@@ -1183,6 +1324,7 @@ class DeliverableContractTests(unittest.TestCase):
             with self.assertRaisesRegex(dc.DeliverableContractError, "bytes/hash"):
                 dc.require_publication_url(
                     role, url, root=root, probe=probe, render_probe=render_probe,
+                    mastering_audio_probe=fake_audio_lineage,
                     opener=lambda *_args, **_kwargs: Response(changed),
                 )
 
@@ -1199,6 +1341,7 @@ class DeliverableContractTests(unittest.TestCase):
             write_json(manifest_path, tampered)
             _checked, problems = dc.validate_manifest(
                 root=root, probe=probe, render_probe=render_probe,
+                mastering_audio_probe=fake_audio_lineage,
             )
             joined = "; ".join(problems)
             self.assertIn("collides across", joined)
@@ -1241,7 +1384,8 @@ class EvidenceAndPreviewContractTests(unittest.TestCase):
         facts = make_artifacts(root, stamp)
         probe = lambda path: dict(facts[str(Path(path).resolve())])
         make_mastering(root, stamp, render_probe)
-        manifest = dc.build_manifest(root=root, probe=probe, render_probe=render_probe)
+        manifest = dc.build_manifest(root=root, probe=probe, render_probe=render_probe,
+                                     mastering_audio_probe=fake_audio_lineage)
         write_json(
             root / "out" / "dispatch" / "vo_lines.json",
             {"lines": [{"idx": 0, "start": 0.0, "end": 90.0, "text": "fixture"}]},
@@ -1250,6 +1394,9 @@ class EvidenceAndPreviewContractTests(unittest.TestCase):
             root / "out" / "dispatch" / "audio" / "words.json",
             {"words": [{"word": "fixture", "start": 0.0, "end": 0.5}]},
         )
+        write_json(root / "out" / "dispatch" / "claims.json", {"claims": []})
+        write_json(root / "out" / "dispatch" / "sources.json", {"sources": []})
+        write_json(root / "out" / "dispatch" / "vo_script.json", {"lines": []})
         (root / "out" / "dispatch" / "audio" / "vo.wav").write_bytes(b"fixture-vo")
         return root, stamp, manifest, probe, render_probe
 
@@ -1496,16 +1643,38 @@ class VideoJudgeContractTests(unittest.TestCase):
             "evidence_delivery_manifest_digest": "5" * 64,
             "preflight_receipt_sha256": "6" * 64,
         }
-        allowed = {"out/evidence/contact-sheet.jpg", "out/evidence/audio_report.json"}
+        allowed = {
+            "out/evidence/contact-sheet.jpg",
+            "out/evidence/motion.json",
+            "out/evidence/caption_cues.json",
+            "out/evidence/audio_report.json",
+            "out/evidence/story_claims_sources.json",
+        }
         return rubric, binding, allowed
 
     def card(self, rubric, binding, allowed, judge_id, *, score=8.0):
-        artifact = sorted(allowed)[0]
-        axes = [
-            {"name": axis["name"], "weight": axis["weight"], "score": score,
-             "evidence": [{"artifact": artifact, "observation": f"observed {axis['name']}"}]}
-            for axis in rubric["axes"]
-        ]
+        capability_artifacts = {
+            "visual": "out/evidence/contact-sheet.jpg",
+            "timeline": "out/evidence/motion.json",
+            "motion": "out/evidence/motion.json",
+            "captions": "out/evidence/caption_cues.json",
+            "audio": "out/evidence/audio_report.json",
+            "source_claims": "out/evidence/story_claims_sources.json",
+            "story": "out/evidence/story_claims_sources.json",
+        }
+        axes = []
+        for axis in rubric["axes"]:
+            artifacts = sorted({
+                capability_artifacts[capability]
+                for capability in video_judge_contract.AXIS_EVIDENCE_CAPABILITIES[axis["name"]]
+            })
+            axes.append({
+                "name": axis["name"], "weight": axis["weight"], "score": score,
+                "evidence": [
+                    {"artifact": artifact, "observation": f"observed {axis['name']} in {artifact}"}
+                    for artifact in artifacts
+                ],
+            })
         return {
             "schema_version": 1, "judge_id": judge_id, "binding": binding,
             "rubric": rubric, "axes": axes,
@@ -1575,6 +1744,42 @@ class VideoJudgeContractTests(unittest.TestCase):
                     allowed_evidence=allowed,
                 )
 
+    def test_axis_evidence_capabilities_reject_still_only_sound_and_audio_only_visual(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            rubric, binding, allowed = self.fixture(root)
+            card = self.card(rubric, binding, allowed, "judge-1")
+            axes = {axis["name"]: axis for axis in card["axes"]}
+            axes["Sound design & mix"]["evidence"] = [{
+                "artifact": "out/evidence/contact-sheet.jpg", "observation": "still only",
+            }]
+            path = root / "still-sound.json"
+            write_json(path, card)
+            with self.assertRaisesRegex(video_judge_contract.VideoJudgeContractError, "audio"):
+                video_judge_contract.validate_card(
+                    path, root=root, binding=binding, rubric=rubric, allowed_evidence=allowed,
+                )
+
+            card = self.card(rubric, binding, allowed, "judge-1")
+            axes = {axis["name"]: axis for axis in card["axes"]}
+            axes["Illustration craft & detail"]["evidence"] = [{
+                "artifact": "out/evidence/audio_report.json", "observation": "audio only",
+            }]
+            path = root / "audio-visual.json"
+            write_json(path, card)
+            with self.assertRaisesRegex(video_judge_contract.VideoJudgeContractError, "visual"):
+                video_judge_contract.validate_card(
+                    path, root=root, binding=binding, rubric=rubric, allowed_evidence=allowed,
+                )
+
+            valid = self.card(rubric, binding, allowed, "judge-1")
+            path = root / "valid-mixed.json"
+            write_json(path, valid)
+            checked = video_judge_contract.validate_card(
+                path, root=root, binding=binding, rubric=rubric, allowed_evidence=allowed,
+            )
+            self.assertEqual(checked["judge_id"], "judge-1")
+
     def test_panel_ledger_recomputes_median_and_hard_blockers(self):
         cards = [
             {"judge_id": f"judge-{index}", "weighted_total": total, "hard_blockers": []}
@@ -1635,7 +1840,7 @@ class ObjectivePreflightContractTests(unittest.TestCase):
             self.assertEqual(report["status"], "pass")
             self.assertEqual(
                 [item["id"] for item in report["checks"]],
-                ["delivery_manifest_v4", "mastering_audio_lineage_v2",
+                ["delivery_manifest_v4", "mastering_audio_lineage_v3",
                  "evidence_manifest_v3", "sole_sfx_ledger_v3",
                  "delivered_audio_report_v1"],
             )
@@ -1718,6 +1923,19 @@ class ObjectivePreflightContractTests(unittest.TestCase):
                 }
                 for index, relative in enumerate(sorted(preflight.REQUIRED_AUTHORED_INPUTS))
             }
+            for index, relative in enumerate((
+                "video-engine/tsconfig.json",
+                "video-engine/package.json",
+                "video-engine/package-lock.json",
+                "video-engine/remotion.config.ts",
+                ".claude/agents/scorer.md",
+                ".claude/agents/dispatch-fixer.md",
+                "prompts/dispatch_routine.md",
+                "config/panel_protocol.md",
+            ), len(authored) + 1):
+                authored[relative] = {
+                    "path": relative, "bytes": index, "sha256": f"{index:064x}",
+                }
             tools = {
                 "scripts/build_scenes.py": {
                     "path": "scripts/build_scenes.py", "bytes": 7, "sha256": "c" * 64,
@@ -1728,12 +1946,16 @@ class ObjectivePreflightContractTests(unittest.TestCase):
             }
             check_ids = [spec["id"] for spec in preflight.required_check_specs()]
             lineage = {
-                "scope_id": "closed_preflight_state_v1",
+                "scope_id": preflight.PREFLIGHT_SCOPE_ID,
                 "inputs": sorted(authored),
                 "tools": sorted(tools),
-                "external_tools": ["ffmpeg"],
+                "external_tools": ["ffmpeg", "remotion_cli", "typescript_compiler"],
+                "consumers": {
+                    "typescript_engine": ["video-engine/tsconfig.json"],
+                    "terminal_judging": [".claude/agents/scorer.md"],
+                },
                 "checks": {
-                    check_id: {"scope_id": "closed_preflight_state_v1"}
+                    check_id: {"scope_id": preflight.PREFLIGHT_SCOPE_ID}
                     for check_id in check_ids
                 },
             }
@@ -1741,7 +1963,14 @@ class ObjectivePreflightContractTests(unittest.TestCase):
                 {"run_id": "fixture", "delivery_manifest_digest": "a" * 64},
                 authored,
                 tools,
-                {"ffmpeg": {"path": "fixture", "version": "fixture"}},
+                {
+                    "ffmpeg": {"path": "fixture", "version": "fixture", "bytes": 1,
+                               "sha256": "1" * 64},
+                    "typescript_compiler": {"path": "fixture-tsc", "version": "5.9.3",
+                                             "bytes": 2, "sha256": "2" * 64},
+                    "remotion_cli": {"path": "fixture-remotion", "version": "4.0.399",
+                                     "bytes": 3, "sha256": "3" * 64},
+                },
                 lineage,
             )
             results = [
@@ -1758,12 +1987,12 @@ class ObjectivePreflightContractTests(unittest.TestCase):
                 checked, problems = preflight.validate_preflight_receipt(root=root)
                 self.assertIsNotNone(checked)
                 self.assertEqual(problems, [])
-            self.assertEqual(set(authored), preflight.REQUIRED_AUTHORED_INPUTS)
+            self.assertTrue(preflight.REQUIRED_AUTHORED_INPUTS.issubset(authored))
             self.assertIn("scripts/build_scenes.py", tools)
             self.assertEqual(set(lineage["checks"]), set(check_ids))
             # Every required check is declared against one exhaustive closed scope.
             self.assertTrue(all(
-                value == {"scope_id": "closed_preflight_state_v1"}
+                value == {"scope_id": preflight.PREFLIGHT_SCOPE_ID}
                 for value in lineage["checks"].values()
             ))
 
@@ -1778,6 +2007,14 @@ class ObjectivePreflightContractTests(unittest.TestCase):
                 "out/dispatch/audio/vo.wav",
                 "out/dispatch/audio/words.json",
                 "out/dispatch/music_bed.wav",
+                "video-engine/tsconfig.json",
+                "video-engine/package.json",
+                "video-engine/package-lock.json",
+                "video-engine/remotion.config.ts",
+                ".claude/agents/scorer.md",
+                ".claude/agents/dispatch-fixer.md",
+                "prompts/dispatch_routine.md",
+                "config/panel_protocol.md",
             )
             for relative in families:
                 drifted_state = list(copy.deepcopy(state))
@@ -1794,6 +2031,14 @@ class ObjectivePreflightContractTests(unittest.TestCase):
             ):
                 _checked, problems = preflight.validate_preflight_receipt(root=root)
             self.assertIn("tool source bytes or hashes changed", "; ".join(problems))
+            for runtime_name in ("typescript_compiler", "remotion_cli"):
+                drifted_runtime = list(copy.deepcopy(state))
+                drifted_runtime[3][runtime_name]["sha256"] = "f" * 64
+                with self.subTest(runtime=runtime_name), mock.patch.object(
+                    preflight, "_current_contract_state", return_value=tuple(drifted_runtime),
+                ):
+                    _checked, problems = preflight.validate_preflight_receipt(root=root)
+                self.assertIn("external tool paths/versions changed", "; ".join(problems))
             drifted = ({**state[0], "delivery_manifest_digest": "f" * 64}, *state[1:])
             with mock.patch.object(preflight, "_current_contract_state", return_value=drifted):
                 _checked, problems = preflight.validate_preflight_receipt(root=root)

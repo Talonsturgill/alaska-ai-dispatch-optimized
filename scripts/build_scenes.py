@@ -6,7 +6,11 @@ VO line; S1 covers lines 0-1. Writes episode_props.json {captions, scenes, total
 import json
 import os
 import re
-from urllib.parse import urlparse
+
+from credits_contract import (
+    CREDITS_MIN_S, CREDITS_S, CREDITS_TAIL_S, CreditsSourceError,
+    derive_source_labels,
+)
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 OUT = os.path.join(REPO, "out", "dispatch")
@@ -375,67 +379,6 @@ def _rebalance_cues(caps):
 # This number may go UP for a longer card. It may not go down. scripts/credits_check.py
 # enforces the floor against the DELIVERED BYTES, so editing this constant alone cannot
 # defeat it, and neither can a run that decides it needs the seconds back.
-CREDITS_MIN_S = 10.0
-# The floor is 10s of READABLE body, not 10s of card. lib/EndCredits runs two fades: the body
-# (site, sources, licence) clears 46 frames before the end and starts fading 12 before that,
-# then the mark holds alone and fades last, so the film signs off on the logo. At a flat 10s
-# card that left about 7.8s of legible source list, which is not what was asked for. The tail
-# is added ON TOP of the floor so the readable window is the full ten seconds.
-CREDITS_TAIL_S = 2.3          # EndCredits: 0.3 fade-in + 0.4 body-out + 1.6 mark sign-off
-CREDITS_S = CREDITS_MIN_S + CREDITS_TAIL_S
-
-def _source_labels(srcs):
-    """Group sources.json into lines a person can read off a phone in six seconds.
-
-    One label per URL produced junk: the aggregate award query rendered as "API.NSF.GOV",
-    the human-readable award page duplicated an id already listed, and eight near-identical
-    rows pushed real sources off the card behind an "AND 4 MORE". Grouping by KIND is what a
-    credit roll actually wants: every NSF award on one line, every indexed paper on the next.
-    """
-    awards, papers, other, seen = [], [], [], set()
-    for e in srcs:
-        url = (e.get("url") or "").strip()
-        m = re.search(r"/awards/(\d+)\.json", url) or re.search(r"AWD_ID=(\d+)", url)
-        # AN AWARD CITED BY KEYWORD IS STILL AN AWARD (2026-08-13). The companion award's only
-        # stable URL is an aggregate keyword query, so it fell through to the `awards.json?keyword`
-        # skip below and its id never reached the card. The end card then read "NSF AWARDS
-        # 2626692" -- plural, one number -- while the companion award's $225,000 was on screen
-        # in the film. Two judges caught it. The id is in the source TITLE, so read it there.
-        if not m:
-            m = re.search(r"\bAwards?\s+(\d{7,})", e.get("title") or "")
-        if m:
-            if m.group(1) not in awards:
-                awards.append(m.group(1))
-            continue
-        m = re.search(r"pubmed\.ncbi\.nlm\.nih\.gov/(\d+)", url)
-        if m:
-            if m.group(1) not in papers:
-                papers.append(m.group(1))
-            continue
-        if "eutils.ncbi" in url or "esearch.fcgi" in url:
-            lab = "PUBMED QUERY"
-        elif "awards.json?keyword" in url:
-            continue          # the aggregate query behind the total, already implied by the ids
-        elif "dggs.alaska.gov" in url:
-            lab = "ALASKA DGGS"
-        elif "epscor" in url:
-            lab = "NSF EPSCOR"
-        else:
-            host = re.sub(r"^www\.", "", urlparse(url).netloc)
-            lab = host.upper()
-        if lab and lab not in seen:
-            seen.add(lab)
-            other.append(lab)
-
-    labels = []
-    if awards:
-        labels.append(("NSF AWARDS " if len(awards) > 1 else "NSF AWARD ") + ", ".join(awards))
-    if papers:
-        labels.append(("PUBMED " if len(papers) > 1 else "PUBMED ") + ", ".join(papers))
-    labels.extend(other)
-    return labels
-
-
 def _credits():
     """Build the credits block, or return None and say why. Never invents a credit."""
     try:
@@ -443,29 +386,18 @@ def _credits():
     except Exception:
         music = ""
     try:
-        srcs = json.load(open(os.path.join(OUT, "sources.json"))).get("sources", [])
-    except Exception:
-        srcs = []
-    # THE LEDGER AND THE END CARD ARE TWO DIFFERENT OBLIGATIONS (2026-08-13, round 8).
-    # sources.json must account for EVERY claim in claims.json, so the accuracy record is
-    # auditable and a removal cannot pass silently -- three judges docked the film for a
-    # ledger that skipped s6 and carried no entry for c14 or c21. The END CARD has the
-    # opposite duty: it may only cite sources for claims the film actually MAKES, and a
-    # previous panel specifically credited it for not listing the two dropped ones. Those
-    # requirements only conflict if one file serves both, so entries carry `used_in_film`
-    # and the card reads the subset. Absent means true, so an entry cannot vanish from the
-    # card by omission.
-    srcs = [s for s in srcs if s.get("used_in_film", True)]
-    labels = _source_labels(srcs)
+        with open(os.path.join(OUT, "sources.json"), encoding="utf-8") as handle:
+            source_document = json.load(handle)
+        labels = derive_source_labels(source_document)
+    except (OSError, UnicodeError, json.JSONDecodeError, CreditsSourceError) as exc:
+        print(f"build_scenes: INVALID SOURCE LABEL CONTRACT: {exc}")
+        return None
     if not music:
         print("build_scenes: NO MUSIC CREDIT. out/dispatch/music_credit.json has no `credit`.")
         return None
     if not labels:
         print("build_scenes: NO SOURCE LABELS. out/dispatch/sources.json produced none.")
         return None
-    # six lines is what fits above the licence strap at a size a phone can read
-    if len(labels) > 6:
-        labels = labels[:5] + [f"AND {len(labels) - 5} MORE AT ALASKAAIHQ.COM"]
     return {"music": music, "sources": labels, "site": "alaskaaihq.com",
             "seconds": CREDITS_S, "frames": round(CREDITS_S * FPS)}
 

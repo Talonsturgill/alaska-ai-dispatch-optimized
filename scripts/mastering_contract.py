@@ -21,6 +21,7 @@ import subprocess
 import sys
 import tempfile
 import time
+from functools import lru_cache
 from pathlib import Path, PurePosixPath
 from typing import Any, Callable
 
@@ -80,11 +81,18 @@ COMMAND_PLAN = (
     "extract 1080x1080 PNG poster from square and 540x960 MJPEG poster from vertical_hosted",
     "measure delivered square loudness/true peak, finalize mastering, build/check manifest",
 )
-AUDIO_SAMPLE_RATE = 8000
-AUDIO_BLOCK_SAMPLES = 400
-AUDIO_MAX_LAG_BLOCKS = 6
-AUDIO_MIN_CORRELATION = 0.97
-AUDIO_MIN_FINGERPRINT_SIMILARITY = 0.98
+AUDIO_SAMPLE_RATE = 16000
+AUDIO_BLOCK_SAMPLES = 320
+AUDIO_MAX_LAG_BLOCKS = 15
+AUDIO_SPECTRAL_WINDOW = 512
+AUDIO_SPECTRAL_BINS = 96
+AUDIO_SPECTRAL_WINDOWS = 40
+AUDIO_MIN_ENVELOPE_CORRELATION = 0.97
+AUDIO_MAX_ENVELOPE_NORMALIZED_ERROR = 0.25
+AUDIO_MIN_WAVEFORM_CORRELATION = 0.985
+AUDIO_MAX_WAVEFORM_NORMALIZED_ERROR = 0.18
+AUDIO_MIN_SPECTRAL_SIMILARITY = 0.985
+AUDIO_MAX_CEPSTRAL_DISTANCE = 0.30
 AUDIO_MAX_DURATION_DELTA_SECONDS = 0.30
 
 
@@ -327,7 +335,74 @@ def _load_intent(base: Path) -> dict[str, Any]:
     return value
 
 
-def _decode_envelope(path: Path) -> dict[str, Any]:
+@lru_cache(maxsize=1)
+def _spectral_basis() -> tuple[tuple[tuple[float, float], ...], ...]:
+    return tuple(
+        tuple(
+            (
+                math.cos(2.0 * math.pi * bin_index * sample / AUDIO_SPECTRAL_WINDOW),
+                math.sin(2.0 * math.pi * bin_index * sample / AUDIO_SPECTRAL_WINDOW),
+            )
+            for sample in range(AUDIO_SPECTRAL_WINDOW)
+        )
+        for bin_index in range(1, AUDIO_SPECTRAL_BINS + 1)
+    )
+
+
+@lru_cache(maxsize=1)
+def _hann_window() -> tuple[float, ...]:
+    return tuple(
+        0.5 - 0.5 * math.cos(2.0 * math.pi * index / (AUDIO_SPECTRAL_WINDOW - 1))
+        for index in range(AUDIO_SPECTRAL_WINDOW)
+    )
+
+
+def _spectral_features(samples: list[float]) -> tuple[list[float], list[float]]:
+    available = len(samples) - AUDIO_SPECTRAL_WINDOW
+    if available < 0:
+        raise MasteringContractError("decoded audio is too short for spectral identity")
+    if AUDIO_SPECTRAL_WINDOWS == 1:
+        offsets = [available // 2]
+    else:
+        offsets = sorted({
+            round(index * available / (AUDIO_SPECTRAL_WINDOWS - 1))
+            for index in range(AUDIO_SPECTRAL_WINDOWS)
+        })
+    profile = [0.0] * AUDIO_SPECTRAL_BINS
+    window = _hann_window()
+    basis = _spectral_basis()
+    for offset in offsets:
+        frame = [samples[offset + index] * window[index] for index in range(AUDIO_SPECTRAL_WINDOW)]
+        magnitudes = []
+        for wave in basis:
+            real = sum(value * pair[0] for value, pair in zip(frame, wave))
+            imag = sum(value * pair[1] for value, pair in zip(frame, wave))
+            magnitudes.append(math.hypot(real, imag))
+        total = sum(magnitudes)
+        if total <= 1e-12:
+            continue
+        for index, magnitude in enumerate(magnitudes):
+            profile[index] += magnitude / total
+    total = sum(profile)
+    if total <= 1e-12:
+        raise MasteringContractError("decoded audio has no measurable spectral program")
+    profile = [value / total for value in profile]
+    log_profile = [math.log(max(value, 1e-12)) for value in profile]
+    log_mean = statistics.fmean(log_profile)
+    centered = [value - log_mean for value in log_profile]
+    cepstrum = [
+        sum(
+            value * math.cos(math.pi * order * (index + 0.5) / AUDIO_SPECTRAL_BINS)
+            for index, value in enumerate(centered)
+        ) / AUDIO_SPECTRAL_BINS
+        for order in range(1, 17)
+    ]
+    return profile, cepstrum
+
+
+def _decode_audio_features(path: Path) -> dict[str, Any]:
+    before = path.stat()
+    before_sha256 = sha256_file(path)
     try:
         result = subprocess.run(
             [
@@ -344,6 +419,13 @@ def _decode_envelope(path: Path) -> dict[str, Any]:
             f"audio decode failed for {path.name}: {detail[-1] if detail else 'no PCM'}"
         )
     pcm = result.stdout
+    after = path.stat()
+    after_sha256 = sha256_file(path)
+    if (
+        (before.st_size, before.st_mtime_ns, before_sha256)
+        != (after.st_size, after.st_mtime_ns, after_sha256)
+    ):
+        raise MasteringContractError(f"audio input changed while decoding: {path.name}")
     if len(pcm) % 2:
         raise MasteringContractError(f"audio decode returned odd PCM byte count for {path.name}")
     samples = [item[0] / 32768.0 for item in struct.iter_unpack("<h", pcm)]
@@ -362,29 +444,55 @@ def _decode_envelope(path: Path) -> dict[str, Any]:
         )
     if len(envelope) < 20 or max(envelope) < 1e-5:
         raise MasteringContractError(f"decoded audio has no measurable program for {path.name}")
-    # 32 time buckets × (relative energy, zero-crossing rate).  Unlike an
-    # amplitude-only envelope this distinguishes, for example, a wrong 880 Hz
-    # mux from the intended 440 Hz track even when both share the same fades.
-    fingerprint_vector = []
-    peak = max(envelope)
-    for index in range(32):
-        lo = index * len(envelope) // 32
-        hi = max(lo + 1, (index + 1) * len(envelope) // 32)
-        energy = sum(envelope[lo:hi]) / len(envelope[lo:hi])
-        zcr = sum(zero_crossing[lo:hi]) / len(zero_crossing[lo:hi])
-        fingerprint_vector.extend((
-            max(0, min(255, round(255 * energy / peak))),
-            max(0, min(255, round(255 * zcr))),
-        ))
+    spectral_profile, cepstrum = _spectral_features(samples)
+    feature_fingerprint = _sha256_json({
+        "envelope": [round(value, 8) for value in envelope],
+        "zero_crossing": [round(value, 8) for value in zero_crossing],
+        "spectral_profile": [round(value, 10) for value in spectral_profile],
+        "cepstrum": [round(value, 10) for value in cepstrum],
+    })
     return {
         "sample_rate": AUDIO_SAMPLE_RATE,
         "sample_count": len(samples),
         "duration_seconds": round(len(samples) / AUDIO_SAMPLE_RATE, 6),
         "pcm_sha256": hashlib.sha256(pcm).hexdigest(),
-        "perceptual_fingerprint": bytes(fingerprint_vector).hex(),
-        "fingerprint_vector": fingerprint_vector,
+        "container_sha256": after_sha256,
+        "feature_fingerprint_sha256": feature_fingerprint,
+        "samples": samples,
         "envelope": envelope,
+        "spectral_profile": spectral_profile,
+        "cepstrum": cepstrum,
     }
+
+
+def _aac_packet_sha256(path: Path) -> str:
+    """Hash exact AAC packet payloads; derivatives use ``-c:a copy`` and must match."""
+    before = path.stat()
+    before_sha256 = sha256_file(path)
+    try:
+        result = subprocess.run(
+            [
+                "ffmpeg", "-v", "error", "-i", str(path), "-map", "0:a:0",
+                "-c:a", "copy", "-f", "adts", "-",
+            ],
+            capture_output=True, timeout=180,
+        )
+    except (FileNotFoundError, OSError, subprocess.TimeoutExpired) as exc:
+        raise MasteringContractError(f"AAC packet extraction failed for {path.name}: {exc}") from None
+    if result.returncode != 0 or not result.stdout:
+        detail = result.stderr.decode("utf-8", errors="replace").strip().splitlines()
+        raise MasteringContractError(
+            f"AAC packet extraction failed for {path.name}: "
+            f"{detail[-1] if detail else 'no AAC packets'}"
+        )
+    after = path.stat()
+    after_sha256 = sha256_file(path)
+    if (
+        (before.st_size, before.st_mtime_ns, before_sha256)
+        != (after.st_size, after.st_mtime_ns, after_sha256)
+    ):
+        raise MasteringContractError(f"audio input changed while extracting packets: {path.name}")
+    return hashlib.sha256(result.stdout).hexdigest()
 
 
 def _pearson(left: list[float], right: list[float]) -> float:
@@ -395,6 +503,54 @@ def _pearson(left: list[float], right: list[float]) -> float:
     ld = math.sqrt(sum((a - lm) ** 2 for a in left))
     rd = math.sqrt(sum((b - rm) ** 2 for b in right))
     return numerator / (ld * rd) if ld > 0 and rd > 0 else -1.0
+
+
+def _normalized_error(left: list[float], right: list[float]) -> float:
+    if len(left) != len(right) or len(left) < 8:
+        return math.inf
+    left_mean, right_mean = statistics.fmean(left), statistics.fmean(right)
+    left_centered = [value - left_mean for value in left]
+    right_centered = [value - right_mean for value in right]
+    left_rms = math.sqrt(statistics.fmean(value * value for value in left_centered))
+    right_rms = math.sqrt(statistics.fmean(value * value for value in right_centered))
+    if left_rms <= 1e-10 or right_rms <= 1e-10:
+        return math.inf
+    return math.sqrt(statistics.fmean(
+        (left_value / left_rms - right_value / right_rms) ** 2
+        for left_value, right_value in zip(left_centered, right_centered)
+    ))
+
+
+def _aligned_waveforms(
+    source: list[float], delivered: list[float], coarse_lag_samples: int,
+) -> tuple[list[float], list[float], int]:
+    """Refine codec-delay alignment, then return a bounded deterministic sample."""
+    best = (-2.0, coarse_lag_samples)
+    # Refine within two milliseconds around the envelope-derived coarse lag.
+    for lag in range(coarse_lag_samples - 32, coarse_lag_samples + 33):
+        source_start = max(0, -lag)
+        delivered_start = max(0, lag)
+        count = min(len(source) - source_start, len(delivered) - delivered_start, AUDIO_SAMPLE_RATE)
+        if count < AUDIO_SAMPLE_RATE // 2:
+            continue
+        stride = 4
+        left = source[source_start:source_start + count:stride]
+        right = delivered[delivered_start:delivered_start + count:stride]
+        score = _pearson(left, right)
+        if score > best[0]:
+            best = (score, lag)
+    lag = best[1]
+    source_start = max(0, -lag)
+    delivered_start = max(0, lag)
+    count = min(len(source) - source_start, len(delivered) - delivered_start)
+    if count < AUDIO_SAMPLE_RATE:
+        raise MasteringContractError("decoded audio overlap is under one second after alignment")
+    # Bound work for full-length films while sampling the complete timeline.
+    stride = max(1, count // 200_000)
+    left = source[source_start:source_start + count:stride]
+    right = delivered[delivered_start:delivered_start + count:stride]
+    common = min(len(left), len(right))
+    return left[:common], right[:common], lag
 
 
 def _compare_audio(source: dict[str, Any], delivered: dict[str, Any]) -> dict[str, Any]:
@@ -411,37 +567,88 @@ def _compare_audio(source: dict[str, Any], delivered: dict[str, Any]) -> dict[st
         score = _pearson(left[:count], right[:count])
         if score > best[0]:
             best = (score, lag)
-    source_vector = source["fingerprint_vector"]
-    delivered_vector = delivered["fingerprint_vector"]
-    similarity = 1.0 - (
-        sum(abs(a - b) for a, b in zip(source_vector, delivered_vector))
-        / (255.0 * len(source_vector))
+    lag_samples = best[1] * AUDIO_BLOCK_SAMPLES
+    waveform_left, waveform_right, lag_samples = _aligned_waveforms(
+        source["samples"], delivered["samples"], lag_samples,
     )
+    waveform_correlation = _pearson(waveform_left, waveform_right)
+    waveform_error = _normalized_error(waveform_left, waveform_right)
+    envelope_count = min(len(a), len(b))
+    if best[1] < 0:
+        envelope_left, envelope_right = a[-best[1]:], b[:len(a) + best[1]]
+    elif best[1] > 0:
+        envelope_left, envelope_right = a[:len(a) - best[1]], b[best[1]:]
+    else:
+        envelope_left, envelope_right = a, b
+    envelope_count = min(len(envelope_left), len(envelope_right))
+    envelope_error = _normalized_error(
+        envelope_left[:envelope_count], envelope_right[:envelope_count],
+    )
+    spectral_similarity = sum(
+        math.sqrt(max(0.0, left) * max(0.0, right))
+        for left, right in zip(source["spectral_profile"], delivered["spectral_profile"])
+    )
+    cepstral_numerator = math.sqrt(statistics.fmean(
+        (left - right) ** 2
+        for left, right in zip(source["cepstrum"], delivered["cepstrum"])
+    ))
+    cepstral_scale = max(
+        1e-9,
+        math.sqrt(statistics.fmean(value * value for value in source["cepstrum"])),
+    )
+    cepstral_distance = cepstral_numerator / cepstral_scale
     duration_delta = abs(source["duration_seconds"] - delivered["duration_seconds"])
     return {
-        "correlation": round(best[0], 9),
-        "lag_blocks": best[1],
-        "fingerprint_similarity": round(similarity, 9),
+        "envelope_correlation": round(best[0], 9),
+        "envelope_normalized_error": round(envelope_error, 9),
+        "waveform_correlation": round(waveform_correlation, 9),
+        "waveform_normalized_error": round(waveform_error, 9),
+        "spectral_similarity": round(spectral_similarity, 9),
+        "cepstral_distance": round(cepstral_distance, 9),
+        "lag_samples": lag_samples,
         "duration_delta_seconds": round(duration_delta, 6),
     }
 
 
 def decoded_audio_lineage(base: Path, source_relative: str, roles: dict[str, str]) -> dict[str, Any]:
     source_path = _inside(base, source_relative, label="audio lineage source")
-    source = _decode_envelope(source_path)
+    source = _decode_audio_features(source_path)
     role_facts: dict[str, Any] = {}
+    packet_digests: set[str] = set()
     for role, relative in roles.items():
-        delivered = _decode_envelope(_inside(base, relative, label=f"audio lineage {role}"))
+        delivered_path = _inside(base, relative, label=f"audio lineage {role}")
+        delivered = _decode_audio_features(delivered_path)
+        packet_sha256 = _aac_packet_sha256(delivered_path)
+        packet_digests.add(packet_sha256)
         comparison = _compare_audio(source, delivered)
-        if comparison["correlation"] < AUDIO_MIN_CORRELATION:
+        if comparison["envelope_correlation"] < AUDIO_MIN_ENVELOPE_CORRELATION:
             raise MasteringContractError(
-                f"{role} decoded audio correlation {comparison['correlation']:.6f} is below "
-                f"{AUDIO_MIN_CORRELATION:.2f}; wrong audio may have been muxed"
+                f"{role} decoded audio envelope correlation is below "
+                f"{AUDIO_MIN_ENVELOPE_CORRELATION:.3f}; wrong audio may have been muxed"
             )
-        if comparison["fingerprint_similarity"] < AUDIO_MIN_FINGERPRINT_SIMILARITY:
+        if comparison["envelope_normalized_error"] > AUDIO_MAX_ENVELOPE_NORMALIZED_ERROR:
             raise MasteringContractError(
-                f"{role} perceptual fingerprint similarity is below "
-                f"{AUDIO_MIN_FINGERPRINT_SIMILARITY:.2f}"
+                f"{role} decoded audio envelope error exceeds "
+                f"{AUDIO_MAX_ENVELOPE_NORMALIZED_ERROR:.3f}"
+            )
+        if (
+            comparison["waveform_correlation"] < AUDIO_MIN_WAVEFORM_CORRELATION
+            or comparison["waveform_normalized_error"] > AUDIO_MAX_WAVEFORM_NORMALIZED_ERROR
+        ):
+            raise MasteringContractError(
+                f"{role} decoded waveform identity failed (correlation "
+                f"{comparison['waveform_correlation']:.6f}, normalized error "
+                f"{comparison['waveform_normalized_error']:.6f}); wrong audio may have been muxed"
+            )
+        if comparison["spectral_similarity"] < AUDIO_MIN_SPECTRAL_SIMILARITY:
+            raise MasteringContractError(
+                f"{role} decoded spectral identity {comparison['spectral_similarity']:.6f} is below "
+                f"{AUDIO_MIN_SPECTRAL_SIMILARITY:.3f}; timbre substitution detected"
+            )
+        if comparison["cepstral_distance"] > AUDIO_MAX_CEPSTRAL_DISTANCE:
+            raise MasteringContractError(
+                f"{role} decoded cepstral distance {comparison['cepstral_distance']:.6f} exceeds "
+                f"{AUDIO_MAX_CEPSTRAL_DISTANCE:.3f}; timbre substitution detected"
             )
         if comparison["duration_delta_seconds"] > AUDIO_MAX_DURATION_DELTA_SECONDS:
             raise MasteringContractError(
@@ -451,25 +658,42 @@ def decoded_audio_lineage(base: Path, source_relative: str, roles: dict[str, str
         role_facts[role] = {
             "path": relative,
             "decoded_pcm_sha256": delivered["pcm_sha256"],
-            "perceptual_fingerprint": delivered["perceptual_fingerprint"],
+            "container_sha256": delivered["container_sha256"],
+            "encoded_audio_packet_sha256": packet_sha256,
+            "feature_fingerprint_sha256": delivered["feature_fingerprint_sha256"],
             "sample_count": delivered["sample_count"],
             "duration_seconds": delivered["duration_seconds"],
             **comparison,
         }
+    if len(packet_digests) != 1:
+        raise MasteringContractError(
+            "hosted/square/mobile AAC packet bytes differ; derivatives did not preserve the exact mix"
+        )
     return {
-        "algorithm": "decoded-envelope-zcr-v2",
+        "algorithm": "aligned-pcm-spectral-cepstral-v3",
         "sample_rate": AUDIO_SAMPLE_RATE,
         "block_samples": AUDIO_BLOCK_SAMPLES,
+        "spectral": {
+            "window_samples": AUDIO_SPECTRAL_WINDOW,
+            "bins": AUDIO_SPECTRAL_BINS,
+            "windows": AUDIO_SPECTRAL_WINDOWS,
+        },
+        "aac_packet_sha256": next(iter(packet_digests)),
         "tolerances": {
-            "minimum_correlation": AUDIO_MIN_CORRELATION,
-            "minimum_fingerprint_similarity": AUDIO_MIN_FINGERPRINT_SIMILARITY,
+            "minimum_envelope_correlation": AUDIO_MIN_ENVELOPE_CORRELATION,
+            "maximum_envelope_normalized_error": AUDIO_MAX_ENVELOPE_NORMALIZED_ERROR,
+            "minimum_waveform_correlation": AUDIO_MIN_WAVEFORM_CORRELATION,
+            "maximum_waveform_normalized_error": AUDIO_MAX_WAVEFORM_NORMALIZED_ERROR,
+            "minimum_spectral_similarity": AUDIO_MIN_SPECTRAL_SIMILARITY,
+            "maximum_cepstral_distance": AUDIO_MAX_CEPSTRAL_DISTANCE,
             "maximum_duration_delta_seconds": AUDIO_MAX_DURATION_DELTA_SECONDS,
             "maximum_lag_blocks": AUDIO_MAX_LAG_BLOCKS,
         },
         "source": {
             "path": source_relative,
+            "container_sha256": source["container_sha256"],
             "decoded_pcm_sha256": source["pcm_sha256"],
-            "perceptual_fingerprint": source["perceptual_fingerprint"],
+            "feature_fingerprint_sha256": source["feature_fingerprint_sha256"],
             "sample_count": source["sample_count"],
             "duration_seconds": source["duration_seconds"],
         },
@@ -480,20 +704,31 @@ def decoded_audio_lineage(base: Path, source_relative: str, roles: dict[str, str
 def _lineage_problems(value: Any) -> list[str]:
     if not isinstance(value, dict):
         return ["mastering audio lineage must be an object"]
-    problems = []
+    problems: list[str] = []
     if set(value) != {
-        "algorithm", "sample_rate", "block_samples", "tolerances", "source", "roles",
+        "algorithm", "sample_rate", "block_samples", "spectral", "aac_packet_sha256",
+        "tolerances", "source", "roles",
     }:
         problems.append("mastering audio lineage fields are not canonical")
-    if value.get("algorithm") != "decoded-envelope-zcr-v2":
+    if value.get("algorithm") != "aligned-pcm-spectral-cepstral-v3":
         problems.append("mastering audio lineage algorithm is not canonical")
     if value.get("sample_rate") != AUDIO_SAMPLE_RATE:
         problems.append("mastering audio lineage sample rate is not canonical")
     if value.get("block_samples") != AUDIO_BLOCK_SAMPLES:
         problems.append("mastering audio lineage block size is not canonical")
+    if value.get("spectral") != {
+        "window_samples": AUDIO_SPECTRAL_WINDOW,
+        "bins": AUDIO_SPECTRAL_BINS,
+        "windows": AUDIO_SPECTRAL_WINDOWS,
+    }:
+        problems.append("mastering audio lineage spectral configuration drifted")
     if value.get("tolerances") != {
-        "minimum_correlation": AUDIO_MIN_CORRELATION,
-        "minimum_fingerprint_similarity": AUDIO_MIN_FINGERPRINT_SIMILARITY,
+        "minimum_envelope_correlation": AUDIO_MIN_ENVELOPE_CORRELATION,
+        "maximum_envelope_normalized_error": AUDIO_MAX_ENVELOPE_NORMALIZED_ERROR,
+        "minimum_waveform_correlation": AUDIO_MIN_WAVEFORM_CORRELATION,
+        "maximum_waveform_normalized_error": AUDIO_MAX_WAVEFORM_NORMALIZED_ERROR,
+        "minimum_spectral_similarity": AUDIO_MIN_SPECTRAL_SIMILARITY,
+        "maximum_cepstral_distance": AUDIO_MAX_CEPSTRAL_DISTANCE,
         "maximum_duration_delta_seconds": AUDIO_MAX_DURATION_DELTA_SECONDS,
         "maximum_lag_blocks": AUDIO_MAX_LAG_BLOCKS,
     }:
@@ -501,7 +736,7 @@ def _lineage_problems(value: Any) -> list[str]:
     def media_facts_problems(facts: Any, *, label: str, path: str) -> list[str]:
         issues = []
         core = {
-            "path", "decoded_pcm_sha256", "perceptual_fingerprint",
+            "path", "container_sha256", "decoded_pcm_sha256", "feature_fingerprint_sha256",
             "sample_count", "duration_seconds",
         }
         if not isinstance(facts, dict):
@@ -511,16 +746,17 @@ def _lineage_problems(value: Any) -> list[str]:
             return issues
         if facts.get("path") != path:
             issues.append(f"{label} path is not canonical")
-        digest = facts.get("decoded_pcm_sha256")
-        if not isinstance(digest, str) or len(digest) != 64 or any(
-            char not in "0123456789abcdef" for char in digest
-        ):
-            issues.append(f"{label} decoded PCM digest is invalid")
-        fingerprint = facts.get("perceptual_fingerprint")
-        if not isinstance(fingerprint, str) or len(fingerprint) != 128 or any(
+        for digest_name in ("container_sha256", "decoded_pcm_sha256"):
+            digest = facts.get(digest_name)
+            if not isinstance(digest, str) or len(digest) != 64 or any(
+                char not in "0123456789abcdef" for char in digest
+            ):
+                issues.append(f"{label} {digest_name} is invalid")
+        fingerprint = facts.get("feature_fingerprint_sha256")
+        if not isinstance(fingerprint, str) or len(fingerprint) != 64 or any(
             char not in "0123456789abcdef" for char in fingerprint
         ):
-            issues.append(f"{label} perceptual fingerprint is invalid")
+            issues.append(f"{label} feature fingerprint digest is invalid")
         samples = facts.get("sample_count")
         duration = facts.get("duration_seconds")
         if isinstance(samples, bool) or not isinstance(samples, int) or samples <= 0:
@@ -538,7 +774,7 @@ def _lineage_problems(value: Any) -> list[str]:
 
     source = value.get("source")
     if isinstance(source, dict) and set(source) != {
-        "path", "decoded_pcm_sha256", "perceptual_fingerprint",
+        "path", "container_sha256", "decoded_pcm_sha256", "feature_fingerprint_sha256",
         "sample_count", "duration_seconds",
     }:
         problems.append("mastering audio lineage source fields are not canonical")
@@ -549,9 +785,11 @@ def _lineage_problems(value: Any) -> list[str]:
     else:
         for role, facts in roles.items():
             expected_fields = {
-                "path", "decoded_pcm_sha256", "perceptual_fingerprint", "sample_count",
-                "duration_seconds", "correlation", "lag_blocks",
-                "fingerprint_similarity", "duration_delta_seconds",
+                "path", "container_sha256", "decoded_pcm_sha256", "encoded_audio_packet_sha256",
+                "feature_fingerprint_sha256", "sample_count",
+                "duration_seconds", "envelope_correlation", "envelope_normalized_error",
+                "waveform_correlation", "waveform_normalized_error", "spectral_similarity",
+                "cepstral_distance", "lag_samples", "duration_delta_seconds",
             }
             if not isinstance(facts, dict) or set(facts) != expected_fields:
                 problems.append(f"mastering audio lineage {role} fields are not canonical")
@@ -559,28 +797,70 @@ def _lineage_problems(value: Any) -> list[str]:
             problems.extend(media_facts_problems(
                 facts, label=f"mastering audio lineage {role}", path=EXPECTED_ARTIFACTS[role],
             ))
-            correlation = facts.get("correlation")
-            similarity = facts.get("fingerprint_similarity")
+            packet_digest = facts.get("encoded_audio_packet_sha256")
+            if (
+                not isinstance(packet_digest, str) or len(packet_digest) != 64
+                or any(char not in "0123456789abcdef" for char in packet_digest)
+                or packet_digest != value.get("aac_packet_sha256")
+            ):
+                problems.append(f"mastering audio lineage {role} AAC packet digest fails")
+            envelope_correlation = facts.get("envelope_correlation")
+            envelope_error = facts.get("envelope_normalized_error")
+            waveform_correlation = facts.get("waveform_correlation")
+            waveform_error = facts.get("waveform_normalized_error")
+            spectral_similarity = facts.get("spectral_similarity")
+            cepstral_distance = facts.get("cepstral_distance")
             delta = facts.get("duration_delta_seconds")
-            lag = facts.get("lag_blocks")
+            lag = facts.get("lag_samples")
             if (
-                isinstance(correlation, bool) or not isinstance(correlation, (int, float))
-                or not math.isfinite(float(correlation))
-                or not AUDIO_MIN_CORRELATION <= float(correlation) <= 1.0
+                isinstance(envelope_correlation, bool)
+                or not isinstance(envelope_correlation, (int, float))
+                or not math.isfinite(float(envelope_correlation))
+                or not AUDIO_MIN_ENVELOPE_CORRELATION <= float(envelope_correlation) <= 1.0
             ):
-                problems.append(f"mastering audio lineage {role} correlation fails")
+                problems.append(f"mastering audio lineage {role} envelope correlation fails")
             if (
-                isinstance(similarity, bool) or not isinstance(similarity, (int, float))
-                or not math.isfinite(float(similarity))
-                or not AUDIO_MIN_FINGERPRINT_SIMILARITY <= float(similarity) <= 1.0
+                isinstance(envelope_error, bool) or not isinstance(envelope_error, (int, float))
+                or not math.isfinite(float(envelope_error))
+                or not 0 <= float(envelope_error) <= AUDIO_MAX_ENVELOPE_NORMALIZED_ERROR
             ):
-                problems.append(f"mastering audio lineage {role} fingerprint fails")
+                problems.append(f"mastering audio lineage {role} envelope error fails")
+            if (
+                isinstance(waveform_correlation, bool)
+                or not isinstance(waveform_correlation, (int, float))
+                or not math.isfinite(float(waveform_correlation))
+                or not AUDIO_MIN_WAVEFORM_CORRELATION <= float(waveform_correlation) <= 1.0
+            ):
+                problems.append(f"mastering audio lineage {role} waveform correlation fails")
+            if (
+                isinstance(waveform_error, bool) or not isinstance(waveform_error, (int, float))
+                or not math.isfinite(float(waveform_error))
+                or not 0 <= float(waveform_error) <= AUDIO_MAX_WAVEFORM_NORMALIZED_ERROR
+            ):
+                problems.append(f"mastering audio lineage {role} waveform error fails")
+            if (
+                isinstance(spectral_similarity, bool)
+                or not isinstance(spectral_similarity, (int, float))
+                or not math.isfinite(float(spectral_similarity))
+                or not AUDIO_MIN_SPECTRAL_SIMILARITY <= float(spectral_similarity) <= 1.0 + 1e-9
+            ):
+                problems.append(f"mastering audio lineage {role} spectral similarity fails")
+            if (
+                isinstance(cepstral_distance, bool)
+                or not isinstance(cepstral_distance, (int, float))
+                or not math.isfinite(float(cepstral_distance))
+                or not 0 <= float(cepstral_distance) <= AUDIO_MAX_CEPSTRAL_DISTANCE
+            ):
+                problems.append(f"mastering audio lineage {role} cepstral distance fails")
             if (
                 isinstance(delta, bool) or not isinstance(delta, (int, float))
                 or not math.isfinite(float(delta)) or not 0 <= float(delta) <= AUDIO_MAX_DURATION_DELTA_SECONDS
             ):
                 problems.append(f"mastering audio lineage {role} duration fails")
-            if isinstance(lag, bool) or not isinstance(lag, int) or abs(lag) > AUDIO_MAX_LAG_BLOCKS:
+            if (
+                isinstance(lag, bool) or not isinstance(lag, int)
+                or abs(lag) > AUDIO_MAX_LAG_BLOCKS * AUDIO_BLOCK_SAMPLES + 32
+            ):
                 problems.append(f"mastering audio lineage {role} lag fails")
             if (
                 isinstance(source, dict) and isinstance(source.get("duration_seconds"), (int, float))
@@ -592,6 +872,12 @@ def _lineage_problems(value: Any) -> list[str]:
                 ) > 1e-6
             ):
                 problems.append(f"mastering audio lineage {role} duration delta is inconsistent")
+    common_packet = value.get("aac_packet_sha256")
+    if (
+        not isinstance(common_packet, str) or len(common_packet) != 64
+        or any(char not in "0123456789abcdef" for char in common_packet)
+    ):
+        problems.append("mastering audio lineage common AAC packet digest is invalid")
     return problems
 
 
@@ -653,6 +939,7 @@ def validate_mastering(
     *,
     root: str | Path = ROOT,
     render_probe: Callable[[str | Path], dict[str, Any]] = probe_render,
+    audio_probe: Callable[[Path, str, dict[str, str]], dict[str, Any]] = decoded_audio_lineage,
 ) -> tuple[dict[str, Any] | None, list[str]]:
     base = Path(root).resolve()
     try:
@@ -701,6 +988,17 @@ def validate_mastering(
     if receipt.get("artifacts") != artifacts:
         problems.append("mastering deliverable bytes changed after finalize")
     problems.extend(_lineage_problems(receipt.get("audio_lineage")))
+    try:
+        current_lineage = audio_probe(
+            base, AUDIO_REL, {role: EXPECTED_ARTIFACTS[role] for role in AUDIO_ROLES},
+        )
+    except MasteringContractError as exc:
+        problems.append(f"mastering decoded audio lineage cannot be revalidated: {exc}")
+    else:
+        current_lineage_problems = _lineage_problems(current_lineage)
+        problems.extend(current_lineage_problems)
+        if not current_lineage_problems and receipt.get("audio_lineage") != current_lineage:
+            problems.append("mastering decoded audio/AAC packet lineage changed after finalize")
     if receipt.get("external_tools") != intent.get("external_tools"):
         problems.append("mastering receipt tool versions differ from prepare intent")
     if not isinstance(receipt.get("finalized_at"), str) or not receipt["finalized_at"]:
@@ -712,8 +1010,11 @@ def require_mastering(
     *,
     root: str | Path = ROOT,
     render_probe: Callable[[str | Path], dict[str, Any]] = probe_render,
+    audio_probe: Callable[[Path, str, dict[str, str]], dict[str, Any]] = decoded_audio_lineage,
 ) -> dict[str, Any]:
-    receipt, problems = validate_mastering(root=root, render_probe=render_probe)
+    receipt, problems = validate_mastering(
+        root=root, render_probe=render_probe, audio_probe=audio_probe,
+    )
     if receipt is None or problems:
         raise MasteringContractError("; ".join(problems or ["mastering receipt is unavailable"]))
     return receipt
@@ -723,9 +1024,10 @@ def mastering_binding(
     *,
     root: str | Path = ROOT,
     render_probe: Callable[[str | Path], dict[str, Any]] = probe_render,
+    audio_probe: Callable[[Path, str, dict[str, str]], dict[str, Any]] = decoded_audio_lineage,
 ) -> dict[str, Any]:
     base = Path(root).resolve()
-    receipt = require_mastering(root=base, render_probe=render_probe)
+    receipt = require_mastering(root=base, render_probe=render_probe, audio_probe=audio_probe)
     target = _inside(base, RECEIPT_REL, label="mastering receipt")
     return {
         "path": RECEIPT_REL,

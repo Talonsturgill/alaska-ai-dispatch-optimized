@@ -33,7 +33,7 @@ nothing to ship.
 
     python3 scripts/credits_check.py
 """
-import json
+import importlib
 import math
 import os
 import subprocess
@@ -79,18 +79,31 @@ def registered_episode():
         return None
 
 
-# The owner's floor, imported from the one place that sets it so the gate and the builder can
-# never disagree about the number.
-try:
-    import importlib.util as _ilu
-    _spec = _ilu.spec_from_file_location(
-        "_bs", os.path.join(os.path.dirname(os.path.abspath(__file__)), "build_scenes.py"))
-    _bs = _ilu.module_from_spec(_spec); _spec.loader.exec_module(_bs)
-    CREDITS_MIN_S = float(_bs.CREDITS_MIN_S)
-    CREDITS_TAIL_S = float(getattr(_bs, 'CREDITS_TAIL_S', 2.3))
-except Exception:
-    CREDITS_MIN_S = 10.0
-    CREDITS_TAIL_S = 2.3
+def _load_credits_contract():
+    """Load the one builder/gate contract, or fail closed with a named reason."""
+    try:
+        contract = importlib.import_module("credits_contract")
+    except (ImportError, OSError, UnicodeError) as exc:
+        raise RuntimeError(f"credits label contract cannot be imported: {exc}") from None
+    required = (
+        "CONTRACT_VERSION", "CREDITS_MIN_S", "CREDITS_TAIL_S",
+        "derive_source_labels",
+    )
+    missing = [name for name in required if not hasattr(contract, name)]
+    if missing:
+        raise RuntimeError(
+            "credits label contract is incomplete: missing " + ", ".join(missing)
+        )
+    if not callable(contract.derive_source_labels):
+        raise RuntimeError("credits label contract derive_source_labels is not callable")
+    try:
+        minimum = float(contract.CREDITS_MIN_S)
+        tail = float(contract.CREDITS_TAIL_S)
+    except (TypeError, ValueError, OverflowError):
+        raise RuntimeError("credits label contract duration constants are invalid") from None
+    if not math.isfinite(minimum) or not math.isfinite(tail) or minimum < 10 or tail <= 0:
+        raise RuntimeError("credits label contract duration constants are unsafe")
+    return contract, minimum, tail
 
 
 def _probe_duration(path):
@@ -138,6 +151,7 @@ def _luma(path, t):
 
 def main() -> int:
     problems = []
+    contract, credits_min_s, credits_tail_s = _load_credits_contract()
 
     props_p = os.path.join(OUT, "episode_props.json")
     if not os.path.exists(props_p):
@@ -200,14 +214,20 @@ def main() -> int:
         sources = load_path(src_p, label="sources")
         if not isinstance(sources, dict):
             raise StrictJSONError("sources must be a JSON object")
-        raw = json.dumps(sources, ensure_ascii=False, sort_keys=True)
-        # every id shown on screen must appear somewhere in sources.json. This catches a label
-        # somebody typed by hand, which is the only way a wrong id can get here.
-        for lab in labels:
-            for ident in re.findall(r"\b\d{6,}\b", lab):
-                if ident not in raw:
-                    problems.append(f"source label {lab!r} names {ident}, which appears "
-                                    f"nowhere in sources.json.")
+        try:
+            expected_labels = contract.derive_source_labels(sources)
+        except Exception as exc:
+            # The contract is deliberately a hard dependency.  A broken import,
+            # changed callable, malformed source entry, or derivation error cannot
+            # turn into an unverified but apparently clean delivered credit.
+            raise RuntimeError(f"credits label derivation failed: {exc}") from None
+        if labels != expected_labels:
+            problems.append(
+                "the on-screen source labels are not the exact ordered labels derived from "
+                "sources.json.\n"
+                f"          record: {expected_labels!r}\n"
+                f"          screen: {labels!r}"
+            )
 
     site_raw = cred.get("site")
     if not isinstance(site_raw, str):
@@ -277,12 +297,12 @@ def main() -> int:
     # must look like the card. If the second one still shows the story, the card is short.
     dwell_problems = []
     secs = float(cred.get("seconds") or 0)
-    if secs + 1e-6 < CREDITS_MIN_S + CREDITS_TAIL_S:
+    if secs + 1e-6 < credits_min_s + credits_tail_s:
         dwell_problems.append(
-            f"the sign-off is configured for {secs:.1f}s, which leaves under {CREDITS_MIN_S:.0f}s of "
-            f"READABLE body once EndCredits' {CREDITS_TAIL_S:.1f}s of fades and mark sign-off are "
+            f"the sign-off is configured for {secs:.1f}s, which leaves under {credits_min_s:.0f}s of "
+            f"READABLE body once EndCredits' {credits_tail_s:.1f}s of fades and mark sign-off are "
             f"taken off. "
-            f"Raise CREDITS_MIN_S in scripts/build_scenes.py only to make the card LONGER. "
+            f"Raise CREDITS_MIN_S in scripts/credits_contract.py only to make the card LONGER. "
             f"If the film is over its runtime ceiling, take the seconds out of the script.")
 
     video = os.path.join(OUT, "dispatch_master_hosted.mp4")
@@ -290,9 +310,9 @@ def main() -> int:
         dwell_problems.append("the canonical hosted video is missing, so delivered credit dwell cannot be verified.")
     else:
         dur = _probe_duration(video)
-        body_end = dur - CREDITS_TAIL_S
+        body_end = dur - credits_tail_s
         for label, t in (("end of the readable window", body_end - 0.4),
-                         ("start of the readable window", body_end - CREDITS_MIN_S + 0.8)):
+                         ("start of the readable window", body_end - credits_min_s + 0.8)):
             yavg, ymax = _luma(video, t)
             if yavg is None:
                 dwell_problems.append(f"could not sample the frame at {t:.1f}s ({label}).")
@@ -301,18 +321,18 @@ def main() -> int:
                     f"at {t:.1f}s ({label}) the frame does not look like the sign-off card "
                     f"(luma avg {yavg:.0f}, max {ymax:.0f}; the card measures avg under 30 "
                     f"with max above 200). The card is on screen for less than "
-                    f"{CREDITS_MIN_S:.0f}s in the delivered cut.")
+                    f"{credits_min_s:.0f}s in the delivered cut.")
 
     if dwell_problems:
         for d in dwell_problems:
             print(f"FAIL credits_check: {d}")
-        print(f"\ncredits_check: the sign-off does not hold for {CREDITS_MIN_S:.0f}s. Sources "
+        print(f"\ncredits_check: the sign-off does not hold for {credits_min_s:.0f}s. Sources "
               f"and a CC BY 4.0 attribution nobody can finish reading are not delivered.")
         return 1
 
     print(f"credits_check: clean. {len(labels)} source line(s), licence string matches "
           f"music_credit.json verbatim, {cred.get('seconds')}s sign-off rendered by the engine "
-          f"and verified on screen for the full {CREDITS_MIN_S:.0f}s floor.")
+          f"and verified on screen for the full {credits_min_s:.0f}s floor.")
     for l in labels:
         print(f"    {l}")
     print(f"    {site_line}")

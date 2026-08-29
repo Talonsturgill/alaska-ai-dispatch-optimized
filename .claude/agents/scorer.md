@@ -13,7 +13,7 @@ schema or `config/scoring_rubric.yaml` axes.
 
 Read `out/evidence/evidence_manifest.json`, `out/dispatch/preflight_receipt.json`,
 and `config/dispatch_rubric.yaml`. Refuse to score unless evidence schema v3 and
-preflight schema v2 are current and every artifact you inspect appears verbatim
+preflight schema v3 are current and every artifact you inspect appears verbatim
 in `expected_artifacts` with its declared bytes and SHA-256. Do not open
 `out/dispatch/review/`, independent frames, caller-selected montages, raw media,
 or a retired SFX ledger.
@@ -24,6 +24,14 @@ remove, rename, reorder, or reweight an axis. Do not round a score upward.
 Every axis must cite at least one manifest-declared artifact and a concrete
 observation from that artifact. If the closed pack cannot support an axis,
 refuse the terminal score instead of guessing.
+
+Evidence must also match the axis. Visual craft/color/composition require visual
+artifacts; motion requires a filmstrip or motion record; captions require the
+caption cue record plus visual evidence; sound requires the audio card/report;
+VO–illustration sync requires audio, visual, and timeline evidence together;
+accuracy/sourcing requires `story_claims_sources.json`; writing/story clarity
+requires that same hash-bound story record. A contact sheet cannot certify sound,
+and an audio report cannot certify illustration.
 
 ## Sole video-card schema
 

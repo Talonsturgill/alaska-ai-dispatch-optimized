@@ -402,6 +402,30 @@ def main():
     record_visual(_credits_path)
     print(f"  credits card sampled at {_t:.1f}s")
 
+    # Accuracy/sourcing cannot be graded from contact stills. Keep the strict
+    # authored ledgers inside the closed evidence pack so those axes cite the
+    # claims and sources they actually inspected rather than guessing from film.
+    claims_path = os.path.join(OUT, "claims.json")
+    sources_path = os.path.join(OUT, "sources.json")
+    vo_script_path = os.path.join(OUT, "vo_script.json")
+    claims = load_path(claims_path, label="claims evidence input")
+    sources = load_path(sources_path, label="sources evidence input")
+    vo_script = load_path(vo_script_path, label="VO script evidence input")
+    if not all(isinstance(value, dict) for value in (claims, sources, vo_script)):
+        sys.exit("build_evidence: claims/sources/VO evidence inputs must be JSON objects")
+    claims_sources_path = os.path.join(EV, "story_claims_sources.json")
+    with open(claims_sources_path, "w", encoding="utf-8", newline="\n") as handle:
+        json.dump(
+            {
+                "schema_version": 1, "claims": claims, "sources": sources,
+                "vo_script": vo_script,
+            },
+            handle, ensure_ascii=False, indent=2, sort_keys=True, allow_nan=False,
+        )
+        handle.write("\n")
+    record_visual(claims_sources_path)
+    print("  story_claims_sources.json rebuilt from strict authored ledgers")
+
     # THE AUDIO REPORT IS PART OF THE PACK, SO THIS BUILDS IT (2026-08-12).
     # It used to be whatever audio_report.py last happened to write, whenever that was. On
     # this run the pack shipped a report describing a 153.5s cut to a panel grading a 119.57s

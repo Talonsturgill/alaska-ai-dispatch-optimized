@@ -33,7 +33,8 @@ from strict_json import StrictJSONError, load_path
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 RECEIPT_REL = "out/dispatch/preflight_receipt.json"
-RECEIPT_SCHEMA_VERSION = 2
+RECEIPT_SCHEMA_VERSION = 3
+PREFLIGHT_SCOPE_ID = "closed_preflight_state_v2"
 
 # Conservative closed input set for every terminal required check.  These are
 # authored/mix records that older receipts accidentally omitted even though the
@@ -161,7 +162,41 @@ def _sha256_text(value: str) -> str:
     return hashlib.sha256(value.encode("utf-8", errors="replace")).hexdigest()
 
 
-def _external_tool_versions() -> dict:
+def _external_file_facts(path: Path) -> dict:
+    try:
+        resolved = path.resolve(strict=True)
+    except (OSError, ValueError) as exc:
+        raise PreflightContractError(f"external runtime file is unavailable: {path}: {exc}") from None
+    if not resolved.is_file():
+        raise PreflightContractError(f"external runtime path is not a file: {resolved}")
+    before = resolved.stat()
+    digest = _sha256_file(resolved)
+    after = resolved.stat()
+    if (before.st_size, before.st_mtime_ns) != (after.st_size, after.st_mtime_ns):
+        raise PreflightContractError(f"external runtime file changed while hashing: {resolved}")
+    return {"path": str(resolved), "bytes": after.st_size, "sha256": digest}
+
+
+def _package_tree_facts(package_root: Path, paths: list[Path]) -> dict:
+    entries = []
+    for path in sorted({candidate.resolve() for candidate in paths}, key=lambda item: item.as_posix()):
+        try:
+            relative = path.relative_to(package_root.resolve()).as_posix()
+        except ValueError:
+            raise PreflightContractError(f"runtime package file escaped package root: {path}") from None
+        facts = _external_file_facts(path)
+        entries.append({"path": relative, "bytes": facts["bytes"], "sha256": facts["sha256"]})
+    if not entries:
+        raise PreflightContractError(f"runtime package has no bound files: {package_root}")
+    payload = json.dumps(entries, sort_keys=True, separators=(",", ":"), allow_nan=False)
+    return {
+        "root": str(package_root.resolve()),
+        "files": len(entries),
+        "sha256": hashlib.sha256(payload.encode("utf-8")).hexdigest(),
+    }
+
+
+def _external_tool_versions(root=REPO) -> dict:
     """Bind executable identity/version for tools used by required checks."""
     facts = {}
     commands = {
@@ -194,13 +229,66 @@ def _external_tool_versions() -> dict:
         lines = (result.stdout or result.stderr).strip().splitlines()
         if not lines:
             raise PreflightContractError(f"{name} returned no version")
-        facts[name] = {
-            "path": str(Path(executable).resolve()),
-            "version": lines[0].strip(),
-        }
+        facts[name] = {**_external_file_facts(Path(executable)), "version": lines[0].strip()}
     facts["python"] = {
-        "path": str(Path(sys.executable).resolve()),
-        "version": sys.version.split()[0],
+        **_external_file_facts(Path(sys.executable)), "version": sys.version.split()[0],
+    }
+
+    base = Path(root).resolve()
+    engine = base / "video-engine"
+    node = facts["node"]["path"]
+    resolver = (
+        "const p=process.argv[1];process.stdout.write(JSON.stringify({"
+        "typescript:require.resolve('typescript/lib/tsc.js',{paths:[p]}),"
+        "remotion:require.resolve('@remotion/cli',{paths:[p]})}));"
+    )
+    try:
+        resolved = subprocess.run(
+            [node, "-e", resolver, str(engine)], capture_output=True, text=True, timeout=30,
+        )
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        raise PreflightContractError(f"TypeScript/Remotion resolution failed: {exc}") from None
+    if resolved.returncode != 0:
+        raise PreflightContractError(
+            "TypeScript/Remotion resolution failed: "
+            + (resolved.stderr.strip().splitlines()[-1] if resolved.stderr.strip() else "unknown error")
+        )
+    try:
+        runtime_paths = json.loads(resolved.stdout)
+    except (json.JSONDecodeError, TypeError, UnicodeError) as exc:
+        raise PreflightContractError(f"TypeScript/Remotion resolution returned invalid JSON: {exc}") from None
+    if not isinstance(runtime_paths, dict) or set(runtime_paths) != {"typescript", "remotion"}:
+        raise PreflightContractError("TypeScript/Remotion resolution returned incomplete paths")
+
+    typescript_entry = Path(runtime_paths["typescript"])
+    typescript_root = typescript_entry.parent.parent
+    typescript_package = typescript_root / "package.json"
+    remotion_entry = Path(runtime_paths["remotion"])
+    remotion_root = remotion_entry.parent.parent
+    remotion_package = remotion_root / "package.json"
+    try:
+        typescript_meta = load_path(typescript_package, label="installed TypeScript package")
+        remotion_meta = load_path(remotion_package, label="installed Remotion CLI package")
+    except (StrictJSONError, OSError) as exc:
+        raise PreflightContractError(str(exc)) from None
+    if not isinstance(typescript_meta, dict) or not isinstance(typescript_meta.get("version"), str):
+        raise PreflightContractError("installed TypeScript package metadata is invalid")
+    if not isinstance(remotion_meta, dict) or not isinstance(remotion_meta.get("version"), str):
+        raise PreflightContractError("installed Remotion CLI package metadata is invalid")
+    typescript_files = [
+        typescript_package, typescript_root / "bin" / "tsc", typescript_entry,
+        typescript_entry.parent / "_tsc.js",
+    ]
+    remotion_files = [remotion_package, *remotion_root.rglob("*.js")]
+    facts["typescript_compiler"] = {
+        **_external_file_facts(typescript_entry),
+        "version": typescript_meta["version"],
+        "package_tree": _package_tree_facts(typescript_root, typescript_files),
+    }
+    facts["remotion_cli"] = {
+        **_external_file_facts(remotion_entry),
+        "version": remotion_meta["version"],
+        "package_tree": _package_tree_facts(remotion_root, remotion_files),
     }
     return facts
 
@@ -284,7 +372,7 @@ def _current_contract_state(root=REPO):
         raise PreflightContractError(str(exc)) from None
     expected_quality_checks = [
         {"id": "delivery_manifest_v4", "exit_code": 0, "result": "pass"},
-        {"id": "mastering_audio_lineage_v2", "exit_code": 0, "result": "pass"},
+        {"id": "mastering_audio_lineage_v3", "exit_code": 0, "result": "pass"},
         {"id": "evidence_manifest_v3", "exit_code": 0, "result": "pass"},
         {"id": "sole_sfx_ledger_v3", "exit_code": 0, "result": "pass"},
         {"id": "delivered_audio_report_v1", "exit_code": 0, "result": "pass"},
@@ -326,6 +414,15 @@ def _current_contract_state(root=REPO):
         "config/deliverables.json",
         "config/dispatch_rubric.yaml",
         ".claude/skills/alaska-dispatch/quality_gate.py",
+        ".claude/skills/alaska-dispatch/SKILL.md",
+        "prompts/dispatch_routine.md",
+        "config/panel_protocol.md",
+        "CLAUDE.md",
+        "CANARY_SAFETY.md",
+        "video-engine/package.json",
+        "video-engine/package-lock.json",
+        "video-engine/tsconfig.json",
+        "video-engine/remotion.config.ts",
         "out/dispatch/quality_report.json",
     }
     input_paths.update(REQUIRED_AUTHORED_INPUTS)
@@ -350,6 +447,12 @@ def _current_contract_state(root=REPO):
         raise PreflightContractError("video-engine/src is missing or unsafe")
     for candidate in engine_root.rglob("*"):
         if candidate.is_file() and candidate.suffix in {".ts", ".tsx"}:
+            input_paths.add(candidate.resolve().relative_to(base).as_posix())
+    agent_root = base / ".claude" / "agents"
+    if not agent_root.is_dir() or agent_root.is_symlink():
+        raise PreflightContractError(".claude/agents is missing or unsafe")
+    for candidate in agent_root.glob("*.md"):
+        if candidate.is_file() and not candidate.is_symlink():
             input_paths.add(candidate.resolve().relative_to(base).as_posix())
     config_root = base / "config"
     if not config_root.is_dir() or config_root.is_symlink():
@@ -386,14 +489,46 @@ def _current_contract_state(root=REPO):
         if candidate.is_file():
             tool_paths.add(candidate.resolve().relative_to(base).as_posix())
     tools = {relative: _safe_file_facts(base, relative) for relative in sorted(tool_paths)}
-    external_tools = _external_tool_versions()
+    external_tools = _external_tool_versions(base)
+    consumers = {
+        "routine_controller": [
+            "CANARY_SAFETY.md", "CLAUDE.md", "prompts/dispatch_routine.md",
+            "config/panel_protocol.md",
+        ],
+        "typescript_engine": [
+            "video-engine/package.json", "video-engine/package-lock.json",
+            "video-engine/tsconfig.json", "video-engine/remotion.config.ts",
+            *sorted(path for path in inputs if path.startswith("video-engine/src/")),
+        ],
+        "terminal_judging": [
+            ".claude/agents/scorer.md", ".claude/agents/flow-critic.md",
+            "config/dispatch_rubric.yaml", "config/panel_protocol.md",
+            "out/evidence/evidence_manifest.json",
+        ],
+        "repair_agent": [
+            ".claude/agents/dispatch-fixer.md", "config/deliverables.json",
+            "out/dispatch/deliverables_manifest.json",
+            "out/evidence/evidence_manifest.json",
+        ],
+        "credits": [
+            "out/dispatch/episode_props.json", "out/dispatch/music_credit.json",
+            "out/dispatch/sources.json",
+        ],
+    }
+    for consumer, paths in consumers.items():
+        missing = [path for path in paths if path not in inputs and path not in tools]
+        if missing:
+            raise PreflightContractError(
+                f"preflight consumer {consumer} references unbound paths: {missing}"
+            )
     check_lineage = {
-        "scope_id": "closed_preflight_state_v1",
+        "scope_id": PREFLIGHT_SCOPE_ID,
         "inputs": sorted(inputs),
         "tools": sorted(tools),
         "external_tools": sorted(external_tools),
+        "consumers": consumers,
         "checks": {
-            spec["id"]: {"scope_id": "closed_preflight_state_v1"}
+            spec["id"]: {"scope_id": PREFLIGHT_SCOPE_ID}
             for spec in required_check_specs()
         },
     }
