@@ -1,8 +1,9 @@
-# Canary limitations after B1 correctness hardening
+# Canary limitations after Phase C acceptance
 
-This repository remains an isolated correctness/replay canary. It is not a
-daily, fresh-story, production-ready Dispatch engine. `DispatchDaily` still
-replays a historical authored film; a genuinely parametric template is Phase C.
+This repository remains an isolated, non-production correctness/replay canary.
+Phase C's parametric `DispatchDaily`, compact daily controller, and offline
+replay evaluator are implemented and accepted here. No paid live model run,
+full 120-second render, or publication has occurred.
 
 The following known sixth-pass findings are deliberately deferred so this
 checkpoint can support the token-optimization experiment without another broad

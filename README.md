@@ -9,7 +9,13 @@ repository. There is no runtime opt-in or environment override. Normal runs may
 write local artifacts and push source or test media only to
 `Talonsturgill/alaska-ai-dispatch-optimized`.
 
-Read [CANARY_SAFETY.md](CANARY_SAFETY.md) before running anything.
+Read [CANARY_SAFETY.md](CANARY_SAFETY.md) and
+[CANARY_LIMITATIONS.md](CANARY_LIMITATIONS.md) before running anything.
+
+> **Do not execute inherited production documents.** `docs/LAUNCH.md` and
+> `docs/ROUTINE_SPEC.md` are historical context only. Use
+> `prompts/dispatch_routine.md` under `CANARY_SAFETY.md` as the active canary
+> contract.
 
 ## Safe start
 
