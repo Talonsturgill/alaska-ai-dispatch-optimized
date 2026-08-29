@@ -27,7 +27,11 @@ reduces repeated context and bounds model work.
 Daily roles are deliberately narrow. The showrunner locks one angle. The fact
 validator checks claims without reopening discovery. The writer produces the
 262–282-word voiceover. The storyboarder maps the approved script into episode
-props for a 112–130-second film. Production validation fixes contract defects.
+props for a 112–130-second film. It writes schema-v2 props exactly as
+`config/episode_props.schema.json` declares: the fixed `DispatchDaily` engine
+receives scenes, captions, word timings, sources, credits, semantic assets,
+safe zones, palette, and motion mode from data. Never edit TSX for a daily story.
+Production validation fixes contract defects.
 Three isolated judges score the evidence, not one another. If the first panel
 fails, one repair is allowed and three fresh final cards decide the terminal
 state.

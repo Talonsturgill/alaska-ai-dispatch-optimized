@@ -5,11 +5,10 @@ repeated model context and enforces a finite call/revision budget while leaving
 the existing correctness, render, evidence, preflight, panel, and canary safety
 contracts intact.
 
-It does not enable production, external delivery, or the live site. At this
-commit, the active `DispatchDaily` Remotion component is still the frozen
-August 13 replay fixture documented in `CORRECTNESS_FOUNDATION.md`. The
-controller is therefore safe to inspect and exercise with fixture artifacts,
-but a fresh episode also requires the separately reviewed parametric component.
+It does not enable production, external delivery, or the live site. The active
+`DispatchDaily` is the separately reviewed fixed parametric component documented
+in `PARAMETRIC_VIDEO.md`. The controller writes schema-v2 episode props and
+cannot accept the historical loose props shape or daily TSX edits.
 
 ## Measured context boundary
 
@@ -22,12 +21,12 @@ bill. Provider-reported usage and cost are recorded separately after each call.
 | Historical master routine alone | 33,308 tokens |
 | Historical minimum standing context | 35,227 tokens |
 | Historical fully referenced inventory | 101,057 tokens |
-| New controller prompt | 566 tokens |
-| New standing context | 528 tokens |
-| New total static block | 1,094 tokens |
+| New controller prompt | 689 tokens |
+| New standing context | 605 tokens |
+| New total static block | 1,294 tokens |
 | Real August 28 compact story packet | 3,130 tokens |
 
-The static block is 96.9% smaller than the measured 35,227-token standing
+The static block is 96.3% smaller than the measured 35,227-token standing
 baseline. It is hash-keyed once and reused. The story packet is dynamic and
 separate, so later calls do not reload the repository, archived runs, the
 legacy master prompt, or broad craft documentation.
@@ -39,6 +38,8 @@ legacy master prompt, or broad craft documentation.
 - America/Anchorage daily date;
 - 112–130 seconds at 30 fps;
 - 262–282 spoken words;
+- schema-v2 `DispatchDaily` props, with ordered storyboard/scene identity and
+  no daily TSX edits;
 - exactly three video roles: 1080×1920 master, 1080×1080 square, and 720×1280
   mobile;
 - 1080×1350/4:5 explicitly forbidden;
@@ -119,8 +120,9 @@ planning
 
 Each transition hash-binds its evidence. The authoring transition requires
 exactly `vo_script.txt`, `storyboard.json`, and `episode_props.json`; it counts
-the VO words and derives runtime from `total / fps` before render work can
-begin. A failed judge transition requires exactly three card files. A passing
+the VO words, validates the complete strict schema-v2 props contract, requires
+storyboard shot IDs to match scene IDs, and derives runtime from `total / fps`
+before render work can begin. A failed judge transition requires exactly three card files. A passing
 transition additionally requires the canonical panel verdict and `SHIP_NOW`,
 and reruns the existing `ship_gate.py check`; the controller cannot mint its
 own ship decision.
@@ -181,7 +183,9 @@ python -m unittest discover -s scripts -p "test_token_controller.py" -v
 python -m py_compile `
   scripts/dispatch_story_packet.py `
   scripts/daily_scope_guard.py `
-  scripts/dispatch_controller.py
+  scripts/dispatch_controller.py `
+  scripts/parametric_episode_contract.py
 python -m json.tool config/daily_controller.json > $null
 python -m json.tool config/schemas/dispatch_story_packet.schema.json > $null
+python -m json.tool config/episode_props.schema.json > $null
 ```

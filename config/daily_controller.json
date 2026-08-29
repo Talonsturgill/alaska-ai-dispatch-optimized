@@ -17,6 +17,12 @@
     "storyboard": "out/dispatch/storyboard.json",
     "episode_props": "out/dispatch/episode_props.json"
   },
+  "episode_props_contract": {
+    "schema_version": 2,
+    "schema": "config/episode_props.schema.json",
+    "composition": "DispatchDaily",
+    "daily_typescript_edits": false
+  },
   "video_formats": {
     "master": {
       "role": "vertical_hosted",

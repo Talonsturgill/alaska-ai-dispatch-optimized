@@ -45,6 +45,10 @@ class TempControllerRoot:
             SOURCE_ROOT / "config" / "schemas" / "dispatch_story_packet.schema.json",
             self.root / "config" / "schemas" / "dispatch_story_packet.schema.json",
         )
+        shutil.copy2(
+            SOURCE_ROOT / "config" / "episode_props.schema.json",
+            self.root / "config" / "episode_props.schema.json",
+        )
         shutil.copy2(SOURCE_ROOT / "prompts" / "dispatch_controller.md", self.root / "prompts" / "dispatch_controller.md")
         shutil.copy2(SOURCE_ROOT / "prompts" / "dispatch_context.md", self.root / "prompts" / "dispatch_context.md")
 
@@ -75,6 +79,23 @@ def make_fact_pack(base: Path, count: int = 20) -> Path:
     return run
 
 
+def write_authored_outputs(root: Path, outputs: dict[str, str], *, short_voiceover: bool = False) -> dict:
+    vo_path = root / outputs["voiceover_text"]
+    vo_path.parent.mkdir(parents=True, exist_ok=True)
+    vo_path.write_text(
+        "far too short" if short_voiceover else " ".join(["Alaska"] * 270),
+        encoding="utf-8",
+    )
+    props = json.loads(
+        (SOURCE_ROOT / "video-engine" / "fixtures" / "dispatch-2026-08-28.json")
+        .read_text(encoding="utf-8")
+    )
+    storyboard = {"shots": [{"id": scene["id"]} for scene in props["scenes"]]}
+    (root / outputs["storyboard"]).write_text(json.dumps(storyboard), encoding="utf-8")
+    (root / outputs["episode_props"]).write_text(json.dumps(props), encoding="utf-8")
+    return props
+
+
 class ConfigContractTests(unittest.TestCase):
     def test_authoritative_daily_shape_and_budgets(self) -> None:
         config = controller._config(SOURCE_ROOT)
@@ -96,6 +117,12 @@ class ConfigContractTests(unittest.TestCase):
         self.assertEqual(config["models"]["normal_plan"].count("showrunner"), 1)
         self.assertEqual(config["models"]["worst_case_plan"].count("showrunner"), 1)
         self.assertEqual(config["models"]["worst_case_plan"].count("judge"), 6)
+        self.assertEqual(config["episode_props_contract"], {
+            "schema_version": 2,
+            "schema": "config/episode_props.schema.json",
+            "composition": "DispatchDaily",
+            "daily_typescript_edits": False,
+        })
 
     def test_prompt_context_measurement(self) -> None:
         config = controller._config(SOURCE_ROOT)
@@ -231,15 +258,7 @@ class ControllerFlowTests(unittest.TestCase):
                 ]
             elif phase == "vo_storyboard_episode_props":
                 outputs = controller._config(self.root)["authoring_outputs"]
-                vo_path = self.root / outputs["voiceover_text"]
-                vo_path.parent.mkdir(parents=True, exist_ok=True)
-                vo_path.write_text(" ".join(["Alaska"] * 270), encoding="utf-8")
-                (self.root / outputs["storyboard"]).write_text(
-                    json.dumps({"shots": [{"id": "shot-1"}]}), encoding="utf-8"
-                )
-                (self.root / outputs["episode_props"]).write_text(
-                    json.dumps({"fps": 30, "total": 3600}), encoding="utf-8"
-                )
+                write_authored_outputs(self.root, outputs)
                 evidence = list(outputs.values())
             else:
                 minimum = controller._config(self.root)["state_machine"]["evidence_minimums"][phase]
@@ -293,7 +312,7 @@ class ControllerFlowTests(unittest.TestCase):
         run = exported["runs"][0]
         self.assertEqual(run["fixture_id"], RUN_DATE)
         self.assertEqual(run["calls"][0]["model_tier"], "frontier")
-        self.assertEqual(run["standing_context_tokens"], 1094)
+        self.assertEqual(run["standing_context_tokens"], 1294)
         with self.assertRaises(controller.ControllerError):
             controller.export_eval(
                 root=self.root, scenario="normal", source_kind="measured",
@@ -318,16 +337,27 @@ class ControllerFlowTests(unittest.TestCase):
     def test_authoring_phase_blocks_short_voiceover(self) -> None:
         self.advance_to("vo_storyboard_episode_props")
         outputs = controller._config(self.root)["authoring_outputs"]
-        vo_path = self.root / outputs["voiceover_text"]
-        vo_path.parent.mkdir(parents=True, exist_ok=True)
-        vo_path.write_text("far too short", encoding="utf-8")
-        (self.root / outputs["storyboard"]).write_text(
-            json.dumps({"shots": [{"id": "shot-1"}]}), encoding="utf-8"
-        )
-        (self.root / outputs["episode_props"]).write_text(
-            json.dumps({"fps": 30, "total": 3600}), encoding="utf-8"
-        )
+        write_authored_outputs(self.root, outputs, short_voiceover=True)
         with self.assertRaises(controller.ControllerError):
+            controller.advance(
+                root=self.root, outcome="pass", evidence_paths=list(outputs.values())
+            )
+
+    def test_authoring_phase_rejects_legacy_or_unsourced_historical_props(self) -> None:
+        self.advance_to("vo_storyboard_episode_props")
+        outputs = controller._config(self.root)["authoring_outputs"]
+        props = write_authored_outputs(self.root, outputs)
+        props.pop("schemaVersion")
+        (self.root / outputs["episode_props"]).write_text(json.dumps(props), encoding="utf-8")
+        with self.assertRaisesRegex(controller.ControllerError, "schema-v2 DispatchDaily"):
+            controller.advance(
+                root=self.root, outcome="pass", evidence_paths=list(outputs.values())
+            )
+
+        props = write_authored_outputs(self.root, outputs)
+        props["episode"]["provenance"]["kind"] = "historical_reconstruction"
+        (self.root / outputs["episode_props"]).write_text(json.dumps(props), encoding="utf-8")
+        with self.assertRaisesRegex(controller.ControllerError, "historical scenes require"):
             controller.advance(
                 root=self.root, outcome="pass", evidence_paths=list(outputs.values())
             )

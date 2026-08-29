@@ -21,6 +21,13 @@ Follow the machine state exactly:
 `planning → packet_context → fact_validation → angle →
 vo_storyboard_episode_props → gates → render_preflight → judges_round_1`.
 
+In `vo_storyboard_episode_props`, write the canonical 262–282-word VO, a
+storyboard whose ordered `shots[].id` values exactly match the episode scenes,
+and schema-v2 `out/dispatch/episode_props.json` conforming to
+`config/episode_props.schema.json`. Bind every historical scene to declared
+sources. A synthetic canary carries no source bindings and says it is synthetic.
+All daily visual choices are props for the fixed `DispatchDaily`; never edit TSX.
+
 Three independent judges evaluate the exact evidence. A pass reaches `SHIP`. A
 failure permits one repair, then three final independent judges. A second
 failure reaches `BLOCKED_QUALITY`; do not lower a gate, add a second repair, or

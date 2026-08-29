@@ -3,8 +3,11 @@
 from __future__ import annotations
 
 import json
+import copy
 import unittest
 from pathlib import Path
+
+from parametric_episode_contract import ParametricEpisodeError, validate_parametric_episode
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -16,6 +19,23 @@ def load(path: Path):
 
 
 class ParametricVideoTests(unittest.TestCase):
+    def test_python_controller_boundary_accepts_fixtures_and_rejects_contract_drift(self):
+        for path in sorted(FIXTURES.glob("dispatch-2026-08-*.json")):
+            props = load(path)
+            storyboard = {"shots": [{"id": scene["id"]} for scene in props["scenes"]]}
+            facts = validate_parametric_episode(props, storyboard)
+            self.assertEqual(facts["schema_version"], 2)
+            self.assertEqual(facts["composition"], "DispatchDaily")
+
+        props = load(FIXTURES / "dispatch-2026-08-28.json")
+        storyboard = {"shots": [{"id": scene["id"]} for scene in props["scenes"]]}
+        malformed = copy.deepcopy(props)
+        malformed["legacyFallback"] = True
+        with self.assertRaisesRegex(ParametricEpisodeError, "unknown or missing"):
+            validate_parametric_episode(malformed, storyboard)
+        with self.assertRaisesRegex(ParametricEpisodeError, "shot IDs"):
+            validate_parametric_episode(props, {"shots": list(reversed(storyboard["shots"]))})
+
     def test_schema_is_strict_for_every_declared_object(self):
         schema = load(ROOT / "config" / "episode_props.schema.json")
         self.assertEqual(schema["$schema"], "https://json-schema.org/draft/2020-12/schema")

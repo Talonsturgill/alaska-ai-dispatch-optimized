@@ -18,6 +18,7 @@ from typing import Any
 
 from daily_scope_guard import ScopeError, check_scope, create_snapshot
 from dispatch_story_packet import PacketError, estimate_tokens_bytes, validate_packet
+from parametric_episode_contract import ParametricEpisodeError, validate_parametric_episode
 from strict_json import StrictJSONError, canonical_bytes, load_path, loads
 
 
@@ -93,7 +94,7 @@ def _config(root: Path = ROOT) -> dict[str, Any]:
     value = load_path(root / CONFIG_REL, label="daily controller config")
     if not isinstance(value, dict) or value.get("schema_version") != 1:
         raise ControllerError("daily controller config must be a schema-v1 object")
-    for key in ("authoring_outputs", "story_packet", "context", "state_machine", "models", "budgets", "daily_scope"):
+    for key in ("authoring_outputs", "episode_props_contract", "story_packet", "context", "state_machine", "models", "budgets", "daily_scope"):
         if not isinstance(value.get(key), dict):
             raise ControllerError(f"daily controller config is missing {key}")
     _validate_plan(value)
@@ -163,6 +164,24 @@ def _validate_daily_contract(root: Path, config: dict[str, Any]) -> None:
         raise ControllerError("authoring output paths must be exact")
     for name, value in outputs.items():
         _safe_rel(value, label=f"authoring output {name}")
+    props_contract = config["episode_props_contract"]
+    if props_contract != {
+        "schema_version": 2,
+        "schema": "config/episode_props.schema.json",
+        "composition": "DispatchDaily",
+        "daily_typescript_edits": False,
+    }:
+        raise ControllerError("episode props contract must bind schema-v2 DispatchDaily with no daily TSX edits")
+    schema = load_path(
+        _inside(root, props_contract["schema"], label="episode props schema"),
+        label="episode props schema",
+    )
+    if (
+        not isinstance(schema, dict)
+        or schema.get("additionalProperties") is not False
+        or (schema.get("properties") or {}).get("schemaVersion") != {"const": 2}
+    ):
+        raise ControllerError("episode props JSON schema is missing the strict schema-v2 root contract")
     deliverables_path = root / "config" / "deliverables.json"
     if deliverables_path.is_file():
         deliverables = load_path(deliverables_path, label="deliverables config")
@@ -399,25 +418,19 @@ def _validate_authored_outputs(root: Path, config: dict[str, Any], evidence: lis
     storyboard = load_path(
         _inside(root, outputs["storyboard"], label="storyboard"), label="daily storyboard"
     )
-    if not isinstance(storyboard, (dict, list)) or not storyboard:
-        raise ControllerError("storyboard must be a nonempty strict-JSON object or array")
+    if not isinstance(storyboard, dict) or not storyboard:
+        raise ControllerError("storyboard must be a nonempty strict-JSON object")
     props = load_path(
         _inside(root, outputs["episode_props"], label="episode props"), label="episode props"
     )
-    if not isinstance(props, dict):
-        raise ControllerError("episode props must be a strict-JSON object")
-    total = props.get("total")
-    fps = props.get("fps")
-    if isinstance(total, bool) or not isinstance(total, int) or total <= 0:
-        raise ControllerError("episode props total must be a positive integer frame count")
-    if fps != config["fps"]:
-        raise ControllerError("episode props fps must equal the 30 fps daily contract")
-    duration = total / fps
     runtime = config["runtime_seconds"]
-    if not runtime["minimum"] <= duration <= runtime["maximum"]:
-        raise ControllerError(
-            f"episode duration must be {runtime['minimum']}-{runtime['maximum']} seconds; got {duration:.3f}"
+    try:
+        validate_parametric_episode(
+            props, storyboard, expected_fps=config["fps"],
+            minimum_seconds=runtime["minimum"], maximum_seconds=runtime["maximum"],
         )
+    except ParametricEpisodeError as exc:
+        raise ControllerError(f"schema-v2 DispatchDaily props are invalid: {exc}") from None
 
 
 def _require_ship_gate(root: Path, evidence: list[dict[str, Any]]) -> None:
