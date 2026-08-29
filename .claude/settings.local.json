@@ -8,11 +8,11 @@
       "WebFetch",
       "WebSearch",
       "Agent",
-      "Task",
-      "mcp__github"
+      "Task"
     ],
     "deny": [
-      "mcp__Gmail"
+      "mcp__Gmail",
+      "mcp__github"
     ],
     "ask": []
   }

@@ -2,12 +2,10 @@
 
 Token-safe: bytes go over the network/git from the container, NEVER through the model as base64.
 
-Order of preference (so delivery is PERMANENT by default with ZERO setup):
-  1) rclone remote (PERMANENT) when RCLONE_CONFIG_B64 / RCLONE_CONFIG is set (Drive / S3 / R2 ...).
-  2) GITHUB media branch (PERMANENT, default, no credentials): git-push the file to the
-     `dispatch-media` branch of this repo -> a permanent raw.githubusercontent.com download URL.
-     Keep each file < 100 MB (GitHub's hard push limit) — encode the hosted cut accordingly.
-  3) NO-AUTH temporary host (tmpfiles.org, ~1h) — last resort if the git push fails.
+The canary has exactly one upload destination: the `dispatch-media` branch of
+`Talonsturgill/alaska-ai-dispatch-optimized`. There is no rclone, Drive, R2,
+S3, temporary-host, or production-repository fallback. A failed canary push is
+a failed upload and remains local.
 
 Prints `HOST=permanent|temporary` to stderr and self-verifies the URL is an OPENABLE media link
 (200 + correct extension + full content-length, not just any 200) before printing it. A --name
@@ -18,39 +16,12 @@ Usage:
   python scripts/upload_video.py --file out/dispatch/dispatch.mp4 --name dispatch-2026-06-27.mp4
   # --name may omit the extension; it is appended from --file automatically.
 """
-import argparse, base64, os, subprocess, sys, tempfile, re, json, shutil
+import argparse, os, subprocess, sys, tempfile, re, shutil
 from pathlib import Path
 
 from canary_guard import require_action, require_canary_origin
 
 def sh(cmd, **kw): return subprocess.run(cmd, capture_output=True, text=True, **kw)
-def have_rclone(): return sh(["which", "rclone"]).returncode == 0
-def rclone_configured(): return bool(os.environ.get("RCLONE_CONFIG_B64") or os.environ.get("RCLONE_CONFIG"))
-
-def ensure_config():
-    b64 = os.environ.get("RCLONE_CONFIG_B64")
-    if b64:
-        path = os.path.join(tempfile.gettempdir(), "rclone_dispatch.conf")
-        open(path, "wb").write(base64.b64decode(b64)); os.environ["RCLONE_CONFIG"] = path
-    return os.environ.get("RCLONE_CONFIG")
-
-def to_direct(url):
-    m = re.search(r"/d/([A-Za-z0-9_-]+)", url) or re.search(r"[?&]id=([A-Za-z0-9_-]+)", url)
-    if "drive.google.com" in url and m:
-        return f"https://drive.google.com/uc?export=download&id={m.group(1)}"
-    return url
-
-def via_rclone(file, name):
-    ensure_config()
-    remote = os.environ.get("DISPATCH_REMOTE", "dispatch:"); dest = f"{remote}{name}"
-    require_action("external_media_upload", dest)
-    up = sh(["rclone", "copyto", file, dest, "--no-traverse"])
-    if up.returncode != 0: raise RuntimeError("rclone upload failed: " + up.stderr[-400:])
-    pub = os.environ.get("DISPATCH_PUBLIC_BASE")
-    if pub: return f"{pub.rstrip('/')}/{name}"
-    ln = sh(["rclone", "link", dest])
-    if ln.returncode != 0: raise RuntimeError("rclone link failed: " + ln.stderr[-400:])
-    return to_direct(ln.stdout.strip())
 
 def media_email():
     """The owner's commit email, from git config. Never an assistant/Anthropic address."""
@@ -66,15 +37,12 @@ def media_email():
 def via_github(file, name):
     """git-push the file to the dispatch-media branch; return its permanent raw URL."""
     if os.path.getsize(file) > 99 * 1024 * 1024:
-        raise RuntimeError("file >99MB exceeds GitHub's push limit; encode smaller or use rclone")
+        raise RuntimeError("file >99MB exceeds GitHub's push limit; encode a smaller canary artifact")
     root = sh(["git", "rev-parse", "--show-toplevel"]).stdout.strip()
     if not root: raise RuntimeError("not inside a git repo")
-    origin = sh(["git", "-C", root, "remote", "get-url", "origin"]).stdout.strip()
-    m = re.search(r"[:/]([^/]+)/([^/]+?)(?:\.git)?$", origin)
-    if not m: raise RuntimeError("cannot parse owner/repo from origin: " + origin)
-    owner, repo = m.group(1), m.group(2)
-    require_canary_origin(Path(root))
-    require_action("github_media_publish", f"{owner}/{repo}")
+    repository = require_canary_origin(Path(root))
+    require_action("github_media_publish", repository)
+    owner, repo = repository.split("/", 1)
     branch = os.environ.get("DISPATCH_MEDIA_BRANCH", "dispatch-media")
     wt = tempfile.mkdtemp(prefix="media_wt_")
     try:
@@ -102,14 +70,6 @@ def via_github(file, name):
         return f"https://raw.githubusercontent.com/{owner}/{repo}/{branch}/media/{name}"
     finally:
         sh(["git", "-C", root, "worktree", "remove", "--force", wt])
-
-def via_tmpfiles(file):
-    require_action("external_media_upload", "https://tmpfiles.org")
-    r = sh(["curl", "-sS", "--max-time", "300", "-F", f"file=@{file}", "https://tmpfiles.org/api/v1/upload"])
-    if r.returncode != 0: raise RuntimeError("tmpfiles curl failed: " + (r.stderr or "")[-300:])
-    try: u = json.loads(r.stdout)["data"]["url"]
-    except Exception: raise RuntimeError("tmpfiles parse failed: " + (r.stdout or "")[:200])
-    return u.replace("tmpfiles.org/", "tmpfiles.org/dl/")
 
 def ensure_ext(name, file):
     """Force the hosted name to carry the SOURCE file's real extension. Without an extension,
@@ -150,22 +110,19 @@ def verify(url, file):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--file", required=True); ap.add_argument("--name", default=None)
-    ap.add_argument("--no-github", action="store_true", help="skip the GitHub media-branch host")
+    ap.add_argument("--no-github", action="store_true",
+                    help="disable the sole canary publisher and keep the file local")
     a = ap.parse_args()
     name = ensure_ext(a.name or os.path.basename(a.file), a.file)
-    url = None; kind = None; errs = []
-    if rclone_configured() and have_rclone():
-        try: url, kind = via_rclone(a.file, name), "permanent"
-        except Exception as e: errs.append("rclone: " + str(e))
-    if not url and not a.no_github:
-        try: url, kind = via_github(a.file, name), "permanent"
-        except Exception as e: errs.append("github: " + str(e))
-    if not url:
-        try: url, kind = via_tmpfiles(a.file), "temporary"
-        except Exception as e: errs.append("tmpfiles: " + str(e))
-    if not url:
-        print("ERROR: all upload hosts failed:\n  " + "\n  ".join(errs), file=sys.stderr); sys.exit(1)
-    if errs: print("(fell through: " + "; ".join(errs) + ")", file=sys.stderr)
+    if a.no_github:
+        print("CANARY: upload disabled by --no-github; file remains local", file=sys.stderr)
+        return 1
+    try:
+        url, kind = via_github(a.file, name), "permanent"
+    except Exception as exc:
+        print(f"ERROR: canary GitHub upload failed; no fallback was attempted:\n  {exc}",
+              file=sys.stderr)
+        return 1
     ok, detail = verify(url, a.file)
     print(f"HOST={kind} VERIFIED={'ok' if ok else 'FAILED'} ({detail})", file=sys.stderr)
     if not ok:
@@ -174,4 +131,4 @@ def main():
     print(url)   # LAST line = the URL the routine captures
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

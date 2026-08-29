@@ -1,9 +1,9 @@
-"""Build the Gmail draft payload for a finished Alaska.Ai video Dispatch (story-agnostic).
+"""Build the local HTML delivery preview for an Alaska.Ai video Dispatch.
 
 Media is NEVER base64'd through the model. The routine uploads the cuts (and ideally the poster)
-with scripts/upload_video.py and passes their direct-download URLs here. This prints the draft
-payload JSON {subject,to,html_body} on the LAST stdout line for the orchestrator to hand to the
-Gmail create_draft connector (use --poster-url, not --poster, to keep that payload small).
+with scripts/upload_video.py and passes their direct-download URLs here. Canary runs must use
+--local-only with --out-html. The inherited connector-payload branch is permanently denied by
+config/execution_policy.json.
 
 Usage:
   python scripts/dispatch_email.py \
@@ -359,6 +359,15 @@ def main():
                     help="bypass the run-freshness guard (deliberate manual/standalone use only; "
                          "the routine must NEVER pass this -- it is how a previous run's scratch ships)")
     a = ap.parse_args()
+    if a.local_only:
+        if not a.out_html:
+            sys.exit("REFUSING LOCAL-ONLY DRAFT: --out-html is required so the preview is retained")
+        require_action("local_artifact")
+    else:
+        try:
+            require_action("gmail_draft", a.to)
+        except CanarySafetyError as exc:
+            sys.exit(f"dispatch_email: {exc}\nUse --local-only --out-html <path> for a canary preview.")
     chk = not a.no_freshness_check
     try:
         post = Path(fresh(a.post, check=chk)).read_text().strip()
@@ -401,14 +410,8 @@ def main():
     if a.out_html:
         Path(a.out_html).write_text(html); print("wrote", a.out_html)
     if a.local_only:
-        if not a.out_html:
-            sys.exit("REFUSING LOCAL-ONLY DRAFT: --out-html is required so the preview is retained")
         print(f"CANARY LOCAL ONLY: Gmail payload suppressed; preview={a.out_html}")
         return
-    try:
-        require_action("gmail_draft", a.to)
-    except CanarySafetyError as exc:
-        sys.exit(f"dispatch_email: {exc}\nUse --local-only --out-html <path> for a canary preview.")
     payload = {"subject": f"ALASKA.AI · Dispatch ready · {a.date}", "to": a.to, "html_body": html}
     print(json.dumps(payload))   # LAST line = the draft payload for Gmail create_draft
 

@@ -76,9 +76,6 @@ fi
 "$VOICE_PY" -c "import setuptools,pkg_resources" >/dev/null 2>&1 \
   || "$VENV_DIR/bin/pip" install -q "setuptools<81" || true
 
-# rclone (token-safe video upload -> one-click download link)
-command -v rclone >/dev/null 2>&1 || { curl -fsSL https://rclone.org/install.sh | bash || true; }
-
 # edge-tts TLS: append the system + agent-proxy CA bundles to certifi (idempotent)
 # — for BOTH pythons (system + voice venv); aiohttp/hf_hub read certifi, not SSL_CERT_FILE.
 for PYBIN in python3 "$VOICE_PY"; do
@@ -94,15 +91,8 @@ PY
 done
 echo "setup_env: ready"
 
-# AUTO-PUSH GUARDRAIL (2026-07-21): the container is ephemeral and reclaimed on inactivity;
-# a run once lost a fully-built video because work was committed but never pushed. Activate the
-# tracked post-commit hook so EVERY commit on a run branch auto-mirrors to origin. core.hooksPath
-# is repo-local (not carried by a fresh clone), so we re-apply it here on every fresh container.
-if [ -f .githooks/post-commit ]; then
-  chmod +x .githooks/post-commit 2>/dev/null || true
-  git config core.hooksPath .githooks 2>/dev/null || true
-  echo "setup_env: auto-push post-commit hook activated (core.hooksPath=.githooks)"
-fi
+# Canary commits are pushed deliberately after the guard and test suite passes.
+# Do not install post-commit hooks or automatic push behavior in this lab.
 
 # NODE / REMOTION deps for the video engine. The fresh clone has no node_modules; without this
 # the render step fails with "remotion: not found" on every fresh container. Idempotent.

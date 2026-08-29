@@ -1,6 +1,5 @@
 {
   "permissions": {
-    "defaultMode": "bypassPermissions",
     "allow": [
       "Bash",
       "Read",
@@ -14,11 +13,11 @@
       "Task",
       "TaskCreate",
       "TaskUpdate",
-      "TaskList",
-      "mcp__github"
+      "TaskList"
     ],
     "deny": [
-      "mcp__Gmail"
+      "mcp__Gmail",
+      "mcp__github"
     ],
     "ask": []
   },

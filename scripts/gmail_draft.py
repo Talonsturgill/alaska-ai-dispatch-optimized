@@ -1,8 +1,7 @@
-"""Build the HTML body + base64 image payload for the weekly Gmail draft.
+"""Build a local HTML preview of the historical weekly draft.
 
-This script is invoked by the routine to compose the email pieces. The actual
-draft creation happens via the Gmail MCP `create_draft` tool — this script
-just returns a clean payload (JSON to stdout) the orchestrator passes through.
+Canary runs must use --local-only with --out-html. The inherited connector
+payload branch is permanently denied by config/execution_policy.json.
 
 Note: Gmail MCP `create_draft` does not yet support attachments. The image
 is embedded inline as a base64 `<img src="data:image/png;base64,...">` so
@@ -102,6 +101,19 @@ def main():
                     help="write --out-html but suppress the connector-ready Gmail payload "
                          "(required for normal canary runs)")
     args = ap.parse_args()
+    if args.local_only:
+        if not args.out_html:
+            raise SystemExit(
+                "REFUSING LOCAL-ONLY DRAFT: --out-html is required so the preview is retained"
+            )
+        require_action("local_artifact")
+    else:
+        try:
+            require_action("gmail_draft", DRAFT_TO)
+        except CanarySafetyError as exc:
+            raise SystemExit(
+                f"gmail_draft: {exc}\nUse --local-only --out-html <path> for a canary preview."
+            ) from exc
 
     post_text = Path(args.post_md).read_text()
     image_b64 = base64.b64encode(Path(args.image).read_bytes()).decode("ascii")
@@ -113,18 +125,8 @@ def main():
         Path(args.out_html).write_text(html, encoding="utf-8")
         print("wrote", args.out_html)
     if args.local_only:
-        if not args.out_html:
-            raise SystemExit(
-                "REFUSING LOCAL-ONLY DRAFT: --out-html is required so the preview is retained"
-            )
         print(f"CANARY LOCAL ONLY: Gmail payload suppressed; preview={args.out_html}")
         return
-    try:
-        require_action("gmail_draft", DRAFT_TO)
-    except CanarySafetyError as exc:
-        raise SystemExit(
-            f"gmail_draft: {exc}\nUse --local-only --out-html <path> for a canary preview."
-        ) from exc
     payload = {
         "subject": f"Alaska.Ai — Weekly Recap Draft — {args.date}",
         "to": DRAFT_TO,
