@@ -33,9 +33,9 @@ rubric:
       / 3D / higher-fidelity than the brand" are out of scope and MUST NOT cap any score.
       Concrete within-style flaws (an unshaded flat fill, a frozen held figure, a character whose
       finish lags the props in the same frame, a missing motion cycle) absolutely still count.
-  # OBJECTIVE pre-gate — the canonical lineage check. quality_gate.py MUST exit 0
-  # BEFORE this rubric is scored. It validates the exact five delivered artifacts,
-  # codecs, mastering/audio lineage, evidence-v3 pack, and sole SFX-v3 ledger.
+  # OBJECTIVE pre-gate — no promise beyond this mechanically enforced set.
+  # quality_gate.py and then preflight.py MUST exit 0 BEFORE this rubric is
+  # scored. Taste/craft descriptors below remain the three human judges' work.
   objective_gate:
     script: ".claude/skills/alaska-dispatch/quality_gate.py"
     must_pass_first: true
@@ -44,6 +44,8 @@ rubric:
       mastering_lineage: "render receipt + mute SHA + master.wav + SFX-v3 audio + five output hashes agree"
       evidence_manifest: "schema-v3 exact artifact set and producer source/input provenance all revalidate"
       sfx_ledger: "sole schema-v3 enriched ledger is bound to the exact mastered audio"
+      delivered_audio_report: "delivered square has measured -15..-13 LUFS, true peak <= -1 dBTP, finite LRA, and all mandatory pass fields"
+      collective_preflight: "current Git identity; manifests; quality; TypeScript; text fit; caption band/spelling/render; plate overlap; zoom clipping; claims; credits; and VO claims all pass against the receipt's closed input/tool hashes"
   hard_blockers:               # ANY of these = automatic fail regardless of score
     - "quality_gate.py or the current-run preflight receipt fails canonical delivery/evidence/audio lineage"
     - "a factual error or an unverifiable load-bearing claim"
@@ -70,7 +72,7 @@ rubric:
       4:  "Linear/robotic, static sprites, pops."
     - name: "Composition & staging"
       weight: 0.08
-      10: "Clear focal hierarchy, hero reads in silhouette, intentional negative space, safe areas honored in 9:16 AND 4:5."
+      10: "Clear focal hierarchy, hero reads in silhouette, intentional negative space, safe areas honored in 9:16 AND the derived 1:1 square."
       7:  "Reads, minor crowding or a crop risk."
       4:  "Competing elements; unsafe crops."
     - name: "Color & grade"

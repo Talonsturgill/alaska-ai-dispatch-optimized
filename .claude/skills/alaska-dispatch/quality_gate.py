@@ -7,7 +7,9 @@ pack, sole SFX-v3 ledger, and mastering receipt that terminal consumers use.
 """
 from __future__ import annotations
 
+import hashlib
 import json
+import math
 import os
 import sys
 import tempfile
@@ -43,13 +45,81 @@ from sfx_contract import (  # noqa: E402
     SFXContractError,
     sidecar_facts,
 )
+from strict_json import StrictJSONError, load_path  # noqa: E402
 
 REPORT_REL = "out/dispatch/quality_report.json"
-REPORT_SCHEMA_VERSION = 2
+REPORT_SCHEMA_VERSION = 3
+AUDIO_REPORT_REL = "out/evidence/audio_report.json"
 
 
 class QualityGateError(RuntimeError):
     pass
+
+
+def audio_report_facts(*, root: str | Path, evidence: dict[str, Any]) -> dict[str, Any]:
+    base = Path(root).resolve()
+    artifact = evidence.get("artifacts", {}).get(AUDIO_REPORT_REL)
+    if not isinstance(artifact, dict):
+        raise QualityGateError("evidence manifest does not declare mandatory audio_report.json")
+    path = base.joinpath(*AUDIO_REPORT_REL.split("/"))
+    if not path.is_file() or path.is_symlink():
+        raise QualityGateError("audio report is missing or unsafe")
+    digest = hashlib.sha256(path.read_bytes()).hexdigest()
+    if artifact.get("bytes") != path.stat().st_size or artifact.get("sha256") != digest:
+        raise QualityGateError("audio report bytes do not match the evidence manifest")
+    try:
+        value = load_path(path, label="audio report")
+    except (StrictJSONError, OSError) as exc:
+        raise QualityGateError(str(exc)) from None
+    if not isinstance(value, dict):
+        raise QualityGateError("audio report must be a JSON object")
+    passed = value.get("pass")
+    if not isinstance(passed, dict) or set(passed) != {"loudness", "true_peak", "lra"}:
+        raise QualityGateError("audio report pass fields are not canonical")
+    if any(passed[key] is not True for key in ("loudness", "true_peak", "lra")):
+        raise QualityGateError("audio report has a failed loudness/true-peak/LRA field")
+    if value.get("measured_on") != "dispatch_square.mp4" or value.get("also_covers_master") is not True:
+        raise QualityGateError("audio report is not measured on square and cross-checked on hosted master")
+    metrics = {}
+    for key in ("delivered_i", "delivered_tp", "delivered_lra"):
+        raw = value.get(key)
+        if isinstance(raw, bool) or not isinstance(raw, (int, float)) or not math.isfinite(float(raw)):
+            raise QualityGateError(f"audio report {key} must be finite")
+        metrics[key] = float(raw)
+    if not -15.0 <= metrics["delivered_i"] <= -13.0:
+        raise QualityGateError("delivered audio loudness is outside -15..-13 LUFS")
+    if metrics["delivered_tp"] > -1.0:
+        raise QualityGateError("delivered audio true peak exceeds -1.0 dBTP")
+    if not 6.0 <= metrics["delivered_lra"] <= 9.0:
+        raise QualityGateError("delivered audio LRA is outside 6..9 LU")
+    master = value.get("master_measured")
+    if not isinstance(master, dict) or set(master) != {"i", "tp", "lra"}:
+        raise QualityGateError("audio report has no canonical hosted-master measurements")
+    master_metrics = {}
+    for key in ("i", "tp", "lra"):
+        raw = master.get(key)
+        if isinstance(raw, bool) or not isinstance(raw, (int, float)) or not math.isfinite(float(raw)):
+            raise QualityGateError(f"audio report master_measured.{key} must be finite")
+        master_metrics[key] = float(raw)
+    if (
+        abs(master_metrics["i"] - metrics["delivered_i"]) > 0.5
+        or abs(master_metrics["lra"] - metrics["delivered_lra"]) > 0.5
+    ):
+        raise QualityGateError("square and hosted-master audio measurements do not agree")
+    if (
+        not -15.0 <= master_metrics["i"] <= -13.0
+        or master_metrics["tp"] > -1.0
+        or not 6.0 <= master_metrics["lra"] <= 9.0
+    ):
+        raise QualityGateError("hosted-master loudness/true-peak/LRA measurement fails")
+    return {
+        "path": AUDIO_REPORT_REL,
+        "bytes": artifact.get("bytes"),
+        "sha256": artifact.get("sha256"),
+        **metrics,
+        "master_measured": master_metrics,
+        "pass": passed,
+    }
 
 
 def _atomic_json(path: Path, value: dict[str, Any]) -> None:
@@ -76,6 +146,7 @@ def evaluate(
     evidence_loader: Callable[..., dict[str, Any]] = require_evidence_manifest,
     mastering_loader: Callable[..., dict[str, Any]] = mastering_binding,
     sfx_loader: Callable[..., tuple[dict[str, Any] | None, list[str]]] = sidecar_facts,
+    audio_report_loader: Callable[..., dict[str, Any]] = audio_report_facts,
 ) -> dict[str, Any]:
     """Return the canonical objective report or raise one concise gate error."""
     base = Path(root).resolve()
@@ -84,6 +155,7 @@ def evaluate(
         evidence = evidence_loader(root=base, delivery_manifest=delivery)
         mastering = mastering_loader(root=base)
         sfx, sfx_problems = sfx_loader(root=base)
+        audio_report = audio_report_loader(root=base, evidence=evidence)
     except (DeliverableContractError, EvidenceContractError, MasteringContractError, SFXContractError) as exc:
         raise QualityGateError(str(exc)) from None
     if sfx is None or sfx_problems:
@@ -101,9 +173,10 @@ def evaluate(
     evidence_path = base.joinpath(*EVIDENCE_MANIFEST_REL.split("/"))
     checks = [
         {"id": "delivery_manifest_v4", "exit_code": 0, "result": "pass"},
-        {"id": "mastering_audio_lineage_v1", "exit_code": 0, "result": "pass"},
+        {"id": "mastering_audio_lineage_v2", "exit_code": 0, "result": "pass"},
         {"id": "evidence_manifest_v3", "exit_code": 0, "result": "pass"},
         {"id": "sole_sfx_ledger_v3", "exit_code": 0, "result": "pass"},
+        {"id": "delivered_audio_report_v1", "exit_code": 0, "result": "pass"},
     ]
     return {
         "schema_version": REPORT_SCHEMA_VERSION,
@@ -128,6 +201,7 @@ def evaluate(
             "schema_version": SFX_SCHEMA_VERSION,
             "audio": sfx["audio"],
         },
+        "audio_report": audio_report,
         "checks": checks,
         "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
     }

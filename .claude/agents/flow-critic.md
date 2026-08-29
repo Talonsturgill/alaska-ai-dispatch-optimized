@@ -1,6 +1,6 @@
 ---
 name: flow-critic
-description: The VISUAL FLOW critic for the video Dispatch. Runs TWICE. In PREPRODUCTION (after storyboard_check.py's flow block passes) it red-teams the beat map for the never-rest cadence, say-it-show-it VO coverage, and a motivated sound on every beat. In POST (on the rendered montage + sfx_events) it checks the picture actually flows and is sonified. Returns a strict ship/revise JSON. Defaults to revise unless the piece keeps the eye AND the ear moving with the story every few seconds. No-spawn.
+description: Non-terminal VISUAL FLOW critic for the B1 replay. PRE red-teams the beat map; POST reads only evidence-manifest artifacts and returns repair notes, never a terminal judge card or ship verdict. No-spawn.
 tools: Read
 model: opus
 ---
@@ -70,7 +70,7 @@ judge-pack media. Judge:
 3. Any beat the plan promised that the render did not deliver (a reveal that is not there, a counter that
    does not move)?
 
-## Return STRICT JSON (only this)
+## Non-terminal return JSON (PRE planning or POST repair diagnostic)
 {
  "mode": "pre" | "post",
  "flows": <true if the eye and ear keep advancing with the story throughout>,
@@ -78,11 +78,13 @@ judge-pack media. Judge:
  "resting_or_meaningless_beats": [ {"t": "...", "why": "..."}, ... ],
  "silent_or_generic_sfx_beats": [ {"t": "...", "why": "..."}, ... ],
  "notes": [ "<specific, actionable>", ... ],
- "ship": <true only if flows AND no orphan sentence AND every beat has a real motivated sound>,
  "one_fix": "<the single highest-leverage change>"
 }
 
-Default to ship:false unless the piece genuinely never lets the eye or the ear rest on the story. Be
+This diagnostic has no `ship`, score, median, or verdict field. Terminal POST
+scoring is performed only through the exact rubric-derived schema in
+`scripts/video_judge_contract.py`; exactly three scorer cards are required.
+Be
 concrete: quote the sentence, name the beat time, say what sound is missing. Paper fixes are nearly
 free; rendered fixes are not, so in PRE mode be demanding.
 

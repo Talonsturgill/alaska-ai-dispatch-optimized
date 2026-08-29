@@ -38,9 +38,11 @@ is the brand signature. Pairs with `docs/VIDEO_PRODUCTION_STANDARD.md` (craft bi
 - `audio_v3.py` — the 60s mix + single-pass loudnorm + the audio gate (prints PASS).
 - `quality_gate.py` — the current B1 objective pre-panel gate. It consumes only
   the schema-v4 delivery manifest, schema-v3 evidence manifest, mastering
-  receipt, and sole SFX-v3 ledger; it writes `out/dispatch/quality_report.json`
-  and is a required preflight check. Historical frame-folder metrics below are
-  archived craft context, not an alternate gate.
+  receipt, sole SFX-v3 ledger, and mandatory evidence-manifest audio report
+  (finite delivered loudness/true peak/LRA plus all pass fields); it writes
+  `out/dispatch/quality_report.json` and is a required preflight check.
+  Historical frame-folder metrics below are archived craft context, not an
+  alternate gate.
 
 ## How to use (per run — VARY THE CONCEPT)
 1. This engine is a REFERENCE, not a stamp. Each Dispatch must use a different visual

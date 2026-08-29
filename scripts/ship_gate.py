@@ -57,7 +57,10 @@ don't. That is the exact thing the 2026-07-31 directive forbade.
 Usage
 -----
   # after the FINAL render, rebuild evidence from it, then have the panel grade THAT
-  python3 scripts/ship_gate.py record --judges 8.5,8.7,8.9 \
+  python3 scripts/ship_gate.py record --cards \
+      out/dispatch/judge_cards/judge-1.json \
+      out/dispatch/judge_cards/judge-2.json \
+      out/dispatch/judge_cards/judge-3.json \
       --notes "what the panel said"
 
   # before upload / email / merge. exit 0 = you may ship. exit 1 = you may not.
@@ -81,6 +84,11 @@ from evidence_contract import (
 )
 from strict_json import StrictJSONError, load_path
 from preflight import PreflightContractError, require_preflight_receipt
+from video_judge_contract import (
+    VideoJudgeContractError,
+    require_three_cards,
+    rubric_contract,
+)
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "out" / "dispatch"
@@ -118,7 +126,10 @@ def atomic_json(path: Path, value):
     fd, name = tempfile.mkstemp(prefix=path.name + ".", suffix=".tmp", dir=path.parent)
     try:
         with os.fdopen(fd, "w", encoding="utf-8", newline="\n") as handle:
-            json.dump(value, handle, indent=2, ensure_ascii=False, sort_keys=True)
+            json.dump(
+                value, handle, indent=2, ensure_ascii=False, sort_keys=True,
+                allow_nan=False,
+            )
             handle.write("\n")
             handle.flush()
             os.fsync(handle.fileno())
@@ -140,27 +151,10 @@ def sha(p: Path) -> str:
 
 def rubric_facts() -> dict:
     """Return the exact immutable rubric bytes and threshold, or fail closed."""
-    if not RUBRIC.is_file() or RUBRIC.is_symlink():
-        raise GateInputError("dispatch rubric is missing or unsafe")
     try:
-        import yaml
-        cfg = yaml.safe_load(RUBRIC.read_text(encoding="utf-8"))
-    except Exception as exc:
-        raise GateInputError(f"dispatch rubric cannot be parsed: {exc}") from None
-    if not isinstance(cfg, dict) or not isinstance(cfg.get("rubric"), dict):
-        raise GateInputError("dispatch rubric must contain a rubric object")
-    threshold = cfg["rubric"].get("ship_threshold")
-    if (
-        isinstance(threshold, bool) or not isinstance(threshold, (int, float))
-        or not math.isfinite(float(threshold)) or not 0 <= float(threshold) <= 10
-    ):
-        raise GateInputError("dispatch rubric ship_threshold must be finite in 0..10")
-    return {
-        "path": "config/dispatch_rubric.yaml",
-        "bytes": RUBRIC.stat().st_size,
-        "sha256": sha(RUBRIC),
-        "ship_threshold": float(threshold),
-    }
+        return rubric_contract(root=ROOT)
+    except VideoJudgeContractError as exc:
+        raise GateInputError(str(exc)) from None
 
 
 RELEASE = ROOT / "config" / "owner_release.json"
@@ -432,19 +426,16 @@ def cmd_record(a):
         fail([f"no review evidence in {REVIEW} — the panel cannot have looked at anything. "
               f"Run scripts/build_evidence.py against THIS delivered cut."])
 
-    parts = a.judges.split(",") if isinstance(a.judges, str) else []
-    if len(parts) != 3 or any(not part.strip() for part in parts):
-        fail(["judge scores must be exactly 3 comma-separated finite numbers"])
     try:
-        judges = [float(part.strip()) for part in parts]
-    except ValueError:
-        fail(["judge scores must be comma-separated finite numbers"])
-    if len(judges) != 3 or any(not math.isfinite(score) or not 0 <= score <= 10 for score in judges):
-        fail([f"a 3-judge panel means THREE judges. Got {len(judges)}: {judges}. "
-              f"The panel was skipped on 2026-07-29 and 2026-07-30 and that is exactly "
-              f"how a failing cut reaches the owner."])
-
-    median = float(statistics.median(judges))
+        judge_cards = require_three_cards(a.cards, root=ROOT)
+    except VideoJudgeContractError as exc:
+        fail([f"video judge cards are invalid: {exc}"])
+    judge_totals = [float(card["weighted_total"]) for card in judge_cards]
+    median = float(statistics.median(judge_totals))
+    hard_blockers = [
+        {"judge_id": card["judge_id"], "blocker": blocker}
+        for card in judge_cards for blocker in card["hard_blockers"]
+    ]
 
     try:
         evidence_manifest_facts = evidence_binding(manifest)
@@ -459,6 +450,15 @@ def cmd_record(a):
         min(rubric["ship_threshold"], release["floor"])
         if release is not None else rubric["ship_threshold"]
     )
+    if hard_blockers:
+        fail([
+            f"judge {item['judge_id']} raised hard blocker: {item['blocker'].get('what')}"
+            for item in hard_blockers
+        ], median=median)
+    if median < effective_threshold:
+        fail([
+            f"panel median {median:.6f} is below immutable threshold {effective_threshold:.6f}"
+        ], median=median)
 
     duration = float(manifest["artifacts"]["vertical_hosted"]["duration_seconds"])
     sfx, sfx_problems = sfx_facts(duration_seconds=duration)
@@ -481,7 +481,8 @@ def cmd_record(a):
         "run_date": stamp["date"],
         "composition": stamp["composition"],
         "median": median,
-        "judges": judges,
+        "judge_totals": judge_totals,
+        "judge_cards": judge_cards,
         "rubric": rubric,
         "owner_release": release,
         "effective_threshold": effective_threshold,
@@ -495,7 +496,7 @@ def cmd_record(a):
         "blankness": blankness,
         "preflight": preflight_receipt,
     })
-    print(f"ship_gate: verdict recorded. median={median} judges={judges} "
+    print(f"ship_gate: verdict recorded. median={median} judge_totals={judge_totals} "
           f"threshold={effective_threshold}")
     print(f"  bound to {len(arts)} deliverables, {len(evidence_hashes)} evidence files and {sfx['count']} SFX events")
     print(f"  -> {VERDICT}")
@@ -567,7 +568,8 @@ def validate_ship_verdict(*, verify_blankness=True):
     if not isinstance(verdict, dict):
         return None, problems + ["panel verdict must be a JSON object"]
     expected_fields = {
-        "recorded_at", "run_id", "run_date", "composition", "median", "judges",
+        "recorded_at", "run_id", "run_date", "composition", "median", "judge_totals",
+        "judge_cards",
         "rubric", "owner_release", "effective_threshold", "notes", "artifacts",
         "evidence", "evidence_manifest", "manifest_digest", "media_facts", "sfx",
         "blankness", "preflight",
@@ -585,19 +587,19 @@ def validate_ship_verdict(*, verify_blankness=True):
         if verdict.get(key) != wanted:
             problems.append(f"verdict {key} does not match the current run")
 
-    judges = verdict.get("judges")
+    judge_totals = verdict.get("judge_totals")
     if (
-        not isinstance(judges, list) or len(judges) != 3
+        not isinstance(judge_totals, list) or len(judge_totals) != 3
         or any(
             isinstance(score, bool) or not isinstance(score, (int, float))
             or not math.isfinite(float(score)) or not 0 <= float(score) <= 10
-            for score in (judges if isinstance(judges, list) else [])
+            for score in (judge_totals if isinstance(judge_totals, list) else [])
         )
     ):
-        problems.append("verdict must record exactly 3 finite judge scores in 0..10")
+        problems.append("verdict must record exactly 3 finite rubric-derived judge totals in 0..10")
         computed_median = None
     else:
-        computed_median = float(statistics.median(float(score) for score in judges))
+        computed_median = float(statistics.median(float(score) for score in judge_totals))
     recorded_median = verdict.get("median")
     if (
         computed_median is None or isinstance(recorded_median, bool)
@@ -606,6 +608,19 @@ def validate_ship_verdict(*, verify_blankness=True):
         or abs(float(recorded_median) - computed_median) > 1e-9
     ):
         problems.append("verdict median is not the internally computed median of its 3 judges")
+
+    recorded_cards = verdict.get("judge_cards")
+    try:
+        paths = [card["path"] for card in recorded_cards] if isinstance(recorded_cards, list) else []
+        current_cards = require_three_cards(paths, root=ROOT)
+        if recorded_cards != current_cards:
+            problems.append("judge card bytes, totals, blockers, or bindings changed after grading")
+        elif judge_totals != [float(card["weighted_total"]) for card in current_cards]:
+            problems.append("verdict judge totals do not match the bound judge cards")
+        elif any(card["hard_blockers"] for card in current_cards):
+            problems.append("a bound judge card contains a hard blocker")
+    except (VideoJudgeContractError, KeyError, TypeError) as exc:
+        problems.append(f"bound judge cards are invalid: {exc}")
 
     try:
         current_rubric = rubric_facts()
@@ -686,7 +701,7 @@ def validate_ship_verdict(*, verify_blankness=True):
         "manifest": manifest,
         "median": computed_median,
         "threshold": effective,
-        "judges": judges,
+        "judge_totals": judge_totals,
     }, problems
 
 
@@ -704,7 +719,7 @@ def cmd_check(a):
         fail(strict_problems or ["ship verdict is unavailable"])
     median = state["median"]
     effective = state["threshold"]
-    judges = state["judges"]
+    judge_totals = state["judge_totals"]
     arts = state["verdict"]["artifacts"]
     graded_ev = state["verdict"]["evidence"]
     from ship_marker import record_ship_marker
@@ -712,7 +727,7 @@ def cmd_check(a):
     print("=" * 72)
     print("SHIP GATE: PASS  ->  SHIP NOW, DO NOT KEEP EDITING")
     print("=" * 72)
-    print(f"  panel median {median} >= {effective}   judges={judges}")
+    print(f"  panel median {median} >= {effective}   judge_totals={judge_totals}")
     print(f"  {len(arts)} deliverables hash-match the graded cut")
     print(f"  {len(graded_ev)} evidence artifacts hash-match the evidence manifest")
     return state
@@ -721,7 +736,10 @@ def main():
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
     r = sub.add_parser("record", help="bind a passing panel verdict to the current bytes")
-    r.add_argument("--judges", type=str, default="", help="comma-separated, need 3")
+    r.add_argument(
+        "--cards", nargs=3, required=True, metavar=("JUDGE_1", "JUDGE_2", "JUDGE_3"),
+        help="exactly three strict rubric-derived video judge card paths",
+    )
     r.add_argument("--notes", type=str, default="")
     r.set_defaults(fn=cmd_record)
     c = sub.add_parser("check", help="the hard gate. run before upload/email/merge")
@@ -729,7 +747,10 @@ def main():
     a = ap.parse_args()
     try:
         a.fn(a)
-    except (GateInputError, DeliverableContractError, StrictJSONError, OSError, ValueError) as exc:
+    except (
+        GateInputError, DeliverableContractError, StrictJSONError,
+        VideoJudgeContractError, OSError, ValueError,
+    ) as exc:
         fail([str(exc)])
 
 

@@ -22,6 +22,7 @@ job and this file has no opinion about it.
 import hashlib
 import json
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -32,7 +33,23 @@ from strict_json import StrictJSONError, load_path
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 RECEIPT_REL = "out/dispatch/preflight_receipt.json"
-RECEIPT_SCHEMA_VERSION = 1
+RECEIPT_SCHEMA_VERSION = 2
+
+# Conservative closed input set for every terminal required check.  These are
+# authored/mix records that older receipts accidentally omitted even though the
+# claims, captions, credits, and delivered-audio checks read them directly.
+REQUIRED_AUTHORED_INPUTS = {
+    "out/dispatch/claims.json",
+    "out/dispatch/vo_script.txt",
+    "out/dispatch/vo_script.json",
+    "out/dispatch/music_credit.json",
+    "out/dispatch/sources.json",
+    "out/dispatch/storyboard.json",
+    "out/dispatch/episode_props.json",
+    "out/dispatch/audio/vo.wav",
+    "out/dispatch/audio/words.json",
+    "out/dispatch/music_bed.wav",
+}
 
 
 class PreflightContractError(RuntimeError):
@@ -144,6 +161,50 @@ def _sha256_text(value: str) -> str:
     return hashlib.sha256(value.encode("utf-8", errors="replace")).hexdigest()
 
 
+def _external_tool_versions() -> dict:
+    """Bind executable identity/version for tools used by required checks."""
+    facts = {}
+    commands = {
+        "git": ["--version"],
+        "node": ["--version"],
+        "npx": ["--version"],
+        "ffmpeg": ["-version"],
+        "ffprobe": ["-version"],
+    }
+    for name, args in commands.items():
+        executable = shutil.which(name)
+        if not executable:
+            raise PreflightContractError(f"required preflight executable is unavailable: {name}")
+        probe_argv = [executable, *args]
+        if os.name == "nt" and Path(executable).suffix.lower() in {".cmd", ".bat"}:
+            command_processor = os.environ.get("ComSpec") or os.environ.get("COMSPEC")
+            if not command_processor:
+                raise PreflightContractError(
+                    f"{name} is a command script but the Windows command processor is unavailable"
+                )
+            probe_argv = [command_processor, "/d", "/c", executable, *args]
+        try:
+            result = subprocess.run(
+                probe_argv, capture_output=True, text=True, timeout=30,
+            )
+        except (OSError, subprocess.TimeoutExpired) as exc:
+            raise PreflightContractError(f"{name} version probe failed: {exc}") from None
+        if result.returncode != 0:
+            raise PreflightContractError(f"{name} version probe exited {result.returncode}")
+        lines = (result.stdout or result.stderr).strip().splitlines()
+        if not lines:
+            raise PreflightContractError(f"{name} returned no version")
+        facts[name] = {
+            "path": str(Path(executable).resolve()),
+            "version": lines[0].strip(),
+        }
+    facts["python"] = {
+        "path": str(Path(sys.executable).resolve()),
+        "version": sys.version.split()[0],
+    }
+    return facts
+
+
 def _atomic_json(path: Path, value: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     fd, temporary = tempfile.mkstemp(prefix=path.name + ".", suffix=".tmp", dir=path.parent)
@@ -223,32 +284,39 @@ def _current_contract_state(root=REPO):
         raise PreflightContractError(str(exc)) from None
     expected_quality_checks = [
         {"id": "delivery_manifest_v4", "exit_code": 0, "result": "pass"},
-        {"id": "mastering_audio_lineage_v1", "exit_code": 0, "result": "pass"},
+        {"id": "mastering_audio_lineage_v2", "exit_code": 0, "result": "pass"},
         {"id": "evidence_manifest_v3", "exit_code": 0, "result": "pass"},
         {"id": "sole_sfx_ledger_v3", "exit_code": 0, "result": "pass"},
+        {"id": "delivered_audio_report_v1", "exit_code": 0, "result": "pass"},
     ]
     quality_delivery = quality.get("delivery") if isinstance(quality, dict) else None
     quality_evidence = quality.get("evidence") if isinstance(quality, dict) else None
     quality_sfx = quality.get("sfx") if isinstance(quality, dict) else None
+    quality_audio = quality.get("audio_report") if isinstance(quality, dict) else None
     mastering_sfx = delivery.get("mastering", {}).get("sfx")
     if (
         not isinstance(quality, dict)
         or not isinstance(quality_delivery, dict)
         or not isinstance(quality_evidence, dict)
         or not isinstance(quality_sfx, dict)
+        or not isinstance(quality_audio, dict)
         or not isinstance(mastering_sfx, dict)
-        or quality.get("schema_version") != 2
+        or quality.get("schema_version") != 3
         or quality.get("status") != "pass"
         or quality_delivery.get("digest") != contract_digest(delivery)
         or quality.get("mastering") != delivery.get("mastering")
         or quality_evidence.get("sha256") != evidence_manifest_sha(root=base)
         or quality_sfx.get("sha256") != mastering_sfx.get("sha256")
+        or quality_audio.get("path") != "out/evidence/audio_report.json"
+        or quality_audio.get("sha256")
+            != evidence.get("artifacts", {}).get("out/evidence/audio_report.json", {}).get("sha256")
         or quality.get("checks") != expected_quality_checks
     ):
         raise PreflightContractError("quality report is not canonical or bound to current contracts")
     input_paths = {
         "out/dispatch/.run_stamp.json",
         "out/dispatch/render/render_receipt.json",
+        "out/dispatch/mastering_intent.json",
         "out/dispatch/mastering_receipt.json",
         "out/dispatch/deliverables_manifest.json",
         "out/evidence/evidence_manifest.json",
@@ -260,6 +328,7 @@ def _current_contract_state(root=REPO):
         ".claude/skills/alaska-dispatch/quality_gate.py",
         "out/dispatch/quality_report.json",
     }
+    input_paths.update(REQUIRED_AUTHORED_INPUTS)
     for entry in delivery["artifacts"].values():
         input_paths.add(entry["path"])
     for relative in evidence["artifacts"]:
@@ -282,6 +351,12 @@ def _current_contract_state(root=REPO):
     for candidate in engine_root.rglob("*"):
         if candidate.is_file() and candidate.suffix in {".ts", ".tsx"}:
             input_paths.add(candidate.resolve().relative_to(base).as_posix())
+    config_root = base / "config"
+    if not config_root.is_dir() or config_root.is_symlink():
+        raise PreflightContractError("config directory is missing or unsafe")
+    for candidate in config_root.rglob("*"):
+        if candidate.is_file() and candidate.suffix.lower() in {".json", ".yaml", ".yml", ".md"}:
+            input_paths.add(candidate.resolve().relative_to(base).as_posix())
     inputs = {relative: _safe_file_facts(base, relative) for relative in sorted(input_paths)}
 
     tool_paths = {
@@ -294,6 +369,7 @@ def _current_contract_state(root=REPO):
         "scripts/sfx_contract.py",
         "scripts/strict_json.py",
         ".claude/skills/alaska-dispatch/quality_gate.py",
+        "scripts/build_scenes.py",
     }
     for _label, argv, required in CHECKS:
         if not required:
@@ -301,7 +377,26 @@ def _current_contract_state(root=REPO):
         for value in argv:
             if isinstance(value, str) and value.endswith(".py") and not Path(value).is_absolute():
                 tool_paths.add(value.replace("\\", "/"))
+    scripts_root = base / "scripts"
+    for candidate in scripts_root.rglob("*.py"):
+        if candidate.is_file() and not candidate.name.startswith("test_"):
+            tool_paths.add(candidate.resolve().relative_to(base).as_posix())
+    skill_root = base / ".claude" / "skills" / "alaska-dispatch"
+    for candidate in skill_root.rglob("*.py"):
+        if candidate.is_file():
+            tool_paths.add(candidate.resolve().relative_to(base).as_posix())
     tools = {relative: _safe_file_facts(base, relative) for relative in sorted(tool_paths)}
+    external_tools = _external_tool_versions()
+    check_lineage = {
+        "scope_id": "closed_preflight_state_v1",
+        "inputs": sorted(inputs),
+        "tools": sorted(tools),
+        "external_tools": sorted(external_tools),
+        "checks": {
+            spec["id"]: {"scope_id": "closed_preflight_state_v1"}
+            for spec in required_check_specs()
+        },
+    }
     binding = {
         "run_id": stamp["run_id"],
         "run_date": stamp["date"],
@@ -313,7 +408,7 @@ def _current_contract_state(root=REPO):
         "evidence_manifest_bytes": evidence_path.stat().st_size,
         "evidence_manifest_sha256": evidence_manifest_sha(root=base),
     }
-    return binding, inputs, tools
+    return binding, inputs, tools, external_tools, check_lineage
 
 
 def record_preflight_receipt(results, *, root=REPO):
@@ -340,7 +435,7 @@ def record_preflight_receipt(results, *, root=REPO):
                 raise PreflightContractError(f"preflight result {spec['id']}.{key} is invalid")
         normalized.append(canonical)
     try:
-        binding, inputs, tools = _current_contract_state(root)
+        binding, inputs, tools, external_tools, check_lineage = _current_contract_state(root)
     except PreflightContractError:
         raise
     except Exception as exc:
@@ -351,6 +446,8 @@ def record_preflight_receipt(results, *, root=REPO):
         "required_checks": normalized,
         "inputs": inputs,
         "tool_sources": tools,
+        "external_tools": external_tools,
+        "check_lineage": check_lineage,
         "recorded_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
     }
     target = Path(root).resolve().joinpath(*RECEIPT_REL.split("/"))
@@ -368,11 +465,14 @@ def validate_preflight_receipt(*, root=REPO):
     if not isinstance(receipt, dict):
         return None, ["preflight receipt must be a JSON object"]
     problems = []
-    fields = {"schema_version", "binding", "required_checks", "inputs", "tool_sources", "recorded_at"}
+    fields = {
+        "schema_version", "binding", "required_checks", "inputs", "tool_sources",
+        "external_tools", "check_lineage", "recorded_at",
+    }
     if set(receipt) != fields or receipt.get("schema_version") != RECEIPT_SCHEMA_VERSION:
         problems.append("preflight receipt fields/schema are not canonical")
     try:
-        binding, inputs, tools = _current_contract_state(base)
+        binding, inputs, tools, external_tools, check_lineage = _current_contract_state(base)
     except Exception as exc:
         return receipt, problems + [f"preflight current contract state is invalid: {exc}"]
     if receipt.get("binding") != binding:
@@ -381,6 +481,10 @@ def validate_preflight_receipt(*, root=REPO):
         problems.append("preflight input bytes or hashes changed after checks")
     if receipt.get("tool_sources") != tools:
         problems.append("preflight tool source bytes or hashes changed after checks")
+    if receipt.get("external_tools") != external_tools:
+        problems.append("preflight external tool paths/versions changed after checks")
+    if receipt.get("check_lineage") != check_lineage:
+        problems.append("preflight declarative check lineage changed after checks")
     checks = receipt.get("required_checks")
     expected_specs = required_check_specs()
     if not isinstance(checks, list) or len(checks) != len(expected_specs):
@@ -420,6 +524,8 @@ def require_preflight_receipt(*, root=REPO):
         "binding": receipt["binding"],
         "required_checks": receipt["required_checks"],
         "tool_sources": receipt["tool_sources"],
+        "external_tools": receipt["external_tools"],
+        "check_lineage": receipt["check_lineage"],
     }
 
 

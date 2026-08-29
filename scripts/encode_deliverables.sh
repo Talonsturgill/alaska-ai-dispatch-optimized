@@ -5,6 +5,10 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 OUT=out/dispatch
+# Transaction boundary comes first. It removes stale success controls and old
+# outputs before any argument/source/retired-alias failure can return.
+python3 scripts/mastering_contract.py prepare
+
 MUTE="$OUT/render/video_mute.mp4"
 if [ -n "${1:-}" ] && [ "${1}" != "$MUTE" ] && [ "${1}" != "$PWD/$MUTE" ]; then
   echo "encode_deliverables: mute input must be the canonical $MUTE" >&2
@@ -95,7 +99,7 @@ awk -v i="$audio_i" -v tp="$audio_tp" 'BEGIN {
   if (tp > -1.0) {printf "encode_deliverables: true peak %.2f dBTP above -1.0\n", tp > "/dev/stderr"; exit 1}
 }'
 
-python3 scripts/mastering_contract.py record
+python3 scripts/mastering_contract.py finalize
 python3 scripts/mastering_contract.py check
 python3 scripts/deliverable_contract.py build
 python3 scripts/deliverable_contract.py check

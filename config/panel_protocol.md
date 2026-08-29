@@ -16,6 +16,25 @@ manifest. A missing, extra, stale, mutated, or independently assembled file mean
 the panel does not start. After any render, mix, encode, or evidence change, rebuild
 the pack and re-run preflight before asking a judge to score.
 
+## Terminal card contract
+
+Use the video-only scorer exactly three times with three unique lowercase ASCII
+judge IDs. Each run emits one JSON object matching
+`scripts/video_judge_contract.py`: exact current run/render/delivery/evidence/
+preflight binding; exact ordered rubric axes and weights; one finite 0..10 score
+and at least one manifest-artifact observation for every axis; a recomputable
+weighted total; and explicit evidence-bound hard blockers. A text-post score,
+scalar total, caller-supplied median, missing/extra axis, arbitrary review sheet,
+or card that names non-manifest evidence is not a video judge card.
+
+Validate each card, record each against the real panel round with
+`scripts/panel_ledger.py record`, and run `panel_ledger.py median`. The ledger
+and ship gate re-hash the card files and independently recompute all math.
+`ship_gate.py record --cards J1 J2 J3` is the only verdict-recording path, and
+`ship_gate.py check` revalidates those same current bytes before it can create a
+SHIP marker. Never fabricate a passing numeric example in documentation or use
+one as a substitute for three scorer runs.
+
 Written 2026-07-31 after a run in which the panel's numbers drifted downward across
 re-grades of a film that was measurably improving. The owner named it: "it seemed like you
 started to get some judging drift."

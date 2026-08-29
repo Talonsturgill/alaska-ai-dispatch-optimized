@@ -34,10 +34,14 @@ nothing to ship.
     python3 scripts/credits_check.py
 """
 import json
+import math
 import os
 import subprocess
 import re
 import sys
+from pathlib import Path
+
+from strict_json import StrictJSONError, load_path
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 OUT = os.path.join(REPO, "out", "dispatch")
@@ -90,20 +94,35 @@ except Exception:
 
 
 def _probe_duration(path):
-    r = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration",
-                        "-of", "csv=p=0", path], capture_output=True, text=True)
     try:
-        return float(r.stdout.strip())
-    except ValueError:
-        return None
+        r = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration",
+                            "-of", "csv=p=0", path], capture_output=True, text=True, timeout=90)
+    except (FileNotFoundError, OSError, subprocess.TimeoutExpired) as exc:
+        raise RuntimeError(f"duration probe could not run: {exc}") from None
+    if r.returncode != 0:
+        detail = (r.stderr or r.stdout or "ffprobe failed").strip().splitlines()
+        raise RuntimeError(f"duration probe failed: {detail[-1] if detail else 'unknown error'}")
+    try:
+        value = float(r.stdout.strip())
+    except (TypeError, ValueError, OverflowError):
+        raise RuntimeError("duration probe returned an invalid value") from None
+    if not math.isfinite(value) or value <= 0:
+        raise RuntimeError("duration probe returned a non-finite/non-positive value")
+    return value
 
 
 def _luma(path, t):
     """(mean, max) luma of the frame at t, off ffmpeg signalstats. (None, None) on failure."""
-    r = subprocess.run(
-        ["ffmpeg", "-v", "error", "-ss", f"{max(0.0, t):.3f}", "-i", path, "-vframes", "1",
-         "-vf", "format=gray,signalstats,metadata=print:file=-", "-f", "null", "-"],
-        capture_output=True, text=True)
+    try:
+        r = subprocess.run(
+            ["ffmpeg", "-v", "error", "-ss", f"{max(0.0, t):.3f}", "-i", path, "-vframes", "1",
+             "-vf", "format=gray,signalstats,metadata=print:file=-", "-f", "null", "-"],
+            capture_output=True, text=True, timeout=90)
+    except (FileNotFoundError, OSError, subprocess.TimeoutExpired) as exc:
+        raise RuntimeError(f"credit-frame probe could not run: {exc}") from None
+    if r.returncode != 0:
+        detail = (r.stderr or r.stdout or "ffmpeg failed").strip().splitlines()
+        raise RuntimeError(f"credit-frame probe failed: {detail[-1] if detail else 'unknown error'}")
     vals = {}
     for line in (r.stdout + r.stderr).splitlines():
         if "lavfi.signalstats.Y" in line and "=" in line:
@@ -124,11 +143,13 @@ def main() -> int:
     if not os.path.exists(props_p):
         print("credits_check: no episode_props.json. Run scripts/build_scenes.py first.")
         return 1
-    props = json.load(open(props_p))
+    props = load_path(props_p, label="episode props")
+    if not isinstance(props, dict):
+        raise StrictJSONError("episode props must be a JSON object")
     cred = props.get("credits")
 
     # ---- 1. the block exists ---------------------------------------------------------
-    if not cred:
+    if not isinstance(cred, dict) or not cred:
         print("credits_check: FAIL, episode_props.json carries no `credits` block.")
         print("  The music is CC BY 4.0 and the licence needs attribution on the work itself.")
         print("  build_scenes.py builds this from music_credit.json + sources.json; if it")
@@ -141,8 +162,17 @@ def main() -> int:
         problems.append("out/dispatch/music_credit.json is missing, so nothing can verify "
                         "the licence string that is on screen.")
     else:
-        want = (json.load(open(mc_p)).get("credit") or "").strip()
-        got = (cred.get("music") or "").strip()
+        music_credit = load_path(mc_p, label="music credit")
+        if not isinstance(music_credit, dict):
+            raise StrictJSONError("music credit must be a JSON object")
+        want_raw = music_credit.get("credit")
+        got_raw = cred.get("music")
+        if not isinstance(want_raw, str):
+            raise StrictJSONError("music credit.credit must be a string")
+        if not isinstance(got_raw, str):
+            raise StrictJSONError("episode props credits.music must be a string")
+        want = want_raw.strip()
+        got = got_raw.strip()
         if not want:
             problems.append("music_credit.json has no `credit` field.")
         elif got != want:
@@ -157,11 +187,20 @@ def main() -> int:
                                 f"or the composer requires.")
 
     src_p = os.path.join(OUT, "sources.json")
-    labels = cred.get("sources") or []
+    labels = cred.get("sources")
+    if not isinstance(labels, list) or any(
+        not isinstance(label, str) or not label.strip() for label in labels
+    ):
+        raise StrictJSONError("episode props credits.sources must be a list of non-empty strings")
     if not labels:
         problems.append("the credits carry no source labels at all.")
-    elif os.path.exists(src_p):
-        raw = json.dumps(json.load(open(src_p)))
+    elif not os.path.exists(src_p):
+        problems.append("out/dispatch/sources.json is missing, so the on-screen source labels cannot be verified.")
+    else:
+        sources = load_path(src_p, label="sources")
+        if not isinstance(sources, dict):
+            raise StrictJSONError("sources must be a JSON object")
+        raw = json.dumps(sources, ensure_ascii=False, sort_keys=True)
         # every id shown on screen must appear somewhere in sources.json. This catches a label
         # somebody typed by hand, which is the only way a wrong id can get here.
         for lab in labels:
@@ -170,7 +209,10 @@ def main() -> int:
                     problems.append(f"source label {lab!r} names {ident}, which appears "
                                     f"nowhere in sources.json.")
 
-    site = (cred.get("site") or "").strip()
+    site_raw = cred.get("site")
+    if not isinstance(site_raw, str):
+        raise StrictJSONError("episode props credits.site must be a string")
+    site = site_raw.strip()
     if "alaskaaihq.com" not in site.lower():
         problems.append(f"the credits point at {site!r} rather than alaskaaihq.com.")
 
@@ -180,7 +222,7 @@ def main() -> int:
         problems.append("DispatchDaily has no single valid registered source dependency, so "
                         "nothing can be verified as drawing the credits.")
     else:
-        src = open(ep).read()
+        src = Path(ep).read_text(encoding="utf-8")
         body = re.sub(r"/\*.*?\*/", " ", src, flags=re.S)      # comments are not renders
         body = re.sub(r"^\s*//.*$", " ", body, flags=re.M)
         # a TAG, not a substring: the first version of this check passed on "XEndCredits",
@@ -244,21 +286,22 @@ def main() -> int:
             f"If the film is over its runtime ceiling, take the seconds out of the script.")
 
     video = os.path.join(OUT, "dispatch_master_hosted.mp4")
-    if os.path.exists(video):
+    if not os.path.exists(video):
+        dwell_problems.append("the canonical hosted video is missing, so delivered credit dwell cannot be verified.")
+    else:
         dur = _probe_duration(video)
-        if dur:
-            body_end = dur - CREDITS_TAIL_S
-            for label, t in (("end of the readable window", body_end - 0.4),
-                             ("start of the readable window", body_end - CREDITS_MIN_S + 0.8)):
-                yavg, ymax = _luma(video, t)
-                if yavg is None:
-                    dwell_problems.append(f"could not sample the frame at {t:.1f}s ({label}).")
-                elif not (yavg < 30 and ymax > 200):
-                    dwell_problems.append(
-                        f"at {t:.1f}s ({label}) the frame does not look like the sign-off card "
-                        f"(luma avg {yavg:.0f}, max {ymax:.0f}; the card measures avg under 30 "
-                        f"with max above 200). The card is on screen for less than "
-                        f"{CREDITS_MIN_S:.0f}s in the delivered cut.")
+        body_end = dur - CREDITS_TAIL_S
+        for label, t in (("end of the readable window", body_end - 0.4),
+                         ("start of the readable window", body_end - CREDITS_MIN_S + 0.8)):
+            yavg, ymax = _luma(video, t)
+            if yavg is None:
+                dwell_problems.append(f"could not sample the frame at {t:.1f}s ({label}).")
+            elif not (yavg < 30 and ymax > 200):
+                dwell_problems.append(
+                    f"at {t:.1f}s ({label}) the frame does not look like the sign-off card "
+                    f"(luma avg {yavg:.0f}, max {ymax:.0f}; the card measures avg under 30 "
+                    f"with max above 200). The card is on screen for less than "
+                    f"{CREDITS_MIN_S:.0f}s in the delivered cut.")
 
     if dwell_problems:
         for d in dwell_problems:
@@ -278,4 +321,7 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    try:
+        raise SystemExit(main())
+    except (StrictJSONError, RuntimeError, OSError, TypeError, ValueError, KeyError) as exc:
+        raise SystemExit(f"credits_check: FAIL: {exc}") from None

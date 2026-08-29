@@ -37,6 +37,21 @@ in this inherited craft document are archived Phase-C design notes only. Do not
 execute them in B1. A genuinely parametric story component remains Phase C; no
 word such as "daily", "run", "deliver", or "ship" below overrides this scope.
 
+### Exactly what B1 proves mechanically
+
+B1 makes no broader objective-quality claim than the checks named here. The
+canonical quality gate proves exactly five contracts: schema-v4 delivery bytes,
+transactional mastering/audio lineage, schema-v3 evidence provenance, the sole
+schema-v3 SFX ledger, and a delivered-square audio report with passing loudness,
+true-peak, and LRA fields. `preflight.py` then requires exactly: Git identity,
+delivery manifest, evidence manifest, that quality gate, TypeScript, text fit,
+caption band, caption spelling, rendered captions, plate overlap, zoom clipping,
+claims contract, credits, and VO-claims checks. Its receipt hash-binds the closed
+input/tool set and exact results. Anything else described later—including
+say-it/show-it latency, first-frame poster grade, motion cadence, silence-dip
+craft, or taste—is either a subjective judge concern, an advisory diagnostic, or
+an archived Phase-C goal unless and until a named blocking check enforces it.
+
 ---
 
 ## B1 ROLE
@@ -236,8 +251,9 @@ fact, one at a time, by a run that remembered to. So cuts reached the panel carr
 defects a script could have named in four seconds, three judges spent twenty minutes each
 rediscovering them, and a whole fix round went on arithmetic. A checklist in a document is
 a suggestion; preflight.py is that checklist as a program. It typechecks the engine,
-measures every plated string against its plate, asserts the cut on disk is NEWER than every
-file that can change a frame, and reports the crop and dead-space meters.
+requires the exact mechanical checks listed in the B1 scope above, and atomically
+binds their results to current input and tool hashes. It never treats modification
+time alone as proof of freshness.
 
 A judge's attention is the most expensive thing in this loop. It must never be spent on
 something a regex can find.
@@ -1526,7 +1542,7 @@ watched it work.
   been seen by nobody. The reported score described a file that no longer existed. So the
   verdict is now BOUND TO A HASH:
 
-      python3 scripts/ship_gate.py record --judges <j1>,<j2>,<j3>   # after the FINAL render
+      python3 scripts/ship_gate.py record --cards <judge-1.json> <judge-2.json> <judge-3.json>
       python3 scripts/ship_gate.py check                            # before ANY delivery
 
   `record` refuses evidence older than the render it claims to describe. `check` hard-fails if
@@ -1624,7 +1640,7 @@ preview step.
    Then rebuild the review evidence from THAT encode, have the 3-judge panel grade THAT
    evidence, then:
 
-       python3 scripts/ship_gate.py record --judges <j1>,<j2>,<j3>
+       python3 scripts/ship_gate.py record --cards <judge-1.json> <judge-2.json> <judge-3.json>
        python3 scripts/ship_gate.py check
 
    `check` MUST exit 0 before a single byte is uploaded, before the local preview is built,
