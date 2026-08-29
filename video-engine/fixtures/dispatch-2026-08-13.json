@@ -1,0 +1,195 @@
+{
+  "schemaVersion": 2,
+  "episode": {
+    "id": "dispatch-2026-08-13-reconstruction",
+    "date": "2026-08-13",
+    "title": "The Machine Nobody Wrote Down",
+    "subtitle": "A source-bound parametric reconstruction of the checked-in August 13 story",
+    "provenance": {
+      "kind": "historical_reconstruction",
+      "notice": "Historical reconstruction from checked-in 2026-08-13 records; not the published cut"
+    },
+    "motion": "full"
+  },
+  "fps": 30,
+  "total": 3600,
+  "safeZones": {
+    "squareTop": 420,
+    "squareBottom": 1500,
+    "actionLeft": 72,
+    "actionRight": 1008,
+    "captionTop": 1328,
+    "captionBottom": 1484
+  },
+  "palette": {
+    "ink": "#20262B",
+    "paper": "#EEE9DE",
+    "accent": "#7B5CFF",
+    "signal": "#B24C3E"
+  },
+  "assets": [
+    {"id": "generator", "kind": "symbol", "glyph": "generator", "alt": "A field diesel generator"},
+    {"id": "battery", "kind": "symbol", "glyph": "battery", "alt": "A grid-forming battery cabinet"},
+    {"id": "award", "kind": "symbol", "glyph": "document", "alt": "A National Science Foundation award record"},
+    {"id": "network", "kind": "symbol", "glyph": "network", "alt": "A probe travelling through a microgrid"}
+  ],
+  "sources": [
+    {
+      "id": "s1",
+      "label": "NSF Award 2626692",
+      "url": "https://api.nsf.gov/services/v1/awards/2626692.json",
+      "claimIds": ["c1", "c2", "c4", "c6", "c7", "c8", "c9", "c10"]
+    },
+    {
+      "id": "s3",
+      "label": "UAF ACEP — Mariko Shirazi",
+      "url": "https://www.uaf.edu/acep/about/our-team/mariko-shirazi.php",
+      "claimIds": ["c5"]
+    },
+    {
+      "id": "s5",
+      "label": "UAF ACEP — What is a microgrid",
+      "url": "https://www.uaf.edu/acep/our-resources/what-is-a-microgrid.php",
+      "claimIds": ["c13", "c20"]
+    },
+    {
+      "id": "s6",
+      "label": "AVEC — St. Mary's Grid Bridging System",
+      "url": "https://avec.org/about/projects/st-marys-grid-bridging-system/",
+      "claimIds": ["c17"]
+    }
+  ],
+  "scenes": [
+    {
+      "id": "hook",
+      "from": 0,
+      "dur": 390,
+      "primitive": "location",
+      "eyebrow": "The missing field",
+      "title": "The plate gives you one number",
+      "body": "A generator rating plate records power. The checked-in story asks what the plate cannot tell an operator.",
+      "primaryValue": "365 kW",
+      "labels": ["power", "behavior"],
+      "sourceIds": ["s1"],
+      "assetId": "generator"
+    },
+    {
+      "id": "award",
+      "from": 390,
+      "dur": 390,
+      "primitive": "document",
+      "eyebrow": "The news peg",
+      "title": "NSF put money behind the blank",
+      "body": "Award 2626692 names a UAF-led project on data-driven tuning of hybrid diesel and inverter-based microgrids.",
+      "primaryValue": "2626692",
+      "labels": ["UAF", "award", "August 10"],
+      "sourceIds": ["s1", "s3"],
+      "assetId": "award"
+    },
+    {
+      "id": "pair",
+      "from": 780,
+      "dur": 390,
+      "primitive": "comparison",
+      "eyebrow": "One wire, two machines",
+      "title": "The battery and diesel can interact",
+      "body": "The award describes hybrid systems where a diesel generator and inverter-based resource operate together.",
+      "primaryValue": "DIESEL",
+      "secondaryValue": "BATTERY",
+      "labels": ["generator", "inverter"],
+      "sourceIds": ["s1", "s5"],
+      "assetId": "battery"
+    },
+    {
+      "id": "risk",
+      "from": 1170,
+      "dur": 390,
+      "primitive": "metric",
+      "eyebrow": "The failure mode",
+      "title": "Interaction can become oscillation",
+      "body": "The checked-in NSF record identifies sustained oscillations as a failure mode the research proposes to address.",
+      "primaryValue": "OSCILLATION",
+      "secondaryValue": "Proposed problem, not a reported outcome",
+      "labels": ["interaction", "stability"],
+      "sourceIds": ["s1"]
+    },
+    {
+      "id": "probe",
+      "from": 1560,
+      "dur": 390,
+      "primitive": "process",
+      "eyebrow": "The proposed method",
+      "title": "Ask the wire and measure the answer",
+      "body": "The proposed approach uses the battery inverter to probe the grid and infer how the generator responds.",
+      "labels": ["probe", "response", "model"],
+      "sourceIds": ["s1"],
+      "assetId": "network"
+    },
+    {
+      "id": "village",
+      "from": 1950,
+      "dur": 390,
+      "primitive": "location",
+      "eyebrow": "Alaska context",
+      "title": "St. Mary's already has a grid-bridging system",
+      "body": "AVEC documents a battery system for St. Mary's. That deployment is context, not a result of the new award.",
+      "labels": ["St. Mary's", "battery", "deployment"],
+      "sourceIds": ["s6"],
+      "assetId": "battery"
+    },
+    {
+      "id": "timeline",
+      "from": 2340,
+      "dur": 435,
+      "primitive": "timeline",
+      "eyebrow": "Tense matters",
+      "title": "The checked-in story stops before results",
+      "body": "It distinguishes an award, a proposed method, and future work. None is proof that the method succeeded.",
+      "labels": ["award", "proposal", "future work"],
+      "sourceIds": ["s1"]
+    },
+    {
+      "id": "close",
+      "from": 2775,
+      "dur": 435,
+      "primitive": "closing",
+      "eyebrow": "The question",
+      "title": "The plate still will not say",
+      "body": "The story's closing image is a machine whose behavior must be measured rather than looked up.",
+      "primaryValue": "MEASURED",
+      "labels": ["not looked up"],
+      "sourceIds": ["s1"],
+      "assetId": "generator"
+    }
+  ],
+  "captions": [
+    {"t": 1.0, "d": 4.0, "text": "The plate gives you one number."},
+    {"t": 14.0, "d": 4.0, "text": "NSF put money behind the blank."},
+    {"t": 27.0, "d": 4.0, "text": "One wire connects two machines."},
+    {"t": 40.0, "d": 4.0, "text": "Their interaction can become an oscillation."},
+    {"t": 53.0, "d": 4.0, "text": "The proposal is to ask the wire."},
+    {"t": 66.0, "d": 4.0, "text": "St. Mary's is context, not a claimed result."},
+    {"t": 79.0, "d": 4.0, "text": "The record stops before results."},
+    {"t": 93.5, "d": 4.0, "text": "Behavior has to be measured, not looked up."}
+  ],
+  "wordTimings": [
+    {"word": "plate", "start": 1.0, "end": 1.3, "lineId": "line-1"},
+    {"word": "number", "start": 1.4, "end": 1.8, "lineId": "line-1"},
+    {"word": "NSF", "start": 14.0, "end": 14.3, "lineId": "line-2"},
+    {"word": "award", "start": 14.4, "end": 14.8, "lineId": "line-2"},
+    {"word": "machines", "start": 27.0, "end": 27.5, "lineId": "line-3"},
+    {"word": "oscillation", "start": 40.0, "end": 40.7, "lineId": "line-4"},
+    {"word": "probe", "start": 53.0, "end": 53.4, "lineId": "line-5"},
+    {"word": "village", "start": 66.0, "end": 66.4, "lineId": "line-6"},
+    {"word": "future", "start": 79.0, "end": 79.4, "lineId": "line-7"},
+    {"word": "measured", "start": 93.5, "end": 94.0, "lineId": "line-8"}
+  ],
+  "credits": {
+    "frames": 390,
+    "seconds": 13,
+    "music": "NO MUSIC — PARAMETRIC COMPOSITION SMOKE FIXTURE",
+    "sources": ["NSF AWARD 2626692", "UAF.EDU", "AVEC.ORG"],
+    "sourceIds": ["s1", "s3", "s5", "s6"],
+    "site": "alaskaaihq.com"
+  }
+}

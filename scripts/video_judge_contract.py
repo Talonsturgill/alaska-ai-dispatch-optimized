@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Strict rubric-derived video judge cards for the B1 replay fixture.
+"""Strict rubric-derived video judge cards for the parametric canary film.
 
 A judge card is not a scalar score.  It is a closed measurement of one exact
 render/evidence/preflight state against every axis in the canonical dispatch

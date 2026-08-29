@@ -4,14 +4,16 @@ This canary treats identity, timing, review evidence, and distribution bytes as
 closed contracts. A familiar filename, a modification time, or a successful
 process is never proof that an artifact belongs to the current run.
 
-## Current composition limitation
+## Current composition contract
 
 `DispatchDaily` is the sole active, case-sensitive ASCII composition ID. In
-B1 it is explicitly a **2026-08-13 replay/correctness fixture**, not a generic
-daily story template. `video-engine/src/DispatchDaily.tsx` wraps the frozen
-`Ep0813` film. Historical films remain available only under explicit legacy
-IDs. Changing props can change timing and captions, but cannot author a new
-story. A genuinely parametric story-bearing template is deferred work.
+the optimization canary it is a fixed **parametric story component**. Strict
+episode props supply story, scene primitives, frame timing, captions, word
+timings, sources, credits, palette, motion mode, and semantic assets; daily TSX
+edits are forbidden. The runtime parser rejects unknown fields, broken
+references, timeline gaps, crop-unsafe constants, unsourced historical scenes,
+and synthetic fixtures that carry source bindings. Historical authored films
+remain available only under explicit legacy IDs.
 
 ## Supported runtime
 

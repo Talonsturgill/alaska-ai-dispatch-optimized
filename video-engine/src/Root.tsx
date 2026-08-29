@@ -34,7 +34,12 @@ import { Ep0808, ep0808Schema } from './Ep0808';
 import { Ep0809, ep0809Schema } from './Ep0809';
 import { Ep0812, ep0812Schema } from './Ep0812';
 import { Ep0813, ep0813Schema } from './Ep0813';
-import {DispatchDaily, dispatchDailySchema, DISPATCH_DAILY_FIXTURE} from './DispatchDaily';
+import {
+  DispatchDaily,
+  dispatchDailyDefaultProps,
+  dispatchDailyInputSchema,
+  dispatchDailyMetadata,
+} from './DispatchDaily';
 import compositionRegistry from '../../config/compositions.json';
 
 const standoffSchema = z.object({
@@ -42,12 +47,10 @@ const standoffSchema = z.object({
   noLabel: z.string(),
 });
 
-// DispatchDaily is the sole active 1080x1920 composition. Historical films remain under
-// explicit legacy/date IDs; the retired generic "Dispatch" ID is intentionally absent.
-// 2026-07-18: retimed to the Gemini-narrated VO (out/dispatch/vo_lines.json,
-// 67.52s = 2026 frames @ 30fps incl. tail; switched off the cloned voice per
-// owner). DEFAULT_BOUNDS below is the fallback; episode_props.json (from
-// scripts/build_scenes.py) carries the authoritative per-run scene timing.
+// DispatchDaily is the sole active 1080x1920 composition. It is a fixed parametric
+// engine: story, scene primitives, captions, word timings, sources and credits all
+// arrive through strict episode props. Historical authored films remain registered
+// under explicit legacy/date IDs; the retired generic "Dispatch" ID stays absent.
 export const RemotionRoot: React.FC = () => {
   const daily = compositionRegistry.compositions.DispatchDaily;
   return (
@@ -59,11 +62,9 @@ export const RemotionRoot: React.FC = () => {
         fps={daily.fps}
         width={daily.width}
         height={daily.height}
-        schema={dispatchDailySchema}
-        defaultProps={{captions: [], fixtureId: DISPATCH_DAILY_FIXTURE}}
-        calculateMetadata={({props}) => ({
-          durationInFrames: (props as {total?: number}).total ?? daily.default_duration_in_frames,
-        })}
+        schema={dispatchDailyInputSchema}
+        defaultProps={dispatchDailyDefaultProps}
+        calculateMetadata={({props}) => dispatchDailyMetadata(props)}
       />
       <Composition
         id="Dispatch0812"

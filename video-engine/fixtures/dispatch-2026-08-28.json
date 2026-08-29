@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 2,
+  "episode": {
+    "id": "dispatch-2026-08-28-synthetic-canary",
+    "date": "2026-08-28",
+    "title": "Synthetic Layout Canary — August 28",
+    "subtitle": "A non-factual fixture that exercises every reusable scene family",
+    "provenance": {
+      "kind": "synthetic_canary",
+      "notice": "Synthetic canary only; not a historical episode and not evidence of any event"
+    },
+    "motion": "full"
+  },
+  "fps": 30,
+  "total": 3600,
+  "safeZones": {
+    "squareTop": 420,
+    "squareBottom": 1500,
+    "actionLeft": 72,
+    "actionRight": 1008,
+    "captionTop": 1328,
+    "captionBottom": 1484
+  },
+  "palette": {
+    "ink": "#1E2930",
+    "paper": "#ECF0E9",
+    "accent": "#36C6A2",
+    "signal": "#FF5C7A"
+  },
+  "assets": [
+    {"id": "spark", "kind": "symbol", "glyph": "spark", "alt": "A synthetic signal icon"},
+    {"id": "document", "kind": "symbol", "glyph": "document", "alt": "A synthetic document icon"},
+    {"id": "network", "kind": "symbol", "glyph": "network", "alt": "A synthetic network icon"},
+    {"id": "clock", "kind": "symbol", "glyph": "clock", "alt": "A synthetic clock icon"}
+  ],
+  "sources": [],
+  "scenes": [
+    {
+      "id": "metric",
+      "from": 0,
+      "dur": 390,
+      "primitive": "metric",
+      "eyebrow": "Synthetic primitive 01",
+      "title": "A metric can become the visual subject",
+      "body": "Placeholder copy exercises large numerals, a progress rail, and phone-safe supporting text.",
+      "primaryValue": "42",
+      "secondaryValue": "Synthetic value — no factual meaning",
+      "labels": ["metric", "progress"],
+      "sourceIds": []
+    },
+    {
+      "id": "comparison",
+      "from": 390,
+      "dur": 390,
+      "primitive": "comparison",
+      "eyebrow": "Synthetic primitive 02",
+      "title": "Two declared values can share the frame",
+      "body": "The fixture checks equal visual weight without implying that either placeholder describes the real world.",
+      "primaryValue": "ALPHA",
+      "secondaryValue": "BETA",
+      "labels": ["placeholder A", "placeholder B"],
+      "sourceIds": []
+    },
+    {
+      "id": "timeline",
+      "from": 780,
+      "dur": 390,
+      "primitive": "timeline",
+      "eyebrow": "Synthetic primitive 03",
+      "title": "A timeline reveals steps in order",
+      "body": "These labels test deterministic progressive disclosure. They are interface samples, not dated events.",
+      "labels": ["start", "middle", "finish"],
+      "sourceIds": [],
+      "assetId": "clock"
+    },
+    {
+      "id": "process",
+      "from": 1170,
+      "dur": 390,
+      "primitive": "process",
+      "eyebrow": "Synthetic primitive 04",
+      "title": "A process can stay inside the square crop",
+      "body": "Four compact stages exercise the busiest allowed layout while preserving caption and action safe zones.",
+      "labels": ["input", "check", "shape", "output"],
+      "sourceIds": [],
+      "assetId": "network"
+    },
+    {
+      "id": "document",
+      "from": 1560,
+      "dur": 390,
+      "primitive": "document",
+      "eyebrow": "Synthetic primitive 05",
+      "title": "A record can carry the evidence beat",
+      "body": "The paper layout tests line density and checked states without presenting a real filing or quotation.",
+      "labels": ["field one", "field two", "field three"],
+      "sourceIds": [],
+      "assetId": "document"
+    },
+    {
+      "id": "quote",
+      "from": 1950,
+      "dur": 390,
+      "primitive": "quote",
+      "eyebrow": "Synthetic primitive 06",
+      "title": "Quote styling does not make text a quote",
+      "body": "This intentionally fictional line tests typography. The provenance banner prevents it from masquerading as evidence.",
+      "primaryValue": "SAMPLE WORDS",
+      "secondaryValue": "synthetic typography fixture",
+      "labels": ["not a quotation"],
+      "sourceIds": []
+    },
+    {
+      "id": "location",
+      "from": 2340,
+      "dur": 435,
+      "primitive": "location",
+      "eyebrow": "Synthetic primitive 07",
+      "title": "A semantic symbol can anchor a place beat",
+      "body": "The generic icon is supplied by props and carries alt text, with no external asset or invented location.",
+      "labels": ["symbol", "alt text", "safe crop"],
+      "sourceIds": [],
+      "assetId": "spark"
+    },
+    {
+      "id": "closing",
+      "from": 2775,
+      "dur": 435,
+      "primitive": "closing",
+      "eyebrow": "Synthetic primitive 08",
+      "title": "The same engine reaches a deterministic close",
+      "body": "Only props changed across this fixture. The component, timing contract, captions, and credits stayed fixed.",
+      "primaryValue": "DATA, NOT TSX",
+      "labels": ["fixed engine"],
+      "sourceIds": [],
+      "assetId": "spark"
+    }
+  ],
+  "captions": [
+    {"t": 1.0, "d": 4.0, "text": "This is a synthetic metric fixture."},
+    {"t": 14.0, "d": 4.0, "text": "These are synthetic comparison values."},
+    {"t": 27.0, "d": 4.0, "text": "The timeline labels are interface samples."},
+    {"t": 40.0, "d": 4.0, "text": "Four process steps stay inside the safe crop."},
+    {"t": 53.0, "d": 4.0, "text": "The document is not a real filing."},
+    {"t": 66.0, "d": 4.0, "text": "The styled words are not a real quotation."},
+    {"t": 79.0, "d": 4.0, "text": "The symbol carries accessible alt text."},
+    {"t": 93.5, "d": 4.0, "text": "Daily content belongs in data, not TSX."}
+  ],
+  "wordTimings": [
+    {"word": "synthetic", "start": 1.0, "end": 1.5, "lineId": "line-1"},
+    {"word": "metric", "start": 1.6, "end": 2.0, "lineId": "line-1"},
+    {"word": "comparison", "start": 14.0, "end": 14.6, "lineId": "line-2"},
+    {"word": "timeline", "start": 27.0, "end": 27.5, "lineId": "line-3"},
+    {"word": "process", "start": 40.0, "end": 40.4, "lineId": "line-4"},
+    {"word": "document", "start": 53.0, "end": 53.5, "lineId": "line-5"},
+    {"word": "quotation", "start": 66.0, "end": 66.5, "lineId": "line-6"},
+    {"word": "accessible", "start": 79.0, "end": 79.6, "lineId": "line-7"},
+    {"word": "data", "start": 93.5, "end": 93.8, "lineId": "line-8"}
+  ],
+  "credits": {
+    "frames": 390,
+    "seconds": 13,
+    "music": "NO MUSIC — SYNTHETIC PARAMETRIC COMPOSITION FIXTURE",
+    "sources": ["SYNTHETIC CANARY — NO FACTUAL CLAIMS"],
+    "sourceIds": [],
+    "site": "alaskaaihq.com"
+  }
+}

@@ -43,17 +43,15 @@ The setup script deliberately installs no post-commit or automatic-push hook.
 - `config/compositions.json` defines the one active composition identity.
 - `config/deliverables.json` defines the five-file distribution contract.
 - `scripts/canary_guard.py` enforces it.
-- `prompts/dispatch_routine.md` currently governs only the frozen B1
-  replay/correctness fixture. Fresh-story daily generation remains Phase C.
+- `prompts/dispatch_routine.md` governs the parametric canary while preserving
+  the correctness and safety lifecycle.
 - `video-engine/` contains the Remotion engine.
 - `CANARY_SAFETY.md` documents the boundary and failure behavior.
 - `docs/CORRECTNESS_FOUNDATION.md` documents run identity, manifested bytes,
-  and the deliberately limited `DispatchDaily` replay fixture.
+  and the strict, reusable `DispatchDaily` parametric composition.
 - `docs/TOKEN_OPTIMIZED_DAILY.md` documents the compact daily controller,
   measured context reduction, hard call/token/cost budgets, and the separate
-  weekly maintenance boundary. The controller exists, but the active Remotion
-  component remains the replay fixture until the parametric template is
-  reviewed separately.
+  weekly maintenance boundary.
 
 Production deployment must be reviewed and implemented separately in the
 production repositories. Do not weaken this lab to turn a canary into a release.
