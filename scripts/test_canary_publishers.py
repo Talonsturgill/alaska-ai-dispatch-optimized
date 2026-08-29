@@ -52,6 +52,7 @@ class PublisherBoundaryTests(unittest.TestCase):
         argv = [
             "dispatch_email.py", "--post", "missing.txt",
             "--video-url-vertical", "https://example.invalid/test.mp4",
+            "--video-url-square", "https://example.invalid/test-square.mp4",
         ]
         with mock.patch.object(sys, "argv", argv), \
              mock.patch.object(dispatch_email, "require_action", side_effect=BLOCKED), \
@@ -206,6 +207,7 @@ class PublisherBoundaryTests(unittest.TestCase):
             argv = [
                 "dispatch_email.py", "--post", str(post),
                 "--video-url-vertical", "https://example.invalid/canary.mp4",
+                "--video-url-square", "https://example.invalid/canary-square.mp4",
                 "--sources", str(sources), "--local-only", "--out-html", str(output),
             ]
             stdout = io.StringIO()
@@ -213,6 +215,8 @@ class PublisherBoundaryTests(unittest.TestCase):
                  mock.patch.object(dispatch_email, "fresh", side_effect=lambda path, check=True: path), \
                  mock.patch.object(dispatch_email, "refuse_unless_copy_is_clean"), \
                  mock.patch.object(dispatch_email, "refuse_unless_links_are_live"), \
+                 mock.patch.object(dispatch_email, "require_manifest"), \
+                 mock.patch.object(dispatch_email, "require_publication_url"), \
                  contextlib.redirect_stdout(stdout):
                 dispatch_email.main()
             rendered = output.read_bytes().decode("utf-8")

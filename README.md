@@ -38,11 +38,15 @@ The setup script deliberately installs no post-commit or automatic-push hook.
 ## Sources of truth
 
 - `config/execution_policy.json` defines the complete action policy.
+- `config/compositions.json` defines the one active composition identity.
+- `config/deliverables.json` defines the five-file distribution contract.
 - `scripts/canary_guard.py` enforces it.
 - `prompts/dispatch_routine.md` governs the canary routine until the optimized
   controller replaces it.
 - `video-engine/` contains the Remotion engine.
 - `CANARY_SAFETY.md` documents the boundary and failure behavior.
+- `docs/CORRECTNESS_FOUNDATION.md` documents run identity, manifested bytes,
+  and the deliberately limited `DispatchDaily` replay fixture.
 
 Production deployment must be reviewed and implemented separately in the
 production repositories. Do not weaken this lab to turn a canary into a release.
