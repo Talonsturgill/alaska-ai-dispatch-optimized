@@ -1,0 +1,282 @@
+{
+  "schema_version": 1,
+  "product": "Alaska AI Dispatch",
+  "cadence": "daily",
+  "timezone": "America/Anchorage",
+  "fps": 30,
+  "runtime_seconds": {
+    "minimum": 112,
+    "maximum": 130
+  },
+  "voiceover_words": {
+    "minimum": 262,
+    "maximum": 282
+  },
+  "authoring_outputs": {
+    "voiceover_text": "out/dispatch/vo_script.txt",
+    "storyboard": "out/dispatch/storyboard.json",
+    "episode_props": "out/dispatch/episode_props.json"
+  },
+  "video_formats": {
+    "master": {
+      "role": "vertical_hosted",
+      "width": 1080,
+      "height": 1920,
+      "aspect_ratio": "9:16"
+    },
+    "square": {
+      "role": "square",
+      "width": 1080,
+      "height": 1080,
+      "aspect_ratio": "1:1"
+    },
+    "mobile": {
+      "role": "mobile",
+      "width": 720,
+      "height": 1280,
+      "aspect_ratio": "9:16"
+    }
+  },
+  "forbidden_video_formats": [
+    {
+      "width": 1080,
+      "height": 1350,
+      "aspect_ratio": "4:5"
+    }
+  ],
+  "story_packet": {
+    "output": "out/dispatch/dispatch_story_packet.json",
+    "schema": "config/schemas/dispatch_story_packet.schema.json",
+    "required_carousel_files": [
+      "selection.md",
+      "claims.json",
+      "scout_merge.md",
+      "run_state.json"
+    ],
+    "maximum_estimated_tokens": 5000,
+    "minimum_claims": 3,
+    "maximum_claims": 12,
+    "maximum_sources": 12,
+    "fallback": {
+      "maximum_candidates": 5,
+      "maximum_broad_searches": 10,
+      "normal_broad_searches": 0
+    }
+  },
+  "context": {
+    "controller_prompt": "prompts/dispatch_controller.md",
+    "standing_context": "prompts/dispatch_context.md",
+    "manifest": "out/dispatch/controller_context.json",
+    "token_estimator": "ceil(utf8_bytes/4)",
+    "maximum_controller_prompt_tokens": 6000,
+    "maximum_standing_context_tokens": 6000,
+    "maximum_total_standing_tokens": 12000,
+    "cache_static_block": true,
+    "repeat_static_injection": false,
+    "broad_repository_injection": false
+  },
+  "state_machine": {
+    "state_path": "out/dispatch/controller_state.json",
+    "initial": "planning",
+    "terminal": [
+      "SHIP",
+      "BLOCKED_QUALITY"
+    ],
+    "transitions": {
+      "planning": {
+        "pass": "packet_context"
+      },
+      "packet_context": {
+        "pass": "fact_validation"
+      },
+      "fact_validation": {
+        "pass": "angle"
+      },
+      "angle": {
+        "pass": "vo_storyboard_episode_props"
+      },
+      "vo_storyboard_episode_props": {
+        "pass": "gates"
+      },
+      "gates": {
+        "pass": "render_preflight"
+      },
+      "render_preflight": {
+        "pass": "judges_round_1"
+      },
+      "judges_round_1": {
+        "pass": "SHIP",
+        "fail": "repair"
+      },
+      "repair": {
+        "pass": "judges_round_2"
+      },
+      "judges_round_2": {
+        "pass": "SHIP",
+        "fail": "BLOCKED_QUALITY"
+      }
+    },
+    "maximum_repairs": 1,
+    "evidence_minimums": {
+      "planning": 1,
+      "packet_context": 2,
+      "fact_validation": 1,
+      "angle": 1,
+      "vo_storyboard_episode_props": 3,
+      "gates": 1,
+      "render_preflight": 1,
+      "judges_round_1": 3,
+      "repair": 1,
+      "judges_round_2": 3
+    }
+  },
+  "models": {
+    "tiers": {
+      "high": "provider_high_tier",
+      "mid": "provider_mid_tier",
+      "cheap": "provider_cheap_tier"
+    },
+    "telemetry_tiers": {
+      "high": "frontier",
+      "mid": "balanced",
+      "cheap": "fast"
+    },
+    "roles": {
+      "showrunner": {
+        "tier": "high",
+        "maximum_calls": 1,
+        "maximum_input_tokens_per_call": 18000,
+        "maximum_output_tokens_per_call": 5000,
+        "allowed_phases": [
+          "angle"
+        ]
+      },
+      "fact_validator": {
+        "tier": "mid",
+        "maximum_calls": 1,
+        "maximum_input_tokens_per_call": 12000,
+        "maximum_output_tokens_per_call": 3000,
+        "allowed_phases": [
+          "fact_validation"
+        ]
+      },
+      "writer": {
+        "tier": "mid",
+        "maximum_calls": 1,
+        "maximum_input_tokens_per_call": 15000,
+        "maximum_output_tokens_per_call": 4000,
+        "allowed_phases": [
+          "vo_storyboard_episode_props"
+        ]
+      },
+      "storyboarder": {
+        "tier": "mid",
+        "maximum_calls": 1,
+        "maximum_input_tokens_per_call": 15000,
+        "maximum_output_tokens_per_call": 5000,
+        "allowed_phases": [
+          "vo_storyboard_episode_props"
+        ]
+      },
+      "production_validator": {
+        "tier": "mid",
+        "maximum_calls": 2,
+        "maximum_input_tokens_per_call": 10000,
+        "maximum_output_tokens_per_call": 2500,
+        "allowed_phases": [
+          "gates",
+          "repair"
+        ]
+      },
+      "judge": {
+        "tier": "mid",
+        "maximum_calls": 6,
+        "maximum_input_tokens_per_call": 10000,
+        "maximum_output_tokens_per_call": 2500,
+        "allowed_phases": [
+          "judges_round_1",
+          "judges_round_2"
+        ]
+      },
+      "repair_editor": {
+        "tier": "mid",
+        "maximum_calls": 1,
+        "maximum_input_tokens_per_call": 16000,
+        "maximum_output_tokens_per_call": 5000,
+        "allowed_phases": [
+          "repair"
+        ]
+      },
+      "triage": {
+        "tier": "cheap",
+        "maximum_calls": 1,
+        "maximum_input_tokens_per_call": 5000,
+        "maximum_output_tokens_per_call": 1000,
+        "allowed_phases": [
+          "gates"
+        ],
+        "optional": true
+      }
+    },
+    "normal_plan": [
+      "fact_validator",
+      "showrunner",
+      "writer",
+      "storyboarder",
+      "production_validator",
+      "judge",
+      "judge",
+      "judge"
+    ],
+    "worst_case_plan": [
+      "fact_validator",
+      "showrunner",
+      "writer",
+      "storyboarder",
+      "production_validator",
+      "triage",
+      "judge",
+      "judge",
+      "judge",
+      "repair_editor",
+      "production_validator",
+      "judge",
+      "judge",
+      "judge"
+    ]
+  },
+  "budgets": {
+    "normal_model_calls": 8,
+    "maximum_normal_model_calls": 9,
+    "worst_case_model_calls": 14,
+    "maximum_worst_case_model_calls": 14,
+    "hard_model_call_cap": 15,
+    "maximum_uncached_input_tokens": 95000,
+    "maximum_cache_read_tokens": 220000,
+    "maximum_output_tokens": 36000,
+    "maximum_cost_usd": 10.0,
+    "telemetry": "out/dispatch/token_telemetry.jsonl",
+    "reserve_before_call": true,
+    "stop_on_any_budget_breach": true
+  },
+  "daily_scope": {
+    "snapshot": "out/dispatch/daily_scope_snapshot.json",
+    "require_clean_source_tree": true,
+    "allowed_runtime_prefixes": [
+      "out/dispatch/"
+    ],
+    "forbidden_prefixes": [
+      "prompts/",
+      ".claude/agents/",
+      "scripts/",
+      "config/",
+      "video-engine/src/lib/"
+    ],
+    "forbidden_exact_paths": [
+      "video-engine/src/DispatchDaily.tsx",
+      "video-engine/src/Root.tsx"
+    ],
+    "weekly_maintenance_is_separate": true,
+    "daily_controller_may_enter_maintenance": false
+  }
+}

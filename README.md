@@ -49,6 +49,11 @@ The setup script deliberately installs no post-commit or automatic-push hook.
 - `CANARY_SAFETY.md` documents the boundary and failure behavior.
 - `docs/CORRECTNESS_FOUNDATION.md` documents run identity, manifested bytes,
   and the deliberately limited `DispatchDaily` replay fixture.
+- `docs/TOKEN_OPTIMIZED_DAILY.md` documents the compact daily controller,
+  measured context reduction, hard call/token/cost budgets, and the separate
+  weekly maintenance boundary. The controller exists, but the active Remotion
+  component remains the replay fixture until the parametric template is
+  reviewed separately.
 
 Production deployment must be reviewed and implemented separately in the
 production repositories. Do not weaken this lab to turn a canary into a release.
