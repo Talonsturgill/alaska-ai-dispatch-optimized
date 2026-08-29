@@ -3,9 +3,12 @@
 
 from __future__ import annotations
 
+import contextlib
+import io
 import json
 import os
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 from unittest import mock
@@ -127,6 +130,148 @@ class PublisherBoundaryTests(unittest.TestCase):
             self.assertEqual(upload_video.main(), 1)
         network.assert_not_called()
 
+    def test_media_branch_override_is_rejected_before_guard_or_io(self):
+        with mock.patch.dict(os.environ, {"DISPATCH_MEDIA_BRANCH": "anything"}), \
+             mock.patch.object(upload_video, "require_canary_origin") as origin, \
+             mock.patch.object(upload_video.os.path, "getsize") as getsize, \
+             mock.patch.object(upload_video.tempfile, "mkdtemp") as mkdtemp, \
+             mock.patch.object(upload_video, "sh") as shell:
+            with self.assertRaisesRegex(RuntimeError, "overrides are forbidden"):
+                upload_video.via_github("missing.mp4", "safe.mp4")
+        origin.assert_not_called()
+        getsize.assert_not_called()
+        mkdtemp.assert_not_called()
+        shell.assert_not_called()
+
+    def test_media_names_are_conservative_basenames(self):
+        self.assertEqual(
+            upload_video.media_name("dispatch-2026-08-28-master", "master.mp4"),
+            "dispatch-2026-08-28-master.mp4",
+        )
+        hostile = (
+            "../escape.mp4",
+            "..\\escape.mp4",
+            "/absolute.mp4",
+            "C:\\absolute.mp4",
+            "nested/name.mp4",
+            "nested\\name.mp4",
+            "double..dot.mp4",
+            "control\nname.mp4",
+            "\x00name.mp4",
+            "Qargiŋ.mp4",
+            "a" * 129 + ".mp4",
+            "",
+            ".",
+            "..",
+        )
+        for name in hostile:
+            with self.subTest(name=repr(name)):
+                with self.assertRaises(ValueError):
+                    upload_video.media_name(name, "master.mp4")
+
+    def test_hostile_media_name_stops_main_before_publisher(self):
+        argv = [
+            "upload_video.py", "--file", "missing.mp4", "--name", "../escape.mp4"
+        ]
+        with mock.patch.object(sys, "argv", argv), \
+             mock.patch.object(upload_video, "via_github") as publisher, \
+             mock.patch.object(upload_video, "verify") as verify:
+            self.assertEqual(upload_video.main(), 2)
+        publisher.assert_not_called()
+        verify.assert_not_called()
+
+    def test_dispatch_preview_round_trips_utf8_alaska_text(self):
+        alaska_text = "Qargiŋ and Łingít knowledge belong in the Alaska record."
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            post = root / "post.txt"
+            sources = root / "sources.json"
+            output = root / "dispatch-preview.html"
+            post.write_text(alaska_text, encoding="utf-8")
+            sources.write_text(
+                json.dumps(
+                    {
+                        "sources": [
+                            {
+                                "url": "https://example.invalid/alaska",
+                                "title": "Łingít source",
+                                "note": "Qargiŋ evidence",
+                            }
+                        ]
+                    },
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+            argv = [
+                "dispatch_email.py", "--post", str(post),
+                "--video-url-vertical", "https://example.invalid/canary.mp4",
+                "--sources", str(sources), "--local-only", "--out-html", str(output),
+            ]
+            stdout = io.StringIO()
+            with mock.patch.object(sys, "argv", argv), \
+                 mock.patch.object(dispatch_email, "fresh", side_effect=lambda path, check=True: path), \
+                 mock.patch.object(dispatch_email, "refuse_unless_copy_is_clean"), \
+                 mock.patch.object(dispatch_email, "refuse_unless_links_are_live"), \
+                 contextlib.redirect_stdout(stdout):
+                dispatch_email.main()
+            rendered = output.read_bytes().decode("utf-8")
+        self.assertIn(alaska_text, rendered)
+        self.assertIn("Łingít source", rendered)
+        self.assertNotIn('"html_body"', stdout.getvalue())
+
+    def test_weekly_preview_round_trips_utf8_alaska_text(self):
+        alaska_text = "Qargiŋ and Łingít voices stay intact in the local preview."
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            post = root / "post.md"
+            image = root / "image.png"
+            sources = root / "sources.json"
+            score = root / "score.json"
+            output = root / "weekly-preview.html"
+            post.write_text(alaska_text, encoding="utf-8")
+            image.write_bytes(b"not-a-render-test")
+            sources.write_text(
+                json.dumps(
+                    {
+                        "sources": [
+                            {
+                                "url": "https://example.invalid/alaska",
+                                "outlet": "Łingít archive",
+                                "story_title": "Qargiŋ record",
+                            }
+                        ]
+                    },
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+            score.write_text(
+                json.dumps(
+                    {
+                        "ship": True,
+                        "criteria": [],
+                        "weighted_total": 9,
+                        "threshold": 8,
+                    },
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+            argv = [
+                "gmail_draft.py", "--post-md", str(post), "--image", str(image),
+                "--sources", str(sources), "--score", str(score),
+                "--date", "2026-08-28", "--branch", "canary",
+                "--local-only", "--out-html", str(output),
+            ]
+            stdout = io.StringIO()
+            with mock.patch.object(sys, "argv", argv), contextlib.redirect_stdout(stdout):
+                gmail_draft.main()
+            rendered = output.read_bytes().decode("utf-8")
+        self.assertIn(alaska_text, rendered)
+        self.assertIn("Łingít archive", rendered)
+        self.assertNotIn('"html_body"', stdout.getvalue())
+
     def test_setup_has_no_auto_push_hook_and_connectors_are_denied(self):
         setup = (ROOT / "scripts" / "setup_env.sh").read_text(encoding="utf-8")
         self.assertNotIn("core.hooksPath", setup)
@@ -141,6 +286,41 @@ class PublisherBoundaryTests(unittest.TestCase):
             self.assertIn("mcp__github", permissions["deny"])
             self.assertNotIn("mcp__Gmail", permissions["allow"])
             self.assertNotIn("mcp__github", permissions["allow"])
+
+    def test_active_guidance_has_no_legacy_outward_instructions(self):
+        guidance = "\n".join(
+            (ROOT / path).read_text(encoding="utf-8")
+            for path in (
+                "CLAUDE.md",
+                "prompts/dispatch_routine.md",
+                "prompts/routine_instructions.md",
+            )
+        ).lower()
+        forbidden = (
+            "gmail",
+            '"to": "me"',
+            "talonsturgill/alaska-ai-weekly",
+            "talonsturgill/alaskaaicarousels",
+            "spend freely",
+            "git push",
+            "git fetch",
+            "git checkout",
+            "auto-merge",
+            "merged with",
+            "single pr",
+            "handoff pr",
+            "push that branch",
+        )
+        for phrase in forbidden:
+            with self.subTest(phrase=phrase):
+                self.assertNotIn(phrase, guidance)
+
+        legacy_pointer = (
+            ROOT / "prompts" / "routine_instructions.md"
+        ).read_text(encoding="utf-8")
+        self.assertIn("non-authoritative compatibility pointer", legacy_pointer)
+        self.assertIn("prompts/dispatch_routine.md", legacy_pointer)
+        self.assertLessEqual(len(legacy_pointer.splitlines()), 20)
 
 
 if __name__ == "__main__":

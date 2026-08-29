@@ -7,7 +7,7 @@ The canary has exactly one upload destination: the `dispatch-media` branch of
 S3, temporary-host, or production-repository fallback. A failed canary push is
 a failed upload and remains local.
 
-Prints `HOST=permanent|temporary` to stderr and self-verifies the URL is an OPENABLE media link
+Prints `HOST=permanent` to stderr and self-verifies the URL is an OPENABLE media link
 (200 + correct extension + full content-length, not just any 200) before printing it. A --name
 without an extension is auto-corrected to the source file's extension, so a hosted link can never
 be an extensionless octet-stream blob that won't open.
@@ -20,6 +20,9 @@ import argparse, os, subprocess, sys, tempfile, re, shutil
 from pathlib import Path
 
 from canary_guard import require_action, require_canary_origin
+
+MEDIA_BRANCH = "dispatch-media"
+MEDIA_NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$")
 
 def sh(cmd, **kw): return subprocess.run(cmd, capture_output=True, text=True, **kw)
 
@@ -36,6 +39,11 @@ def media_email():
 
 def via_github(file, name):
     """git-push the file to the dispatch-media branch; return its permanent raw URL."""
+    if "DISPATCH_MEDIA_BRANCH" in os.environ:
+        raise RuntimeError(
+            "DISPATCH_MEDIA_BRANCH overrides are forbidden; the canary branch is fixed"
+        )
+    name = media_name(name, file)
     root_path = Path(__file__).resolve().parent.parent
     repository = require_canary_origin(root_path)
     require_action("github_media_publish", repository)
@@ -43,7 +51,7 @@ def via_github(file, name):
         raise RuntimeError("file >99MB exceeds GitHub's push limit; encode a smaller canary artifact")
     root = str(root_path)
     owner, repo = repository.split("/", 1)
-    branch = os.environ.get("DISPATCH_MEDIA_BRANCH", "dispatch-media")
+    branch = MEDIA_BRANCH
     wt = tempfile.mkdtemp(prefix="media_wt_")
     try:
         sh(["git", "-C", root, "fetch", "origin", branch])
@@ -71,15 +79,31 @@ def via_github(file, name):
     finally:
         sh(["git", "-C", root, "worktree", "remove", "--force", wt])
 
-def ensure_ext(name, file):
-    """Force the hosted name to carry the SOURCE file's real extension. Without an extension,
+def media_name(name, file):
+    """Return one conservative media basename with the source extension.
+
+    Separators, traversal markers, absolute paths, control characters, Unicode,
+    shell punctuation, and oversized names are refused before any repository or
+    filesystem operation. Without an extension,
     raw.githubusercontent serves the file as application/octet-stream with nosniff, so a browser
     downloads an extensionless blob that won't open in any player (the 2026-07-21 bug: a --name
     without '.mp4' shipped a dead link). If --name already ends with the right extension, keep it;
     otherwise append it (never silently host an extensionless or wrong-extension media file)."""
+    if not isinstance(name, str) or not name or name != name.strip():
+        raise ValueError("media name must be a non-empty canonical basename")
+    if name in {".", ".."} or ".." in name or "/" in name or "\\" in name:
+        raise ValueError("media name may not contain separators or traversal markers")
+    if os.path.isabs(name) or re.match(r"^[A-Za-z]:", name):
+        raise ValueError("media name may not be absolute")
+    if any(ord(char) < 0x20 or ord(char) == 0x7F for char in name):
+        raise ValueError("media name may not contain control characters")
     ext = os.path.splitext(file)[1]  # e.g. ".mp4" / ".png"
     if ext and not name.lower().endswith(ext.lower()):
         name = name + ext
+    if not MEDIA_NAME_RE.fullmatch(name):
+        raise ValueError(
+            "media name must be 1 to 128 ASCII letters, numbers, dots, underscores, or hyphens"
+        )
     return name
 
 def verify(url, file):
@@ -113,7 +137,11 @@ def main():
     ap.add_argument("--no-github", action="store_true",
                     help="disable the sole canary publisher and keep the file local")
     a = ap.parse_args()
-    name = ensure_ext(a.name or os.path.basename(a.file), a.file)
+    try:
+        name = media_name(a.name or os.path.basename(a.file), a.file)
+    except ValueError as exc:
+        print(f"REFUSING MEDIA NAME: {exc}", file=sys.stderr)
+        return 2
     if a.no_github:
         print("CANARY: upload disabled by --no-github; file remains local", file=sys.stderr)
         return 1

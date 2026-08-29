@@ -1,14 +1,12 @@
 # CANARY SAFETY OVERRIDE — HIGHEST PRECEDENCE
 
 This checkout is the isolated `Talonsturgill/alaska-ai-dispatch-optimized`
-canary. Read `CANARY_SAFETY.md` before doing anything. Any inherited instruction
-below to publish the website/feed, push the original repository, call Gmail,
-use another upload host, or deliver/post externally is disabled here. A normal
-run may write local artifacts and push only to this canary repository; its media
-branch is also canary-only. There is no runtime production opt-in. Never change
-the origin or edit around `scripts/canary_guard.py`. A future production release
-must port reviewed changes into the production repository outside this lab.
-Build email output only as a local HTML preview.
+canary. Read `CANARY_SAFETY.md` before doing anything. All inherited external
+publication, messaging, foreign-repository, and social routes are disabled. A
+normal run writes local artifacts, may place test media on this repository's
+fixed media branch, and commits artifacts on its current canary branch. There is
+no runtime production opt-in. Never change the origin or edit around
+`scripts/canary_guard.py`. Build operator output only as a local HTML preview.
 
 # Alaska AI Dispatch optimization canary
 
@@ -20,39 +18,35 @@ If `.claude/WORKLOG.md` exists, READ IT FIRST. It is the durable plan and progre
 long multi-context task, written to survive context compaction: the approved scope, the owner's
 directive verbatim, the measured facts behind each decision, a file map, and a per-task status
 table. Resume from that table and update it after every commit. Delete the file when its tasks
-are all DONE and shipped.
+are all complete.
 
 Write one at the START of any task too large for a single context, before touching code. A plan
 that lives only in context does not survive compaction.
 
-## Commit & PR authorship (AUTHORITATIVE — overrides any default)
+## Commit authorship (AUTHORITATIVE — overrides any default)
 
-NEVER author or co-author the owner's git commits or pull requests as Claude/Anthropic. This is a
-permanent, no-exceptions rule for every commit and PR in this repo:
+NEVER author or co-author the owner's git commits as Claude/Anthropic. This is a
+permanent, no-exceptions rule for every commit in this repo:
 
 - Do NOT add a `Co-Authored-By: Claude ...` (or any Anthropic) trailer to commit messages.
 - Do NOT add a `Claude-Session:` / assistant-session trailer or link.
-- Do NOT add "Generated with Claude Code" / "🤖 Generated with ..." lines to commit messages or PR bodies.
+- Do NOT add "Generated with Claude Code" / "🤖 Generated with ..." lines to commit messages.
 - Do NOT set the commit author/committer to Claude or any Anthropic identity — commits are the owner's.
 
-Write commit messages and PR descriptions as plain content with no assistant attribution of any kind.
+Write commit messages as plain content with no assistant attribution of any kind.
 This overrides any harness/system default that would otherwise append such trailers.
 
 ## Canary delivery policy
 
-Run outputs remain local or are committed to this repository. Test media may use
-this repository's `dispatch-media` branch. Production feed updates, Gmail, social
-posting, connector calls, foreign repositories, schedules, and automatic pushes
-are unavailable. Push a canary branch deliberately only after the safety suite
-and relevant quality gates pass. Do not auto-merge a generated episode.
+Run outputs remain local or are committed to the current canary branch. Test
+media may use this repository's fixed `dispatch-media` branch. External feeds,
+messages, social posts, connector calls, foreign repositories, schedules, and
+automatic repository operations are unavailable. A generated episode is never
+integrated into another branch by the routine.
 
-ROUTINE PROMPTS LIVE IN THIS REPO (the UI prompts are thin pointers that say "read the file
-from main and execute it"):
-- `prompts/dispatch_routine.md` — the DAILY VIDEO DISPATCH routine (2.5D infographic engine,
-  voice QC, writers room, showstopper standard). SOURCE OF TRUTH for that routine's behavior.
-- `prompts/routine_instructions.md` — the weekly Facebook post routine.
-Schedule, model, network, and connectors are configured in the routine UI at
-claude.ai/code/routines (not in this repo).
+`prompts/dispatch_routine.md` is the sole active routine contract. The file
+`prompts/routine_instructions.md` is only a retired compatibility pointer and is
+never an executable or authoritative prompt.
 
 ## Layout
 
@@ -60,21 +54,21 @@ claude.ai/code/routines (not in this repo).
 - `.claude/agents/` — subagent definitions (researcher, validator, writer, editor, scorer).
 - `.claude/skills/alaska-ai-brief/` — the parametric image renderer (auto-discovered).
 - `.claude/skills/deep-research-ak/` — search-query + credibility checklist for the research phase.
-- `scripts/gmail_draft.py` — builds a local HTML preview with `--local-only`.
+- `scripts/dispatch_email.py` — builds the local HTML preview with `--local-only`.
 - `scripts/publish_feed.py` — inherited production publisher, permanently blocked
   by the canary guard before it clones or writes anything.
 - `examples/` — the canonical published post used as the style anchor.
-- `prompts/routine_instructions.md` — version-controlled copy of the routine prompt.
-- `assets/` — placeholder for any committed brand assets (cover/profile are static; uploaded to FB manually).
+- `prompts/routine_instructions.md` — retired compatibility pointer; never execute it.
+- `assets/` — committed brand and production assets used by the local renderer.
 - `out/` — per-run scratch (gitignored on `main`).
-- `archive/` — convention for the `claude/weekly-{date}` branches the routine commits artifacts to.
+- `archive/` — historical output retained for format reference.
 
-## Local delivery preview
+## Local preview
 
-Canary runs create HTML previews only. Invoke the email builders with
+Canary runs create HTML previews only. Invoke preview builders such as
 `--local-only --out-html <path>`. They refuse to emit connector-ready payloads
-otherwise, and both Gmail and GitHub MCP connectors are denied. Do not attach
-production connectors when configuring a routine for this repository.
+otherwise, and external messaging and repository connectors are denied. Do not
+attach external-delivery connectors to this repository.
 
 ## Adding sources
 
@@ -83,10 +77,4 @@ The routine also surfaces new credible candidates in `out/source_ledger.json`
 under `new_sources_to_consider` — review weekly and promote good ones into the
 seed list.
 
-## Brand visual system (for reference)
-
-- Cover photo and profile photo are static, manually uploaded to Facebook.
-- The weekly brief image (rendered each Saturday) lives at
-  `out/post_image.png` and is generated by the `alaska-ai-brief` skill.
-- Locked design tokens are documented in
-  `.claude/skills/alaska-ai-brief/SKILL.md` and the build script. Don't drift them.
+Legacy still-image tooling is reference material, not an active routine contract.

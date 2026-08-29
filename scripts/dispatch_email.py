@@ -337,7 +337,7 @@ def main():
     def _music_default():
         p = Path(__file__).resolve().parent.parent / "out" / "dispatch" / "music_credit.json"
         try:
-            return json.loads(p.read_text()).get("credit", "")
+            return json.loads(p.read_text(encoding="utf-8")).get("credit", "")
         except Exception:
             return ""
 
@@ -370,7 +370,7 @@ def main():
             sys.exit(f"dispatch_email: {exc}\nUse --local-only --out-html <path> for a canary preview.")
     chk = not a.no_freshness_check
     try:
-        post = Path(fresh(a.post, check=chk)).read_text().strip()
+        post = Path(fresh(a.post, check=chk)).read_text(encoding="utf-8").strip()
     except StaleArtifactError as e:
         sys.exit(f"REFUSING TO BUILD DRAFT: --post is not from this run.\n  {e}")
     # Lint the string, not a path. See refuse_unless_copy_is_clean for why that distinction
@@ -397,7 +397,9 @@ def main():
         sys.exit("REFUSING TO BUILD DRAFT: --sources is required and must point at this run's "
                  "sources.json (the email must carry every source inline).")
     try:
-        src_data = json.loads(Path(fresh(a.sources, check=chk)).read_text())
+        src_data = json.loads(
+            Path(fresh(a.sources, check=chk)).read_text(encoding="utf-8")
+        )
     except StaleArtifactError as e:
         sys.exit(f"REFUSING TO BUILD DRAFT: --sources is not from this run.\n  {e}")
     sources, sourcing_note = parse_sources(src_data)
@@ -408,7 +410,7 @@ def main():
                   a.voice or "(unset)", a.music or "(unset)", sources, a.score, a.note, a.temporary, a.date, a.title,
                   a.upgrades, sourcing_note)
     if a.out_html:
-        Path(a.out_html).write_text(html); print("wrote", a.out_html)
+        Path(a.out_html).write_text(html, encoding="utf-8"); print("wrote", a.out_html)
     if a.local_only:
         print(f"CANARY LOCAL ONLY: Gmail payload suppressed; preview={a.out_html}")
         return

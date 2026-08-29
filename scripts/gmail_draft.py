@@ -115,10 +115,10 @@ def main():
                 f"gmail_draft: {exc}\nUse --local-only --out-html <path> for a canary preview."
             ) from exc
 
-    post_text = Path(args.post_md).read_text()
+    post_text = Path(args.post_md).read_text(encoding="utf-8")
     image_b64 = base64.b64encode(Path(args.image).read_bytes()).decode("ascii")
-    sources = json.loads(Path(args.sources).read_text())
-    score = json.loads(Path(args.score).read_text())
+    sources = json.loads(Path(args.sources).read_text(encoding="utf-8"))
+    score = json.loads(Path(args.score).read_text(encoding="utf-8"))
 
     html = render(post_text, image_b64, sources, score, args.date, args.branch)
     if args.out_html:
