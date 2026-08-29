@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "baseline_id": "current_routine_7902a697",
+  "source_commit": "7902a697948c430d99347f5018cdd648e11884d1",
+  "estimator": {
+    "id": "utf8_bytes_div_4_ceiling_v1",
+    "description": "Deterministic model-agnostic estimate: ceil(exact committed UTF-8 blob bytes / 4)."
+  },
+  "standing_context": [
+    {
+      "path": "CLAUDE.md",
+      "bytes": 4229,
+      "sha256": "22e1a88088c5b4db028ed218a2de55c783c650b46dbcc19a1170b432a8bce33f",
+      "estimated_tokens": 1058
+    },
+    {
+      "path": "CANARY_SAFETY.md",
+      "bytes": 3281,
+      "sha256": "67b8ffa9ee05b09f50aff3ea7e169e7f935ed402f57843372ad20bb40d590457",
+      "estimated_tokens": 821
+    },
+    {
+      "path": "prompts/dispatch_routine.md",
+      "bytes": 131387,
+      "sha256": "c3d428fc4c8979da0da745f8e7e4ea04b714158c530ea69c2591ef5c58ef3882",
+      "estimated_tokens": 32847
+    }
+  ],
+  "referenced_context": [
+    {
+      "path": "docs/craft/INFOGRAPHIC_2_5D.md",
+      "bytes": 5405,
+      "sha256": "722c5ec7f985155f7fb91fa49a6019b0faee1506bc55df66fa76f9482969d0e2",
+      "estimated_tokens": 1352
+    },
+    {
+      "path": "docs/craft/DIRECTORS_ROOM.md",
+      "bytes": 4678,
+      "sha256": "009fcd3641b5bca9ff6ce1fbc2411de2ebaf56b98c98517e228108c0859e0b88",
+      "estimated_tokens": 1170
+    },
+    {
+      "path": "docs/craft/DISPATCH_STANDARD.md",
+      "bytes": 14633,
+      "sha256": "319faa80b30a5507e33f60f117104ebcf144d9c308a1b79a15fb89868a98d1db",
+      "estimated_tokens": 3659
+    },
+    {
+      "path": "docs/craft/ENGAGEMENT.md",
+      "bytes": 15845,
+      "sha256": "e99d4fa9d8c2b4e564ac2be46eeb62ea3d06258d31b0c1247571dff35a621881",
+      "estimated_tokens": 3962
+    },
+    {
+      "path": "docs/craft/VO_DIRECTION.md",
+      "bytes": 11767,
+      "sha256": "f25f7fe5f06d6f62d7bbebd633e328789b2e6e91b059874007364e615f0c2fbb",
+      "estimated_tokens": 2942
+    },
+    {
+      "path": "video-engine/src/lib/ASSET_MANIFEST.md",
+      "bytes": 80827,
+      "sha256": "ced853f831197dc7777393ee87c6a78e48c20ce7b1024492049035e6724d76b4",
+      "estimated_tokens": 20207
+    },
+    {
+      "path": "config/brand.yaml",
+      "bytes": 8234,
+      "sha256": "8621b7cc4a6ca492f472fe1e74f1bc99628e392c0519c7dfc322e1a663de9cab",
+      "estimated_tokens": 2059
+    },
+    {
+      "path": "config/state.yaml",
+      "bytes": 62523,
+      "sha256": "9fd14bcb6bd466d5385ea762be239083e4e4b62e4c95ab42a8c66831a9c41519",
+      "estimated_tokens": 15631
+    },
+    {
+      "path": "config/dispatch_rubric.yaml",
+      "bytes": 8749,
+      "sha256": "22db9efd06e33c41b3c20f85dd2b03998f1df5c50e2164f268a6b116aaad2b06",
+      "estimated_tokens": 2188
+    },
+    {
+      "path": "config/panel_protocol.md",
+      "bytes": 5792,
+      "sha256": "f6fe1490f8f670cacb26066d81200850e7c7ade7e8d180c07a6c90e1dedaded7",
+      "estimated_tokens": 1448
+    },
+    {
+      "path": ".claude/agents/researcher.md",
+      "bytes": 2643,
+      "sha256": "b7afd7cb66a913a523259eff186600704fbf7cdb96f10bb45ef031fcbfd04911",
+      "estimated_tokens": 661
+    },
+    {
+      "path": ".claude/agents/validator.md",
+      "bytes": 1322,
+      "sha256": "81f6c2d844ee52d9b20016a041052165cb0339060fe5481f802e01e53bdcd472",
+      "estimated_tokens": 331
+    },
+    {
+      "path": ".claude/agents/writer.md",
+      "bytes": 5373,
+      "sha256": "95ddbcb7e31f750aee5808dc90affd88f011adde10e568c435735216aa13ddf5",
+      "estimated_tokens": 1344
+    },
+    {
+      "path": ".claude/agents/editor.md",
+      "bytes": 2154,
+      "sha256": "e577b3167d01f7963f5ed49742308505621f706779796e9a74a4c222dd25f3e4",
+      "estimated_tokens": 539
+    },
+    {
+      "path": ".claude/agents/scorer.md",
+      "bytes": 3303,
+      "sha256": "d42fc9ae839f627f822ebbca03d03c70ebda7db4add436ccc4305687f0bb5978",
+      "estimated_tokens": 826
+    },
+    {
+      "path": ".claude/agents/storyboard-critic.md",
+      "bytes": 13147,
+      "sha256": "fac8bb56f2fc4b250922a19a817f792d47d0a1bdc108e33c60db599b041201ed",
+      "estimated_tokens": 3287
+    },
+    {
+      "path": ".claude/agents/flow-critic.md",
+      "bytes": 7828,
+      "sha256": "0531fd4bcc742234fa416263962858d152d380908d70cb9ca9edb4b4be7c8114",
+      "estimated_tokens": 1957
+    },
+    {
+      "path": ".claude/agents/vo-director.md",
+      "bytes": 3952,
+      "sha256": "197ce2b41ac80c45547ae973f6d149147e0baa155a276616b59bfdc3319381d1",
+      "estimated_tokens": 988
+    },
+    {
+      "path": ".claude/agents/dispatch-fixer.md",
+      "bytes": 965,
+      "sha256": "a3793749c100f693233f4ddc5679b14aaff28119f9daf46ec5ee2168ce7db142",
+      "estimated_tokens": 242
+    }
+  ],
+  "call_estimate_basis": [
+    {
+      "path": "prompts/dispatch_routine.md",
+      "line_ranges": "367-372, 645-672, 767-809, 812-870, 1107-1201, 1508-1555, 1558-1608",
+      "note": "Routine caps and named research, validation, angle, treatment, critic, panel, and caption-review calls."
+    },
+    {
+      "path": "prompts/dispatch_routine.md",
+      "line_ranges": "1348-1407, 1508-1555",
+      "note": "One bounded repair pass adds one fixer, two critics, and three re-judges in the comparative worst-case estimate."
+    },
+    {
+      "path": ".claude/agents/scorer.md",
+      "line_ranges": "1-55",
+      "note": "Terminal panel uses exactly three frontier-tier judge calls."
+    }
+  ],
+  "scenarios": {
+    "normal": {
+      "call_groups": [
+        {"id": "orchestrator", "count": 1, "model_tier": "frontier", "prompt_tokens": 34726, "input_tokens": 12000, "output_tokens": 7000, "cache_read_tokens": 0, "cache_write_tokens": 0},
+        {"id": "researchers", "count": 4, "model_tier": "frontier", "prompt_tokens": 3500, "input_tokens": 1200, "output_tokens": 1800, "cache_read_tokens": 0, "cache_write_tokens": 0},
+        {"id": "validators", "count": 2, "model_tier": "frontier", "prompt_tokens": 2200, "input_tokens": 6000, "output_tokens": 1600, "cache_read_tokens": 0, "cache_write_tokens": 0},
+        {"id": "angle_analysts", "count": 4, "model_tier": "frontier", "prompt_tokens": 1800, "input_tokens": 7000, "output_tokens": 1500, "cache_read_tokens": 0, "cache_write_tokens": 0},
+        {"id": "angle_synthesis", "count": 1, "model_tier": "frontier", "prompt_tokens": 1800, "input_tokens": 6000, "output_tokens": 1800, "cache_read_tokens": 0, "cache_write_tokens": 0},
+        {"id": "treatment_writers", "count": 4, "model_tier": "frontier", "prompt_tokens": 2500, "input_tokens": 6000, "output_tokens": 2200, "cache_read_tokens": 0, "cache_write_tokens": 0},
+        {"id": "treatment_scorer", "count": 1, "model_tier": "frontier", "prompt_tokens": 1800, "input_tokens": 10000, "output_tokens": 1600, "cache_read_tokens": 0, "cache_write_tokens": 0},
+        {"id": "gate_critics", "count": 4, "model_tier": "frontier", "prompt_tokens": 2200, "input_tokens": 8000, "output_tokens": 1500, "cache_read_tokens": 0, "cache_write_tokens": 0},
+        {"id": "vo_director", "count": 1, "model_tier": "frontier", "prompt_tokens": 3000, "input_tokens": 4000, "output_tokens": 1600, "cache_read_tokens": 0, "cache_write_tokens": 0},
+        {"id": "terminal_review", "count": 5, "model_tier": "frontier", "prompt_tokens": 1800, "input_tokens": 9000, "output_tokens": 1800, "cache_read_tokens": 0, "cache_write_tokens": 0},
+        {"id": "caption_review", "count": 2, "model_tier": "frontier", "prompt_tokens": 1400, "input_tokens": 2500, "output_tokens": 900, "cache_read_tokens": 0, "cache_write_tokens": 0}
+      ],
+      "tools": {"search_calls": 80, "fetch_calls": 40, "other_tool_calls": 120},
+      "revisions": {"editorial_revisions": 3, "repair_passes": 0}
+    },
+    "worst_case": {
+      "call_groups": [
+        {"id": "orchestrator", "count": 1, "model_tier": "frontier", "prompt_tokens": 34726, "input_tokens": 12000, "output_tokens": 7000, "cache_read_tokens": 0, "cache_write_tokens": 0},
+        {"id": "researchers", "count": 4, "model_tier": "frontier", "prompt_tokens": 3500, "input_tokens": 1200, "output_tokens": 1800, "cache_read_tokens": 0, "cache_write_tokens": 0},
+        {"id": "validators", "count": 2, "model_tier": "frontier", "prompt_tokens": 2200, "input_tokens": 6000, "output_tokens": 1600, "cache_read_tokens": 0, "cache_write_tokens": 0},
+        {"id": "angle_analysts", "count": 4, "model_tier": "frontier", "prompt_tokens": 1800, "input_tokens": 7000, "output_tokens": 1500, "cache_read_tokens": 0, "cache_write_tokens": 0},
+        {"id": "angle_synthesis", "count": 1, "model_tier": "frontier", "prompt_tokens": 1800, "input_tokens": 6000, "output_tokens": 1800, "cache_read_tokens": 0, "cache_write_tokens": 0},
+        {"id": "treatment_writers", "count": 4, "model_tier": "frontier", "prompt_tokens": 2500, "input_tokens": 6000, "output_tokens": 2200, "cache_read_tokens": 0, "cache_write_tokens": 0},
+        {"id": "treatment_scorer", "count": 1, "model_tier": "frontier", "prompt_tokens": 1800, "input_tokens": 10000, "output_tokens": 1600, "cache_read_tokens": 0, "cache_write_tokens": 0},
+        {"id": "gate_critics", "count": 4, "model_tier": "frontier", "prompt_tokens": 2200, "input_tokens": 8000, "output_tokens": 1500, "cache_read_tokens": 0, "cache_write_tokens": 0},
+        {"id": "vo_director", "count": 1, "model_tier": "frontier", "prompt_tokens": 3000, "input_tokens": 4000, "output_tokens": 1600, "cache_read_tokens": 0, "cache_write_tokens": 0},
+        {"id": "terminal_review", "count": 5, "model_tier": "frontier", "prompt_tokens": 1800, "input_tokens": 9000, "output_tokens": 1800, "cache_read_tokens": 0, "cache_write_tokens": 0},
+        {"id": "caption_review", "count": 2, "model_tier": "frontier", "prompt_tokens": 1400, "input_tokens": 2500, "output_tokens": 900, "cache_read_tokens": 0, "cache_write_tokens": 0},
+        {"id": "bounded_repair_round", "count": 6, "model_tier": "frontier", "prompt_tokens": 1800, "input_tokens": 9000, "output_tokens": 1800, "cache_read_tokens": 0, "cache_write_tokens": 0}
+      ],
+      "tools": {"search_calls": 80, "fetch_calls": 40, "other_tool_calls": 170},
+      "revisions": {"editorial_revisions": 4, "repair_passes": 1}
+    }
+  }
+}

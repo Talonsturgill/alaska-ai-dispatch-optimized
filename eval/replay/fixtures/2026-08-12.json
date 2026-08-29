@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "fixture_id": "2026-08-12",
+  "fixture_kind": "archived_exact",
+  "expected_scenario": "normal",
+  "provenance": {
+    "source_commit": "7902a697948c430d99347f5018cdd648e11884d1",
+    "label": "Exact archived authored package for dispatch-2026-08-12-smallest-door.",
+    "exact_artifacts": true,
+    "note": "The repository contains the authored package but not its terminal media or historical controller telemetry. Artifact bytes are exact; cost telemetry is separately labeled."
+  },
+  "artifacts": [
+    {"path": "archive/dispatch-2026-08-12-smallest-door/angle.json", "bytes": 9099, "sha256": "821c2ee1f4866f8d883c9cfc5590668648fafaccb2e2c8b376afea7143658980"},
+    {"path": "archive/dispatch-2026-08-12-smallest-door/art_direction.json", "bytes": 6162, "sha256": "734f13f7973436fc164a2a2bae6d87a3652c204857b7d25c6afe35240371beb1"},
+    {"path": "archive/dispatch-2026-08-12-smallest-door/candidates.json", "bytes": 8970, "sha256": "4a484c834ebb936a54d525d63cc13fc574b8b0be2a6c55dbd7dca56fcd0c534a"},
+    {"path": "archive/dispatch-2026-08-12-smallest-door/claims.json", "bytes": 15748, "sha256": "882f86ae6ab97d15cd2ad4063fb33e7a19046d054c67fab2a3b17f9780849580"},
+    {"path": "archive/dispatch-2026-08-12-smallest-door/gmail_draft_receipt.json", "bytes": 553, "sha256": "01264c78f957dad172df51ddf3abc56507f12d1e4bfaf4680e154ba7a2f8a1ff"},
+    {"path": "archive/dispatch-2026-08-12-smallest-door/music_credit.json", "bytes": 360, "sha256": "4d7ea16ab3d167143ee3c4c59caee0cd3e3fabe3671c1d25a25a7e213f9dea07"},
+    {"path": "archive/dispatch-2026-08-12-smallest-door/post.txt", "bytes": 2201, "sha256": "84a19f22af37c23ccddd0c9d494b8b5e07fa78755c033e130a6f43bcdf47dd34"},
+    {"path": "archive/dispatch-2026-08-12-smallest-door/sources.json", "bytes": 2503, "sha256": "68a873722f042493345a17afe113e22634000f27b8fee4a7520c3efa0d85905b"},
+    {"path": "archive/dispatch-2026-08-12-smallest-door/storyboard.json", "bytes": 48894, "sha256": "9da735944ee6b4f2fe33c97fb89331094580ec8d981de9a96c8aedb9be452b71"},
+    {"path": "archive/dispatch-2026-08-12-smallest-door/vo_direction.json", "bytes": 15210, "sha256": "d023a15ce13259672a002afb54fab21e2b0444af53abcf766fbc726c1db4c35d"},
+    {"path": "archive/dispatch-2026-08-12-smallest-door/vo_lines.json", "bytes": 1192, "sha256": "f5a7c0d759ca1fcc8cfe6fe88d8d6b2caa546ae1ea462b13afc2a8b8ba6ff896"},
+    {"path": "archive/dispatch-2026-08-12-smallest-door/vo_script.txt", "bytes": 1742, "sha256": "87b962c11e041fce35c54254007e97cfadb37f6b78fe108a3dc3587309b29c4b"}
+  ],
+  "required_outputs": [
+    "claims", "sources", "storyboard", "voice_package", "post", "vertical_master",
+    "square_cut", "mobile_rendition", "posters", "delivery_manifest", "evidence_manifest",
+    "preflight_receipt", "judge_cards", "ship_verdict", "terminal_preview"
+  ],
+  "required_gates": [
+    "run_identity", "render_contract", "delivery_manifest", "mastering", "sfx_contract",
+    "quality_gate", "evidence_manifest", "typescript", "text_fit", "caption_band",
+    "caption_spelling", "caption_render", "plate_overlap", "zoom_clip", "claims_contract",
+    "credits", "vo_claims", "video_panel", "ship_gate", "terminal_preview"
+  ]
+}
