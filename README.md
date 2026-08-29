@@ -53,6 +53,14 @@ The setup script deliberately installs no post-commit or automatic-push hook.
 Production deployment must be reviewed and implemented separately in the
 production repositories. Do not weaken this lab to turn a canary into a release.
 
+## Offline replay evaluation
+
+The deterministic cost and quality harness is documented in
+[`eval/replay/README.md`](eval/replay/README.md). It reconstructs the inherited
+routine baseline from exact pinned Git blobs, consumes strict controller
+telemetry, and produces compact JSON and Markdown reports without model calls,
+searches, renders, or external services.
+
 The Bash/FFmpeg media pipeline is supported on Linux or WSL. Cross-platform
 Python contract tests and Windows-safe verification commands are documented in
 `docs/CORRECTNESS_FOUNDATION.md`.

@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "fixture_id": "2026-08-28",
+  "fixture_kind": "synthetic_contract",
+  "expected_scenario": "worst_case",
+  "provenance": {
+    "source_commit": "7902a697948c430d99347f5018cdd648e11884d1",
+    "label": "Synthetic worst-case contract fixture; no Aug-28 episode package exists in the pinned repository.",
+    "exact_artifacts": false,
+    "note": "This fixture exercises the bounded one-repair path only. It contains no invented episode facts, media, scores, or claims of historical execution."
+  },
+  "artifacts": [],
+  "required_outputs": [
+    "claims", "sources", "storyboard", "voice_package", "post", "vertical_master",
+    "square_cut", "mobile_rendition", "posters", "delivery_manifest", "evidence_manifest",
+    "preflight_receipt", "judge_cards", "ship_verdict", "terminal_preview"
+  ],
+  "required_gates": [
+    "run_identity", "render_contract", "delivery_manifest", "mastering", "sfx_contract",
+    "quality_gate", "evidence_manifest", "typescript", "text_fit", "caption_band",
+    "caption_spelling", "caption_render", "plate_overlap", "zoom_clip", "claims_contract",
+    "credits", "vo_claims", "video_panel", "ship_gate", "terminal_preview"
+  ]
+}

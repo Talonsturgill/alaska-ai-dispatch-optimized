@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "fixture_id": "2026-08-13",
+  "fixture_kind": "derived_source",
+  "expected_scenario": "normal",
+  "provenance": {
+    "source_commit": "7902a697948c430d99347f5018cdd648e11884d1",
+    "label": "Derived from the exact committed Ep0813 replay source; no archived controller telemetry is present.",
+    "exact_artifacts": true,
+    "note": "The source component is exact. Required outputs and gates are the current frozen B1 replay contract, not a claim that historical terminal artifacts were archived."
+  },
+  "artifacts": [
+    {"path": "video-engine/src/Ep0813.tsx", "bytes": 75829, "sha256": "9a08278ecd02222ec215e3d19e833ef0be76d38827791d50615d3f53856beb9b"}
+  ],
+  "required_outputs": [
+    "claims", "sources", "storyboard", "voice_package", "post", "vertical_master",
+    "square_cut", "mobile_rendition", "posters", "delivery_manifest", "evidence_manifest",
+    "preflight_receipt", "judge_cards", "ship_verdict", "terminal_preview"
+  ],
+  "required_gates": [
+    "run_identity", "render_contract", "delivery_manifest", "mastering", "sfx_contract",
+    "quality_gate", "evidence_manifest", "typescript", "text_fit", "caption_band",
+    "caption_spelling", "caption_render", "plate_overlap", "zoom_clip", "claims_contract",
+    "credits", "vo_claims", "video_panel", "ship_gate", "terminal_preview"
+  ]
+}

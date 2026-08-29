@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "telemetry_id": "synthetic_2026_08_12",
+  "source_kind": "synthetic",
+  "controller": {"name": "compact_controller_sample", "version": "sample-v1"},
+  "runs": [
+    {
+      "fixture_id": "2026-08-12",
+      "scenario": "normal",
+      "standing_context_tokens": 8600,
+      "calls": [
+        {"id": "controller_plan", "model_tier": "frontier", "purpose": "Bounded replay plan", "prompt_tokens": 8600, "input_tokens": 2400, "output_tokens": 1200, "cache_read_tokens": 7000, "cache_write_tokens": 0},
+        {"id": "contract_bind", "model_tier": "fast", "purpose": "Manifest and identity binding", "prompt_tokens": 800, "input_tokens": 1600, "output_tokens": 300, "cache_read_tokens": 500, "cache_write_tokens": 0},
+        {"id": "objective_checks", "model_tier": "fast", "purpose": "Objective gate summary", "prompt_tokens": 600, "input_tokens": 2200, "output_tokens": 400, "cache_read_tokens": 400, "cache_write_tokens": 0},
+        {"id": "editorial_review", "model_tier": "balanced", "purpose": "Single editorial pass", "prompt_tokens": 1200, "input_tokens": 3000, "output_tokens": 700, "cache_read_tokens": 800, "cache_write_tokens": 0},
+        {"id": "judge_a", "model_tier": "frontier", "purpose": "Terminal video judge A", "prompt_tokens": 850, "input_tokens": 5000, "output_tokens": 900, "cache_read_tokens": 700, "cache_write_tokens": 0},
+        {"id": "judge_b", "model_tier": "frontier", "purpose": "Terminal video judge B", "prompt_tokens": 850, "input_tokens": 5000, "output_tokens": 900, "cache_read_tokens": 700, "cache_write_tokens": 0},
+        {"id": "judge_c", "model_tier": "frontier", "purpose": "Terminal video judge C", "prompt_tokens": 850, "input_tokens": 5000, "output_tokens": 900, "cache_read_tokens": 700, "cache_write_tokens": 0}
+      ],
+      "tools": {"search_calls": 0, "fetch_calls": 0, "other_tool_calls": 28},
+      "revisions": {"editorial_revisions": 1, "repair_passes": 0},
+      "preserved_outputs": [
+        "claims", "sources", "storyboard", "voice_package", "post", "vertical_master",
+        "square_cut", "mobile_rendition", "posters", "delivery_manifest", "evidence_manifest",
+        "preflight_receipt", "judge_cards", "ship_verdict", "terminal_preview"
+      ],
+      "gates": [
+        {"id": "run_identity", "result": "pass"},
+        {"id": "render_contract", "result": "pass"},
+        {"id": "delivery_manifest", "result": "pass"},
+        {"id": "mastering", "result": "pass"},
+        {"id": "sfx_contract", "result": "pass"},
+        {"id": "quality_gate", "result": "pass"},
+        {"id": "evidence_manifest", "result": "pass"},
+        {"id": "typescript", "result": "pass"},
+        {"id": "text_fit", "result": "pass"},
+        {"id": "caption_band", "result": "pass"},
+        {"id": "caption_spelling", "result": "pass"},
+        {"id": "caption_render", "result": "pass"},
+        {"id": "plate_overlap", "result": "pass"},
+        {"id": "zoom_clip", "result": "pass"},
+        {"id": "claims_contract", "result": "pass"},
+        {"id": "credits", "result": "pass"},
+        {"id": "vo_claims", "result": "pass"},
+        {"id": "video_panel", "result": "pass"},
+        {"id": "ship_gate", "result": "pass"},
+        {"id": "terminal_preview", "result": "pass"}
+      ]
+    }
+  ]
+}
