@@ -8,7 +8,6 @@ import os
 import sys
 import unittest
 from pathlib import Path
-from types import SimpleNamespace
 from unittest import mock
 
 SCRIPTS = Path(__file__).resolve().parent
@@ -96,12 +95,8 @@ class PublisherBoundaryTests(unittest.TestCase):
         dump.assert_not_called()
 
     def test_foreign_github_media_refusal_precedes_worktree_copy_commit_and_push(self):
-        with mock.patch.object(upload_video.os.path, "getsize", return_value=1), \
-             mock.patch.object(
-                 upload_video,
-                 "sh",
-                 return_value=SimpleNamespace(stdout=str(ROOT), stderr="", returncode=0),
-             ) as shell, \
+        with mock.patch.object(upload_video.os.path, "getsize", return_value=1) as getsize, \
+             mock.patch.object(upload_video, "sh") as shell, \
              mock.patch.object(upload_video, "require_canary_origin", side_effect=BLOCKED), \
              mock.patch.object(upload_video.tempfile, "mkdtemp") as mkdtemp, \
              mock.patch.object(upload_video.shutil, "copyfile") as copyfile:
@@ -109,9 +104,8 @@ class PublisherBoundaryTests(unittest.TestCase):
                 upload_video.via_github("missing.mp4", "test.mp4")
         mkdtemp.assert_not_called()
         copyfile.assert_not_called()
-        for call in shell.call_args_list:
-            self.assertNotIn("push", call.args[0])
-            self.assertNotIn("commit", call.args[0])
+        getsize.assert_not_called()
+        shell.assert_not_called()
 
     def test_rclone_secret_is_never_decoded_written_or_probed(self):
         argv = ["upload_video.py", "--file", "missing.mp4", "--no-github"]

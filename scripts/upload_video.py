@@ -36,12 +36,12 @@ def media_email():
 
 def via_github(file, name):
     """git-push the file to the dispatch-media branch; return its permanent raw URL."""
+    root_path = Path(__file__).resolve().parent.parent
+    repository = require_canary_origin(root_path)
+    require_action("github_media_publish", repository)
     if os.path.getsize(file) > 99 * 1024 * 1024:
         raise RuntimeError("file >99MB exceeds GitHub's push limit; encode a smaller canary artifact")
-    root = sh(["git", "rev-parse", "--show-toplevel"]).stdout.strip()
-    if not root: raise RuntimeError("not inside a git repo")
-    repository = require_canary_origin(Path(root))
-    require_action("github_media_publish", repository)
+    root = str(root_path)
     owner, repo = repository.split("/", 1)
     branch = os.environ.get("DISPATCH_MEDIA_BRANCH", "dispatch-media")
     wt = tempfile.mkdtemp(prefix="media_wt_")
