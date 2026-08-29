@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "active_composition": "DispatchDaily",
+  "compositions": {
+    "DispatchDaily": {
+      "status": "active",
+      "component": "DispatchDaily",
+      "source": "video-engine/src/DispatchDaily.tsx",
+      "source_dependencies": ["video-engine/src/Ep0813.tsx"],
+      "props": "out/dispatch/episode_props.json",
+      "template_kind": "canary_replay_fixture",
+      "fixture_id": "2026-08-13-replay",
+      "generic_daily_template": false,
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "default_duration_in_frames": 3900
+    },
+    "Dispatch0729": {"status": "legacy", "component": "Ep0729", "source": "video-engine/src/Ep0729.tsx"},
+    "Dispatch0730": {"status": "legacy", "component": "Ep0730", "source": "video-engine/src/Ep0730.tsx"},
+    "Dispatch0731": {"status": "legacy", "component": "Ep0731", "source": "video-engine/src/Ep0731.tsx"},
+    "Dispatch0802": {"status": "legacy", "component": "Ep0802", "source": "video-engine/src/Ep0802.tsx"},
+    "Dispatch0803": {"status": "legacy", "component": "Ep0803", "source": "video-engine/src/Ep0803.tsx"},
+    "Dispatch0805": {"status": "legacy", "component": "Ep0805", "source": "video-engine/src/Ep0805.tsx"},
+    "Dispatch0806": {"status": "legacy", "component": "Ep0806", "source": "video-engine/src/Ep0806.tsx"},
+    "Dispatch0807": {"status": "legacy", "component": "Ep0807", "source": "video-engine/src/Ep0807.tsx"},
+    "Dispatch0808": {"status": "legacy", "component": "Ep0808", "source": "video-engine/src/Ep0808.tsx"},
+    "Dispatch0809": {"status": "legacy", "component": "Ep0809", "source": "video-engine/src/Ep0809.tsx"},
+    "Dispatch0812": {"status": "legacy", "component": "Ep0812", "source": "video-engine/src/Ep0812.tsx"},
+    "LegacyDispatch0813": {"status": "legacy", "component": "Ep0813", "source": "video-engine/src/Ep0813.tsx"},
+    "LegacyDispatch0726": {"status": "legacy", "component": "Episode", "source": "video-engine/src/Episode.tsx"}
+  }
+}

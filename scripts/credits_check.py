@@ -33,7 +33,6 @@ nothing to ship.
 
     python3 scripts/credits_check.py
 """
-import glob
 import json
 import os
 import subprocess
@@ -55,9 +54,25 @@ def fit_size(s, maxw, ideal, floor=13.0):
     return max(floor, min(ideal, maxw / (len(s) * 0.602 + 0.001)))
 
 
-def newest_episode():
-    files = glob.glob(os.path.join(REPO, "video-engine", "src", "Ep*.tsx"))
-    return max(files, key=os.path.getmtime) if files else None
+def registered_episode():
+    """Return the active registry's sole story-bearing dependency; never infer by mtime."""
+    try:
+        from run_guard import ACTIVE_COMPOSITION, check_identity, composition_record
+
+        ok, _reason = check_identity(
+            root=REPO, expected_composition=ACTIVE_COMPOSITION, require_props=False
+        )
+        if not ok:
+            return None
+        dependencies = composition_record(ACTIVE_COMPOSITION, REPO).get("source_dependencies")
+        if not isinstance(dependencies, list) or len(dependencies) != 1:
+            return None
+        target = os.path.realpath(os.path.join(REPO, *dependencies[0].split("/")))
+        if os.path.commonpath([os.path.realpath(REPO), target]) != os.path.realpath(REPO):
+            return None
+        return target if os.path.isfile(target) else None
+    except (OSError, ValueError, KeyError, TypeError, RuntimeError):
+        return None
 
 
 # The owner's floor, imported from the one place that sets it so the gate and the builder can
@@ -160,9 +175,10 @@ def main() -> int:
         problems.append(f"the credits point at {site!r} rather than alaskaaihq.com.")
 
     # ---- 3. the engine renders it ----------------------------------------------------
-    ep = newest_episode()
+    ep = registered_episode()
     if not ep:
-        problems.append("no Ep*.tsx found, so nothing can be drawing the credits.")
+        problems.append("DispatchDaily has no single valid registered source dependency, so "
+                        "nothing can be verified as drawing the credits.")
     else:
         src = open(ep).read()
         body = re.sub(r"/\*.*?\*/", " ", src, flags=re.S)      # comments are not renders
@@ -227,7 +243,7 @@ def main() -> int:
             f"Raise CREDITS_MIN_S in scripts/build_scenes.py only to make the card LONGER. "
             f"If the film is over its runtime ceiling, take the seconds out of the script.")
 
-    video = os.path.join(OUT, "dispatch_master.mp4")
+    video = os.path.join(OUT, "dispatch_master_hosted.mp4")
     if os.path.exists(video):
         dur = _probe_duration(video)
         if dur:

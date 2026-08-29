@@ -26,7 +26,7 @@
 # no frame is rendered twice or skipped, and the script ASSERTS the final frame count
 # against the expected total before it will hand back a file.
 #
-# Usage: scripts/render_parallel.sh <Comp> <out.mp4> [total_frames] [chunks]
+# Usage: scripts/render_parallel.sh DispatchDaily <out.mp4> [total_frames] [chunks]
 # ============================================================================
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -41,10 +41,17 @@ cd "$(dirname "$0")/.."
 # that reported clean while reading a shipped July episode.
 if [ $# -lt 1 ]; then
   echo "render_parallel.sh: refusing to guess which film to render." >&2
-  echo "Usage: scripts/render_parallel.sh <Comp> <out.mp4> [total_frames] [chunks]" >&2
+  echo "Usage: scripts/render_parallel.sh DispatchDaily <out.mp4> [total_frames] [chunks]" >&2
   echo "Compositions are declared in video-engine/src/Root.tsx." >&2
   exit 2
 fi
+COMP="$1"
+if [ "$COMP" != "DispatchDaily" ]; then
+  echo "render_parallel.sh: only the active, case-sensitive DispatchDaily identity may render." >&2
+  exit 2
+fi
+python3 scripts/run_guard.py bind-inputs
+python3 scripts/run_guard.py require-composition --composition DispatchDaily
 # ONE RENDER AT A TIME (2026-08-08). Two instances were started minutes apart because the
 # first launch LOOKED like it had failed - the command that started it errored on an
 # unrelated `head` of its log, so it read as dead, while nohup had in fact started it and
@@ -76,10 +83,10 @@ fi
 # against the newest source, and a mixed render is NEWER than every source. It looks fresh
 # precisely because it is.
 #
-# So the fingerprint is taken before the first chunk and checked after the last one. It is
-# a warning rather than a hard failure because a comment-only edit changes the hash without
-# changing a pixel - which is exactly what happened the day this was written, when a render
-# was killed on an mtime alone and the edit turned out to be a comment.
+# So the fingerprint is taken before the first chunk and checked after the last one. B1 makes
+# this a hard failure: the run stamp binds the entire TS/TSX tree by content, and any source
+# drift means the finished bytes no longer belong to the stamped run. Even a comment-only edit
+# requires a new stamp; identity is intentionally exact rather than based on semantic guesses.
 _src_fingerprint() {
   find video-engine/src -name '*.tsx' -o -name '*.ts' 2>/dev/null \
     | sort | xargs stat -c '%n %Y %s' 2>/dev/null | sha256sum | cut -c1-16
@@ -126,9 +133,8 @@ if [ -f out/dispatch/SHIP_NOW ]; then
   exit 5
 fi
 
-COMP="$1"
 OUT="${2:-out/dispatch/render_mute.mp4}"
-PROPS="${PROPS:-out/dispatch/episode_props.json}"
+PROPS="out/dispatch/episode_props.json"
 # MORE CHUNKS THAN SLOTS, ON PURPOSE (2026-08-04). The first version cut the film into
 # exactly one chunk per slot, which is only optimal when every frame costs the same. It
 # does not: on the 2026-08-03 film, chunk 0 held S1 to S3, which carry the characters and
@@ -270,10 +276,15 @@ if [ "$GOT" != "$TOTAL" ]; then
 fi
 SRC_AFTER="$(_src_fingerprint)"
 if [ "$SRC_BEFORE" != "$SRC_AFTER" ]; then
-  echo "  WARNING  engine source changed DURING this render ($SRC_BEFORE -> $SRC_AFTER)." >&2
+  echo "  FAIL  engine source changed DURING this render ($SRC_BEFORE -> $SRC_AFTER)." >&2
   echo "  Chunks bundle when they start, so this file may be part old film and part new," >&2
-  echo "  and the downstream freshness check CANNOT see it: a mixed render is newer than" >&2
-  echo "  every source. Diff the change before trusting this cut - if it touched only" >&2
-  echo "  comments the render is fine, and if it touched a rendered value, re-render." >&2
+  echo "  so it is deleted. Start a new run stamp and render from one immutable source tree." >&2
+  rm -f "$ABS_OUT"
+  exit 6
+fi
+if ! python3 scripts/run_guard.py require-composition --composition DispatchDaily; then
+  echo "render_parallel.sh: run identity drifted during render; deleting untrusted output." >&2
+  rm -f "$ABS_OUT"
+  exit 6
 fi
 echo "  OK  $ABS_OUT  $GOT frames  $(du -h "$ABS_OUT" | cut -f1)"

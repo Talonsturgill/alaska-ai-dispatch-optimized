@@ -5,7 +5,7 @@
   "description": "Alaska.Ai dispatch 2.5D infographic video engine (Remotion)",
   "scripts": {
     "start": "remotion studio",
-    "render": "remotion render Dispatch out.mp4"
+    "render": "remotion render src/index.ts DispatchDaily ../out/dispatch/render/video_mute.mp4 --props=../out/dispatch/episode_props.json --codec=h264 --muted --crf=19"
   },
   "dependencies": {
     "@remotion/cli": "4.0.399",

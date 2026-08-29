@@ -34,21 +34,37 @@ import { Ep0808, ep0808Schema } from './Ep0808';
 import { Ep0809, ep0809Schema } from './Ep0809';
 import { Ep0812, ep0812Schema } from './Ep0812';
 import { Ep0813, ep0813Schema } from './Ep0813';
+import {DispatchDaily, dispatchDailySchema, DISPATCH_DAILY_FIXTURE} from './DispatchDaily';
+import compositionRegistry from '../../config/compositions.json';
 
 const standoffSchema = z.object({
   yesCount: z.number(),
   noLabel: z.string(),
 });
 
-// 1080x1920 (9:16), 30fps. "Dispatch" = the full episode timeline (6 scenes wired
-// to the VO line anchors, captions overlaid). "Standoff" kept for look-dev.
+// DispatchDaily is the sole active 1080x1920 composition. Historical films remain under
+// explicit legacy/date IDs; the retired generic "Dispatch" ID is intentionally absent.
 // 2026-07-18: retimed to the Gemini-narrated VO (out/dispatch/vo_lines.json,
 // 67.52s = 2026 frames @ 30fps incl. tail; switched off the cloned voice per
 // owner). DEFAULT_BOUNDS below is the fallback; episode_props.json (from
 // scripts/build_scenes.py) carries the authoritative per-run scene timing.
 export const RemotionRoot: React.FC = () => {
+  const daily = compositionRegistry.compositions.DispatchDaily;
   return (
     <>
+      <Composition
+        id="DispatchDaily"
+        component={DispatchDaily}
+        durationInFrames={daily.default_duration_in_frames}
+        fps={daily.fps}
+        width={daily.width}
+        height={daily.height}
+        schema={dispatchDailySchema}
+        defaultProps={{captions: [], fixtureId: DISPATCH_DAILY_FIXTURE}}
+        calculateMetadata={({props}) => ({
+          durationInFrames: (props as {total?: number}).total ?? daily.default_duration_in_frames,
+        })}
+      />
       <Composition
         id="Dispatch0812"
         component={Ep0812}
@@ -154,7 +170,7 @@ export const RemotionRoot: React.FC = () => {
         })}
       />
       <Composition
-        id="Dispatch"
+        id="LegacyDispatch0726"
         component={Episode}
         durationInFrames={1800}
         fps={30}
@@ -380,7 +396,7 @@ export const RemotionRoot: React.FC = () => {
         })}
       />
       <Composition
-        id="Ep0813"
+        id="LegacyDispatch0813"
         component={Ep0813}
         durationInFrames={3900}
         fps={30}

@@ -47,7 +47,6 @@ shapes are not graded here.
 
     python3 scripts/zoom_clip_check.py            # exit 1 on any clipped element
 """
-import glob
 import os
 import re
 import sys
@@ -72,10 +71,24 @@ def mono_w(s: str, size: float, track: float = LS) -> float:
 
 
 def episode_files():
-    """The current run's episode, which is the newest Ep*.tsx. Past episodes are history and
-    grading them would fail the run on a film that shipped weeks ago."""
-    files = glob.glob(os.path.join(REPO, "video-engine", "src", "Ep*.tsx"))
-    return [max(files, key=os.path.getmtime)] if files else []
+    """The active registry's story dependency. Never choose an episode by wall clock."""
+    try:
+        from run_guard import ACTIVE_COMPOSITION, check_identity, composition_record
+
+        ok, _reason = check_identity(
+            root=REPO, expected_composition=ACTIVE_COMPOSITION, require_props=False
+        )
+        if not ok:
+            return []
+        dependencies = composition_record(ACTIVE_COMPOSITION, REPO).get("source_dependencies")
+        if not isinstance(dependencies, list) or len(dependencies) != 1:
+            return []
+        target = os.path.realpath(os.path.join(REPO, *dependencies[0].split("/")))
+        if os.path.commonpath([os.path.realpath(REPO), target]) != os.path.realpath(REPO):
+            return []
+        return [target] if os.path.isfile(target) else []
+    except (OSError, ValueError, KeyError, TypeError, RuntimeError):
+        return []
 
 
 def content_zoom(src: str) -> float:

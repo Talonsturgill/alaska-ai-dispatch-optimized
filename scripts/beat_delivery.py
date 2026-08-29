@@ -36,7 +36,7 @@ eye at contact-sheet scale: did anything happen here at all.
   python3 scripts/beat_delivery.py --frames out/dispatch/frames --storyboard out/dispatch/storyboard.json
 """
 import argparse, glob, json, os, re, shutil, subprocess, sys, tempfile
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 import numpy as np
 
 FPS = 30
@@ -65,7 +65,7 @@ SAMPLE_FPS = 10
 # the master is the cut the panel grades. Sampling the square would need the crop offset
 # applied to the caption row, which is one more place for the 1420-vs-1336 class of error to
 # live. Same reasoning as DISPATCH_STANDARD section 4: derive geometry, never restate it.
-DEFAULT_CUT = "out/dispatch/dispatch_master.mp4"
+DEFAULT_CUT = "out/dispatch/dispatch_master_hosted.mp4"
 
 
 def _load(path, scale=3):
@@ -90,18 +90,16 @@ def episode_caption_top(default: int = CAPTION_TOP) -> int:
     precisely so caption_band_check.py can read it, so read it here from the same place.
     """
     root = Path(__file__).resolve().parent.parent
-    stamp = root / "out" / "dispatch" / ".run_stamp.json"
-    comp = ""
-    if stamp.exists():
-        try:
-            comp = (json.loads(stamp.read_text()) or {}).get("composition", "") or ""
-        except Exception:
-            comp = ""
-    if not comp:
-        return default
-    src = root / "video-engine" / "src" / f"{comp}.tsx"
-    if not src.exists():
-        return default
+    from run_guard import ACTIVE_COMPOSITION, check_identity, composition_record
+
+    ok, reason = check_identity(root=root, expected_composition=ACTIVE_COMPOSITION, require_props=False)
+    if not ok:
+        raise RuntimeError(f"beat_delivery: run identity is invalid: {reason}")
+    record = composition_record(ACTIVE_COMPOSITION, root)
+    sources = record.get("source_dependencies") or [record["source"]]
+    if not isinstance(sources, list) or not sources:
+        raise RuntimeError("beat_delivery: active composition has no registered source")
+    src = root.joinpath(*PurePosixPath(sources[0]).parts)
     m = re.search(r"\bCAPTION_TOP\s*=\s*(\d+)", src.read_text())
     return int(m.group(1)) if m else default
 
@@ -198,11 +196,10 @@ def analyze(frames_dir: str, storyboard_path: str,
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--frames", default="out/dispatch/frames")
+    ap.add_argument("--frames", default=None,
+                    help="explicit legacy-only frame directory; never selected automatically")
     ap.add_argument("--video", default=None,
-                    help=f"sample the DELIVERED cut instead of a frames dir "
-                         f"(default cut: {DEFAULT_CUT}). This is the live path; --frames "
-                         f"reads a directory the pipeline does not produce.")
+                    help=f"canonical manifest-bound delivered cut (default: {DEFAULT_CUT})")
     ap.add_argument("--storyboard", default="out/dispatch/storyboard.json")
     ap.add_argument("--min-changed", type=float, default=MIN_CHANGED)
     ap.add_argument("--caption-top", type=int, default=None,
@@ -210,12 +207,25 @@ def main():
                          "composition source by default)")
     ap.add_argument("--json", action="store_true")
     a = ap.parse_args()
-    if a.video is not None or not glob.glob(str(Path(a.frames) / "frame_*.png")):
-        cut = a.video or DEFAULT_CUT
+    if a.frames is None:
+        from deliverable_contract import DeliverableContractError, require_manifest
+        root = Path(__file__).resolve().parent.parent
+        try:
+            manifest = require_manifest(root=root)
+        except DeliverableContractError as exc:
+            raise SystemExit(f"beat_delivery: deliverables manifest rejected: {exc}") from None
+        canonical = root.joinpath(*manifest["artifacts"]["vertical_hosted"]["path"].split("/"))
+        requested = Path(a.video or DEFAULT_CUT)
+        requested = (root / requested).resolve() if not requested.is_absolute() else requested.resolve()
+        if requested != canonical.resolve():
+            raise SystemExit("beat_delivery: --video must be the manifest-bound vertical_hosted cut")
+        cut = str(canonical)
         r = analyze_cut(cut, a.storyboard, a.min_changed, a.caption_top)
         print(f"sampled {r['sampled_from']} at {SAMPLE_FPS} fps, "
               f"caption band from y={a.caption_top or episode_caption_top()}")
     else:
+        # Kept only for explicit historical diagnostics. The active path never infers this
+        # directory merely because stale frame_*.png files happen to exist.
         r = analyze(a.frames, a.storyboard, a.min_changed,
                     caption_top=a.caption_top if a.caption_top is not None
                     else episode_caption_top())

@@ -1,150 +1,627 @@
 #!/usr/bin/env python3
-"""Run-freshness guard: make it physically impossible to ship a PREVIOUS run's scratch.
+"""Hash-bound run identity and freshness guard for DispatchDaily.
 
-WHY THIS EXISTS
----------------
-out/dispatch/ is gitignored scratch that survives across container sessions.
-The pipeline reads and writes artifacts BY PATH, and a stale file at the right
-path is byte-for-byte indistinguishable from a fresh one. Two runs have already
-been bitten by this:
-  - 2026-07-18 found a stale shots.json left over from the 07-17 episode.
-  - 2026-07-19 found stale post.txt / sources.json / shots.json / vo_script.json
-    left over from a run about an ENTIRELY DIFFERENT story (the Mat-Su AIDEA land
-    conveyance). Delivery could have emailed the wrong caption and source list.
-
-The root cause is not "someone forgot to clean up." It is that the pipeline
-DRIFTS: newer runs stopped producing some of the old artifacts (they moved to
-caption.txt, inline shots, etc.), so those old outputs are never overwritten and
-just linger. Any fix that asks every PRODUCER to stamp or register its output
-re-introduces exactly this drift problem the next time the pipeline changes.
-
-THE INVARIANT (why this is a real fix and not another sticky note)
-------------------------------------------------------------------
-A run starts at a recorded instant T. Every artifact this run legitimately
-produces is written at or after T. Therefore ANY scratch file with mtime < T is,
-by definition, a leftover from an earlier run and must never be trusted.
-
-Freshness is thus a property the filesystem already tracks (mtime), and mtime is
-trustworthy here precisely because scratch files are gitignored -- git never
-rewrites their timestamps the way it does for checked-out files. No producer has
-to change; only:
-  1. Phase 0 stamps the run ONCE, before any artifact is produced:
-         python3 scripts/run_guard.py init --run-id 2026-07-19
-  2. Consumers route their reads through fresh(), which refuses (loudly, with
-     both timestamps) anything older than the stamp:
-         from run_guard import fresh
-         post = open(fresh("out/dispatch/post.txt")).read()
-
-A missing stamp is also a hard failure: if the run was never stamped we cannot
-PROVE a file is fresh, so we refuse rather than guess. The escape hatch for
-deliberate manual/standalone use is an explicit opt-out on the consumer
-(dispatch_email.py --no-freshness-check), never a silent fallback.
+`init` is deliberately explicit: a run is not valid until its case-sensitive,
+ASCII composition is registered and the repository, worktree, branch, HEAD,
+registry, Root.tsx, source and expected props path are recorded. Consumers call
+`require-identity` / `require-composition` before rendering and `fresh()` before
+reading scratch. There are no clock, newest-file, generic-Dispatch or copied-
+stamp fallbacks.
 """
+from __future__ import annotations
+
 import argparse
+import datetime as dt
+import hashlib
 import json
+import math
 import os
+import re
+import subprocess
 import sys
+import tempfile
 import time
-from pathlib import Path
+from pathlib import Path, PurePosixPath
+from typing import Any
+
+from strict_json import StrictJSONError, canonical_bytes, load_path
 
 STAMP_REL = "out/dispatch/.run_stamp.json"
-
-# A file written up to GRACE_S seconds before the stamp is still accepted. Real
-# leftovers are hours-to-days old, so this never lets a genuine stale file
-# through; it only avoids a false positive on a file created moments before init
-# in the same run's own setup.
-GRACE_S = 5.0
+REGISTRY_REL = "config/compositions.json"
+ROOT_SOURCE_REL = "video-engine/src/Root.tsx"
+POLICY_REL = "config/execution_policy.json"
+STAMP_SCHEMA_VERSION = 2
+ACTIVE_COMPOSITION = "DispatchDaily"
+COMPOSITION_RE = re.compile(r"^[A-Za-z][A-Za-z0-9]*$")
+SAFE_PATH_RE = re.compile(r"^[A-Za-z0-9._/-]+$")
+DATE_RE = re.compile(r"^(\d{4}-\d{2}-\d{2})(?:$|[-_])")
+SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
+GIT_HEAD_RE = re.compile(r"^(?:[0-9a-f]{40}|[0-9a-f]{64})$")
 
 
 class StaleArtifactError(RuntimeError):
-    """Raised when a scratch artifact predates the current run (or the run was
-    never stamped, so freshness cannot be proven)."""
+    """The requested artifact cannot be proven to belong to this run."""
 
 
-def _stamp_path(root: str | None = None) -> Path:
-    base = Path(root) if root else Path.cwd()
-    return base / STAMP_REL
+class RunIdentityError(RuntimeError):
+    """The run stamp does not identify this exact checkout and input set."""
 
 
-def _fmt(ts: float) -> str:
-    return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(ts))
+def _base(root: str | Path | None = None) -> Path:
+    return (Path(root) if root is not None else Path.cwd()).resolve()
 
 
-def init(run_id: str, root: str | None = None) -> dict:
-    """Stamp the current run. Call ONCE, in Phase 0, before any artifact exists."""
-    stamp = {"run_id": run_id, "started_at": time.time()}
-    p = _stamp_path(root)
-    p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(json.dumps(stamp, indent=2))
+def _stamp_path(root: str | Path | None = None) -> Path:
+    return _base(root) / STAMP_REL
+
+
+def _sha(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _engine_sources_sha(root: Path) -> str:
+    """Hash every TS/TSX input, including paths, so transitive source drift is visible."""
+    source_root = _resolve_inside(root, "video-engine/src", label="engine source directory")
+    files: list[Path] = []
+    for candidate in source_root.rglob("*"):
+        if candidate.suffix not in (".ts", ".tsx") or not candidate.is_file():
+            continue
+        if candidate.is_symlink():
+            raise RunIdentityError("engine source files may not be symlinks")
+        resolved = candidate.resolve()
+        try:
+            resolved.relative_to(root)
+        except ValueError:
+            raise RunIdentityError("engine source file escapes the repository") from None
+        files.append(resolved)
+    if not files:
+        raise RunIdentityError("video-engine/src contains no TypeScript sources")
+    digest = hashlib.sha256()
+    for path in sorted(files, key=lambda item: item.relative_to(root).as_posix()):
+        relative = path.relative_to(root).as_posix()
+        digest.update(relative.encode("utf-8"))
+        digest.update(b"\0")
+        digest.update(_sha(path).encode("ascii"))
+        digest.update(b"\n")
+    return digest.hexdigest()
+
+
+def _atomic_json(path: Path, value: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fd, name = tempfile.mkstemp(prefix=path.name + ".", suffix=".tmp", dir=path.parent)
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8", newline="\n") as handle:
+            json.dump(value, handle, ensure_ascii=False, indent=2, sort_keys=True)
+            handle.write("\n")
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(name, path)
+    finally:
+        try:
+            os.unlink(name)
+        except FileNotFoundError:
+            pass
+
+
+def _git(root: Path, *args: str) -> str:
+    result = subprocess.run(
+        ["git", "-C", str(root), *args], capture_output=True, text=True, timeout=20
+    )
+    if result.returncode != 0:
+        detail = (result.stderr or result.stdout).strip().splitlines()
+        raise RunIdentityError(f"git {' '.join(args)} failed: {detail[-1] if detail else 'unknown error'}")
+    return result.stdout.strip()
+
+
+def _origin_identity(root: Path) -> str:
+    origin = _canonical_origin(_git(root, "remote", "get-url", "origin"))
+    configured_push = subprocess.run(
+        ["git", "-C", str(root), "config", "--get-all", "remote.origin.pushurl"],
+        capture_output=True, text=True, timeout=20,
+    )
+    if configured_push.returncode not in (0, 1):
+        raise RunIdentityError("could not inspect origin pushurl")
+    if configured_push.stdout.strip():
+        raise RunIdentityError("origin may not have a configured pushurl")
+    raw_push = [
+        line for line in _git(root, "remote", "get-url", "--push", "--all", "origin").splitlines()
+        if line
+    ]
+    if len(raw_push) != 1 or _canonical_origin(raw_push[0]) != origin:
+        raise RunIdentityError("origin must resolve to exactly one identical push URL")
+    return origin
+
+
+def _canonical_origin(value: str) -> str:
+    text = value.strip()
+    match = re.fullmatch(r"https://github\.com/([^/]+)/([^/]+?)(?:\.git)?/?", text, re.I)
+    if not match:
+        raise RunIdentityError("origin must be one canonical https://github.com/owner/repository.git URL")
+    return f"https://github.com/{match.group(1)}/{match.group(2)}.git"
+
+
+def _repo_slug(origin: str) -> str:
+    match = re.fullmatch(r"https://github\.com/([^/]+)/([^/]+)\.git", origin, re.I)
+    if not match:
+        raise RunIdentityError("cannot derive repository identity from origin")
+    return f"{match.group(1)}/{match.group(2)}"
+
+
+def _safe_rel(value: str, *, label: str) -> str:
+    if (
+        not isinstance(value, str) or not value or not value.isascii() or "\\" in value
+        or not SAFE_PATH_RE.fullmatch(value) or re.match(r"^[A-Za-z]:", value)
+    ):
+        raise RunIdentityError(f"{label} must be a non-empty ASCII repo-relative POSIX path")
+    pure = PurePosixPath(value)
+    if (
+        pure.is_absolute() or ".." in pure.parts or any(part in ("", ".") for part in pure.parts)
+        or pure.as_posix() != value
+    ):
+        raise RunIdentityError(f"{label} must stay inside the repository")
+    return pure.as_posix()
+
+
+def _resolve_inside(root: Path, relative: str, *, label: str, must_exist: bool = True) -> Path:
+    rel = _safe_rel(relative, label=label)
+    candidate = root.joinpath(*PurePosixPath(rel).parts)
+    try:
+        resolved = candidate.resolve(strict=must_exist)
+    except OSError as exc:
+        raise RunIdentityError(f"{label} cannot be resolved: {exc}") from None
+    try:
+        resolved.relative_to(root)
+    except ValueError:
+        raise RunIdentityError(f"{label} escapes the repository") from None
+    if candidate.is_symlink():
+        raise RunIdentityError(f"{label} may not be a symlink")
+    return resolved
+
+
+def _registry(root: Path) -> tuple[dict[str, Any], Path]:
+    path = _resolve_inside(root, REGISTRY_REL, label="composition registry")
+    value = load_path(path, label="composition registry")
+    if not isinstance(value, dict) or value.get("schema_version") != 1:
+        raise RunIdentityError("composition registry must be a schema_version 1 object")
+    compositions = value.get("compositions")
+    if not isinstance(compositions, dict):
+        raise RunIdentityError("composition registry.compositions must be an object")
+    if value.get("active_composition") != ACTIVE_COMPOSITION:
+        raise RunIdentityError(f"composition registry active_composition must be {ACTIVE_COMPOSITION}")
+    active = [
+        name for name, record in compositions.items()
+        if isinstance(record, dict) and record.get("status") == "active"
+    ]
+    if active != [ACTIVE_COMPOSITION]:
+        raise RunIdentityError(f"composition registry must mark only {ACTIVE_COMPOSITION} active")
+    for name in compositions:
+        if not isinstance(name, str) or not name.isascii() or not COMPOSITION_RE.fullmatch(name):
+            raise RunIdentityError("every registered composition key must be an ASCII identifier")
+    return value, path
+
+
+def composition_record(composition: str, root: str | Path | None = None) -> dict[str, Any]:
+    base = _base(root)
+    if not isinstance(composition, str) or not composition.isascii() or not COMPOSITION_RE.fullmatch(composition):
+        raise RunIdentityError("composition must be a case-sensitive ASCII identifier")
+    registry, _ = _registry(base)
+    record = registry["compositions"].get(composition)
+    if not isinstance(record, dict):
+        raise RunIdentityError(f"composition {composition!r} is not registered")
+    if composition == ACTIVE_COMPOSITION and record.get("status") != "active":
+        raise RunIdentityError(f"{ACTIVE_COMPOSITION} must be the one active composition")
+    if composition != ACTIVE_COMPOSITION and record.get("status") != "legacy":
+        raise RunIdentityError(f"non-active composition {composition!r} must be explicitly legacy")
+    source = _safe_rel(record.get("source", ""), label=f"source for {composition}")
+    _resolve_inside(base, source, label=f"source for {composition}")
+    dependencies = record.get("source_dependencies", [])
+    if not isinstance(dependencies, list) or any(not isinstance(item, str) for item in dependencies):
+        raise RunIdentityError("composition source_dependencies must be a list of paths")
+    canonical_dependencies = [_safe_rel(item, label="composition dependency") for item in dependencies]
+    if len(canonical_dependencies) != len(set(canonical_dependencies)):
+        raise RunIdentityError("composition source_dependencies may not contain duplicates")
+    if composition == ACTIVE_COMPOSITION:
+        _safe_rel(record.get("props", ""), label=f"props for {composition}")
+    return record
+
+
+def _root_registration(root: Path, composition: str, component: str) -> None:
+    path = _resolve_inside(root, ROOT_SOURCE_REL, label="Root.tsx")
+    text = path.read_text(encoding="utf-8")
+    pattern = re.compile(
+        r'<Composition\s+id="' + re.escape(composition) + r'"\s+component=\{' + re.escape(component) + r'\}',
+        re.MULTILINE,
+    )
+    count = len(pattern.findall(text))
+    if count != 1:
+        raise RunIdentityError(
+            f"Root.tsx must register {composition} with component {component} exactly once (found {count})"
+        )
+    if re.search(r'<Composition\s+id="Dispatch"\b', text):
+        raise RunIdentityError("Root.tsx may not register the retired generic Dispatch composition")
+
+
+def _policy_identity(root: Path) -> tuple[str, str]:
+    policy = load_path(_resolve_inside(root, POLICY_REL, label="execution policy"), label="execution policy")
+    if not isinstance(policy, dict):
+        raise RunIdentityError("execution policy must be an object")
+    mode = policy.get("mode")
+    repository = policy.get("canary_repository")
+    if mode != "canary" or not isinstance(repository, str) or not repository:
+        raise RunIdentityError("execution policy must name this canary repository in canary mode")
+    return mode, repository
+
+
+def _date_for(run_id: str, run_date: str | None) -> str:
+    if not isinstance(run_id, str) or not run_id.strip() or not run_id.isascii():
+        raise RunIdentityError("run_id must be a non-empty ASCII string")
+    match = DATE_RE.match(run_id)
+    value = run_date or (match.group(1) if match else None)
+    if not value or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", value):
+        raise RunIdentityError("date is required unless run_id begins with YYYY-MM-DD")
+    try:
+        if dt.date.fromisoformat(value).isoformat() != value:
+            raise ValueError
+    except ValueError:
+        raise RunIdentityError("date must be a real calendar date in YYYY-MM-DD form") from None
+    return value
+
+
+def init(
+    run_id: str,
+    composition: str,
+    *,
+    run_date: str | None = None,
+    props: str | None = None,
+    root: str | Path | None = None,
+) -> dict[str, Any]:
+    """Create a new atomic stamp for this exact checkout and registered composition."""
+    base = _base(root)
+    record = composition_record(composition, base)
+    if composition != ACTIVE_COMPOSITION:
+        raise RunIdentityError(f"new runs must use {ACTIVE_COMPOSITION}; {composition} is legacy")
+    component = record.get("component")
+    if not isinstance(component, str) or not component:
+        raise RunIdentityError(f"composition {composition} has no component")
+    _root_registration(base, composition, component)
+    registry_path = _resolve_inside(base, REGISTRY_REL, label="composition registry")
+    root_source = _resolve_inside(base, ROOT_SOURCE_REL, label="Root.tsx")
+    source_rel = _safe_rel(record["source"], label="composition source")
+    source_path = _resolve_inside(base, source_rel, label="composition source")
+    dependency_hashes: dict[str, str] = {}
+    dependencies = record.get("source_dependencies", [])
+    for item in dependencies:
+        relative = _safe_rel(item, label="composition dependency")
+        dependency_hashes[relative] = _sha(
+            _resolve_inside(base, relative, label="composition dependency")
+        )
+    registered_props = _safe_rel(record.get("props", ""), label="registered props")
+    props_rel = _safe_rel(props, label="props") if props is not None else registered_props
+    if props_rel != registered_props:
+        raise RunIdentityError(
+            f"{ACTIVE_COMPOSITION} props must use the registered path {registered_props}"
+        )
+    props_path = _resolve_inside(base, props_rel, label="props", must_exist=False)
+    origin = _origin_identity(base)
+    mode, policy_repository = _policy_identity(base)
+    repository = _repo_slug(origin)
+    if repository.lower() != policy_repository.lower():
+        raise RunIdentityError("origin repository does not match execution policy")
+    branch = _git(base, "branch", "--show-current")
+    if not branch:
+        raise RunIdentityError("detached HEAD is not a valid run identity")
+    stamp: dict[str, Any] = {
+        "schema_version": STAMP_SCHEMA_VERSION,
+        "run_id": run_id,
+        "date": _date_for(run_id, run_date),
+        "composition": composition,
+        "mode": mode,
+        "repository": repository,
+        "origin": origin,
+        "worktree_root": str(base),
+        "branch": branch,
+        "git_head": _git(base, "rev-parse", "HEAD"),
+        "started_at": time.time(),
+        "registry_path": REGISTRY_REL,
+        "registry_sha256": _sha(registry_path),
+        "root_source_path": ROOT_SOURCE_REL,
+        "root_source_sha256": _sha(root_source),
+        "source_path": source_rel,
+        "source_sha256": _sha(source_path),
+        "source_dependencies": dependency_hashes,
+        "engine_sources_sha256": _engine_sources_sha(base),
+        "props_path": props_rel,
+        # Scratch may survive from an older run. Presence at init is not provenance, so an
+        # existing props file is deliberately left unbound until `bind-inputs` is called after
+        # the current run writes or deliberately selects it.
+        "props_sha256": None,
+    }
+    _atomic_json(_stamp_path(base), stamp)
     return stamp
 
 
-def load_stamp(root: str | None = None) -> dict | None:
-    p = _stamp_path(root)
-    if not p.exists():
+def load_stamp(root: str | Path | None = None) -> dict[str, Any] | None:
+    path = _stamp_path(root)
+    if not path.is_file():
         return None
     try:
-        return json.loads(p.read_text())
-    except (json.JSONDecodeError, OSError):
+        value = load_path(path, label="run stamp")
+    except StrictJSONError:
         return None
+    return value if isinstance(value, dict) else None
 
 
-def check_path(path: str, root: str | None = None) -> tuple[bool, str]:
-    """Return (ok, reason). ok=False means the file is stale, missing, or the run
-    was never stamped. Never raises -- for callers that want to branch."""
-    stamp = load_stamp(root)
-    if stamp is None:
-        return False, (
-            f"run not stamped (no {STAMP_REL}); cannot prove freshness. "
-            f"Run `python3 scripts/run_guard.py init --run-id <date>` in Phase 0 first."
-        )
-    started = float(stamp["started_at"])
-    fp = Path(path)
-    if not fp.exists():
+def _identity_problems(
+    root: Path, stamp: dict[str, Any], *, expected_composition: str | None = None,
+    require_props: bool = True,
+) -> list[str]:
+    problems: list[str] = []
+    required = {
+        "schema_version", "run_id", "date", "composition", "mode", "repository", "origin",
+        "worktree_root", "branch", "git_head", "started_at", "registry_path",
+        "registry_sha256", "root_source_path", "root_source_sha256", "source_path",
+        "source_sha256", "source_dependencies", "props_path", "props_sha256",
+        "engine_sources_sha256",
+    }
+    missing = sorted(required - set(stamp))
+    if missing:
+        return ["run stamp is missing: " + ", ".join(missing)]
+    unknown = sorted(set(stamp) - required)
+    if unknown:
+        problems.append("run stamp has unknown fields: " + ", ".join(unknown))
+    for field in (
+        "run_id", "date", "composition", "mode", "repository", "origin", "worktree_root",
+        "branch", "git_head", "registry_path", "root_source_path", "source_path", "props_path",
+    ):
+        if not isinstance(stamp.get(field), str) or not stamp[field]:
+            problems.append(f"run stamp {field} must be a non-empty string")
+    started_at = stamp.get("started_at")
+    if (
+        isinstance(started_at, bool) or not isinstance(started_at, (int, float))
+        or not math.isfinite(float(started_at)) or float(started_at) <= 0
+    ):
+        problems.append("run stamp started_at must be a finite positive number")
+    if not isinstance(stamp.get("git_head"), str) or not GIT_HEAD_RE.fullmatch(stamp["git_head"]):
+        problems.append("run stamp git_head must be a full lowercase Git object ID")
+    for field in (
+        "registry_sha256", "root_source_sha256", "source_sha256", "engine_sources_sha256",
+    ):
+        if not isinstance(stamp.get(field), str) or not SHA256_RE.fullmatch(stamp[field]):
+            problems.append(f"run stamp {field} must be a lowercase SHA-256")
+    props_hash = stamp.get("props_sha256")
+    if props_hash is not None and (not isinstance(props_hash, str) or not SHA256_RE.fullmatch(props_hash)):
+        problems.append("run stamp props_sha256 must be null or a lowercase SHA-256")
+    try:
+        _date_for(str(stamp.get("run_id", "")), str(stamp.get("date", "")))
+    except RunIdentityError as exc:
+        problems.append(str(exc))
+    if stamp.get("schema_version") != STAMP_SCHEMA_VERSION:
+        problems.append(f"run stamp schema_version must be {STAMP_SCHEMA_VERSION}")
+    composition = stamp.get("composition")
+    if expected_composition is not None and composition != expected_composition:
+        problems.append(f"run stamp composition is {composition!r}, expected {expected_composition!r}")
+    if composition != ACTIVE_COMPOSITION:
+        problems.append(f"active run composition must be exactly {ACTIVE_COMPOSITION!r}")
+    if stamp.get("worktree_root") != str(root):
+        problems.append("run stamp belongs to a different worktree root")
+    record: dict[str, Any] = {}
+    try:
+        record = composition_record(str(composition), root)
+        _root_registration(root, str(composition), str(record.get("component", "")))
+    except (RunIdentityError, StrictJSONError) as exc:
+        problems.append(str(exc))
+    checks = (
+        ("origin", lambda: _origin_identity(root)),
+        ("branch", lambda: _git(root, "branch", "--show-current")),
+        ("git_head", lambda: _git(root, "rev-parse", "HEAD")),
+    )
+    for field, current in checks:
+        try:
+            if stamp.get(field) != current():
+                problems.append(f"{field} changed since run init")
+        except RunIdentityError as exc:
+            problems.append(str(exc))
+    dependencies = stamp.get("source_dependencies")
+    if not isinstance(dependencies, dict):
+        problems.append("run stamp source_dependencies must be an object")
+    else:
+        expected_dependencies = record.get("source_dependencies", []) if isinstance(record, dict) else []
+        if not isinstance(expected_dependencies, list) or set(dependencies) != set(expected_dependencies):
+            problems.append("run stamp composition dependency set does not match the registry")
+        for relative, expected_hash in dependencies.items():
+            if not isinstance(expected_hash, str) or not SHA256_RE.fullmatch(expected_hash):
+                problems.append(f"composition dependency {relative} has an invalid stamped hash")
+                continue
+            try:
+                path = _resolve_inside(root, str(relative), label="composition dependency")
+                if _sha(path) != expected_hash:
+                    problems.append(f"composition dependency {relative} changed since run init")
+            except RunIdentityError as exc:
+                problems.append(str(exc))
+    try:
+        mode, repository = _policy_identity(root)
+        if stamp.get("mode") != mode:
+            problems.append("execution mode changed since run init")
+        if str(stamp.get("repository", "")).lower() != repository.lower():
+            problems.append("repository identity changed since run init")
+    except (RunIdentityError, StrictJSONError) as exc:
+        problems.append(str(exc))
+    for path_field, hash_field, label in (
+        ("registry_path", "registry_sha256", "composition registry"),
+        ("root_source_path", "root_source_sha256", "Root.tsx"),
+        ("source_path", "source_sha256", "composition source"),
+    ):
+        try:
+            path = _resolve_inside(root, str(stamp.get(path_field, "")), label=label)
+            if _sha(path) != stamp.get(hash_field):
+                problems.append(f"{label} changed since run init")
+        except RunIdentityError as exc:
+            problems.append(str(exc))
+    if stamp.get("registry_path") != REGISTRY_REL:
+        problems.append("run stamp registry_path is not canonical")
+    if stamp.get("root_source_path") != ROOT_SOURCE_REL:
+        problems.append("run stamp root_source_path is not canonical")
+    if isinstance(record, dict):
+        if stamp.get("source_path") != record.get("source"):
+            problems.append("run stamp source_path does not match the registry")
+        if stamp.get("props_path") != record.get("props"):
+            problems.append("run stamp props_path does not match the registry")
+    try:
+        if _engine_sources_sha(root) != stamp.get("engine_sources_sha256"):
+            problems.append("engine source tree changed since run init")
+    except RunIdentityError as exc:
+        problems.append(str(exc))
+    try:
+        props_path = _resolve_inside(root, str(stamp.get("props_path", "")), label="props", must_exist=False)
+        want = stamp.get("props_sha256")
+        if require_props and not props_path.is_file():
+            problems.append("props file is missing")
+        elif props_path.is_file() and want is None and require_props:
+            problems.append("props exist but are not hash-bound; run bind-inputs")
+        elif props_path.is_file() and want is not None and _sha(props_path) != want:
+            problems.append("props changed since they were bound to the run")
+        elif not props_path.is_file() and want is not None:
+            problems.append("hash-bound props file is missing")
+    except RunIdentityError as exc:
+        problems.append(str(exc))
+    return problems
+
+
+def check_identity(
+    *, root: str | Path | None = None, expected_composition: str | None = None,
+    require_props: bool = True,
+) -> tuple[bool, str]:
+    base = _base(root)
+    path = _stamp_path(base)
+    if not path.is_file():
+        return False, f"run not stamped (no {STAMP_REL})"
+    try:
+        raw = load_path(path, label="run stamp")
+    except StrictJSONError as exc:
+        return False, str(exc)
+    if not isinstance(raw, dict):
+        return False, "run stamp must be a JSON object"
+    problems = _identity_problems(base, raw, expected_composition=expected_composition,
+                                  require_props=require_props)
+    return (False, "; ".join(problems)) if problems else (True, "run identity matches checkout and inputs")
+
+
+def bind_inputs(*, root: str | Path | None = None) -> dict[str, Any]:
+    """Hash props exactly once after Phase 0 creates them; later drift is refused."""
+    base = _base(root)
+    path = _stamp_path(base)
+    raw = load_path(path, label="run stamp")
+    if not isinstance(raw, dict):
+        raise RunIdentityError("run stamp must be a JSON object")
+    problems = _identity_problems(base, raw, require_props=False)
+    if problems:
+        raise RunIdentityError("; ".join(problems))
+    props = _resolve_inside(base, str(raw["props_path"]), label="props")
+    current = _sha(props)
+    if raw.get("props_sha256") not in (None, current):
+        raise RunIdentityError("props changed after they were bound; start a new run stamp")
+    raw["props_sha256"] = current
+    _atomic_json(path, raw)
+    return raw
+
+
+def _artifact_path(path: str | Path, root: Path) -> Path:
+    candidate = Path(path)
+    if candidate.is_absolute():
+        resolved = candidate.resolve(strict=False)
+        try:
+            resolved.relative_to(root)
+        except ValueError:
+            raise StaleArtifactError("artifact path is outside the stamped repository") from None
+        return resolved
+    try:
+        if "\\" in str(path):
+            raise StaleArtifactError("artifact path must use POSIX separators")
+        relative = _safe_rel(PurePosixPath(str(path)).as_posix(), label="artifact")
+        return _resolve_inside(root, relative, label="artifact", must_exist=False)
+    except RunIdentityError as exc:
+        raise StaleArtifactError(str(exc)) from None
+
+
+def check_path(path: str | Path, root: str | Path | None = None) -> tuple[bool, str]:
+    """Check a current-run artifact, resolving relative paths against `root` only."""
+    base = _base(root)
+    ok, reason = check_identity(root=base, require_props=False)
+    if not ok:
+        return False, reason
+    stamp = load_stamp(base)
+    assert stamp is not None
+    try:
+        target = _artifact_path(path, base)
+    except StaleArtifactError as exc:
+        return False, str(exc)
+    if not target.is_file():
         return False, f"{path} does not exist"
-    mtime = fp.stat().st_mtime
-    if mtime < started - GRACE_S:
-        return False, (
-            f"STALE: {path} was last written {_fmt(mtime)}, but this run "
-            f"(run_id={stamp.get('run_id')}) started {_fmt(started)}. "
-            f"This file is a leftover from an earlier run -- regenerate it this run "
-            f"or point at the artifact this run actually produced."
-        )
+    if target.is_symlink():
+        return False, f"{path} may not be a symlink"
+    if target.stat().st_mtime <= float(stamp["started_at"]):
+        return False, f"STALE: {path} does not postdate run_id={stamp.get('run_id')}"
     return True, "fresh"
 
 
-def fresh(path: str, *, check: bool = True, root: str | None = None) -> str:
-    """Assert `path` belongs to the current run and return it unchanged, so it
-    drops into existing code:  open(fresh("out/dispatch/post.txt")).
-    Set check=False to bypass (deliberate manual use only)."""
+def fresh(
+    path: str | Path, *, check: bool = True, root: str | Path | None = None,
+) -> str:
     if not check:
-        return path
+        return str(path)
     ok, reason = check_path(path, root)
     if not ok:
         raise StaleArtifactError(reason)
-    return path
+    return str(_artifact_path(path, _base(root)))
+
+
+def stamp_digest(root: str | Path | None = None) -> str:
+    stamp = load_stamp(root)
+    if stamp is None:
+        raise RunIdentityError("run stamp is missing or unreadable")
+    return hashlib.sha256(canonical_bytes(stamp)).hexdigest()
 
 
 def _main() -> int:
-    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    sub = ap.add_subparsers(dest="cmd", required=True)
-
-    pi = sub.add_parser("init", help="stamp the current run (Phase 0, once)")
-    pi.add_argument("--run-id", required=True, help="e.g. the run date 2026-07-19")
-
-    pc = sub.add_parser("check", help="check one path; exit 0 fresh, 1 stale/missing")
-    pc.add_argument("path")
-
-    a = ap.parse_args()
-    if a.cmd == "init":
-        s = init(a.run_id)
-        print(f"run stamped: run_id={s['run_id']} started_at={_fmt(s['started_at'])} -> {STAMP_REL}")
-        return 0
-    if a.cmd == "check":
-        ok, reason = check_path(a.path)
-        print(("OK: " if ok else "FAIL: ") + reason, file=sys.stderr if not ok else sys.stdout)
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    init_parser = sub.add_parser("init", help="stamp an explicit registered composition")
+    init_parser.add_argument("--run-id", required=True)
+    init_parser.add_argument("--date")
+    init_parser.add_argument("--composition", required=True)
+    init_parser.add_argument("--props")
+    check_parser = sub.add_parser("check", help="check one current-run artifact")
+    check_parser.add_argument("path")
+    identity_parser = sub.add_parser("require-identity", help="validate checkout and bound inputs")
+    identity_parser.add_argument("--allow-unbound-props", action="store_true")
+    composition_parser = sub.add_parser("require-composition", help="validate exact composition and inputs")
+    composition_parser.add_argument("--composition", required=True)
+    sub.add_parser("bind-inputs", help="hash props once after they are created")
+    args = parser.parse_args()
+    try:
+        if args.cmd == "init":
+            stamp = init(args.run_id, args.composition, run_date=args.date, props=args.props)
+            print(f"run stamped: run_id={stamp['run_id']} composition={stamp['composition']} head={stamp['git_head'][:12]} -> {STAMP_REL}")
+            return 0
+        if args.cmd == "bind-inputs":
+            stamp = bind_inputs()
+            print(f"run inputs bound: composition={stamp['composition']} props_sha256={stamp['props_sha256'][:12]}")
+            return 0
+        if args.cmd == "check":
+            ok, reason = check_path(args.path)
+        elif args.cmd == "require-identity":
+            ok, reason = check_identity(require_props=not args.allow_unbound_props)
+        else:
+            ok, reason = check_identity(expected_composition=args.composition, require_props=True)
+        print(("OK: " if ok else "FAIL: ") + reason, file=sys.stdout if ok else sys.stderr)
         return 0 if ok else 1
-    return 2
+    except (RunIdentityError, StrictJSONError, OSError, ValueError) as exc:
+        print(f"run_guard: FAIL: {exc}", file=sys.stderr)
+        return 1
 
 
 if __name__ == "__main__":

@@ -22,8 +22,7 @@
 # Rendering eleven frames costs about a minute. That is the whole idea.
 #
 # Usage:
-#   scripts/probe_frames.sh <Comp> <seconds[,seconds...]>   # e.g. 91.3,116.0,129.4
-#   scripts/probe_frames.sh Dispatch0809 91.3,129.4
+#   scripts/probe_frames.sh DispatchDaily <seconds[,seconds...]>   # e.g. 91.3,116.0,129.4
 #
 # Writes out/dispatch/probe/f<sec>.jpg and a single contact strip probe_strip.jpg.
 # It renders MUTE and from the same props the real render uses, so what you see is what the
@@ -33,12 +32,18 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 if [ $# -lt 2 ]; then
-  echo "usage: probe_frames.sh <Comp> <seconds[,seconds...]>" >&2
+  echo "usage: probe_frames.sh DispatchDaily <seconds[,seconds...]>" >&2
   exit 2
 fi
 COMP="$1"
 TIMES="$2"
-PROPS="${PROPS:-out/dispatch/episode_props.json}"
+if [ "$COMP" != "DispatchDaily" ]; then
+  echo "probe_frames: only the active, case-sensitive DispatchDaily identity may be probed." >&2
+  exit 2
+fi
+python3 scripts/run_guard.py bind-inputs
+python3 scripts/run_guard.py require-composition --composition DispatchDaily
+PROPS="out/dispatch/episode_props.json"
 OUTDIR="out/dispatch/probe"
 FPS="${FPS:-30}"
 

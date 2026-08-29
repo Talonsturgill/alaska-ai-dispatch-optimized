@@ -180,28 +180,16 @@ def default_targets():
     already out, which is rewriting history to make a checker happy. The gate binds what
     this run is about to render; pass explicit paths to audit anything else.
     """
-    # FALLBACK HARDENING (2026-08-08). When the stamp carries no composition -- which is
-    # what run_guard writes unless a run sets it -- this resolver used to fall back to
-    # Episode.tsx, a shipped 2026-07 film. Three source gates then reported "clean across
-    # 1 file(s)" all run while never once reading the episode about to be rendered. A
-    # checker pointed at the wrong file is worse than no checker, because it reports PASS.
-    # The fallback is now the NEWEST Ep*.tsx, which is at worst this run's own file.
-    stamp = os.path.join(REPO, "out", "dispatch", ".run_stamp.json")
-    src = os.path.join(REPO, "video-engine", "src")
-    if os.path.exists(stamp):
-        import json
-        comp = json.load(open(stamp)).get("composition") or ""
-        # the composition id is not the filename (id="Dispatch0806", file Ep0806.tsx), so
-        # resolve it through Root.tsx the way Remotion does rather than guessing a path
-        root = os.path.join(src, "Root.tsx")
-        if comp and os.path.exists(root):
-            r = open(root).read()
-            m = re.search(r'id="' + re.escape(comp) + r'"\s*\n\s*component=\{(\w+)\}', r)
-            if m:
-                mi = re.search(r"import\s*\{[^}]*\b" + m.group(1) + r"\b[^}]*\}\s*from\s*'\./(\w+)'", r)
-                if mi and os.path.exists(os.path.join(src, mi.group(1) + ".tsx")):
-                    return [os.path.join(src, mi.group(1) + ".tsx")]
-    return sorted(glob.glob(os.path.join(src, "Ep*.tsx")))[-1:]
+    from run_guard import ACTIVE_COMPOSITION, check_identity, composition_record
+
+    ok, reason = check_identity(root=REPO, expected_composition=ACTIVE_COMPOSITION, require_props=False)
+    if not ok:
+        raise SystemExit(f"caption_band_check: run identity is invalid: {reason}")
+    record = composition_record(ACTIVE_COMPOSITION, REPO)
+    targets = record.get("source_dependencies") or [record["source"]]
+    if not isinstance(targets, list) or not targets:
+        raise SystemExit("caption_band_check: active composition has no registered source")
+    return [os.path.join(REPO, *path.split("/")) for path in targets]
 
 
 def main():
