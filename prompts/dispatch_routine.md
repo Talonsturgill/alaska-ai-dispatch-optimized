@@ -8,9 +8,9 @@ every later production-era instruction to update `alaskaaihq.com`, clone/push
 Gmail, use rclone/Drive/S3/R2/tmpfiles, post socially, or fire another routine is
 disabled. Produce local artifacts, local email HTML, and canary-repository media
 only. The canary terminal state does not require a Gmail receipt or production
-feed entry. Never set the production latch, switch remotes, weaken a guard, or
-find an alternate publisher unless the owner explicitly authorizes production
-side effects for this exact run in the current conversation. If a later section
+feed entry. There is no production latch or runtime override. Never switch
+remotes, weaken a guard, or find an alternate publisher. Production release is
+a separate reviewed port into the production repositories. If a later section
 conflicts, this override wins.
 
 # ALASKA.AI DISPATCH ROUTINE — MASTER PROMPT v2 (SOURCE OF TRUTH)
@@ -355,7 +355,7 @@ Prompting is, so here it is. Match the length of every written artifact to its j
 - `storyboard.md`, `story_pick.md`, art-direction rationales, manifest entries, RUN_UPGRADES
   entries, PR bodies, run reports: cover the substance, then STOP. No filler sections, no
   redundant summaries, no boilerplate, no restating what an adjacent file already says.
-- The Gmail draft is the exception that stays complete, because the owner reads it and it carries
+- The local email preview is the exception that stays complete, because the owner reviews it and it carries
   the credits, sources, and honest scorecard.
 - **An artifact longer than its job is stealing from the film.** The 08-01 run produced a beautiful
   paper trail and zero frames. Legibility of the plan is not the deliverable.
@@ -400,9 +400,10 @@ decision an earlier phase already made. Grep the phase you need and keep buildin
 
 ## REPO + CADENCE
 
-All work in talonsturgill/alaska-ai-weekly, on a claude/dispatch-<date> branch off main that you
-push AND merge (repo policy in CLAUDE.md: this routine ships autonomously; the Gmail draft is
-the only human touchpoint and is NOT a merge gate). Runs DAILY. Dedupe is mandatory:
+All work stays in `Talonsturgill/alaska-ai-dispatch-optimized`, on a
+`canary/dispatch-<date>` branch off main. Push deliberately only after the
+safety suite and quality gates pass; do not auto-merge generated episodes. Runs
+DAILY when invoked. Dedupe is mandatory:
 scripts/dedupe.py list at research start, check before locking a story, add (with composition
 fingerprint) at the end of every run. THE DEDUPE WINDOW IS 30 DAYS (owner directive 2026-07-30,
 "make the dedupe function of this automation only 30 days, it's okay to repeat if it's been 30 days
@@ -441,14 +442,14 @@ enforced in code by DEDUPE_WINDOW_DAYS in scripts/dedupe.py, so `list` and `chec
    (owner directive 2026-08-05, "rn ur saying '10 August', the normal way to say it is August
    10th"). NEVER "10 August", never a bare "August 10", never "the 10th of August", never an
    abbreviated month in prose ("Aug 10"). This applies to every surface a human READS OR HEARS:
-   the VO, the LinkedIn post, on-screen text that is a SENTENCE, the Gmail draft's prose.
+   the VO, the LinkedIn post, on-screen text that is a SENTENCE, the local preview's prose.
    ISO 8601 IS STILL CORRECT where the date is a CITATION rather than a sentence: filenames,
    ledger and JSON fields, and a provenance stamp on screen or in a source list. "ANCHORAGE
    DAILY NEWS, 2026-08-02" under a masthead is a stamp and stays ISO. "The paper ran it on
    August 2nd" is a sentence and takes the ordinal. If you are unsure which one you are
    writing, read it aloud: if it sounds like a person talking, it takes the ordinal.
    Enforced as a hard fail on the post text by scripts/caption_check.py DATE_FORMS. The VO,
-   on-screen labels and the Gmail draft are YOUR responsibility, same as the em-dash ban.
+   on-screen labels and the local preview are YOUR responsibility, same as the em-dash ban.
 
 5b. FEWER COMMAS IN THE CAPTION. Ceiling **4.9 commas per 100 words** of post body (owner
    directive 2026-08-05, "reduce comma usage by 10% on the captions moving forward"). That
@@ -465,11 +466,11 @@ enforced in code by DEDUPE_WINDOW_DAYS in scripts/dedupe.py, so `list` and `chec
 5. NO EM DASHES OR EN DASHES, NO SEMICOLONS, NO COLONS. ANYWHERE. EVER. AND NEVER THE WORD
    "CANNOT", ALWAYS "CAN'T" (owner directive 2026-07-30, "ban the word cannot, always use can't
    instead, especially in the captions"). Contractions over the formal register, everywhere:
-   captions and post copy above all, but also VO, on-screen labels, the Gmail draft and credits.
+   captions and post copy above all, but also VO, on-screen labels, the local preview and credits.
    "cannot" reads as institutional writing and this voice is not institutional. Enforced as a hard
    fail by scripts/caption_check.py (BANNED_FORMAL), and the table is the place to add any future
    formal-register ban rather than scattering one-off checks. Not in VO, captions,
-   on-screen labels, the LinkedIn post, the Gmail draft, or credits. Ranges are "X to Y"; use
+   on-screen labels, the LinkedIn post, the local preview, or credits. Ranges are "X to Y"; use
    commas, periods, and parentheses to join clauses (a colon is NEVER the answer, rewrite the
    sentence), and the middot as an on-screen separator. scripts/caption_check.py hard-fails the
    post on any of these; YOU hold the line everywhere else (VO, on-screen, credits).
@@ -508,7 +509,7 @@ enforced in code by DEDUPE_WINDOW_DAYS in scripts/dedupe.py, so `list` and `chec
   (WER<=0.15), speaker-similarity best-pick vs assets/voice/talon_ref_cond.wav, SIM_FLOOR 0.92.
   cfg_weight stays 0.5 (lowering it caused the 2026-07-14 accent drift). NEVER time-stretch
   audio; if the read runs long, TRIM THE SCRIPT and re-synth the affected lines. Budget
-  ~3.5 min/line on CPU. The per-line similarity report goes in the Gmail draft.
+  ~3.5 min/line on CPU. The per-line similarity report goes in the local preview.
 - scripts/align_captions.py — forced alignment (faster-whisper) on the FINAL mixed VO; ALL
   caption cues come from its words JSON. Approximated/scaled/hand-shifted timings are banned.
 - scripts/dedupe.py; scripts/get_music.py (archive.org reachable; Kevin MacLeod CC-BY proven);
@@ -621,7 +622,7 @@ round one silently buys a blind round two. Therefore:
 - WebFetch is the cheap instrument: fetching an outlet's news index and reading its headlines costs
   no search budget at all. Sweep by OUTLET with WebFetch, and spend WebSearch only on genuine
   unknowns.
-- If an agent reports the budget exhausted, say so in the run report and in the Gmail draft note.
+- If an agent reports the budget exhausted, say so in the run report and in the local preview note.
   A thin research result caused by an exhausted budget is NOT a slow news week, and must never be
   reported as one.
 
@@ -1178,7 +1179,7 @@ worlds, no flat single-tone fills, no glyphs that read as broken assets.
       random 500), renders VO_TAKES takes, and keeps the BEST by scripts/vo_soundcheck.py (word
       accuracy, no spoken-tag leak, pitch-variance/not-monotone, duration, loudness). It writes
       vo.wav, vo_lines.json, words.json, captions.json (whole-file forced alignment) and
-      vo_report.json (the QC scorecard for the Gmail draft). If the best take fails a check, the
+      vo_report.json (the QC scorecard for the local preview). If the best take fails a check, the
       fix is IN THE PLAN (re-invoke vo-director with the diagnosis: more energy contrast for
       monotone, move a leaking tag into the notes) then re-synth — do not ship a failed take.
    Target total 112 to 130s (the 120s format); if long, TRIM THE SCRIPT (build_scenes.py retimes the scenes from the new
@@ -1513,7 +1514,7 @@ AI-tells, no savior framing.
 THE POST BODY IS ONLY hook + argument + CTA question + hashtags. Sources and the music/voice
 credit NEVER go in the post body (the 2026-07-21 owner catch: they were pasted into the post
 AND duplicated, and the music credit sat above the hashtags blocking the copy of the post).
-They are delivered SEPARATELY in the Gmail draft's copy-paste comment block (dispatch_email.py
+They are delivered SEPARATELY in the local preview's copy-paste comment block (dispatch_email.py
 renders it) as plain "Title / URL" lines the owner drops into the LinkedIn FIRST COMMENT, not
 the post. So post.txt ends at the hashtags, with no sources list, no URLs and no "Music" line.
 
@@ -1589,7 +1590,7 @@ delivery step.
        python3 scripts/ship_gate.py record --judges <j1>,<j2>,<j3>
        python3 scripts/ship_gate.py check
 
-   `check` MUST exit 0 before a single byte is uploaded, before the Gmail draft is built,
+   `check` MUST exit 0 before a single byte is uploaded, before the local preview is built,
    and before the PR is merged. If it exits 1, THE RUN IS NOT DONE: fix the named defects,
    re-render, rebuild the evidence, re-grade, re-record. Do not upload "so the links exist".
    Do not draft the email "so it is ready". Do not merge "and fix it tomorrow". The gate is
@@ -1647,45 +1648,23 @@ delivery step.
        -c:a aac -b:a 96k -ar 48000 master_9x16_720.mp4
    plus a poster thumb: ffmpeg -i poster.png -vf scale=540:960 -q:v 5 poster_thumb.jpg
    ffprobe-assert 720x1280 on the rendition and check the thumb is < 100 KB.
-2. Upload the two full cuts + poster (frame 0) + the 720p rendition + the poster thumb via
-   upload_video.py; verify HTTP 200 permanent links for ALL of them.
-   MEDIA NAMES ARE DETERMINISTIC AND THAT IS LOAD-BEARING: `dispatch-<date>-<basename>`,
-   e.g. `dispatch-2026-08-06-dispatch_master.mp4`. Because the name depends only on the run
-   date, re-uploading overwrites the same path and the raw URL never changes, and because
-   publish_feed is idempotent by --id, a re-publish REPLACES the feed entry rather than
-   adding one. Together those mean a bad entry that reached the site can be repaired IN
-   PLACE by finishing the run — no dead link, no duplicate, no second entry for one day.
-   That is the only reason the 2026-08-06 premature publish was recoverable. Do not
-   "fix" a bad entry by minting a new name or a new id; use the same ones and overwrite.
-2b. PUBLISH TO THE SITE FEED: `python3 scripts/publish_feed.py --id <run-slug> --date <date>
-   --title "<display title>" --caption "<1-2 sentence VERIFIED summary, fact-check-safe-set
-   language only>" --video-url "<the verified 9:16 URL from step 2>" --poster-url "<the
-   verified poster URL>" --video-mobile-url "<the verified 720p rendition URL>"
-   --poster-thumb-url "<the verified poster-thumb URL>"`. The mobile fields keep the feed
-   fast on phones (the page falls back to the heavy master without them -- never skip them
-   when step 1's rendition succeeded). This prepends the run's entry to docs/videos/videos.json in the
-   Talonsturgill/alaskaaicarousels repo (the alaskaaihq.com/videos vertical feed) and pushes
-   it to main, so the site updates the same day the video ships. Idempotent by --id (re-runs
-   replace, never duplicate). If it exits non-zero (most likely: the routine environment
-   lacks push access to alaskaaicarousels), DO NOT block or roll back delivery -- the video,
-   email, and merge all proceed -- but the failure MUST be surfaced in the Gmail draft's
-   note so the owner knows the site feed is stale and why. Title/caption rules: the title is
-   the run's display title (the storyboard/treatment title, short); the caption uses only
-   verified fact-check-safe-set language, no clickbait beyond what the sources support.
-3. dispatch_email.py (NO --temporary): post text, 1:1-square-primary download buttons, poster, VOICE
-   credit ("Gemini native TTS, voice Sulafat, model gemini-3.1-flash-tts-preview; preset voice
-   with a SynthID watermark, not a clone") plus the vo_report.json sound-check scorecard, MUSIC
-   credit with composer + license, SOURCES with per-figure attribution,
-   the honest gate/panel scorecard, the illustrative-numbers note, AND — via `--upgrades` (one
-   fix per line) — the concrete list of what Phase 8 actually FIXED this run (changes committed,
-   not suggestions), plus any repeat-offender escalation. This renders the "Upgrades shipped this
-   run" email section. (Do the Phase 8 look-back + fixes BEFORE this step so the list is real.)
-   Hand the payload to the Gmail create_draft connector.
-4. Git: commit scenes + storyboard + caption + art_direction + artifacts + stills (NOT heavy
-   mp4s/frames) + the ledger (`scripts/dedupe.py add ... --composition '<fingerprint JSON>'`
-   ALWAYS, and include `--stance <celebratory|cautionary|curious|mixed>` and `--angle "<the
-   Phase 3.5 thesis>"` so the next run can rotate register) + the appended docs/RUN_UPGRADES.md.
-   Push, open PR (ready, not draft), MERGE to main. No dangling or draft PRs.
+2. Publish the two full cuts + poster + 720p rendition + poster thumb only to this
+   repository's `dispatch-media` branch via `scripts/upload_video.py`. The guard
+   validates both origin URLs before creating a worktree or pushing. There is no
+   rclone, temporary-host, foreign-repository, or production fallback. If the
+   canary upload fails, keep the files local and report the failure.
+3. Build the operator-facing preview with
+   `scripts/dispatch_email.py --local-only --out-html out/dispatch/email-preview.html`.
+   Include the post text, local/canary download links, source and license credits,
+   voice report, panel scorecard, illustrative-number note, and actual upgrades.
+   Do not emit or hand off a Gmail payload, and do not create a draft receipt.
+4. Do not invoke `scripts/publish_feed.py`; the live site-feed publisher is
+   permanently blocked in this repository. Do not clone or write the core site.
+5. Commit the scenes, storyboard, caption, art direction, artifacts, stills,
+   dedupe ledger, and upgrade log to the canary run branch. Run
+   `python scripts/canary_guard.py self-test` plus the publisher boundary tests,
+   then push that branch deliberately to the validated canary origin. Do not
+   auto-merge a generated episode.
 
 ## PHASE 8: RETROSPECTIVE + SELF-UPGRADE (close the loop, every run) — AUTHORITATIVE
 
@@ -1724,10 +1703,11 @@ in this run's single PR and merged with it.
    what shipped, every code/doctrine/asset change committed this run (with commit refs), what
    was upgraded and WHY, the repeat-offenders addressed, known-issues genuinely deferred (with the
    plan), and the panel/gate result. Specific enough to diff against and roll back on.
-4. REPORT WHAT YOU DID in the Gmail draft: pass the concrete list of fixes MADE this run to
-   `dispatch_email.py --upgrades` (one per line — changes committed, not suggestions), which
-   renders the "Upgrades shipped this run" section. Include any repeat-offender escalation here
-   too. A run with no fix made and no logged reason is an incomplete run.
+4. REPORT WHAT YOU DID in the local HTML preview: pass the concrete list of fixes
+   MADE this run to `dispatch_email.py --local-only --out-html
+   out/dispatch/email-preview.html --upgrades ...` (one per line, changes
+   committed, not suggestions). Include repeat-offender escalation there too.
+   A run with no fix made and no logged reason is incomplete.
 
 ## ACCURACY + CULTURAL RESPECT
 
@@ -1760,20 +1740,19 @@ skip the day for lack of a story, AND you may never ship a cut that has not clea
 as many rounds as it takes. It is not a failed run, it is an unfinished one, and "we tried" is not a
 state this routine has. The loop's only exit is a passing median.
 Anyone reaching for "but a Dispatch is always delivered" to justify pushing a below-bar cut past
-the ship gate is repeating 07-31 with a different sentence. A Gmail
-draft exists with post text, credits (voice QC report included), sources, the honest scorecard,
-and WORKING permanent links for BOTH cuts (4:5 labeled as the LinkedIn feed cut). The run's
-entry was published to the alaskaaihq.com/videos feed via scripts/publish_feed.py (or its
-failure was explicitly surfaced in the Gmail draft's note -- never silently skipped). Gate 0
+the ship gate is repeating 07-31 with a different sentence. A local HTML preview
+exists with post text, credits (voice QC report included), sources, the honest scorecard,
+and working local or canary-repository links for both valid cuts. No live feed or
+Gmail action was attempted. Gate 0
 passed; the writers-room treatment is recorded; scenes were built in the Remotion engine from
 beats[].draw to the exemplar craft bar with the taste loop run per scene; new library
 components were committed; captions are forced-aligned (median < 150ms); all audio gates
 passed; the 3-judge panel graded it (median + hard-blocker state disclosed); links verified
-live; the branch is pushed AND MERGED to main; dispatch_history updated with the composition
+live; the canary branch is deliberately pushed but not auto-merged; dispatch_history is updated with the composition
 fingerprint. The art_direction plan was written up front (Gate 0D) and the build met it; the
 run's net-new asset + craft-advance were committed and registered in ASSET_MANIFEST.md; and the
 Phase 8 retrospective made a logged upgrade appended to docs/RUN_UPGRADES.md and echoed in the
-Gmail draft. Report: story, winning treatment + why, cast/scenes used + library additions,
+local preview. Report: story, winning treatment + why, cast/scenes used + library additions,
 palette, voice summary, render wall-time, panel result, and this run's upgrade.
 
 ## POST-MORTEM MEMORY (why these rules exist)

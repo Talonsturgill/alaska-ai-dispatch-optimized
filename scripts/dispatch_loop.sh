@@ -76,5 +76,5 @@ for p in sys.argv[1:]:
         print(f"  {name}: probe failed {e}")
 PY
 echo ""
-echo "Next: upload BOTH cuts (scripts/upload_video.py) -> verify HTTP 200 -> scripts/dispatch_email.py."
+echo "Next: keep both cuts local or upload to the CANARY media branch, then build dispatch_email.py --local-only --out-html preview.html."
 echo ">>> LinkedIn: post the 4:5 (dispatch_master_4x5.mp4) — it lands in the MAIN FEED. 9:16 = TikTok."

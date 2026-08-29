@@ -1,63 +1,48 @@
 # Alaska AI Dispatch optimization canary
 
-> **Production publishing is disabled by default.** This repository is an
-> isolated, token-optimization test bed seeded from `alaska-ai-weekly`. Read
-> [CANARY_SAFETY.md](CANARY_SAFETY.md) before running any routine. Local outputs
-> and this repository are allowed; AlaskaAIHQ.com, the original repositories,
-> Gmail, other upload hosts, and social publishing are blocked.
+This public repository is an isolated, token-optimization test bed seeded from
+the Alaska AI Dispatch production history. It exists to compare output quality
+and cost without touching the live Alaska AI HQ publication pipeline.
 
-# alaska-ai-weekly
+Production delivery is not merely off by default; it is unavailable from this
+repository. There is no runtime opt-in or environment override. Normal runs may
+write local artifacts and push source or test media only to
+`Talonsturgill/alaska-ai-dispatch-optimized`.
 
-Source for the **Alaska.Ai Weekly FB Post** Claude Code Routine.
+Read [CANARY_SAFETY.md](CANARY_SAFETY.md) before running anything.
 
-Every Saturday at 5:00 AM AK time, a Claude routine cloned from this repo:
-
-1. Spawns five parallel research subagents covering different beats of AI/robotics in Alaska.
-2. Validates every story (URLs resolve, dates in window, sourcing rule).
-3. Selects the lead + 2-4 supporting stories.
-4. Drafts the post in the analytical, position-taking voice anchored on `examples/post_001.md`.
-5. Runs an editor + scorer loop until the post hits the rubric threshold.
-6. Renders a 1080x1350 brand image via the `alaska-ai-brief` skill.
-7. Drops a polished HTML draft in **docket@alaskaaihq.com** (the connected Gmail account) with the post text + image inline.
-8. Commits all artifacts to a `claude/weekly-{YYYY-MM-DD}` branch.
-
-## Setup
-
-1. Push this repo to GitHub.
-2. Open https://claude.ai/code/routines and create a new routine bound to this repo.
-3. Configure: model = Opus, network = Trusted, connectors = Gmail, schedule = Weekly Saturday 5am America/Anchorage.
-4. Paste the prompt from `prompts/routine_instructions.md` into the Instructions field.
-5. Set `launch_date` in `config/state.yaml` to the Saturday VOL. 01 ships.
-6. Click **Run now** for a smoke test before the first scheduled run.
-
-## Local smoke test of the image renderer
+## Safe start
 
 ```bash
-pip install -r requirements.txt
-mkdir -p out
-python .claude/skills/alaska-ai-brief/build_template.py \
-  --volume "VOL. 01" \
-  --topic  "The Federal AI Push\nHits The 49th" \
-  --date   "10 MAY 2026" \
-  --byline "BY TALON" \
-  --kicker "WEEKLY BRIEF" \
-  --out    out/post_image.png
-open out/post_image.png   # macOS; use xdg-open on Linux
+python scripts/canary_guard.py status
+python scripts/canary_guard.py self-test
+python -m unittest discover -s scripts -p "test_canary_*.py" -v
+bash scripts/setup_env.sh
 ```
 
-A sidecar `out/post_image.png.meta.json` is written next to the PNG.
+The guard verifies that `origin` has one canonical github.com fetch URL, no
+configured `pushurl`, one identical push URL, and the exact canary repository.
+The setup script deliberately installs no post-commit or automatic-push hook.
 
-## What the routine does NOT do
+## Canary outputs
 
-- Render the cover photo (static, manually uploaded).
-- Render the profile photo (static, manually uploaded).
-- Post directly to Facebook (you copy/paste from the Gmail draft).
+- Rendered artifacts stay under `out/` unless deliberately committed.
+- `scripts/upload_video.py` can publish test media only to this repository's
+  `dispatch-media` branch. It has no external-host fallback.
+- `scripts/dispatch_email.py --local-only --out-html <path>` creates an HTML
+  preview without emitting a Gmail connector payload.
+- `scripts/publish_feed.py`, Gmail receipts, Gmail and GitHub connectors,
+  production repositories, the live site feed, social publishing, Cloudflare,
+  databases, schedules, and secrets are blocked.
 
-## Files of note
+## Sources of truth
 
-- `prompts/routine_instructions.md` — the pasted routine prompt.
-- `.claude/skills/alaska-ai-brief/` — the brand image generator.
-- `.claude/agents/*.md` — subagent definitions.
-- `config/brand.yaml` — voice anchor.
-- `examples/post_001.md` — published style baseline.
-- `config/scoring_rubric.yaml` — ship threshold.
+- `config/execution_policy.json` defines the complete action policy.
+- `scripts/canary_guard.py` enforces it.
+- `prompts/dispatch_routine.md` governs the canary routine until the optimized
+  controller replaces it.
+- `video-engine/` contains the Remotion engine.
+- `CANARY_SAFETY.md` documents the boundary and failure behavior.
+
+Production deployment must be reviewed and implemented separately in the
+production repositories. Do not weaken this lab to turn a canary into a release.

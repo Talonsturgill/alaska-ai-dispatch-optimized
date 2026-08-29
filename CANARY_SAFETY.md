@@ -1,6 +1,6 @@
 # Alaska AI Dispatch optimization canary
 
-> **CANARY REPOSITORY — PRODUCTION SIDE EFFECTS ARE OFF BY DEFAULT**
+> **CANARY REPOSITORY — PRODUCTION SIDE EFFECTS ARE PERMANENTLY UNAVAILABLE**
 
 This repository is the isolated test bed for the token-optimized Alaska AI
 Dispatch routine. It is intentionally separate from the production
@@ -26,12 +26,14 @@ The normal canary run must not:
 
 ## Safety layers
 
-1. `origin` must resolve to the canary repository. The historical source remote
-   is fetch-only and has a deliberately invalid push URL.
+1. `origin` must have one canonical github.com fetch URL, no configured
+   `pushurl`, and one identical push URL resolving to the canary repository.
+   No production remote is retained in the checkout.
 2. `config/execution_policy.json` is committed in `canary` mode.
 3. `scripts/canary_guard.py` permits local work and canary-repository pushes,
    but blocks production publishing, Gmail, and other external uploads.
-4. `.claude/settings.json` and `.claude/settings.local.json` deny the Gmail MCP.
+4. `.claude/settings.json` and `.claude/settings.local.json` deny both Gmail and
+   GitHub MCP connectors; repository writes use the validated canary origin.
 5. The highest-precedence banner in `CLAUDE.md` and
    `prompts/dispatch_routine.md` overrides their inherited production-era
    delivery instructions.
@@ -43,10 +45,10 @@ Check the boundary before a run:
 ```bash
 python scripts/canary_guard.py status
 python scripts/canary_guard.py self-test
-python -m unittest scripts/test_canary_guard.py
+python -m unittest discover -s scripts -p "test_canary_*.py" -v
 ```
 
-The expected status is `mode=canary`, `production_opt_in=false`, and
+The expected status is `mode=canary`, `production_override=none`, and
 `origin=Talonsturgill/alaska-ai-dispatch-optimized`.
 
 ## Local email preview
@@ -63,23 +65,16 @@ The historical weekly builder follows the same `--local-only --out-html`
 contract. `scripts/record_draft.py` is blocked because a receipt is supposed to
 attest that Gmail accepted a real draft.
 
-## Deliberate production override
+## No production override
 
-There is no command-line bypass. The guard recognizes a two-part environment
-latch only so an owner-authorized recovery can be audited without editing out
-the safety code. **A routine or agent must never set either variable on its own.**
-Both may be set only when the owner explicitly authorizes production side
-effects for that exact run in the current conversation.
-
-The variable names and acknowledgement value are recorded in
-`config/execution_policy.json`; `status` reports only whether the complete latch
-is active, never secret values. Delete the variables immediately after the
-authorized run. Creating this canary repository is not authorization to use the
-latch.
+There is no command-line bypass, environment latch, secret, alternate remote,
+or arbitrary action route. Owner approval for a future production release means
+reviewing and deliberately porting approved changes into the production
+repository. It does not mean weakening this lab's policy at runtime.
 
 ## If a guard blocks
 
 Treat the block as the correct canary result. Do not rename a production action,
-edit the policy, set the latch, switch remotes, use a connector directly, or find
+edit the policy, switch remotes, use a connector directly, or find
 an alternate upload host. Keep the output local or publish it to this canary
 repository and report the blocked production step plainly.

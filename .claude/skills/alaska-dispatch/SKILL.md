@@ -3,7 +3,14 @@ name: alaska-dispatch
 description: Reference engine + helpers for producing an Alaska.Ai video "Dispatch" — a ~60s, 1080x1350, narrated cinematic video tying a recent verifiable Alaska story to an honest AI/ML angle. Use when the routine (see docs/ROUTINE_SPEC.md) needs to build a Dispatch video to the locked production standard (docs/VIDEO_PRODUCTION_STANDARD.md). Provides a proven, hand-coded PIL/numpy renderer, an edge-tts VO + sound-design + loudnorm-gated mix, cinematic finishing, and open captions. This is a STARTING POINT TO ADAPT per story, not a rigid template — vary the visual concept every time.
 ---
 
-# Alaska.Ai Dispatch — production engine
+# ARCHIVED ENGINE REFERENCE — NOT AN OPERATIONAL ROUTE
+
+This skill documents a retired engine generation. In the optimization canary,
+the only operational contract is `prompts/dispatch_routine.md` plus
+`CANARY_SAFETY.md`. Do not use the delivery or dependency instructions below to
+publish, call Gmail, install rclone, or reach a production repository.
+
+# Alaska.Ai Dispatch — historical production engine
 
 Hand-coded illustration video (PIL + numpy + ffmpeg). No AI-generated imagery — that
 is the brand signature. Pairs with `docs/VIDEO_PRODUCTION_STANDARD.md` (craft bible) and
@@ -44,14 +51,13 @@ is the brand signature. Pairs with `docs/VIDEO_PRODUCTION_STANDARD.md` (craft bi
 3. Render in the BACKGROUND, in parallel chunks (e.g. 3×600), never blocking the run.
 4. Before muxing/delivering: run `quality_gate.py` (objective Gate A — MUST exit 0) AND the audio
    gate, THEN a visual contact sheet for taste. Never encode a render that fails the quality gate.
-5. Encode a ~12–14 Mbps faststart H.264/AAC post-master; deliver via `scripts/upload_video.py`
-   (→ one-click link) + `scripts/dispatch_email.py` (→ Gmail draft). Never base64 video
-   through the model.
+5. Historical delivery guidance is retired. In this canary, test media may go
+   only to its own media branch and email output is a local HTML preview.
 
 ## Dependencies (install in the routine environment setup script; cached)
 - ffmpeg, Python 3.11+, `pip install --break-system-packages pillow numpy scipy edge-tts kokoro soundfile`
   (Kokoro = Apache-2.0 publish voice, ~327MB cached; edge-tts = drafts. Voice roster: config/voices.yaml)
-- `rclone` for the upload step (`curl https://rclone.org/install.sh | bash`)
+- No external upload client is installed or permitted by the canary.
 - Fonts are committed under `../alaska-ai-brief/fonts/` — no download needed.
 
 ## Locked brand tokens
