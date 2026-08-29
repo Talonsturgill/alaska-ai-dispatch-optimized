@@ -1,3 +1,18 @@
+# CANARY SAFETY OVERRIDE — HIGHEST PRECEDENCE
+
+This prompt is running from the isolated
+`Talonsturgill/alaska-ai-dispatch-optimized` lab. Read `CANARY_SAFETY.md` and run
+`python scripts/canary_guard.py self-test` before Phase 0. In this repository,
+every later production-era instruction to update `alaskaaihq.com`, clone/push
+`Talonsturgill/alaskaaicarousels`, push `Talonsturgill/alaska-ai-weekly`, use
+Gmail, use rclone/Drive/S3/R2/tmpfiles, post socially, or fire another routine is
+disabled. Produce local artifacts, local email HTML, and canary-repository media
+only. The canary terminal state does not require a Gmail receipt or production
+feed entry. Never set the production latch, switch remotes, weaken a guard, or
+find an alternate publisher unless the owner explicitly authorizes production
+side effects for this exact run in the current conversation. If a later section
+conflicts, this override wins.
+
 # ALASKA.AI DISPATCH ROUTINE — MASTER PROMPT v2 (SOURCE OF TRUTH)
 
 This file IS the routine. The prompt in the routine UI is only a pointer that tells the run to

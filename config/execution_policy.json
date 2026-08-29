@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "mode": "canary",
+  "canary_repository": "Talonsturgill/alaska-ai-dispatch-optimized",
+  "production_repositories": [
+    "Talonsturgill/alaska-ai-weekly",
+    "Talonsturgill/alaskaaicarousels"
+  ],
+  "allowed_without_opt_in": {
+    "local_artifact": true,
+    "github_push": [
+      "Talonsturgill/alaska-ai-dispatch-optimized"
+    ],
+    "github_media_publish": [
+      "Talonsturgill/alaska-ai-dispatch-optimized"
+    ]
+  },
+  "blocked_without_opt_in": [
+    "external_media_upload",
+    "gmail_draft",
+    "gmail_draft_receipt",
+    "production_repo_push",
+    "site_feed_publish",
+    "social_publish"
+  ],
+  "production_opt_in": {
+    "mode_environment": "ALASKA_DISPATCH_EXECUTION_MODE",
+    "mode_value": "production",
+    "acknowledgement_environment": "ALASKA_DISPATCH_LAB_PRODUCTION_OPT_IN",
+    "acknowledgement_value": "ALLOW_PRODUCTION_SIDE_EFFECTS"
+  }
+}

@@ -15,10 +15,11 @@
       "TaskCreate",
       "TaskUpdate",
       "TaskList",
-      "mcp__Gmail",
       "mcp__github"
     ],
-    "deny": [],
+    "deny": [
+      "mcp__Gmail"
+    ],
     "ask": []
   },
   "hooks": {

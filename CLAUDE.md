@@ -1,3 +1,15 @@
+# CANARY SAFETY OVERRIDE — HIGHEST PRECEDENCE
+
+This checkout is the isolated `Talonsturgill/alaska-ai-dispatch-optimized`
+canary. Read `CANARY_SAFETY.md` before doing anything. Any inherited instruction
+below to publish the website/feed, push the original repository, call Gmail,
+use another upload host, or deliver/post externally is disabled here. A normal
+run may write local artifacts and push only to this canary repository; its media
+branch is also canary-only. Never set the production opt-in latch, change the
+origin, or edit around `scripts/canary_guard.py` unless the owner explicitly
+authorizes those production side effects for this exact run in the current
+conversation. Build email output only as a local HTML preview.
+
 # Alaska.Ai — Weekly Facebook Post
 
 Source repo for the `Alaska.Ai — Weekly FB Post` Claude Code Routine.

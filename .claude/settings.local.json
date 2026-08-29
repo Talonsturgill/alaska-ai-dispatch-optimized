@@ -9,10 +9,11 @@
       "WebSearch",
       "Agent",
       "Task",
-      "mcp__Gmail",
       "mcp__github"
     ],
-    "deny": [],
+    "deny": [
+      "mcp__Gmail"
+    ],
     "ask": []
   }
 }

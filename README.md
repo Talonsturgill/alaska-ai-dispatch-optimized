@@ -1,3 +1,11 @@
+# Alaska AI Dispatch optimization canary
+
+> **Production publishing is disabled by default.** This repository is an
+> isolated, token-optimization test bed seeded from `alaska-ai-weekly`. Read
+> [CANARY_SAFETY.md](CANARY_SAFETY.md) before running any routine. Local outputs
+> and this repository are allowed; AlaskaAIHQ.com, the original repositories,
+> Gmail, other upload hosts, and social publishing are blocked.
+
 # alaska-ai-weekly
 
 Source for the **Alaska.Ai Weekly FB Post** Claude Code Routine.
